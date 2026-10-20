@@ -5,6 +5,7 @@ import type { Blueprint, BrickNode, ImportEdge } from '@rama/shared';
 import pkg from '../package.json' with { type: 'json' };
 import {
   committerDate,
+  originName,
   readBranches,
   readCommitTree,
   readHistory,
@@ -32,7 +33,7 @@ export interface ExtractOptions {
   worktree?: boolean;
   /** Globs of tracked paths to leave out (e.g. the Blueprint files themselves). */
   exclude?: string[];
-  /** Repository identifier written to `Blueprint.repo` (default: the directory name). */
+  /** Repository identifier written to `Blueprint.repo` (default: the origin URL without credentials, else the directory name). */
   repo?: string;
   /** Phrases to merge under the target's own `.rama/glossary.json` (whose entries win): fresh drafts. */
   glossaryExtra?: Glossary;
@@ -174,7 +175,7 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
   external.sort((a, b) => byString(a.manifest, b.manifest) || byString(a.name, b.name) || Number(a.dev) - Number(b.dev));
 
   return {
-    repo: opts.repo ?? path.basename(root),
+    repo: opts.repo ?? originName(root) ?? path.basename(root),
     commit: sha ?? '',
     worktree: Boolean(opts.worktree),
     extractedAt: sha ? committerDate(root, sha) : '',
@@ -185,8 +186,8 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
     unresolved: [...unresolved.values()].sort((a, b) => byString(a.from, b.from) || byString(a.spec, b.spec)),
     external,
     commits,
-    branches: opts.worktree ? [] : readBranches(root),
-    tags: opts.worktree ? [] : readTags(root),
+    branches: opts.worktree || !sha ? [] : readBranches(root, sha),
+    tags: opts.worktree || !sha ? [] : readTags(root, sha),
     screens: findScreens(paths, edges, read),
   };
 }

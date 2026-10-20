@@ -197,9 +197,13 @@ export function readHistory(repo: string, sha: string | null): Commit[] {
   return commits;
 }
 
-/** Local and remote branch names (remote prefix and HEAD pointers removed), deduplicated and sorted. */
-export function readBranches(repo: string): string[] {
-  const refs = text(repo, ['for-each-ref', '--format=%(refname)', 'refs/heads', 'refs/remotes'])
+/**
+ * Local and remote branch names whose tip is in the history of `sha` (remote prefix and HEAD pointers
+ * removed), deduplicated and sorted. Refs are repository state, not commit content: limiting them to
+ * the extracted history keeps later branches out of an older commit's Blueprint.
+ */
+export function readBranches(repo: string, sha: string): string[] {
+  const refs = text(repo, ['for-each-ref', `--merged=${sha}`, '--format=%(refname)', 'refs/heads', 'refs/remotes'])
     .split('\n')
     .filter(Boolean)
     .filter((r) => !r.endsWith('/HEAD'))
@@ -207,9 +211,21 @@ export function readBranches(repo: string): string[] {
   return [...new Set(refs)].sort(byString);
 }
 
-export function readTags(repo: string): string[] {
-  return text(repo, ['for-each-ref', '--format=%(refname:short)', 'refs/tags'])
+/** Tag names whose target is in the history of `sha`, sorted. */
+export function readTags(repo: string, sha: string): string[] {
+  return text(repo, ['for-each-ref', `--merged=${sha}`, '--format=%(refname:short)', 'refs/tags'])
     .split('\n')
     .filter(Boolean)
     .sort(byString);
+}
+
+/**
+ * A stable name for the repository: the origin URL with any credentials and a trailing `.git` removed
+ * (so a token in a remote URL is never written), or null when there is no origin.
+ */
+export function originName(repo: string): string | null {
+  const res = spawnSync('git', ['-C', repo, 'config', '--get', 'remote.origin.url'], { encoding: 'utf8' });
+  const url = res.status === 0 ? res.stdout.trim() : '';
+  if (!url) return null;
+  return url.replace(/^([a-z+]+:\/\/)[^@/]*@/i, '$1').replace(/\.git$/, '');
 }

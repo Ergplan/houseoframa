@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b11347f1c308645c753b7187bace67e9254677db",
+  "commit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1036,6 +1036,63 @@
       "sha": "b11347f1c308645c753b7187bace67e9254677db",
       "short": "b11347f",
       "subject": "Stage 1: the Blueprint — extractor, metrics, rama CLI, self.json"
+    },
+    {
+      "at": "2026-10-20T09:49:25Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 495,
+          "del": 130,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 93,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-1.md"
+        },
+        {
+          "add": 5,
+          "del": 2,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "M",
+          "path": "pnpm-lock.yaml"
+        },
+        {
+          "add": 22,
+          "del": 0,
+          "kind": "A",
+          "path": "prompts/reviewer.v1.md"
+        },
+        {
+          "add": 95,
+          "del": 0,
+          "kind": "A",
+          "path": "scripts/review.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "scripts/tsconfig.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        }
+      ],
+      "sha": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "short": "9a40e00",
+      "subject": "Stage 1: draft report and the independent reviewer script"
     }
   ],
   "edges": [
@@ -1335,6 +1392,7 @@
       "symbols": [
         "TreeFile",
         "committerDate",
+        "originName",
         "readBranches",
         "readCommitTree",
         "readHistory",
@@ -2169,7 +2227,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T09:45:39Z",
+  "extractedAt": "2026-10-20T09:49:25Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -2571,7 +2629,7 @@
     },
     {
       "binary": false,
-      "bytes": 7493,
+      "bytes": 8114,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -2580,7 +2638,7 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 56,
+      "lines": 58,
       "path": "docs/DECISIONS.md",
       "test": false
     },
@@ -2646,7 +2704,22 @@
     },
     {
       "binary": false,
-      "bytes": 10725,
+      "bytes": 11425,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 94,
+      "path": "docs/reports/stage-1.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 9071,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -2655,8 +2728,8 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 93,
-      "path": "docs/reports/stage-1.md",
+      "lines": 19,
+      "path": "docs/reports/stage-1.review.md",
       "test": false
     },
     {
@@ -2679,12 +2752,12 @@
     {
       "binary": false,
       "bytes": 1509,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 43,
@@ -2852,7 +2925,7 @@
     },
     {
       "binary": false,
-      "bytes": 9639,
+      "bytes": 10714,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2861,13 +2934,13 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 210,
+      "lines": 236,
       "path": "packages/blueprint/src/extract.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 7114,
+      "bytes": 7215,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2882,13 +2955,13 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 192,
+      "lines": 193,
       "path": "packages/blueprint/src/extract.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 8441,
+      "bytes": 9283,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2897,6 +2970,7 @@
         "committerDate",
         "git",
         "isExcluded",
+        "originName",
         "pathspec",
         "readBranches",
         "readCommitTree",
@@ -2911,7 +2985,7 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 215,
+      "lines": 231,
       "path": "packages/blueprint/src/git.ts",
       "test": false
     },
@@ -3896,12 +3970,12 @@
     {
       "binary": false,
       "bytes": 101560,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 3171,
@@ -3956,12 +4030,12 @@
     {
       "binary": false,
       "bytes": 1914,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 22,
@@ -4278,12 +4352,12 @@
     {
       "binary": false,
       "bytes": 3788,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 95,
@@ -4293,12 +4367,12 @@
     {
       "binary": false,
       "bytes": 64,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 4,
@@ -4308,12 +4382,12 @@
     {
       "binary": false,
       "bytes": 7611,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 232,

@@ -155,6 +155,32 @@ describe('extract on a fixture repository', () => {
     expect(edge!.english).toEqual({ text: 'the x; the y', confirmed: true, by: 'Asha, Ravi', at: '2026-01-03' });
   });
 
+  it('records only refs in the extracted history, so a later tag stays out of an older commit', () => {
+    repo.git('tag', 'v-later', shas[2]!);
+    repo.git('branch', 'side', shas[0]!);
+    try {
+      const old = extract(repo.dir, { rev: shas[1] });
+      expect(old.tags).toEqual([]);
+      expect(old.branches).toEqual(['side']);
+      expect(extract(repo.dir).tags).toEqual(['v-later']);
+      expect(extract(repo.dir).branches).toEqual(['main', 'side']);
+    } finally {
+      repo.git('tag', '-d', 'v-later');
+      repo.git('branch', '-D', 'side');
+    }
+  });
+
+  it('names the repository by its origin without credentials, else by its directory', () => {
+    expect(extract(repo.dir).repo).toBe(repo.dir.split('/').at(-1));
+    repo.git('remote', 'add', 'origin', 'https://user:secret-token@example.com/team/fixture.git');
+    try {
+      expect(extract(repo.dir).repo).toBe('https://example.com/team/fixture');
+      expect(canonicalJson(extract(repo.dir))).not.toContain('secret-token');
+    } finally {
+      repo.git('remote', 'remove', 'origin');
+    }
+  });
+
   it('refuses a malformed overlay with the file name', () => {
     repo.write({ '.rama/layers.json': '{ "rules": [{ "layer": "logic" }] }' });
     repo.commit('bad overlay');
