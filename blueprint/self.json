@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+  "commit": "3d024c953027fa953674489f519967fe396a7b5a",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1885,6 +1885,285 @@
       "sha": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "short": "3dbc4f9",
       "subject": "Member's Stage 2 answers: floors confirmed, drafting through barrels, full bad replies, rupee costs"
+    },
+    {
+      "at": "2026-10-20T18:08:50Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 11,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/site/[siteId]/shots/[name]/route.ts"
+        },
+        {
+          "add": 19,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/site/[siteId]/shots/[name]/shot.ts"
+        },
+        {
+          "add": 213,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/globals.css"
+        },
+        {
+          "add": 3,
+          "del": 8,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.test.tsx"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.tsx"
+        },
+        {
+          "add": 175,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/site/[siteId]/showroom/page.test.tsx"
+        },
+        {
+          "add": 36,
+          "del": 11,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/showroom/page.tsx"
+        },
+        {
+          "add": 37,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/inspector/Inspector.test.tsx"
+        },
+        {
+          "add": 28,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/inspector/Inspector.tsx"
+        },
+        {
+          "add": 131,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/showroom/ShowroomView.tsx"
+        },
+        {
+          "add": 119,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/showroom/TrailPanel.tsx"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/site/SiteView.tsx"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/next.config.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/package.json"
+        },
+        {
+          "add": 1264,
+          "del": 134,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 22,
+          "del": 10,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/BLUEPRINT.md"
+        },
+        {
+          "add": 12,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 96,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/HOUSE-STYLE.md"
+        },
+        {
+          "add": 7,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 3,
+          "del": 1,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/shared/src/blueprint.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/shared/src/trail.ts"
+        },
+        {
+          "add": 12,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/trace/README.md"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/bin/rama-trace.mjs"
+        },
+        {
+          "add": 25,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/package.json"
+        },
+        {
+          "add": 408,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/capture.ts"
+        },
+        {
+          "add": 47,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/cli.ts"
+        },
+        {
+          "add": 129,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/config.ts"
+        },
+        {
+          "add": 21,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/index.ts"
+        },
+        {
+          "add": 49,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/page-figures.js"
+        },
+        {
+          "add": 41,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/sandbox-runner.mjs"
+        },
+        {
+          "add": 76,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/sandbox.test.ts"
+        },
+        {
+          "add": 66,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/sandbox.ts"
+        },
+        {
+          "add": 77,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/showroom.ts"
+        },
+        {
+          "add": 200,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/trail.test.ts"
+        },
+        {
+          "add": 88,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/src/trail.ts"
+        },
+        {
+          "add": 153,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/test/capture.test.ts"
+        },
+        {
+          "add": 114,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/test/fixture-app.ts"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/tsconfig.json"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "M",
+          "path": "pnpm-lock.yaml"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        },
+        {
+          "add": 86,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/stage-3.e2e.test.ts"
+        },
+        {
+          "add": 65,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/stage-3.ekbill.test.ts"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "vitest.config.ts"
+        }
+      ],
+      "sha": "3d024c953027fa953674489f519967fe396a7b5a",
+      "short": "3d024c9",
+      "subject": "Stage 3: Showroom and trails — capture, re-execution, house style"
     }
   ],
   "edges": [
@@ -5257,7 +5536,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T17:39:38Z",
+  "extractedAt": "2026-10-20T18:08:50Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -5619,15 +5898,15 @@
     {
       "binary": false,
       "bytes": 275,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "GET",
         "dynamic"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 11,
@@ -5637,14 +5916,14 @@
     {
       "binary": false,
       "bytes": 809,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "shotResponse"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 19,
@@ -5654,12 +5933,12 @@
     {
       "binary": false,
       "bytes": 11675,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 622,
@@ -5761,12 +6040,12 @@
     {
       "binary": false,
       "bytes": 1853,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 44,
@@ -5776,7 +6055,7 @@
     {
       "binary": false,
       "bytes": 1121,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "RAMA_MEMBER_NAME"
       ],
@@ -5786,7 +6065,7 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 39,
@@ -5800,14 +6079,14 @@
     {
       "binary": false,
       "bytes": 6348,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "RAMA_WORK_DIR"
       ],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 175,
@@ -5817,7 +6096,7 @@
     {
       "binary": false,
       "bytes": 1535,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -5825,7 +6104,7 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 45,
@@ -6127,12 +6406,12 @@
     {
       "binary": false,
       "bytes": 4989,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 123,
@@ -6142,7 +6421,7 @@
     {
       "binary": false,
       "bytes": 17302,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -6151,7 +6430,7 @@
         "View"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 526,
@@ -6209,14 +6488,14 @@
     {
       "binary": false,
       "bytes": 5284,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "ShowroomView"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 131,
@@ -6226,15 +6505,15 @@
     {
       "binary": false,
       "bytes": 3939,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "TrailPanel",
         "UntracedPanel"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 119,
@@ -6244,14 +6523,14 @@
     {
       "binary": false,
       "bytes": 11798,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "SiteView"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 331,
@@ -6265,7 +6544,7 @@
     {
       "binary": false,
       "bytes": 825,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "NEXT_DIST_DIR"
       ],
@@ -6274,7 +6553,7 @@
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 15,
@@ -6288,12 +6567,12 @@
     {
       "binary": false,
       "bytes": 701,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 28,
@@ -6387,12 +6666,12 @@
     {
       "binary": false,
       "bytes": 16229,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 101,
@@ -6406,12 +6685,12 @@
     {
       "binary": false,
       "bytes": 10514,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 191,
@@ -6425,12 +6704,12 @@
     {
       "binary": false,
       "bytes": 17986,
-      "changes": 11,
+      "changes": 12,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 103,
@@ -6444,12 +6723,12 @@
     {
       "binary": false,
       "bytes": 5986,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 96,
@@ -6459,12 +6738,12 @@
     {
       "binary": false,
       "bytes": 4550,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 25,
@@ -6602,6 +6881,21 @@
     },
     {
       "binary": false,
+      "bytes": 13588,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 150,
+      "path": "docs/reports/stage-3.md",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 856,
       "changes": 1,
       "env": [],
@@ -6624,12 +6918,12 @@
     {
       "binary": false,
       "bytes": 1555,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 50,
@@ -8148,7 +8442,7 @@
     {
       "binary": false,
       "bytes": 5540,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -8161,7 +8455,7 @@
         "Screen"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 132,
@@ -8247,14 +8541,14 @@
     {
       "binary": false,
       "bytes": 1420,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "Trail"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 27,
@@ -8287,12 +8581,12 @@
     {
       "binary": false,
       "bytes": 1762,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 14,
@@ -8306,12 +8600,12 @@
     {
       "binary": false,
       "bytes": 208,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
@@ -8321,12 +8615,12 @@
     {
       "binary": false,
       "bytes": 611,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 25,
@@ -8336,7 +8630,7 @@
     {
       "binary": false,
       "bytes": 14460,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "HOME",
         "PATH"
@@ -8354,8 +8648,8 @@
         "routeMatcher",
         "screenForRoute"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 408,
@@ -8365,12 +8659,12 @@
     {
       "binary": false,
       "bytes": 2032,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 47,
@@ -8380,7 +8674,7 @@
     {
       "binary": false,
       "bytes": 5574,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -8397,8 +8691,8 @@
         "readScreensConfig",
         "screensOf"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 129,
@@ -8408,7 +8702,7 @@
     {
       "binary": false,
       "bytes": 520,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -8436,8 +8730,8 @@
         "screenForRoute",
         "showroomOf"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 21,
@@ -8447,12 +8741,12 @@
     {
       "binary": false,
       "bytes": 1954,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 49,
@@ -8462,12 +8756,12 @@
     {
       "binary": false,
       "bytes": 1530,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 41,
@@ -8477,14 +8771,14 @@
     {
       "binary": false,
       "bytes": 2698,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "OPENAI_API_KEY_TEST_LEAK"
       ],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 76,
@@ -8494,7 +8788,7 @@
     {
       "binary": false,
       "bytes": 2509,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "HOME",
         "PATH"
@@ -8505,8 +8799,8 @@
         "SandboxRequest",
         "runInSandbox"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 66,
@@ -8516,7 +8810,7 @@
     {
       "binary": false,
       "bytes": 2648,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -8526,8 +8820,8 @@
         "readCapture",
         "showroomOf"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 77,
@@ -8537,12 +8831,12 @@
     {
       "binary": false,
       "bytes": 6606,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 200,
@@ -8552,7 +8846,7 @@
     {
       "binary": false,
       "bytes": 3277,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -8562,8 +8856,8 @@
         "codeAt",
         "normalise"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 88,
@@ -8573,12 +8867,12 @@
     {
       "binary": false,
       "bytes": 5599,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 153,
@@ -8588,14 +8882,14 @@
     {
       "binary": false,
       "bytes": 4810,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "fixtureApp"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 114,
@@ -8605,12 +8899,12 @@
     {
       "binary": false,
       "bytes": 229,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "default: tsconfig",
       "lines": 6,
@@ -8620,12 +8914,12 @@
     {
       "binary": false,
       "bytes": 103622,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 3248,
@@ -9142,12 +9436,12 @@
     {
       "binary": false,
       "bytes": 7685,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 234,
@@ -9254,12 +9548,12 @@
     {
       "binary": false,
       "bytes": 3850,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 86,
@@ -9269,12 +9563,12 @@
     {
       "binary": false,
       "bytes": 2720,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 65,
@@ -9303,7 +9597,7 @@
     {
       "binary": false,
       "bytes": 1456,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "RAMA_VENDOR_TESTS"
       ],
@@ -9312,7 +9606,7 @@
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 34,
