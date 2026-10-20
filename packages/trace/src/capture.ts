@@ -24,7 +24,7 @@ import {
   type ScreenSpec,
   type ScreensConfig,
 } from './config.ts';
-import { appearanceKey } from './keys.ts';
+import { appearanceKeys } from './keys.ts';
 import { runInSandbox } from './sandbox.ts';
 import { codeAt, type RunResult } from './trail.ts';
 
@@ -76,8 +76,8 @@ export interface Capture {
   /** Every traced figure's mapping, by figure id. */
   mappings: Record<string, CapturedMapping>;
   /**
-   * The result of re-executing each traced figure, per appearance (`<screen>/<figureId>`): the same figure
-   * on two screens may have been computed from different arguments.
+   * The result of re-executing each traced figure, per appearance (`<screen>/<figureId>`, with `~<n>` for a
+   * second occurrence on the same screen; see keys.ts): two appearances may come from different arguments.
    */
   runs: Record<string, RunResult>;
 }
@@ -336,7 +336,8 @@ export async function capture(
   const runs: Capture['runs'] = {};
   const harnessRuns = new Map<string, RunResult>();
   for (const screen of screens) {
-    for (const f of screen.figures) {
+    const keys = appearanceKeys(screen.name, screen.figures);
+    for (const [i, f] of screen.figures.entries()) {
       const mapping = mappings[f.id];
       if (f.origin === 'detected' || !mapping) continue;
       const harness = overlay[f.id]?.run;
@@ -345,9 +346,9 @@ export async function capture(
         run = await reexecute(site.repoDir, f, mapping, harness);
         if (mapping.origin === 'overlay') harnessRuns.set(f.id, run);
       }
-      runs[appearanceKey(screen.name, f.id)] = run;
+      runs[keys[i]!] = run;
       log(
-        `figure ${screen.name}/${f.id}: ${run.ok ? `re-executed → ${run.text}` : `not re-executed (${run.error})`}`,
+        `figure ${keys[i]}: ${run.ok ? `re-executed → ${run.text}` : `not re-executed (${run.error})`}`,
       );
     }
   }

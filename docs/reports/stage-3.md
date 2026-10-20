@@ -174,7 +174,13 @@ Rather than patch case by case, detection now works on **residual text**. Each e
 1. **Invariant 2 (code): text directly in `<body>` was never considered** (detection scanned `body *`). Body is now included, judged by its own direct text. A detected figure's hotspot is now drawn around the text it was judged by, not the whole element, so a body-level figure does not cover the screen. The fixture's "Tip ₹5" directly in `<body>` pins it.
 2. **Invariant 7 (code): the Brick view counted its "On screen" screens itself.** `screensRendering()` in `packages/blueprint/metrics` now does it, with a test, and the view only displays the result.
 
-(Run 6 below.)
+**Run 6 (at 8a96211): two code defects and one report claim, all fixed with tests in this commit.**
+
+1. **Invariant 2 (code): figures drawn as pixels.** A canvas or an image could show figures with neither a trail nor a mark. Every `<canvas>`, and every image of 48 × 32 px or more, is now marked untraced as a whole. Smaller images are icons. The fixture's "Sales chart" image is marked and its 16 px icon is not.
+2. **Invariant 2 (code): the same figure twice on one screen** with different arguments shared one run and trail. Appearance keys now carry the occurrence (`home/order-total`, `home/order-total~2`). Capture and the Showroom both use `appearanceKeys()`, and each hotspot opens its own trail. The fixture's home shows `order-total` twice (₹28.00 and ₹15.00), each matching its own screen.
+3. **Report claim: "one trail per appearance"** was not true within a screen. It is now (finding 2).
+
+(Run 7 below.)
 
 ## Real model cost
 

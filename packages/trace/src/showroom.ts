@@ -6,7 +6,7 @@ import path from 'node:path';
 import type { Blueprint, FigureRef, Trail } from '@rama/shared';
 import { workDir } from '@rama/blueprint/site';
 import type { Capture, CapturedScreen } from './capture.ts';
-import { appearanceKey } from './keys.ts';
+import { appearanceKeys } from './keys.ts';
 import { buildTrail } from './trail.ts';
 
 export interface ShowroomScreen {
@@ -28,7 +28,7 @@ export interface Showroom {
   commit: string;
   capturedAt: string;
   screens: ShowroomScreen[];
-  /** One trail per traced figure's appearance, by `<screen>/<figureId>`. */
+  /** One trail per traced figure's appearance, by appearance key (keys.ts). */
   trails: Record<string, Trail>;
   /** Figures shown and figures traced, counted per appearance: the honest rate. */
   counts: { shown: number; traced: number };
@@ -55,20 +55,22 @@ export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
     width: s.width,
     height: s.height,
     bricks: s.bricks,
-    figures: s.figures.map((f) => {
-      const mapping = f.origin === 'detected' ? undefined : capture.mappings[f.id];
-      const key = appearanceKey(s.name, f.id);
-      if (mapping) {
-        trails[key] = buildTrail(bp, {
-          figureId: f.id,
-          mapping,
-          code: mapping.code,
-          shown: f.value ?? f.text,
-          run: capture.runs[key] ?? null,
-        });
-      }
-      return { id: f.id, box: f.box, traced: Boolean(mapping), text: f.text };
-    }),
+    figures: (() => {
+      const keys = appearanceKeys(s.name, s.figures);
+      return s.figures.map((f, i) => {
+        const mapping = f.origin === 'detected' ? undefined : capture.mappings[f.id];
+        if (mapping) {
+          trails[keys[i]!] = buildTrail(bp, {
+            figureId: f.id,
+            mapping,
+            code: mapping.code,
+            shown: f.value ?? f.text,
+            run: capture.runs[keys[i]!] ?? null,
+          });
+        }
+        return { id: f.id, box: f.box, traced: Boolean(mapping), text: f.text };
+      });
+    })(),
   });
   const screens = capture.screens.map(screen);
   const all = screens.flatMap((s) => s.figures);

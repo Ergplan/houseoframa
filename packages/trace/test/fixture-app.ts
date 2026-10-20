@@ -28,7 +28,12 @@ const page = (body) => '<!doctype html><html><body style="margin:0;font:16px san
 const routes = {
   '/': () =>
     page('<h1>Shop</h1><p data-rama-figure="order-total" data-rama-args=\\'' + JSON.stringify([LINES]) + '\\' data-rama-value="' +
-      orderTotal(LINES) + '">' + rupees(orderTotal(LINES)) + '</p><p>Delivery <span>₹99</span></p>Tip ₹5'),
+      orderTotal(LINES) + '">' + rupees(orderTotal(LINES)) + '</p><p>Delivery <span>₹99</span></p>Tip ₹5' +
+      // The same figure again on this screen, from other arguments; a chart image; a small icon.
+      '<p>Last order <b data-rama-figure="order-total" data-rama-args=\\'' + JSON.stringify([OTHER]) + '\\' data-rama-value="' +
+      orderTotal(OTHER) + '">' + rupees(orderTotal(OTHER)) + '</b></p>' +
+      '<img alt="Sales chart" width="200" height="100" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect width="200" height="100" fill="#ddd"/></svg>') + '">' +
+      '<img alt="" width="16" height="16" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>') + '">'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
       '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +

@@ -19,4 +19,4 @@ export {
 } from './showroom.ts';
 export { runInSandbox, type SandboxAnswer, type SandboxRequest } from './sandbox.ts';
 export * from './config.ts';
-export { appearanceKey } from './keys.ts';
+export { appearanceKey, appearanceKeys } from './keys.ts';

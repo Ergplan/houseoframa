@@ -66,9 +66,13 @@ describe('capture', () => {
     const home = cap.screens[0]!.figures;
     expect(home.map((f) => [f.id, f.origin, f.text])).toEqual([
       ['order-total', 'attribute', '₹28.00'],
+      ['order-total', 'attribute', '₹15.00'], // the same figure again, from other arguments
       ['untraced:home:1', 'detected', 'Tip ₹5'], // text directly in <body>
       ['untraced:home:2', 'detected', '₹99'],
+      ['untraced:home:3', 'detected', 'image: Sales chart'], // figures drawn in an image cannot be read
     ]);
+    // A small icon is not marked: it cannot hold a figure a person reads.
+    expect(home.filter((f) => f.text.startsWith('image')).length).toBe(1);
     expect(home[0]).toMatchObject({
       args: [
         [
@@ -122,6 +126,8 @@ describe('capture', () => {
       inputs: [{ label: 'Order lines', value: '2 lines' }],
     });
     expect(cap.runs['order/vat']).toBeUndefined(); // tagged, but nothing maps it
+    // Two appearances on one screen are kept apart: the second is keyed with its occurrence.
+    expect(cap.runs['home/order-total~2']).toMatchObject({ ok: true, text: '1500', value: 1500 });
     expect(cap.mappings['order-total']!.code).toBe(
       'export function orderTotal(lines) {\n  let sum = 0;\n  for (const l of lines) sum += l.qty * l.pricePaise;\n  return sum;\n}',
     );
@@ -146,13 +152,16 @@ describe('showroom', () => {
       );
     expect(ids(true)).toEqual([
       'home/order-total',
+      'home/order-total',
       'order/order-total',
       'order/line-count',
+      'moved/order-total',
       'moved/order-total',
     ]);
     expect(ids(false)).toEqual([
       'home/untraced:home:1',
       'home/untraced:home:2',
+      'home/untraced:home:3',
       'order/vat',
       'order/untraced:order:1',
       'order/untraced:order:2',
@@ -164,11 +173,14 @@ describe('showroom', () => {
       'order/untraced:order:8',
       'moved/untraced:moved:1',
       'moved/untraced:moved:2',
+      'moved/untraced:moved:3',
     ]);
-    expect(s.counts).toEqual({ shown: 17, traced: 4 });
+    expect(s.counts).toEqual({ shown: 21, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
+      'home/order-total~2',
       'moved/order-total',
+      'moved/order-total~2',
       'order/line-count',
       'order/order-total',
     ]);
@@ -190,6 +202,15 @@ describe('showroom', () => {
       signoff: null,
     });
     expect(s.trails['home/order-total']!.build.map((b) => b.file)).toEqual(['lib/total.js']);
+    // The second appearance on the same screen has its own trail: its own inputs and its own check.
+    expect(s.trails['home/order-total~2']!.result).toEqual({
+      shown: '1500',
+      computed: '1500',
+      matches: true,
+    });
+    expect(s.trails['home/order-total~2']!.inputs[0]!.value).toBe(
+      JSON.stringify([{ qty: 3, pricePaise: 500 }]),
+    );
     const order = s.trails['order/order-total']!;
     expect(order.result).toEqual({ shown: '1500', computed: '1500', matches: true });
     expect(order.inputs[0]!.value).toBe(JSON.stringify([{ qty: 3, pricePaise: 500 }]));

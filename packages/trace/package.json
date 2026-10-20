@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./trail": "./src/trail.ts",
-    "./showroom": "./src/showroom.ts"
+    "./showroom": "./src/showroom.ts",
+    "./keys": "./src/keys.ts"
   },
   "bin": {
     "rama-trace": "./bin/rama-trace.mjs"

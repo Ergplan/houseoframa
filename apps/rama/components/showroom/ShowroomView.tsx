@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { Showroom } from '@rama/trace/showroom';
+import { appearanceKey, appearanceKeys } from '@rama/trace/keys';
 import { TrailPanel, UntracedPanel } from './TrailPanel';
 
 export function ShowroomView({
@@ -25,8 +26,18 @@ export function ShowroomView({
     showroom.screens.find((s) => s.name === initialScreen)?.name ?? showroom.screens[0]?.name ?? '',
   );
   const screen = showroom.screens.find((s) => s.name === screenName) ?? showroom.screens[0];
-  const [figure, setFigure] = useState<string | null>(initialFigure ?? null);
-  const picked = screen?.figures.find((f) => f.id === figure) ?? null;
+  // A figure is selected by its appearance key (keys.ts), so two appearances on one screen stay apart.
+  // `?figure=` may give a key or a bare figure id (its first appearance on the screen).
+  const keys = screen ? appearanceKeys(screen.name, screen.figures) : [];
+  const [figure, setFigure] = useState<string | null>(
+    initialFigure && screen
+      ? initialFigure.includes('/')
+        ? initialFigure
+        : appearanceKey(screen.name, initialFigure)
+      : null,
+  );
+  const pickedAt = keys.indexOf(figure ?? '');
+  const picked = pickedAt === -1 ? null : screen!.figures[pickedAt]!;
   const shotUrl = (shot: string) => `/api/site/${siteId}/shots/${shot}`;
 
   return (
@@ -71,11 +82,12 @@ export function ShowroomView({
                   src={shotUrl(screen.shot)}
                   alt={`${screen.title}, as the target's app shows it`}
                 />
-                {screen.figures.map((f) => (
+                {screen.figures.map((f, i) => (
                   <button
-                    key={f.id}
-                    className={`hot${f.traced ? '' : ' untraced'}${figure === f.id ? ' on' : ''}`}
+                    key={keys[i]}
+                    className={`hot${f.traced ? '' : ' untraced'}${figure === keys[i] ? ' on' : ''}`}
                     data-figure={f.id}
+                    data-key={keys[i]}
                     data-traced={f.traced}
                     aria-label={
                       f.traced
@@ -88,7 +100,7 @@ export function ShowroomView({
                       width: `${(f.box.w / screen.width) * 100}%`,
                       height: `${(f.box.h / screen.height) * 100}%`,
                     }}
-                    onClick={() => setFigure(f.id)}
+                    onClick={() => setFigure(keys[i]!)}
                   />
                 ))}
               </div>
@@ -111,8 +123,8 @@ export function ShowroomView({
             </div>
           </div>
           <aside className="mon" aria-live="polite">
-            {picked && picked.traced && showroom.trails[`${screen.name}/${picked.id}`] ? (
-              <TrailPanel trail={showroom.trails[`${screen.name}/${picked.id}`]!} />
+            {picked && picked.traced && showroom.trails[figure!] ? (
+              <TrailPanel trail={showroom.trails[figure!]!} />
             ) : picked ? (
               <UntracedPanel text={picked.text ?? picked.id} />
             ) : (

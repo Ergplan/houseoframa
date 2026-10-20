@@ -113,14 +113,16 @@ describe('route /site/[siteId]/showroom', () => {
     expect(html).toContain('<b>1 of 2</b>');
     expect(html).toContain('src="/api/site/shop/shots/home.png"');
     expect(html).toContain('aria-label="Traced figure ₹28.00: open its trail"');
-    expect(html).toMatch(/class="hot" data-figure="order-total" data-traced="true"/);
+    expect(html).toMatch(
+      /class="hot" data-figure="order-total" data-key="home\/order-total" data-traced="true"/,
+    );
     expect(html).toContain('left:2.564102564102564%');
   });
 
   it('renders an untraced figure in the untraced state (Invariant 2)', async () => {
     const html = await render('shop', { figure: 'untraced:home:1' });
     expect(html).toMatch(
-      /class="hot untraced on" data-figure="untraced:home:1" data-traced="false"/,
+      /class="hot untraced on" data-figure="untraced:home:1" data-key="home\/untraced:home:1" data-traced="false"/,
     );
     expect(html).toContain('aria-label="Untraced figure ₹99"');
     expect(html).toContain('<h2>Untraced figure</h2>');
