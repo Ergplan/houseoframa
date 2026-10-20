@@ -3,7 +3,6 @@ import { isValidElement, type ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import SitePage from './page';
-import Showroom from './showroom/page';
 import Discovery from './discovery/page';
 import { SiteView } from '../../../components/site/SiteView';
 
@@ -32,18 +31,14 @@ describe('route /site/[siteId]', () => {
   });
 });
 
-describe('routes /site/[siteId]/showroom and /discovery (stubs until Stages 3 and 4)', () => {
-  it('say what will be there and when, and show nothing invented', async () => {
-    const show = renderToStaticMarkup(await Showroom(params('self')));
-    expect(show).toContain('Showroom · House of Rama');
-    expect(show).toContain('Stage 3');
+describe('route /site/[siteId]/discovery (stub until Stage 4)', () => {
+  it('says what will be there and when, and shows nothing invented', async () => {
     const office = renderToStaticMarkup(await Discovery(params('self')));
     expect(office).toContain('Site office · House of Rama');
     expect(office).toContain('Stage 4');
   });
 
-  it('are not found for an unknown site', async () => {
-    await expect(Showroom(params('nope'))).rejects.toThrow(notFound);
+  it('is not found for an unknown site', async () => {
     await expect(Discovery(params('nope'))).rejects.toThrow(notFound);
   });
 });

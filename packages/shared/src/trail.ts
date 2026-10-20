@@ -20,4 +20,8 @@ export interface Trail {
   signoff: Signoff | null;
   /** True when the values come from re-executing the target's own function. */
   reexecuted: boolean;
+  /** The figure as the screen showed it, as re-execution computed it, and whether the two agree (null when either is missing). */
+  result?: { shown: string | null; computed: string | null; matches: boolean | null };
+  /** Why the trail has no re-executed values, when it has none. */
+  reexecutionError?: string;
 }

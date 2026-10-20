@@ -93,6 +93,7 @@ Source: `packages/shared/src/blueprint.ts`
 | `id` | `string` | yes | Figure identifier (`data-rama-figure`). |
 | `box` | `{ x: number; y: number; w: number; h: number }` | yes | Bounding box on the screenshot, in pixels. |
 | `traced` | `boolean` | yes | True when a trail exists for the figure; false renders it in the untraced state. |
+| `text` | `string` | no | The figure's text as the screen showed it, when it was read from the page. |
 
 ## Blueprint
 
@@ -134,6 +135,8 @@ Source: `packages/shared/src/trail.ts`
 | `build` | `{ sha: string; at: string; author: string; subject: string; file: string }[]` | yes | Commits that touched the trail's files. |
 | `signoff` | `Signoff \| null` | yes | The signature on the figure's screen, or null when unsigned. |
 | `reexecuted` | `boolean` | yes | True when the values come from re-executing the target's own function. |
+| `result` | `{ shown: string \| null; computed: string \| null; matches: boolean \| null }` | no | The figure as the screen showed it, as re-execution computed it, and whether the two agree (null when either is missing). |
+| `reexecutionError` | `string` | no | Why the trail has no re-executed values, when it has none. |
 
 ## Decision
 

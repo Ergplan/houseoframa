@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
+import { readCapture } from '@rama/trace/showroom';
 import { SiteView } from '../../../components/site/SiteView';
 
 export const dynamic = 'force-dynamic';
@@ -19,12 +20,20 @@ export default async function SitePage({ params }: { params: Promise<{ siteId: s
       </main>
     );
   }
+  const capture = readCapture(site.id);
+  const captured = (capture?.screens ?? []).map((s) => ({
+    name: s.name,
+    title: s.title,
+    shot: s.shot,
+    bricks: s.bricks,
+  }));
   return (
     <SiteView
       siteId={site.id}
       name={site.name}
       blueprint={blueprint}
       member={process.env.RAMA_MEMBER_NAME?.trim() || null}
+      captured={captured}
     />
   );
 }

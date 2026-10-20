@@ -2,9 +2,8 @@
 
 Updated in the same commit as the code that opens or closes a gap.
 
-- The weekend prototype hand-maps glossary phrases and figure trails; Stages 1–3 replace both with generated versions.
 - The prototype audit was scripted by the builder's vendor; Stage 5 replaces it with a second-vendor auditor.
-- EkBill has no `data-rama-figure` instrumentation; Stage 3 covers its five headline figures by overlay and marks the rest untraced.
+- EkBill has no `data-rama-figure` instrumentation. Its five headline figures are traced by an overlay in its working clone (`.rama/figures.json`, hand-written harnesses); the other 90 figures on its 12 captured screens are untraced. Instrumenting EkBill itself (HOUSE-STYLE §1–2) is the EkBill team's work.
 - No city layout; a single building per site. EkBill (916 bricks) fits in one building about 1,500 scene pixels wide; at fit-to-screen its bricks are about half size, so `Zoom 1:1` or the brick finder is the way to reach a small one.
 - (Stage 0) `model_calls` records tokens, not money: no price table is in code, so cost in a stage report is given in tokens unless a price is stated by the vendor's invoice.
 - (Stage 0) The `stack` compose profile (app and watcher in containers) is validated with `docker compose config` but has not been run end to end; `pnpm dev` is the tested path.
@@ -14,8 +13,13 @@ Updated in the same commit as the code that opens or closes a gap.
 - (Stage 1) A brick's history is its current path only: commits made under a previous name (before a rename) are not counted in `changes` or `firstCommit`.
 - (Stage 2) EkBill's `.rama/` (layers, confirmed 2026-10-20 by Rachit Agarwal; glossary; purposes) lives only in the working clone `work/ekbill/repo`. **When the Stage 4 gate lands, the EkBill team commits `.rama/` into EkBill** so its CI and every fresh clone see it. Until then a fresh `rama site add` of EkBill starts without it.
 - (Stage 2) Confirmations are written to the target's working copy only. Committing them to the target is the target team's act (House of Rama never pushes), so a fresh `rama site add` of the same repository starts without them.
-- (Stage 2) Screens on the Brick view are listed by route only. Screenshots and the Showroom arrive in Stage 3, and the site office (Discovery) in Stage 4. Both are stubs that say so.
+- (Stage 2) The site office (Discovery) is a stub until Stage 4, and says so.
 - (Stage 2) The canvas is not readable by a screen reader. Its label states the size of the site, and the brick finder and the inspector give keyboard and screen-reader access to every brick.
 - (Stage 2) EkBill is not in CI (its remote needs credentials). `/site/ekbill` is exercised on this machine. The Stage 2 e2e runs on this repository and on a throwaway fixture site.
 - (Stage 3) `gpt-6.1-sol`'s price in `packages/model/src/prices.ts` is taken from third-party price lists that agree with each other; OpenAI's own pricing page refused automated access. The row is marked `fromVendor: false` until checked against the vendor's page or invoice. Costs use list prices: cache discounts are not applied.
 - (Stage 3) Drafting follows `export * from` and `export { … } from` (up to 6 hops); a symbol re-exported through `export default` of another module, or built at run time, is not followed and its edge stays without English.
+- (Stage 3) Capture photographs only what a target draws with no secrets. EkBill's screens show its Stage 1 fixtures (the signed-out demo owner), not a signed-in business's live data, so the traced values are the fixture's. Live-data screens need a seeded demo database that the capture can start, and that is not built.
+- (Stage 3) The untraced detector finds amounts (currency followed by digits). Counts without a currency, such as "13 bills", and percentages are not detected, so they are neither traced nor counted as shown. The honest rate is over amounts only.
+- (Stage 3) An overlay figure's selector is checked only by its re-execution matching the screen. If EkBill changes its markup the selector may find nothing; the figure then simply does not appear on that screen and is not counted.
+- (Stage 3) This repository (`self`) has no `.rama/screens.json`, so its Showroom says nothing has been captured. Instrumenting House of Rama's own Trust report per HOUSE-STYLE is not done.
+- (Stage 3) EkBill's capture and trail tests (`tests/stage-3.ekbill.test.ts`) run only where its working clone exists (this machine and its watcher), not in CI. CI runs the same capture and Showroom path on a fixture target that follows the convention.

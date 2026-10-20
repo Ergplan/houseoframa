@@ -24,6 +24,14 @@ import {
 } from '@rama/blueprint/metrics';
 import { edgePhrase, floorName, reviewerParagraph } from './words';
 
+/** A screen photographed from the target's built app (Stage 3), with the bricks that render it. */
+export interface CapturedScreen {
+  name: string;
+  title: string;
+  shot: string;
+  bricks: string[];
+}
+
 export type View =
   { kind: 'report' } | { kind: 'commit'; index: number } | { kind: 'brick'; path: string };
 
@@ -32,6 +40,7 @@ interface Props {
   blueprint: Blueprint;
   view: View;
   member: string | null;
+  captured?: CapturedScreen[];
   onBrick: (path: string) => void;
   onCommit: (index: number) => void;
   onReport: () => void;
@@ -303,6 +312,7 @@ function BrickView({
   blueprint: bp,
   path,
   member,
+  captured = [],
   onBrick,
   onCommit,
   onReport,
@@ -318,6 +328,7 @@ function BrickView({
   const history = brickHistory(bp, path);
   const born = history.laidIn === null ? null : history.entries.find((e) => e.laid)!;
   const screens = screensOf(bp, path);
+  const photographed = captured.filter((s) => s.bricks.includes(path));
   const floor = bp.layers.find((l) => l.id === n.layer);
 
   const confirmControl = (key: string, body: object, label: string) =>
@@ -478,6 +489,23 @@ function BrickView({
           Not behind any screen the extractor found: this brick works behind the glass, or is not
           code.
         </p>
+      )}
+      {photographed.length > 0 && (
+        <section aria-label="On screen">
+          <p>
+            <b>On screen ({photographed.length})</b>{' '}
+            <small style={{ color: 'var(--dim)' }}>· real screens this brick helps render</small>
+          </p>
+          <div className="thumbs">
+            {photographed.map((s) => (
+              <a key={s.name} href={`/site/${siteId}/showroom?screen=${s.name}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- a captured screenshot thumbnail */}
+                <img src={`/api/site/${siteId}/shots/${s.shot}`} alt="" />
+                <span>{s.title}</span>
+              </a>
+            ))}
+          </div>
+        </section>
       )}
       <p className="note">
         Change history:{' '}

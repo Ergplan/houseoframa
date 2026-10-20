@@ -1,0 +1,25 @@
+{
+  "name": "@rama/trace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Screen capture of a target's built app, figure trails, and re-execution of the target's own functions.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./trail": "./src/trail.ts",
+    "./showroom": "./src/showroom.ts"
+  },
+  "bin": {
+    "rama-trace": "./bin/rama-trace.mjs"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@rama/blueprint": "workspace:*",
+    "@rama/shared": "workspace:*",
+    "playwright": "1.64.1",
+    "tsx": "4.23.15",
+    "zod": "4.6.5"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "e49890d6df639a30514f3f8387b30334be5793da",
+  "commit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1792,6 +1792,99 @@
       "sha": "e49890d6df639a30514f3f8387b30334be5793da",
       "short": "e49890d",
       "subject": "Stage 2: report with reviewer findings, cost and open questions"
+    },
+    {
+      "at": "2026-10-20T17:39:38Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 66,
+          "del": 0,
+          "kind": "M",
+          "path": ".rama/glossary.json"
+        },
+        {
+          "add": 244,
+          "del": 32,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 3,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 29,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/draft.test.ts"
+        },
+        {
+          "add": 50,
+          "del": 7,
+          "kind": "M",
+          "path": "packages/blueprint/src/draft.ts"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/model/src/call.test.ts"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/model/src/call.ts"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/model/src/index.ts"
+        },
+        {
+          "add": 27,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/prices.test.ts"
+        },
+        {
+          "add": 58,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/prices.ts"
+        },
+        {
+          "add": 58,
+          "del": 0,
+          "kind": "A",
+          "path": "scripts/cost.ts"
+        }
+      ],
+      "sha": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "short": "3dbc4f9",
+      "subject": "Member's Stage 2 answers: floors confirmed, drafting through barrels, full bad replies, rupee costs"
     }
   ],
   "edges": [
@@ -1918,6 +2011,34 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/shots/[name]/route.ts",
+      "symbols": [
+        "shotResponse"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/shots/[name]/shot.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/shots/[name]/shot.ts",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/shots/[name]/shot.ts",
+      "symbols": [
+        "captureDir"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/layout.tsx",
       "symbols": [],
       "to": "apps/rama/app/globals.css",
@@ -2010,18 +2131,6 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the showroom page for a site"
-      },
-      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
-      "symbols": [
-        "default"
-      ],
-      "to": "apps/rama/app/site/[siteId]/showroom/page.tsx",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
         "text": "the screen for one site and its blueprint"
       },
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
@@ -2057,15 +2166,94 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "readCapture"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
+      "symbols": [
+        "shotResponse"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/shots/[name]/shot.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
-        "text": "a way to find one site's location by its id"
+        "text": "the showroom page for a site"
+      },
+      "from": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source"
+      },
+      "from": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
+      "symbols": [
+        "addSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
+      "symbols": [
+        "Capture"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "symbols": [
+        "ShowroomView"
+      ],
+      "to": "apps/rama/components/showroom/ShowroomView.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
       },
       "from": "apps/rama/app/site/[siteId]/showroom/page.tsx",
       "symbols": [
-        "locateSite"
+        "locateSite",
+        "readSiteBlueprint"
       ],
       "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "symbols": [
+        "readCapture",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/showroom.ts",
       "typeOnly": false
     },
     {
@@ -2603,6 +2791,31 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/showroom/ShowroomView.tsx",
+      "symbols": [
+        "TrailPanel",
+        "UntracedPanel"
+      ],
+      "to": "apps/rama/components/showroom/TrailPanel.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/showroom/ShowroomView.tsx",
+      "symbols": [
+        "Showroom"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/showroom/TrailPanel.tsx",
+      "symbols": [
+        "Trail"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the painter that draws a site's state onto the canvas and returns its frame"
@@ -2672,6 +2885,7 @@
       },
       "from": "apps/rama/components/site/SiteView.tsx",
       "symbols": [
+        "CapturedScreen",
         "Inspector",
         "View"
       ],
@@ -4207,6 +4421,326 @@
       "typeOnly": true
     },
     {
+      "from": "packages/trace/bin/rama-trace.mjs",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/trace/src/cli.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
+        "CONVENTION_FILE",
+        "FigureMapping",
+        "FiguresOverlay",
+        "ScreenSpec",
+        "ScreensConfig",
+        "readFiguresOverlay",
+        "readScreensConfig",
+        "screensOf"
+      ],
+      "to": "packages/trace/src/config.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
+        "runInSandbox"
+      ],
+      "to": "packages/trace/src/sandbox.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
+        "RunResult",
+        "codeAt"
+      ],
+      "to": "packages/trace/src/trail.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
+      },
+      "from": "packages/trace/src/cli.ts",
+      "symbols": [
+        "locateSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/cli.ts",
+      "symbols": [
+        "capture"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/cli.ts",
+      "symbols": [
+        "captureDir",
+        "readCapture",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "CAPTURE_VERSION",
+        "Capture",
+        "CapturedFigure",
+        "CapturedMapping",
+        "CapturedScreen",
+        "capture",
+        "reexecute",
+        "routeMatcher",
+        "screenForRoute"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/trace/src/config.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "SandboxAnswer",
+        "SandboxRequest",
+        "runInSandbox"
+      ],
+      "to": "packages/trace/src/sandbox.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "Showroom",
+        "ShowroomScreen",
+        "captureDir",
+        "readCapture",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "RunResult",
+        "TrailSource",
+        "buildTrail",
+        "codeAt",
+        "normalise"
+      ],
+      "to": "packages/trace/src/trail.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "packages/trace/src/sandbox.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/sandbox.test.ts",
+      "symbols": [
+        "runInSandbox"
+      ],
+      "to": "packages/trace/src/sandbox.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/showroom.ts",
+      "symbols": [
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/showroom.ts",
+      "symbols": [
+        "Blueprint",
+        "FigureRef",
+        "Trail"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/src/showroom.ts",
+      "symbols": [
+        "Capture",
+        "CapturedScreen"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/src/showroom.ts",
+      "symbols": [
+        "buildTrail"
+      ],
+      "to": "packages/trace/src/trail.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/trail.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/src/trail.test.ts",
+      "symbols": [
+        "routeMatcher",
+        "screenForRoute"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/trail.test.ts",
+      "symbols": [
+        "FiguresOverlay",
+        "ScreensConfig"
+      ],
+      "to": "packages/trace/src/config.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/trail.test.ts",
+      "symbols": [
+        "buildTrail",
+        "codeAt",
+        "normalise"
+      ],
+      "to": "packages/trace/src/trail.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/trail.ts",
+      "symbols": [
+        "Blueprint",
+        "Trail"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/src/trail.ts",
+      "symbols": [
+        "FigureMapping"
+      ],
+      "to": "packages/trace/src/config.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/test/capture.test.ts",
+      "symbols": [
+        "extract"
+      ],
+      "to": "packages/blueprint/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers"
+      },
+      "from": "packages/trace/test/capture.test.ts",
+      "symbols": [
+        "FixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/test/capture.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/trace/test/capture.test.ts",
+      "symbols": [
+        "Capture",
+        "capture"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/test/capture.test.ts",
+      "symbols": [
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/test/capture.test.ts",
+      "symbols": [
+        "fixtureApp"
+      ],
+      "to": "packages/trace/test/fixture-app.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "packages/trace/test/fixture-app.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "a database connection opened from a URL"
@@ -4337,6 +4871,106 @@
       ],
       "to": "tests/dev-server.ts",
       "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source"
+      },
+      "from": "tests/stage-3.e2e.test.ts",
+      "symbols": [
+        "addSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers"
+      },
+      "from": "tests/stage-3.e2e.test.ts",
+      "symbols": [
+        "FixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "tests/stage-3.e2e.test.ts",
+      "symbols": [
+        "capture"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-3.e2e.test.ts",
+      "symbols": [
+        "captureDir"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-3.e2e.test.ts",
+      "symbols": [
+        "fixtureApp"
+      ],
+      "to": "packages/trace/test/fixture-app.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-3.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
+      },
+      "from": "tests/stage-3.ekbill.test.ts",
+      "symbols": [
+        "locateSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-3.ekbill.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "tests/stage-3.ekbill.test.ts",
+      "symbols": [
+        "Capture",
+        "capture"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-3.ekbill.test.ts",
+      "symbols": [
+        "Showroom",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
     }
   ],
   "external": [
@@ -4356,6 +4990,12 @@
       "dev": false,
       "manifest": "apps/rama/package.json",
       "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "@rama/trace",
       "version": "workspace:*"
     },
     {
@@ -4435,6 +5075,12 @@
       "manifest": "package.json",
       "name": "@rama/shared",
       "version": "workspace:^"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@rama/trace",
+      "version": "workspace:*"
     },
     {
       "dev": true,
@@ -4579,9 +5225,39 @@
       "manifest": "packages/model/package.json",
       "name": "zod",
       "version": "4.6.5"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/trace/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/trace/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/trace/package.json",
+      "name": "playwright",
+      "version": "1.64.1"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/trace/package.json",
+      "name": "tsx",
+      "version": "4.23.15"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/trace/package.json",
+      "name": "zod",
+      "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T15:43:53Z",
+  "extractedAt": "2026-10-20T17:39:38Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -4731,12 +5407,12 @@
     {
       "binary": false,
       "bytes": 23617,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 593,
@@ -4942,7 +5618,42 @@
     },
     {
       "binary": false,
-      "bytes": 7670,
+      "bytes": 275,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 11,
+      "path": "apps/rama/app/api/site/[siteId]/shots/[name]/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 809,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "shotResponse"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 19,
+      "path": "apps/rama/app/api/site/[siteId]/shots/[name]/shot.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 11675,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -4951,7 +5662,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 409,
+      "lines": 622,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -5049,7 +5760,7 @@
     },
     {
       "binary": false,
-      "bytes": 2152,
+      "bytes": 1853,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -5058,13 +5769,13 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 49,
+      "lines": 44,
       "path": "apps/rama/app/site/[siteId]/page.test.tsx",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 860,
+      "bytes": 1121,
       "changes": 1,
       "env": [
         "RAMA_MEMBER_NAME"
@@ -5078,7 +5789,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 30,
+      "lines": 39,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -5088,18 +5799,36 @@
     },
     {
       "binary": false,
-      "bytes": 752,
+      "bytes": 6348,
+      "changes": 0,
+      "env": [
+        "RAMA_WORK_DIR"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 175,
+      "path": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1535,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
-        "default"
+        "default",
+        "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 20,
+      "lines": 45,
       "path": "apps/rama/app/site/[siteId]/showroom/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -5397,7 +6126,7 @@
     },
     {
       "binary": false,
-      "bytes": 3772,
+      "bytes": 4989,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -5406,17 +6135,18 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 86,
+      "lines": 123,
       "path": "apps/rama/components/inspector/Inspector.test.tsx",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 16253,
+      "bytes": 17302,
       "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "CapturedScreen",
         "Inspector",
         "View"
       ],
@@ -5424,7 +6154,7 @@
       "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 498,
+      "lines": 526,
       "path": "apps/rama/components/inspector/Inspector.tsx",
       "purpose": {
         "confirmed": false,
@@ -5478,7 +6208,42 @@
     },
     {
       "binary": false,
-      "bytes": 11598,
+      "bytes": 5284,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ShowroomView"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 131,
+      "path": "apps/rama/components/showroom/ShowroomView.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3939,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "TrailPanel",
+        "UntracedPanel"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 119,
+      "path": "apps/rama/components/showroom/TrailPanel.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 11798,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -5489,7 +6254,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 327,
+      "lines": 331,
       "path": "apps/rama/components/site/SiteView.tsx",
       "purpose": {
         "confirmed": false,
@@ -5499,7 +6264,7 @@
     },
     {
       "binary": false,
-      "bytes": 796,
+      "bytes": 825,
       "changes": 2,
       "env": [
         "NEXT_DIST_DIR"
@@ -5522,7 +6287,7 @@
     },
     {
       "binary": false,
-      "bytes": 667,
+      "bytes": 701,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -5531,7 +6296,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 27,
+      "lines": 28,
       "path": "apps/rama/package.json",
       "purpose": {
         "confirmed": false,
@@ -5621,16 +6386,16 @@
     },
     {
       "binary": false,
-      "bytes": 13061,
-      "changes": 6,
+      "bytes": 16229,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 89,
+      "lines": 101,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -5640,7 +6405,7 @@
     },
     {
       "binary": false,
-      "bytes": 10086,
+      "bytes": 10514,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -5649,7 +6414,7 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 188,
+      "lines": 191,
       "path": "docs/BLUEPRINT.md",
       "purpose": {
         "confirmed": false,
@@ -5659,16 +6424,16 @@
     },
     {
       "binary": false,
-      "bytes": 14766,
-      "changes": 10,
+      "bytes": 17986,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 91,
+      "lines": 103,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -5678,16 +6443,31 @@
     },
     {
       "binary": false,
-      "bytes": 3356,
-      "changes": 6,
+      "bytes": 5986,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 96,
+      "path": "docs/HOUSE-STYLE.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4550,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 21,
+      "lines": 25,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -5843,16 +6623,16 @@
     },
     {
       "binary": false,
-      "bytes": 1489,
-      "changes": 5,
+      "bytes": 1555,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 48,
+      "lines": 50,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -6003,12 +6783,12 @@
     {
       "binary": false,
       "bytes": 6667,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "335e537ea700b01bc2b15f12126dd81ff6f65a9c",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 134,
@@ -6022,7 +6802,7 @@
     {
       "binary": false,
       "bytes": 7904,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -6037,7 +6817,7 @@
         "missingPurposes"
       ],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "335e537ea700b01bc2b15f12126dd81ff6f65a9c",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 208,
@@ -7071,12 +7851,12 @@
     {
       "binary": false,
       "bytes": 7825,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 208,
@@ -7090,7 +7870,7 @@
     {
       "binary": false,
       "bytes": 6400,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -7106,7 +7886,7 @@
         "call"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 191,
@@ -7139,7 +7919,7 @@
     {
       "binary": false,
       "bytes": 564,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -7171,7 +7951,7 @@
         "resolveVendors"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 21,
@@ -7185,12 +7965,12 @@
     {
       "binary": false,
       "bytes": 1020,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 27,
@@ -7200,7 +7980,7 @@
     {
       "binary": false,
       "bytes": 2315,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -7212,8 +7992,8 @@
         "costOf",
         "formatInr"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 58,
@@ -7367,7 +8147,7 @@
     },
     {
       "binary": false,
-      "bytes": 5439,
+      "bytes": 5540,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -7384,7 +8164,7 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 130,
+      "lines": 132,
       "path": "packages/shared/src/blueprint.ts",
       "purpose": {
         "confirmed": false,
@@ -7466,7 +8246,7 @@
     },
     {
       "binary": false,
-      "bytes": 1105,
+      "bytes": 1420,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -7477,7 +8257,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 23,
+      "lines": 27,
       "path": "packages/shared/src/trail.ts",
       "purpose": {
         "confirmed": false,
@@ -7506,7 +8286,7 @@
     },
     {
       "binary": false,
-      "bytes": 164,
+      "bytes": 1762,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -7515,7 +8295,7 @@
       "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 3,
+      "lines": 14,
       "path": "packages/trace/README.md",
       "purpose": {
         "confirmed": false,
@@ -7525,7 +8305,321 @@
     },
     {
       "binary": false,
-      "bytes": 103035,
+      "bytes": 208,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 6,
+      "path": "packages/trace/bin/rama-trace.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 611,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 25,
+      "path": "packages/trace/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 14460,
+      "changes": 0,
+      "env": [
+        "HOME",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "CAPTURE_VERSION",
+        "Capture",
+        "CaptureOptions",
+        "CapturedFigure",
+        "CapturedMapping",
+        "CapturedScreen",
+        "capture",
+        "reexecute",
+        "routeMatcher",
+        "screenForRoute"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 408,
+      "path": "packages/trace/src/capture.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2032,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 47,
+      "path": "packages/trace/src/cli.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5574,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CONVENTION_FILE",
+        "FIGURES_FILE",
+        "FigureMapping",
+        "FiguresOverlay",
+        "OverlayFigure",
+        "SCREENS_FILE",
+        "ScreenSpec",
+        "ScreensConfig",
+        "Step",
+        "readFiguresOverlay",
+        "readScreensConfig",
+        "screensOf"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 129,
+      "path": "packages/trace/src/config.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 520,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*",
+        "CAPTURE_VERSION",
+        "Capture",
+        "CapturedFigure",
+        "CapturedMapping",
+        "CapturedScreen",
+        "RunResult",
+        "SandboxAnswer",
+        "SandboxRequest",
+        "Showroom",
+        "ShowroomScreen",
+        "TrailSource",
+        "buildTrail",
+        "capture",
+        "captureDir",
+        "codeAt",
+        "normalise",
+        "readCapture",
+        "reexecute",
+        "routeMatcher",
+        "runInSandbox",
+        "screenForRoute",
+        "showroomOf"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 21,
+      "path": "packages/trace/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1954,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 49,
+      "path": "packages/trace/src/page-figures.js",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1530,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 41,
+      "path": "packages/trace/src/sandbox-runner.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2698,
+      "changes": 0,
+      "env": [
+        "OPENAI_API_KEY_TEST_LEAK"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 76,
+      "path": "packages/trace/src/sandbox.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2509,
+      "changes": 0,
+      "env": [
+        "HOME",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "SandboxAnswer",
+        "SandboxRequest",
+        "runInSandbox"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 66,
+      "path": "packages/trace/src/sandbox.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2648,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Showroom",
+        "ShowroomScreen",
+        "captureDir",
+        "readCapture",
+        "showroomOf"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 77,
+      "path": "packages/trace/src/showroom.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 6606,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 200,
+      "path": "packages/trace/src/trail.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3277,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "RunResult",
+        "TrailSource",
+        "buildTrail",
+        "codeAt",
+        "normalise"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 88,
+      "path": "packages/trace/src/trail.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5599,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 153,
+      "path": "packages/trace/test/capture.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4810,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "fixtureApp"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 114,
+      "path": "packages/trace/test/fixture-app.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 229,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 6,
+      "path": "packages/trace/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 103622,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -7534,7 +8628,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3224,
+      "lines": 3248,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -7950,12 +9044,12 @@
     {
       "binary": false,
       "bytes": 2148,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
+      "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 58,
@@ -8047,7 +9141,7 @@
     },
     {
       "binary": false,
-      "bytes": 7611,
+      "bytes": 7685,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -8056,7 +9150,7 @@
       "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 232,
+      "lines": 234,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -8159,6 +9253,36 @@
     },
     {
       "binary": false,
+      "bytes": 3850,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 86,
+      "path": "tests/stage-3.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2720,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 65,
+      "path": "tests/stage-3.ekbill.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 458,
       "changes": 1,
       "env": [],
@@ -8178,7 +9302,7 @@
     },
     {
       "binary": false,
-      "bytes": 1113,
+      "bytes": 1456,
       "changes": 2,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -8191,7 +9315,7 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 29,
+      "lines": 34,
       "path": "vitest.config.ts",
       "purpose": {
         "confirmed": false,
@@ -8255,7 +9379,9 @@
         "packages/blueprint/src/parse.ts",
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
-        "packages/blueprint/src/site.ts"
+        "packages/blueprint/src/site.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts"
       ],
       "file": "apps/rama/app/site/[siteId]/page.tsx",
       "id": "/site/[siteId]",
@@ -8292,6 +9418,8 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/showroom/page.tsx",
+        "apps/rama/components/showroom/ShowroomView.tsx",
+        "apps/rama/components/showroom/TrailPanel.tsx",
         "packages/blueprint/package.json",
         "packages/blueprint/src/diff.ts",
         "packages/blueprint/src/extract.ts",
@@ -8305,7 +9433,9 @@
         "packages/blueprint/src/parse.ts",
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
-        "packages/blueprint/src/site.ts"
+        "packages/blueprint/src/site.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts"
       ],
       "file": "apps/rama/app/site/[siteId]/showroom/page.tsx",
       "id": "/site/[siteId]/showroom",

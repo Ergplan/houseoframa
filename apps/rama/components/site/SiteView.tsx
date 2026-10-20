@@ -12,7 +12,7 @@ import { siteModel } from '../../canvas/frame';
 import { layerColor } from '../../canvas/palette';
 import { pick, toScene } from '../../canvas/pick';
 import { brickState, clockText, currentTime } from '../../canvas/timeline';
-import { Inspector, type View } from '../inspector/Inspector';
+import { Inspector, type CapturedScreen, type View } from '../inspector/Inspector';
 
 const SPEEDS = [1, 2, 4] as const;
 const PER_SECOND = 0.22; // progress through one lift per second at 1×
@@ -22,11 +22,14 @@ export function SiteView({
   name,
   blueprint,
   member,
+  captured = [],
 }: {
   siteId: string;
   name: string;
   blueprint: Blueprint;
   member: string | null;
+  /** Screens photographed from the target's app (Stage 3), for the brick's On screen thumbnails. */
+  captured?: CapturedScreen[];
 }) {
   const router = useRouter();
   const { scene, timeline } = siteModel(blueprint);
@@ -313,6 +316,7 @@ export function SiteView({
           blueprint={blueprint}
           view={view}
           member={member}
+          captured={captured}
           onBrick={select}
           onCommit={(i) => goTo(i + 1)}
           onReport={() => {

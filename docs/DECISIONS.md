@@ -2,6 +2,18 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-20 — Stage 3: Showroom and trails
+
+- **Re-execution runs in a separate Node process, not a vitest worker.** The stage prompt says "vitest worker importing the target's module". EkBill's screen loaders import `server-only` and are meant to run under Next's `react-server` condition, which EkBill's own scripts set with `node --conditions=react-server --import tsx`. The sandbox does the same: a child process in the target's checkout, tsx's full loader (ES modules and CommonJS), the `react-server` condition, and an environment of PATH, HOME and NODE_ENV only. It gives the same isolation as a worker (its own process, the target's own modules, no access to House of Rama's state) and no vendor keys.
+- **A figure's mapping lives in the target's code (`rama/figures.ts`) and its arguments on the element (`data-rama-args`, `data-rama-value`).** Re-execution then needs no hand-written glue: the function is called with exactly what the screen used, and its raw result is compared with what the screen declared. `docs/HOUSE-STYLE.md` is the convention.
+- **EkBill is traced by overlay, not by editing EkBill**, as the stage requires: `.rama/figures.json` places five figures by CSS selector, and `.rama/trails/*.mjs` harnesses call EkBill's own screen loaders (`loadGst`, `loadDues`, `loadBillView`) for the signed-out demo owner the captured screens are drawn for. They format with the components' own formatter (`formatRupees`, `rupees`). The harnesses build the viewer exactly as EkBill's `getViewer` does with no session; they never compute or retype a figure.
+- **The five EkBill figures.** EkBill has no track-record score and no walk-in concept. So: GST this quarter (₹21,483), taxable sales this quarter (₹1,19,350), dues (₹39,914), a bill total (INV-042, ₹7,316, a registered customer), and a "walk-in" bill, read as EkBill's nearest case, a bill to a customer with no GST number (INV-043, Deshmukh ji, ₹5,310, B2C). The taxable figure stands in for the score.
+- **Untraced figures are found, not assumed.** A leaf element whose text looks like an amount (`[₹$€£]\s?\d[\d,]*(\.\d+)?`, configurable) and that no traced figure covers is recorded untraced, as is a `data-rama-figure` with no mapping. On EkBill's 12 screens: 7 of 97 figures traced (the five, two of them on two screens), the rest outlined grey.
+- **Screens are photographed with no secrets** (PATH, HOME, NODE_ENV only), so only screens a target can draw without a database or a key are captured. EkBill draws every product screen from its Stage 1 fixtures when nobody is signed in, so it needs neither.
+- **Full-page screenshots grow the viewport to the page height** before the shot, so fixed bars sit where the user sees them and figure boxes are measured in the same coordinates as the image.
+- **A capture is kept per site** in `work/<site>/capture.json` (gitignored) with the mapping, the formula's lines and the re-execution results, so the Showroom is built from the capture and the Blueprint alone. Trails are computed on each request by `buildTrail`, a pure function.
+- **`playwright` is a dependency of `packages/trace`** (pinned 1.64.1); Chromium's system libraries are installed on the build VM and in CI.
+
 ## 2026-10-20 — Stage 2 open questions, answered by the member (Rachit Agarwal)
 
 - **EkBill's floors confirmed** by Rachit Agarwal on 2026-10-20, as drafted: the eight floors foundation, data, logic, api, interface, design, tests, shell, with `design` and `tests` as floors of their own (`work/ekbill/repo/.rama/layers.json`).

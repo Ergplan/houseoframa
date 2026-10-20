@@ -95,6 +95,8 @@ export interface FigureRef {
   box: { x: number; y: number; w: number; h: number };
   /** True when a trail exists for the figure; false renders it in the untraced state. */
   traced: boolean;
+  /** The figure's text as the screen showed it, when it was read from the page. */
+  text?: string;
 }
 
 /** The generated, machine-maintained model of a repository at one commit. */

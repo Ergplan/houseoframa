@@ -407,3 +407,216 @@ button:disabled {
   padding: 8px 0;
   border-bottom: 1px dashed var(--line);
 }
+/* Showroom (Stage 3) */
+.lede {
+  margin: 12px 0 0;
+  color: var(--dim);
+}
+.lede b {
+  color: var(--amber);
+}
+.shotbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px 14px 0 0;
+}
+.shotbar h4 {
+  margin: 0;
+  font-size: 13px;
+}
+.shotbar .real {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 1px solid rgba(90, 212, 90, 0.6);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.shotbar .real.amb {
+  color: var(--amber);
+  border-color: rgba(255, 180, 41, 0.6);
+}
+.shotbar code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--cyan);
+}
+.shotbar .hint {
+  font-size: 12px;
+  color: var(--dim);
+  margin-left: auto;
+}
+.shotview {
+  background: #1a1826;
+  border: 1px solid var(--line);
+  border-top: 0;
+  padding: 14px;
+  max-height: 78vh;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+.shotwrap {
+  position: relative;
+  width: min(100%, 420px);
+  /* As tall as the screenshot, not the scroll box: hotspot percentages are of the image. */
+  align-self: flex-start;
+  flex: none;
+}
+.shotwrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.hot {
+  position: absolute;
+  padding: 0;
+  border: 2px solid var(--amber);
+  border-radius: 6px;
+  background: rgba(255, 180, 41, 0.1);
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(255, 180, 41, 0.18);
+}
+.hot:hover,
+.hot.on {
+  background: rgba(255, 180, 41, 0.3);
+}
+.hot.untraced {
+  border: 2px dashed #8a8794;
+  background: rgba(138, 135, 148, 0.08);
+  box-shadow: none;
+}
+.hot.untraced:hover,
+.hot.untraced.on {
+  background: rgba(138, 135, 148, 0.25);
+}
+.strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+}
+.strip button {
+  flex: 0 0 auto;
+  padding: 4px;
+  border-radius: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+.strip button.on {
+  border-color: var(--amber);
+}
+.strip img {
+  display: block;
+  width: 90px;
+  height: 64px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 5px;
+}
+.strip span {
+  display: block;
+  font-size: 11px;
+  color: var(--dim);
+  margin-top: 4px;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.trail section {
+  border-top: 1px dashed var(--line);
+  margin-top: 12px;
+  padding-top: 8px;
+}
+.trail h4 {
+  margin: 0 0 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--violet);
+}
+.trail .code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--cyan);
+  max-height: 320px;
+  overflow: auto;
+}
+.trail .where code,
+.trail .check code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.trail .check {
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13.5px;
+  margin: 10px 0;
+  border: 1px solid var(--line);
+}
+.trail .check.ok {
+  border-color: rgba(90, 212, 90, 0.6);
+}
+.trail .check.bad {
+  border-color: rgba(255, 90, 106, 0.6);
+}
+.trail ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13.5px;
+}
+.trail .build li {
+  margin: 3px 0;
+}
+.thumbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 6px 0;
+}
+.thumbs a {
+  display: block;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel2);
+  text-decoration: none;
+}
+.thumbs img {
+  display: block;
+  width: 100%;
+  height: 64px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 5px;
+}
+.thumbs span {
+  display: block;
+  font-size: 11px;
+  color: var(--dim);
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

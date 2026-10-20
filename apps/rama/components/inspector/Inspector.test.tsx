@@ -83,4 +83,41 @@ describe('Inspector: Brick', () => {
     expect(render({ kind: 'brick', path: 'public/logo.png' })).toContain('binary file');
     expect(render({ kind: 'brick', path: 'lib/calc.test.ts' })).toContain('is a test');
   });
+
+  it('shows On screen thumbnails for the captured screens the brick renders, and none when it renders none', () => {
+    const captured = [
+      { name: 'home', title: 'Home', shot: 'home.png', bricks: ['lib/calc.ts', 'lib/data.ts'] },
+      { name: 'bills', title: 'Bills', shot: 'bills.png', bricks: ['lib/data.ts'] },
+    ];
+    const html = renderToStaticMarkup(
+      <Inspector
+        siteId="fixture"
+        blueprint={bp}
+        view={{ kind: 'brick', path: 'lib/data.ts' }}
+        member={null}
+        captured={captured}
+        onBrick={noop}
+        onCommit={noop}
+        onReport={noop}
+        onConfirmed={noop}
+      />,
+    );
+    expect(html).toContain('On screen (2)');
+    expect(html).toContain('href="/site/fixture/showroom?screen=home"');
+    expect(html).toContain('src="/api/site/fixture/shots/bills.png"');
+    const none = renderToStaticMarkup(
+      <Inspector
+        siteId="fixture"
+        blueprint={bp}
+        view={{ kind: 'brick', path: 'app/page.tsx' }}
+        member={null}
+        captured={captured}
+        onBrick={noop}
+        onCommit={noop}
+        onReport={noop}
+        onConfirmed={noop}
+      />,
+    );
+    expect(none).not.toContain('On screen');
+  });
 });
