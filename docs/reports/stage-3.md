@@ -80,13 +80,13 @@ Whitespace does not count in the comparison (the hero's ₹ is its own span). Re
 
 ## Tests
 
-257 tests in 35 files, all passing in the watcher:
+264 tests in 35 files, all passing in the watcher:
 
 | Package               | Tests |
 | --------------------- | ----- |
-| `@rama/blueprint`     | 132   |
+| `@rama/blueprint`     | 133   |
 | `@rama/app`           | 66    |
-| `@rama/trace`         | 21    |
+| `@rama/trace`         | 27    |
 | model                 | 17    |
 | e2e                   | 10    |
 | db                    | 5     |
@@ -224,7 +224,7 @@ The fixture's counter (42) and closed component (₹4) are both marked. EkBill h
 
    The formula's lines now come from the TypeScript parser (`code.ts`): the declaration that starts on the mapped line, to its true end. At most 40 lines are shown, and a longer function ends with "… cut at 40 lines". Tests cover braces in strings and comments, typed signatures and the cut. EkBill's GST and bill formulas now show 40 lines and say they are cut; the dues formula shows whole.
 
-(Run 17 below.)
+**Run 17 (at 3d5528b): no new code defect.** The one remaining finding is the icon threshold again (runs 7, 16 and 17). It is by design (reason under run 16) and stays open as question 1 below, since it is your call. Items (d) and (e) remain "cannot tell" for reasons a diff cannot settle: the generator and CI wiring are not in this diff, and EkBill's values live in its gitignored clone. The watcher re-checks both on every save on this machine. The review is complete.
 
 ## Real model cost
 
@@ -237,17 +237,17 @@ Model calls since 2026-10-20T15:43:53Z (prices set 2026-10-20; ₹94.92 per US$,
 | glossary | ekbill | claude-sonnet-5-5 | ok     | 9 (9)            | 65,195       | 24,013        | ₹35  |
 | purpose  | ekbill | claude-sonnet-5-5 | ok     | 3 (5)            | 42,645       | 3,058         | ₹11  |
 | glossary | self   | claude-sonnet-5-5 | ok     | 1 (1)            | 4,965        | 2,059         | ₹3   |
-| reviewer | self   | gpt-6.1-sol       | ok     | 5 (5)            | 3,19,962     | 6,737         | ₹67  |
+| reviewer | self   | gpt-6.1-sol       | ok     | 17 (17)          | 12,93,604    | 23,453        | ₹268 |
 
-Total: ₹116
+Total: ₹317
 
-- **Drafting:** the member-requested redraft through barrel files, the 10 purposes that had failed, and EkBill's new symbols and files at 4f28628.
-- **Reviewer:** every run up to run 5.
-- **Not yet included:** later review runs, recorded in `docs/reports/stage-3.review.md`.
+- **Drafting (₹49):** the member-requested redraft through barrel files, the 10 purposes that had failed, and EkBill's new symbols and files at 4f28628.
+- **Review (₹268):** 17 runs of the independent reviewer. Most were spent closing Invariant 2 one way of drawing text at a time.
 
 ## Open questions
 
-1. **Walk the Showroom.** This is the week-3 checkpoint, and it is yours. Do the five traced figures, and the way an untraced amount is shown, read right to you? Anything that should be traced next, in place of or beside these five?
-2. **Live data.** Should a later stage capture EkBill signed in against a seeded demo database, so traced values come from rows rather than fixtures? That needs a database the capture can start, with EkBill's own seed and no real books.
-3. **Instrumenting EkBill.** Should the EkBill team follow HOUSE-STYLE §1–2 (`data-rama-figure` and `rama/figures.ts` in EkBill itself), so its trails no longer depend on a hand-written overlay? If yes, the five overlay entries are the first to move.
-4. **`gpt-6.1-sol`'s price** is from third-party lists, because OpenAI's page refused automated access. Can you confirm it from the OpenAI console or an invoice, so the table can be marked as from the vendor?
+1. **Icons.** Images and SVGs no larger than 24 × 24 px are not marked as untraced figures (by design, runs 7, 16 and 17). Marking them would outline every tab-bar and button icon and count them as "figures shown". Do you agree icons are not figures, or should they be marked too?
+2. **Walk the Showroom.** This is the week-3 checkpoint, and it is yours. Restart `pnpm dev`, then open `http://localhost:3000/site/ekbill`, walk the building, open the Showroom door and click the amber outlines. Do the five traced figures, and the grey outlines on everything else, read right to you? Which figures should be traced next?
+3. **Live data.** Should a later stage capture EkBill signed in to a seeded demo database (EkBill now has "sign in without SMS"), so traced values come from rows rather than its sample-shop fixtures?
+4. **Instrumenting EkBill.** Should the EkBill team follow HOUSE-STYLE §1–2 (`data-rama-figure` and `rama/figures.ts` in EkBill itself), so its trails no longer depend on the hand-written overlay? If yes, the five overlay entries move first.
+5. **`gpt-6.1-sol`'s price** is from third-party lists, because OpenAI's page refused automated access. Can you confirm it from the OpenAI console or an invoice?
