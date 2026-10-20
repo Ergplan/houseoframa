@@ -41,6 +41,7 @@ describe('stage 3 on EkBill', () => {
   it('captures at least 8 real screens, each with at least one brick behind it', () => {
     expect(cap.screens.length).toBeGreaterThanOrEqual(8);
     for (const s of cap.screens) {
+      expect(s.landed, `${s.name} was redirected`).toBeUndefined(); // e.g. to /welcome: not the screen asked for
       expect(s.bricks.length, s.name).toBeGreaterThanOrEqual(1);
       expect(existsSync(path.join(out, 'shots', s.shot)), s.shot).toBe(true);
     }

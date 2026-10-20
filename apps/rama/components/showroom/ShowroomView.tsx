@@ -56,6 +56,9 @@ export function ShowroomView({
               <span className="real">real screen</span>
               {screen.role ? <span className="real amb">as {screen.role}</span> : null}
               <code>{screen.route}</code>
+              {screen.landed ? (
+                <span className="real bad">redirected to {screen.landed}</span>
+              ) : null}
               <span className="hint">{screen.bricks.length} bricks behind it</span>
             </div>
             <div className="shotview">

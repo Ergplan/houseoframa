@@ -34,6 +34,7 @@ describe('capture', () => {
     expect(cap.screens.map((s) => [s.name, s.route, s.title])).toEqual([
       ['home', '/', 'Shop'],
       ['order', '/orders/7?as=staff', bp.screens.find((x) => x.route === '/orders/[id]')!.name],
+      ['moved', '/old-home', 'moved'], // no route of its own in the Blueprint: it redirects to / (see "redirects")
     ]);
     for (const s of cap.screens) {
       const png = readFileSync(path.join(out, 'shots', s.shot));
@@ -126,6 +127,15 @@ describe('capture', () => {
   });
 });
 
+describe('redirects', () => {
+  it('records where a screen landed when its route redirected, and nothing when it did not', () => {
+    const moved = cap.screens.find((x) => x.name === 'moved')!;
+    expect(moved).toMatchObject({ route: '/old-home', landed: '/' });
+    expect(cap.screens.find((x) => x.name === 'home')!.landed).toBeUndefined();
+    expect(showroomOf(cap, bp).screens.find((x) => x.name === 'moved')!.landed).toBe('/');
+  });
+});
+
 describe('showroom', () => {
   it('marks a figure traced only when it maps to a trail; every other figure is untraced (Invariant 2)', () => {
     const s = showroomOf(cap, bp);
@@ -133,7 +143,12 @@ describe('showroom', () => {
       s.screens.flatMap((x) =>
         x.figures.filter((f) => f.traced === traced).map((f) => `${x.name}/${f.id}`),
       );
-    expect(ids(true)).toEqual(['home/order-total', 'order/order-total', 'order/line-count']);
+    expect(ids(true)).toEqual([
+      'home/order-total',
+      'order/order-total',
+      'order/line-count',
+      'moved/order-total',
+    ]);
     expect(ids(false)).toEqual([
       'home/untraced:home:1',
       'order/vat',
@@ -145,10 +160,12 @@ describe('showroom', () => {
       'order/untraced:order:6',
       'order/untraced:order:7',
       'order/untraced:order:8',
+      'moved/untraced:moved:1',
     ]);
-    expect(s.counts).toEqual({ shown: 13, traced: 3 });
+    expect(s.counts).toEqual({ shown: 15, traced: 4 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
+      'moved/order-total',
       'order/line-count',
       'order/order-total',
     ]);

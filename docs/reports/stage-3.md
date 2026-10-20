@@ -13,6 +13,17 @@ Date: 2026-10-20. Tag at start: `stage-3-start` (e49890d). Builder: Claude Opus 
    - `gpt-6.1-sol` is $2 / $10 from third-party price lists that agree with each other. OpenAI's own pricing page refused automated access, so the row is marked `fromVendor: false`.
    - The rupee rate is ₹94.92 per US$, the rupee's close on 19 Oct 2026 as reported by Deccan Herald.
 
+## EkBill moved during the stage: followed to 4f28628
+
+You asked me to check the new EkBill repo. GitHub's `main` had four new commits (153 files), and I followed them in EkBill's working clone. `reference/ekbill` is read-only and stays at 8c46a81.
+
+- **The floors you confirmed still place every brick:** 931 bricks, none on the fallback rule.
+- **Drafted for what is new:** 15 phrases and 14 purposes, unconfirmed. Now 1,185 of 1,349 named edges have English, and 706 of 707 text bricks have a purpose.
+- **The visible change:** signed out, EkBill now sends you to `/welcome`, and its sample shop is reachable only as a "look" (`?as=owner`). The overlay photographs the owner's screens as that look, and the harnesses build the viewer exactly as EkBill's `getViewer` does for a look.
+- **Capture now records where each screen landed.** The Showroom shows a redirect, and the EkBill test fails if any screen lands elsewhere, so a screen that becomes a redirect is never photographed silently. A fixture route that redirects pins this.
+
+All five figures re-execute and match at 4f28628.
+
 ## What was built
 
 - **`packages/trace`**:
@@ -53,7 +64,7 @@ Date: 2026-10-20. Tag at start: `stage-3-start` (e49890d). Builder: Claude Opus 
 
 ## EkBill's Showroom
 
-12 screens captured from the built app at 8c46a81. Every screen has its bricks, 154–171 each, because they share the app shell. **7 of 155 figures are traced:** the five below, two of them appearing on both the owner's and the accountant's GST screen. Each appearance is checked against its own screen: an overlay harness takes no screen arguments, so it runs once per figure and its result is compared at each appearance. The other 148 (amounts, percentages, counts and numbers in words) are outlined untraced.
+12 screens captured from the built app at 4f28628 (EkBill's `main` on 20 Oct), the owner's as the `?as=owner` look. Every screen has its bricks, 154–171 each, because they share the app shell. **7 of 158 figures are traced:** the five below, two of them appearing on both the owner's and the accountant's GST screen. Each appearance is checked against its own screen: an overlay harness takes no screen arguments, so it runs once per figure and its result is compared at each appearance. The other 151 (amounts, percentages, counts and numbers in words) are outlined untraced.
 
 | Figure                                              | Screen           | Shown      | Re-executed by EkBill's own code                               | Match |
 | --------------------------------------------------- | ---------------- | ---------- | -------------------------------------------------------------- | ----- |
@@ -65,7 +76,7 @@ Date: 2026-10-20. Tag at start: `stage-3-start` (e49890d). Builder: Claude Opus 
 
 Whitespace does not count in the comparison (the hero's ₹ is its own span). Re-executing all five takes about 2 seconds each.
 
-**The week-3 checkpoint is yours.** Walk EkBill end to end: `pnpm dev`, open `http://localhost:3000/site/ekbill`. Replay its 72 lifts, open a brick, then the Showroom door. Click the amber outline on the GST tile and read its trail. To recapture after EkBill changes, run `pnpm rama site extract ekbill` then `pnpm rama-trace capture ekbill`.
+**The week-3 checkpoint is yours.** (`pnpm dev` must be restarted to pick up the latest code.) Walk EkBill end to end: `pnpm dev`, open `http://localhost:3000/site/ekbill`. Replay its 72 lifts, open a brick, then the Showroom door. Click the amber outline on the GST tile and read its trail. To recapture after EkBill changes, run `pnpm rama site extract ekbill` then `pnpm rama-trace capture ekbill`.
 
 ## Tests
 

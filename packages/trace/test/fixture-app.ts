@@ -41,6 +41,11 @@ http
   .createServer((req, res) => {
     const url = new URL(req.url, 'http://x');
     const route = routes[url.pathname];
+    if (url.pathname === '/old-home') {
+      res.writeHead(302, { location: '/' });
+      res.end();
+      return;
+    }
     res.writeHead(route ? 200 : 404, { 'content-type': 'text/html; charset=utf-8' });
     res.end(route ? route(url.searchParams) : 'not found');
   })
@@ -84,6 +89,7 @@ export const figures = {
       screens: [
         { name: 'home', title: 'Shop', route: '/' },
         { name: 'order', route: '/orders/7', role: 'staff', steps: [{ waitFor: 'h1' }] },
+        { name: 'moved', route: '/old-home' },
       ],
     }),
     '.rama/figures.json': JSON.stringify({

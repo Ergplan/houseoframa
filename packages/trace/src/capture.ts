@@ -47,6 +47,8 @@ export interface CapturedScreen {
   title: string;
   route: string;
   role: string | null;
+  /** Where the browser ended up (path and query), when a redirect took it somewhere other than `route`. */
+  landed?: string;
   /** File name under shots/. */
   shot: string;
   width: number;
@@ -276,6 +278,9 @@ export async function capture(
       const route = query ? `${s.route}${s.route.includes('?') ? '&' : '?'}${query}` : s.route;
       log(`screen ${s.name}: ${route}`);
       await page.goto(`${app.url}${route}`, { waitUntil: 'networkidle' });
+      const end = new URL(page.url());
+      const landedAt = end.pathname + end.search;
+      if (landedAt !== route) log(`screen ${s.name}: redirected to ${landedAt}`);
       await runSteps(page, s.steps);
       await page.waitForLoadState('networkidle');
       // Grow the viewport to the page so fixed bars sit where the user sees them, and everything is in one shot.
@@ -304,6 +309,7 @@ export async function capture(
         name: s.name,
         title: s.title ?? match?.name ?? s.name,
         route,
+        ...(landedAt !== route ? { landed: landedAt } : {}),
         role: s.role ?? null,
         shot,
         width: size.width,

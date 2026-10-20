@@ -620,3 +620,7 @@ button:disabled {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.shotbar .real.bad {
+  color: var(--red);
+  border-color: rgba(255, 90, 106, 0.6);
+}

@@ -13,6 +13,8 @@ export interface ShowroomScreen {
   name: string;
   title: string;
   route: string;
+  /** Set when the screen redirected: where it actually landed. */
+  landed?: string;
   role: string | null;
   shot: string;
   width: number;
@@ -47,6 +49,7 @@ export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
     name: s.name,
     title: s.title,
     route: s.route,
+    ...(s.landed ? { landed: s.landed } : {}),
     role: s.role,
     shot: s.shot,
     width: s.width,
