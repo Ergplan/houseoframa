@@ -174,41 +174,39 @@ function collectFigures(arg) {
   // image large enough to hold a figure a person reads (48 × 32 px or more), is marked untraced as a whole.
   // Smaller images are icons: they cannot hold a legible figure, and marking them would make the honest
   // rate untrue.
+  // These surfaces are judged independently of text detection: one element may carry a text figure and
+  // an unreadable surface (text over a chart image, readable text beside counter() content), and each is
+  // marked on its own.
   const LEGIBLE = (r) => r.width >= 48 && r.height >= 32;
-  for (const el of candidates) {
-    if (texts.has(el)) continue;
+  const surfacesOf = (el) => {
     const r = el.getBoundingClientRect();
     const tag = el.tagName.toUpperCase();
-    if (tag === 'CANVAS') texts.set(el, 'canvas');
-    else if (unreadableGenerated(el)) texts.set(el, 'generated content');
-    // A defined custom element without an open shadow root may draw inside a closed one, which cannot be read.
-    else if (tag.includes('-') && !el.shadowRoot && window.customElements.get(el.localName)) {
-      texts.set(el, `component: ${el.localName}`);
-    } else if (tag === 'VIDEO') texts.set(el, 'video');
-    else if (tag === 'IFRAME' && LEGIBLE(r))
-      texts.set(el, 'frame'); // another document: not read
-    else if ((tag === 'IMG' || tag === 'IMAGE') && LEGIBLE(r)) {
+    const found = [];
+    if (tag === 'CANVAS') found.push('canvas');
+    if (tag === 'VIDEO') found.push('video');
+    if (tag === 'IFRAME' && LEGIBLE(r)) found.push('frame'); // another document: not read
+    if ((tag === 'IMG' || tag === 'IMAGE') && LEGIBLE(r)) {
       const src = el.getAttribute('src') ?? el.getAttribute('href') ?? '';
       const name =
         el.getAttribute('alt') ||
         (src.startsWith('data:') ? 'embedded' : src.split('/').pop()?.split('?')[0]) ||
         'unnamed';
-      texts.set(el, `image: ${name.slice(0, 60)}`);
-    } else if (LEGIBLE(r) && /url\(/.test(window.getComputedStyle(el).backgroundImage)) {
-      texts.set(el, 'background image');
+      found.push(`image: ${name.slice(0, 60)}`);
     }
-  }
+    if (LEGIBLE(r) && /url\(/.test(window.getComputedStyle(el).backgroundImage))
+      found.push('background image');
+    if (unreadableGenerated(el)) found.push('generated content');
+    // A defined custom element without an open shadow root may draw inside a closed one, which cannot be read.
+    if (tag.includes('-') && !el.shadowRoot && window.customElements.get(el.localName)) {
+      found.push(`component: ${el.localName}`);
+    }
+    return found;
+  };
   for (const el of candidates) {
-    if (!texts.has(el)) continue;
-    const pixels =
-      ['CANVAS', 'VIDEO', 'IMG', 'IMAGE', 'IFRAME'].includes(el.tagName.toUpperCase()) ||
-      texts.get(el) === 'background image';
-    out.push({
-      id: null,
-      origin: 'detected',
-      text: texts.get(el),
-      box: pixels ? box(el) : figureBox(el),
-    });
+    if (texts.has(el))
+      out.push({ id: null, origin: 'detected', text: texts.get(el), box: figureBox(el) });
+    for (const surface of surfacesOf(el))
+      out.push({ id: null, origin: 'detected', text: surface, box: box(el) });
   }
   return out;
 }

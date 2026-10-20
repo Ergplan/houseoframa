@@ -163,6 +163,10 @@ describe('figures without a text node of their own', () => {
       'component: x-closed', // may draw inside a closed shadow root, which cannot be read
       'generated content', // CSS counter(): drawn, but its value cannot be read
       'image: embedded',
+      'Total ₹1', // text over a background image: the text is marked...
+      'background image', // ...and so is the surface, on its own
+      'Items 5', // readable text beside unreadable generated content: both marked
+      'generated content',
     ]);
     expect(more.figures.every((f) => f.origin === 'detected' && f.box.w > 0 && f.box.h > 0)).toBe(
       true,
@@ -222,8 +226,12 @@ describe('showroom', () => {
       'more/untraced:more:5',
       'more/untraced:more:6',
       'more/untraced:more:7',
+      'more/untraced:more:8',
+      'more/untraced:more:9',
+      'more/untraced:more:10',
+      'more/untraced:more:11',
     ]);
-    expect(s.counts).toEqual({ shown: 33, traced: 6 });
+    expect(s.counts).toEqual({ shown: 37, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

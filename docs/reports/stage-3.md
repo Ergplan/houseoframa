@@ -207,7 +207,9 @@ A fixture page holds one of each, and all five are marked. KNOWN-GAPS names what
 
 The fixture's counter (42) and closed component (₹4) are both marked. EkBill has neither, and stays at 7 of 158.
 
-(Run 11 below.)
+**Run 11 (at 6e37b43): one code defect, fixed with regression tests in this commit.** An element that already carried a detected text figure skipped the surface check. So text over a chart background, or readable text beside `counter()` content, left the surface unmarked. Surfaces (canvas, video, frame, image, background image, unreadable generated content, closed component) are now judged independently of text, and one element can carry both marks. The fixture's "Total ₹1" over a background image, and "Items 5" beside a counter, each get two marks. EkBill stays at 7 of 158.
+
+(Run 12 below.)
 
 ## Real model cost
 
