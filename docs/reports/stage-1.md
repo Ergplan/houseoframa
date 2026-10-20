@@ -45,15 +45,15 @@ Four of the 13 env vars (`OPENAI_API_KEY1`, `OPENAI_KEY`, `OPENAI_SECRET_KEY` an
 
 ## Tests
 
-133 tests in 16 files, all passing in the watcher.
+135 tests in 16 files, all passing in the watcher.
 
-- `@rama/blueprint` has 103, plus 1 opt-in `@vendor` test:
+- `@rama/blueprint` has 105, plus 1 opt-in `@vendor` test:
   - glob matching;
   - every default layer rule (each at the root and one level down), overlay precedence, naming, custom floors, refusals;
   - parser cases for every import form, exports, and env (dot, bracket, const, for-of, destructuring, dynamic);
   - resolver cases: relative, index, `.js`→`.ts`, alias, nested tsconfig with `extends` and pattern precedence, workspace packages, unresolved, external, no escape outside the repository;
   - one test per metric;
-  - `extract()` integration on fixture git repositories: determinism, commit mode ignoring the working tree, `--rev`, history with rename/delete/binary, node fields, edges, external, screens, glossary merge confirmed/partial/unconfirmed, malformed-overlay refusal, and the worktree base rule (before a commit = after it = after a Blueprint-only commit);
+  - `extract()` integration on fixture git repositories: determinism, commit mode ignoring the working tree, `--rev`, history with rename/delete/binary, node fields, edges, external, screens, refs limited to the extracted history, the repository name without credentials, glossary merge confirmed/partial/unconfirmed, malformed-overlay refusal, and the worktree base rule (before a commit = after it = after a Blueprint-only commit);
   - the golden test; `diff`; drafting with a fake model (asked keys only, never confirmed, no call when nothing is missing).
 - `tests/stage-1.e2e.test.ts` runs the real `rama` binary on Procurement Studio: extract, an identical second extraction (`rama diff` exits 0), an earlier commit that differs (exit 1, "commits: 5 → 6"), and `--check` passing on a fresh file and failing on a tampered one.
 - `/api/health`: route test, plus a request to the real dev server in `tests/stage-0.e2e.test.ts`.
@@ -79,12 +79,26 @@ The self-drift check was verified both ways: appending one line to a source file
 
 ## Reviewer findings
 
-(Pending: filled in after the independent review.)
+Two runs of `pnpm review 1` (OpenAI `gpt-6.1-sol` through `packages/model`, prompt `reviewer.v1`, auditor role). Each run is recorded verbatim in `docs/reports/stage-1.review.md`.
+
+**Run 1, at 9a40e00.**
+
+1. _Code defect, fixed in c3f5c8a._ Commit mode listed every branch and tag in the repository, so an older commit's Blueprint showed tags made later and changed whenever any ref was added. Refs are now limited to tips in the extracted history, with a test that a later tag stays out of an older commit.
+2. _Report claim, fixed in c3f5c8a._ "Deterministic" was unconditional, and `repo` defaulted to the directory name. `repo` now defaults to the origin URL with credentials stripped (tested: a token in the URL never reaches the output), and the report states determinism precisely.
+3. _Not a defect._ The reviewer cannot see the generator's body or CI execution from the diff.
+
+**Run 2, at c3f5c8a.** No new code defect.
+
+1. _Repeats run 1's item 1, narrowed; not resolvable by code._ A branch or tag added inside the extracted history still changes the output. Rationale: the stage requires branches and tags in the Blueprint, and refs are live repository state, so the only full fix is a schema change, moving refs out of the Blueprint (open question 4).
+2. _Item (d), cannot tell._ The generator body and CI runs are outside the diff. By design of the review's inputs; the watcher runs both checks green.
+3. _Item (e), cannot tell._ Test results, timings and local runs need execution evidence a diff cannot carry.
+
+Verdicts on the other items: (b) upheld (`/api/health` has a route test and an HTTP test). (c) not applicable (no writes to `signoffs`, `audits` or `decisions` in this stage).
 
 ## Real model cost
 
 - **Glossary drafting, one `@vendor` run:** anthropic `claude-sonnet-5-5`, 524 input and 140 output tokens, 1 attempt. The reply was "a converter from paise to rupees, returned as text": grounded in the code rather than the doc comment.
-- **Reviewer:** see Reviewer findings.
+- **Reviewer, 2 runs:** openai `gpt-6.1-sol`, 55,444 + 57,422 input and 1,228 + 1,159 output tokens, 1 attempt each.
 - No dollar figures: there is no price table in code (KNOWN-GAPS).
 
 ## Open questions
@@ -92,3 +106,4 @@ The self-drift check was verified both ways: appending one line to a source file
 1. **EkBill's floors.** 801 of 916 files land on the fallback floor. Should I draft an EkBill `.rama/layers.json` for its working clone in Stage 2, for you to confirm? Or should the house-stack defaults learn monorepo folders (`packages/*/src` as logic, `tests/**`, `design/**`)? That would change the §7.2 defaults.
 2. **Public repository.** `github.com/Ergplan/houseoframa` answers without credentials, so it is public. Nothing from this session has been pushed. Should it stay public?
 3. **Push.** May I push `main` and the `stage-0-start` and `stage-1-start` tags, so CI runs the self-drift and golden checks on GitHub?
+4. **Refs and determinism.** The stage asks for branches and tags in the Blueprint and for byte-identical re-extraction of a commit. Refs are live repository state, so both cannot hold when a ref is added inside the history. I recommend keeping refs in the Blueprint as now, because Stage 2's layout draws branches as scaffolds from it. The alternative is moving refs to a sidecar file beside the Blueprint, which would make it a pure function of the commit but changes the §8 schema. Which do you want?
