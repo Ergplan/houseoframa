@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+  "commit": "9821352ae141857b952366f2779eb3d96b166308",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -2938,6 +2938,75 @@
       "sha": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "short": "8b84de9",
       "subject": "Fix reviewer run 8: form fields are judged by the value they show"
+    },
+    {
+      "at": "2026-10-20T19:41:42Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 94,
+          "del": 31,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/HOUSE-STYLE.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 11,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-3.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-3.review.md"
+        },
+        {
+          "add": 35,
+          "del": 23,
+          "kind": "M",
+          "path": "packages/trace/src/page-figures.js"
+        },
+        {
+          "add": 24,
+          "del": 2,
+          "kind": "M",
+          "path": "packages/trace/test/capture.test.ts"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/trace/test/fixture-app.ts"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/stage-3.e2e.test.ts"
+        }
+      ],
+      "sha": "9821352ae141857b952366f2779eb3d96b166308",
+      "short": "9821352",
+      "subject": "Fix reviewer run 9: read every channel that draws text without a text node"
     }
   ],
   "edges": [
@@ -6346,7 +6415,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T19:33:48Z",
+  "extractedAt": "2026-10-20T19:41:42Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -7513,13 +7582,13 @@
     },
     {
       "binary": false,
-      "bytes": 20896,
-      "changes": 21,
+      "bytes": 21049,
+      "changes": 22,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 105,
@@ -7532,13 +7601,13 @@
     },
     {
       "binary": false,
-      "bytes": 7959,
-      "changes": 9,
+      "bytes": 8061,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 97,
@@ -7547,13 +7616,13 @@
     },
     {
       "binary": false,
-      "bytes": 5283,
-      "changes": 13,
+      "bytes": 5371,
+      "changes": 14,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 25,
@@ -7691,31 +7760,31 @@
     },
     {
       "binary": false,
-      "bytes": 23379,
-      "changes": 10,
+      "bytes": 23962,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 229,
+      "lines": 236,
       "path": "docs/reports/stage-3.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 72816,
-      "changes": 8,
+      "bytes": 81442,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e05abd1272d5441e422c5eddd3597571a49de37a",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 154,
+      "lines": 170,
       "path": "docs/reports/stage-3.review.md",
       "test": false
     },
@@ -9587,16 +9656,16 @@
     },
     {
       "binary": false,
-      "bytes": 8836,
-      "changes": 9,
+      "bytes": 9698,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 199,
+      "lines": 214,
       "path": "packages/trace/src/page-figures.js",
       "test": false
     },
@@ -9713,33 +9782,33 @@
     },
     {
       "binary": false,
-      "bytes": 11597,
-      "changes": 10,
+      "bytes": 11829,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 284,
+      "lines": 288,
       "path": "packages/trace/test/capture.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 7643,
-      "changes": 10,
+      "bytes": 7961,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [
         "fixtureApp"
       ],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 147,
+      "lines": 149,
       "path": "packages/trace/test/fixture-app.ts",
       "test": false
     },
@@ -10395,12 +10464,12 @@
     {
       "binary": false,
       "bytes": 3884,
-      "changes": 10,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "lastCommit": "9821352ae141857b952366f2779eb3d96b166308",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 86,

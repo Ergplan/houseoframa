@@ -200,7 +200,14 @@ Rather than patch case by case, detection now works on **residual text**. Each e
 
 A fixture page holds one of each, and all five are marked. KNOWN-GAPS names what detection cannot read: a closed shadow root, and CSS `counter()` content. EkBill's count is unchanged at 7 of 158.
 
-(Run 10 below.)
+**Run 10 (at 9821352): one code defect, fixed with regression tests in this commit.** I had named two channels as unreadable: CSS `counter()` content and closed shadow roots. Unreadable is not the same as unmarked, so both are now marked untraced as a whole:
+
+- generated content that is not a plain string or `attr()` is marked "generated content";
+- a defined custom element without an open shadow root (it may draw in a closed one) is marked "component: <name>".
+
+The fixture's counter (42) and closed component (₹4) are both marked. EkBill has neither, and stays at 7 of 158.
+
+(Run 11 below.)
 
 ## Real model cost
 

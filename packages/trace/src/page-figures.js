@@ -109,11 +109,22 @@ function collectFigures(arg) {
     return null;
   };
   // Text an element generates with CSS (::before and ::after content) is drawn but is no text node.
-  const generated = (el) =>
+  // Quoted strings and attr() are read; anything else (counter(), counters()) draws a value that cannot be
+  // read, and the element is marked as a whole below.
+  const pseudoContent = (el) =>
     ['::before', '::after']
       .map((p) => window.getComputedStyle(el, p).content)
-      .filter((c) => c && c !== 'none' && c !== 'normal' && /^["']/.test(c))
-      .map((c) => c.slice(1, -1));
+      .filter((c) => c && c !== 'none' && c !== 'normal');
+  const readable = (c) => /^((["'][^"']*["']|attr\([\w-]+\))\s*)+$/.test(c);
+  const generated = (el) =>
+    pseudoContent(el)
+      .filter(readable)
+      .map((c) =>
+        c.replace(/["']([^"']*)["']|attr\(([\w-]+)\)/g, (_m, str, name) =>
+          str !== undefined ? str : (el.getAttribute(name) ?? ''),
+        ),
+      );
+  const unreadableGenerated = (el) => pseudoContent(el).some((c) => !readable(c));
   const residual = (el) =>
     fieldValue(el)?.replace(/\s+/g, ' ').trim() ??
     [...generated(el), ...residualNodes(el).map((n) => n.textContent)]
@@ -169,7 +180,11 @@ function collectFigures(arg) {
     const r = el.getBoundingClientRect();
     const tag = el.tagName.toUpperCase();
     if (tag === 'CANVAS') texts.set(el, 'canvas');
-    else if (tag === 'VIDEO') texts.set(el, 'video');
+    else if (unreadableGenerated(el)) texts.set(el, 'generated content');
+    // A defined custom element without an open shadow root may draw inside a closed one, which cannot be read.
+    else if (tag.includes('-') && !el.shadowRoot && window.customElements.get(el.localName)) {
+      texts.set(el, `component: ${el.localName}`);
+    } else if (tag === 'VIDEO') texts.set(el, 'video');
     else if (tag === 'IFRAME' && LEGIBLE(r))
       texts.set(el, 'frame'); // another document: not read
     else if ((tag === 'IMG' || tag === 'IMAGE') && LEGIBLE(r)) {

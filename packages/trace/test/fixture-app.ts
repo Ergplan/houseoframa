@@ -46,6 +46,8 @@ const routes = {
       '<input type="button" value="₹99"> <span class="pre"></span>' +
       '<iframe width="200" height="100" srcdoc="<p>₹1</p>"></iframe>' +
       '<x-total></x-total><script>customElements.define("x-total", class extends HTMLElement { constructor() { super(); this.attachShadow({ mode: "open" }).innerHTML = "<b>₹3</b>"; } });</script>' +
+      '<x-closed></x-closed><script>customElements.define("x-closed", class extends HTMLElement { constructor() { super(); this.attachShadow({ mode: "closed" }).innerHTML = "<b>₹4</b>"; } });</script>' +
+      '<style>.n { counter-reset: n 42; } .n::before { content: counter(n); }</style><span class="n"></span>' +
       '<svg width="100" height="60"><image width="100" height="60" href="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>') + '"/></svg>'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +

@@ -160,6 +160,8 @@ describe('figures without a text node of their own', () => {
       '₹7',
       'frame',
       '₹3',
+      'component: x-closed', // may draw inside a closed shadow root, which cannot be read
+      'generated content', // CSS counter(): drawn, but its value cannot be read
       'image: embedded',
     ]);
     expect(more.figures.every((f) => f.origin === 'detected' && f.box.w > 0 && f.box.h > 0)).toBe(
@@ -218,8 +220,10 @@ describe('showroom', () => {
       'more/untraced:more:3',
       'more/untraced:more:4',
       'more/untraced:more:5',
+      'more/untraced:more:6',
+      'more/untraced:more:7',
     ]);
-    expect(s.counts).toEqual({ shown: 31, traced: 6 });
+    expect(s.counts).toEqual({ shown: 33, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',
