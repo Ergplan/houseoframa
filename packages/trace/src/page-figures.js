@@ -170,21 +170,21 @@ function collectFigures(arg) {
   pass((t) => numberInWords(t));
   // Texts are read once everything is marked: each figure's own text, without the figures inside it.
   const texts = new Map(marked.map((el) => [el, residual(el)]));
-  // Figures drawn as pixels cannot be read, so every canvas and video, and every image or CSS background
-  // image large enough to hold a figure a person reads (48 × 32 px or more), is marked untraced as a whole.
-  // Smaller images are icons: they cannot hold a legible figure, and marking them would make the honest
-  // rate untrue.
+  // Figures drawn as pixels cannot be read, so every canvas, video and frame, and every image or CSS
+  // background image larger than an icon, is marked untraced as a whole. Icons cannot hold a legible figure,
+  // and marking them would make the honest rate untrue.
   // These surfaces are judged independently of text detection: one element may carry a text figure and
   // an unreadable surface (text over a chart image, readable text beside counter() content), and each is
   // marked on its own.
-  const LEGIBLE = (r) => r.width >= 48 && r.height >= 32;
+  // An icon has no side longer than 24 px: too small to hold a figure a person reads. Anything larger may.
+  const LEGIBLE = (r) => Math.max(r.width, r.height) > 24;
   const surfacesOf = (el) => {
     const r = el.getBoundingClientRect();
     const tag = el.tagName.toUpperCase();
     const found = [];
     if (tag === 'CANVAS') found.push('canvas');
     if (tag === 'VIDEO') found.push('video');
-    if (tag === 'IFRAME' && LEGIBLE(r)) found.push('frame'); // another document: not read
+    if (tag === 'IFRAME') found.push('frame'); // another document, not read: marked whatever its size
     if ((tag === 'IMG' || tag === 'IMAGE') && LEGIBLE(r)) {
       const src = el.getAttribute('src') ?? el.getAttribute('href') ?? '';
       const name =

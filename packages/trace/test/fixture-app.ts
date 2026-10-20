@@ -51,7 +51,10 @@ const routes = {
       '<svg width="100" height="60"><image width="100" height="60" href="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>') + '"/></svg>' +
       // Text over an unreadable surface: each is marked on its own.
       '<div style="width:200px;height:100px;background-image:url(data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>') + ')">Total ₹1</div>' +
-      '<style>.n2 { counter-reset: m 7; } .n2::after { content: counter(m); }</style><p class="n2">Items 5 </p>'),
+      '<style>.n2 { counter-reset: m 7; } .n2::after { content: counter(m); }</style><p class="n2">Items 5 </p>' +
+      // Short but readable: a 200 × 30 frame and a 200 × 30 image strip can both show a figure.
+      '<iframe width="200" height="30" srcdoc="<p>₹99</p>"></iframe>' +
+      '<img alt="Strip" width="200" height="30" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="30"/>') + '">'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
       '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +

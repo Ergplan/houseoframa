@@ -167,6 +167,8 @@ describe('figures without a text node of their own', () => {
       'background image', // ...and so is the surface, on its own
       'Items 5', // readable text beside unreadable generated content: both marked
       'generated content',
+      'frame', // short frames are marked too: any size can show a figure
+      'image: Strip', // a 200 × 30 strip is not an icon
     ]);
     expect(more.figures.every((f) => f.origin === 'detected' && f.box.w > 0 && f.box.h > 0)).toBe(
       true,
@@ -230,8 +232,10 @@ describe('showroom', () => {
       'more/untraced:more:9',
       'more/untraced:more:10',
       'more/untraced:more:11',
+      'more/untraced:more:12',
+      'more/untraced:more:13',
     ]);
-    expect(s.counts).toEqual({ shown: 37, traced: 6 });
+    expect(s.counts).toEqual({ shown: 39, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

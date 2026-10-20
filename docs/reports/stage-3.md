@@ -183,7 +183,7 @@ Rather than patch case by case, detection now works on **residual text**. Each e
 **Run 7 (at 58970ab): one code defect, one by-design item, and one report claim.**
 
 1. **Invariant 2 (code): videos and CSS background images** could hold figures with no mark. Now every `<video>`, and every CSS background image of 48 × 32 px or more, is marked untraced like images and canvases. A fixture page with a video and a background image pins it.
-2. **By design, not changed: images smaller than 48 × 32 px are not marked.** They are icons and cannot hold a figure a person reads. Marking every icon as an "untraced figure" would make the Showroom's honest rate untrue (rule 12: a true picture beats a complete one).
+2. **By design: icons are not marked** (since run 12, an image with no side longer than 24 px). They cannot hold a figure a person reads. Marking every icon as an "untraced figure" would make the Showroom's honest rate untrue (rule 12: a true picture beats a complete one).
 3. **Report claim: "full-page".** Screenshots stop at 12,000 px. The claim now says so, and so does the code: a taller page is recorded `croppedFrom` its full height, the Showroom says "cropped at 12,000 of N px", and figures below the crop are left out (they are not on the screenshot). A fixture page 13,000 px tall pins it.
 
 **Run 8 (at 49dad8d): one code defect, fixed with a regression test in this commit.**
@@ -209,7 +209,9 @@ The fixture's counter (42) and closed component (₹4) are both marked. EkBill h
 
 **Run 11 (at 6e37b43): one code defect, fixed with regression tests in this commit.** An element that already carried a detected text figure skipped the surface check. So text over a chart background, or readable text beside `counter()` content, left the surface unmarked. Surfaces (canvas, video, frame, image, background image, unreadable generated content, closed component) are now judged independently of text, and one element can carry both marks. The fixture's "Total ₹1" over a background image, and "Items 5" beside a counter, each get two marks. EkBill stays at 7 of 158.
 
-(Run 12 below.)
+**Run 12 (at b14994b): one code defect, fixed with regression tests in this commit.** A frame under 48 × 32 px (say 200 × 30) can show "₹99" but was not marked. Every frame is now marked whatever its size. "Icon" is now an image with no side longer than 24 px: a 200 × 30 image strip is marked, a 16 px icon is not. Earlier runs' 48 × 32 threshold is replaced throughout. The fixture's short frame and strip are both marked. EkBill stays at 7 of 158.
+
+(Run 13 below.)
 
 ## Real model cost
 
