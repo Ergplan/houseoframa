@@ -2,6 +2,15 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-20 — Stage 2 open questions, answered by the member (Rachit Agarwal)
+
+- **EkBill's floors confirmed** by Rachit Agarwal on 2026-10-20, as drafted: the eight floors foundation, data, logic, api, interface, design, tests, shell, with `design` and `tests` as floors of their own (`work/ekbill/repo/.rama/layers.json`).
+- **EkBill's `.rama/` stays local** in `work/ekbill/repo` until Stage 4. When the merge gate lands, the EkBill team commits `.rama/` into EkBill so its CI and every fresh clone see it (KNOWN-GAPS).
+- **Drafting follows `export * from`** through barrel files to the file that declares the symbol (a `packages/blueprint` change, test first), and the edges with no English are redrafted.
+- **`packages/model` keeps the full reply** in `model_calls.error` when it is not valid JSON; the 10 EkBill purposes that failed are redrafted.
+- **Stage reports show cost in rupees**, from one price table in code with the date it was set.
+- `main` and `stage-2-start` pushed.
+
 ## 2026-10-20 — Stage 2: the Site
 
 - **Sites live under `work/`.** `rama site add <gitUrl|path> [--id] [--name]` clones the target into `work/<id>/repo` (`--no-hardlinks`, never pushed), records `work/<id>/site.json` (source and repo name without credentials) and writes `work/<id>/blueprint.json`, which is gitignored, like the clone. A private target's Blueprint therefore never enters this public repository. The site `self` is this repository: its Blueprint is the checked-in `blueprint/self.json` (rule 14), and `pnpm extract:self` / `check:self` now run `rama site extract self` / `rama site check self`, so the self options live in one place (`SELF_EXTRACT`). With `DATABASE_URL` set, `site add` also registers the site for the local member, because model calls and audit rows reference `sites`.

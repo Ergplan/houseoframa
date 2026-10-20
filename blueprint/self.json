@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
+  "commit": "e49890d6df639a30514f3f8387b30334be5793da",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1765,6 +1765,33 @@
       "sha": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
       "short": "5a2d0ed",
       "subject": "Fix reviewer findings: figures from metrics only; confirm only what was shown"
+    },
+    {
+      "at": "2026-10-20T15:43:53Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 110,
+          "del": 29,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 23,
+          "del": 4,
+          "kind": "M",
+          "path": "docs/reports/stage-2.md"
+        },
+        {
+          "add": 15,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-2.review.md"
+        }
+      ],
+      "sha": "e49890d6df639a30514f3f8387b30334be5793da",
+      "short": "e49890d",
+      "subject": "Stage 2: report with reviewer findings, cost and open questions"
     }
   ],
   "edges": [
@@ -1795,7 +1822,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the handler that confirms an edge or purpose for a site as the local member"
+        "text": "the shape of what the confirm handler relies on; the handler that confirms an edge or purpose for a site as the local member"
       },
       "from": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
       "symbols": [
@@ -1808,7 +1835,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "a way to add a site from a local folder or remote source; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; a way to find one site's location by its id"
+        "text": "a way to add a site from a local folder or remote source; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; a way to find one site's location by its id; putting an overlay file back as it was and regenerating the site's blueprint; a saved copy of an overlay file's text, or nothing if it is missing"
       },
       "from": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
       "symbols": [
@@ -1863,7 +1890,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; a way to find one site's location by its id"
+        "text": "a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; a way to find one site's location by its id; putting an overlay file back as it was and regenerating the site's blueprint; a saved copy of an overlay file's text, or nothing if it is missing"
       },
       "from": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
       "symbols": [
@@ -1877,6 +1904,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the audit log table; a database connection opened from a URL; the table of people"
+      },
       "from": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
       "symbols": [
         "auditLog",
@@ -1953,6 +1984,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the site office page for a site"
+      },
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
       "symbols": [
         "default"
@@ -1961,6 +1996,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the main page for a single site"
+      },
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
       "symbols": [
         "default"
@@ -1969,6 +2008,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the showroom page for a site"
+      },
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
       "symbols": [
         "default"
@@ -2392,6 +2435,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "one commit's changes sorted into laid, renovated, knocked out and gone"
+      },
       "from": "apps/rama/canvas/timeline.ts",
       "symbols": [
         "commitBreakdown"
@@ -2463,7 +2510,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the sorted list of distinct commit authors; per-file counts of dependencies, users and test status; lines added, lines deleted and tests added by one commit; commits that deleted a large number of lines from a file; the sorted list of environment variables the files use; the code file with the most lines; minutes from the first commit to the last; the files that the most other files import; the files changed by the most commits; the headline figures of a project in one summary; how many code files are directly tested, out of all code files"
+        "text": "the sorted list of distinct commit authors; per-file counts of dependencies, users and test status; one file's change history across commits; one commit's changes sorted into laid, renovated, knocked out and gone; lines added, lines deleted and tests added by one commit; commits that deleted a large number of lines from a file; the sorted list of environment variables the files use; the code file with the most lines; minutes from the first commit to the last; the files that the most other files import; the files changed by the most commits; the screens that include a given file; the headline figures of a project in one summary; how many code files are directly tested, out of all code files"
       },
       "from": "apps/rama/components/inspector/Inspector.tsx",
       "symbols": [
@@ -2536,7 +2583,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the shape of per-file figures: what it needs, what uses it, whether tested"
+        "text": "the shape of per-file figures: what it needs, what uses it, whether tested; what one file imports, grouped by layer"
       },
       "from": "apps/rama/components/inspector/words.ts",
       "symbols": [
@@ -2860,6 +2907,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
       "from": "packages/blueprint/src/draft.test.ts",
       "symbols": [
         "call"
@@ -2913,6 +2964,22 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the resolver that works with project files, tsconfig paths and workspace packages"
+      },
+      "from": "packages/blueprint/src/draft.ts",
+      "symbols": [
+        "Resolver"
+      ],
+      "to": "packages/blueprint/src/resolve.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
       "from": "packages/blueprint/src/draft.ts",
       "symbols": [
         "call"
@@ -3091,7 +3158,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the imports, exports and environment use read from a source file"
+        "text": "a check for whether a path is a code file; the imports, exports and environment use read from a source file"
       },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
@@ -3102,6 +3169,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the resolver that works with project files, tsconfig paths and workspace packages"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "Resolver"
@@ -3408,7 +3479,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the imports, exports and environment use read from a source file"
+        "text": "a check for whether a path is a code file; the imports, exports and environment use read from a source file"
       },
       "from": "packages/blueprint/src/parse.test.ts",
       "symbols": [
@@ -3457,6 +3528,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations; the one-time setup of the local member and the self site, safe to repeat; the table of sites, one per target repository"
+      },
       "from": "packages/blueprint/src/register.test.ts",
       "symbols": [
         "createDb",
@@ -3480,6 +3555,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of people; the table of sites, one per target repository"
+      },
       "from": "packages/blueprint/src/register.ts",
       "symbols": [
         "createDb",
@@ -3490,6 +3569,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the resolver that works with project files, tsconfig paths and workspace packages"
+      },
       "from": "packages/blueprint/src/resolve.test.ts",
       "symbols": [
         "Resolver"
@@ -3533,7 +3616,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the location of the glossary file in a project; the location of the file purposes file in a project; the extraction settings for House of Rama's own repository; the error raised for site problems: not found, conflict or invalid; a way to add a site from a local folder or remote source; a check that a site's blueprint file is up to date; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; the sorted list of known sites, leaving out the project's own; a way to find one site's location by its id; a site's saved blueprint, if it has one; regenerating and saving a site's blueprint file; saving a glossary overlay file into a site's checkout"
+        "text": "the location of the glossary file in a project; the location of the file purposes file in a project; the extraction settings for House of Rama's own repository; the error raised for site problems: not found, conflict or invalid; a way to add a site from a local folder or remote source; a check that a site's blueprint file is up to date; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; the sorted list of known sites, leaving out the project's own; a way to find one site's location by its id; a site's saved blueprint, if it has one; putting an overlay file back as it was and regenerating the site's blueprint; a saved copy of an overlay file's text, or nothing if it is missing; regenerating and saving a site's blueprint file; saving a glossary overlay file into a site's checkout"
       },
       "from": "packages/blueprint/src/site.test.ts",
       "symbols": [
@@ -3876,6 +3959,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
       "from": "packages/model/src/call.ts",
       "symbols": [
         "createDb",
@@ -3984,6 +4071,20 @@
       "typeOnly": false
     },
     {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "Cost",
+        "MODEL_PRICES",
+        "ModelPrice",
+        "PRICES_SET_ON",
+        "USD_INR",
+        "costOf",
+        "formatInr"
+      ],
+      "to": "packages/model/src/prices.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the folder where the prompt files are kept; the shape of a loaded prompt with its text and hash; a loader that reads a named, versioned prompt"
@@ -4011,6 +4112,18 @@
         "resolveVendors"
       ],
       "to": "packages/model/src/vendors.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/prices.test.ts",
+      "symbols": [
+        "MODEL_PRICES",
+        "PRICES_SET_ON",
+        "USD_INR",
+        "costOf",
+        "formatInr"
+      ],
+      "to": "packages/model/src/prices.ts",
       "typeOnly": false
     },
     {
@@ -4094,6 +4207,33 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "scripts/cost.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "scripts/cost.ts",
+      "symbols": [
+        "PRICES_SET_ON",
+        "USD_INR",
+        "costOf",
+        "formatInr"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
       "from": "scripts/review.ts",
       "symbols": [
         "call"
@@ -4102,6 +4242,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
       "from": "tests/stage-0.e2e.test.ts",
       "symbols": [
         "DevServer",
@@ -4160,6 +4304,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations; the one-time setup of the local member and the self site, safe to repeat"
+      },
       "from": "tests/stage-2.e2e.test.ts",
       "symbols": [
         "createDb",
@@ -4178,6 +4326,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
       "from": "tests/stage-2.e2e.test.ts",
       "symbols": [
         "DevServer",
@@ -4429,7 +4581,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T15:39:10Z",
+  "extractedAt": "2026-10-20T15:43:53Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -4578,7 +4730,7 @@
     },
     {
       "binary": false,
-      "bytes": 21094,
+      "bytes": 23617,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -4587,7 +4739,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 527,
+      "lines": 593,
       "path": ".rama/glossary.json",
       "test": false
     },
@@ -5469,7 +5621,7 @@
     },
     {
       "binary": false,
-      "bytes": 12885,
+      "bytes": 13061,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -5507,7 +5659,7 @@
     },
     {
       "binary": false,
-      "bytes": 13774,
+      "bytes": 14766,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -5516,7 +5668,7 @@
       "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 82,
+      "lines": 91,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -5526,7 +5678,7 @@
     },
     {
       "binary": false,
-      "bytes": 3023,
+      "bytes": 3356,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -5535,7 +5687,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 20,
+      "lines": 21,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -5641,12 +5793,12 @@
     {
       "binary": false,
       "bytes": 17768,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a42ce76617396842d5be056547ebb8709bf175a",
-      "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
+      "lastCommit": "e49890d6df639a30514f3f8387b30334be5793da",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 164,
@@ -5656,12 +5808,12 @@
     {
       "binary": false,
       "bytes": 18051,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
-      "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
+      "lastCommit": "e49890d6df639a30514f3f8387b30334be5793da",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 37,
@@ -5691,7 +5843,7 @@
     },
     {
       "binary": false,
-      "bytes": 1454,
+      "bytes": 1489,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -5700,7 +5852,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 47,
+      "lines": 48,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -5850,7 +6002,7 @@
     },
     {
       "binary": false,
-      "bytes": 5135,
+      "bytes": 6667,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -5859,7 +6011,7 @@
       "lastCommit": "335e537ea700b01bc2b15f12126dd81ff6f65a9c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 105,
+      "lines": 134,
       "path": "packages/blueprint/src/draft.test.ts",
       "purpose": {
         "confirmed": false,
@@ -5869,7 +6021,7 @@
     },
     {
       "binary": false,
-      "bytes": 6045,
+      "bytes": 7904,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -5888,7 +6040,7 @@
       "lastCommit": "335e537ea700b01bc2b15f12126dd81ff6f65a9c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 165,
+      "lines": 208,
       "path": "packages/blueprint/src/draft.ts",
       "purpose": {
         "confirmed": false,
@@ -6918,7 +7070,7 @@
     },
     {
       "binary": false,
-      "bytes": 7314,
+      "bytes": 7825,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -6927,7 +7079,7 @@
       "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 199,
+      "lines": 208,
       "path": "packages/model/src/call.test.ts",
       "purpose": {
         "confirmed": false,
@@ -6937,7 +7089,7 @@
     },
     {
       "binary": false,
-      "bytes": 6362,
+      "bytes": 6400,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -6986,7 +7138,7 @@
     },
     {
       "binary": false,
-      "bytes": 434,
+      "bytes": 564,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -6994,20 +7146,27 @@
         "CallDeps",
         "CallRequest",
         "CallResult",
+        "Cost",
         "MAX_ATTEMPTS",
         "MODEL_COMPONENT",
+        "MODEL_PRICES",
         "ModelCallRow",
         "ModelConfigError",
+        "ModelPrice",
         "OutputParseError",
         "OutputTruncatedError",
+        "PRICES_SET_ON",
         "PROMPTS_DIR",
         "Prompt",
         "Role",
+        "USD_INR",
         "VENDORS",
         "Vendor",
         "VendorGuardError",
         "VendorHttpError",
         "call",
+        "costOf",
+        "formatInr",
         "loadPrompt",
         "resolveVendors"
       ],
@@ -7015,12 +7174,50 @@
       "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 12,
+      "lines": 21,
       "path": "packages/model/src/index.ts",
       "purpose": {
         "confirmed": false,
         "text": "Entry point of the model package: gathers the model-calling, vendor-choice and prompt-loading pieces so other packages import them from one place."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1020,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 27,
+      "path": "packages/model/src/prices.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2315,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Cost",
+        "MODEL_PRICES",
+        "ModelPrice",
+        "PRICES_SET_ON",
+        "USD_INR",
+        "costOf",
+        "formatInr"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 58,
+      "path": "packages/model/src/prices.ts",
       "test": false
     },
     {
@@ -7748,6 +7945,21 @@
         "confirmed": false,
         "text": "Prototype data that links figures on captured screens to their explanation: the formula, the inputs and where the sample data lives."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2148,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 58,
+      "path": "scripts/cost.ts",
       "test": false
     },
     {

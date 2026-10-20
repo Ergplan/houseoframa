@@ -23,7 +23,8 @@
     "extract:self": "rama site extract self",
     "check:self": "rama site check self",
     "rama": "rama",
-    "review": "tsx scripts/review.ts"
+    "review": "tsx scripts/review.ts",
+    "cost": "tsx scripts/cost.ts"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

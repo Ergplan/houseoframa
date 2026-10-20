@@ -8,6 +8,7 @@ import type { Blueprint } from '@rama/shared';
 import { phraseFor, type Glossary } from './glossary.ts';
 import { EXTRACTOR_VERSION } from './extract.ts';
 import { byString } from './json.ts';
+import { Resolver } from './resolve.ts';
 
 export const DRAFT_COMPONENT = `rama:blueprint-glossary@${EXTRACTOR_VERSION}`;
 export const PURPOSE_COMPONENT = `rama:blueprint-purpose@${EXTRACTOR_VERSION}`;
@@ -50,22 +51,63 @@ export interface DraftRequestItem {
   declaration: string;
 }
 
-function declarationOf(source: string, symbol: string): string {
+/** The lines that declare `symbol` in a file, or null when the file does not declare it itself. */
+function declarationIn(source: string, symbol: string): string | null {
   const lines = source.split('\n');
-  const named = new RegExp(`\\bexport\\b.*\\b${symbol.replace(/[$]/g, '\\$')}\\b`);
-  let at = symbol === 'default' ? lines.findIndex((l) => /\bexport\s+default\b/.test(l)) : lines.findIndex((l) => named.test(l));
-  if (at === -1) at = 0;
-  return lines.slice(at, at + 8).join('\n').slice(0, 600);
+  const named = new RegExp(`\\bexport\\b(?!\\s*(\\*|\\{[^}]*\\}\\s*from))(?!.*\\bfrom\\s*['"]).*\\b${symbol.replace(/[$]/g, '\\$')}\\b`);
+  const at =
+    symbol === 'default' ? lines.findIndex((l) => /\bexport\s+default\b/.test(l)) : lines.findIndex((l) => named.test(l));
+  return at === -1 ? null : lines.slice(at, at + 8).join('\n').slice(0, 600);
+}
+
+const REEXPORT = /^\s*export\s+(\*|\{([^}]*)\})\s+from\s+['"]([^'"]+)['"]/gm;
+
+/**
+ * Where `symbol` is declared, starting at `file` and following `export * from` and `export { … } from`
+ * through barrel files (up to 6 hops). Null when no file in reach declares it: the model is then shown
+ * nothing and leaves the phrase out, rather than guess.
+ */
+function findDeclaration(
+  file: string,
+  symbol: string,
+  read: (p: string) => string | null,
+  resolver: Resolver,
+  depth = 0,
+): { file: string; declaration: string } | null {
+  const source = read(file);
+  if (source === null || depth > 6) return null;
+  const own = declarationIn(source, symbol);
+  if (own) return { file, declaration: own };
+  for (const m of source.matchAll(REEXPORT)) {
+    let name = symbol;
+    if (m[1] !== '*') {
+      const hit = m[2]!
+        .split(',')
+        .map((x) => x.trim().replace(/^type\s+/, ''))
+        .map((x) => x.split(/\s+as\s+/))
+        .find((parts) => (parts[1] ?? parts[0]) === symbol);
+      if (!hit) continue;
+      name = hit[0]!;
+    } else if (symbol === 'default') continue; // export * never carries a default
+    const r = resolver.resolve(file, m[3]!);
+    if (r.kind !== 'internal') continue;
+    const found = findDeclaration(r.path, name, read, resolver, depth + 1);
+    if (found) return found;
+  }
+  return null;
 }
 
 /** The symbols across edges that have no phrase yet, keyed `<path>#<symbol>`. */
 export function missingPhrases(bp: Blueprint, glossary: Glossary, read: (p: string) => string | null): DraftRequestItem[] {
+  const resolver = new Resolver({ files: new Set((bp.nodes ?? []).map((n) => n.path)), read });
   const items = new Map<string, DraftRequestItem>();
   for (const e of bp.edges) {
     for (const symbol of e.symbols) {
       if (symbol === '*' || phraseFor(glossary, e.to, symbol)) continue;
       const key = `${e.to}#${symbol}`;
-      if (!items.has(key)) items.set(key, { key, file: e.to, symbol, declaration: declarationOf(read(e.to) ?? '', symbol) });
+      if (items.has(key)) continue;
+      const found = findDeclaration(e.to, symbol, read, resolver);
+      items.set(key, { key, file: found?.file ?? e.to, symbol, declaration: found?.declaration ?? '' });
     }
   }
   return [...items.values()].sort((a, b) => byString(a.key, b.key));
@@ -78,7 +120,8 @@ export async function draftGlossary(
   opts: DraftOptions,
 ): Promise<Glossary> {
   const call = opts.call ?? modelCall;
-  const todo = missingPhrases(bp, glossary, read);
+  // A symbol no file in reach declares is not asked about: the model would only be told to leave it out.
+  const todo = missingPhrases(bp, glossary, read).filter((t) => t.declaration);
   const drafted: Glossary = {};
   for (let i = 0; i < todo.length; i += BATCH) {
     const batch = todo.slice(i, i + BATCH);

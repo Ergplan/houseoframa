@@ -10,7 +10,7 @@ Built:
 - `packages/blueprint` (Stage 1) — `extract(repoPath, opts) → Blueprint` from git and the file tree only; `metrics` (one function per figure, browser-safe); `diffBlueprints`; `draftGlossary` and `draftPurposes`; `site` (Stage 2: sites under `work/`, confirmations into a target's `.rama/`); the `rama` CLI (`extract`, `diff`, `site add|extract|check|draft|list`). The only writer of `blueprint/*.json` and `work/*/blueprint.json`. See its README.
 - `packages/shared` — the types of MASTER-PROMPT §8 (`Blueprint`, `BrickNode`, `ImportEdge`, `Commit`, `Screen`, `FigureRef`, `Trail`, `Decision`, `Signoff`, `Finding`), one doc comment per field. `docs/BLUEPRINT.md` is generated from them.
 - `packages/db` — Drizzle schema, the single migration `0000_init`, migrator and seed.
-- `packages/model` — `call()`, the one path to a model vendor: vendor guard, versioned prompt, Anthropic and OpenAI adapters over `fetch`, retries, one `model_calls` row per call.
+- `packages/model` — `call()`, the one path to a model vendor: vendor guard, versioned prompt, Anthropic and OpenAI adapters over `fetch`, retries, one `model_calls` row per call. `prices.ts` is the one dated price table (US$ per million tokens per model, the rupee rate, sources); `pnpm cost <stage>` turns a stage's `model_calls` into tokens and rupees.
 
 Planned (folders hold only a README until their stage):
 

@@ -89,7 +89,7 @@ function parseOutput<O>(text: string, schema: z.ZodType<O>, format: 'json' | 'te
     try {
       value = JSON.parse((fenced?.[1] ?? text).trim());
     } catch {
-      throw new OutputParseError(`reply is not JSON: ${text.slice(0, 200)}`);
+      throw new OutputParseError(`reply is not JSON: ${text}`); // whole: the row is where a bad reply is diagnosed
     }
   }
   const parsed = schema.safeParse(value);

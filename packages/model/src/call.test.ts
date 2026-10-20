@@ -136,6 +136,15 @@ describe('call()', () => {
     expect(rows[0]).toMatchObject({ status: 'error', attempts: 3, output: null });
   });
 
+  it('keeps the whole reply in the error row when it is not valid JSON, so the failure can be diagnosed', async () => {
+    const long = `{"echo": "${'brick '.repeat(200)}` + '"unterminated';
+    const fetchImpl = vi.fn<typeof fetch>(async () => anthropicReply(long));
+    const { d, rows } = deps(fetchImpl);
+    await expect(call({ ...request, role: 'builder' }, d)).rejects.toThrow(/reply is not JSON/);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.error).toBe(`reply is not JSON: ${long}`);
+  });
+
   it('recovers on a retry after a reply that does not match the output type', async () => {
     const replies = [anthropicReply('not json'), anthropicReply('{"echo":"brick"}')];
     const fetchImpl = vi.fn<typeof fetch>(async () => replies.shift()!);

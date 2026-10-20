@@ -103,3 +103,32 @@ describe('purpose drafting', () => {
     await expect(draftPurposes(many, {}, text, { siteId: 's', call: flaky })).rejects.toThrow('reply is not JSON');
   });
 });
+
+describe('drafting through barrel files', () => {
+  const barrel = {
+    repo: 'r',
+    nodes: ['app/page.tsx', 'lib/index.ts', 'lib/more.ts', 'lib/calc.ts', 'lib/types.ts'].map((path) => ({ path })),
+    edges: [{ from: 'app/page.tsx', to: 'lib/index.ts', symbols: ['Row', 'half', 'total'], typeOnly: false }],
+  } as unknown as Blueprint;
+  const src: Record<string, string> = {
+    'lib/index.ts': "export * from './more';\nexport { Row as Row } from './types';\n",
+    'lib/more.ts': "export * from './calc.ts';\n",
+    'lib/calc.ts': 'export const total = () => 1;\nexport const half = () => total() / 2;\n',
+    'lib/types.ts': 'export type Row = number;\n',
+  };
+  const readSrc = (p: string) => src[p] ?? null;
+
+  it('follows export * and export { } from to the file that declares the symbol, keyed on the edge', () => {
+    const todo = missingPhrases(barrel, {}, readSrc);
+    expect(todo.map((t) => [t.key, t.file, t.declaration.split('\n')[0]])).toEqual([
+      ['lib/index.ts#Row', 'lib/types.ts', 'export type Row = number;'],
+      ['lib/index.ts#half', 'lib/calc.ts', 'export const half = () => total() / 2;'],
+      ['lib/index.ts#total', 'lib/calc.ts', 'export const total = () => 1;'],
+    ]);
+  });
+
+  it('gives an empty declaration when no file in reach declares it, rather than guessing', () => {
+    const todo = missingPhrases({ ...barrel, edges: [{ ...barrel.edges[0]!, symbols: ['nowhere'] }] }, {}, readSrc);
+    expect(todo[0]).toMatchObject({ key: 'lib/index.ts#nowhere', declaration: '' });
+  });
+});

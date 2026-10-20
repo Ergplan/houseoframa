@@ -2,11 +2,23 @@
   "apps/rama/app/api/health/route.ts#GET": {
     "text": "a health check reporting ok and the short commit id"
   },
+  "apps/rama/app/api/site/[siteId]/confirm/handler.ts#ConfirmDeps": {
+    "text": "the shape of what the confirm handler relies on"
+  },
   "apps/rama/app/api/site/[siteId]/confirm/handler.ts#handleConfirm": {
     "text": "the handler that confirms an edge or purpose for a site as the local member"
   },
   "apps/rama/app/page.tsx#default": {
     "text": "the home page listing the sites"
+  },
+  "apps/rama/app/site/[siteId]/discovery/page.tsx#default": {
+    "text": "the site office page for a site"
+  },
+  "apps/rama/app/site/[siteId]/page.tsx#default": {
+    "text": "the main page for a single site"
+  },
+  "apps/rama/app/site/[siteId]/showroom/page.tsx#default": {
+    "text": "the showroom page for a site"
   },
   "apps/rama/canvas/draw.ts#Ctx": {
     "text": "the shape of the canvas drawing operations the painter needs"
@@ -284,11 +296,20 @@
   "packages/blueprint/src/metrics/index.ts#brickFigures": {
     "text": "per-file counts of dependencies, users and test status"
   },
+  "packages/blueprint/src/metrics/index.ts#brickHistory": {
+    "text": "one file's change history across commits"
+  },
+  "packages/blueprint/src/metrics/index.ts#commitBreakdown": {
+    "text": "one commit's changes sorted into laid, renovated, knocked out and gone"
+  },
   "packages/blueprint/src/metrics/index.ts#commitTotals": {
     "text": "lines added, lines deleted and tests added by one commit"
   },
   "packages/blueprint/src/metrics/index.ts#demolitions": {
     "text": "commits that deleted a large number of lines from a file"
+  },
+  "packages/blueprint/src/metrics/index.ts#dependenciesByFloor": {
+    "text": "what one file imports, grouped by layer"
   },
   "packages/blueprint/src/metrics/index.ts#envVars": {
     "text": "the sorted list of environment variables the files use"
@@ -305,11 +326,17 @@
   "packages/blueprint/src/metrics/index.ts#mostReworked": {
     "text": "the files changed by the most commits"
   },
+  "packages/blueprint/src/metrics/index.ts#screensOf": {
+    "text": "the screens that include a given file"
+  },
   "packages/blueprint/src/metrics/index.ts#summary": {
     "text": "the headline figures of a project in one summary"
   },
   "packages/blueprint/src/metrics/index.ts#testCoverage": {
     "text": "how many code files are directly tested, out of all code files"
+  },
+  "packages/blueprint/src/parse.ts#isCode": {
+    "text": "a check for whether a path is a code file"
   },
   "packages/blueprint/src/parse.ts#parseSource": {
     "text": "the imports, exports and environment use read from a source file"
@@ -319,6 +346,9 @@
   },
   "packages/blueprint/src/register.ts#registerSite": {
     "text": "a way to register a site for the local member"
+  },
+  "packages/blueprint/src/resolve.ts#Resolver": {
+    "text": "the resolver that works with project files, tsconfig paths and workspace packages"
   },
   "packages/blueprint/src/screens.ts#findScreens": {
     "text": "the screens found from app routes and page files"
@@ -365,8 +395,14 @@
   "packages/blueprint/src/site.ts#readSiteOverlay": {
     "text": "a site's glossary overlay file, or an empty one when missing"
   },
+  "packages/blueprint/src/site.ts#restoreOverlay": {
+    "text": "putting an overlay file back as it was and regenerating the site's blueprint"
+  },
   "packages/blueprint/src/site.ts#siteReader": {
     "text": "a reader for the text of files in a site's checkout"
+  },
+  "packages/blueprint/src/site.ts#snapshotOverlay": {
+    "text": "a saved copy of an overlay file's text, or nothing if it is missing"
   },
   "packages/blueprint/src/site.ts#writeSiteBlueprint": {
     "text": "regenerating and saving a site's blueprint file"
@@ -388,6 +424,27 @@
   },
   "packages/db/src/client.ts#createDb": {
     "text": "opening a pool of database connections"
+  },
+  "packages/db/src/index.ts#auditLog": {
+    "text": "the audit log table"
+  },
+  "packages/db/src/index.ts#createDb": {
+    "text": "a database connection opened from a URL"
+  },
+  "packages/db/src/index.ts#modelCalls": {
+    "text": "the table of model calls"
+  },
+  "packages/db/src/index.ts#people": {
+    "text": "the table of people"
+  },
+  "packages/db/src/index.ts#runMigrations": {
+    "text": "running the database migrations"
+  },
+  "packages/db/src/index.ts#seed": {
+    "text": "the one-time setup of the local member and the self site, safe to repeat"
+  },
+  "packages/db/src/index.ts#sites": {
+    "text": "the table of sites, one per target repository"
   },
   "packages/db/src/migrate.ts#MIGRATIONS_DIR": {
     "text": "the folder holding the database migrations"
@@ -461,6 +518,9 @@
   "packages/model/src/call.ts#call": {
     "text": "the function that makes a vendor model call from a prompt request"
   },
+  "packages/model/src/index.ts#call": {
+    "text": "making a model call for a given role"
+  },
   "packages/model/src/prompts.ts#PROMPTS_DIR": {
     "text": "the folder where the prompt files are kept"
   },
@@ -523,5 +583,11 @@
   },
   "scripts/gen-blueprint-doc.mjs#render": {
     "text": "the Blueprint schema document, written out from the collected types"
+  },
+  "tests/dev-server.ts#DevServer": {
+    "text": "the shape of a running dev server with its address, output and stop control"
+  },
+  "tests/dev-server.ts#startDevServer": {
+    "text": "starting a dev server on a free port"
   }
 }
