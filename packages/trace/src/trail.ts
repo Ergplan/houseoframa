@@ -27,23 +27,6 @@ export interface TrailSource {
 /** Whitespace and non-breaking spaces do not make two figures different. */
 export const normalise = (s: string) => s.replace(/[\s\u00a0\u202f]+/g, '');
 
-/** The function starting at `line` (1-based): through the line where its braces balance, at most 40 lines. */
-export function codeAt(source: string, line: number, max = 40): string {
-  const lines = source.split('\n').slice(line - 1, line - 1 + max);
-  let depth = 0;
-  let opened = false;
-  for (let i = 0; i < lines.length; i++) {
-    for (const ch of lines[i]!) {
-      if (ch === '{') {
-        depth++;
-        opened = true;
-      } else if (ch === '}') depth--;
-    }
-    if (opened && depth <= 0) return lines.slice(0, i + 1).join('\n');
-  }
-  return lines.join('\n');
-}
-
 export function buildTrail(bp: Blueprint, src: TrailSource): Trail {
   const m = src.mapping;
   const files = [m.file, ...m.files];

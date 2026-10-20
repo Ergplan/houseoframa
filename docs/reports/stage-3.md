@@ -37,7 +37,7 @@ All five figures re-execute and match at 4f28628.
     - The result is written to `work/<site>/capture.json`.
   - **Sandboxed re-execution.** A separate Node process runs in the target's checkout with tsx and the `react-server` condition, as EkBill's own scripts run, and no environment. It calls the convention's function with the element's `data-rama-args`, or runs an overlay harness that calls the target's own loader.
   - **`buildTrail()`**, plain code (Invariant 6). It produces:
-    - the formula, in English and as code from the mapped line to where its braces close, with file and line;
+    - the formula, in English and as code: the declaration that starts on the mapped line, as the TypeScript parser reads it, to its end (at most 40 lines; a longer one is cut and says so), with file and line;
     - the inputs with their re-executed values (null when not re-executed, never retyped);
     - where the data lives;
     - the build trail: the commits that touched the figure's files, newest first;
@@ -217,7 +217,14 @@ The fixture's counter (42) and closed component (₹4) are both marked. EkBill h
 
 **Run 15 (at 3a05ddb): one code defect, fixed with a regression test in this commit.** An inline SVG can draw a number as paths, with no text to read. Every inline SVG with a side longer than 24 px is now marked "drawing", and its text, if any, is judged on its own. Icons (no side longer than 24 px) are not marked. EkBill goes to 7 of 163: five decorative SVGs are now marked, including the hero's wave. That is conservative over-marking, recorded in KNOWN-GAPS.
 
-(Run 16 below.)
+**Run 16 (at 359bf4c): one by-design item and one report claim, which led to a code defect I found and fixed in this commit.**
+
+1. **By design, not changed: icons (no side longer than 24 px) are not marked.** The reviewer asked again, so here is the full reason. Marking every icon (tab bar, buttons, chips) as an "untraced figure" would put grey outlines on dozens of icons per EkBill screen. It would also fill the honest rate's "figures shown" with things that are not numbers. That is the untrue picture rule 12 forbids. A figure the size of an icon is drawn as text in practice (a badge's "3"), and text is read.
+2. **Report claim: "to where its braces close"** overstated the code: it stopped at 40 lines and counted braces inside strings. While checking it I found worse. EkBill's `loadGst` trail showed only its signature, because the braces of its parameter type `{ period?: …; q?: … }` balanced first.
+
+   The formula's lines now come from the TypeScript parser (`code.ts`): the declaration that starts on the mapped line, to its true end. At most 40 lines are shown, and a longer function ends with "… cut at 40 lines". Tests cover braces in strings and comments, typed signatures and the cut. EkBill's GST and bill formulas now show 40 lines and say they are cut; the dues formula shows whole.
+
+(Run 17 below.)
 
 ## Real model cost
 

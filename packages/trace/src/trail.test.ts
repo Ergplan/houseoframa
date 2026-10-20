@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import type { Blueprint } from '@rama/shared';
 import { routeMatcher, screenForRoute } from './capture.ts';
 import { ScreensConfig, FiguresOverlay } from './config.ts';
-import { buildTrail, codeAt, normalise } from './trail.ts';
+import { buildTrail, normalise } from './trail.ts';
+import { codeAt } from './code.ts';
 
 const bp = {
   screens: [
@@ -74,9 +75,50 @@ describe('codeAt', () => {
     expect(codeAt(src, 3)).toBe(
       'export function f(a) {\n  if (a) {\n    return 1;\n  }\n  return 2;\n}',
     );
-    expect(codeAt('export const g = (a) => a * 2;\nnext', 1, 1)).toBe(
+    expect(codeAt('export const g = (a) => a * 2;\nnext', 1)).toBe(
       'export const g = (a) => a * 2;',
     );
+  });
+});
+
+describe('codeAt, carefully', () => {
+  it('ignores braces inside strings, template literals and comments', () => {
+    const src = [
+      'export function f(a) {',
+      "  const s = '}';",
+      '  const t = `${a}}`; // }',
+      '  /* } */',
+      '  return s + t;',
+      '}',
+      'const after = 1;',
+    ].join('\n');
+    expect(codeAt(src, 1, 'f.js')).toBe(src.split('\n').slice(0, 6).join('\n'));
+  });
+
+  it('says so when a long function is cut', () => {
+    const body = Array.from({ length: 60 }, (_, i) => `  x += ${i};`);
+    const src = ['export function long(x) {', ...body, '  return x;', '}'].join('\n');
+    const code = codeAt(src, 1);
+    expect(code.split('\n')).toHaveLength(41);
+    expect(code.split('\n').at(-1)).toBe(
+      '// … cut at 40 lines: the function continues in the file',
+    );
+  });
+});
+
+describe('codeAt, with a typed signature', () => {
+  it("reads past object types in the parameters and the return type to the body's end", () => {
+    const src = [
+      'export async function loadGst(',
+      '  viewer: Viewer,',
+      '  opts: { period?: string | null; q?: string | null } = {},',
+      '): Promise<{ total: number } | null> {',
+      '  const q = { from: 1 };',
+      '  return { total: q.from };',
+      '}',
+      'const after = 1;',
+    ].join('\n');
+    expect(codeAt(src, 1, 'data.ts')).toBe(src.split('\n').slice(0, 7).join('\n'));
   });
 });
 

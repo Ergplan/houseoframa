@@ -9,7 +9,8 @@ export {
   type CapturedScreen,
   type CapturedMapping,
 } from './capture.ts';
-export { buildTrail, codeAt, normalise, type RunResult, type TrailSource } from './trail.ts';
+export { buildTrail, normalise, type RunResult, type TrailSource } from './trail.ts';
+export { codeAt } from './code.ts';
 export {
   readCapture,
   showroomOf,

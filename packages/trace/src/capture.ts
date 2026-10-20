@@ -26,7 +26,8 @@ import {
 } from './config.ts';
 import { appearanceKeys } from './keys.ts';
 import { runInSandbox } from './sandbox.ts';
-import { codeAt, type RunResult } from './trail.ts';
+import { codeAt } from './code.ts';
+import type { RunResult } from './trail.ts';
 
 export const CAPTURE_VERSION = 1;
 /** Screenshots are full-page up to this height; a taller page is cropped, and says so. */
@@ -266,7 +267,7 @@ export async function capture(
   }
   for (const m of Object.values(mappings)) {
     const full = path.join(site.repoDir, m.file);
-    m.code = existsSync(full) ? codeAt(readFileSync(full, 'utf8'), m.line) : '';
+    m.code = existsSync(full) ? codeAt(readFileSync(full, 'utf8'), m.line, m.file) : '';
   }
 
   const shotsDir = path.join(opts.outDir, 'shots');
