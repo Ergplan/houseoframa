@@ -1,1 +1,1 @@
-End-to-end tests per stage (`stage-N.e2e.ts`). Unit tests live beside their package. Tests tagged `@vendor` call a real model vendor and are excluded from the watcher.
+End-to-end tests per stage (`stage-N.e2e.test.ts`), run by the watcher and CI as the vitest project `e2e`. Unit tests live beside their package. Tests that call a real model vendor are tagged `@vendor`, live in `*.vendor.test.ts`, and run only with `RAMA_VENDOR_TESTS=1`; the watcher and CI never set it.

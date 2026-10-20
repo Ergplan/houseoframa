@@ -1,0 +1,13 @@
+{
+  "name": "@rama/shared",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Types shared across House of Rama packages (MASTER-PROMPT §8).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  }
+}

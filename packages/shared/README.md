@@ -1,3 +1,3 @@
 # packages/shared
 
-See CLAUDE.md §4 for this package's responsibility and docs/MASTER-PROMPT.md for the stage that builds it. Created in Stage 0; empty until then.
+Types shared across packages, exactly as MASTER-PROMPT §8 defines them: `Blueprint` and its parts, `Trail`, `Decision`, `Signoff`, `Finding`. Every field carries a one-line doc comment; `docs/BLUEPRINT.md` is generated from these comments by `scripts/gen-blueprint-doc.mjs`, and the watcher fails when the document drifts or a field is undocumented.

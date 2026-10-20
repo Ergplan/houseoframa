@@ -1,0 +1,17 @@
+{
+  "name": "@rama/model",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "The one module for external model calls: versioned prompts, vendor routing, retries, model_calls rows.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@rama/db": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

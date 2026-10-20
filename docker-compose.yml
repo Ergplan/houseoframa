@@ -1,4 +1,5 @@
-# One box: Postgres for House of Rama. Stage 0 adds the app and the watcher services.
+# One box: Postgres, the app and the watcher. `pnpm dev` starts only `db` here and runs the app and the
+# watcher on the host. `docker compose --profile stack up` runs all three in containers instead.
 services:
   db:
     image: postgres:16
@@ -6,7 +7,38 @@ services:
       POSTGRES_USER: rama
       POSTGRES_PASSWORD: rama
       POSTGRES_DB: rama
-    ports: ["5432:5432"]
-    volumes: ["pgdata:/var/lib/postgresql/data"]
+    ports: ['5432:5432']
+    volumes: ['pgdata:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U rama']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  app:
+    profiles: [stack]
+    image: node:22-bookworm
+    working_dir: /repo
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm db:migrate && pnpm db:seed && pnpm --filter @rama/app dev --hostname 0.0.0.0"
+    environment:
+      DATABASE_URL: postgres://rama:rama@db:5432/rama
+      RAMA_MEMBER_NAME: ${RAMA_MEMBER_NAME:-}
+      GIT_SHA: ${GIT_SHA:-}
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+    ports: ['3000:3000']
+    volumes: ['.:/repo', 'stack_node_modules:/repo/node_modules']
+    depends_on:
+      db: { condition: service_healthy }
+  watcher:
+    profiles: [stack]
+    image: node:22-bookworm
+    working_dir: /repo
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && node scripts/watch.mjs"
+    environment:
+      DATABASE_URL: postgres://rama:rama@db:5432/rama
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+    volumes: ['.:/repo', 'stack_node_modules:/repo/node_modules']
+    depends_on:
+      app: { condition: service_started }
 volumes:
   pgdata:
+  stack_node_modules:

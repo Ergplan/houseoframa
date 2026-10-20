@@ -1,0 +1,15 @@
+# Read-only inputs and verbatim copies are never reformatted.
+reference/
+CLAUDE.md
+docs/MASTER-PROMPT.md
+# Generated files: their generators own the formatting.
+docs/BLUEPRINT.md
+blueprint/
+packages/db/migrations/
+pnpm-lock.yaml
+# Build and runtime output.
+node_modules/
+.next/
+.next-e2e/
+work/
+.watch/

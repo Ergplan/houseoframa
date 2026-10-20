@@ -1,13 +1,46 @@
-# Stage 0 fills this in with the same checks the watcher runs. Until then CI only proves the repo is well-formed.
+# The same checks the watcher runs (CLAUDE.md §4), once, against a fresh Postgres 16.
 name: check
 on: [push, pull_request]
 jobs:
   check:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: rama
+          POSTGRES_PASSWORD: rama
+          POSTGRES_DB: rama
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U rama"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 30
+    env:
+      DATABASE_URL: postgres://rama:rama@localhost:5432/rama
+      BUILDER_VENDOR: anthropic
+      AUDITOR_VENDOR: openai
+      RAMA_MEMBER_NAME: CI
+      NEXT_TELEMETRY_DISABLED: '1'
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22 }
-      - run: test -f CLAUDE.md && test -f docs/MASTER-PROMPT.md
-      - run: node scripts/watch.mjs || true
-      - run: cat .watch/status.json
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Migrate and seed
+        run: pnpm db:migrate && pnpm db:seed
+      - name: Watcher checks
+        run: node scripts/watch.mjs --once
+      - name: Status
+        if: always()
+        run: cat .watch/status.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: watch-status
+          path: .watch/
+          include-hidden-files: true
