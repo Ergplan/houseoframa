@@ -45,7 +45,18 @@ function collectFigures(arg) {
   // A count or amount without a currency: grouped digits, or up to nine plain ones. A leading "+" or ten
   // or more plain digits is an identifier (a phone number, an account), not a figure.
   const number = /^[\u2212-]?(\d{1,3}(,\d{2,3})+|\d{1,9})(\.\d+)?$/;
-  const covered = (el) => traced.some((t) => t === el || t.contains(el) || el.contains(t));
+  // A traced figure and everything inside it are covered. An element that merely holds a traced figure is
+  // judged by its text outside that figure, so another amount beside a traced one is still marked.
+  const covered = (el) => traced.some((t) => t === el || t.contains(el));
+  const free = (el) => {
+    if (!traced.some((t) => el.contains(t))) return text(el);
+    const parts = [];
+    const walk = document.createTreeWalker(el, 4 /* NodeFilter.SHOW_TEXT */);
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+      if (!traced.some((t) => t.contains(n))) parts.push(n.textContent);
+    }
+    return parts.join(' ').replace(/\s+/g, ' ').trim();
+  };
   const candidates = Array.from(document.querySelectorAll('body *')).filter(
     (el) =>
       !['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'].includes(el.tagName) &&
@@ -55,11 +66,11 @@ function collectFigures(arg) {
   const smallest = (els) =>
     els.filter((el) => !els.some((other) => other !== el && el.contains(other)));
   // First amounts and percentages, at the smallest element holding one; then bare numbers not inside one.
-  const amounts = smallest(candidates.filter((el) => amount.test(text(el))));
+  const amounts = smallest(candidates.filter((el) => amount.test(free(el))));
   const numbers = smallest(
     candidates.filter(
       (el) =>
-        number.test(text(el)) && !amounts.some((a) => a === el || a.contains(el) || el.contains(a)),
+        number.test(free(el)) && !amounts.some((a) => a === el || a.contains(el) || el.contains(a)),
     ),
   );
   // Third, conservatively: a number inside words ("13 bills", "Order 7"). The detector cannot tell a count
@@ -82,10 +93,10 @@ function collectFigures(arg) {
   };
   const marked = [...amounts, ...numbers];
   const inside = (el) => marked.some((m) => m === el || m.contains(el) || el.contains(m));
-  const words = smallest(candidates.filter((el) => !inside(el) && numberInWords(text(el))));
+  const words = smallest(candidates.filter((el) => !inside(el) && numberInWords(free(el))));
   for (const el of candidates) {
     if (amounts.includes(el) || numbers.includes(el) || words.includes(el)) {
-      out.push({ id: null, origin: 'detected', text: text(el), box: box(el) });
+      out.push({ id: null, origin: 'detected', text: free(el), box: box(el) });
     }
   }
   return out;

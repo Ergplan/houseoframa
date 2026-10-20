@@ -33,7 +33,7 @@ const routes = {
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
       '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +
       '<p>Previous order <span data-rama-figure="order-total" data-rama-args=\\'' + JSON.stringify([OTHER]) + '\\' data-rama-value="' +
-      orderTotal(OTHER) + '">' + rupees(orderTotal(OTHER)) + '</span></p>' +
+      orderTotal(OTHER) + '">' + rupees(orderTotal(OTHER)) + '</span> incl. ₹2 packing</p>' +
       '<p class="hero"><span>₹</span><span>12</span></p><p>GST <i>18%</i></p><p>Items <b>3</b></p>' +
       '<p>13 bills this quarter</p><p>Issued 22 Sept 2026 at 10:30 (22/09)</p><p>Invoice INV-042, GSTIN 27AAPFU0939F1ZV</p>'),
 };

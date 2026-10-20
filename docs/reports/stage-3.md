@@ -150,7 +150,11 @@ Other items from run 1 do not block the stage:
 1. **Invariant 2 (code): numbers inside words.** A count such as "13 bills" still had neither a trail nor a mark. A third, conservative pass now marks the smallest element holding a number inside words. Plain dates ("22 Sept", "12/10"), years, times and letter-digit identifiers ("INV-042", a GSTIN) are left alone. It over-marks a little (a house number in an address), and KNOWN-GAPS says so. EkBill: 7 of 155 figures traced.
 2. **Report claim: "each appearance re-executed".** An overlay harness runs once per figure and its result is compared at each appearance. The report and DECISIONS now say exactly that.
 
-(Run 3 below.)
+**Run 3 (at 72a697b): one code defect, fixed with a regression test in this commit.**
+
+1. **Invariant 2 (code): ancestors of a traced figure were skipped.** In `<p><span data-rama-figure>₹10</span> Delivery ₹99</p>` the ₹99 was left bare. Detection now excludes only a traced figure and what is inside it. An element that holds a traced figure is judged by its text outside that figure. The fixture's "Previous order ₹15.00 incl. ₹2 packing" pins it: the traced ₹15.00 keeps its trail and the ₹2 is marked untraced. EkBill has no such element, so its count is unchanged at 7 of 155.
+
+(Run 4 below.)
 
 ## Real model cost
 
@@ -169,8 +173,9 @@ Independent reviewer (auditor vendor):
 | ----------- | ----------- | ------------ | ------------- | ---- |
 | 1 (54a9f3e) | gpt-6.1-sol | 58,824       | 1,369         | ₹12  |
 | 2 (e05abd1) | gpt-6.1-sol | 62,388       | 1,211         | ₹13  |
+| 3 (72a697b) | gpt-6.1-sol | 64,493       | 1,129         | ₹13  |
 
-**Stage total so far: ₹66** (`pnpm cost 3`). Further review runs are added below.
+**Stage total so far: ₹79** (`pnpm cost 3`). Further review runs are added below.
 
 ## Open questions
 

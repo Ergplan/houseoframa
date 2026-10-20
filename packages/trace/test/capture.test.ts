@@ -83,10 +83,11 @@ describe('capture', () => {
       ['order-total', 'attribute', '₹15.00'],
       ['line-count', 'overlay', '2 lines'],
       ['untraced:order:1', 'detected', 'Order 7'],
-      ['untraced:order:2', 'detected', '₹12'],
-      ['untraced:order:3', 'detected', '18%'],
-      ['untraced:order:4', 'detected', '3'],
-      ['untraced:order:5', 'detected', '13 bills this quarter'],
+      ['untraced:order:2', 'detected', 'Previous order incl. ₹2 packing'],
+      ['untraced:order:3', 'detected', '₹12'],
+      ['untraced:order:4', 'detected', '18%'],
+      ['untraced:order:5', 'detected', '3'],
+      ['untraced:order:6', 'detected', '13 bills this quarter'],
     ]);
   });
 
@@ -94,6 +95,7 @@ describe('capture', () => {
     const detected = cap.screens[1]!.figures.filter((f) => f.origin === 'detected');
     expect(detected.map((f) => f.text)).toEqual([
       'Order 7',
+      'Previous order incl. ₹2 packing', // it also holds a traced figure: its other amount is still marked
       '₹12',
       '18%',
       '3',
@@ -136,8 +138,9 @@ describe('showroom', () => {
       'order/untraced:order:3',
       'order/untraced:order:4',
       'order/untraced:order:5',
+      'order/untraced:order:6',
     ]);
-    expect(s.counts).toEqual({ shown: 10, traced: 3 });
+    expect(s.counts).toEqual({ shown: 11, traced: 3 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'order/line-count',
