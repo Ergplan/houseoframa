@@ -45,8 +45,11 @@ export const ScreensConfig = z.object({
     .default({ width: 390, height: 844 }),
   /** How a role is put on: a query string to append. A role not listed adds nothing. */
   roles: z.record(z.string(), z.object({ query: z.string().optional() })).default({}),
-  /** Leaf text that looks like a figure; a match not covered by a traced figure is recorded untraced. */
-  figurePattern: z.string().default('[₹$€£]\\s?\\d[\\d,]*(\\.\\d+)?'),
+  /**
+   * Text that holds a figure: amounts and percentages (an element whose whole text is a number is always
+   * a figure too). A figure no traced figure covers is recorded untraced.
+   */
+  figurePattern: z.string().default('[₹$€£]\\s?\\d[\\d,]*(\\.\\d+)?|\\d+(\\.\\d+)?\\s?%'),
   screens: z.array(ScreenSpec).min(1),
 });
 export type ScreensConfig = z.infer<typeof ScreensConfig>;

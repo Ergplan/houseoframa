@@ -23,6 +23,7 @@ const SERVER = `import http from 'node:http';
 import { orderTotal, lineCount, rupees } from './lib/total.js';
 
 const LINES = [{ qty: 2, pricePaise: 1250 }, { qty: 1, pricePaise: 300 }];
+const OTHER = [{ qty: 3, pricePaise: 500 }];
 const page = (body) => '<!doctype html><html><body style="margin:0;font:16px sans-serif">' + body + '</body></html>';
 const routes = {
   '/': () =>
@@ -30,7 +31,10 @@ const routes = {
       orderTotal(LINES) + '">' + rupees(orderTotal(LINES)) + '</p><p>Delivery <span>₹99</span></p>'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
-      '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>'),
+      '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +
+      '<p>Previous order <span data-rama-figure="order-total" data-rama-args=\\'' + JSON.stringify([OTHER]) + '\\' data-rama-value="' +
+      orderTotal(OTHER) + '">' + rupees(orderTotal(OTHER)) + '</span></p>' +
+      '<p class="hero"><span>₹</span><span>12</span></p><p>GST <i>18%</i></p><p>Items <b>3</b></p>'),
 };
 http
   .createServer((req, res) => {
@@ -103,6 +107,7 @@ export const figures = {
     }),
     '.rama/trails/line-count.mjs': `import { lineCount } from '../../lib/total.js';
 const LINES = [{ qty: 2, pricePaise: 1250 }, { qty: 1, pricePaise: 300 }];
+const OTHER = [{ qty: 3, pricePaise: 500 }];
 export default function run() {
   const n = lineCount(LINES);
   return { text: n + ' lines', value: n, inputs: [{ label: 'Order lines', value: LINES.length + ' lines' }] };

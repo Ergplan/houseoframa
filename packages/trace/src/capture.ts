@@ -24,6 +24,7 @@ import {
   type ScreenSpec,
   type ScreensConfig,
 } from './config.ts';
+import { appearanceKey } from './keys.ts';
 import { runInSandbox } from './sandbox.ts';
 import { codeAt, type RunResult } from './trail.ts';
 
@@ -72,7 +73,10 @@ export interface Capture {
   screens: CapturedScreen[];
   /** Every traced figure's mapping, by figure id. */
   mappings: Record<string, CapturedMapping>;
-  /** The result of re-executing each traced figure, by figure id. */
+  /**
+   * The result of re-executing each traced figure, per appearance (`<screen>/<figureId>`): the same figure
+   * on two screens may have been computed from different arguments.
+   */
   runs: Record<string, RunResult>;
 }
 
@@ -321,14 +325,23 @@ export async function capture(
     app.stop();
   }
 
-  // Re-execute every traced figure that appeared on a screen.
+  // Re-execute every traced figure, per appearance. An overlay harness takes no screen arguments, so it
+  // runs once per figure and its result serves every screen the figure appears on.
   const runs: Capture['runs'] = {};
+  const harnessRuns = new Map<string, RunResult>();
   for (const screen of screens) {
     for (const f of screen.figures) {
-      if (f.origin === 'detected' || runs[f.id] || !mappings[f.id]) continue;
-      runs[f.id] = await reexecute(site.repoDir, f, mappings[f.id]!, overlay[f.id]?.run);
+      const mapping = mappings[f.id];
+      if (f.origin === 'detected' || !mapping) continue;
+      const harness = overlay[f.id]?.run;
+      let run = mapping.origin === 'overlay' ? harnessRuns.get(f.id) : undefined;
+      if (!run) {
+        run = await reexecute(site.repoDir, f, mapping, harness);
+        if (mapping.origin === 'overlay') harnessRuns.set(f.id, run);
+      }
+      runs[appearanceKey(screen.name, f.id)] = run;
       log(
-        `figure ${f.id}: ${runs[f.id]!.ok ? `re-executed → ${runs[f.id]!.text}` : `not re-executed (${runs[f.id]!.error})`}`,
+        `figure ${screen.name}/${f.id}: ${run.ok ? `re-executed → ${run.text}` : `not re-executed (${run.error})`}`,
       );
     }
   }

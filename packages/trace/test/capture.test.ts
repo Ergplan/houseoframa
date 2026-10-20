@@ -80,18 +80,31 @@ describe('capture', () => {
     const order = cap.screens[1]!.figures;
     expect(order.map((f) => [f.id, f.origin, f.text])).toEqual([
       ['vat', 'attribute', '₹4.20'],
+      ['order-total', 'attribute', '₹15.00'],
       ['line-count', 'overlay', '2 lines'],
+      ['untraced:order:1', 'detected', '₹12'],
+      ['untraced:order:2', 'detected', '18%'],
+      ['untraced:order:3', 'detected', '3'],
     ]);
   });
 
-  it("re-executes the convention's function with the screen's arguments, and the overlay's harness", () => {
-    expect(cap.runs['order-total']).toMatchObject({ ok: true, text: '2800', value: 2800 });
-    expect(cap.runs['line-count']).toMatchObject({
+  it('marks an amount split across elements, a percentage and a bare count, each once, at its smallest element', () => {
+    const detected = cap.screens[1]!.figures.filter((f) => f.origin === 'detected');
+    expect(detected.map((f) => f.text)).toEqual(['₹12', '18%', '3']);
+    // Words with a number in them ("Order 7", "2 lines" outside the overlay) are not figures; neither are labels.
+    const all = cap.screens.flatMap((s) => s.figures).map((f) => f.text);
+    expect(all.some((t) => /Order 7|owner|staff|none|Delivery/.test(t))).toBe(false);
+  });
+
+  it("re-executes the convention's function with each screen's own arguments, and the overlay's harness", () => {
+    expect(cap.runs['home/order-total']).toMatchObject({ ok: true, text: '2800', value: 2800 });
+    expect(cap.runs['order/order-total']).toMatchObject({ ok: true, text: '1500', value: 1500 });
+    expect(cap.runs['order/line-count']).toMatchObject({
       ok: true,
       text: '2 lines',
       inputs: [{ label: 'Order lines', value: '2 lines' }],
     });
-    expect(cap.runs.vat).toBeUndefined(); // tagged, but nothing maps it
+    expect(cap.runs['order/vat']).toBeUndefined(); // tagged, but nothing maps it
     expect(cap.mappings['order-total']!.code).toBe(
       'export function orderTotal(lines) {\n  let sum = 0;\n  for (const l of lines) sum += l.qty * l.pricePaise;\n  return sum;\n}',
     );
@@ -101,19 +114,29 @@ describe('capture', () => {
 describe('showroom', () => {
   it('marks a figure traced only when it maps to a trail; every other figure is untraced (Invariant 2)', () => {
     const s = showroomOf(cap, bp);
-    expect(s.screens.flatMap((x) => x.figures.map((f) => [f.id, f.traced]))).toEqual([
-      ['order-total', true],
-      ['untraced:home:1', false],
-      ['vat', false],
-      ['line-count', true],
+    const ids = (traced: boolean) =>
+      s.screens.flatMap((x) =>
+        x.figures.filter((f) => f.traced === traced).map((f) => `${x.name}/${f.id}`),
+      );
+    expect(ids(true)).toEqual(['home/order-total', 'order/order-total', 'order/line-count']);
+    expect(ids(false)).toEqual([
+      'home/untraced:home:1',
+      'order/vat',
+      'order/untraced:order:1',
+      'order/untraced:order:2',
+      'order/untraced:order:3',
     ]);
-    expect(s.counts).toEqual({ shown: 4, traced: 2 });
-    expect(Object.keys(s.trails).sort()).toEqual(['line-count', 'order-total']);
+    expect(s.counts).toEqual({ shown: 8, traced: 3 });
+    expect(Object.keys(s.trails).sort()).toEqual([
+      'home/order-total',
+      'order/line-count',
+      'order/order-total',
+    ]);
   });
 
-  it('builds trails whose re-executed value matches what the screen showed', () => {
-    const t = showroomOf(cap, bp).trails['order-total']!;
-    expect(t).toMatchObject({
+  it('builds a trail per appearance, each with its own inputs and its own check against the screen', () => {
+    const s = showroomOf(cap, bp);
+    expect(s.trails['home/order-total']).toMatchObject({
       title: 'Order total',
       reexecuted: true,
       formula: {
@@ -126,8 +149,11 @@ describe('showroom', () => {
       result: { shown: '2800', computed: '2800', matches: true },
       signoff: null,
     });
-    expect(t.build.map((b) => b.file)).toEqual(['lib/total.js']);
-    expect(showroomOf(cap, bp).trails['line-count']!.result).toEqual({
+    expect(s.trails['home/order-total']!.build.map((b) => b.file)).toEqual(['lib/total.js']);
+    const order = s.trails['order/order-total']!;
+    expect(order.result).toEqual({ shown: '1500', computed: '1500', matches: true });
+    expect(order.inputs[0]!.value).toBe(JSON.stringify([{ qty: 3, pricePaise: 500 }]));
+    expect(s.trails['order/line-count']!.result).toEqual({
       shown: '2 lines',
       computed: '2 lines',
       matches: true,

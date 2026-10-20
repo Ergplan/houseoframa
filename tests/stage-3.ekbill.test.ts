@@ -47,12 +47,15 @@ describe('stage 3 on EkBill', () => {
   });
 
   it("re-executes the five headline figures with EkBill's own functions, and each matches the on-screen text", () => {
+    // Trails are kept per appearance (`<screen>/<figure>`): every appearance of each figure must match.
     for (const id of FIVE) {
-      const t = room.trails[id];
-      expect(t, id).toBeDefined();
-      expect(t!.reexecuted, `${id}: ${t!.reexecutionError ?? ''}`).toBe(true);
-      expect(t!.result, id).toMatchObject({ matches: true });
-      expect(t!.result!.computed, id).toMatch(/^₹[\d,]+(\.\d\d)?$/);
+      const appearances = Object.entries(room.trails).filter(([key]) => key.endsWith(`/${id}`));
+      expect(appearances.length, id).toBeGreaterThanOrEqual(1);
+      for (const [key, t] of appearances) {
+        expect(t.reexecuted, `${key}: ${t.reexecutionError ?? ''}`).toBe(true);
+        expect(t.result, key).toMatchObject({ matches: true });
+        expect(t.result!.computed, key).toMatch(/^₹[\d,]+(\.\d\d)?$/);
+      }
     }
   });
 

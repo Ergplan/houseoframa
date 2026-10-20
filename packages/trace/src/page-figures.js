@@ -1,7 +1,7 @@
 /* global document, window */
 // Runs inside the captured page (capture.ts sends it as text). Finds every figure: traced ones first
-// (the convention's data-rama-figure, then the overlay's selectors), then every leaf whose text matches
-// the figure pattern and that no traced figure covers: those are recorded untraced.
+// (the convention's data-rama-figure, then the overlay's selectors), then every amount, percentage or
+// count that no traced figure covers: those are recorded untraced.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- called by name from capture.ts, as text
 function collectFigures(arg) {
   const box = (el) => {
@@ -38,12 +38,33 @@ function collectFigures(arg) {
     traced.push(el);
     out.push({ id: f.id, origin: 'overlay', text: text(el), box: box(el) });
   }
-  const re = new RegExp(arg.pattern);
+  // Untraced figures: the smallest element whose text holds an amount or a percentage (an amount may be
+  // split across child elements, like "₹" and "39,914"), or whose whole text is a number (a count). An
+  // element is skipped when a child already qualifies, so each figure is marked once, where it is drawn.
+  const amount = new RegExp(arg.pattern);
+  // A count or amount without a currency: grouped digits, or up to nine plain ones. A leading "+" or ten
+  // or more plain digits is an identifier (a phone number, an account), not a figure.
+  const number = /^[\u2212-]?(\d{1,3}(,\d{2,3})+|\d{1,9})(\.\d+)?$/;
   const covered = (el) => traced.some((t) => t === el || t.contains(el) || el.contains(t));
-  for (const el of Array.from(document.querySelectorAll('body *'))) {
-    if (el.children.length > 0 || !visible(el) || covered(el)) continue;
-    const t = text(el);
-    if (t && re.test(t)) out.push({ id: null, origin: 'detected', text: t, box: box(el) });
+  const candidates = Array.from(document.querySelectorAll('body *')).filter(
+    (el) =>
+      !['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'].includes(el.tagName) &&
+      visible(el) &&
+      !covered(el),
+  );
+  const smallest = (els) =>
+    els.filter((el) => !els.some((other) => other !== el && el.contains(other)));
+  // First amounts and percentages, at the smallest element holding one; then bare numbers not inside one.
+  const amounts = smallest(candidates.filter((el) => amount.test(text(el))));
+  const numbers = smallest(
+    candidates.filter(
+      (el) =>
+        number.test(text(el)) && !amounts.some((a) => a === el || a.contains(el) || el.contains(a)),
+    ),
+  );
+  for (const el of candidates) {
+    if (amounts.includes(el) || numbers.includes(el))
+      out.push({ id: null, origin: 'detected', text: text(el), box: box(el) });
   }
   return out;
 }

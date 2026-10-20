@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "3d024c953027fa953674489f519967fe396a7b5a",
+  "commit": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -2164,6 +2164,27 @@
       "sha": "3d024c953027fa953674489f519967fe396a7b5a",
       "short": "3d024c9",
       "subject": "Stage 3: Showroom and trails — capture, re-execution, house style"
+    },
+    {
+      "at": "2026-10-20T18:13:05Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 408,
+          "del": 114,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 150,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-3.md"
+        }
+      ],
+      "sha": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
+      "short": "54a9f3e",
+      "subject": "Stage 3: draft report (before the independent review)"
     }
   ],
   "edges": [
@@ -4741,6 +4762,14 @@
     {
       "from": "packages/trace/src/capture.ts",
       "symbols": [
+        "appearanceKey"
+      ],
+      "to": "packages/trace/src/keys.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
         "runInSandbox"
       ],
       "to": "packages/trace/src/sandbox.ts",
@@ -4808,6 +4837,14 @@
         "*"
       ],
       "to": "packages/trace/src/config.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "appearanceKey"
+      ],
+      "to": "packages/trace/src/keys.ts",
       "typeOnly": false
     },
     {
@@ -4891,6 +4928,14 @@
       ],
       "to": "packages/trace/src/capture.ts",
       "typeOnly": true
+    },
+    {
+      "from": "packages/trace/src/showroom.ts",
+      "symbols": [
+        "appearanceKey"
+      ],
+      "to": "packages/trace/src/keys.ts",
+      "typeOnly": false
     },
     {
       "from": "packages/trace/src/showroom.ts",
@@ -5536,7 +5581,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T18:08:50Z",
+  "extractedAt": "2026-10-20T18:13:05Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -6078,7 +6123,7 @@
     },
     {
       "binary": false,
-      "bytes": 6348,
+      "bytes": 6353,
       "changes": 1,
       "env": [
         "RAMA_WORK_DIR"
@@ -6487,7 +6532,7 @@
     },
     {
       "binary": false,
-      "bytes": 5284,
+      "bytes": 5324,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -6703,7 +6748,7 @@
     },
     {
       "binary": false,
-      "bytes": 17986,
+      "bytes": 18548,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -6712,7 +6757,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 103,
+      "lines": 104,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -6722,7 +6767,7 @@
     },
     {
       "binary": false,
-      "bytes": 5986,
+      "bytes": 6486,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -6731,13 +6776,13 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 96,
+      "lines": 97,
       "path": "docs/HOUSE-STYLE.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 4550,
+      "bytes": 4667,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -6881,7 +6926,22 @@
     },
     {
       "binary": false,
-      "bytes": 13588,
+      "bytes": 15663,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
+      "lastCommit": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 168,
+      "path": "docs/reports/stage-3.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8267,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -6890,8 +6950,8 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 150,
-      "path": "docs/reports/stage-3.md",
+      "lines": 21,
+      "path": "docs/reports/stage-3.review.md",
       "test": false
     },
     {
@@ -8296,7 +8356,7 @@
     },
     {
       "binary": false,
-      "bytes": 1115,
+      "bytes": 1352,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8309,7 +8369,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 30,
+      "lines": 35,
       "path": "packages/model/src/prompts.ts",
       "purpose": {
         "confirmed": false,
@@ -8629,7 +8689,7 @@
     },
     {
       "binary": false,
-      "bytes": 14460,
+      "bytes": 15056,
       "changes": 1,
       "env": [
         "HOME",
@@ -8652,7 +8712,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 408,
+      "lines": 421,
       "path": "packages/trace/src/capture.ts",
       "test": false
     },
@@ -8673,7 +8733,7 @@
     },
     {
       "binary": false,
-      "bytes": 5574,
+      "bytes": 5681,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8695,13 +8755,13 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 129,
+      "lines": 132,
       "path": "packages/trace/src/config.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 520,
+      "bytes": 563,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8718,6 +8778,7 @@
         "Showroom",
         "ShowroomScreen",
         "TrailSource",
+        "appearanceKey",
         "buildTrail",
         "capture",
         "captureDir",
@@ -8734,13 +8795,30 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 21,
+      "lines": 22,
       "path": "packages/trace/src/index.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1954,
+      "bytes": 190,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "appearanceKey"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 2,
+      "path": "packages/trace/src/keys.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3109,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8749,7 +8827,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 49,
+      "lines": 70,
       "path": "packages/trace/src/page-figures.js",
       "test": false
     },
@@ -8809,7 +8887,7 @@
     },
     {
       "binary": false,
-      "bytes": 2648,
+      "bytes": 2796,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8824,7 +8902,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 77,
+      "lines": 80,
       "path": "packages/trace/src/showroom.ts",
       "test": false
     },
@@ -8866,7 +8944,7 @@
     },
     {
       "binary": false,
-      "bytes": 5599,
+      "bytes": 7031,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8875,13 +8953,13 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 153,
+      "lines": 179,
       "path": "packages/trace/test/capture.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 4810,
+      "bytes": 5217,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -8892,7 +8970,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 114,
+      "lines": 119,
       "path": "packages/trace/test/fixture-app.ts",
       "test": false
     },
@@ -9562,7 +9640,7 @@
     },
     {
       "binary": false,
-      "bytes": 2720,
+      "bytes": 2975,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -9571,7 +9649,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 65,
+      "lines": 68,
       "path": "tests/stage-3.ekbill.test.ts",
       "test": true
     },
@@ -9674,6 +9752,7 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/trace/src/keys.ts",
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts"
       ],
@@ -9728,6 +9807,7 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/trace/src/keys.ts",
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts"
       ],

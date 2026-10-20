@@ -6,6 +6,7 @@ import path from 'node:path';
 import type { Blueprint, FigureRef, Trail } from '@rama/shared';
 import { workDir } from '@rama/blueprint/site';
 import type { Capture, CapturedScreen } from './capture.ts';
+import { appearanceKey } from './keys.ts';
 import { buildTrail } from './trail.ts';
 
 export interface ShowroomScreen {
@@ -25,6 +26,7 @@ export interface Showroom {
   commit: string;
   capturedAt: string;
   screens: ShowroomScreen[];
+  /** One trail per traced figure's appearance, by `<screen>/<figureId>`. */
   trails: Record<string, Trail>;
   /** Figures shown and figures traced, counted per appearance: the honest rate. */
   counts: { shown: number; traced: number };
@@ -52,13 +54,14 @@ export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
     bricks: s.bricks,
     figures: s.figures.map((f) => {
       const mapping = f.origin === 'detected' ? undefined : capture.mappings[f.id];
-      if (mapping && !trails[f.id]) {
-        trails[f.id] = buildTrail(bp, {
+      const key = appearanceKey(s.name, f.id);
+      if (mapping) {
+        trails[key] = buildTrail(bp, {
           figureId: f.id,
           mapping,
           code: mapping.code,
           shown: f.value ?? f.text,
-          run: capture.runs[f.id] ?? null,
+          run: capture.runs[key] ?? null,
         });
       }
       return { id: f.id, box: f.box, traced: Boolean(mapping), text: f.text };

@@ -3,8 +3,13 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// Built with path.join, not `new URL('../../../prompts', import.meta.url)`: the app's bundler takes the
+// latter for a static asset and fails to build any route that reaches this module (as with MIGRATIONS_DIR).
 /** The repository's prompts/ directory. */
-export const PROMPTS_DIR = fileURLToPath(new URL('../../../prompts', import.meta.url));
+export const PROMPTS_DIR = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../../prompts',
+);
 
 export interface Prompt {
   name: string;

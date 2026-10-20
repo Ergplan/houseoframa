@@ -84,7 +84,7 @@ beforeAll(() => {
       },
     },
     runs: {
-      'order-total': {
+      'home/order-total': {
         ok: true,
         text: '2',
         value: 2,

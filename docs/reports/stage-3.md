@@ -21,7 +21,7 @@ Date: 2026-10-20. Tag at start: `stage-3-start` (e49890d). Builder: Claude Opus 
     - Playwright drives it through `.rama/screens.json`: route, role, steps and name.
     - Each screen is photographed full-page into `work/<site>/shots/<name>.png`, with the viewport grown to the page so fixed bars sit where the user sees them.
     - Each screen records the bricks that render it, taken from the route's import closure in the Blueprint.
-    - Every figure is found: traced ones by `data-rama-figure` (the convention) or the overlay's selector, untraced ones as amounts that no traced figure covers.
+    - Figures are found: traced ones by `data-rama-figure` (the convention) or the overlay's selector. Untraced ones are amounts and percentages, at the smallest element that holds one (even split across elements), plus elements whose whole text is a number, wherever no traced figure covers them. Identifiers (a leading "+", or ten or more plain digits) are not figures. What this leaves undetected is in KNOWN-GAPS.
     - Every traced figure is re-executed with the target's own function.
     - The result is written to `work/<site>/capture.json`.
   - **Sandboxed re-execution.** A separate Node process runs in the target's checkout with tsx and the `react-server` condition, as EkBill's own scripts run, and no environment. It calls the convention's function with the element's `data-rama-args`, or runs an overlay harness that calls the target's own loader.
@@ -53,7 +53,7 @@ Date: 2026-10-20. Tag at start: `stage-3-start` (e49890d). Builder: Claude Opus 
 
 ## EkBill's Showroom
 
-12 screens captured from the built app at 8c46a81. Every screen has its bricks, 154–171 each, because they share the app shell. **7 of 97 figures are traced:** the five below, two of them appearing on both the owner's and the accountant's GST screen. The other 90 amounts are outlined untraced.
+12 screens captured from the built app at 8c46a81. Every screen has its bricks, 154–171 each, because they share the app shell. **7 of 127 figures are traced:** the five below, two of them appearing on both the owner's and the accountant's GST screen, each appearance re-executed and checked on its own. The other 120 (amounts, percentages and counts) are outlined untraced.
 
 | Figure                                              | Screen           | Shown      | Re-executed by EkBill's own code                               | Match |
 | --------------------------------------------------- | ---------------- | ---------- | -------------------------------------------------------------- | ----- |
@@ -69,13 +69,13 @@ Whitespace does not count in the comparison (the hero's ₹ is its own span). Re
 
 ## Tests
 
-256 tests in 35 files, all passing in the watcher:
+257 tests in 35 files, all passing in the watcher:
 
 | Package               | Tests |
 | --------------------- | ----- |
 | `@rama/blueprint`     | 132   |
 | `@rama/app`           | 66    |
-| `@rama/trace`         | 20    |
+| `@rama/trace`         | 21    |
 | model                 | 17    |
 | e2e                   | 10    |
 | db                    | 5     |
@@ -127,7 +127,25 @@ Also tested:
 
 ## Reviewer findings
 
-(To be filled from `docs/reports/stage-3.review.md` after the run.)
+Runs with `gpt-6.1-sol`, recorded in full in `docs/reports/stage-3.review.md`.
+
+**Run 1 (at 54a9f3e): two code defects and one report claim.** All three are fixed with tests in this commit.
+
+1. **Invariant 2 (code): detection was too narrow.** Only leaf elements holding a currency amount were found. Amounts split across elements (EkBill's hero "₹" + "39,914"), percentages and counts were on screen with neither a trail nor an untraced mark. Detection now marks:
+   - the smallest element holding an amount or percentage;
+   - any element whose whole text is a number, unless it is inside an amount.
+
+   Identifiers such as phone numbers are left out. EkBill went from 97 to 127 figures shown, 7 traced. The fixture app gained a split amount, a percentage and a count to pin this.
+
+2. **Invariant 2 (code): trails keyed by figure id.** The same figure on two screens can come from different arguments, and a later appearance showed the first one's inputs and verdict. Runs and trails are now kept per appearance (`<screen>/<figure>`). The fixture shows `order-total` on two screens, computed from different lines, each matching its own screen.
+3. **Report claim.** "Every figure is found" overstated the detector. It now says what is found, and KNOWN-GAPS says what is not: numbers inside words, figures drawn as images, and two amounts in one element's own text.
+
+Other items from run 1 do not block the stage:
+
+- **Item (d) "cannot tell"** for the generator and drift-check wiring, which are not in this stage's diff. They ran green before every commit (`.watch/status.json`).
+- **Item (e) "cannot tell"** for EkBill's captured values and the cost: EkBill's overlay and capture live in its gitignored working clone. The EkBill test re-checks them on every watcher run on this machine.
+
+(Run 2 below.)
 
 ## Real model cost
 

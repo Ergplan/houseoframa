@@ -108,8 +108,8 @@ export function ShowroomView({
             </div>
           </div>
           <aside className="mon" aria-live="polite">
-            {picked && picked.traced && showroom.trails[picked.id] ? (
-              <TrailPanel trail={showroom.trails[picked.id]!} />
+            {picked && picked.traced && showroom.trails[`${screen.name}/${picked.id}`] ? (
+              <TrailPanel trail={showroom.trails[`${screen.name}/${picked.id}`]!} />
             ) : picked ? (
               <UntracedPanel text={picked.text ?? picked.id} />
             ) : (
