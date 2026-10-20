@@ -17,6 +17,9 @@ importers:
       '@rama/blueprint':
         specifier: workspace:*
         version: link:packages/blueprint
+      '@rama/model':
+        specifier: workspace:*
+        version: link:packages/model
       '@types/node':
         specifier: 22.20.5
         version: 22.20.5
@@ -41,6 +44,9 @@ importers:
       vitest:
         specifier: 5.0.3
         version: 5.0.3(@types/node@22.20.5)(vite@8.3.4(@types/node@22.20.5)(esbuild@0.28.2)(tsx@4.23.15))
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
 
   apps/rama:
     dependencies:

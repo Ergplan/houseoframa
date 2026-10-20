@@ -45,6 +45,7 @@ const TS_PACKAGES = [
   'packages/model',
   'packages/blueprint',
   'apps/rama',
+  'scripts',
 ];
 const IGNORED = [
   /(^|\/)node_modules(\/|$)/,
