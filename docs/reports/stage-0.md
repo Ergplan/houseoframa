@@ -65,10 +65,11 @@ Not applicable to Stage 0 (review starts at Stage 1).
   - First run: `gpt-5-mini-2025-08-07`, error after 3 attempts, empty reply. The 50-token budget went entirely on hidden reasoning. The row records 58 input and 50 output tokens, the last attempt only, because tokens were not yet summed across attempts; the vendor billed about three times that.
   - Fixes: a reply cut off at the token limit now fails at once without retry (`OutputTruncatedError`); tokens are summed across attempts; the vendor test's budget is 2,000.
   - Second run: ok on the first attempt, 58 input and 78 output tokens, reply `{"echo": "foundation"}`.
+  - With the chosen auditor model, `gpt-6.1-sol` (now in `.env`): ok on the first attempt, 58 input and 8 output tokens.
 - The builder session's own cost is not visible from inside the session.
 
 ## Open questions
 
-1. **OpenAI model.** Answered in part: the key was replaced and works (the first one was echoed into this session's transcript and has been replaced). Still open: which OpenAI model should the auditor and the independent reviewer use? Set it as `OPENAI_MODEL` in `.env`. The key can use, among others, `gpt-5.5`, `gpt-5.5-pro`, `gpt-6-sol`, `gpt-6.1-sol` and `o3`. The Stage 1 reviewer cannot run without it.
+1. **OpenAI key and model.** Answered: the key was replaced and works (the first one was echoed into this session's transcript and has been replaced). The auditor and reviewer model is `gpt-6.1-sol`, the only id visible to the key containing "gpt", "sol" and "6.1"; set in `.env` and `.env.example`.
 2. **EkBill clone.** Answered: `reference/ekbill` is cloned, `main` at 8c46a81, 72 commits, clean. The ease-of-use walkthrough's commit e2082a4 is in its history, 7 commits behind HEAD.
 3. **Push to GitHub.** Should I push `main` and the `stage-0-start` tag to `github.com/Ergplan/houseoframa` so the CI workflow runs there? I have not pushed anything.

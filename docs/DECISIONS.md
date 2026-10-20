@@ -2,6 +2,10 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-20 — Auditor model
+
+- The auditor and the independent reviewer use OpenAI `gpt-6.1-sol` (`OPENAI_MODEL`), chosen by the member. It was the only model id visible to the key containing "gpt", "sol" and "6.1". First real call: ok on the first attempt.
+
 ## 2026-10-20 — Stage 0 foundation choices
 
 - Toolchain pinned to the newest release at least two weeks old on each line: Next 16.3.8, React 19.3.0, Drizzle ORM 0.45.3 / drizzle-kit 0.31.11, postgres.js 3.4.9, Vitest 5.0.3, ESLint 10.12.0, Prettier 3.9.9, zod 4.6.5. TypeScript is 6.0.3, not 7: typescript-eslint supports `<6.1`, and the BLUEPRINT.md generator uses the compiler API.
