@@ -99,12 +99,13 @@ function collectFigures(arg) {
   // fields show no figure.
   const fieldValue = (el) => {
     if (el.tagName === 'SELECT') return el.selectedOptions?.[0]?.textContent ?? '';
-    if (el.tagName === 'TEXTAREA') return el.value;
+    // An empty field shows its placeholder instead of a value.
+    if (el.tagName === 'TEXTAREA') return el.value || el.placeholder || '';
     if (
       el.tagName === 'INPUT' &&
       !['hidden', 'checkbox', 'radio', 'image', 'file', 'password'].includes(el.type)
     ) {
-      return el.value;
+      return el.value || el.placeholder || '';
     }
     return null;
   };

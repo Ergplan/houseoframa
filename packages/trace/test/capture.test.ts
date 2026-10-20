@@ -158,6 +158,7 @@ describe('figures without a text node of their own', () => {
     expect(more.figures.map((f) => f.text)).toEqual([
       '₹99',
       '₹7',
+      '₹250', // an empty field's placeholder is what it shows; "Name" is not a figure
       'frame',
       '₹3',
       'component: x-closed', // may draw inside a closed shadow root, which cannot be read
@@ -234,8 +235,9 @@ describe('showroom', () => {
       'more/untraced:more:11',
       'more/untraced:more:12',
       'more/untraced:more:13',
+      'more/untraced:more:14',
     ]);
-    expect(s.counts).toEqual({ shown: 39, traced: 6 });
+    expect(s.counts).toEqual({ shown: 40, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

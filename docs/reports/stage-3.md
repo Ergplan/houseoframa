@@ -211,7 +211,9 @@ The fixture's counter (42) and closed component (₹4) are both marked. EkBill h
 
 **Run 12 (at b14994b): one code defect, fixed with regression tests in this commit.** A frame under 48 × 32 px (say 200 × 30) can show "₹99" but was not marked. Every frame is now marked whatever its size. "Icon" is now an image with no side longer than 24 px: a 200 × 30 image strip is marked, a 16 px icon is not. Earlier runs' 48 × 32 threshold is replaced throughout. The fixture's short frame and strip are both marked. EkBill stays at 7 of 158.
 
-(Run 13 below.)
+**Run 13 (at 394825d): one code defect, fixed with a regression test in this commit.** An empty field shows its placeholder (`<input placeholder="₹99">`), which was not read. An empty input or textarea is now judged by its placeholder. The fixture's "₹250" placeholder is marked and its "Name" placeholder is not a figure. EkBill stays at 7 of 158.
+
+(Run 14 below.)
 
 ## Real model cost
 
