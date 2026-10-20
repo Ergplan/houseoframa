@@ -83,7 +83,31 @@ function collectFigures(arg) {
     }
     return nodes;
   };
+  // A form field shows its value, which is no text node: an input or textarea is judged by its value, a
+  // select by its chosen option. Checkboxes, radios, buttons and hidden fields show no figure.
+  const fieldValue = (el) => {
+    if (el.tagName === 'SELECT') return el.selectedOptions?.[0]?.textContent ?? '';
+    if (el.tagName === 'TEXTAREA') return el.value;
+    if (
+      el.tagName === 'INPUT' &&
+      ![
+        'hidden',
+        'checkbox',
+        'radio',
+        'button',
+        'submit',
+        'reset',
+        'image',
+        'file',
+        'password',
+      ].includes(el.type)
+    ) {
+      return el.value;
+    }
+    return null;
+  };
   const residual = (el) =>
+    fieldValue(el)?.replace(/\s+/g, ' ').trim() ??
     residualNodes(el)
       .map((n) => n.textContent)
       .join(' ')

@@ -186,7 +186,11 @@ Rather than patch case by case, detection now works on **residual text**. Each e
 2. **By design, not changed: images smaller than 48 × 32 px are not marked.** They are icons and cannot hold a figure a person reads. Marking every icon as an "untraced figure" would make the Showroom's honest rate untrue (rule 12: a true picture beats a complete one).
 3. **Report claim: "full-page".** Screenshots stop at 12,000 px. The claim now says so, and so does the code: a taller page is recorded `croppedFrom` its full height, the Showroom says "cropped at 12,000 of N px", and figures below the crop are left out (they are not on the screenshot). A fixture page 13,000 px tall pins it.
 
-(Run 8 below.)
+**Run 8 (at 49dad8d): one code defect, fixed with a regression test in this commit.**
+
+1. **Invariant 2 (code): a form field's value** (`<input type="number" value="99">`) is no text node, so it had no mark. Inputs and textareas are now judged by their value and selects by their chosen option. Checkboxes, radios, buttons and hidden or password fields show no figure. The fixture's number input (99) and select (₹500) are marked, and its name input ("Asha") is not. EkBill's count is unchanged at 7 of 158: its new-bill form starts empty.
+
+(Run 9 below.)
 
 ## Real model cost
 

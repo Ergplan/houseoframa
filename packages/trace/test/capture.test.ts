@@ -97,6 +97,8 @@ describe('capture', () => {
       ['untraced:order:6', 'detected', 'Delivery ₹99'],
       ['untraced:order:7', 'detected', 'Tax ₹10'],
       ['untraced:order:8', 'detected', '13 bills this quarter'],
+      ['untraced:order:9', 'detected', '99'], // a number input's value
+      ['untraced:order:10', 'detected', '₹500'], // a select's chosen option
     ]);
   });
 
@@ -111,6 +113,8 @@ describe('capture', () => {
       'Delivery ₹99', // its child holds another amount: each is marked, the parent by its own text
       'Tax ₹10',
       '13 bills this quarter',
+      '99', // form fields are judged by the value they show
+      '₹500',
     ]);
     // A number the detector cannot tell from a figure ("Order 7") is marked untraced, not left bare. Dates,
     // times, years and identifiers that mix letters and digits are not figures; neither are plain words.
@@ -184,6 +188,8 @@ describe('showroom', () => {
       'order/untraced:order:6',
       'order/untraced:order:7',
       'order/untraced:order:8',
+      'order/untraced:order:9',
+      'order/untraced:order:10',
       'moved/untraced:moved:1',
       'moved/untraced:moved:2',
       'moved/untraced:moved:3',
@@ -191,7 +197,7 @@ describe('showroom', () => {
       'long/untraced:long:2',
       'long/untraced:long:3',
     ]);
-    expect(s.counts).toEqual({ shown: 24, traced: 6 });
+    expect(s.counts).toEqual({ shown: 26, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',
