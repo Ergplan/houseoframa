@@ -3,7 +3,7 @@
 // (rule 12). The reviewer paragraph is ported from the weekend prototype's reviewerLine()
 // (reference/weekend-prototype/house-of-rama.html).
 import type { Blueprint, ImportEdge } from '@rama/shared';
-import type { BrickFigures } from '@rama/blueprint/metrics';
+import { dependenciesByFloor, type BrickFigures } from '@rama/blueprint/metrics';
 
 /** Bricks this many dependants or more, with no test behind them, get the reviewer's warning. */
 export const WARN_DEPENDANTS = 4;
@@ -22,22 +22,10 @@ export function floorName(bp: Blueprint, layer: string): string {
 
 /** One paragraph a person who pays for the software can read: what the brick needs, who relies on it, and the risk. */
 export function reviewerParagraph(bp: Blueprint, path: string, figures: BrickFigures): string {
-  const deps = bp.edges.filter((e) => e.from === path).map((e) => e.to);
-  const byFloor = new Map<string, string[]>();
-  for (const to of deps) {
-    const layer = bp.nodes.find((n) => n.path === to)?.layer ?? 'unknown';
-    byFloor.set(layer, [...(byFloor.get(layer) ?? []), to]);
-  }
-  const order = [
-    ...bp.layers.map((l) => l.id),
-    ...[...byFloor.keys()].filter((k) => !bp.layers.some((l) => l.id === k)).sort(),
-  ];
-  const parts = order
-    .filter((f) => byFloor.has(f))
-    .map((f) => {
-      const on = byFloor.get(f)!;
-      return `${on.length} on the ${floorName(bp, f)} floor (${on.map(shortName).join(', ')})`;
-    });
+  const parts = dependenciesByFloor(bp, path).map(
+    (g) =>
+      `${g.paths.length} on the ${floorName(bp, g.layer)} floor (${g.paths.map(shortName).join(', ')})`,
+  );
   const n = figures.dependsOn;
   const needs = n
     ? `It needs ${n} other ${plural(n, 'brick', 'bricks')}: ${parts.join('; ')}.`

@@ -13,7 +13,7 @@ import { z } from 'zod';
 import { diffBlueprints, formatDiff } from './diff.ts';
 import { extract, type ExtractOptions } from './extract.ts';
 import { originName, readWorktree, stripCredentials } from './git.ts';
-import { Glossary } from './glossary.ts';
+import { Glossary, mergeGlossary } from './glossary.ts';
 import { canonicalJson } from './json.ts';
 
 export const SELF_SITE_ID = 'self';
@@ -248,11 +248,14 @@ export function confirmEdge(
   const found = current.edges.find((e) => e.from === edge.from && e.to === edge.to);
   if (!found) throw new SiteError(`no dependency ${edge.from} → ${edge.to} in site "${site.id}"`, 'not-found');
   if (!found.english) throw new SiteError(`${edge.from} → ${edge.to} has no phrase to confirm`, 'invalid');
-  if (found.english.text !== edge.shown) {
+  // What is confirmed must be exactly what was shown: the Blueprint the member read, and the overlay as it
+  // stands now (it may have been redrafted without the Blueprint being regenerated).
+  const glossary = readSiteOverlay(site, GLOSSARY_FILE);
+  const now = mergeGlossary([{ ...found, english: undefined }], glossary)[0]!.english?.text;
+  if (found.english.text !== edge.shown || now !== edge.shown) {
     throw new SiteError('the phrase has changed since it was shown; reload and read it again', 'conflict');
   }
 
-  const glossary = readSiteOverlay(site, GLOSSARY_FILE);
   const confirmed: string[] = [];
   const missing: string[] = [];
   for (const symbol of found.symbols) {

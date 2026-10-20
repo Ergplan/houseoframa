@@ -14,6 +14,7 @@ import {
   SELF_EXTRACT,
   SiteError,
   writeSiteOverlay,
+  writeSiteBlueprint,
   snapshotOverlay,
   restoreOverlay,
   GLOSSARY_FILE,
@@ -136,6 +137,22 @@ describe('sites', () => {
     expect(res.confirmed).toEqual(['lib/calc.ts#total']);
     expect(res.missing).toEqual(['half']);
     expect(res.blueprint.edges.find((e) => e.from === 'app/page.tsx')!.english).toEqual({ text: 'the row count', confirmed: false });
+  });
+
+  it('refuses to confirm when the overlay changed after the Blueprint was made, even if the Blueprint still shows the old text', () => {
+    const site = locateSite('fixture', env)!;
+    const overlay = JSON.parse(readFileSync(path.join(site.repoDir, GLOSSARY_FILE), 'utf8'));
+    writeSiteOverlay(site, GLOSSARY_FILE, { ...overlay, 'lib/calc.ts#half': { text: 'half the rows' } });
+    writeSiteBlueprint(site);
+    // Someone rewrites the draft without regenerating the Blueprint.
+    writeSiteOverlay(site, GLOSSARY_FILE, { ...overlay, 'lib/calc.ts#half': { text: 'something never shown' } });
+    const edge = { from: 'app/other.tsx', to: 'lib/calc.ts' };
+    expect(() => confirmEdge(site, { ...edge, shown: 'half the rows' }, 'Asha', at)).toThrow(/changed since it was shown/);
+    expect(() => confirmEdge(site, { ...edge, shown: 'something never shown' }, 'Asha', at)).toThrow(/changed since it was shown/);
+    expect(JSON.parse(readFileSync(path.join(site.repoDir, GLOSSARY_FILE), 'utf8'))['lib/calc.ts#half']).toEqual({
+      text: 'something never shown',
+    });
+    writeSiteBlueprint(site);
   });
 
   it('restores an overlay exactly, or removes one that did not exist, and regenerates the Blueprint', () => {

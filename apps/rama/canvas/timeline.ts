@@ -4,7 +4,7 @@
 // the commit's own time zone, so the same Blueprint replays the same on every machine.
 // Ported from the weekend prototype (reference/weekend-prototype/house-of-rama.html, "timeline model").
 import type { Blueprint } from '@rama/shared';
-import { demolitions } from '@rama/blueprint/metrics';
+import { commitBreakdown } from '@rama/blueprint/metrics';
 import type { Scene } from './layout.ts';
 
 export type EventKind = 'add' | 'modify' | 'demolish';
@@ -46,8 +46,11 @@ export function offsetMinutes(iso: string): number {
 export function timeline(bp: Blueprint, scene: Scene): Timeline {
   const floorOf = new Map(scene.floors.flatMap((f, i) => f.paths.map((p) => [p, i] as const)));
   const nodes = new Map(bp.nodes.map((n) => [n.path, n]));
-  const knocked = new Set(demolitions(bp).map((d) => `${d.sha}\0${d.path}`));
   const lifts = bp.commits.map((c): Lift => {
+    // The same sorting the Commit view shows (Invariant 7): laid, knocked out, or renovated.
+    const sorted = commitBreakdown(bp, c);
+    const laid = new Set(sorted.laid);
+    const knocked = new Set(sorted.knockedOut.map((ch) => ch.path));
     const changes = c.changes
       .filter((ch) => nodes.has(ch.path) && scene.byPath.has(ch.path))
       .sort(
@@ -58,12 +61,7 @@ export function timeline(bp: Blueprint, scene: Scene): Timeline {
       );
     const events = changes.map((ch, i): LiftEvent => ({
       path: ch.path,
-      kind:
-        nodes.get(ch.path)!.firstCommit === c.sha
-          ? 'add'
-          : knocked.has(`${c.sha}\0${ch.path}`)
-            ? 'demolish'
-            : 'modify',
+      kind: laid.has(ch.path) ? 'add' : knocked.has(ch.path) ? 'demolish' : 'modify',
       add: ch.add,
       del: ch.del,
       t0: i / changes.length,

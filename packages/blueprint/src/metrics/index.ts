@@ -1,6 +1,6 @@
 // The numbers. One function per figure, each a pure function of a Blueprint (Invariant 7): the campus,
 // the inspector and the audit report display these and never recount.
-import type { Blueprint, BrickNode, Commit } from '@rama/shared';
+import type { Blueprint, BrickNode, Commit, Screen } from '@rama/shared';
 import { isCode } from '../files.ts';
 import { byString } from '../json.ts';
 
@@ -132,6 +132,77 @@ export const commitTotals = (bp: Blueprint, c: Commit): { add: number; del: numb
     del: c.changes.reduce((s, x) => s + (x.del ?? 0), 0),
     testsAdded: c.changes.filter((x) => x.kind === 'A' && tests.has(x.path)).length,
   };
+};
+
+type Change = Commit['changes'][number];
+
+export interface CommitBreakdown {
+  /** Bricks this commit laid (their first commit). */
+  laid: string[];
+  /** Bricks it changed, short of knocking a wall out. */
+  renovated: Change[];
+  /** Bricks it deleted 20 or more lines from (the demolitions). */
+  knockedOut: Change[];
+  /** Files it touched that are no longer in the building. */
+  gone: Change[];
+}
+
+/** One commit's changes, sorted the way the building shows them. */
+export const commitBreakdown = (bp: Blueprint, c: Commit): CommitBreakdown => {
+  const nodes = new Map(bp.nodes.map((n) => [n.path, n]));
+  const knocked = new Set(demolitions({ ...bp, commits: [c] }).map((d) => d.path));
+  const out: CommitBreakdown = { laid: [], renovated: [], knockedOut: [], gone: [] };
+  for (const ch of c.changes) {
+    const n = nodes.get(ch.path);
+    if (!n) out.gone.push(ch);
+    else if (n.firstCommit === c.sha) out.laid.push(ch.path);
+    else if (knocked.has(ch.path)) out.knockedOut.push(ch);
+    else out.renovated.push(ch);
+  }
+  return out;
+};
+
+export interface BrickHistory {
+  entries: { index: number; sha: string; short: string; at: string; author: string; laid: boolean; add: number | null; del: number | null }[];
+  /** 0-based commit that laid it; null when it is not in the extracted history. */
+  laidIn: number | null;
+  /** Commits that changed it after it was laid. */
+  reworked: number;
+}
+
+/** Every commit that touched a brick, oldest first. */
+export const brickHistory = (bp: Blueprint, path: string): BrickHistory => {
+  const n = bp.nodes.find((x) => x.path === path);
+  const entries = bp.commits.flatMap((c, index) => {
+    const ch = c.changes.find((x) => x.path === path);
+    return ch
+      ? [{ index, sha: c.sha, short: c.short, at: c.at, author: c.author, laid: c.sha === n?.firstCommit, add: ch.add, del: ch.del }]
+      : [];
+  });
+  const laid = entries.find((e) => e.laid);
+  return { entries, laidIn: laid ? laid.index : null, reworked: laid ? entries.length - 1 : 0 };
+};
+
+/** The screens whose import closure holds this brick. */
+export const screensOf = (bp: Blueprint, path: string): Screen[] => bp.screens.filter((s) => s.bricks.includes(path));
+
+/** What a brick imports, grouped by the floor each import stands on, in floor order (unknown floors last). */
+export const dependenciesByFloor = (bp: Blueprint, path: string): { layer: string; paths: string[] }[] => {
+  const layerOf = new Map(bp.nodes.map((n) => [n.path, n.layer]));
+  const groups = new Map<string, string[]>();
+  for (const e of bp.edges) {
+    if (e.from !== path) continue;
+    const layer = layerOf.get(e.to) ?? 'unknown';
+    groups.set(layer, [...(groups.get(layer) ?? []), e.to]);
+  }
+  const order = bp.layers.map((l) => l.id);
+  return [...groups]
+    .sort(([a], [b]) => {
+      const ia = order.indexOf(a);
+      const ib = order.indexOf(b);
+      return (ia === -1 ? Infinity : ia) - (ib === -1 ? Infinity : ib) || byString(a, b);
+    })
+    .map(([layer, paths]) => ({ layer, paths }));
 };
 
 /** Every figure at once, for the CLI summary and the trust report. */

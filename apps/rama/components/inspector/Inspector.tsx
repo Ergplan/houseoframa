@@ -9,6 +9,8 @@ import type { Blueprint, ImportEdge } from '@rama/shared';
 import {
   authors,
   brickFigures,
+  brickHistory,
+  commitBreakdown,
   commitTotals,
   demolitions,
   envVars,
@@ -16,6 +18,7 @@ import {
   historySpan,
   loadBearing,
   mostReworked,
+  screensOf,
   summary,
   testCoverage,
 } from '@rama/blueprint/metrics';
@@ -181,20 +184,7 @@ function CommitView({ blueprint: bp, index, onBrick, onReport }: Props & { index
   const c = bp.commits[index];
   if (!c) return null;
   const t = commitTotals(bp, c);
-  const present = new Set(bp.nodes.map((n) => n.path));
-  const knocked = new Set(
-    demolitions(bp)
-      .filter((d) => d.sha === c.sha)
-      .map((d) => d.path),
-  );
-  const laid = c.changes.filter(
-    (ch) => present.has(ch.path) && bp.nodes.find((n) => n.path === ch.path)!.firstCommit === c.sha,
-  );
-  const renovated = c.changes.filter(
-    (ch) => present.has(ch.path) && !laid.includes(ch) && !knocked.has(ch.path),
-  );
-  const demolished = c.changes.filter((ch) => present.has(ch.path) && knocked.has(ch.path));
-  const gone = c.changes.filter((ch) => !present.has(ch.path));
+  const { laid, renovated, knockedOut: demolished, gone } = commitBreakdown(bp, c);
   const counts = (ch: (typeof c.changes)[number]) =>
     ch.add === null ? 'binary' : `+${ch.add}/−${ch.del}`;
   return (
@@ -226,9 +216,9 @@ function CommitView({ blueprint: bp, index, onBrick, onReport }: Props & { index
           <p>
             <span className="pill green">{laid.length} new bricks</span>
           </p>
-          {laid.map((ch) => (
-            <div key={ch.path}>
-              <Lnk path={ch.path} onBrick={onBrick} />
+          {laid.map((p) => (
+            <div key={p}>
+              <Lnk path={p} onBrick={onBrick} />
             </div>
           ))}
         </>
@@ -325,11 +315,9 @@ function BrickView({
   const f = figures[path]!;
   const deps = bp.edges.filter((e) => e.from === path);
   const users = bp.edges.filter((e) => e.to === path);
-  const history = bp.commits
-    .map((c, i) => ({ c, i, ch: c.changes.find((x) => x.path === path) }))
-    .filter((x) => x.ch);
-  const born = history.find((h) => h.c.sha === n.firstCommit);
-  const screens = bp.screens.filter((s) => s.bricks.includes(path));
+  const history = brickHistory(bp, path);
+  const born = history.laidIn === null ? null : history.entries.find((e) => e.laid)!;
+  const screens = screensOf(bp, path);
   const floor = bp.layers.find((l) => l.id === n.layer);
 
   const confirmControl = (key: string, body: object, label: string) =>
@@ -420,10 +408,10 @@ function BrickView({
         <dd>
           {born ? (
             <>
-              <button className="lnk" onClick={() => onCommit(born.i)}>
-                lift {born.i + 1}
+              <button className="lnk" onClick={() => onCommit(born.index)}>
+                lift {born.index + 1}
               </button>
-              , {fmtTime(born.c.at)} by {born.c.author}
+              , {fmtTime(born.at)} by {born.author}
             </>
           ) : (
             'not in the history yet (a working-tree change)'
@@ -431,8 +419,8 @@ function BrickView({
         </dd>
         <dt>Reworked</dt>
         <dd>
-          {n.changes > 1
-            ? `${n.changes - 1} time${n.changes > 2 ? 's' : ''} since laid`
+          {history.reworked
+            ? `${history.reworked} time${history.reworked > 1 ? 's' : ''} since laid`
             : 'never since laid'}
         </dd>
         <dt>Tested</dt>
@@ -493,20 +481,16 @@ function BrickView({
       )}
       <p className="note">
         Change history:{' '}
-        {history.map((h, j) => (
-          <span key={h.c.sha}>
+        {history.entries.map((h, j) => (
+          <span key={h.sha}>
             {j > 0 && ' · '}
-            <button className="lnk" onClick={() => onCommit(h.i)}>
-              {h.c.short}
+            <button className="lnk" onClick={() => onCommit(h.index)}>
+              {h.short}
             </button>{' '}
-            {h.c.sha === n.firstCommit
-              ? 'laid'
-              : h.ch!.add === null
-                ? 'binary change'
-                : `+${h.ch!.add}/−${h.ch!.del}`}
+            {h.laid ? 'laid' : h.add === null ? 'binary change' : `+${h.add}/−${h.del}`}
           </span>
         ))}
-        {!history.length && 'none in the extracted history'}
+        {!history.entries.length && 'none in the extracted history'}
       </p>
       <button onClick={onReport}>◀ Trust report</button>
     </>

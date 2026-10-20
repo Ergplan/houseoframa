@@ -15,7 +15,7 @@ Date: 2026-10-20. Tag at start: `stage-2-start` (cdc888d). Builder: Claude Opus 
   - A brick finder (path with completion) opens any brick from the keyboard.
   - The site opens on the finished building, so every brick can be inspected at once.
   - The door leads to the Showroom and the site office to Discovery. Both are stubs that say which stage fills them.
-- **The inspector** (`components/inspector`). Every figure is a call into `@rama/blueprint/metrics`.
+- **The inspector** (`components/inspector`). Every figure and every list it counts is a call into `@rama/blueprint/metrics`; the views and the reviewer paragraph only display. That covers coverage, totals, the commit breakdown, a brick's history and rework, its screens, and its dependencies by floor.
   - **Trust report:** test coverage, files, lines, commits, history span, builders, branches, import links, env vars, the heaviest code brick, the load-bearing brick, the most reworked brick, and walls knocked out.
   - **Commit (lift):** when, who, lines added and deleted, tests added, and new, renovated and knocked-out bricks.
   - **Brick:** the purpose (confirmed with who and when, an unconfirmed draft, or "No purpose recorded").
@@ -28,7 +28,7 @@ Date: 2026-10-20. Tag at start: `stage-2-start` (cdc888d). Builder: Claude Opus 
   - It posts to `POST /api/site/[siteId]/confirm` with the text as shown.
   - The handler finds the member's person id, then writes the confirmation into the target's own `.rama/glossary.json` or `.rama/purposes.json` in its checkout (path-qualified, with `confirmedBy` and `confirmedAt`), and regenerates the site's Blueprint.
   - It then appends an `audit_log` row per confirmed key. If that row cannot be written, the overlay is put back byte for byte (503).
-  - A phrase that changed since it was shown is refused (409).
+  - A phrase is refused (409) unless the text shown equals both the Blueprint the member read and the overlay as it stands now, so a draft rewritten behind the Blueprint's back is never confirmed unseen.
 - **Sites** (`packages/blueprint/src/site.ts`, CLI `rama site …`).
   - `rama site add <gitUrl|path> [--id] [--name]` clones into `work/<id>/repo` and records `work/<id>/site.json` without credentials. It extracts `work/<id>/blueprint.json` and registers the site in Postgres for the local member.
   - `rama site extract|check|draft|list`. `self` is this repository and its `blueprint/self.json`; `pnpm extract:self` and `check:self` now go through `rama site`.
@@ -64,7 +64,7 @@ The self row is what `self.json` held when this report was drafted; it changes w
 
 ## Tests
 
-212 tests in 28 files, all passing in the watcher:
+217 tests in 28 files, all passing in the watcher:
 
 | Package           | Tests |
 | ----------------- | ----- |

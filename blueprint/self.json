@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b52043ce709083ba4fbdf10c041919494f7bc9ae",
+  "commit": "2a42ce76617396842d5be056547ebb8709bf175a",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1663,6 +1663,27 @@
       "sha": "b52043ce709083ba4fbdf10c041919494f7bc9ae",
       "short": "b52043c",
       "subject": "Confirm: no confirmation stands without its audit row"
+    },
+    {
+      "at": "2026-10-20T15:32:37Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 88,
+          "del": 16,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 145,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-2.md"
+        }
+      ],
+      "sha": "2a42ce76617396842d5be056547ebb8709bf175a",
+      "short": "2a42ce7",
+      "subject": "Stage 2: draft report (before the independent review)"
     }
   ],
   "edges": [
@@ -2290,13 +2311,9 @@
       "typeOnly": true
     },
     {
-      "english": {
-        "confirmed": false,
-        "text": "commits that deleted a large number of lines from a file"
-      },
       "from": "apps/rama/canvas/timeline.ts",
       "symbols": [
-        "demolitions"
+        "commitBreakdown"
       ],
       "to": "packages/blueprint/src/metrics/index.ts",
       "typeOnly": false
@@ -2371,6 +2388,8 @@
       "symbols": [
         "authors",
         "brickFigures",
+        "brickHistory",
+        "commitBreakdown",
         "commitTotals",
         "demolitions",
         "envVars",
@@ -2378,6 +2397,7 @@
         "historySpan",
         "loadBearing",
         "mostReworked",
+        "screensOf",
         "summary",
         "testCoverage"
       ],
@@ -2439,10 +2459,11 @@
       },
       "from": "apps/rama/components/inspector/words.ts",
       "symbols": [
-        "BrickFigures"
+        "BrickFigures",
+        "dependenciesByFloor"
       ],
       "to": "packages/blueprint/src/metrics/index.ts",
-      "typeOnly": true
+      "typeOnly": false
     },
     {
       "from": "apps/rama/components/inspector/words.ts",
@@ -3278,7 +3299,8 @@
       "symbols": [
         "Blueprint",
         "BrickNode",
-        "Commit"
+        "Commit",
+        "Screen"
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
@@ -3430,7 +3452,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the location of the glossary file in a project; the location of the file purposes file in a project; the extraction settings for House of Rama's own repository; the error raised for site problems: not found, conflict or invalid; a way to add a site from a local folder or remote source; a check that a site's blueprint file is up to date; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; the sorted list of known sites, leaving out the project's own; a way to find one site's location by its id; a site's saved blueprint, if it has one; saving a glossary overlay file into a site's checkout"
+        "text": "the location of the glossary file in a project; the location of the file purposes file in a project; the extraction settings for House of Rama's own repository; the error raised for site problems: not found, conflict or invalid; a way to add a site from a local folder or remote source; a check that a site's blueprint file is up to date; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; the sorted list of known sites, leaving out the project's own; a way to find one site's location by its id; a site's saved blueprint, if it has one; regenerating and saving a site's blueprint file; saving a glossary overlay file into a site's checkout"
       },
       "from": "packages/blueprint/src/site.test.ts",
       "symbols": [
@@ -3447,6 +3469,7 @@
         "readSiteBlueprint",
         "restoreOverlay",
         "snapshotOverlay",
+        "writeSiteBlueprint",
         "writeSiteOverlay"
       ],
       "to": "packages/blueprint/src/site.ts",
@@ -3508,11 +3531,12 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the glossary of phrases, keyed by file and symbol, with its shape"
+        "text": "the glossary of phrases, keyed by file and symbol, with its shape; a way to attach glossary phrases to import edges"
       },
       "from": "packages/blueprint/src/site.ts",
       "symbols": [
-        "Glossary"
+        "Glossary",
+        "mergeGlossary"
       ],
       "to": "packages/blueprint/src/glossary.ts",
       "typeOnly": false
@@ -4324,7 +4348,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T15:27:04Z",
+  "extractedAt": "2026-10-20T15:32:37Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -5086,7 +5110,7 @@
     },
     {
       "binary": false,
-      "bytes": 4974,
+      "bytes": 5054,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -5108,7 +5132,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 136,
+      "lines": 134,
       "path": "apps/rama/canvas/timeline.ts",
       "purpose": {
         "confirmed": false,
@@ -5155,7 +5179,7 @@
     },
     {
       "binary": false,
-      "bytes": 16880,
+      "bytes": 16253,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -5167,7 +5191,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 514,
+      "lines": 498,
       "path": "apps/rama/components/inspector/Inspector.tsx",
       "purpose": {
         "confirmed": false,
@@ -5196,7 +5220,7 @@
     },
     {
       "binary": false,
-      "bytes": 3341,
+      "bytes": 2891,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -5211,7 +5235,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 74,
+      "lines": 62,
       "path": "apps/rama/components/inspector/words.ts",
       "purpose": {
         "confirmed": false,
@@ -5364,7 +5388,7 @@
     },
     {
       "binary": false,
-      "bytes": 12814,
+      "bytes": 12885,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -5402,7 +5426,7 @@
     },
     {
       "binary": false,
-      "bytes": 13567,
+      "bytes": 13774,
       "changes": 9,
       "env": [],
       "envDynamic": false,
@@ -5535,7 +5559,22 @@
     },
     {
       "binary": false,
-      "bytes": 15136,
+      "bytes": 15479,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "2a42ce76617396842d5be056547ebb8709bf175a",
+      "lastCommit": "2a42ce76617396842d5be056547ebb8709bf175a",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 145,
+      "path": "docs/reports/stage-2.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8294,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -5544,8 +5583,8 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 145,
-      "path": "docs/reports/stage-2.md",
+      "lines": 22,
+      "path": "docs/reports/stage-2.review.md",
       "test": false
     },
     {
@@ -6087,20 +6126,25 @@
     },
     {
       "binary": false,
-      "bytes": 6100,
+      "bytes": 9130,
       "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "BrickFigures",
+        "BrickHistory",
+        "CommitBreakdown",
         "Demolition",
         "Ranked",
         "authors",
         "branches",
         "brickFigures",
+        "brickHistory",
+        "commitBreakdown",
         "commitTotals",
         "commits",
         "demolitions",
+        "dependenciesByFloor",
         "envVars",
         "files",
         "heaviestCodeBrick",
@@ -6108,6 +6152,7 @@
         "importEdges",
         "loadBearing",
         "mostReworked",
+        "screensOf",
         "sideEffectImports",
         "summary",
         "testCoverage",
@@ -6119,7 +6164,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 152,
+      "lines": 223,
       "path": "packages/blueprint/src/metrics/index.ts",
       "purpose": {
         "confirmed": false,
@@ -6129,7 +6174,7 @@
     },
     {
       "binary": false,
-      "bytes": 5044,
+      "bytes": 7424,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -6138,7 +6183,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 109,
+      "lines": 153,
       "path": "packages/blueprint/src/metrics/metrics.test.ts",
       "purpose": {
         "confirmed": false,
@@ -6302,7 +6347,7 @@
     },
     {
       "binary": false,
-      "bytes": 8834,
+      "bytes": 9969,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -6311,7 +6356,7 @@
       "lastCommit": "b52043ce709083ba4fbdf10c041919494f7bc9ae",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 177,
+      "lines": 194,
       "path": "packages/blueprint/src/site.test.ts",
       "purpose": {
         "confirmed": false,
@@ -6321,7 +6366,7 @@
     },
     {
       "binary": false,
-      "bytes": 12761,
+      "bytes": 13085,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -6356,7 +6401,7 @@
       "lastCommit": "b52043ce709083ba4fbdf10c041919494f7bc9ae",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 294,
+      "lines": 297,
       "path": "packages/blueprint/src/site.ts",
       "purpose": {
         "confirmed": false,

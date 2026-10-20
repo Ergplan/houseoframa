@@ -104,6 +104,50 @@ describe('metrics (one function per figure)', () => {
     const withTest = { ...bp.commits[0]!, changes: [{ path: 'lib/a.test.ts', kind: 'A' as const, add: 40, del: 0 }] };
     expect(m.commitTotals(bp, withTest)).toEqual({ add: 40, del: 0, testsAdded: 1 });
   });
+  it('commitBreakdown sorts a commit\'s changes into laid, renovated, knocked out and gone', () => {
+    const first: Record<string, string> = { 'lib/a.ts': 'c1aaaaaa', 'public/logo.png': 'c3cccccc' };
+    const b = { ...bp, nodes: bp.nodes.map((n) => (first[n.path] ? { ...n, firstCommit: first[n.path]! } : n)) };
+    expect(m.commitBreakdown(b, b.commits[0]!).laid).toEqual(['lib/a.ts']);
+    const second = m.commitBreakdown(b, b.commits[1]!);
+    expect(second.knockedOut.map((c) => c.path)).toEqual(['lib/a.ts']);
+    expect(second.renovated).toEqual([]);
+    const third = m.commitBreakdown(b, { ...b.commits[2]!, changes: [...b.commits[2]!.changes, { path: 'old.ts', kind: 'D', add: 0, del: 3 }] });
+    expect(third.renovated.map((c) => c.path)).toEqual(['lib/a.ts']);
+    expect(third.laid).toEqual(['public/logo.png']);
+    expect(third.gone.map((c) => c.path)).toEqual(['old.ts']);
+  });
+  it('brickHistory lists the commits that touched a brick, where it was laid, and its rework', () => {
+    const b = { ...bp, nodes: bp.nodes.map((n) => (n.path === 'lib/a.ts' ? { ...n, firstCommit: 'c1aaaaaa' } : n)) };
+    const h = m.brickHistory(b, 'lib/a.ts');
+    expect(h.entries.map((e) => [e.index, e.short, e.laid, e.add, e.del])).toEqual([
+      [0, 'c1aaaaa', true, 100, 0],
+      [1, 'c2bbbbb', false, 5, 25],
+      [2, 'c3ccccc', false, 1, 19],
+    ]);
+    expect(h.laidIn).toBe(0);
+    expect(h.reworked).toBe(2);
+    expect(m.brickHistory(b, 'lib/b.ts')).toEqual({ entries: [], laidIn: null, reworked: 0 });
+  });
+  it('screensOf lists the screens a brick is behind', () => {
+    const b = { ...bp, screens: [{ id: '/', name: 'Home', route: '/', file: 'app/page.tsx', bricks: ['lib/a.ts'] }] };
+    expect(m.screensOf(b, 'lib/a.ts').map((s) => s.route)).toEqual(['/']);
+    expect(m.screensOf(b, 'lib/b.ts')).toEqual([]);
+  });
+  it('dependenciesByFloor groups what a brick imports by the floor it stands on, in floor order', () => {
+    const b = {
+      ...bp,
+      layers: [
+        { id: 'data', label: 'Data' },
+        { id: 'logic', label: 'Logic' },
+      ],
+      nodes: [...bp.nodes, node('lib/c.ts', { layer: 'data' })],
+      edges: [...bp.edges, edge('lib/b.ts', 'lib/c.ts')],
+    };
+    expect(m.dependenciesByFloor(b, 'lib/b.ts')).toEqual([
+      { layer: 'data', paths: ['lib/c.ts'] },
+      { layer: 'logic', paths: ['lib/a.ts'] },
+    ]);
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });
