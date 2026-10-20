@@ -40,7 +40,7 @@ Date: 2026-10-20. Tag at start: `stage-2-start` (cdc888d). Builder: Claude Opus 
 
 | Site                                    | Commit              | Bricks | Floors                                    | Named import edges with English | Bricks with a purpose |
 | --------------------------------------- | ------------------- | ------ | ----------------------------------------- | ------------------------------- | --------------------- |
-| `self` (`blueprint/self.json`)          | worktree on 335e537 | 166    | 7 (this repository's `.rama/layers.json`) | 153 of 198                      | 151 of 166            |
+| `self` (`blueprint/self.json`)          | worktree on 2a42ce7 | 168    | 7 (this repository's `.rama/layers.json`) | 152 of 198                      | 151 of 168            |
 | `ekbill` (`work/ekbill/blueprint.json`) | 8c46a81             | 916    | 8 (drafted overlay, below)                | 1,038 of 1,300                  | 682 of 916            |
 
 The self row is what `self.json` held when this report was drafted; it changes with every commit.
@@ -68,7 +68,7 @@ The self row is what `self.json` held when this report was drafted; it changes w
 
 | Package           | Tests |
 | ----------------- | ----- |
-| `@rama/blueprint` | 125   |
+| `@rama/blueprint` | 130   |
 | `@rama/app`       | 58    |
 | e2e               | 9     |
 | model             | 12    |
@@ -120,7 +120,21 @@ Also tested:
 
 ## Reviewer findings
 
-(To be filled from `docs/reports/stage-2.review.md` after the run.)
+Two runs with `gpt-6.1-sol`, recorded in full in `docs/reports/stage-2.review.md`.
+
+**Run 1 (at 2a42ce7): two code defects and two report claims.** All four were fixed in 5a2d0ed.
+
+1. **Invariant 7 (code).** The Commit view sorted a commit's changes itself. The Brick view counted rework and screens, the reviewer paragraph grouped dependencies by floor, and the replay classified changes itself. Fixed with four new metric functions: `commitBreakdown`, `brickHistory`, `screensOf` and `dependenciesByFloor`. The views and the replay now only display them, and the Commit view and the replay share `commitBreakdown`, so they cannot disagree. Each function has a test.
+2. **Invariant 6 (code).** `confirmEdge` compared the shown text with the saved Blueprint only. A draft rewritten in the overlay without regenerating the Blueprint could have been confirmed unseen. It now requires the shown text to equal both the Blueprint and the phrase the overlay produces now. A test rewrites a draft behind the Blueprint's back and both confirmations are refused.
+3. **Report claim.** "Every figure is a call into metrics" was not yet true (finding 1). It is now, and the wording lists what is covered.
+4. **Report claim.** "A changed phrase is refused" was not guaranteed for edges (finding 2). It is now, and the wording says against what.
+
+**Run 2 (at 5a2d0ed): no new code defect.** Items (a), (d) and (e) are "cannot tell" for reasons a diff cannot settle, and they do not block the stage:
+
+- **The watcher and CI wiring** (`scripts/watch.mjs`) are not in this stage's diff, so the reviewer cannot see the drift checks run. They ran green before every commit (`.watch/status.json`), and CI ran them on GitHub for Stage 1.
+- **`blueprint/self.json`** is left out of the diff by design (generated); `pnpm check:self` reports it up to date.
+- **The empirical claims** (test totals, EkBill renders, `model_calls` totals, test-first order) cannot be proven by a diff. The commands and queries that produced them are named in this report.
+- **Invariants 3–5** (signatures, the gate, the auditor) have no code in this stage.
 
 ## Real model cost
 
@@ -135,7 +149,12 @@ From `model_calls` (tokens; there is no price table in code):
 | EkBill: purposes, failed | claude-sonnet-5-5 | 2 (6)            | 61,764        | 4,066         |
 | **Drafting total**       |                   | **133 (138)**    | **1,128,702** | **170,913**   |
 
-Reviewer runs are added below this table.
+Independent reviewer (auditor vendor):
+
+| Run         | Model       | Input tokens | Output tokens |
+| ----------- | ----------- | ------------ | ------------- |
+| 1 (2a42ce7) | gpt-6.1-sol | 100,129      | 2,165         |
+| 2 (5a2d0ed) | gpt-6.1-sol | 103,362      | 1,621         |
 
 ## Open questions
 
