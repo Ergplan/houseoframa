@@ -187,6 +187,9 @@ function collectFigures(arg) {
     if (tag === 'VIDEO') found.push('video');
     if (tag === 'IFRAME') found.push('frame'); // another document, not read: marked whatever its size
     if (tag === 'OBJECT' || tag === 'EMBED') found.push('embedded document'); // likewise
+    // An inline SVG larger than an icon may draw figures as paths, which have no text: the drawing is marked
+    // (its text, if any, is judged on its own like any other).
+    if (tag === 'SVG' && LEGIBLE(r)) found.push('drawing');
     const imageButton = tag === 'INPUT' && el.type === 'image';
     if ((tag === 'IMG' || tag === 'IMAGE' || imageButton) && LEGIBLE(r)) {
       const src = el.getAttribute('src') ?? el.getAttribute('href') ?? '';

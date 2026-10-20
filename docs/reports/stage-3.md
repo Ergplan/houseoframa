@@ -64,7 +64,7 @@ All five figures re-execute and match at 4f28628.
 
 ## EkBill's Showroom
 
-12 screens captured from the built app at 4f28628 (EkBill's `main` on 20 Oct), the owner's as the `?as=owner` look. Every screen has its bricks, 154–171 each, because they share the app shell. **7 of 158 figures are traced:** the five below, two of them appearing on both the owner's and the accountant's GST screen. Each appearance is checked against its own screen: an overlay harness takes no screen arguments, so it runs once per figure and its result is compared at each appearance. The other 151 (amounts, percentages, counts and numbers in words) are outlined untraced.
+12 screens captured from the built app at 4f28628 (EkBill's `main` on 20 Oct), the owner's as the `?as=owner` look. Every screen has its bricks, 154–171 each, because they share the app shell. **7 of 163 figures are traced:** the five below, two of them appearing on both the owner's and the accountant's GST screen. Each appearance is checked against its own screen: an overlay harness takes no screen arguments, so it runs once per figure and its result is compared at each appearance. The other 156 (amounts, percentages, counts and numbers in words) are outlined untraced.
 
 | Figure                                              | Screen           | Shown      | Re-executed by EkBill's own code                               | Match |
 | --------------------------------------------------- | ---------------- | ---------- | -------------------------------------------------------------- | ----- |
@@ -215,7 +215,9 @@ The fixture's counter (42) and closed component (₹4) are both marked. EkBill h
 
 **Run 14 (at e445581): one code defect, fixed with regression tests in this commit.** An image button (`<input type="image">`) is pixels and was not covered. It is now marked like an image. `<object>` and `<embed>`, which show another document like a frame does, are marked "embedded document". The fixture's image button and object are both marked. EkBill stays at 7 of 158.
 
-(Run 15 below.)
+**Run 15 (at 3a05ddb): one code defect, fixed with a regression test in this commit.** An inline SVG can draw a number as paths, with no text to read. Every inline SVG with a side longer than 24 px is now marked "drawing", and its text, if any, is judged on its own. Icons (no side longer than 24 px) are not marked. EkBill goes to 7 of 163: five decorative SVGs are now marked, including the hero's wave. That is conservative over-marking, recorded in KNOWN-GAPS.
+
+(Run 16 below.)
 
 ## Real model cost
 

@@ -159,12 +159,14 @@ describe('figures without a text node of their own', () => {
       '₹99',
       '₹7',
       '₹250', // an empty field's placeholder is what it shows; "Name" is not a figure
+      'drawing', // an inline SVG may draw figures as paths; the 20 px icon is not marked
       'image: Pay', // an image button is pixels
       'embedded document', // <object> / <embed>: another document, not read
       'frame',
       '₹3',
       'component: x-closed', // may draw inside a closed shadow root, which cannot be read
       'generated content', // CSS counter(): drawn, but its value cannot be read
+      'drawing', // the SVG holding the image below is itself a drawing: both are marked
       'image: embedded',
       'Total ₹1', // text over a background image: the text is marked...
       'background image', // ...and so is the surface, on its own
@@ -240,8 +242,10 @@ describe('showroom', () => {
       'more/untraced:more:14',
       'more/untraced:more:15',
       'more/untraced:more:16',
+      'more/untraced:more:17',
+      'more/untraced:more:18',
     ]);
-    expect(s.counts).toEqual({ shown: 42, traced: 6 });
+    expect(s.counts).toEqual({ shown: 44, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

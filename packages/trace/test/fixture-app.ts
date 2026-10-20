@@ -44,6 +44,8 @@ const routes = {
   '/more': () =>
     page('<style>.pre::before { content: "₹7"; }</style>' +
       '<input type="button" value="₹99"> <span class="pre"></span> <input placeholder="₹250"> <input placeholder="Name">' +
+      // A vector drawing (a number drawn as paths has no text) and a 20 px icon.
+      '<svg width="120" height="40"><path d="M0 0L10 10"/></svg><svg width="20" height="20"><path d="M0 0L5 5"/></svg>' +
       '<input type="image" alt="Pay" width="200" height="30" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="30"/>') + '">' +
       '<object width="200" height="60" data="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60"/>') + '"></object>' +
       '<iframe width="200" height="100" srcdoc="<p>₹1</p>"></iframe>' +
