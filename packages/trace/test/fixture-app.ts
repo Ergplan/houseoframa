@@ -39,6 +39,14 @@ const routes = {
     page('<video width="200" height="100"></video>' +
       '<div style="width:200px;height:100px;background-image:url(data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>') + ')"></div>' +
       '<div style="height:13000px">Top ₹1</div><p>Bottom ₹2</p>'),
+  // Figures rendered without a text node of their own: a button's value, generated CSS content, a frame,
+  // an open shadow root, an SVG image.
+  '/more': () =>
+    page('<style>.pre::before { content: "₹7"; }</style>' +
+      '<input type="button" value="₹99"> <span class="pre"></span>' +
+      '<iframe width="200" height="100" srcdoc="<p>₹1</p>"></iframe>' +
+      '<x-total></x-total><script>customElements.define("x-total", class extends HTMLElement { constructor() { super(); this.attachShadow({ mode: "open" }).innerHTML = "<b>₹3</b>"; } });</script>' +
+      '<svg width="100" height="60"><image width="100" height="60" href="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>') + '"/></svg>'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
       '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +
@@ -102,6 +110,7 @@ export const figures = {
         { name: 'order', route: '/orders/7', role: 'staff', steps: [{ waitFor: 'h1' }] },
         { name: 'moved', route: '/old-home' },
         { name: 'long', route: '/long' },
+        { name: 'more', route: '/more' },
       ],
     }),
     '.rama/figures.json': JSON.stringify({

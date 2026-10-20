@@ -190,7 +190,17 @@ Rather than patch case by case, detection now works on **residual text**. Each e
 
 1. **Invariant 2 (code): a form field's value** (`<input type="number" value="99">`) is no text node, so it had no mark. Inputs and textareas are now judged by their value and selects by their chosen option. Checkboxes, radios, buttons and hidden or password fields show no figure. The fixture's number input (99) and select (₹500) are marked, and its name input ("Asha") is not. EkBill's count is unchanged at 7 of 158: its new-bill form starts empty.
 
-(Run 9 below.)
+**Run 9 (at 8b84de9): one code defect, fixed with regression tests in this commit.** A button input's value (`<input type="button" value="₹99">`) and CSS `::before` / `::after` content had no mark. Each run had found the next channel by which a page draws text without a text node of its own, so this fix closes every channel I could enumerate, in one pass:
+
+- **button inputs** are read like other fields;
+- **quoted `::before` / `::after` content** counts as the element's own text;
+- **open shadow roots** are read, including convention figures inside them;
+- **frames** (another document) are marked as a whole;
+- **SVG `<image>`** is treated like `<img>`.
+
+A fixture page holds one of each, and all five are marked. KNOWN-GAPS names what detection cannot read: a closed shadow root, and CSS `counter()` content. EkBill's count is unchanged at 7 of 158.
+
+(Run 10 below.)
 
 ## Real model cost
 

@@ -19,8 +19,19 @@ function collectFigures(arg) {
     return r.width > 0 && r.height > 0;
   };
   const traced = [];
+  // Every element of the page, including those inside open shadow roots (a component's own markup), in
+  // document order with a shadow root's elements right after its host.
+  const all = [];
+  const collect = (root) => {
+    for (const el of Array.from(root.querySelectorAll('*'))) {
+      all.push(el);
+      if (el.shadowRoot) collect(el.shadowRoot);
+    }
+  };
+  all.push(document.body);
+  collect(document.body);
   const out = [];
-  for (const el of Array.from(document.querySelectorAll('[data-rama-figure]'))) {
+  for (const el of all.filter((e) => e.hasAttribute('data-rama-figure'))) {
     if (!visible(el)) continue;
     traced.push(el);
     out.push({
@@ -65,8 +76,8 @@ function collectFigures(arg) {
   };
   const SKIP = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'];
   const insideTraced = (node) => traced.some((t) => t === node || t.contains(node));
-  const candidates = Array.from(document.querySelectorAll('body, body *')).filter(
-    (el) => !SKIP.includes(el.tagName) && visible(el) && !insideTraced(el),
+  const candidates = all.filter(
+    (el) => !SKIP.includes(el.tagName.toUpperCase()) && visible(el) && !insideTraced(el),
   );
   const marked = [];
   // The text nodes an element is judged by. <body> is judged by its own direct text only: everything else
@@ -83,33 +94,29 @@ function collectFigures(arg) {
     }
     return nodes;
   };
-  // A form field shows its value, which is no text node: an input or textarea is judged by its value, a
-  // select by its chosen option. Checkboxes, radios, buttons and hidden fields show no figure.
+  // A form field shows its value, which is no text node: an input (a button's included) or textarea is
+  // judged by its value, a select by its chosen option. Checkboxes, radios, files, passwords and hidden
+  // fields show no figure.
   const fieldValue = (el) => {
     if (el.tagName === 'SELECT') return el.selectedOptions?.[0]?.textContent ?? '';
     if (el.tagName === 'TEXTAREA') return el.value;
     if (
       el.tagName === 'INPUT' &&
-      ![
-        'hidden',
-        'checkbox',
-        'radio',
-        'button',
-        'submit',
-        'reset',
-        'image',
-        'file',
-        'password',
-      ].includes(el.type)
+      !['hidden', 'checkbox', 'radio', 'image', 'file', 'password'].includes(el.type)
     ) {
       return el.value;
     }
     return null;
   };
+  // Text an element generates with CSS (::before and ::after content) is drawn but is no text node.
+  const generated = (el) =>
+    ['::before', '::after']
+      .map((p) => window.getComputedStyle(el, p).content)
+      .filter((c) => c && c !== 'none' && c !== 'normal' && /^["']/.test(c))
+      .map((c) => c.slice(1, -1));
   const residual = (el) =>
     fieldValue(el)?.replace(/\s+/g, ' ').trim() ??
-    residualNodes(el)
-      .map((n) => n.textContent)
+    [...generated(el), ...residualNodes(el).map((n) => n.textContent)]
       .join(' ')
       .replace(/\s+/g, ' ')
       .trim();
@@ -160,12 +167,16 @@ function collectFigures(arg) {
   for (const el of candidates) {
     if (texts.has(el)) continue;
     const r = el.getBoundingClientRect();
-    if (el.tagName === 'CANVAS') texts.set(el, 'canvas');
-    else if (el.tagName === 'VIDEO') texts.set(el, 'video');
-    else if (el.tagName === 'IMG' && LEGIBLE(r)) {
+    const tag = el.tagName.toUpperCase();
+    if (tag === 'CANVAS') texts.set(el, 'canvas');
+    else if (tag === 'VIDEO') texts.set(el, 'video');
+    else if (tag === 'IFRAME' && LEGIBLE(r))
+      texts.set(el, 'frame'); // another document: not read
+    else if ((tag === 'IMG' || tag === 'IMAGE') && LEGIBLE(r)) {
+      const src = el.getAttribute('src') ?? el.getAttribute('href') ?? '';
       const name =
         el.getAttribute('alt') ||
-        (el.getAttribute('src') ?? '').split('/').pop()?.split('?')[0] ||
+        (src.startsWith('data:') ? 'embedded' : src.split('/').pop()?.split('?')[0]) ||
         'unnamed';
       texts.set(el, `image: ${name.slice(0, 60)}`);
     } else if (LEGIBLE(r) && /url\(/.test(window.getComputedStyle(el).backgroundImage)) {
@@ -175,7 +186,8 @@ function collectFigures(arg) {
   for (const el of candidates) {
     if (!texts.has(el)) continue;
     const pixels =
-      ['CANVAS', 'VIDEO', 'IMG'].includes(el.tagName) || texts.get(el) === 'background image';
+      ['CANVAS', 'VIDEO', 'IMG', 'IMAGE', 'IFRAME'].includes(el.tagName.toUpperCase()) ||
+      texts.get(el) === 'background image';
     out.push({
       id: null,
       origin: 'detected',

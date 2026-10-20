@@ -35,7 +35,8 @@ describe('capture', () => {
       ['home', '/', 'Shop'],
       ['order', '/orders/7?as=staff', bp.screens.find((x) => x.route === '/orders/[id]')!.name],
       ['moved', '/old-home', 'moved'],
-      ['long', '/long', 'long'], // no route of its own in the Blueprint: it redirects to / (see "redirects")
+      ['long', '/long', 'long'],
+      ['more', '/more', 'more'], // no route of its own in the Blueprint: it redirects to / (see "redirects")
     ]);
     for (const s of cap.screens) {
       const png = readFileSync(path.join(out, 'shots', s.shot));
@@ -151,6 +152,22 @@ describe('pixels and long pages', () => {
   });
 });
 
+describe('figures without a text node of their own', () => {
+  it('marks a button value, generated CSS content, a frame, an open shadow root and an SVG image', () => {
+    const more = cap.screens.find((x) => x.name === 'more')!;
+    expect(more.figures.map((f) => f.text)).toEqual([
+      '₹99',
+      '₹7',
+      'frame',
+      '₹3',
+      'image: embedded',
+    ]);
+    expect(more.figures.every((f) => f.origin === 'detected' && f.box.w > 0 && f.box.h > 0)).toBe(
+      true,
+    );
+  });
+});
+
 describe('redirects', () => {
   it('records where a screen landed when its route redirected, and nothing when it did not', () => {
     const moved = cap.screens.find((x) => x.name === 'moved')!;
@@ -196,8 +213,13 @@ describe('showroom', () => {
       'long/untraced:long:1',
       'long/untraced:long:2',
       'long/untraced:long:3',
+      'more/untraced:more:1',
+      'more/untraced:more:2',
+      'more/untraced:more:3',
+      'more/untraced:more:4',
+      'more/untraced:more:5',
     ]);
-    expect(s.counts).toEqual({ shown: 26, traced: 6 });
+    expect(s.counts).toEqual({ shown: 31, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

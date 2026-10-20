@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+  "commit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -2875,6 +2875,69 @@
       "sha": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
       "short": "49dad8d",
       "subject": "Fix reviewer run 7: videos and background images marked; tall pages cropped and said so"
+    },
+    {
+      "at": "2026-10-20T19:33:48Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 133,
+          "del": 40,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/HOUSE-STYLE.md"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-3.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-3.review.md"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/trace/src/page-figures.js"
+        },
+        {
+          "add": 7,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/trace/test/capture.test.ts"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/trace/test/fixture-app.ts"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/stage-3.e2e.test.ts"
+        }
+      ],
+      "sha": "8b84de96d5818d17d7b13451ae61542ff12960fd",
+      "short": "8b84de9",
+      "subject": "Fix reviewer run 8: form fields are judged by the value they show"
     }
   ],
   "edges": [
@@ -6283,7 +6346,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T19:28:55Z",
+  "extractedAt": "2026-10-20T19:33:48Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -7450,13 +7513,13 @@
     },
     {
       "binary": false,
-      "bytes": 20719,
-      "changes": 20,
+      "bytes": 20896,
+      "changes": 21,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 105,
@@ -7469,13 +7532,13 @@
     },
     {
       "binary": false,
-      "bytes": 7773,
-      "changes": 8,
+      "bytes": 7959,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 97,
@@ -7484,7 +7547,7 @@
     },
     {
       "binary": false,
-      "bytes": 5045,
+      "bytes": 5283,
       "changes": 13,
       "env": [],
       "envDynamic": false,
@@ -7628,31 +7691,31 @@
     },
     {
       "binary": false,
-      "bytes": 22517,
-      "changes": 9,
+      "bytes": 23379,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 219,
+      "lines": 229,
       "path": "docs/reports/stage-3.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 63904,
-      "changes": 7,
+      "bytes": 72816,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e05abd1272d5441e422c5eddd3597571a49de37a",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 138,
+      "lines": 154,
       "path": "docs/reports/stage-3.review.md",
       "test": false
     },
@@ -9524,16 +9587,16 @@
     },
     {
       "binary": false,
-      "bytes": 7914,
-      "changes": 8,
+      "bytes": 8836,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 187,
+      "lines": 199,
       "path": "packages/trace/src/page-figures.js",
       "test": false
     },
@@ -9650,33 +9713,33 @@
     },
     {
       "binary": false,
-      "bytes": 10910,
-      "changes": 9,
+      "bytes": 11597,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 262,
+      "lines": 284,
       "path": "packages/trace/test/capture.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 6853,
-      "changes": 9,
+      "bytes": 7643,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [
         "fixtureApp"
       ],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 138,
+      "lines": 147,
       "path": "packages/trace/test/fixture-app.ts",
       "test": false
     },
@@ -10332,12 +10395,12 @@
     {
       "binary": false,
       "bytes": 3884,
-      "changes": 9,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
-      "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
+      "lastCommit": "8b84de96d5818d17d7b13451ae61542ff12960fd",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 86,
