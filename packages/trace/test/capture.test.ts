@@ -82,18 +82,27 @@ describe('capture', () => {
       ['vat', 'attribute', '₹4.20'],
       ['order-total', 'attribute', '₹15.00'],
       ['line-count', 'overlay', '2 lines'],
-      ['untraced:order:1', 'detected', '₹12'],
-      ['untraced:order:2', 'detected', '18%'],
-      ['untraced:order:3', 'detected', '3'],
+      ['untraced:order:1', 'detected', 'Order 7'],
+      ['untraced:order:2', 'detected', '₹12'],
+      ['untraced:order:3', 'detected', '18%'],
+      ['untraced:order:4', 'detected', '3'],
+      ['untraced:order:5', 'detected', '13 bills this quarter'],
     ]);
   });
 
-  it('marks an amount split across elements, a percentage and a bare count, each once, at its smallest element', () => {
+  it('marks an amount split across elements, a percentage, a bare count and a number in words, each once', () => {
     const detected = cap.screens[1]!.figures.filter((f) => f.origin === 'detected');
-    expect(detected.map((f) => f.text)).toEqual(['₹12', '18%', '3']);
-    // Words with a number in them ("Order 7", "2 lines" outside the overlay) are not figures; neither are labels.
+    expect(detected.map((f) => f.text)).toEqual([
+      'Order 7',
+      '₹12',
+      '18%',
+      '3',
+      '13 bills this quarter',
+    ]);
+    // A number the detector cannot tell from a figure ("Order 7") is marked untraced, not left bare. Dates,
+    // times, years and identifiers that mix letters and digits are not figures; neither are plain words.
     const all = cap.screens.flatMap((s) => s.figures).map((f) => f.text);
-    expect(all.some((t) => /Order 7|owner|staff|none|Delivery/.test(t))).toBe(false);
+    expect(all.some((t) => /owner|staff|none|Delivery|Sept|INV-042|GSTIN/.test(t))).toBe(false);
   });
 
   it("re-executes the convention's function with each screen's own arguments, and the overlay's harness", () => {
@@ -125,8 +134,10 @@ describe('showroom', () => {
       'order/untraced:order:1',
       'order/untraced:order:2',
       'order/untraced:order:3',
+      'order/untraced:order:4',
+      'order/untraced:order:5',
     ]);
-    expect(s.counts).toEqual({ shown: 8, traced: 3 });
+    expect(s.counts).toEqual({ shown: 10, traced: 3 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'order/line-count',

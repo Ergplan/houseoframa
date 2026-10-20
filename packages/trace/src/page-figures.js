@@ -62,9 +62,31 @@ function collectFigures(arg) {
         number.test(text(el)) && !amounts.some((a) => a === el || a.contains(el) || el.contains(a)),
     ),
   );
+  // Third, conservatively: a number inside words ("13 bills", "Order 7"). The detector cannot tell a count
+  // from a label, so it marks it untraced rather than leave it bare (Invariant 2), unless the number is
+  // plainly a date, a year or a time, or part of an identifier that mixes letters and digits.
+  const MONTH = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?$/i;
+  const NUMERIC = /^[\u2212-]?(\d{1,3}(,\d{2,3})+|\d{1,9})(\.\d+)?$/;
+  const numberInWords = (t) => {
+    const tokens = t
+      .split(/[\s·;()]+/) // a d/m or d/m/y date stays one token, and is not numeric
+      .map((w) => w.replace(/[.,:;!?]+$/, ''))
+      .filter(Boolean);
+    return tokens.some(
+      (w, i) =>
+        NUMERIC.test(w) &&
+        !/^(19|20)\d{2}$/.test(w) &&
+        !MONTH.test(tokens[i - 1] ?? '') &&
+        !MONTH.test(tokens[i + 1] ?? ''),
+    );
+  };
+  const marked = [...amounts, ...numbers];
+  const inside = (el) => marked.some((m) => m === el || m.contains(el) || el.contains(m));
+  const words = smallest(candidates.filter((el) => !inside(el) && numberInWords(text(el))));
   for (const el of candidates) {
-    if (amounts.includes(el) || numbers.includes(el))
+    if (amounts.includes(el) || numbers.includes(el) || words.includes(el)) {
       out.push({ id: null, origin: 'detected', text: text(el), box: box(el) });
+    }
   }
   return out;
 }
