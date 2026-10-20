@@ -1,0 +1,228 @@
+{
+ "byQuoted": [
+  "C",
+  "B",
+  "A"
+ ],
+ "byNorm": [
+  "A",
+  "B",
+  "C"
+ ],
+ "out": {
+  "Thermax": {
+   "quoted": 15000000,
+   "gst": 2700000,
+   "gross": 17700000,
+   "gapLoad": 0,
+   "gaps": [],
+   "scopeAdj": 15000000,
+   "capF": 1,
+   "capNorm": 15000000,
+   "perUnit": 3750000,
+   "lc": 113829401.0889292,
+   "lcDelta": 0,
+   "norm": 15000000,
+   "lines": 16,
+   "fmt": {
+    "quoted": "₹1.50 Cr",
+    "gross": "₹1.77 Cr",
+    "perUnit": "₹37.5 L",
+    "norm": "₹1.50 Cr"
+   }
+  },
+  "Cheema Boilers": {
+   "quoted": 12120000,
+   "gst": 2181600,
+   "gross": 14301600,
+   "gapLoad": 450000,
+   "gaps": [
+    {
+     "id": "b9",
+     "item": "Online soot blowing (Danblast)",
+     "fill": 450000
+    }
+   ],
+   "scopeAdj": 12570000,
+   "capF": 1,
+   "capNorm": 12570000,
+   "perUnit": 3142500,
+   "lc": 117894736.84210525,
+   "lcDelta": 4065335.7531760484,
+   "norm": 16635335.753176048,
+   "lines": 15,
+   "fmt": {
+    "quoted": "₹1.21 Cr",
+    "gross": "₹1.43 Cr",
+    "perUnit": "₹31.4 L",
+    "norm": "₹1.66 Cr"
+   }
+  },
+  "Thermodyne Engineering": {
+   "quoted": 10920000,
+   "gst": 1965600,
+   "gross": 12885600,
+   "gapLoad": 790000,
+   "gaps": [
+    {
+     "id": "b9",
+     "item": "Online soot blowing (Danblast)",
+     "fill": 450000
+    },
+    {
+     "id": "b14",
+     "item": "Ash removal: wet/dry screw conveyor",
+     "fill": 340000
+    }
+   ],
+   "scopeAdj": 11710000,
+   "capF": 0.8746896591546225,
+   "capNorm": 10242615.90870063,
+   "perUnit": 2342000,
+   "lc": 123789473.68421054,
+   "lcDelta": 9960072.595281333,
+   "norm": 20202688.503981963,
+   "lines": 14,
+   "fmt": {
+    "quoted": "₹1.09 Cr",
+    "gross": "₹1.29 Cr",
+    "perUnit": "₹23.4 L",
+    "norm": "₹2.02 Cr"
+   }
+  }
+ },
+ "pkgSpread": {
+  "L1": 10920000,
+  "H1": 15000000,
+  "pct": 37
+ },
+ "portfolio": {
+  "sumL1": 33706000,
+  "sumSpread": 14004000,
+  "fmtL1": "₹3.37 Cr",
+  "fmtSpread": "₹1.40 Cr",
+  "pkgs": [
+   {
+    "id": "solar",
+    "name": "Rooftop Solar Plant",
+    "L1": 14526000,
+    "H1": 20226000,
+    "L1vendor": "Oriano Clean Energy",
+    "fmtL1": "₹1.45 Cr",
+    "fmtH1": "₹2.02 Cr"
+   },
+   {
+    "id": "fryer",
+    "name": "Continuous Namkeen Fryer",
+    "L1": 1880000,
+    "H1": 3035000,
+    "L1vendor": "Prakashwala Food Equipment",
+    "fmtL1": "₹18.8 L",
+    "fmtH1": "₹30.4 L"
+   },
+   {
+    "id": "extruder",
+    "name": "Bhujia & Sev Extrusion Line",
+    "L1": 675000,
+    "H1": 1210000,
+    "L1vendor": "Sneha Food Equipments",
+    "fmtL1": "₹6.8 L",
+    "fmtH1": "₹12.1 L"
+   },
+   {
+    "id": "packing",
+    "name": "Namkeen Pouch Packaging Line",
+    "L1": 1730000,
+    "H1": 3300000,
+    "L1vendor": "Pakona Engineers",
+    "fmtL1": "₹17.3 L",
+    "fmtH1": "₹33.0 L"
+   },
+   {
+    "id": "tfh",
+    "name": "Thermic Fluid Heater",
+    "L1": 3975000,
+    "H1": 4939000,
+    "L1vendor": "Thermodyne Engineering",
+    "fmtL1": "₹39.8 L",
+    "fmtH1": "₹49.4 L"
+   },
+   {
+    "id": "boiler",
+    "name": "Biomass Steam Boiler",
+    "L1": 10920000,
+    "H1": 15000000,
+    "L1vendor": "Thermodyne Engineering",
+    "fmtL1": "₹1.09 Cr",
+    "fmtH1": "₹1.50 Cr"
+   }
+  ]
+ },
+ "thermaxHistory": {
+  "projects": [
+   {
+    "year": 2019,
+    "work": "Thermic fluid heater, 4 lakh kcal/hr (Unit 1)",
+    "value": 3200000,
+    "similar": true
+   },
+   {
+    "year": 2022,
+    "work": "3 TPH briquette boiler (Unit 1)",
+    "value": 9800000,
+    "similar": true
+   }
+  ],
+  "reviews": [
+   {
+    "year": 2023,
+    "quality": 4.5,
+    "claims": 3,
+    "honored": 3,
+    "satisfaction": 8.6,
+    "reviewers": 5,
+    "note": "Service engineer on site within 24 h"
+   },
+   {
+    "year": 2024,
+    "quality": 4.4,
+    "claims": 2,
+    "honored": 2,
+    "satisfaction": 8.3,
+    "reviewers": 6
+   },
+   {
+    "year": 2025,
+    "quality": 4.6,
+    "claims": 1,
+    "honored": 1,
+    "satisfaction": 8.8,
+    "reviewers": 6,
+    "note": "EDGE Live alerts caught a feed-pump issue early"
+   }
+  ]
+ },
+ "thermaxTrack": {
+  "score": 92,
+  "quality": 4.516666666666667,
+  "satisfaction": 8.600000000000001,
+  "warranty": 1,
+  "claims": 6,
+  "honored": 6,
+  "trend": 0.20000000000000107,
+  "lastYear": 2025,
+  "reviewers": 17
+ },
+ "master": {
+  "client": "Shree Marudhar Namkeen Pvt Ltd",
+  "factory": "Bikaner Plant – Unit 2",
+  "location": "Karni Industrial Area, Bikaner, Rajasthan",
+  "names": {},
+  "fuelPrice": 8000,
+  "gcv": 3800,
+  "hours": 6000,
+  "load": 0.7,
+  "years": 5,
+  "tariff": 8
+ }
+}

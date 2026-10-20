@@ -1,0 +1,827 @@
+<meta charset="utf-8">
+<title>House of Rama</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the pixel construction site is the only retro thing on the page. Everything around it (controls, inspector, showroom, discovery) is a modern dark product UI: Plex Sans for reading, Plex Mono for paths and numbers. Single deliberate dark theme. */
+:root{
+  --bg:#0c0b13;
+  --panel:#14121d;
+  --panel2:#1b1826;
+  --fg:#ece8dc;
+  --dim:#9a958a;
+  --amber:#ffb429;
+  --cyan:#4fe3d8;
+  --red:#ff5a6a;
+  --green:#5ad45a;
+  --violet:#c98cff;
+  --line:#2a2740;
+  --pixel:'Press Start 2P',monospace;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 28px;margin:0}
+*{box-sizing:border-box}
+.hud{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding:4px 0 14px;border-bottom:1px solid var(--line)}
+.hud h1{font-family:var(--pixel);font-size:13px;margin:0;color:var(--amber);letter-spacing:1px;text-shadow:0 0 14px rgba(255,180,41,.35)}
+.hud .tag{font-size:12px;font-weight:500;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+.hud .site{margin-left:auto;font-family:var(--mono);font-size:12.5px;color:var(--cyan)}
+.cab{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;margin-top:16px}
+@media (max-width:900px){.cab{grid-template-columns:minmax(0,1fr)}}
+.screen{position:relative;background:#12101c;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45);overflow:hidden;min-width:0}
+.screen canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;cursor:crosshair}
+.tip{position:absolute;pointer-events:none;font-family:var(--mono);font-size:12px;background:rgba(12,11,19,.92);color:var(--fg);padding:6px 9px;border:1px solid var(--amber);border-radius:8px;white-space:nowrap;display:none;z-index:2}
+.deck{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.deck .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+button{font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--panel2);color:var(--fg);border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+button:hover{border-color:var(--amber);color:var(--amber)}
+button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+button.on{background:var(--amber);color:#1a1200;border-color:var(--amber)}
+button.on:hover{color:#1a1200}
+button.primary{background:var(--amber);color:#1a1200;border-color:var(--amber)}
+button.primary:hover{color:#1a1200;filter:brightness(1.08)}
+.clock{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--amber);margin-left:auto;font-variant-numeric:tabular-nums}
+.track{position:relative;margin:18px 10px 4px;height:48px}
+.track .rail{position:absolute;left:0;right:0;top:10px;height:4px;background:#2d2a40;border-radius:2px}
+.track .fill{position:absolute;left:0;top:10px;height:4px;background:var(--amber);border-radius:2px;width:0}
+.tick{position:absolute;top:2px;width:20px;height:20px;margin-left:-10px;background:var(--panel2);border:2px solid #3a3650;border-radius:50%;cursor:pointer;padding:0;font-size:0;transition:transform .15s}
+.tick:hover{transform:scale(1.15);border-color:var(--amber)}
+.tick.done{background:var(--amber);border-color:var(--amber)}
+.tick.cur{box-shadow:0 0 0 4px rgba(79,227,216,.35);border-color:var(--cyan)}
+.tick span{position:absolute;top:24px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:12.5px;color:var(--dim)}
+.legend i{display:inline-block;width:11px;height:11px;vertical-align:-1px;margin-right:6px;border-radius:3px}
+.mon{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;min-width:0;align-self:start;position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}
+.mon h2{font-size:11.5px;font-weight:600;color:var(--cyan);margin:0 0 10px;letter-spacing:.1em;text-transform:uppercase}
+.mon h3{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--amber);margin:12px 0 8px;word-break:break-all;line-height:1.45}
+.mon p{margin:8px 0}
+.kv{display:grid;grid-template-columns:fit-content(46%) minmax(0,1fr);gap:6px 14px;margin:10px 0;font-variant-numeric:tabular-nums;font-size:14px}
+.kv dt{color:var(--dim)}.kv dd{margin:0;min-width:0;word-break:break-word}
+.pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border:1px solid;border-radius:999px;margin:2px 6px 2px 0}
+.pill.red{color:var(--red);border-color:rgba(255,90,106,.6);background:rgba(255,90,106,.08)}.pill.green{color:var(--green);border-color:rgba(90,212,90,.6);background:rgba(90,212,90,.08)}.pill.cyan{color:var(--cyan);border-color:rgba(79,227,216,.6);background:rgba(79,227,216,.08)}.pill.amber{color:var(--amber);border-color:rgba(255,180,41,.6);background:rgba(255,180,41,.08)}
+.links span,.lnk{display:block;cursor:pointer;color:var(--cyan);font-family:var(--mono);font-size:13px;padding:3px 0;line-height:1.4}
+.links span:hover,.lnk:hover{color:var(--amber)}
+.links small{color:var(--dim);font-size:12px}
+.big{font-size:22px;font-weight:600;line-height:1.3;letter-spacing:-.01em;text-wrap:balance}
+.big.red{color:var(--red)}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 4px}
+.stat div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}
+.stat b{display:block;font-size:22px;font-weight:600;color:var(--amber);font-variant-numeric:tabular-nums;line-height:1.1}
+.stat small{font-size:12px;color:var(--dim)}
+.mon .note{color:var(--dim);font-size:13.5px;border-top:1px dashed var(--line);margin-top:12px;padding-top:10px}
+.back{margin-top:14px}
+.ov[hidden]{display:none}
+.ov{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:3}
+.ov .bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ov .bar h4{font-size:13px;font-weight:600;color:var(--fg);margin:0;letter-spacing:.02em}
+.ov .bar .real{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--green);border:1px solid rgba(90,212,90,.6);border-radius:999px;padding:3px 9px}
+.ov .bar .real.amb{color:var(--amber);border-color:rgba(255,180,41,.6)}
+.ov .bar button{margin-left:auto}
+.ov .view{flex:1;min-height:0;overflow:auto;background:#1a1826;padding:12px}
+.ov .view img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:8px;image-rendering:auto}
+.ov .strip{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;background:var(--panel);border-top:1px solid var(--line)}
+.ov .strip button{flex:0 0 auto;padding:4px;border-radius:8px;background:var(--panel2);text-transform:none;letter-spacing:0;font-weight:500}
+.ov .strip button.on{border-color:var(--amber)}
+.ov .strip img{display:block;width:104px;height:64px;object-fit:cover;object-position:top;border-radius:5px;image-rendering:auto}
+.ov .strip span{display:block;font-size:11px;color:var(--dim);margin-top:4px;text-align:center;max-width:104px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dep{padding:6px 0;border-bottom:1px dashed var(--line)}.dep:last-child{border-bottom:0}.dep .en{font-size:13px;color:var(--dim);line-height:1.45;padding-left:14px}.dep .en::first-letter{text-transform:uppercase}
+.reviewer{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.5;margin:10px 0}
+.shotwrap{position:relative;display:inline-block;max-width:100%}
+.hot{position:absolute;border:2px solid var(--amber);border-radius:6px;background:rgba(255,180,41,.10);padding:0;cursor:pointer;box-shadow:0 0 0 3px rgba(255,180,41,.18);animation:hotpulse 1.8s ease-in-out infinite}
+.hot:hover{background:rgba(255,180,41,.28)}
+@keyframes hotpulse{0%,100%{box-shadow:0 0 0 2px rgba(255,180,41,.15)}50%{box-shadow:0 0 0 6px rgba(255,180,41,.35)}}
+@media (prefers-reduced-motion:reduce){.hot{animation:none}}
+.ov .bar .hint{font-size:12px;color:var(--dim)}
+pre.code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;white-space:pre-wrap;word-break:break-word;margin:8px 0;color:var(--cyan)}
+.sig{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.sig div{border:1px dashed var(--line);border-radius:8px;padding:8px 10px;background:var(--panel2)}
+.sig .k{display:block;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.sig .v{display:block;font-size:15px;font-weight:600;margin-top:2px}.sig .v.red{color:var(--red)}
+.alog{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--panel2);display:flex;flex-direction:column;gap:8px}
+.aph{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--violet);margin-top:6px}
+.asay{font-size:14px;line-height:1.5;border-left:2px solid var(--violet);padding-left:10px}
+.afind{font-size:14px;padding:8px 10px;border-radius:8px;background:var(--panel)}.afind.fail{border:1px solid rgba(255,90,106,.45)}.afind.warn{border:1px solid rgba(255,180,41,.45)}
+.afind .en{font-size:13px;color:var(--dim);margin-top:4px}
+.thumbs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.thumbs button{padding:4px;border-radius:8px;background:var(--panel2);text-align:left;text-transform:none;letter-spacing:0;font-weight:500}
+.thumbs img{display:block;width:100%;height:64px;object-fit:cover;object-position:top;border-radius:5px;image-rendering:auto}
+.thumbs span{display:block;font-size:11px;color:var(--dim);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* discovery session */
+.disc{display:grid;grid-template-columns:200px minmax(0,1fr);flex:1;min-height:0}
+@media (max-width:700px){.disc{grid-template-columns:minmax(0,1fr)}.disc .agenda{display:none}}
+.agenda{border-right:1px solid var(--line);background:var(--panel);overflow:auto;padding:12px 10px}
+.agenda h5{margin:4px 6px 8px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.agenda button{display:block;width:100%;text-align:left;text-transform:none;letter-spacing:0;font-weight:500;font-size:13px;background:transparent;border-color:transparent;padding:7px 8px;border-radius:8px}
+.agenda button small{display:block;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.agenda button:hover{background:var(--panel2);color:var(--fg)}
+.agenda button.on{background:var(--panel2);border-color:var(--line);color:var(--amber)}
+.chat{overflow:auto;padding:16px 18px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){.chat{scroll-behavior:auto}}
+.topic{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:12px 0 -4px;display:flex;align-items:center;gap:10px;scroll-margin-top:12px}
+.topic::after{content:"";flex:1;height:1px;background:var(--line)}
+.topic time{font-family:var(--mono);font-weight:400;letter-spacing:0;text-transform:none}
+.msg{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;max-width:720px}
+.msg .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;color:#0c0b13;letter-spacing:.02em}
+.msg .who{font-size:12px;color:var(--dim);margin-bottom:3px}
+.msg .who b{color:var(--fg);font-weight:600}
+.msg .body{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:14px;line-height:1.5}
+.msg.agent .body{border-color:rgba(255,180,41,.35);background:rgba(255,180,41,.06)}
+.dec{border:1px solid rgba(90,212,90,.45);background:rgba(90,212,90,.06);border-radius:12px;padding:12px 14px;max-width:720px;margin-left:44px}
+.dec.warn{border-color:rgba(255,90,106,.5);background:rgba(255,90,106,.06)}
+.dec .h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.dec .h b{font-size:14px;font-weight:600}
+.dec .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+.dec .chips span{font-family:var(--mono);font-size:11.5px;color:var(--cyan);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 7px;cursor:pointer}
+.dec .chips span:hover{color:var(--amber);border-color:var(--amber)}
+.dec button{margin-top:6px;font-size:11px;padding:6px 10px}
+.dec .note{font-size:13px;color:var(--dim);margin:4px 0 0}
+</style>
+
+<header class="hud">
+  <h1>HOUSE OF RAMA</h1>
+  <span class="tag">Built on trust · Site 01</span>
+  <span class="site" id="siteName"></span>
+</header>
+
+<div class="cab">
+  <div>
+    <div class="screen">
+      <canvas id="cv" width="960" height="560" aria-label="Pixel construction site of the Procurement Studio codebase"></canvas>
+      <div class="tip" id="tip"></div>
+      <div class="ov" id="show" hidden></div>
+      <div class="ov" id="discov" hidden></div>
+    </div>
+    <div class="deck">
+      <div class="row">
+        <button id="play" class="primary">▶ Play</button>
+        <button id="prev">◀ Commit</button>
+        <button id="next">Commit ▶</button>
+        <button id="speed">Speed 1×</button>
+        <button id="links">Links: off</button>
+        <button id="discBtn">Discovery</button>
+        <button id="showBtn">Showroom</button>
+        <button id="auditBtn">Audit</button>
+        <span class="clock" id="clock">--:--</span>
+      </div>
+      <div class="track" id="track"><div class="rail"></div><div class="fill" id="fill"></div></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+  <aside class="mon" id="mon"></aside>
+</div>
+
+<script>
+const G = {"project":"Procurement Studio","repo":"Ergplan/procurementstudio","extracted":"2026-10-17","layers":[{"id":"foundation","label":"Foundation \u2014 config, env, deploy"},{"id":"data","label":"Data \u2014 vendors, BoQs, benchmarks"},{"id":"logic","label":"Logic \u2014 normalisation, 3D, focus, state"},{"id":"api","label":"API \u2014 server routes to OpenAI"},{"id":"interface","label":"Interface \u2014 React components"},{"id":"shell","label":"Shell & docs \u2014 layout, styles, README"}],"nodes":[{"path":".env.example","layer":"foundation","lines":14,"env":[],"exports":0,"purpose":"Template of the environment variables: OPENAI_API_KEY plus optional password and model overrides.","binary":false,"test":false},{"path":".gitignore","layer":"foundation","lines":6,"env":[],"exports":0,"purpose":"Keeps node_modules, .next and .env.local out of git.","binary":false,"test":false},{"path":"README.md","layer":"shell","lines":130,"env":[],"exports":0,"purpose":"What the Studio does, how to run it, how to deploy on Vercel, how the voice advisor works.","binary":false,"test":false},{"path":"app/api/health/route.ts","layer":"api","lines":20,"env":[],"exports":2,"purpose":"GET /api/health \u2014 reports whether text, web search and voice are configured (never the key).","binary":false,"test":false},{"path":"app/api/llm/route.ts","layer":"api","lines":66,"env":[],"exports":4,"purpose":"POST /api/llm \u2014 streams text answers from OpenAI with web search; up to 300 s on Vercel.","binary":false,"test":false},{"path":"app/api/realtime/session/route.ts","layer":"api","lines":26,"env":[],"exports":4,"purpose":"Mints a short-lived Realtime key so the browser can talk to OpenAI over WebRTC.","binary":false,"test":false},{"path":"app/globals.css","layer":"shell","lines":401,"env":[],"exports":0,"purpose":"All styling: dark studio theme, isometric site, dock, flash highlights.","binary":false,"test":false},{"path":"app/layout.tsx","layer":"shell","lines":19,"env":[],"exports":3,"purpose":"Root HTML layout and metadata.","binary":false,"test":false},{"path":"app/page.tsx","layer":"shell","lines":2,"env":[],"exports":1,"purpose":"Home route \u2014 renders <Studio/>.","binary":false,"test":false},{"path":"components/AiPanel.tsx","layer":"interface","lines":133,"env":[],"exports":2,"purpose":"Typed Q&A panel: sends the asset's context to /api/llm and renders the answer.","binary":false,"test":false},{"path":"components/AssetView.tsx","layer":"interface","lines":150,"env":[],"exports":1,"purpose":"One equipment package: BoQ comparison table, normalised totals, tabs for walkthrough, AI and vendor history.","binary":false,"test":false},{"path":"components/Markdown.tsx","layer":"interface","lines":20,"env":[],"exports":1,"purpose":"Tiny markdown renderer for AI answers.","binary":false,"test":false},{"path":"components/MasterModal.tsx","layer":"interface","lines":42,"env":[],"exports":1,"purpose":"Edit plant assumptions: fuel price, GCV, hours, load, tariff, years.","binary":false,"test":false},{"path":"components/RealTalk.tsx","layer":"interface","lines":281,"env":[],"exports":1,"purpose":"AI Proc Advisory \u2014 voice session over WebRTC, function calls that move the screen.","binary":false,"test":false},{"path":"components/Studio.tsx","layer":"interface","lines":89,"env":[],"exports":1,"purpose":"Top-level screen: isometric site plan, package picker, portfolio totals.","binary":false,"test":false},{"path":"components/VendorHistory.tsx","layer":"interface","lines":90,"env":[],"exports":1,"purpose":"Vendor track record: past projects, review scores, trust band.","binary":false,"test":false},{"path":"components/Walkthrough.tsx","layer":"interface","lines":112,"env":[],"exports":1,"purpose":"3D wireframe walkthrough UI; every BoQ line is a clickable part.","binary":false,"test":false},{"path":"lib/ai.ts","layer":"logic","lines":24,"env":[],"exports":5,"purpose":"Client helper to call /api/llm and turn errors into plain English.","binary":false,"test":false},{"path":"lib/calc.ts","layer":"logic","lines":84,"env":[],"exports":17,"purpose":"The formulas: scope-gap fill, capacity normalisation, lifecycle cost, rankings, award context.","binary":false,"test":false},{"path":"lib/data.ts","layer":"data","lines":367,"env":[],"exports":15,"purpose":"The dataset: 6 packages, 18 vendor offers, BoQ rows, benchmarks, intel, parts, tech fit.","binary":false,"test":false},{"path":"lib/focus.ts","layer":"logic","lines":132,"env":[],"exports":10,"purpose":"Matches spoken/typed text to assets, rows and figures and flashes them on screen.","binary":false,"test":false},{"path":"lib/history.ts","layer":"data","lines":45,"env":[],"exports":7,"purpose":"Vendor project history and review data, track score and band.","binary":false,"test":false},{"path":"lib/iso.ts","layer":"logic","lines":151,"env":[],"exports":1,"purpose":"Draws the factory as an isometric SVG site plan.","binary":false,"test":false},{"path":"lib/server/config.ts","layer":"foundation","lines":24,"env":["OPENAI_API_KEY","OPENAI_API_KEY1","OPENAI_BASE_URL","OPENAI_KEY","OPENAI_REALTIME_MODEL","OPENAI_SECRET_KEY","OPENAI_TEXT_MODEL","OPENAI_TRANSCRIBE_MODEL","OPENAI_VOICE","STUDIO_PASSWORD","VERCEL","VERCEL_ENV","WEB_SEARCH"],"exports":1,"purpose":"Server-only config: finds the OpenAI key by several names, model defaults, host detection.","binary":false,"test":false},{"path":"lib/store.tsx","layer":"logic","lines":44,"env":[],"exports":4,"purpose":"React context: master assumptions, selected asset, health status, reviews.","binary":false,"test":false},{"path":"lib/walkEngine.ts","layer":"logic","lines":269,"env":[],"exports":5,"purpose":"three.js engine: builds each machine from parts, orbit and walk cameras, guided tour order.","binary":false,"test":false},{"path":"next.config.mjs","layer":"foundation","lines":3,"env":[],"exports":1,"purpose":"Next.js configuration.","binary":false,"test":false},{"path":"package-lock.json","layer":"foundation","lines":1081,"env":[],"exports":0,"purpose":"Locked dependency tree.","binary":false,"test":false},{"path":"package.json","layer":"foundation","lines":26,"env":[],"exports":0,"purpose":"Project manifest: next 16, react 19, three 0.186.","binary":false,"test":false},{"path":"proxy.ts","layer":"foundation","lines":18,"env":["STUDIO_PASSWORD"],"exports":2,"purpose":"Optional HTTP Basic password gate (STUDIO_PASSWORD) in front of every route.","binary":false,"test":false},{"path":"public/boiler-ref.jpg","layer":"data","lines":0,"env":[],"exports":0,"purpose":"Reference photo of the biomass boiler.","binary":true,"test":false},{"path":"start.command","layer":"foundation","lines":16,"env":[],"exports":0,"purpose":"Mac double-click launcher: installs, creates .env.local, opens the browser.","binary":false,"test":false},{"path":"tsconfig.json","layer":"foundation","lines":41,"env":[],"exports":0,"purpose":"TypeScript configuration.","binary":false,"test":false},{"path":"vercel.json","layer":"foundation","lines":7,"env":[],"exports":0,"purpose":"Vercel deployment settings.","binary":false,"test":false}],"edges":[["app/api/health/route.ts","lib/server/config.ts"],["app/api/llm/route.ts","lib/server/config.ts"],["app/api/realtime/session/route.ts","lib/server/config.ts"],["app/page.tsx","components/Studio.tsx"],["components/AiPanel.tsx","lib/store.tsx"],["components/AiPanel.tsx","lib/data.ts"],["components/AiPanel.tsx","lib/calc.ts"],["components/AiPanel.tsx","lib/ai.ts"],["components/AiPanel.tsx","components/Markdown.tsx"],["components/AssetView.tsx","lib/store.tsx"],["components/AssetView.tsx","lib/data.ts"],["components/AssetView.tsx","lib/calc.ts"],["components/AssetView.tsx","lib/ai.ts"],["components/AssetView.tsx","components/Walkthrough.tsx"],["components/AssetView.tsx","components/AiPanel.tsx"],["components/AssetView.tsx","components/VendorHistory.tsx"],["components/AssetView.tsx","lib/history.ts"],["components/AssetView.tsx","lib/focus.ts"],["components/MasterModal.tsx","lib/store.tsx"],["components/MasterModal.tsx","lib/data.ts"],["components/RealTalk.tsx","lib/store.tsx"],["components/RealTalk.tsx","lib/data.ts"],["components/RealTalk.tsx","lib/calc.ts"],["components/RealTalk.tsx","lib/ai.ts"],["components/RealTalk.tsx","components/Markdown.tsx"],["components/RealTalk.tsx","lib/focus.ts"],["components/Studio.tsx","lib/store.tsx"],["components/Studio.tsx","lib/data.ts"],["components/Studio.tsx","lib/calc.ts"],["components/Studio.tsx","lib/iso.ts"],["components/Studio.tsx","components/AssetView.tsx"],["components/Studio.tsx","components/MasterModal.tsx"],["components/Studio.tsx","components/RealTalk.tsx"],["components/VendorHistory.tsx","lib/store.tsx"],["components/VendorHistory.tsx","lib/data.ts"],["components/VendorHistory.tsx","lib/calc.ts"],["components/VendorHistory.tsx","lib/history.ts"],["components/Walkthrough.tsx","lib/store.tsx"],["components/Walkthrough.tsx","lib/data.ts"],["components/Walkthrough.tsx","lib/calc.ts"],["components/Walkthrough.tsx","lib/walkEngine.ts"],["lib/calc.ts","lib/data.ts"],["lib/calc.ts","lib/history.ts"],["lib/focus.ts","lib/data.ts"],["lib/iso.ts","lib/data.ts"],["lib/iso.ts","lib/calc.ts"],["lib/store.tsx","lib/data.ts"],["lib/store.tsx","lib/calc.ts"],["lib/store.tsx","lib/history.ts"],["lib/walkEngine.ts","lib/data.ts"]],"commits":[{"sha":"96b3fba030670ac89e4db926a9902e1866f8a754","short":"96b3fba","date":"2026-09-28T11:07:13+00:00","author":"Joulewise","subject":"Procurement Studio: Next.js app with 3D walkthrough and RealTalk voice","changes":[{"path":".env.example","add":10,"del":0,"kind":"A"},{"path":".gitignore","add":5,"del":0,"kind":"A"},{"path":"README.md","add":81,"del":0,"kind":"A"},{"path":"app/api/health/route.ts","add":5,"del":0,"kind":"A"},{"path":"app/api/llm/route.ts","add":61,"del":0,"kind":"A"},{"path":"app/api/realtime/session/route.ts","add":25,"del":0,"kind":"A"},{"path":"app/globals.css","add":331,"del":0,"kind":"A"},{"path":"app/layout.tsx","add":19,"del":0,"kind":"A"},{"path":"app/page.tsx","add":2,"del":0,"kind":"A"},{"path":"components/AiPanel.tsx","add":133,"del":0,"kind":"A"},{"path":"components/AssetView.tsx","add":138,"del":0,"kind":"A"},{"path":"components/Markdown.tsx","add":20,"del":0,"kind":"A"},{"path":"components/MasterModal.tsx","add":42,"del":0,"kind":"A"},{"path":"components/RealTalk.tsx","add":185,"del":0,"kind":"A"},{"path":"components/Studio.tsx","add":89,"del":0,"kind":"A"},{"path":"components/Walkthrough.tsx","add":112,"del":0,"kind":"A"},{"path":"lib/ai.ts","add":24,"del":0,"kind":"A"},{"path":"lib/calc.ts","add":78,"del":0,"kind":"A"},{"path":"lib/data.ts","add":367,"del":0,"kind":"A"},{"path":"lib/iso.ts","add":151,"del":0,"kind":"A"},{"path":"lib/server/config.ts","add":10,"del":0,"kind":"A"},{"path":"lib/store.tsx","add":38,"del":0,"kind":"A"},{"path":"lib/walkEngine.ts","add":269,"del":0,"kind":"A"},{"path":"next.config.mjs","add":3,"del":0,"kind":"A"},{"path":"package-lock.json","add":1081,"del":0,"kind":"A"},{"path":"package.json","add":23,"del":0,"kind":"A"},{"path":"public/boiler-ref.jpg","add":null,"del":null,"kind":"A"},{"path":"start.command","add":16,"del":0,"kind":"A"},{"path":"tsconfig.json","add":41,"del":0,"kind":"A"}]},{"sha":"30693e58511ed1d425ddbc1a35094d6a9b9bf98f","short":"30693e5","date":"2026-09-28T16:51:02+05:30","author":"Rachit Agarwal","subject":"Make the app Vercel-ready","changes":[{"path":".env.example","add":4,"del":0,"kind":"M"},{"path":".gitignore","add":1,"del":0,"kind":"M"},{"path":"README.md","add":20,"del":1,"kind":"M"},{"path":"app/api/llm/route.ts","add":5,"del":0,"kind":"M"},{"path":"app/api/realtime/session/route.ts","add":1,"del":0,"kind":"M"},{"path":"lib/server/config.ts","add":1,"del":0,"kind":"M"},{"path":"package.json","add":3,"del":0,"kind":"M"},{"path":"proxy.ts","add":18,"del":0,"kind":"A"},{"path":"start.command","add":0,"del":0,"kind":"M"},{"path":"vercel.json","add":7,"del":0,"kind":"A"}]},{"sha":"273340075595f99e4fe3b599678b3017154948a3","short":"2733400","date":"2026-09-28T16:55:50+05:30","author":"Rachit Agarwal","subject":"AI Proc Advisory: compact dock, rename, key diagnostics","changes":[{"path":"README.md","add":5,"del":5,"kind":"M"},{"path":"app/api/health/route.ts","add":17,"del":2,"kind":"M"},{"path":"app/globals.css","add":28,"del":1,"kind":"M"},{"path":"app/layout.tsx","add":1,"del":1,"kind":"M"},{"path":"components/AiPanel.tsx","add":1,"del":1,"kind":"M"},{"path":"components/RealTalk.tsx","add":44,"del":29,"kind":"M"},{"path":"components/Walkthrough.tsx","add":1,"del":1,"kind":"M"},{"path":"lib/server/config.ts","add":15,"del":2,"kind":"M"},{"path":"lib/store.tsx","add":2,"del":2,"kind":"M"}]},{"sha":"fe7da840afd2fb6f00dc9b74017b962f0072f4b8","short":"fe7da84","date":"2026-09-28T17:01:08+05:30","author":"Rachit Agarwal","subject":"Accept OPENAI_API_KEY1","changes":[{"path":"README.md","add":1,"del":1,"kind":"M"},{"path":"lib/server/config.ts","add":1,"del":1,"kind":"M"}]},{"sha":"fa0828402ca16a957bd6ede2229028bb6f942202","short":"fa08284","date":"2026-09-28T17:19:53+05:30","author":"Rachit Agarwal","subject":"Voice-driven focus and vendor track record","changes":[{"path":"README.md","add":28,"del":0,"kind":"M"},{"path":"app/globals.css","add":40,"del":0,"kind":"M"},{"path":"components/AiPanel.tsx","add":6,"del":6,"kind":"M"},{"path":"components/AssetView.tsx","add":23,"del":11,"kind":"M"},{"path":"components/RealTalk.tsx","add":45,"del":9,"kind":"M"},{"path":"components/VendorHistory.tsx","add":90,"del":0,"kind":"A"},{"path":"lib/calc.ts","add":10,"del":4,"kind":"M"},{"path":"lib/focus.ts","add":54,"del":0,"kind":"A"},{"path":"lib/history.ts","add":45,"del":0,"kind":"A"},{"path":"lib/store.tsx","add":7,"del":1,"kind":"M"}]},{"sha":"fac615d8bffca603d20cda57c0642004bc437ffb","short":"fac615d","date":"2026-09-28T17:41:59+05:30","author":"Rachit Agarwal","subject":"Sync screen highlights to the spoken answer","changes":[{"path":"README.md","add":2,"del":0,"kind":"M"},{"path":"app/globals.css","add":3,"del":0,"kind":"M"},{"path":"components/RealTalk.tsx","add":71,"del":26,"kind":"M"},{"path":"components/Walkthrough.tsx","add":2,"del":2,"kind":"M"},{"path":"lib/focus.ts","add":79,"del":1,"kind":"M"}]}],"branches":["main"],"authors":["Joulewise","Rachit Agarwal"],"deps":{"next":"16.3.6","react":"19.3.0","react-dom":"19.3.0","three":"0.186.1"},"facts":{"files":34,"text_lines":3933,"tests":0,"commits":6,"branches":1,"authors":2,"env_vars":["OPENAI_API_KEY","OPENAI_API_KEY1","OPENAI_BASE_URL","OPENAI_KEY","OPENAI_REALTIME_MODEL","OPENAI_SECRET_KEY","OPENAI_TEXT_MODEL","OPENAI_TRANSCRIBE_MODEL","OPENAI_VOICE","STUDIO_PASSWORD","VERCEL","VERCEL_ENV","WEB_SEARCH"],"imports":50,"first_commit":"2026-09-28T11:07:13+00:00","last_commit":"2026-09-28T17:41:59+05:30"},"edgeSyms":{"app/api/health/route.ts>lib/server/config.ts":["cfg"],"app/api/llm/route.ts>lib/server/config.ts":["cfg"],"app/api/realtime/session/route.ts>lib/server/config.ts":["cfg"],"app/page.tsx>components/Studio.tsx":["Studio"],"components/AiPanel.tsx>lib/store.tsx":["useStudio"],"components/AiPanel.tsx>lib/data.ts":["Asset","RESEARCH_DATE"],"components/AiPanel.tsx>lib/calc.ts":["aName","aiContext","amt","compute","money","rate"],"components/AiPanel.tsx>lib/ai.ts":["llm","llmJson","errText"],"components/AiPanel.tsx>components/Markdown.tsx":["Markdown"],"components/AssetView.tsx>lib/store.tsx":["useStudio"],"components/AssetView.tsx>lib/data.ts":["INTEL","RESEARCH_DATE","SRC"],"components/AssetView.tsx>lib/calc.ts":["aName","amt","assetById","benchFlag","benchFor","compute","money","rate"],"components/AssetView.tsx>lib/ai.ts":["llmJson","errText"],"components/AssetView.tsx>components/Walkthrough.tsx":["Walkthrough"],"components/AssetView.tsx>components/AiPanel.tsx":["AiPanel","AiKind"],"components/AssetView.tsx>components/VendorHistory.tsx":["VendorHistory"],"components/AssetView.tsx>lib/history.ts":["mergedHistory","scoreBand","trackScore"],"components/AssetView.tsx>lib/focus.ts":["flash"],"components/MasterModal.tsx>lib/store.tsx":["useStudio"],"components/MasterModal.tsx>lib/data.ts":["ASSETS","DEFAULT_MASTER","Master"],"components/RealTalk.tsx>lib/store.tsx":["useStudio"],"components/RealTalk.tsx>lib/data.ts":["ASSETS","RESEARCH_DATE"],"components/RealTalk.tsx>lib/calc.ts":["aName","aiContext","assetById","partInfo","portfolio"],"components/RealTalk.tsx>lib/ai.ts":["llm","errText","Turn"],"components/RealTalk.tsx>components/Markdown.tsx":["Markdown"],"components/RealTalk.tsx>lib/focus.ts":["flash","SECTIONS","assetFromText","makeScanner","flashEl","findFigure","inView","Mention"],"components/Studio.tsx>lib/store.tsx":["StudioProvider","useStudio"],"components/Studio.tsx>lib/data.ts":["ASSETS","RESEARCH_DATE"],"components/Studio.tsx>lib/calc.ts":["aName","compute","money"],"components/Studio.tsx>lib/iso.ts":["siteSVG"],"components/Studio.tsx>components/AssetView.tsx":["AssetView"],"components/Studio.tsx>components/MasterModal.tsx":["MasterModal"],"components/Studio.tsx>components/RealTalk.tsx":["RealTalk"],"components/VendorHistory.tsx>lib/store.tsx":["useStudio"],"components/VendorHistory.tsx>lib/data.ts":["Asset"],"components/VendorHistory.tsx>lib/calc.ts":["money"],"components/VendorHistory.tsx>lib/history.ts":["mergedHistory","scoreBand","trackScore","Review"],"components/Walkthrough.tsx>lib/store.tsx":["useStudio"],"components/Walkthrough.tsx>lib/data.ts":["PARTS","TECH","Asset"],"components/Walkthrough.tsx>lib/calc.ts":["aName","amt","benchFlag","benchFor","compute","money","rate","rowObj"],"components/Walkthrough.tsx>lib/walkEngine.ts":["createEngine","Engine","TOUR"],"lib/calc.ts>lib/data.ts":["ASSETS","INTEL","TECH","PARTS","SRC","RESEARCH_DATE","Asset","Cell","Master","Row","Vendor"],"lib/calc.ts>lib/history.ts":["mergedHistory","trackScore","Review"],"lib/focus.ts>lib/data.ts":["Asset"],"lib/iso.ts>lib/data.ts":["ASSETS","Master"],"lib/iso.ts>lib/calc.ts":["compute","money","aName","Comp"],"lib/store.tsx>lib/data.ts":["DEFAULT_MASTER","Master"],"lib/store.tsx>lib/calc.ts":["Disc"],"lib/store.tsx>lib/history.ts":["Review"],"lib/walkEngine.ts>lib/data.ts":["Asset"]}};
+// ---------- derive ----------
+const nodes = G.nodes, byPath = Object.fromEntries(nodes.map(n=>[n.path,n]));
+nodes.forEach(n=>{n.imports=[];n.importers=[];n.firstCommit=null;n.changes=[];});
+G.edges.forEach(([a,b])=>{byPath[a].imports.push(b);byPath[b].importers.push(a);});
+G.commits.forEach((c,i)=>{c.i=i;c.t=new Date(c.date);c.changes.forEach(ch=>{const n=byPath[ch.path];if(!n)return;if(ch.kind==='A')n.firstCommit=c;n.changes.push({c,ch});});});
+const LAYER_COLOR={foundation:'#8a7a63',data:'#4fe3d8',logic:'#ffb429',api:'#c98cff',interface:'#5ad45a',shell:'#ff8c5a'};
+const LAYER_SHORT={foundation:'FOUNDATION',data:'DATA',logic:'LOGIC',api:'API',interface:'INTERFACE',shell:'SHELL'};
+const fmtT=d=>d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Kolkata'});
+const fmtD=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Kolkata'});
+document.getElementById('siteName').textContent=G.project.toUpperCase()+' · '+G.repo;
+
+// ---------- building layout ----------
+const BX=300,BW=440,GROUND=500,BH=14,GAP=3,FLOOR_PAD=8,PLATE=6;
+const floors=[];let y=GROUND;
+G.layers.forEach(L=>{
+  const items=nodes.filter(n=>n.layer===L.id);
+  // width by lines, log-scaled so package-lock does not eat the floor
+  items.forEach(n=>{n.w=Math.max(18,Math.min(150,Math.round(14+Math.log2(1+n.lines)*9)));});
+  const rows=[];let row=[],x=0;
+  items.forEach(n=>{if(x+n.w>BW-16&&row.length){rows.push(row);row=[];x=0;}row.push(n);n.rx=x;x+=n.w+GAP;});
+  if(row.length)rows.push(row);
+  const h=rows.length*(BH+GAP)+FLOOR_PAD*2;
+  y-=h;
+  rows.forEach((r,ri)=>{const used=r.reduce((s,n)=>s+n.w+GAP,0)-GAP;const off=Math.round((BW-16-used)/2)+8;r.forEach(n=>{n.x=BX+off+n.rx;n.y=y+FLOOR_PAD+ri*(BH+GAP);n.h=BH;});});
+  floors.push({...L,y,h,color:LAYER_COLOR[L.id]});
+  y-=PLATE;
+});
+const TOP=y;
+
+// ---------- timeline model ----------
+// state: commit index k (0 = empty site), progress p in [0,1] within commit k
+let k=0,p=0,playing=false,speed=1,showLinks=false,sel=null,hover=null;
+const C=G.commits;
+// per commit: ordered events (foundation layers first), each gets a slot in p
+function eventsOf(c){const order=G.layers.map(l=>l.id);return c.changes.map(ch=>({ch,n:byPath[ch.path]})).filter(e=>e.n).sort((a,b)=>order.indexOf(a.n.layer)-order.indexOf(b.n.layer)||a.n.x-b.n.x).map(e=>({...e,kind:e.ch.kind==='A'?'add':(e.ch.del>=20?'demolish':'modify')}));}
+C.forEach(c=>{c.ev=eventsOf(c);c.ev.forEach((e,i)=>{e.t0=i/c.ev.length;e.t1=(i+1)/c.ev.length;});});
+function brickState(n){ // 'none' | 'ghost' | 'placing' | 'built'
+  if(!n.firstCommit)return 'built';
+  const fi=n.firstCommit.i;
+  if(k<=fi)return 'none';
+  if(k===fi+1){const e=C[fi].ev.find(e=>e.n===n);if(p<e.t0)return 'none';if(p<e.t1)return 'placing';}
+  return 'built';
+}
+function activeEvent(){if(k===0||k>C.length)return null;const c=C[k-1];return c.ev.find(e=>p>=e.t0&&p<e.t1)||null;}
+function currentTime(){if(k===0)return null;const c=C[k-1];const prev=k>1?C[k-2].t:new Date(c.t-15*60000);return new Date(prev.getTime()+(c.t-prev)*Math.min(1,p));}
+
+// ---------- drawing helpers ----------
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');ctx.imageSmoothingEnabled=false;
+const R=(x,y,w,h,c)=>{ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
+function sprite(rows,pal,x,y,s=2){rows.forEach((r,j)=>{for(let i=0;i<r.length;i++){const ch=r[i];if(ch===' '||ch==='.')continue;R(x+i*s,y+j*s,s,s,pal[ch]);}});}
+function text(t,x,y,size,c,align='left'){ctx.font=size+'px "Press Start 2P", monospace';ctx.fillStyle=c;ctx.textAlign=align;ctx.textBaseline='top';ctx.fillText(t,Math.round(x),Math.round(y));}
+
+const JCB=[
+'......YYYYYYY........',
+'.....YYYYYYYYY.......',
+'.....YDDDDDDY........',
+'.....YDCCCCDY........',
+'YYYYYYDCCCCDYYYYYYYY.',
+'YYYYYYYYYYYYYYYYYYYYY',
+'YYYYYYYYYYYYYYYYYYYYY',
+'.KKK.YYYYYYYYYY.KKK..',
+'KKKKK..........KKKKK.',
+'KKKKK..........KKKKK.',
+'.KKK............KKK..'];
+const JCBPAL={Y:'#ffb429',D:'#1a1200',C:'#9fe7ff',K:'#1b1b1b'};
+const CRANEPAL={M:'#e0493a',L:'#ffd36b',K:'#1a1200',W:'#444'};
+
+function drawSky(now){
+  // Delhi, late September: golden hour around 17:30, sunset ~18:10
+  let h=now?now.getHours()+now.getMinutes()/60:16.5; // IST hours
+  // convert to IST explicitly
+  if(now){const ist=new Date(now.getTime()+(330+now.getTimezoneOffset())*60000);h=ist.getHours()+ist.getMinutes()/60;}
+  const t=Math.max(0,Math.min(1,(h-16)/2.2)); // 16:00 blue -> 18:12 dusk
+  const top=mix('#3f6fb8','#2b1f4e',t),bot=mix('#9fc4ea','#ff7a3d',t);
+  const g=ctx.createLinearGradient(0,0,0,GROUND);g.addColorStop(0,top);g.addColorStop(1,bot);ctx.fillStyle=g;ctx.fillRect(0,0,960,GROUND);
+  // sun arcs down to the horizon
+  const sx=120+t*700,sy=60+t*380;R(sx-10,sy-10,20,20,'#fff2a8');R(sx-14,sy-6,28,12,'#fff2a8');R(sx-6,sy-14,12,28,'#fff2a8');
+  if(t>0.55){for(let i=0;i<40;i++){const x=(i*241)%960,y=(i*97)%260;R(x,y,2,2,`rgba(255,255,255,${(t-0.55)*2})`);}}
+  // far skyline
+  for(let i=0;i<24;i++){const x=i*42,w=30,hh=30+((i*37)%60);R(x,GROUND-hh,w,hh,mix('#6c8fc2','#20163a',t));for(let j=0;j<hh/14;j++)for(let q=0;q<3;q++){if((i+j+q)%3)R(x+6+q*9,GROUND-hh+8+j*14,4,5,t>0.5?'#ffd36b':'#d5e4f7');}}
+  // ground
+  R(0,GROUND,960,60,'#2a2a2a');R(0,GROUND,960,4,'#555');for(let x=0;x<960;x+=28)R(x,GROUND+30,14,4,'#3a3a3a');
+}
+function mix(a,b,t){const pa=hex(a),pb=hex(b);return `rgb(${pa.map((v,i)=>Math.round(v+(pb[i]-v)*t)).join(',')})`;}
+function hex(h){return [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));}
+
+function drawSign(){
+  R(14,GROUND-160,146,78,'#f3e9c6');ctx.strokeStyle='#5a3a1a';ctx.lineWidth=4;ctx.strokeRect(16,GROUND-158,142,74);
+  R(30,GROUND-82,8,82,'#5a3a1a');R(136,GROUND-82,8,82,'#5a3a1a');
+  text('HOUSE OF RAMA',87,GROUND-150,8,'#5a3a1a','center');text('SITE 01',87,GROUND-134,8,'#b4341f','center');
+  text(G.project.toUpperCase(),87,GROUND-114,6,'#2a2a2a','center');text('BUILT ON TRUST',87,GROUND-100,6,'#2a2a2a','center');
+}
+function drawOffice(){ // site office: where the discovery session happened
+  const x=796,y=GROUND-64;R(x,y,140,64,'#cfd3d8');R(x,y,140,6,'#5a5f66');R(x-4,y-2,148,4,'#3a3f45');
+  R(x+10,y+16,34,22,'#9fe7ff');R(x+26,y+16,2,22,'#5a5f66');R(x+10,y+26,34,2,'#5a5f66');
+  R(x+96,y+16,34,22,'#9fe7ff');R(x+112,y+16,2,22,'#5a5f66');R(x+96,y+26,34,2,'#5a5f66');
+  R(x+58,y+22,24,42,'#5a3a1a');R(x+76,y+42,3,3,'#ffd36b');
+  R(x+8,y-18,124,14,'#1a1200');text('SITE OFFICE · DISCOVERY',x+70,y-14,5,'#ffb429','center');
+  R(x-2,GROUND,144,4,'#444');
+}
+function drawScaffold(){
+  const x=BX+BW+6,w=26;for(let yy=GROUND;yy>TOP-20;yy-=24){R(x,yy-24,3,24,'#9aa0a6');R(x+w,yy-24,3,24,'#9aa0a6');R(x,yy-4,w+3,3,'#c3c8cc');R(x+3,yy-20,w-3,2,'#777');}
+  R(x-2,TOP-26,w+8,10,'#ffb429');text(G.branches[0],x+w/2+1,TOP-24,6,'#1a1200','center');
+}
+function drawCrane(x,label,color){
+  // mast
+  for(let yy=GROUND;yy>TOP-70;yy-=16){R(x-6,yy-16,12,16,color);R(x-4,yy-12,8,2,'#1a1200');R(x-4,yy-6,8,2,'#1a1200');}
+  const jy=TOP-70;
+  if(x<520){R(x-70,jy,400,8,color);R(x-70,jy+8,60,4,'#1a1200');for(let i=0;i<16;i++)R(x+i*22,jy+8,3,6,'#1a1200');}
+  else{R(x-330,jy-30,400,8,color);R(x+10,jy-22,60,4,'#1a1200');for(let i=0;i<16;i++)R(x-i*22,jy-22,3,6,'#1a1200');R(x-6,jy-30,12,30,color);}
+  const cy=x<520?jy:jy-30;R(x-12,cy-26,24,26,'#444');R(x-8,cy-20,16,10,'#9fe7ff');
+  // name board
+  R(x-50,cy-46,100,16,'#1a1200');text(label.toUpperCase().slice(0,14),x,cy-42,6,color,'center');
+}
+function drawHook(hook){const jy=TOP-70;const {hx,hy,n}=hook;R(hx-1,jy+12,2,Math.max(0,hy-jy-12),'#ddd');R(hx-6,hy-6,12,6,'#ddd');drawBrick(n,hx-n.w/2,hy,'placing');}
+function drawBrick(n,x,y,state,alpha=1){
+  const col=LAYER_COLOR[n.layer];
+  if(state==='placing'){ctx.globalAlpha=alpha;}
+  R(x,y,n.w,n.h,col);R(x,y,n.w,2,'rgba(255,255,255,.45)');R(x,y+n.h-2,n.w,2,'rgba(0,0,0,.45)');R(x+n.w-2,y,2,n.h,'rgba(0,0,0,.35)');
+  // mortar joints
+  for(let i=10;i<n.w-4;i+=14)R(x+i,y+(((i/14)|0)%2?2:7),2,5,'rgba(0,0,0,.25)');
+  if(!n.test){R(x+2,y+2,3,3,'#ff4d5e');} // untested marker
+  if(n.binary)R(x+n.w-6,y+2,3,3,'#fff');
+  ctx.globalAlpha=1;
+}
+let jcb={x:40,tx:40,busy:null,anim:0},dust=[];
+function drawJCB(){
+  const s=3;sprite(JCB,JCBPAL,jcb.x,GROUND-11*s,s);
+  // boom + bucket
+  const bx=jcb.x+21*s,by=GROUND-9*s;R(bx-6,by,26,4,'#ffb429');const up=jcb.busy?Math.abs(Math.sin(jcb.anim*6))*40:0;R(bx+18,by-up,4,up+4,'#ffb429');R(bx+10,by-up-10,22,12,'#444');R(bx+12,by-up-14,18,4,'#777');
+}
+function updateFx(dt){
+  const ev=activeEvent();
+  if(ev&&ev.kind==='demolish'){jcb.tx=Math.min(880,Math.max(0,ev.n.x+ev.n.w/2-70));jcb.busy=ev;jcb.anim+=dt;
+    if(Math.random()<0.4)dust.push({x:ev.n.x+Math.random()*ev.n.w,y:ev.n.y+ev.n.h,vx:(Math.random()-0.5)*40,vy:20+Math.random()*60,life:1.2,c:LAYER_COLOR[ev.n.layer]});}
+  else{jcb.busy=null;if(!playing&&k===0)jcb.tx=40;}
+  jcb.x+=(jcb.tx-jcb.x)*Math.min(1,dt*3);
+  dust.forEach(d=>{d.x+=d.vx*dt;d.y+=d.vy*dt;d.vy+=120*dt;d.life-=dt;});dust=dust.filter(d=>d.life>0&&d.y<GROUND+4);
+}
+function drawLinks(n){
+  if(!n)return;ctx.lineWidth=2;
+  n.imports.forEach(q=>{if(brickState(q)!=='built')return;cable(n,q,'#4fe3d8');});
+  n.importers.forEach(q=>{if(brickState(q)!=='built')return;cable(q,n,'#ffb429');});
+}
+function cable(a,b,c){const ax=a.x+a.w/2,ay=a.y+a.h,bx=b.x+b.w/2,by=b.y;ctx.strokeStyle=c;ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax,ay+5);ctx.lineTo(bx,by-5);ctx.lineTo(bx,by);ctx.stroke();R(bx-3,by-3,6,6,c);}
+
+function draw(){
+  const now=currentTime();drawSky(now);drawSign();
+  // foundation trench / slab appears at k>=1
+  if(k>=1){R(BX-10,GROUND-6,BW+20,6,'#6b6b6b');R(BX-14,GROUND-2,BW+28,4,'#444');}
+  else{R(BX-10,GROUND,BW+20,10,'#1a1a1a');R(BX+BW/2-150,GROUND-60,300,40,'rgba(10,9,20,.8)');text('SITE CLEARED · PRESS PLAY',BX+BW/2,GROUND-50,8,'#fff','center');text('THE TEAM IS IN THE SITE OFFICE →',BX+BW/2,GROUND-32,6,'#ffb429','center');}
+  const evc=activeEvent();const hooks=[];
+  G.authors.forEach((a,i)=>{const x=i===0?430:610;const col=i===0?'#e0493a':'#ffb429';drawCrane(x,a,col);
+    if(evc&&evc.kind==='add'&&C[k-1].author===a){const t=(p-evc.t0)/(evc.t1-evc.t0);const hy=TOP-70+(evc.n.y-(TOP-70))*ease(t);hooks.push({hx:evc.n.x+evc.n.w/2,hy,n:evc.n});}
+    if(evc&&C[k-1].author===a){R(x-40,TOP-130,80,14,'#1a1200');text('BUILDING',x,TOP-126,6,'#fff','center');}
+  });
+  drawOffice();
+  drawScaffold();
+  // floors
+  floors.forEach(f=>{
+    const built=nodes.filter(n=>n.layer===f.id&&brickState(n)==='built').length,total=nodes.filter(n=>n.layer===f.id).length;
+    if(!built)return;
+    R(BX,f.y-PLATE,BW,PLATE,'#4a4658');R(BX,f.y,BW,f.h,'#262233');R(BX,f.y,2,f.h,'#5a566a');R(BX+BW-2,f.y,2,f.h,'#15121f');
+    // floor plate label
+    R(BX-130,f.y+f.h/2-9,124,18,'#1a1200');R(BX-130,f.y+f.h/2-9,4,18,f.color);text(LAYER_SHORT[f.id],BX-120,f.y+f.h/2-4,7,f.color);text(built+'/'+total,BX-12,f.y+f.h/2-4,6,'#8f8a78','right');
+  });
+  const ev=activeEvent();
+  nodes.forEach(n=>{const st=brickState(n);if(st==='built'){drawBrick(n,n.x,n.y,'built');
+    if(ev&&ev.n===n&&ev.kind!=='add'){const fl=ev.kind==='demolish'?'#ff4d5e':'#fff';ctx.strokeStyle=fl;ctx.lineWidth=2;ctx.strokeRect(n.x-2,n.y-2,n.w+4,n.h+4);
+      const tag=(ev.ch.add?'+'+ev.ch.add:'')+(ev.ch.del?' −'+ev.ch.del:'');text(tag.trim(),n.x+n.w/2,n.y-14,7,fl,'center');}
+  }});
+  hooks.forEach(drawHook);
+  if(showLinks||sel)drawLinks(sel||hover);
+  if(glow.size){const pulse=0.55+0.45*Math.sin(performance.now()/300);nodes.forEach(n=>{if(glow.has(n.path)&&brickState(n)==='built'){ctx.strokeStyle=`rgba(255,180,41,${pulse})`;ctx.lineWidth=3;ctx.strokeRect(n.x-3,n.y-3,n.w+6,n.h+6);}});}
+  if(sel){ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.strokeRect(sel.x-3,sel.y-3,sel.w+6,sel.h+6);}
+  // showroom door: the real UI lives behind this glass
+  if(k>=1){const dx=BX+BW/2-22,dy=GROUND-34;R(dx-4,dy-12,52,46,'#1a1200');R(dx,dy,44,34,'#9fe7ff');R(dx+20,dy,4,34,'#1a1200');R(dx+2,dy+2,18,30,'rgba(255,255,255,.35)');text('SHOWROOM',dx+22,dy-10,5,'#ffb429','center');}
+  drawJCB();dust.forEach(d=>R(d.x,d.y,3,3,d.c));drawAudit();
+  // top banner: commit
+  if(k>0&&!audit){const c=C[k-1];R(0,0,960,22,'rgba(0,0,0,.45)');text(`COMMIT ${k}/${C.length}  ${c.short}  ${c.subject.toUpperCase().slice(0,52)}`,10,7,7,'#ffb429');}
+  // timeline ends
+  if(k>C.length-1&&p>=1){R(BX+BW/2-130,TOP-210,260,30,'#1a1200');text('SPRINT 1 COMPLETE · AWAITING SIGN-OFF',BX+BW/2,TOP-200,6,'#5ad45a','center');}
+}
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+// ---------- loop ----------
+let last=performance.now();
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(playing){p+=dt*0.22*speed*(k===0?3:1);if(p>=1){if(k<C.length){k++;p=0;}else{p=1;playing=false;setPlay();}}}
+  updateFx(dt);updateAudit(dt);draw();updateDeck();requestAnimationFrame(loop);}
+// ---------- deck ----------
+const track=document.getElementById('track');
+C.forEach((c,i)=>{const b=document.createElement('button');b.className='tick';b.style.left=((i+1)/(C.length+1)*100)+'%';b.innerHTML=`<span>${fmtT(c.t)}</span>`;b.title=c.subject;b.setAttribute('aria-label','Commit '+(i+1)+': '+c.subject);b.onclick=()=>{k=i+1;p=1;playing=false;setPlay();showCommit(c);};track.appendChild(b);});
+const start=document.createElement('button');start.className='tick';start.style.left='0%';start.innerHTML='<span>Site</span>';start.onclick=()=>{k=0;p=0;playing=false;setPlay();showReport();};track.appendChild(start);
+const fill=document.getElementById('fill'),clock=document.getElementById('clock');
+function updateDeck(){const frac=(k+Math.min(1,p))/(C.length+1);fill.style.width=(frac*100)+'%';
+  [...track.querySelectorAll('.tick')].forEach((t,i)=>{const idx=i<C.length?i+1:0;t.classList.toggle('done',idx<=k&&(idx<k||p>=1)&&idx!==0);t.classList.toggle('cur',idx===k);});
+  const now=currentTime();clock.textContent=now?fmtT(now)+' IST':fmtD(C[0].t);}
+function setPlay(){document.getElementById('play').textContent=playing?'❚❚ Pause':'▶ Play';document.getElementById('play').classList.toggle('on',playing);}
+document.getElementById('play').onclick=()=>{if(k>C.length-1&&p>=1){k=0;p=0;}playing=!playing;setPlay();};
+document.getElementById('prev').onclick=()=>{k=Math.max(0,k-1);p=k?1:0;playing=false;setPlay();k?showCommit(C[k-1]):showReport();};
+document.getElementById('next').onclick=()=>{k=Math.min(C.length,k+1);p=1;playing=false;setPlay();showCommit(C[k-1]);};
+document.getElementById('speed').onclick=e=>{speed=speed===1?2:speed===2?4:1;e.target.textContent='Speed '+speed+'×';};
+document.getElementById('links').onclick=e=>{showLinks=!showLinks;e.target.textContent='Links: '+(showLinks?'on':'off');e.target.classList.toggle('on',showLinks);};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')document.getElementById('next').click();if(e.key==='ArrowLeft')document.getElementById('prev').click();if(e.key===' '&&e.target===document.body){e.preventDefault();document.getElementById('play').click();}});
+// legend
+document.getElementById('legend').innerHTML=G.layers.map(l=>`<span><i style="background:${LAYER_COLOR[l.id]}"></i>${l.label.split(' — ')[0]}</span>`).join('')+`<span><i style="background:#ff5a6a;width:7px;height:7px;border-radius:50%"></i>No test behind this brick</span><span><i style="background:#4fe3d8"></i>Imports</span><span><i style="background:#ffb429"></i>Imported by</span>`;
+
+// ---------- plain English for every link ----------
+// Each exported symbol in the repo, described the way a reviewer would say it. The import statements decide which phrases appear; the words here only translate them.
+const WORDS={
+  // lib/data.ts
+  ASSETS:'the six packages with their vendors and bills of quantities',DEFAULT_MASTER:'the default plant assumptions',INTEL:'the web intel on each vendor',TECH:'the technical-spec comparison per package',PARTS:'what each machine part is and what to check on it',SRC:'the source links behind the research',RESEARCH_DATE:'the date the market research was done',
+  Asset:'the shape of a package record',Cell:'the shape of one quoted line',Master:'the shape of the plant assumptions',Row:'the shape of a BoQ row',Vendor:'the shape of a vendor record',
+  // lib/calc.ts
+  compute:'per-vendor totals after loading scope gaps and normalising for capacity and lifecycle cost',money:'rupee figures in lakh and crore',rate:'unit rates formatted',amt:'quantity × rate for one line',aName:'the package name as renamed in Master data',assetById:'a package looked up by its id',benchFor:'the market benchmark for a line',benchFlag:'whether a quote sits inside the benchmark range',aiContext:'the package summary handed to the AI',portfolio:'the whole-plant capex total and spread',partInfo:'a part’s description for the 3D view',rowObj:'a BoQ row in named fields',Comp:'the shape of a comparison result',Disc:'the shape of discovered market prices',
+  // lib/iso.ts
+  siteSVG:'the isometric plant map',
+  // lib/store.tsx
+  useStudio:'the shared state: open package, assumptions, selection, AI health, reviews',StudioProvider:'the shared state set up for the whole app',
+  // lib/history.ts
+  mergedHistory:'a vendor’s past jobs and reviews, including ones added in this browser',trackScore:'the 0–100 track score',scoreBand:'the good / warn / bad band for a score',Review:'the shape of a review',
+  // lib/focus.ts
+  flash:'scroll to and highlight a section',flashEl:'highlight one element',SECTIONS:'which screen section each spoken target means',assetFromText:'which package a sentence is about',makeScanner:'spotting vendors, parts and figures in a spoken answer',findFigure:'the on-screen figure a sentence refers to',inView:'whether an element is on screen',Mention:'the shape of a spotted mention',
+  // lib/ai.ts
+  llm:'a text answer from the model via /api/llm',llmJson:'a structured answer from the model',errText:'API errors turned into plain English',Turn:'the shape of a chat turn',
+  // lib/walkEngine.ts
+  createEngine:'the 3D machine built with its cameras',TOUR:'the guided tour order',Engine:'the shape of the 3D engine',
+  // lib/server/config.ts
+  cfg:'server-side settings and the OpenAI key',
+  // components
+  AssetView:'the package screen it opens when you click a machine',MasterModal:'the Master data form',RealTalk:'the voice advisor dock',Walkthrough:'the 3D walkthrough',AiPanel:'the typed Q&A panel',AiKind:'the kinds of AI brief',Markdown:'rendering of AI answers',VendorHistory:'the vendor track record',Studio:'the whole Studio screen',
+};
+const edgeSyms=(a,b)=>(G.edgeSyms&&G.edgeSyms[a+'>'+b])||[];
+function english(a,b){ // what brick a takes from brick b
+  let ss=edgeSyms(a,b);if(ss.includes('StudioProvider')&&ss.includes('useStudio'))ss=ss.filter(x=>x!=='StudioProvider');const ph=ss.map(s=>WORDS[s]).filter(Boolean);
+  if(!ph.length)return '';
+  const shapes=ph.filter(p=>p.startsWith('the shape of')),rest=ph.filter(p=>!p.startsWith('the shape of'));
+  const out=[...rest];if(shapes.length&&!rest.length)out.push('only the record formats');else if(shapes.length)out.push('and the record formats');
+  return out.join('; ');
+}
+function depList(n){ // "Depends on" in English
+  return n.imports.map(q=>`<div class="dep"><span class="lnk" data-p="${q}">↓ ${q}</span><div class="en">${esc(english(n.path,q)||'used, but only for its formats')}</div></div>`).join('');
+}
+function useList(n){ // "Used by" in English, from the other side
+  return n.importers.map(q=>`<div class="dep"><span class="lnk" data-p="${q}">↑ ${q}</span><div class="en">takes ${esc(english(q,n.path)||'its formats')}</div></div>`).join('');
+}
+function reviewerLine(n){ // one paragraph a CFO can read
+  const floors=G.layers.map(l=>l.id);const by={};n.imports.forEach(q=>{const f=byPath[q].layer;(by[f]=by[f]||[]).push(q);});
+  const parts=floors.filter(f=>by[f]).map(f=>{const names=by[f].map(q=>q.split('/').pop().replace(/\.(tsx?|css|mjs|json)$/,''));return `${by[f].length} on the ${LAYER_SHORT[f].toLowerCase()} floor (${names.join(', ')})`;});
+  const needs=n.imports.length?`It needs ${n.imports.length} other brick${n.imports.length>1?'s':''}: ${parts.join('; ')}.`:'It needs nothing else to do its job.';
+  const used=n.importers.length?` ${n.importers.length} brick${n.importers.length>1?'s rely':' relies'} on it, so a change here is felt in ${n.importers.length>1?'all of them':'that screen'}.`:' Nothing else relies on it, so it can change without side effects.';
+  const test=n.importers.length>=4?' With this many dependants and no test behind it, this is one of the bricks a reviewer should ask to see verified first.':'';
+  return needs+used+test;
+}
+
+// ---------- showroom: the real Procurement Studio, photographed from the built app ----------
+const SCREENS=[
+ {id:'site',title:'Site plan',file:'shots/site.jpg',cap:'The home screen: the Bikaner plant as an isometric site plan, six packages with L1 totals and the portfolio spread. Click any machine to open its bids.',
+  bricks:['components/Studio.tsx','lib/iso.ts','lib/data.ts','lib/calc.ts','lib/store.tsx','app/page.tsx','app/layout.tsx','app/globals.css']},
+ {id:'package',title:'Package & vendor cards',file:'shots/package.jpg',cap:'One package opened (biomass steam boiler): requirement, bid spread, scope-gap flags and a card per vendor with quoted, incl. GST and per-TPH prices.',
+  bricks:['components/AssetView.tsx','lib/data.ts','lib/calc.ts','lib/history.ts','lib/store.tsx']},
+ {id:'boq',title:'BoQ comparison',file:'shots/boq.jpg',cap:'Bill of quantities side by side: 16 line items, three vendors, lowest amount shaded, gaps loaded, GST and grand totals.',
+  bricks:['components/AssetView.tsx','lib/calc.ts','lib/data.ts']},
+ {id:'walk',title:'3D walkthrough',file:'shots/walk.jpg',cap:'Low-res wireframe of the boiler. Every numbered part is a BoQ line; the side sheet compares offered technical specs against the requirement.',
+  bricks:['components/Walkthrough.tsx','lib/walkEngine.ts','lib/data.ts','lib/calc.ts','public/boiler-ref.jpg']},
+ {id:'history',title:'Vendor track record',file:'shots/history.jpg',cap:'Past jobs with the client, warranties honoured, plant satisfaction, and a 0-100 track score per vendor.',
+  bricks:['components/VendorHistory.tsx','lib/history.ts','lib/calc.ts']},
+ {id:'intel',title:'Vendor intel',file:'shots/intel.jpg',cap:'Web-researched intel per vendor: dealer ratings, complaint flags, strengths, with source links.',
+  bricks:['components/AssetView.tsx','lib/data.ts']},
+ {id:'advisory',title:'AI Proc Advisory',file:'shots/advisory.jpg',cap:'The voice advisor dock. Photographed without an OpenAI key, so it says so: voice needs the key in .env.local. The typed channel and screen-moving function calls live here.',
+  bricks:['components/RealTalk.tsx','lib/focus.ts','lib/ai.ts','app/api/realtime/session/route.ts','app/api/llm/route.ts','app/api/health/route.ts','lib/server/config.ts','proxy.ts']},
+ {id:'master',title:'Master data',file:'shots/master.jpg',cap:'Plant assumptions that drive the normalisation: fuel price, GCV, hours, load factor, horizon, tariff.',
+  bricks:['components/MasterModal.tsx','lib/store.tsx','lib/data.ts']},
+];
+const screensOf=n=>SCREENS.filter(sc=>sc.bricks.includes(n.path));
+let curScreen=null,glow=new Set();
+const showEl=document.getElementById('show');
+function openShow(id){closeDisc();if(audit){audit=null;document.getElementById('auditBtn').classList.remove('on');}mon.dataset.view='';const sc=SCREENS.find(x=>x.id===id)||SCREENS[0];curScreen=sc;glow=new Set(sc.bricks);playing=false;setPlay();
+  if(k<C.length){k=C.length;p=1;}
+  showEl.hidden=false;showEl.innerHTML=`<div class="bar"><h4>Showroom · ${esc(sc.title)}</h4><span class="real">Real UI · photographed from the built app</span>${(HOT[sc.id]||[]).length?`<span class="hint">Outlined figures are traceable — click one</span>`:''}<button id="closeShow">✕ Back to site</button></div>
+  <div class="view"><div class="shotwrap"><img src="${sc.file}" alt="${esc(sc.title)} screen of Procurement Studio">${(HOT[sc.id]||[]).map(h=>`<button class="hot" data-t="${h.t}" style="left:${h.x}%;top:${h.y}%;width:${h.w}%;height:${h.h}%" title="Trace ${esc(TRACES[h.t].figure)}" aria-label="Trace ${esc(TRACES[h.t].figure)}"></button>`).join('')}</div></div>
+  <div class="strip">${SCREENS.map(x=>`<button data-s="${x.id}" class="${x.id===sc.id?'on':''}"><img src="${x.file}" alt=""><span>${x.title}</span></button>`).join('')}</div>`;
+  showEl.querySelector('#closeShow').onclick=closeShow;showEl.querySelectorAll('.hot').forEach(b=>b.onclick=()=>showTrail(b.dataset.t));showEl.querySelectorAll('.strip button').forEach(b=>b.onclick=()=>openShow(b.dataset.s));
+  mon.innerHTML=`<h2>Screen · ${esc(sc.title)}</h2><p>${esc(sc.cap)}</p><p><span class="pill green">${sc.bricks.length} BRICKS BEHIND THIS SCREEN</span></p>
+  <div class="links">${sc.bricks.map(q=>`<span class="lnk" data-p="${q}">▪ ${q}</span>`).join('')}</div>
+  <p class="note">Every screen here was captured by running the repository as it stands (npm run build, next start), with no key configured. Close the showroom and the bricks that render this screen stay lit on the building.</p>
+  <button class="back" id="back">◀ Trust report</button>`;
+  wireLinks();document.getElementById('back').onclick=()=>{closeShow();glow=new Set();sel=null;showReport();};
+}
+function closeShow(){showEl.hidden=true;showEl.innerHTML='';}
+document.getElementById('showBtn').onclick=()=>openShow(curScreen?curScreen.id:'site');
+// ---------- discovery session: the conversation before the first commit ----------
+// Reconstructed from what the repository actually shipped. Roles, not real names; illustrative dialogue, not a recording.
+const PEOPLE={
+  ph:{name:'Procurement Head',org:'client',ini:'PH',c:'#ffb429'},
+  pe:{name:'Plant Engineer',org:'client',ini:'PE',c:'#5ad45a'},
+  fc:{name:'Finance Controller',org:'client',ini:'FC',c:'#c98cff'},
+  jw:{name:'jouleWise consultant',org:'advisor',ini:'JW',c:'#4fe3d8'},
+  rm:{name:'Rama',org:'master agent',ini:'R',c:'#ece8dc'},
+};
+const SESSION=[
+ {topic:'The problem',time:'10:00',items:[
+  {w:'ph',t:'We have three quotes for the biomass boiler and they do not compare. One includes the chimney, one excludes erection, one is priced per TPH. The committee argues about the spreadsheet instead of the boiler.'},
+  {w:'fc',t:'And it is not one package. Solar, fryer, extruder, packaging, thermic fluid heater, boiler. Six decisions, 18 offers, one capex approval for Bikaner Unit 2.'},
+  {w:'rm',t:'So the job is not a vendor portal. It is a way for the committee to see every offer on one basis and know why one is cheaper. I will keep the scope to those six packages for this plant.'},
+  {dec:'Scope: six capex packages, one plant',text:'The Studio covers exactly the six Bikaner Unit 2 packages. Vendor quotes are sample data until the real ones are loaded, and the screen says so.',bricks:['lib/data.ts','components/Studio.tsx'],screen:'site'},
+ ]},
+ {topic:'How it should open',time:'10:20',items:[
+  {w:'pe',t:'When I open it I want to see the plant, not a table. Where the boiler sits, where the fryer line is. Then click the machine.'},
+  {w:'jw',t:'An isometric site plan as the home screen, with the L1 figure printed on each machine. The whole capex spread visible before you open anything.'},
+  {w:'rm',t:'Agreed. Site plan first, packages as clickable equipment, open purchase requisitions listed beside it with L1 and L1-to-H1 spread.'},
+  {dec:'Home screen is the site plan',text:'Isometric plant drawing with every package labelled and priced; the requisition list sits next to it.',bricks:['lib/iso.ts','components/Studio.tsx','lib/calc.ts'],screen:'site'},
+ ]},
+ {topic:'Comparing bids line by line',time:'10:45',items:[
+  {w:'ph',t:'Inside a package I need the bill of quantities side by side. Item by item. Who quoted what spec, what quantity, what rate.'},
+  {w:'fc',t:'And when a vendor leaves something out, do not just mark it missing. Load it. Otherwise the vendor who forgot the chimney wins.'},
+  {w:'rm',t:'Scope gaps get filled at the best quoted rate for that line and added to that vendor\'s total. Lowest amount per line is shaded. A market benchmark column sits at the end for every line.'},
+  {dec:'BoQ comparison with gap loading',text:'16 lines for the boiler, three vendors, lowest shaded, gaps loaded not ignored, GST and grand totals, benchmark per line.',bricks:['components/AssetView.tsx','lib/calc.ts','lib/data.ts'],screen:'boq'},
+ ]},
+ {topic:'Putting offers on one basis',time:'11:15',items:[
+  {w:'fc',t:'Price is not the decision. A cheaper boiler at 80% efficiency costs us more briquettes for ten years.'},
+  {w:'pe',t:'Then the assumptions matter: briquette price, GCV, running hours, load factor. Those are ours, not the vendor\'s, and they change.'},
+  {w:'rm',t:'Three normalisations: scope-adjusted price, capacity-adjusted price per TPH or kWp, and lifecycle cost over the horizon. The plant assumptions live in one editable Master data form and every figure recomputes.'},
+  {dec:'Normalisation driven by Master data',text:'Fuel price, GCV, hours, load factor, horizon and tariff are inputs the client owns; scope, capacity and lifecycle adjustments follow from them.',bricks:['lib/calc.ts','components/MasterModal.tsx','lib/store.tsx'],screen:'master'},
+  {w:'pe',t:'How will I know the normalisation arithmetic is right?'},
+  {w:'jw',t:'We will walk you through it on screen. Every line shows its working.'},
+  {warn:'Promised, not built: automated checks on the formulas',text:'The walkthrough was delivered; automated tests for lib/calc.ts were not. This is the gap House of Rama exists to close, and the reason every brick on this site carries a red dot.',bricks:['lib/calc.ts']},
+ ]},
+ {topic:'Seeing the machine',time:'11:40',items:[
+  {w:'pe',t:'The committee has never seen an economiser. They approve line 13 without knowing what it is.'},
+  {w:'jw',t:'A low-resolution 3D wireframe of each machine, where every BoQ line is a numbered part. Click the part, see what it is, what to check, and what each vendor offered for it.'},
+  {w:'rm',t:'And a guided tour in a sensible order: furnace, grate, drum, tubes, economiser, ID fan, chimney. Offered technical specs sit beside the model against the requirement.'},
+  {dec:'3D walkthrough, one part per BoQ line',text:'Orbit and walk-inside views, 16 numbered parts for the boiler, a tech-fit sheet with good / warn / bad per parameter.',bricks:['components/Walkthrough.tsx','lib/walkEngine.ts','lib/data.ts','public/boiler-ref.jpg'],screen:'walk'},
+ ]},
+ {topic:'Trusting the vendor',time:'12:05',items:[
+  {w:'ph',t:'We have bought from Thermax before. That history should count. And I want to know what the market says about the new names.'},
+  {w:'rm',t:'Two things, kept separate. Our own track record: past jobs, warranties honoured, plant satisfaction, scored out of 100. And web intel per vendor, every claim with a source link.'},
+  {dec:'Vendor track record + sourced intel',text:'Track score from the client\'s own experience; dealer ratings, complaint flags and strengths from the web, each with its source.',bricks:['components/VendorHistory.tsx','lib/history.ts','lib/data.ts','components/AssetView.tsx'],screen:'history'},
+ ]},
+ {topic:'Talking to it',time:'12:20',items:[
+  {w:'ph',t:'In the committee I will not be typing. Can I just ask it which boiler suits 10.5 kg/cm² and have it show me?'},
+  {w:'jw',t:'A voice advisor that moves the screen for you: opens the package, highlights the part, starts the walkthrough, answers from the Studio\'s own data.'},
+  {w:'rm',t:'The OpenAI key stays on the server; the browser only ever gets a short-lived session key. Typed questions use the same channel, with web search when voice is off.'},
+  {dec:'AI Proc Advisory, server-held keys',text:'Realtime voice over WebRTC with function calls that drive the UI; three API routes; the key is read only on the server.',bricks:['components/RealTalk.tsx','lib/focus.ts','lib/ai.ts','app/api/realtime/session/route.ts','app/api/llm/route.ts','app/api/health/route.ts','lib/server/config.ts'],screen:'advisory'},
+ ]},
+ {topic:'Shipping it',time:'12:40',items:[
+  {w:'fc',t:'Where does it run and who can open it? Anyone with the link can spend our API credits.'},
+  {w:'rm',t:'Vercel, one click. A password gate in front of every route when STUDIO_PASSWORD is set. Sample vendor data is labelled illustrative on screen until real quotes replace it.'},
+  {dec:'Vercel deployment behind a password',text:'Password gate, environment template, deployment notes in the README.',bricks:['proxy.ts','vercel.json','.env.example','README.md','start.command'],screen:'advisory'},
+  {w:'ph',t:'Last question. When this recommends an award, who signs it?'},
+  {w:'rm',t:'Today, nobody inside the software. That stays open.'},
+  {warn:'Open: who signs off an award',text:'No sign-off step was designed or built. House of Rama\'s next sprint is exactly this ceremony: a named person confirms a screen in a walkthrough and its bricks turn green.',bricks:[]},
+ ]},
+];
+const discEl=document.getElementById('discov');
+function openDisc(topicIdx=0){closeShow();if(audit){audit=null;document.getElementById('auditBtn').classList.remove('on');}mon.dataset.view='';playing=false;setPlay();
+  discEl.hidden=false;
+  discEl.innerHTML=`<div class="bar"><h4>Discovery session · Procurement Studio</h4><span class="real amb">Reconstructed · illustrative dialogue</span><button id="closeDisc">✕ Back to site</button></div>
+  <div class="disc"><nav class="agenda"><h5>Agenda · 28 Sep 2026</h5>${SESSION.map((s,i)=>`<button data-i="${i}" class="${i===topicIdx?'on':''}">${s.topic}<small>${s.time} IST</small></button>`).join('')}</nav>
+  <div class="chat" id="chat">${SESSION.map((s,i)=>`<div class="topic" id="t${i}"><time>${s.time}</time>${esc(s.topic)}</div>`+s.items.map(it=>{
+    if(it.w){const pp=PEOPLE[it.w];return `<div class="msg ${it.w==='rm'?'agent':''}"><div class="av" style="background:${pp.c}">${pp.ini}</div><div><div class="who"><b>${pp.name}</b> · ${pp.org}</div><div class="body">${esc(it.t)}</div></div></div>`;}
+    const warn=!!it.warn;return `<div class="dec ${warn?'warn':''}"><div class="h"><span class="pill ${warn?'red':'green'}">${warn?'Not built':'Decision'}</span><b>${esc(it.dec||it.warn)}</b></div><div>${esc(it.text)}</div>
+      ${it.bricks.length?`<div class="chips">${it.bricks.map(b=>`<span data-p="${b}">${b}</span>`).join('')}</div><button data-glow="${it.bricks.join(',')}" ${it.screen?`data-screen="${it.screen}"`:''}>Show on building</button>`:''}
+      ${it.screen&&!warn?`<button data-open="${it.screen}">See the screen</button>`:''}</div>`;}).join('')).join('')}
+  <p class="note" style="color:var(--dim);font-size:13px;max-width:720px;margin:8px 0 20px">This session is reconstructed from the features the repository shipped on 28 September 2026. The roles are real roles in a capex committee; the words are illustrative. In House of Rama proper this screen is the live record of the real session, and every decision card is written at the moment it is agreed.</p></div></div>`;
+  discEl.querySelector('#closeDisc').onclick=closeDisc;
+  discEl.querySelectorAll('.agenda button').forEach(b=>b.onclick=()=>{discEl.querySelectorAll('.agenda button').forEach(x=>x.classList.toggle('on',x===b));document.getElementById('t'+b.dataset.i).scrollIntoView({block:'start'});});
+  discEl.querySelectorAll('[data-glow]').forEach(b=>b.onclick=()=>{glow=new Set(b.dataset.glow.split(','));if(k<C.length){k=C.length;p=1;}closeDisc();sel=null;
+    mon.innerHTML=`<h2>Decision on the building</h2><p>${esc(b.closest('.dec').querySelector('b').textContent)}</p><p><span class="pill amber">${glow.size} bricks lit</span></p><div class="links">${[...glow].map(q=>`<span class="lnk" data-p="${q}">▪ ${q}</span>`).join('')}</div>${b.dataset.screen?`<p><button class="back" data-open2="${b.dataset.screen}">See the screen it became</button></p>`:''}<button class="back" id="back">◀ Trust report</button>`;
+    wireLinks();document.getElementById('back').onclick=()=>{glow=new Set();showReport();};const o=mon.querySelector('[data-open2]');if(o)o.onclick=()=>openShow(o.dataset.open2);});
+  discEl.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{closeDisc();openShow(b.dataset.open);});
+  discEl.querySelectorAll('.chips span').forEach(c=>c.onclick=()=>{const n=byPath[c.dataset.p];if(!n)return;closeDisc();if(k<C.length){k=C.length;p=1;}sel=n;showBrick(n);});
+  if(topicIdx)document.getElementById('t'+topicIdx).scrollIntoView({block:'start'});
+  mon.innerHTML=`<h2>Before the first commit</h2><p class="big">Eight decisions, two things left open.</p><p>The committee met on the morning of 28 September; the first commit landed at 16:37 the same afternoon. Each decision card names the bricks that implemented it.</p>
+  <div class="links">${SESSION.flatMap(s=>s.items.filter(i=>i.dec||i.warn)).map(i=>`<span class="lnk" style="color:${i.warn?'var(--red)':'var(--green)'};font-family:var(--sans)">${i.warn?'○':'●'} ${esc(i.dec||i.warn)}</span>`).join('')}</div>
+  <p class="note">Why this screen exists: trust in agent-built software starts before the code. A team that watched the requirements being agreed, and can see which brick each requirement became, does not have to take the build on faith.</p>`;
+}
+function closeDisc(){discEl.hidden=true;discEl.innerHTML='';}
+document.getElementById('discBtn').onclick=()=>openDisc(0);
+
+// ---------- trails: click a figure on a real screen, get formula, inputs, data, build history and sign-off ----------
+// Every number below was produced by running the repository's own calc.ts / history.ts (not retyped from the screenshot).
+const HOT={ // hotspots per screen, in % of the captured image
+  package:[
+    {t:'thermax_quoted',x:2.6,y:54.4,w:7.2,h:4.6},{t:'thermax_gross',x:10.4,y:55,w:5.2,h:3.6},{t:'thermax_pertph',x:16.2,y:55,w:6.3,h:3.6},
+    {t:'spread',x:5.4,y:36.2,w:6.3,h:4},{t:'track92',x:2.6,y:60,w:9.3,h:4},{t:'cheema_quoted',x:35.2,y:54.4,w:7.2,h:4.6},{t:'thermodyne_quoted',x:67.9,y:54.4,w:7.2,h:4.6},
+  ],
+  site:[{t:'l1_total',x:75.4,y:65.1,w:10.8,h:3},{t:'spread_total',x:86.7,y:63.2,w:10.8,h:3},{t:'thermodyne_quoted',x:91.6,y:53.9,w:5.8,h:2.5}],
+  history:[{t:'track92',x:28.4,y:29,w:3.7,h:7.7},{t:'warranty66',x:21.8,y:47,w:10.3,h:4}],
+};
+const fmtINR=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const DATA_IN_CODE={file:'lib/data.ts',note:'There is no database in this build. Vendor quotes, benchmarks and plant assumptions are written into lib/data.ts as sample data, and the screen says "Sample bids" and "illustrative demo data" for that reason. In the production build each of these inputs becomes a row in the quotes table with a vendor, a date and the person who entered it.'};
+const TRACES={
+ thermax_quoted:{figure:'₹1.50 Cr',title:'Thermax · quoted, ex GST',screen:'package',
+  what:'The sum of the sixteen bill-of-quantities lines Thermax priced for the 4 TPH biomass boiler, before GST.',
+  formula:{en:'Add up quantity × rate for every line the vendor quoted.',code:'quoted += qty × rate   // calc.ts lines 43–45, amt() line 18',file:'lib/calc.ts'},
+  inputs:[['16 BoQ lines, vendor A (Thermax)','lib/data.ts, boiler rows b1–b16'],['Largest: b1 boiler shell','1 × ₹52,00,000'],['b2 combustion grate','1 × ₹18,50,000'],['b10 air pollution control','1 × ₹12,00,000'],['b3 economiser','1 × ₹9,50,000'],['b16 IBR, erection, commissioning','1 × ₹9,50,000'],['… eleven more lines','₹48,50,000 together'],['Total','₹1,50,00,000']],
+  data:[DATA_IN_CODE.note,'Master data does not touch this figure; it is a pure sum of the quote.','Shown as "₹1.50 Cr" by money(), calc.ts lines 9–15, which rounds to two decimals of a crore.'],
+  files:['lib/data.ts','lib/calc.ts','components/AssetView.tsx']},
+ thermax_gross:{figure:'₹1.77 Cr',title:'Thermax · including GST',screen:'package',
+  what:'The quoted total plus GST, line by line.',
+  formula:{en:'For each quoted line add quantity × rate × GST% ; then gross = quoted + GST.',code:'gst += amount × r.gst / 100 ; gross = quoted + gst   // calc.ts lines 45, 49',file:'lib/calc.ts'},
+  inputs:[['Quoted, ex GST','₹1,50,00,000'],['GST rate on all 16 boiler lines','18% (data.ts, 4th field of each row)'],['GST','₹27,00,000'],['Gross','₹1,77,00,000']],
+  data:[DATA_IN_CODE.note,'The 18% is stored per line, so a line at a different slab would be computed correctly; in this dataset every boiler line is 18%.'],
+  files:['lib/data.ts','lib/calc.ts','components/AssetView.tsx']},
+ thermax_pertph:{figure:'₹37,50,000 per TPH',title:'Thermax · price per tonne of steam per hour',screen:'package',
+  what:'The scope-adjusted price divided by the offered capacity, so bids of different sizes can be compared.',
+  formula:{en:'Per-unit price = (quoted + scope gaps loaded) ÷ vendor capacity.',code:'perUnit = scopeAdj / v.cap ; scopeAdj = quoted + gapLoad   // calc.ts lines 48–49',file:'lib/calc.ts'},
+  inputs:[['Quoted','₹1,50,00,000'],['Scope gaps loaded','₹0 (Thermax quoted every line)'],['Capacity offered','4 TPH (data.ts, vendor A cap)'],['Per TPH','₹37,50,000']],
+  data:[DATA_IN_CODE.note,'For Thermodyne the same formula gives ₹23,42,000 per TPH because its quote is for 5 TPH, which is why per-unit price and quoted price rank the vendors differently.'],
+  files:['lib/data.ts','lib/calc.ts','components/AssetView.tsx']},
+ spread:{figure:'Spread 37%',title:'Boiler package · spread between lowest and highest quote',screen:'package',
+  what:'How far apart the three quotes are, before any normalisation. Over 25% the chip turns amber.',
+  formula:{en:'Spread = (highest quoted ÷ lowest quoted − 1) × 100.',code:'spread = (out[byQuoted[2]].quoted / out[byQuoted[0]].quoted − 1) × 100   // AssetView.tsx line 19',file:'components/AssetView.tsx'},
+  inputs:[['Highest quoted (Thermax)','₹1,50,00,000'],['Lowest quoted (Thermodyne)','₹1,09,20,000'],['Spread','37.4% → shown as 37%'],['Amber threshold','25% (AssetView.tsx line 31)']],
+  data:['Computed on screen from the two quoted totals; not stored anywhere.','Note the formula assumes exactly three vendors (byQuoted[2]). A package with two or four bids would mis-state the spread. This is the kind of thing a test would have caught.'],
+  files:['components/AssetView.tsx','lib/calc.ts','lib/data.ts']},
+ cheema_quoted:{figure:'₹1.21 Cr',title:'Cheema Boilers · quoted, ex GST',screen:'package',
+  what:'Fifteen quoted lines; one line not quoted and loaded for comparison.',
+  formula:{en:'Sum of quantity × rate for the 15 lines quoted; the missing line is loaded separately at the highest price another vendor quoted for it.',code:'fill = max(other vendors’ amount for that line) ; gapLoad += fill   // calc.ts line 46',file:'lib/calc.ts'},
+  inputs:[['Quoted (15 lines)','₹1,21,20,000'],['Not quoted: b9 online soot blowing','loaded at ₹4,50,000 (Thermax’s price)'],['Scope-adjusted','₹1,25,70,000'],['Lifecycle fuel penalty vs Thermax, 5 years','+₹40,65,336 at 84% efficiency'],['Normalised total','₹1,66,35,336 → ₹1.66 Cr, rank 2']],
+  data:[DATA_IN_CODE.note,'The fuel penalty uses the Master data assumptions: ₹8,000/t briquettes, GCV 3,800 kcal/kg, 6,000 hours, 0.7 load, 5 years. Change any of them in Master data and this normalised figure recomputes; the quoted figure does not.'],
+  files:['lib/data.ts','lib/calc.ts','components/AssetView.tsx','components/MasterModal.tsx']},
+ thermodyne_quoted:{figure:'₹1.09 Cr',title:'Thermodyne Engineering · lowest quote, highest normalised cost',screen:'package',
+  what:'The cheapest quote on paper and the most expensive once scope, capacity and fuel are accounted for. This single figure is the argument for the whole product.',
+  formula:{en:'Quoted = Σ qty × rate (14 lines). Then: load the 2 missing lines at others’ highest price; scale to the required 4 TPH with (required ÷ offered)^0.6; add the 5-year fuel penalty from its 80% efficiency.',code:'scopeAdj = quoted + gapLoad ; capF = (a.req.cap / v.cap)^a.scaleExp ; norm = scopeAdj × capF + lcDelta   // calc.ts lines 48–52',file:'lib/calc.ts'},
+  inputs:[['Quoted (14 lines)','₹1,09,20,000'],['Not quoted: b9 soot blowing, b14 ash removal','loaded ₹4,50,000 + ₹3,40,000'],['Scope-adjusted','₹1,17,10,000'],['Capacity factor (4 ÷ 5)^0.6','0.8747 → ₹1,02,42,616'],['Fuel penalty vs Thermax, 5 yrs, 80% vs 87%','+₹99,60,073'],['Normalised total','₹2,02,02,689 → ₹2.02 Cr, rank 3 of 3']],
+  data:[DATA_IN_CODE.note,'The lifecycle line uses lifecycle(), calc.ts lines 34–37: heat = duty 22,40,000 kcal/h × load 0.7 × 6,000 h; fuel tonnes = heat ÷ (GCV × efficiency) ÷ 1000; cost = tonnes × ₹8,000 × 5 years. All six assumptions come from Master data (DEFAULT_MASTER in data.ts, or the values saved in this browser).','The exponent 0.6 (scaleExp) is a hard-coded engineering rule of thumb in data.ts. Nobody on the discovery call set it; it should be a reviewed assumption.'],
+  files:['lib/data.ts','lib/calc.ts','components/AssetView.tsx','components/MasterModal.tsx','lib/store.tsx']},
+ track92:{figure:'92 / 100',title:'Thermax · track record with the client',screen:'history',
+  what:'A composite score from the client’s own experience with this vendor: quality of similar work, warranties honoured and plant satisfaction, with recent years weighing more.',
+  formula:{en:'Score = quality ÷ 5 × 40 + (warranties honoured ÷ claims) × 30 + satisfaction ÷ 10 × 30, where quality and satisfaction are year-weighted averages (oldest 1, next 2, newest 3).',code:'score = round((quality/5)×40 + warranty×30 + (satisfaction/10)×30)   // history.ts lines 35–44',file:'lib/history.ts'},
+  inputs:[['Reviews','2023, 2024, 2025 (17 reviewers in total)'],['Quality 4.5 / 4.4 / 4.6, weighted','4.52 → 36.1 points'],['Warranty claims honoured','6 of 6 → 30.0 points'],['Satisfaction 8.6 / 8.3 / 8.8, weighted','8.60 → 25.8 points'],['Score','91.9 → 92, band "good" (≥ 80)']],
+  data:['Review data lives in HISTORY in lib/history.ts as sample data.','Reviews added through "Add annual review" are merged in by mergedHistory() but saved only in that person’s browser (store.tsx lines 22–23, key ps.reviews). Two committee members can therefore see two different scores for the same vendor. For a committee product this must move to shared storage with a name against each review.'],
+  files:['lib/history.ts','lib/calc.ts','components/VendorHistory.tsx','lib/store.tsx']},
+ warranty66:{figure:'6 of 6 claims · 100%',title:'Thermax · warranties honoured',screen:'history',
+  what:'Every warranty claim the plant raised against Thermax was honoured. This is 30 of the 92 points.',
+  formula:{en:'Warranty share = honoured ÷ claims across all reviews (not year-weighted).',code:'warranty = claims ? honored / claims : 1   // history.ts line 39',file:'lib/history.ts'},
+  inputs:[['2023','3 claims, 3 honoured'],['2024','2 claims, 2 honoured'],['2025','1 claim, 1 honoured'],['Share','6 ÷ 6 = 100% → 30 points']],
+  data:['Note the fallback: a vendor with zero claims scores a full 30 points, the same as one who honoured every claim. A new vendor with no history returns no score at all, which is the safer behaviour. Whether "no claims" should equal "all claims honoured" is a question for the committee, not the code.'],
+  files:['lib/history.ts','components/VendorHistory.tsx']},
+ l1_total:{figure:'₹3.37 Cr',title:'L1 total, six packages, ex GST',screen:'site',
+  what:'The lowest quote in each of the six packages, added together. The number the CFO takes to the board.',
+  formula:{en:'For every package, take the lowest quoted total; add the six.',code:'ASSETS.forEach(a => { l1 += out[byQuoted[0]].quoted })   // Studio.tsx lines 49–50',file:'components/Studio.tsx'},
+  inputs:[['Rooftop solar · Oriano Clean Energy','₹1,45,26,000'],['Continuous fryer · Prakashwala','₹18,80,000'],['Bhujia extruder · Sneha Food Equipments','₹6,75,000'],['Pouch packaging · Pakona Engineers','₹17,30,000'],['Thermic fluid heater · Thermodyne','₹39,75,000'],['Biomass boiler · Thermodyne','₹1,09,20,000'],['Total','₹3,37,06,000']],
+  data:[DATA_IN_CODE.note,'This is the lowest quoted figure, not the recommended award. On the boiler the lowest quote is also the worst normalised value, so a board paper built on L1 alone understates the likely spend.'],
+  files:['components/Studio.tsx','lib/calc.ts','lib/data.ts']},
+ spread_total:{figure:'+₹1.40 Cr',title:'Spread L1 → H1 across the plant',screen:'site',
+  what:'How much more the plant would pay if the highest quote won every package.',
+  formula:{en:'For every package, highest quoted minus lowest quoted; add the six.',code:'h1 += out[byQuoted[2]].quoted ; shown as money(h1 − l1)   // Studio.tsx lines 50, 80',file:'components/Studio.tsx'},
+  inputs:[['Σ highest quotes','₹4,77,10,000'],['Σ lowest quotes','₹3,37,06,000'],['Spread','₹1,40,04,000']],
+  data:['Same three-vendor assumption as the package spread (byQuoted[2]); correct for this dataset, fragile for any other.'],
+  files:['components/Studio.tsx','lib/calc.ts','lib/data.ts']},
+};
+function buildTrail(files){ // commits that touched these files, newest first, from git
+  const rows=[];files.forEach(f=>{const n=byPath[f];if(!n)return;n.changes.forEach(x=>rows.push({c:x.c,f,ch:x.ch}));});
+  rows.sort((a,b)=>a.c.t-b.c.t);
+  return rows.map(r=>`<div class="dep"><span class="lnk" data-p="${r.f}">${r.f}</span><div class="en">${r.ch.kind==='A'?'laid':'reworked +'+r.ch.add+' / −'+r.ch.del} · lift ${r.c.i+1}, ${fmtT(r.c.t)} IST · ${esc(r.c.author)} · "${esc(r.c.subject)}"</div></div>`).join('');
+}
+function showTrail(id){const t=TRACES[id];if(!t)return;glow=new Set(t.files);sel=null;
+  mon.innerHTML=`<h2>Trail · ${esc(t.figure)}</h2><h3 style="font-family:var(--sans);word-break:normal">${esc(t.title)}</h3><p>${esc(t.what)}</p>
+  <h2 style="margin-top:16px">1 · Formula</h2><p>${esc(t.formula.en)}</p><pre class="code">${esc(t.formula.code)}</pre><div class="links"><span class="lnk" data-p="${t.formula.file}">▪ ${t.formula.file}</span></div>
+  <h2 style="margin-top:16px">2 · Inputs</h2><dl class="kv">${t.inputs.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+  <h2 style="margin-top:16px">3 · Where the data lives</h2>${t.data.map(d=>`<p>${esc(d)}</p>`).join('')}
+  <h2 style="margin-top:16px">4 · Build trail</h2><div class="links">${buildTrail(t.files)}</div>
+  <h2 style="margin-top:16px">5 · Review &amp; sign-off</h2>
+  <div class="sig"><div><span class="k">Reviewed by</span><span class="v">—</span></div><div><span class="k">Signed off by</span><span class="v">—</span></div><div><span class="k">Status</span><span class="v red">Unsigned</span></div><div><span class="k">Automated check</span><span class="v red">None</span></div></div>
+  <p class="note">Nothing in the repository records a review or a sign-off for this figure, and no test checks it. In House of Rama a figure cannot show without a name in this block: either a test that proves it or a reviewer who confirmed it in a walkthrough, with the date.</p>
+  <p><button class="primary" id="trailGlow">Show on building</button> <button class="back" id="back">◀ Back to screen</button></p>`;
+  wireLinks();document.getElementById('back').onclick=()=>openShow(t.screen);document.getElementById('trailGlow').onclick=()=>{closeShow();if(k<C.length){k=C.length;p=1;}};
+}
+
+// ---------- audit: drones from a second opinion fly the site, discovery to data and back ----------
+// V1 is scripted from static checks run against commit fac615d on 17 Oct 2026 (tsc, build, grep for silenced lint, any-types,
+// hard-coded constants, storage, env handling) plus the formula trails. The production feature runs a model from a different
+// vendor than the builder; this preview was prepared by the same vendor and says so on the report.
+const VERDICT={ // path -> [verdict, one-line finding]
+ 'components/AssetView.tsx':['fail','Spread assumes exactly three bids (byQuoted[2], line 19). A package with two or four vendors shows a wrong spread or crashes.'],
+ 'components/Studio.tsx':['fail','H1 total takes the third vendor by position (line 50). Same three-bid assumption, on the number that goes to the board.'],
+ 'lib/store.tsx':['fail','Master data, discovered prices and vendor reviews are saved only in this browser (lines 22–23). Two committee members can see two different scores.'],
+ 'lib/calc.ts':['warn','Benchmark tolerances +8% / −8% are hard-coded (lines 30–31); bench typed as any (line 5). Formulas are correct for this dataset; no test proves it.'],
+ 'lib/data.ts':['warn','Capacity exponent 0.6 and all vendor quotes are constants in code. Sample data is labelled on screen, which is right; the exponent was never put to the committee.'],
+ 'lib/history.ts':['warn','A vendor with zero warranty claims scores the full 30 points (line 39). Policy question, not a bug.'],
+ 'lib/server/config.ts':['warn','Accepts four different names for the OpenAI key, including OPENAI_API_KEY1 added at 17:01 to work around a deployment setting. Fix the setting, not the code.'],
+ 'components/RealTalk.tsx':['warn','Two silenced lint warnings (lines 203, 208) and three swallowed errors. Voice failures will be silent.'],
+ 'components/Walkthrough.tsx':['warn','One silenced lint warning on an effect dependency (line 27).'],
+ 'components/AiPanel.tsx':['warn','One silenced lint warning on an effect dependency (line 20).'],
+ 'proxy.ts':['warn','Password compared with === and no rate limit. Fine behind Vercel protection, weak as the only gate.'],
+ 'app/api/llm/route.ts':['warn','300-second streaming route. With no password set, anyone with the URL can run the client’s OpenAI bill for five minutes per call.'],
+};
+const PASS_NOTE='Compiles, builds, no console output, no TODOs, no key in the browser bundle.';
+function auditScript(){
+  const S=[];const say=(t,d=3.2)=>S.push({kind:'say',t,d});const phase=(t)=>S.push({kind:'phase',t,d:1.2});
+  phase('Audit requested');
+  say('Second-opinion audit of Procurement Studio, commit fac615d. Two drones. We will fly from the discovery session to the data and back, and say everything we see.');
+  phase('Discovery');
+  say('Eight decisions recorded in the site office. All eight have bricks in the building. Two items were left open: automated checks on the formulas, and who signs off an award. Both are still open.',4);
+  G.layers.forEach(L=>{
+    const bricks=nodes.filter(n=>n.layer===L.id).sort((a,b)=>a.x-b.x);
+    phase(L.label.split(' — ')[0]+' floor');
+    const clean=bricks.filter(b=>!VERDICT[b.path]);
+    bricks.forEach(b=>{const v=VERDICT[b.path];S.push({kind:'scan',n:b,v:v?v[0]:'pass',note:v?v[1]:PASS_NOTE,d:v?3.6:0.45});if(v)S.push({kind:'say',quiet:true,t:(v[0]==='fail'?'Defect. ':'Note. ')+b.path.split('/').pop()+'. '+v[1],d:v[0]==='fail'?4.2:3.4});});
+    if(clean.length)say(`${clean.length} of ${bricks.length} bricks on this floor are clean by static checks. None of them has a test.`,2.4);
+  });
+  phase('Screens');
+  say('Eight screens photographed from the built app. Every figure we traced recomputes to the value on screen: 1.50 crore, 37 percent, 92 out of 100, 3.37 crore. The arithmetic is right for this dataset.',4);
+  phase('Sign-offs');
+  say('Thirty-four bricks. Zero tests. Zero reviews recorded. Zero sign-offs. There is no signature anywhere in this repository, so there is none we can confirm and none we can reject. The building is unsigned.',4.4);
+  phase('Verdict');
+  say('Three defects, nine notes, twenty-two clean. The building stands; it needs alteration in five places before a committee should rely on it. Estimates follow.',3.6);
+  S.push({kind:'report',d:1});
+  return S;
+}
+const ALTER=[
+ ['Tests for compute(), lifecycle() and trackScore() using tonight’s traced figures as golden values','agent 1–2 h','review 1 h','closes the open item from discovery'],
+ ['Generalise spread and H1 to any number of bids (AssetView.tsx 19, Studio.tsx 50)','agent 15 min','review 15 min','defect'],
+ ['Move the 0.6 exponent, ±8% benchmark tolerance and 25% spread threshold into Master data as named, reviewed assumptions','agent 1 h','committee 30 min','defect of process'],
+ ['Shared storage for Master data and vendor reviews, with a name and date on every review (needs sign-in and a database)','agent 4–8 h','review 2 h','defect'],
+ ['Decide the zero-claims warranty rule; one line of code either way','agent 10 min','committee 15 min','policy'],
+ ['Single env name for the key; remove the three fallbacks','agent 10 min','—','hygiene'],
+ ['Resolve the five silenced lint warnings and the swallowed voice errors','agent 1 h','review 30 min','hygiene'],
+];
+const TIMEMACHINE=[
+ ['16:37','29 files laid in one lift, no test among them.','A ten-line test of compute() written here would have taken twenty minutes and would have caught the three-bid assumption the moment a fourth vendor was tried.'],
+ ['16:51','Made Vercel-ready: password gate, deployment notes.','Right order. Security before features.'],
+ ['17:01','"Accept OPENAI_API_KEY1" committed.','This was a deployment setting typed wrong. The fix went into the code instead of the setting, and stayed. Workarounds that get committed become permanent.'],
+ ['17:19','Vendor history added, reviews saved in the browser.','This is the minute the sharing decision was needed: whose reviews count, where do they live, who can see them. It was not asked.'],
+ ['17:41','Last commit, direct to main. No branch, no pull request, no second pair of eyes.','One named reviewer at 16:37 and the sign-off boxes on every trail would be filled tonight.'],
+];
+let audit=null; // {S, i, t, log:[], drones:[{x,y,tx,ty}], verdicts:{}, speak}
+const auditEl=()=>mon;
+function startAudit(){closeShow();closeDisc();playing=false;setPlay();if(k<C.length){k=C.length;p=1;}
+  audit={S:auditScript(),i:0,t:0,log:[],drones:[{x:-40,y:120,tx:200,ty:TOP-120},{x:1000,y:140,tx:760,ty:TOP-120}],verdicts:{},speak:false,done:false};
+  glow=new Set();sel=null;renderAuditLog();document.getElementById('auditBtn').classList.add('on');
+}
+function stopAudit(){if(audit&&audit.speak)try{speechSynthesis.cancel();}catch{} audit=null;document.getElementById('auditBtn').classList.remove('on');showReport();}
+function speak(t){if(!audit||!audit.speak)return;try{const u=new SpeechSynthesisUtterance(t);u.rate=1.05;speechSynthesis.speak(u);}catch{}}
+function updateAudit(dt){if(!audit||audit.done)return;audit.t+=dt*speed;const st=audit.S[audit.i];if(!st)return;
+  if(audit.t===dt*speed||audit.t-dt*speed<=0){/* first frame of step */}
+  if(!st.started){st.started=true;
+    if(st.kind==='scan'){const d=audit.drones[nodes.indexOf(st.n)%2];d.tx=st.n.x+st.n.w/2;d.ty=st.n.y-34;audit.cur=st;}
+    if(st.kind==='say'){if(!st.quiet){audit.log.push({t:st.t,kind:'say'});renderAuditLog();}speak(st.t);}
+    if(st.kind==='phase'){audit.log.push({t:st.t,kind:'phase'});renderAuditLog();}
+    if(st.kind==='report'){audit.done=true;renderAuditReport();return;}
+  }
+  if(st.kind==='scan'&&audit.t>st.d*0.5&&!audit.verdicts[st.n.path]){audit.verdicts[st.n.path]=st.v;if(st.v!=='pass'){audit.log.push({t:st.n.path,kind:st.v,note:st.note});renderAuditLog();}}
+  if(audit.t>=st.d){audit.t=0;audit.i++;audit.cur=null;}
+  audit.drones.forEach(d=>{d.x+=(d.tx-d.x)*Math.min(1,dt*2.5);d.y+=(d.ty-d.y)*Math.min(1,dt*2.5);});
+}
+const DRONE=['..P.....P..','..PPPPPPP..','...PVVVP...','..PPPPPPP..','..P.....P..'];
+const DRONEPAL={P:'#c98cff',V:'#ece8dc'};
+function drawAudit(){if(!audit)return;const now=performance.now();
+  // verdict badges
+  nodes.forEach(n=>{const v=audit.verdicts[n.path];if(!v||brickState(n)!=='built')return;const c=v==='pass'?'#5ad45a':v==='warn'?'#ffb429':'#ff5a6a';R(n.x+n.w-7,n.y-3,8,8,'#0c0b13');R(n.x+n.w-6,n.y-2,6,6,c);});
+  // scan beam
+  const st=audit.cur;if(st){const d=audit.drones[nodes.indexOf(st.n)%2];ctx.fillStyle='rgba(201,140,255,.22)';ctx.beginPath();ctx.moveTo(d.x,d.y+8);ctx.lineTo(st.n.x-4,st.n.y+st.n.h+2);ctx.lineTo(st.n.x+st.n.w+4,st.n.y+st.n.h+2);ctx.closePath();ctx.fill();
+    const sy=st.n.y+((now/6)%(st.n.h+4))-2;R(st.n.x-4,sy,st.n.w+8,2,'rgba(236,232,220,.8)');}
+  // drones
+  audit.drones.forEach((d,i)=>{const f=Math.floor(now/60)%2;sprite(DRONE,DRONEPAL,d.x-11,d.y-5,2);if(f){R(d.x-11,d.y-5,6,2,'#fff');R(d.x+5,d.y-5,6,2,'#fff');}R(d.x-1,d.y+5,2,2,'#5ad45a');
+    R(d.x-34,d.y-22,68,12,'#1a1200');text('AUDIT '+(i+1),d.x,d.y-19,6,'#c98cff','center');});
+  R(0,0,960,22,'rgba(12,11,19,.6)');text('AUDIT IN PROGRESS · SECOND OPINION · COMMIT FAC615D',10,7,7,'#c98cff');
+}
+function renderAuditLog(){if(!audit)return;if(audit.log.length>1&&mon.dataset.view!=='audit')return;mon.dataset.view='audit';const m=auditEl();
+  m.innerHTML=`<h2>Audit · live</h2><p class="big">Drones are flying the site.</p>
+  <p><label style="display:flex;align-items:center;gap:8px;font-size:14px"><input type="checkbox" id="speakBox" ${audit.speak?'checked':''}> Read the narration aloud</label></p>
+  <div class="alog" id="alog">${audit.log.map(l=>l.kind==='phase'?`<div class="aph">${esc(l.t)}</div>`:l.kind==='say'?`<div class="asay">${esc(l.t)}</div>`:`<div class="afind ${l.kind}"><span class="pill ${l.kind==='fail'?'red':'amber'}">${l.kind==='fail'?'Defect':'Note'}</span> <span class="lnk" data-p="${l.t}" style="display:inline">${l.t}</span><div class="en">${esc(l.note)}</div></div>`).join('')}</div>
+  <p class="note">V1 audit: scripted from static checks run on 17 Oct 2026 by the same vendor that built the site, so this preview is a second pass, not a second opinion. The production feature runs a model from a different vendor against the live repository.</p>
+  <button class="back" id="stopAudit">■ Stop audit</button>`;
+  wireLinks();m.querySelector('#stopAudit').onclick=stopAudit;const sb=m.querySelector('#speakBox');sb.onchange=()=>{audit.speak=sb.checked;if(!sb.checked)try{speechSynthesis.cancel();}catch{}};
+  const lg=m.querySelector('#alog');if(lg)lg.scrollTop=lg.scrollHeight;
+}
+function renderAuditReport(){mon.dataset.view='audit';const m=auditEl();const vs=Object.values(audit.verdicts);const nf=vs.filter(v=>v==='fail').length,nw=vs.filter(v=>v==='warn').length,np=vs.filter(v=>v==='pass').length;
+  const totalAgent='8–13 h';const totalReview='~5 h + two committee decisions';
+  m.innerHTML=`<h2>Audit report · commit fac615d</h2><p class="big">Building stands. Unsigned. Alteration needed in five places.</p>
+  <div class="stat"><div><b style="color:var(--red)">${nf}</b><small>defects</small></div><div><b>${nw}</b><small>notes</small></div><div><b style="color:var(--green)">${np}</b><small>clean bricks</small></div><div><b style="color:var(--red)">0 / 34</b><small>sign-offs on file</small></div></div>
+  <h2 style="margin-top:16px">Sign-offs</h2><p>None exist, so none can be confirmed or rejected. Every trail on every screen shows "Unsigned". Discovery recorded eight decisions; all eight are built; the two open items are still open.</p>
+  <h2 style="margin-top:16px">Alterations &amp; estimates</h2><div class="links">${ALTER.map(a=>`<div class="dep"><div style="font-family:var(--sans);font-size:14px;color:var(--fg)">${esc(a[0])}</div><div class="en">${esc(a[1])} · ${esc(a[2])} · ${esc(a[3])}</div></div>`).join('')}</div>
+  <p><span class="pill amber">Agent time ${totalAgent}</span><span class="pill cyan">Human time ${totalReview}</span><span class="pill green">Fits one sprint</span></p>
+  <h2 style="margin-top:16px">Time machine · what could have gone better</h2><div class="links">${TIMEMACHINE.map(t=>`<div class="dep"><div style="font-size:14px"><span style="font-family:var(--mono);color:var(--amber)">${t[0]}</span> &nbsp;${esc(t[1])}</div><div class="en">${esc(t[2])}</div></div>`).join('')}</div>
+  <h2 style="margin-top:16px">Who did what</h2><p>Six commits, two builders, one afternoon, no pull request. Every brick carries the lift that laid it and the hand that reworked it; nothing here can be attributed to "the agent" without a timestamp and a name beside it.</p>
+  <p class="note">Independence: this preview audit was prepared by Claude, the same vendor as the builder of record, from static checks and the formula trails. Treat it as a rehearsal of the format. The production audit runs a model from a different vendor, re-runs the checks against the live repository, and signs its own report.</p>
+  <p><button class="primary" id="auditGlow">Light the defects</button> <button class="back" id="stopAudit">◀ Trust report</button></p>`;
+  m.querySelector('#stopAudit').onclick=stopAudit;m.querySelector('#auditGlow').onclick=()=>{glow=new Set(Object.entries(audit.verdicts).filter(([,v])=>v==='fail').map(([p])=>p));};
+}
+document.getElementById('auditBtn').onclick=()=>{if(audit)stopAudit();else startAudit();};
+
+// ---------- picking ----------
+const tip=document.getElementById('tip');
+function pick(e){const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)*960/r.width,y=(e.clientY-r.top)*560/r.height;return nodes.find(n=>brickState(n)==='built'&&x>=n.x&&x<=n.x+n.w&&y>=n.y&&y<=n.y+n.h)||null;}
+cv.addEventListener('mousemove',e=>{hover=pick(e);{const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)*960/r.width,y=(e.clientY-r.top)*560/r.height;if(k>=1&&x>=BX+BW/2-26&&x<=BX+BW/2+26&&y>=GROUND-46&&y<=GROUND){tip.style.display='block';tip.style.left=(e.clientX-r.left+14)+'px';tip.style.top=(e.clientY-r.top-30)+'px';tip.textContent='Enter the showroom · the real UI';cv.style.cursor='pointer';return;}if(x>=796&&x<=936&&y>=GROUND-84&&y<=GROUND){tip.style.display='block';tip.style.left=(e.clientX-r.left-180)+'px';tip.style.top=(e.clientY-r.top-30)+'px';tip.textContent='Site office · the discovery session';cv.style.cursor='pointer';return;}cv.style.cursor='crosshair';}if(hover){tip.style.display='block';const r=cv.getBoundingClientRect();tip.style.left=(e.clientX-r.left+14)+'px';tip.style.top=(e.clientY-r.top-30)+'px';tip.textContent=hover.path+' · '+hover.lines+' lines';}else tip.style.display='none';});
+cv.addEventListener('mouseleave',()=>{hover=null;tip.style.display='none';});
+cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)*960/r.width,y=(e.clientY-r.top)*560/r.height;
+  if(k>=1&&x>=BX+BW/2-26&&x<=BX+BW/2+26&&y>=GROUND-46&&y<=GROUND){openShow(curScreen?curScreen.id:'site');return;}
+  if(x>=796&&x<=936&&y>=GROUND-84&&y<=GROUND){openDisc(0);return;}
+  const n=pick(e);if(n){sel=n;showBrick(n);}else{sel=null;glow=new Set();k?showCommit(C[k-1]):showReport();}});
+
+// ---------- inspector ----------
+const mon=document.getElementById('mon'),F=G.facts;
+function showReport(){mon.dataset.view='';
+  const biggest=[...nodes].filter(n=>!/lock\.json$/.test(n.path)).sort((a,b)=>b.lines-a.lines)[0];const hub=[...nodes].sort((a,b)=>b.importers.length-a.importers.length)[0];const churn=[...nodes].sort((a,b)=>b.changes.length-a.changes.length)[0];
+  const span=Math.round((C[C.length-1].t-C[0].t)/60000);
+  mon.innerHTML=`<h2>Trust report · Sprint 1</h2>
+  <p class="big red">${F.tests} of ${F.files} bricks have a test behind them.</p>
+  <p>Everything on this screen was read from git, not from a plan. The building is what the repository is on ${fmtD(C[C.length-1].t)}.</p>
+  <div class="stat"><div><b>${F.files}</b><small>files · bricks</small></div><div><b>${F.text_lines.toLocaleString('en-IN')}</b><small>lines of text</small></div><div><b>${F.commits}</b><small>commits · lifts</small></div><div><b>${span} min</b><small>first to last commit</small></div><div><b>${F.authors}</b><small>builders · cranes</small></div><div><b>${F.branches}</b><small>branch · scaffold</small></div><div><b>${F.imports}</b><small>import links · cables</small></div><div><b>${F.env_vars.length}</b><small>env vars read</small></div></div>
+  <dl class="kv"><dt>Heaviest brick</dt><dd><span class="lnk" data-p="${biggest.path}">${biggest.path}</span> (${biggest.lines} lines)</dd><dt>Load-bearing</dt><dd><span class="lnk" data-p="${hub.path}">${hub.path}</span>, imported by ${hub.importers.length} files</dd><dt>Most reworked</dt><dd><span class="lnk" data-p="${churn.path}">${churn.path}</span>, touched in ${churn.changes.length} of ${F.commits} commits</dd><dt>Builders</dt><dd>${G.authors.join(' · ')}</dd><dt>Stack</dt><dd>${Object.entries(G.deps).map(([a,b])=>a+' '+b).join(', ')}</dd></dl>
+  <p><span class="pill red">0 TESTS</span><span class="pill amber">1 BRANCH</span><span class="pill cyan">${F.env_vars.length} ENV VARS</span></p>
+  <p class="note">Why the red dots: a brick with no test is a brick nobody has checked by machine. Sign-off in House of Rama will require a green brick: a test that passed, or a named human who confirmed the behaviour in a walkthrough. Right now this building has neither, which is a fair reason for a dev team to hesitate.</p>
+  <p class="note">Click a brick to inspect it. Press PLAY to watch the site build in the order git recorded. Open the Showroom (the glass door) for the real Procurement Studio screens and the bricks behind each one, or step into the site office for the discovery session that preceded the first commit.</p>`;
+  wireLinks();
+}
+function showCommit(c){mon.dataset.view='';
+  const adds=c.ev.filter(e=>e.kind==='add'),mods=c.ev.filter(e=>e.kind==='modify'),dem=c.ev.filter(e=>e.kind==='demolish');
+  const plus=c.changes.reduce((s,x)=>s+(x.add||0),0),minus=c.changes.reduce((s,x)=>s+(x.del||0),0);
+  mon.innerHTML=`<h2>Lift ${c.i+1} of ${C.length} · ${c.short}</h2><h3>${esc(c.subject)}</h3>
+  <dl class="kv"><dt>When</dt><dd>${fmtD(c.t)}, ${fmtT(c.t)} IST</dd><dt>Builder</dt><dd>${esc(c.author)}</dd><dt>Lines</dt><dd>+${plus} / −${minus}</dd><dt>Tests added</dt><dd><span class="pill red">NONE</span></dd></dl>
+  ${adds.length?`<p><span class="pill green">${adds.length} NEW BRICKS</span></p><div class="links">${adds.map(e=>`<span class="lnk" data-p="${e.n.path}">${e.n.path}</span>`).join('')}</div>`:''}
+  ${mods.length?`<p><span class="pill amber">${mods.length} RENOVATED</span></p><div class="links">${mods.map(e=>`<span class="lnk" data-p="${e.n.path}">${e.n.path} <small>+${e.ch.add}/−${e.ch.del}</small></span>`).join('')}</div>`:''}
+  ${dem.length?`<p><span class="pill red">${dem.length} WALL KNOCKED OUT</span></p><div class="links">${dem.map(e=>`<span class="lnk" data-p="${e.n.path}">${e.n.path} <small>+${e.ch.add}/−${e.ch.del}</small></span>`).join('')}</div><p class="note">The JCB comes out whenever a commit removes 20 or more lines from one file. That is where behaviour changed, and where a reviewer should look first.</p>`:''}
+  <button class="back" id="back">◀ Trust report</button>`;
+  wireLinks();document.getElementById('back').onclick=()=>{sel=null;showReport();};
+}
+function showBrick(n){mon.dataset.view='';
+  const born=n.firstCommit;const floor=G.layers.find(l=>l.id===n.layer);
+  mon.innerHTML=`<h2>Brick · ${LAYER_SHORT[n.layer]} floor</h2><h3>${esc(n.path)}</h3>
+  <p>${esc(n.purpose||'')}</p>
+  <div class="reviewer"><b>For the reviewer.</b> ${esc(reviewerLine(n))}</div>
+  ${typeof audit!=='undefined'&&audit&&audit.verdicts[n.path]?`<p><span class="pill ${audit.verdicts[n.path]==='fail'?'red':audit.verdicts[n.path]==='warn'?'amber':'green'}">Audit: ${audit.verdicts[n.path]==='fail'?'defect':audit.verdicts[n.path]==='warn'?'note':'clean'}</span> ${VERDICT[n.path]?esc(VERDICT[n.path][1]):esc(PASS_NOTE)}</p>`:''}
+  <dl class="kv"><dt>Size</dt><dd>${n.binary?'binary file':n.lines+' lines'}${n.exports?' · '+n.exports+' exports':''}</dd>
+  <dt>Floor</dt><dd>${esc(floor.label)}</dd>
+  <dt>Laid</dt><dd>${born?`lift ${born.i+1}, ${fmtT(born.t)} IST by ${esc(born.author)}`:'before this history'}</dd>
+  <dt>Reworked</dt><dd>${n.changes.length-1>0?(n.changes.length-1)+' time'+(n.changes.length>2?'s':'')+', last at '+fmtT(n.changes[n.changes.length-1].c.t)+' IST':'never since laid'}</dd>
+  <dt>Tested</dt><dd><span class="pill red">NO TEST FOUND</span></dd>
+  ${n.env.length?`<dt>Reads env</dt><dd>${n.env.map(v=>`<span class="pill cyan">${v}</span>`).join('')}</dd>`:''}</dl>
+  ${n.imports.length?`<p><b>Depends on (${n.imports.length})</b> <small style="color:var(--dim)">· and what it takes from each</small></p><div class="links">${depList(n)}</div>`:''}
+  ${n.importers.length?`<p><b>Used by (${n.importers.length})</b> <small style="color:var(--dim)">· and what each takes from it</small></p><div class="links">${useList(n)}</div>`:''}
+  ${!n.imports.length&&!n.importers.length?'<p class="note">No import cables. This brick stands on its own.</p>':''}
+  ${screensOf(n).length?`<p>On screen (${screensOf(n).length})</p><div class="thumbs">${screensOf(n).map(sc=>`<button data-s="${sc.id}"><img src="${sc.file}" alt=""><span>${sc.title}</span></button>`).join('')}</div>`:'<p class="note">Not visible on any screen: this brick works behind the glass.</p>'}
+  <p class="note">Change history of this brick: ${n.changes.map(x=>`${x.c.short} ${x.ch.kind==='A'?'laid':'+'+x.ch.add+'/−'+x.ch.del}`).join(' · ')}</p>
+  <button class="back" id="back">◀ Trust report</button>`;
+  wireLinks();document.getElementById('back').onclick=()=>{sel=null;showReport();};
+  mon.querySelectorAll('.thumbs button').forEach(b=>b.onclick=()=>openShow(b.dataset.s));
+}
+function wireLinks(){mon.querySelectorAll('.lnk').forEach(el=>{el.style.cursor='pointer';el.style.color='var(--cyan)';el.onclick=()=>{const n=byPath[el.dataset.p];if(!n)return;closeShow();if(brickState(n)!=='built'){k=n.firstCommit.i+1;p=1;playing=false;setPlay();}sel=n;showBrick(n);};});}
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+showReport();
+(document.fonts?document.fonts.load('8px "Press Start 2P"'):Promise.resolve()).finally(()=>requestAnimationFrame(loop));
+</script>

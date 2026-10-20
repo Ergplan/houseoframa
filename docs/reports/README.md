@@ -1,0 +1,1 @@
+Stage reports: `stage-N.md`, written by the agent at the end of each stage. Contents: what was built; what was skipped and why; deviations from the prompt; reviewer findings and fixes; open questions, numbered; real model cost.

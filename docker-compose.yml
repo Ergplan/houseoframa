@@ -1,0 +1,12 @@
+# One box: Postgres for House of Rama. Stage 0 adds the app and the watcher services.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: rama
+      POSTGRES_PASSWORD: rama
+      POSTGRES_DB: rama
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+volumes:
+  pgdata:

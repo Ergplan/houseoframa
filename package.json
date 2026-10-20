@@ -1,0 +1,13 @@
+{
+  "name": "house-of-rama",
+  "private": true,
+  "version": "0.0.1",
+  "description": "House of Rama — Built on trust. Agent-built software your whole company can watch, question and sign off.",
+  "engines": { "node": ">=22" },
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "dev": "echo 'Stage 0 wires this: next dev + docker compose up db + node scripts/watch.mjs'",
+    "watch": "node scripts/watch.mjs",
+    "extract:self": "echo 'Stage 1 wires this: rama extract . --out blueprint/self.json'"
+  }
+}

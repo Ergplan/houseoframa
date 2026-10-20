@@ -1,0 +1,13 @@
+# Stage 0 fills this in with the same checks the watcher runs. Until then CI only proves the repo is well-formed.
+name: check
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: test -f CLAUDE.md && test -f docs/MASTER-PROMPT.md
+      - run: node scripts/watch.mjs || true
+      - run: cat .watch/status.json

@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env
+.env.local
+work/
+.watch/
+reference/ekbill/
+reference/procurementstudio/
+*.log
+.DS_Store

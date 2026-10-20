@@ -1,0 +1,1300 @@
+{
+ "project": "Procurement Studio",
+ "repo": "Ergplan/procurementstudio",
+ "extracted": "2026-10-17",
+ "layers": [
+  {
+   "id": "foundation",
+   "label": "Foundation \u2014 config, env, deploy"
+  },
+  {
+   "id": "data",
+   "label": "Data \u2014 vendors, BoQs, benchmarks"
+  },
+  {
+   "id": "logic",
+   "label": "Logic \u2014 normalisation, 3D, focus, state"
+  },
+  {
+   "id": "api",
+   "label": "API \u2014 server routes to OpenAI"
+  },
+  {
+   "id": "interface",
+   "label": "Interface \u2014 React components"
+  },
+  {
+   "id": "shell",
+   "label": "Shell & docs \u2014 layout, styles, README"
+  }
+ ],
+ "nodes": [
+  {
+   "path": ".env.example",
+   "layer": "foundation",
+   "lines": 14,
+   "env": [],
+   "exports": 0,
+   "purpose": "Template of the environment variables: OPENAI_API_KEY plus optional password and model overrides.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": ".gitignore",
+   "layer": "foundation",
+   "lines": 6,
+   "env": [],
+   "exports": 0,
+   "purpose": "Keeps node_modules, .next and .env.local out of git.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "README.md",
+   "layer": "shell",
+   "lines": 130,
+   "env": [],
+   "exports": 0,
+   "purpose": "What the Studio does, how to run it, how to deploy on Vercel, how the voice advisor works.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "app/api/health/route.ts",
+   "layer": "api",
+   "lines": 20,
+   "env": [],
+   "exports": 2,
+   "purpose": "GET /api/health \u2014 reports whether text, web search and voice are configured (never the key).",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "app/api/llm/route.ts",
+   "layer": "api",
+   "lines": 66,
+   "env": [],
+   "exports": 4,
+   "purpose": "POST /api/llm \u2014 streams text answers from OpenAI with web search; up to 300 s on Vercel.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "app/api/realtime/session/route.ts",
+   "layer": "api",
+   "lines": 26,
+   "env": [],
+   "exports": 4,
+   "purpose": "Mints a short-lived Realtime key so the browser can talk to OpenAI over WebRTC.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "app/globals.css",
+   "layer": "shell",
+   "lines": 401,
+   "env": [],
+   "exports": 0,
+   "purpose": "All styling: dark studio theme, isometric site, dock, flash highlights.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "app/layout.tsx",
+   "layer": "shell",
+   "lines": 19,
+   "env": [],
+   "exports": 3,
+   "purpose": "Root HTML layout and metadata.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "app/page.tsx",
+   "layer": "shell",
+   "lines": 2,
+   "env": [],
+   "exports": 1,
+   "purpose": "Home route \u2014 renders <Studio/>.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/AiPanel.tsx",
+   "layer": "interface",
+   "lines": 133,
+   "env": [],
+   "exports": 2,
+   "purpose": "Typed Q&A panel: sends the asset's context to /api/llm and renders the answer.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/AssetView.tsx",
+   "layer": "interface",
+   "lines": 150,
+   "env": [],
+   "exports": 1,
+   "purpose": "One equipment package: BoQ comparison table, normalised totals, tabs for walkthrough, AI and vendor history.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/Markdown.tsx",
+   "layer": "interface",
+   "lines": 20,
+   "env": [],
+   "exports": 1,
+   "purpose": "Tiny markdown renderer for AI answers.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/MasterModal.tsx",
+   "layer": "interface",
+   "lines": 42,
+   "env": [],
+   "exports": 1,
+   "purpose": "Edit plant assumptions: fuel price, GCV, hours, load, tariff, years.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/RealTalk.tsx",
+   "layer": "interface",
+   "lines": 281,
+   "env": [],
+   "exports": 1,
+   "purpose": "AI Proc Advisory \u2014 voice session over WebRTC, function calls that move the screen.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/Studio.tsx",
+   "layer": "interface",
+   "lines": 89,
+   "env": [],
+   "exports": 1,
+   "purpose": "Top-level screen: isometric site plan, package picker, portfolio totals.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/VendorHistory.tsx",
+   "layer": "interface",
+   "lines": 90,
+   "env": [],
+   "exports": 1,
+   "purpose": "Vendor track record: past projects, review scores, trust band.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "components/Walkthrough.tsx",
+   "layer": "interface",
+   "lines": 112,
+   "env": [],
+   "exports": 1,
+   "purpose": "3D wireframe walkthrough UI; every BoQ line is a clickable part.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/ai.ts",
+   "layer": "logic",
+   "lines": 24,
+   "env": [],
+   "exports": 5,
+   "purpose": "Client helper to call /api/llm and turn errors into plain English.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/calc.ts",
+   "layer": "logic",
+   "lines": 84,
+   "env": [],
+   "exports": 17,
+   "purpose": "The formulas: scope-gap fill, capacity normalisation, lifecycle cost, rankings, award context.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/data.ts",
+   "layer": "data",
+   "lines": 367,
+   "env": [],
+   "exports": 15,
+   "purpose": "The dataset: 6 packages, 18 vendor offers, BoQ rows, benchmarks, intel, parts, tech fit.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/focus.ts",
+   "layer": "logic",
+   "lines": 132,
+   "env": [],
+   "exports": 10,
+   "purpose": "Matches spoken/typed text to assets, rows and figures and flashes them on screen.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/history.ts",
+   "layer": "data",
+   "lines": 45,
+   "env": [],
+   "exports": 7,
+   "purpose": "Vendor project history and review data, track score and band.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/iso.ts",
+   "layer": "logic",
+   "lines": 151,
+   "env": [],
+   "exports": 1,
+   "purpose": "Draws the factory as an isometric SVG site plan.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/server/config.ts",
+   "layer": "foundation",
+   "lines": 24,
+   "env": [
+    "OPENAI_API_KEY",
+    "OPENAI_API_KEY1",
+    "OPENAI_BASE_URL",
+    "OPENAI_KEY",
+    "OPENAI_REALTIME_MODEL",
+    "OPENAI_SECRET_KEY",
+    "OPENAI_TEXT_MODEL",
+    "OPENAI_TRANSCRIBE_MODEL",
+    "OPENAI_VOICE",
+    "STUDIO_PASSWORD",
+    "VERCEL",
+    "VERCEL_ENV",
+    "WEB_SEARCH"
+   ],
+   "exports": 1,
+   "purpose": "Server-only config: finds the OpenAI key by several names, model defaults, host detection.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/store.tsx",
+   "layer": "logic",
+   "lines": 44,
+   "env": [],
+   "exports": 4,
+   "purpose": "React context: master assumptions, selected asset, health status, reviews.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "lib/walkEngine.ts",
+   "layer": "logic",
+   "lines": 269,
+   "env": [],
+   "exports": 5,
+   "purpose": "three.js engine: builds each machine from parts, orbit and walk cameras, guided tour order.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "next.config.mjs",
+   "layer": "foundation",
+   "lines": 3,
+   "env": [],
+   "exports": 1,
+   "purpose": "Next.js configuration.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "package-lock.json",
+   "layer": "foundation",
+   "lines": 1081,
+   "env": [],
+   "exports": 0,
+   "purpose": "Locked dependency tree.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "package.json",
+   "layer": "foundation",
+   "lines": 26,
+   "env": [],
+   "exports": 0,
+   "purpose": "Project manifest: next 16, react 19, three 0.186.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "proxy.ts",
+   "layer": "foundation",
+   "lines": 18,
+   "env": [
+    "STUDIO_PASSWORD"
+   ],
+   "exports": 2,
+   "purpose": "Optional HTTP Basic password gate (STUDIO_PASSWORD) in front of every route.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "public/boiler-ref.jpg",
+   "layer": "data",
+   "lines": 0,
+   "env": [],
+   "exports": 0,
+   "purpose": "Reference photo of the biomass boiler.",
+   "binary": true,
+   "test": false
+  },
+  {
+   "path": "start.command",
+   "layer": "foundation",
+   "lines": 16,
+   "env": [],
+   "exports": 0,
+   "purpose": "Mac double-click launcher: installs, creates .env.local, opens the browser.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "tsconfig.json",
+   "layer": "foundation",
+   "lines": 41,
+   "env": [],
+   "exports": 0,
+   "purpose": "TypeScript configuration.",
+   "binary": false,
+   "test": false
+  },
+  {
+   "path": "vercel.json",
+   "layer": "foundation",
+   "lines": 7,
+   "env": [],
+   "exports": 0,
+   "purpose": "Vercel deployment settings.",
+   "binary": false,
+   "test": false
+  }
+ ],
+ "edges": [
+  [
+   "app/api/health/route.ts",
+   "lib/server/config.ts"
+  ],
+  [
+   "app/api/llm/route.ts",
+   "lib/server/config.ts"
+  ],
+  [
+   "app/api/realtime/session/route.ts",
+   "lib/server/config.ts"
+  ],
+  [
+   "app/page.tsx",
+   "components/Studio.tsx"
+  ],
+  [
+   "components/AiPanel.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/AiPanel.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/AiPanel.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "components/AiPanel.tsx",
+   "lib/ai.ts"
+  ],
+  [
+   "components/AiPanel.tsx",
+   "components/Markdown.tsx"
+  ],
+  [
+   "components/AssetView.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/AssetView.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/AssetView.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "components/AssetView.tsx",
+   "lib/ai.ts"
+  ],
+  [
+   "components/AssetView.tsx",
+   "components/Walkthrough.tsx"
+  ],
+  [
+   "components/AssetView.tsx",
+   "components/AiPanel.tsx"
+  ],
+  [
+   "components/AssetView.tsx",
+   "components/VendorHistory.tsx"
+  ],
+  [
+   "components/AssetView.tsx",
+   "lib/history.ts"
+  ],
+  [
+   "components/AssetView.tsx",
+   "lib/focus.ts"
+  ],
+  [
+   "components/MasterModal.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/MasterModal.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/RealTalk.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/RealTalk.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/RealTalk.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "components/RealTalk.tsx",
+   "lib/ai.ts"
+  ],
+  [
+   "components/RealTalk.tsx",
+   "components/Markdown.tsx"
+  ],
+  [
+   "components/RealTalk.tsx",
+   "lib/focus.ts"
+  ],
+  [
+   "components/Studio.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/Studio.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/Studio.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "components/Studio.tsx",
+   "lib/iso.ts"
+  ],
+  [
+   "components/Studio.tsx",
+   "components/AssetView.tsx"
+  ],
+  [
+   "components/Studio.tsx",
+   "components/MasterModal.tsx"
+  ],
+  [
+   "components/Studio.tsx",
+   "components/RealTalk.tsx"
+  ],
+  [
+   "components/VendorHistory.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/VendorHistory.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/VendorHistory.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "components/VendorHistory.tsx",
+   "lib/history.ts"
+  ],
+  [
+   "components/Walkthrough.tsx",
+   "lib/store.tsx"
+  ],
+  [
+   "components/Walkthrough.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "components/Walkthrough.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "components/Walkthrough.tsx",
+   "lib/walkEngine.ts"
+  ],
+  [
+   "lib/calc.ts",
+   "lib/data.ts"
+  ],
+  [
+   "lib/calc.ts",
+   "lib/history.ts"
+  ],
+  [
+   "lib/focus.ts",
+   "lib/data.ts"
+  ],
+  [
+   "lib/iso.ts",
+   "lib/data.ts"
+  ],
+  [
+   "lib/iso.ts",
+   "lib/calc.ts"
+  ],
+  [
+   "lib/store.tsx",
+   "lib/data.ts"
+  ],
+  [
+   "lib/store.tsx",
+   "lib/calc.ts"
+  ],
+  [
+   "lib/store.tsx",
+   "lib/history.ts"
+  ],
+  [
+   "lib/walkEngine.ts",
+   "lib/data.ts"
+  ]
+ ],
+ "commits": [
+  {
+   "sha": "96b3fba030670ac89e4db926a9902e1866f8a754",
+   "short": "96b3fba",
+   "date": "2026-09-28T11:07:13+00:00",
+   "author": "Joulewise",
+   "subject": "Procurement Studio: Next.js app with 3D walkthrough and RealTalk voice",
+   "changes": [
+    {
+     "path": ".env.example",
+     "add": 10,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": ".gitignore",
+     "add": 5,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "README.md",
+     "add": 81,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "app/api/health/route.ts",
+     "add": 5,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "app/api/llm/route.ts",
+     "add": 61,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "app/api/realtime/session/route.ts",
+     "add": 25,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "app/globals.css",
+     "add": 331,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "app/layout.tsx",
+     "add": 19,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "app/page.tsx",
+     "add": 2,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/AiPanel.tsx",
+     "add": 133,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/AssetView.tsx",
+     "add": 138,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/Markdown.tsx",
+     "add": 20,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/MasterModal.tsx",
+     "add": 42,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/RealTalk.tsx",
+     "add": 185,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/Studio.tsx",
+     "add": 89,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "components/Walkthrough.tsx",
+     "add": 112,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/ai.ts",
+     "add": 24,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/calc.ts",
+     "add": 78,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/data.ts",
+     "add": 367,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/iso.ts",
+     "add": 151,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/server/config.ts",
+     "add": 10,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/store.tsx",
+     "add": 38,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/walkEngine.ts",
+     "add": 269,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "next.config.mjs",
+     "add": 3,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "package-lock.json",
+     "add": 1081,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "package.json",
+     "add": 23,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "public/boiler-ref.jpg",
+     "add": null,
+     "del": null,
+     "kind": "A"
+    },
+    {
+     "path": "start.command",
+     "add": 16,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "tsconfig.json",
+     "add": 41,
+     "del": 0,
+     "kind": "A"
+    }
+   ]
+  },
+  {
+   "sha": "30693e58511ed1d425ddbc1a35094d6a9b9bf98f",
+   "short": "30693e5",
+   "date": "2026-09-28T16:51:02+05:30",
+   "author": "Rachit Agarwal",
+   "subject": "Make the app Vercel-ready",
+   "changes": [
+    {
+     "path": ".env.example",
+     "add": 4,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": ".gitignore",
+     "add": 1,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "README.md",
+     "add": 20,
+     "del": 1,
+     "kind": "M"
+    },
+    {
+     "path": "app/api/llm/route.ts",
+     "add": 5,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "app/api/realtime/session/route.ts",
+     "add": 1,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "lib/server/config.ts",
+     "add": 1,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "package.json",
+     "add": 3,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "proxy.ts",
+     "add": 18,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "start.command",
+     "add": 0,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "vercel.json",
+     "add": 7,
+     "del": 0,
+     "kind": "A"
+    }
+   ]
+  },
+  {
+   "sha": "273340075595f99e4fe3b599678b3017154948a3",
+   "short": "2733400",
+   "date": "2026-09-28T16:55:50+05:30",
+   "author": "Rachit Agarwal",
+   "subject": "AI Proc Advisory: compact dock, rename, key diagnostics",
+   "changes": [
+    {
+     "path": "README.md",
+     "add": 5,
+     "del": 5,
+     "kind": "M"
+    },
+    {
+     "path": "app/api/health/route.ts",
+     "add": 17,
+     "del": 2,
+     "kind": "M"
+    },
+    {
+     "path": "app/globals.css",
+     "add": 28,
+     "del": 1,
+     "kind": "M"
+    },
+    {
+     "path": "app/layout.tsx",
+     "add": 1,
+     "del": 1,
+     "kind": "M"
+    },
+    {
+     "path": "components/AiPanel.tsx",
+     "add": 1,
+     "del": 1,
+     "kind": "M"
+    },
+    {
+     "path": "components/RealTalk.tsx",
+     "add": 44,
+     "del": 29,
+     "kind": "M"
+    },
+    {
+     "path": "components/Walkthrough.tsx",
+     "add": 1,
+     "del": 1,
+     "kind": "M"
+    },
+    {
+     "path": "lib/server/config.ts",
+     "add": 15,
+     "del": 2,
+     "kind": "M"
+    },
+    {
+     "path": "lib/store.tsx",
+     "add": 2,
+     "del": 2,
+     "kind": "M"
+    }
+   ]
+  },
+  {
+   "sha": "fe7da840afd2fb6f00dc9b74017b962f0072f4b8",
+   "short": "fe7da84",
+   "date": "2026-09-28T17:01:08+05:30",
+   "author": "Rachit Agarwal",
+   "subject": "Accept OPENAI_API_KEY1",
+   "changes": [
+    {
+     "path": "README.md",
+     "add": 1,
+     "del": 1,
+     "kind": "M"
+    },
+    {
+     "path": "lib/server/config.ts",
+     "add": 1,
+     "del": 1,
+     "kind": "M"
+    }
+   ]
+  },
+  {
+   "sha": "fa0828402ca16a957bd6ede2229028bb6f942202",
+   "short": "fa08284",
+   "date": "2026-09-28T17:19:53+05:30",
+   "author": "Rachit Agarwal",
+   "subject": "Voice-driven focus and vendor track record",
+   "changes": [
+    {
+     "path": "README.md",
+     "add": 28,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "app/globals.css",
+     "add": 40,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "components/AiPanel.tsx",
+     "add": 6,
+     "del": 6,
+     "kind": "M"
+    },
+    {
+     "path": "components/AssetView.tsx",
+     "add": 23,
+     "del": 11,
+     "kind": "M"
+    },
+    {
+     "path": "components/RealTalk.tsx",
+     "add": 45,
+     "del": 9,
+     "kind": "M"
+    },
+    {
+     "path": "components/VendorHistory.tsx",
+     "add": 90,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/calc.ts",
+     "add": 10,
+     "del": 4,
+     "kind": "M"
+    },
+    {
+     "path": "lib/focus.ts",
+     "add": 54,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/history.ts",
+     "add": 45,
+     "del": 0,
+     "kind": "A"
+    },
+    {
+     "path": "lib/store.tsx",
+     "add": 7,
+     "del": 1,
+     "kind": "M"
+    }
+   ]
+  },
+  {
+   "sha": "fac615d8bffca603d20cda57c0642004bc437ffb",
+   "short": "fac615d",
+   "date": "2026-09-28T17:41:59+05:30",
+   "author": "Rachit Agarwal",
+   "subject": "Sync screen highlights to the spoken answer",
+   "changes": [
+    {
+     "path": "README.md",
+     "add": 2,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "app/globals.css",
+     "add": 3,
+     "del": 0,
+     "kind": "M"
+    },
+    {
+     "path": "components/RealTalk.tsx",
+     "add": 71,
+     "del": 26,
+     "kind": "M"
+    },
+    {
+     "path": "components/Walkthrough.tsx",
+     "add": 2,
+     "del": 2,
+     "kind": "M"
+    },
+    {
+     "path": "lib/focus.ts",
+     "add": 79,
+     "del": 1,
+     "kind": "M"
+    }
+   ]
+  }
+ ],
+ "branches": [
+  "main"
+ ],
+ "authors": [
+  "Joulewise",
+  "Rachit Agarwal"
+ ],
+ "deps": {
+  "next": "16.3.6",
+  "react": "19.3.0",
+  "react-dom": "19.3.0",
+  "three": "0.186.1"
+ },
+ "facts": {
+  "files": 34,
+  "text_lines": 3933,
+  "tests": 0,
+  "commits": 6,
+  "branches": 1,
+  "authors": 2,
+  "env_vars": [
+   "OPENAI_API_KEY",
+   "OPENAI_API_KEY1",
+   "OPENAI_BASE_URL",
+   "OPENAI_KEY",
+   "OPENAI_REALTIME_MODEL",
+   "OPENAI_SECRET_KEY",
+   "OPENAI_TEXT_MODEL",
+   "OPENAI_TRANSCRIBE_MODEL",
+   "OPENAI_VOICE",
+   "STUDIO_PASSWORD",
+   "VERCEL",
+   "VERCEL_ENV",
+   "WEB_SEARCH"
+  ],
+  "imports": 50,
+  "first_commit": "2026-09-28T11:07:13+00:00",
+  "last_commit": "2026-09-28T17:41:59+05:30"
+ },
+ "edgeSyms": {
+  "app/api/health/route.ts>lib/server/config.ts": [
+   "cfg"
+  ],
+  "app/api/llm/route.ts>lib/server/config.ts": [
+   "cfg"
+  ],
+  "app/api/realtime/session/route.ts>lib/server/config.ts": [
+   "cfg"
+  ],
+  "app/page.tsx>components/Studio.tsx": [
+   "Studio"
+  ],
+  "components/AiPanel.tsx>lib/store.tsx": [
+   "useStudio"
+  ],
+  "components/AiPanel.tsx>lib/data.ts": [
+   "Asset",
+   "RESEARCH_DATE"
+  ],
+  "components/AiPanel.tsx>lib/calc.ts": [
+   "aName",
+   "aiContext",
+   "amt",
+   "compute",
+   "money",
+   "rate"
+  ],
+  "components/AiPanel.tsx>lib/ai.ts": [
+   "llm",
+   "llmJson",
+   "errText"
+  ],
+  "components/AiPanel.tsx>components/Markdown.tsx": [
+   "Markdown"
+  ],
+  "components/AssetView.tsx>lib/store.tsx": [
+   "useStudio"
+  ],
+  "components/AssetView.tsx>lib/data.ts": [
+   "INTEL",
+   "RESEARCH_DATE",
+   "SRC"
+  ],
+  "components/AssetView.tsx>lib/calc.ts": [
+   "aName",
+   "amt",
+   "assetById",
+   "benchFlag",
+   "benchFor",
+   "compute",
+   "money",
+   "rate"
+  ],
+  "components/AssetView.tsx>lib/ai.ts": [
+   "llmJson",
+   "errText"
+  ],
+  "components/AssetView.tsx>components/Walkthrough.tsx": [
+   "Walkthrough"
+  ],
+  "components/AssetView.tsx>components/AiPanel.tsx": [
+   "AiPanel",
+   "AiKind"
+  ],
+  "components/AssetView.tsx>components/VendorHistory.tsx": [
+   "VendorHistory"
+  ],
+  "components/AssetView.tsx>lib/history.ts": [
+   "mergedHistory",
+   "scoreBand",
+   "trackScore"
+  ],
+  "components/AssetView.tsx>lib/focus.ts": [
+   "flash"
+  ],
+  "components/MasterModal.tsx>lib/store.tsx": [
+   "useStudio"
+  ],
+  "components/MasterModal.tsx>lib/data.ts": [
+   "ASSETS",
+   "DEFAULT_MASTER",
+   "Master"
+  ],
+  "components/RealTalk.tsx>lib/store.tsx": [
+   "useStudio"
+  ],
+  "components/RealTalk.tsx>lib/data.ts": [
+   "ASSETS",
+   "RESEARCH_DATE"
+  ],
+  "components/RealTalk.tsx>lib/calc.ts": [
+   "aName",
+   "aiContext",
+   "assetById",
+   "partInfo",
+   "portfolio"
+  ],
+  "components/RealTalk.tsx>lib/ai.ts": [
+   "llm",
+   "errText",
+   "Turn"
+  ],
+  "components/RealTalk.tsx>components/Markdown.tsx": [
+   "Markdown"
+  ],
+  "components/RealTalk.tsx>lib/focus.ts": [
+   "flash",
+   "SECTIONS",
+   "assetFromText",
+   "makeScanner",
+   "flashEl",
+   "findFigure",
+   "inView",
+   "Mention"
+  ],
+  "components/Studio.tsx>lib/store.tsx": [
+   "StudioProvider",
+   "useStudio"
+  ],
+  "components/Studio.tsx>lib/data.ts": [
+   "ASSETS",
+   "RESEARCH_DATE"
+  ],
+  "components/Studio.tsx>lib/calc.ts": [
+   "aName",
+   "compute",
+   "money"
+  ],
+  "components/Studio.tsx>lib/iso.ts": [
+   "siteSVG"
+  ],
+  "components/Studio.tsx>components/AssetView.tsx": [
+   "AssetView"
+  ],
+  "components/Studio.tsx>components/MasterModal.tsx": [
+   "MasterModal"
+  ],
+  "components/Studio.tsx>components/RealTalk.tsx": [
+   "RealTalk"
+  ],
+  "components/VendorHistory.tsx>lib/store.tsx": [
+   "useStudio"
+  ],
+  "components/VendorHistory.tsx>lib/data.ts": [
+   "Asset"
+  ],
+  "components/VendorHistory.tsx>lib/calc.ts": [
+   "money"
+  ],
+  "components/VendorHistory.tsx>lib/history.ts": [
+   "mergedHistory",
+   "scoreBand",
+   "trackScore",
+   "Review"
+  ],
+  "components/Walkthrough.tsx>lib/store.tsx": [
+   "useStudio"
+  ],
+  "components/Walkthrough.tsx>lib/data.ts": [
+   "PARTS",
+   "TECH",
+   "Asset"
+  ],
+  "components/Walkthrough.tsx>lib/calc.ts": [
+   "aName",
+   "amt",
+   "benchFlag",
+   "benchFor",
+   "compute",
+   "money",
+   "rate",
+   "rowObj"
+  ],
+  "components/Walkthrough.tsx>lib/walkEngine.ts": [
+   "createEngine",
+   "Engine",
+   "TOUR"
+  ],
+  "lib/calc.ts>lib/data.ts": [
+   "ASSETS",
+   "INTEL",
+   "TECH",
+   "PARTS",
+   "SRC",
+   "RESEARCH_DATE",
+   "Asset",
+   "Cell",
+   "Master",
+   "Row",
+   "Vendor"
+  ],
+  "lib/calc.ts>lib/history.ts": [
+   "mergedHistory",
+   "trackScore",
+   "Review"
+  ],
+  "lib/focus.ts>lib/data.ts": [
+   "Asset"
+  ],
+  "lib/iso.ts>lib/data.ts": [
+   "ASSETS",
+   "Master"
+  ],
+  "lib/iso.ts>lib/calc.ts": [
+   "compute",
+   "money",
+   "aName",
+   "Comp"
+  ],
+  "lib/store.tsx>lib/data.ts": [
+   "DEFAULT_MASTER",
+   "Master"
+  ],
+  "lib/store.tsx>lib/calc.ts": [
+   "Disc"
+  ],
+  "lib/store.tsx>lib/history.ts": [
+   "Review"
+  ],
+  "lib/walkEngine.ts>lib/data.ts": [
+   "Asset"
+  ]
+ }
+}
