@@ -107,3 +107,10 @@ Verdicts on the other items: (b) upheld (`/api/health` has a route test and an H
 2. **Public repository.** `github.com/Ergplan/houseoframa` answers without credentials, so it is public. Nothing from this session has been pushed. Should it stay public?
 3. **Push.** May I push `main` and the `stage-0-start` and `stage-1-start` tags, so CI runs the self-drift and golden checks on GitHub?
 4. **Refs and determinism.** The stage asks for branches and tags in the Blueprint and for byte-identical re-extraction of a commit. Refs are live repository state, so both cannot hold when a ref is added inside the history. I recommend keeping refs in the Blueprint as now, because Stage 2's layout draws branches as scaffolds from it. The alternative is moving refs to a sidecar file beside the Blueprint, which would make it a pure function of the commit but changes the §8 schema. Which do you want?
+
+### Answers (2026-10-20)
+
+1. Draft an EkBill overlay in Stage 2 for confirmation; defaults unchanged.
+2. Keep the repository public.
+3. Push approved: `main`, `stage-0-start` and `stage-1-start` pushed.
+4. Keep refs in the Blueprint.

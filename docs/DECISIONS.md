@@ -2,6 +2,13 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-20 — Stage 1 open questions, answered by the member
+
+- EkBill's floors: draft an EkBill layers overlay (`.rama/layers.json` in its working clone) in Stage 2 for the member to confirm. The §7.2 house-stack defaults stay as they are.
+- `github.com/Ergplan/houseoframa` stays public.
+- Push approved: `main` and the stage tags go to GitHub so CI runs the drift and golden checks there.
+- Refs stay in the Blueprint (branches and tags merged into the extracted commit). Re-extraction is byte-identical for a fixed set of refs; adding a ref inside the history changes the Blueprint by design. No sidecar file.
+
 ## 2026-10-20 — Stage 1: the Blueprint
 
 - **Schema additions** (additive; MASTER-PROMPT §8 fields unchanged): `BrickNode.envDynamic` (a read of `process.env[x]` the extractor could not name, shown rather than hidden); `ImportEdge.typeOnly` (a type-only import carries no runtime dependency, so screens' import closures skip it); `Commit.changes[].from` (old path of a rename); `Blueprint.worktree`; `Blueprint.unresolved` (internal-looking imports that match no file); `external[].dev` and `external[].manifest` (a monorepo has many manifests).

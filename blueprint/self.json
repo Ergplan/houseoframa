@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
+  "commit": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1144,6 +1144,33 @@
       "sha": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
       "short": "c3f5c8a",
       "subject": "blueprint: record only refs in the extracted history; name the repo by its origin"
+    },
+    {
+      "at": "2026-10-20T09:55:58Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 70,
+          "del": 19,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 20,
+          "del": 5,
+          "kind": "M",
+          "path": "docs/reports/stage-1.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-1.review.md"
+        }
+      ],
+      "sha": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
+      "short": "93d6a9a",
+      "subject": "Stage 1: report with reviewer findings, cost and open questions"
     }
   ],
   "edges": [
@@ -2278,7 +2305,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T09:52:48Z",
+  "extractedAt": "2026-10-20T09:55:58Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -2680,7 +2707,7 @@
     },
     {
       "binary": false,
-      "bytes": 8114,
+      "bytes": 8734,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -2689,7 +2716,7 @@
       "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 58,
+      "lines": 65,
       "path": "docs/DECISIONS.md",
       "test": false
     },
@@ -2755,28 +2782,28 @@
     },
     {
       "binary": false,
-      "bytes": 13738,
-      "changes": 2,
+      "bytes": 13973,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
-      "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
+      "lastCommit": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 109,
+      "lines": 116,
       "path": "docs/reports/stage-1.md",
       "test": false
     },
     {
       "binary": false,
       "bytes": 16700,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
-      "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
+      "lastCommit": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 35,
