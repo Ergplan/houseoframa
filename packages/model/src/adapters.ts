@@ -6,6 +6,8 @@ export interface Completion {
   model: string;
   inputTokens: number | null;
   outputTokens: number | null;
+  /** True when the vendor stopped at the token limit, so the reply is incomplete. */
+  truncated: boolean;
 }
 
 export interface CompletionRequest {
@@ -68,6 +70,7 @@ export async function anthropicComplete(
   )) as {
     model: string;
     content: { type: string; text?: string }[];
+    stop_reason?: string;
     usage?: { input_tokens?: number; output_tokens?: number };
   };
   return {
@@ -78,6 +81,7 @@ export async function anthropicComplete(
     model: json.model,
     inputTokens: json.usage?.input_tokens ?? null,
     outputTokens: json.usage?.output_tokens ?? null,
+    truncated: json.stop_reason === 'max_tokens',
   };
 }
 
@@ -101,7 +105,7 @@ export async function openaiComplete(
     },
   )) as {
     model: string;
-    choices: { message: { content: string | null } }[];
+    choices: { message: { content: string | null }; finish_reason?: string }[];
     usage?: { prompt_tokens?: number; completion_tokens?: number };
   };
   return {
@@ -109,6 +113,8 @@ export async function openaiComplete(
     model: json.model,
     inputTokens: json.usage?.prompt_tokens ?? null,
     outputTokens: json.usage?.completion_tokens ?? null,
+    // Reasoning models spend hidden tokens from the same budget; an empty reply often means this.
+    truncated: json.choices[0]?.finish_reason === 'length',
   };
 }
 

@@ -18,6 +18,11 @@ export class OutputParseError extends Error {
   override name = 'OutputParseError';
 }
 
+/** The vendor stopped at the token limit. Not retried: the same budget would stop it again. */
+export class OutputTruncatedError extends Error {
+  override name = 'OutputTruncatedError';
+}
+
 export interface CallRequest<I, O> {
   /** Prompt name: loads prompts/<name>.v<version>.md. */
   name: string;
@@ -42,6 +47,7 @@ export interface CallResult<O> {
   vendor: Vendor;
   model: string;
   attempts: number;
+  /** Summed over every attempt that got a reply. */
   inputTokens: number | null;
   outputTokens: number | null;
 }
@@ -115,20 +121,33 @@ export async function call<I, O>(
 
   const format = req.format ?? 'json';
   const user = JSON.stringify(req.input);
+  const maxTokens = req.maxTokens ?? 4096;
   const started = Date.now();
   let attempts = 0;
   let completion: Completion | null = null;
   let output: O | undefined;
   let lastError: unknown;
+  // Summed over every attempt that got a reply: each one was billed.
+  let inputTokens: number | null = null;
+  let outputTokens: number | null = null;
 
   while (attempts < MAX_ATTEMPTS) {
     attempts++;
     try {
       completion = await adapter.complete(
-        { model, system: prompt.text, user, maxTokens: req.maxTokens ?? 4096 },
+        { model, system: prompt.text, user, maxTokens },
         apiKey,
         deps.fetch,
       );
+      if (completion.inputTokens !== null)
+        inputTokens = (inputTokens ?? 0) + completion.inputTokens;
+      if (completion.outputTokens !== null)
+        outputTokens = (outputTokens ?? 0) + completion.outputTokens;
+      if (completion.truncated) {
+        throw new OutputTruncatedError(
+          `${vendor} stopped at the token limit (maxTokens ${maxTokens}) before finishing the reply`,
+        );
+      }
       output = parseOutput(completion.text, req.output, format);
       lastError = undefined;
       break;
@@ -153,8 +172,8 @@ export async function call<I, O>(
     status: ok ? 'ok' : 'error',
     error: ok ? null : String((lastError as Error)?.message ?? lastError),
     attempts,
-    inputTokens: completion?.inputTokens ?? null,
-    outputTokens: completion?.outputTokens ?? null,
+    inputTokens,
+    outputTokens,
     ms: Date.now() - started,
     createdBy: req.createdBy,
   });
@@ -166,7 +185,7 @@ export async function call<I, O>(
     vendor,
     model: completion?.model ?? model,
     attempts,
-    inputTokens: completion?.inputTokens ?? null,
-    outputTokens: completion?.outputTokens ?? null,
+    inputTokens,
+    outputTokens,
   };
 }

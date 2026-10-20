@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
-import { call, type CallDeps, type ModelCallRow } from './call.ts';
+import { call, OutputTruncatedError, type CallDeps, type ModelCallRow } from './call.ts';
 import { resolveVendors, VendorGuardError } from './vendors.ts';
 
 const promptsDir = fileURLToPath(new URL('../test/fixtures/prompts', import.meta.url));
@@ -32,11 +32,11 @@ function anthropicReply(text: string) {
   );
 }
 
-function openaiReply(text: string) {
+function openaiReply(text: string, finishReason = 'stop') {
   return new Response(
     JSON.stringify({
       model: 'test-openai-model',
-      choices: [{ message: { content: text } }],
+      choices: [{ message: { content: text }, finish_reason: finishReason }],
       usage: { prompt_tokens: 13, completion_tokens: 5 },
     }),
     { status: 200 },
@@ -143,7 +143,7 @@ describe('call()', () => {
     const res = await call({ ...request, role: 'builder' }, d);
     expect(res.attempts).toBe(2);
     expect(rows).toHaveLength(1);
-    expect(rows[0]).toMatchObject({ status: 'ok', attempts: 2 });
+    expect(rows[0]).toMatchObject({ status: 'ok', attempts: 2, inputTokens: 22, outputTokens: 14 });
   });
 
   it('does not retry a request the vendor rejects', async () => {
@@ -154,6 +154,17 @@ describe('call()', () => {
     await expect(call({ ...request, role: 'builder' }, d)).rejects.toThrow(/401/);
     expect(fetchImpl).toHaveBeenCalledTimes(1);
     expect(rows[0]).toMatchObject({ status: 'error', attempts: 1 });
+  });
+
+  it('fails at once, without retrying, when the reply stops at the token limit', async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => openaiReply('', 'length'));
+    const { d, rows } = deps(fetchImpl);
+    await expect(call({ ...request, role: 'auditor', maxTokens: 50 }, d)).rejects.toThrow(
+      OutputTruncatedError,
+    );
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(rows[0]).toMatchObject({ status: 'error', attempts: 1, outputTokens: 5 });
+    expect(rows[0]?.error).toMatch(/token limit \(maxTokens 50\)/);
   });
 
   it('refuses without a model name rather than guessing one', async () => {

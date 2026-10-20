@@ -19,7 +19,8 @@ describe('@vendor real vendor round trip', () => {
           role,
           siteId: 'self',
           createdBy: 'rama:model-vendor-test@0.0.1',
-          maxTokens: 50,
+          // Reasoning models spend hidden tokens from this budget before they answer.
+          maxTokens: 2000,
         },
         { promptsDir },
       );
