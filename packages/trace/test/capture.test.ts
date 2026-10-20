@@ -84,10 +84,12 @@ describe('capture', () => {
       ['line-count', 'overlay', '2 lines'],
       ['untraced:order:1', 'detected', 'Order 7'],
       ['untraced:order:2', 'detected', 'Previous order incl. ₹2 packing'],
-      ['untraced:order:3', 'detected', '₹12'],
+      ['untraced:order:3', 'detected', '₹ 12'],
       ['untraced:order:4', 'detected', '18%'],
       ['untraced:order:5', 'detected', '3'],
-      ['untraced:order:6', 'detected', '13 bills this quarter'],
+      ['untraced:order:6', 'detected', 'Delivery ₹99'],
+      ['untraced:order:7', 'detected', 'Tax ₹10'],
+      ['untraced:order:8', 'detected', '13 bills this quarter'],
     ]);
   });
 
@@ -96,15 +98,17 @@ describe('capture', () => {
     expect(detected.map((f) => f.text)).toEqual([
       'Order 7',
       'Previous order incl. ₹2 packing', // it also holds a traced figure: its other amount is still marked
-      '₹12',
+      '₹ 12',
       '18%',
       '3',
+      'Delivery ₹99', // its child holds another amount: each is marked, the parent by its own text
+      'Tax ₹10',
       '13 bills this quarter',
     ]);
     // A number the detector cannot tell from a figure ("Order 7") is marked untraced, not left bare. Dates,
     // times, years and identifiers that mix letters and digits are not figures; neither are plain words.
     const all = cap.screens.flatMap((s) => s.figures).map((f) => f.text);
-    expect(all.some((t) => /owner|staff|none|Delivery|Sept|INV-042|GSTIN/.test(t))).toBe(false);
+    expect(all.some((t) => /owner|staff|none|Sept|INV-042|GSTIN/.test(t))).toBe(false);
   });
 
   it("re-executes the convention's function with each screen's own arguments, and the overlay's harness", () => {
@@ -139,8 +143,10 @@ describe('showroom', () => {
       'order/untraced:order:4',
       'order/untraced:order:5',
       'order/untraced:order:6',
+      'order/untraced:order:7',
+      'order/untraced:order:8',
     ]);
-    expect(s.counts).toEqual({ shown: 11, traced: 3 });
+    expect(s.counts).toEqual({ shown: 13, traced: 3 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'order/line-count',

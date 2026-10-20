@@ -35,7 +35,7 @@ const routes = {
       '<p>Previous order <span data-rama-figure="order-total" data-rama-args=\\'' + JSON.stringify([OTHER]) + '\\' data-rama-value="' +
       orderTotal(OTHER) + '">' + rupees(orderTotal(OTHER)) + '</span> incl. ₹2 packing</p>' +
       '<p class="hero"><span>₹</span><span>12</span></p><p>GST <i>18%</i></p><p>Items <b>3</b></p>' +
-      '<p>13 bills this quarter</p><p>Issued 22 Sept 2026 at 10:30 (22/09)</p><p>Invoice INV-042, GSTIN 27AAPFU0939F1ZV</p>'),
+      '<p>Delivery ₹99 <span>Tax ₹10</span></p><p>13 bills this quarter</p><p>Issued 22 Sept 2026 at 10:30 (22/09)</p><p>Invoice INV-042, GSTIN 27AAPFU0939F1ZV</p>'),
 };
 http
   .createServer((req, res) => {

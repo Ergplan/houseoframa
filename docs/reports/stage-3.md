@@ -154,7 +154,11 @@ Other items from run 1 do not block the stage:
 
 1. **Invariant 2 (code): ancestors of a traced figure were skipped.** In `<p><span data-rama-figure>₹10</span> Delivery ₹99</p>` the ₹99 was left bare. Detection now excludes only a traced figure and what is inside it. An element that holds a traced figure is judged by its text outside that figure. The fixture's "Previous order ₹15.00 incl. ₹2 packing" pins it: the traced ₹15.00 keeps its trail and the ₹2 is marked untraced. EkBill has no such element, so its count is unchanged at 7 of 155.
 
-(Run 4 below.)
+**Run 4 (at 5e07e88): one code defect, the same class one level up.** In `<p>Delivery ₹99 <span>Tax ₹10</span></p>` only the child was marked, because the parent was dropped when any child qualified.
+
+Rather than patch case by case, detection now works on **residual text**. Each element is judged by its visible text that is not inside a traced figure or a figure already marked. Each pass repeats until nothing new qualifies. An element is marked wherever its own text holds a figure, at any depth, beside traced or untraced figures. The fixture's "Delivery ₹99 / Tax ₹10" pins it, and both are marked. EkBill's count is unchanged at 7 of 155.
+
+(Run 5 below.)
 
 ## Real model cost
 
@@ -174,8 +178,9 @@ Independent reviewer (auditor vendor):
 | 1 (54a9f3e) | gpt-6.1-sol | 58,824       | 1,369         | ₹12  |
 | 2 (e05abd1) | gpt-6.1-sol | 62,388       | 1,211         | ₹13  |
 | 3 (72a697b) | gpt-6.1-sol | 64,493       | 1,129         | ₹13  |
+| 4 (5e07e88) | gpt-6.1-sol | 65,874       | 1,138         | ₹14  |
 
-**Stage total so far: ₹79** (`pnpm cost 3`). Further review runs are added below.
+**Stage total so far: ₹93** (`pnpm cost 3`). Further review runs are added below.
 
 ## Open questions
 

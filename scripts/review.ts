@@ -92,4 +92,6 @@ if (!existsSync(out))
     `# Stage ${stage} — independent review runs\n\nWritten by \`scripts/review.ts\`; one section per run, newest last.\n\n`,
   );
 appendFileSync(out, lines.join('\n') + '\n');
+// Format the record as the repository's Prettier check expects, so a review run never turns the watcher red.
+execFileSync('node_modules/.bin/prettier', ['--write', out], { stdio: 'ignore' });
 console.log(lines.join('\n'));

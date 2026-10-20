@@ -38,46 +38,18 @@ function collectFigures(arg) {
     traced.push(el);
     out.push({ id: f.id, origin: 'overlay', text: text(el), box: box(el) });
   }
-  // Untraced figures: the smallest element whose text holds an amount or a percentage (an amount may be
-  // split across child elements, like "₹" and "39,914"), or whose whole text is a number (a count). An
-  // element is skipped when a child already qualifies, so each figure is marked once, where it is drawn.
+  // Untraced figures. Every element is judged by its residual text: the visible text under it that is not
+  // inside a traced figure or a figure already marked. Each pass marks the smallest elements whose residual
+  // text qualifies, then repeats, so an ancestor whose own text holds another figure is marked too. Passes,
+  // in order: amounts and percentages (an amount may be split across child elements, like "₹" and
+  // "39,914"); elements whose residual text is a whole number (a count); and, conservatively, numbers
+  // inside words ("13 bills"), which the detector cannot tell from labels and so marks rather than leave
+  // bare. Dates, years, times and letter-digit identifiers are not figures.
   const amount = new RegExp(arg.pattern);
   // A count or amount without a currency: grouped digits, or up to nine plain ones. A leading "+" or ten
   // or more plain digits is an identifier (a phone number, an account), not a figure.
-  const number = /^[\u2212-]?(\d{1,3}(,\d{2,3})+|\d{1,9})(\.\d+)?$/;
-  // A traced figure and everything inside it are covered. An element that merely holds a traced figure is
-  // judged by its text outside that figure, so another amount beside a traced one is still marked.
-  const covered = (el) => traced.some((t) => t === el || t.contains(el));
-  const free = (el) => {
-    if (!traced.some((t) => el.contains(t))) return text(el);
-    const parts = [];
-    const walk = document.createTreeWalker(el, 4 /* NodeFilter.SHOW_TEXT */);
-    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
-      if (!traced.some((t) => t.contains(n))) parts.push(n.textContent);
-    }
-    return parts.join(' ').replace(/\s+/g, ' ').trim();
-  };
-  const candidates = Array.from(document.querySelectorAll('body *')).filter(
-    (el) =>
-      !['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'].includes(el.tagName) &&
-      visible(el) &&
-      !covered(el),
-  );
-  const smallest = (els) =>
-    els.filter((el) => !els.some((other) => other !== el && el.contains(other)));
-  // First amounts and percentages, at the smallest element holding one; then bare numbers not inside one.
-  const amounts = smallest(candidates.filter((el) => amount.test(free(el))));
-  const numbers = smallest(
-    candidates.filter(
-      (el) =>
-        number.test(free(el)) && !amounts.some((a) => a === el || a.contains(el) || el.contains(a)),
-    ),
-  );
-  // Third, conservatively: a number inside words ("13 bills", "Order 7"). The detector cannot tell a count
-  // from a label, so it marks it untraced rather than leave it bare (Invariant 2), unless the number is
-  // plainly a date, a year or a time, or part of an identifier that mixes letters and digits.
-  const MONTH = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?$/i;
   const NUMERIC = /^[\u2212-]?(\d{1,3}(,\d{2,3})+|\d{1,9})(\.\d+)?$/;
+  const MONTH = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?$/i;
   const numberInWords = (t) => {
     const tokens = t
       .split(/[\s·;()]+/) // a d/m or d/m/y date stays one token, and is not numeric
@@ -91,13 +63,44 @@ function collectFigures(arg) {
         !MONTH.test(tokens[i + 1] ?? ''),
     );
   };
-  const marked = [...amounts, ...numbers];
-  const inside = (el) => marked.some((m) => m === el || m.contains(el) || el.contains(m));
-  const words = smallest(candidates.filter((el) => !inside(el) && numberInWords(free(el))));
-  for (const el of candidates) {
-    if (amounts.includes(el) || numbers.includes(el) || words.includes(el)) {
-      out.push({ id: null, origin: 'detected', text: free(el), box: box(el) });
+  const SKIP = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'];
+  const insideTraced = (node) => traced.some((t) => t === node || t.contains(node));
+  const candidates = Array.from(document.querySelectorAll('body *')).filter(
+    (el) => !SKIP.includes(el.tagName) && visible(el) && !insideTraced(el),
+  );
+  const marked = [];
+  const residual = (el) => {
+    const parts = [];
+    const walk = document.createTreeWalker(el, 4 /* NodeFilter.SHOW_TEXT */);
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+      const host = n.parentElement;
+      if (!host || SKIP.includes(host.tagName) || !visible(host) || insideTraced(n)) continue;
+      if (marked.some((m) => m !== el && el.contains(m) && m.contains(n))) continue; // a figure nested inside
+      parts.push(n.textContent);
     }
+    return parts.join(' ').replace(/\s+/g, ' ').trim();
+  };
+  const smallest = (els) =>
+    els.filter((el) => !els.some((other) => other !== el && el.contains(other)));
+  const pass = (qualifies) => {
+    for (;;) {
+      const hits = candidates.filter(
+        (el) =>
+          !marked.includes(el) && !marked.some((m) => m.contains(el)) && qualifies(residual(el)),
+      );
+      const found = smallest(hits);
+      if (!found.length) return;
+      marked.push(...found);
+    }
+  };
+  pass((t) => amount.test(t));
+  pass((t) => NUMERIC.test(t));
+  pass((t) => numberInWords(t));
+  // Texts are read once everything is marked: each figure's own text, without the figures inside it.
+  const texts = new Map(marked.map((el) => [el, residual(el)]));
+  for (const el of candidates) {
+    if (texts.has(el))
+      out.push({ id: null, origin: 'detected', text: texts.get(el), box: box(el) });
   }
   return out;
 }
