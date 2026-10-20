@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
+  "commit": "cdc888da5d2235e3713129f463a19fb9c4fdfd47",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -1171,10 +1171,41 @@
       "sha": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
       "short": "93d6a9a",
       "subject": "Stage 1: report with reviewer findings, cost and open questions"
+    },
+    {
+      "at": "2026-10-20T14:21:53Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 37,
+          "del": 10,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 7,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 7,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-1.md"
+        }
+      ],
+      "sha": "cdc888da5d2235e3713129f463a19fb9c4fdfd47",
+      "short": "cdc888d",
+      "subject": "docs: record the member's answers to the Stage 1 open questions"
     }
   ],
   "edges": [
     {
+      "english": {
+        "confirmed": false,
+        "text": "a health check reporting ok and the short commit id"
+      },
       "from": "apps/rama/app/api/health/route.test.ts",
       "symbols": [
         "GET"
@@ -1183,6 +1214,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the first seven characters of a commit id, or nothing if invalid"
+      },
       "from": "apps/rama/app/api/health/route.ts",
       "symbols": [
         "shortSha"
@@ -1191,6 +1226,106 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the handler that confirms an edge or purpose for a site as the local member"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
+      "symbols": [
+        "ConfirmDeps",
+        "handleConfirm"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/confirm/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
+      "symbols": [
+        "addSite",
+        "confirmEdge",
+        "confirmPurpose",
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a confirmation result: confirmed keys, missing symbols, updated blueprint; the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/confirm/handler.ts",
+      "symbols": [
+        "Confirmation",
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the handler that confirms an edge or purpose for a site as the local member"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
+      "symbols": [
+        "handleConfirm"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/confirm/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
+      "symbols": [
+        "confirmEdge",
+        "confirmPurpose",
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
+      "symbols": [
+        "auditLog",
+        "createDb",
+        "people"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/layout.tsx",
+      "symbols": [],
+      "to": "apps/rama/app/globals.css",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the home page listing the sites"
+      },
       "from": "apps/rama/app/page.test.tsx",
       "symbols": [
         "default"
@@ -1199,6 +1334,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the first seven characters of a commit id, or nothing if invalid"
+      },
       "from": "apps/rama/app/page.test.tsx",
       "symbols": [
         "shortSha"
@@ -1207,12 +1346,738 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a small label showing which commit the app was built from"
+      },
       "from": "apps/rama/app/page.tsx",
       "symbols": [
         "BuildStamp"
       ],
       "to": "apps/rama/components/BuildStamp.tsx",
       "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the sorted list of known sites, leaving out the project's own"
+      },
+      "from": "apps/rama/app/page.tsx",
+      "symbols": [
+        "listSites"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "apps/rama/app/site/[siteId]/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the screen for one site and its blueprint"
+      },
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "SiteView"
+      ],
+      "to": "apps/rama/components/site/SiteView.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the screen for one site and its blueprint"
+      },
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "SiteView"
+      ],
+      "to": "apps/rama/components/site/SiteView.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "locateSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the canvas drawing operations the painter needs; the painter that draws a site's state onto the canvas and returns its frame"
+      },
+      "from": "apps/rama/canvas/draw.test.ts",
+      "symbols": [
+        "Ctx",
+        "draw"
+      ],
+      "to": "apps/rama/canvas/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests"
+      },
+      "from": "apps/rama/canvas/draw.test.ts",
+      "symbols": [
+        "fixtureBlueprint"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/draw.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of one picture of the site, with floors, bricks and crane hook; the shape of what the site is showing: blueprint, commit step, progress and selection; the frame worked out for a given site state"
+      },
+      "from": "apps/rama/canvas/draw.ts",
+      "symbols": [
+        "Frame",
+        "SiteState",
+        "frame"
+      ],
+      "to": "apps/rama/canvas/frame.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a rectangle with position and size; the shape of a brick's box, with path, layer, colour and untested flag; the shape of a crane: author, label, position, colour and jib direction; the shape of the laid-out site: size, ground, building and floors"
+      },
+      "from": "apps/rama/canvas/draw.ts",
+      "symbols": [
+        "Box",
+        "BrickBox",
+        "Crane",
+        "Scene"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the dark ink colour; the red colour marking untested code; the colour for a given layer"
+      },
+      "from": "apps/rama/canvas/draw.ts",
+      "symbols": [
+        "INK",
+        "UNTESTED",
+        "layerColor"
+      ],
+      "to": "apps/rama/canvas/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of what the site is showing: blueprint, commit step, progress and selection; the frame worked out for a given site state; the cached scene and timeline built from a blueprint; the sky for a given hour of the day"
+      },
+      "from": "apps/rama/canvas/frame.test.ts",
+      "symbols": [
+        "SiteState",
+        "frame",
+        "siteModel",
+        "skyAt"
+      ],
+      "to": "apps/rama/canvas/frame.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests"
+      },
+      "from": "apps/rama/canvas/frame.test.ts",
+      "symbols": [
+        "fixtureBlueprint"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a brick's box, with path, layer, colour and untested flag; the shape of one floor of the building; the shape of the laid-out site: size, ground, building and floors; the scene laid out from a blueprint"
+      },
+      "from": "apps/rama/canvas/frame.ts",
+      "symbols": [
+        "BrickBox",
+        "FloorBox",
+        "Scene",
+        "layout"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the amber highlight colour for imported-by links; the teal highlight colour for imports"
+      },
+      "from": "apps/rama/canvas/frame.ts",
+      "symbols": [
+        "IMPORTED_BY",
+        "IMPORTS"
+      ],
+      "to": "apps/rama/canvas/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of one timed brick event within a lift; the shape of the build history: lifts and which lift laid each brick; the event under way at a given point in a lift; whether a brick is built at a given point in the replay; the replay clock between the previous commit and this one; the local hour of day in a commit's own time zone; the build timeline worked out from a blueprint and its scene"
+      },
+      "from": "apps/rama/canvas/frame.ts",
+      "symbols": [
+        "LiftEvent",
+        "Timeline",
+        "activeEvent",
+        "brickState",
+        "currentTime",
+        "localHour",
+        "timeline"
+      ],
+      "to": "apps/rama/canvas/timeline.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/frame.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the fixed height of a brick; the widest a building may be; the most cranes shown on a site; the most scaffolds shown on a site; the narrowest a building may be; a brick's width worked out from its line count; the scene laid out from a blueprint"
+      },
+      "from": "apps/rama/canvas/layout.test.ts",
+      "symbols": [
+        "BRICK_H",
+        "MAX_BUILDING_W",
+        "MAX_CRANES",
+        "MAX_SCAFFOLDS",
+        "MIN_BUILDING_W",
+        "brickWidth",
+        "layout"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests; a test helper that builds one file entry for a blueprint"
+      },
+      "from": "apps/rama/canvas/layout.test.ts",
+      "symbols": [
+        "fixtureBlueprint",
+        "node"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/layout.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the set of six crane colours; the colour for a given layer; a layer's short uppercase name"
+      },
+      "from": "apps/rama/canvas/layout.ts",
+      "symbols": [
+        "CRANE_COLORS",
+        "layerColor",
+        "layerShort"
+      ],
+      "to": "apps/rama/canvas/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the sorted list of distinct commit authors; per-file counts of dependencies, users and test status"
+      },
+      "from": "apps/rama/canvas/layout.ts",
+      "symbols": [
+        "authors",
+        "brickFigures"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/layout.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the cached scene and timeline built from a blueprint"
+      },
+      "from": "apps/rama/canvas/pick.test.ts",
+      "symbols": [
+        "siteModel"
+      ],
+      "to": "apps/rama/canvas/frame.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "what lies under a click: the door, the office, a built brick or nothing; a screen click position converted to scene coordinates"
+      },
+      "from": "apps/rama/canvas/pick.test.ts",
+      "symbols": [
+        "pick",
+        "toScene"
+      ],
+      "to": "apps/rama/canvas/pick.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests"
+      },
+      "from": "apps/rama/canvas/pick.test.ts",
+      "symbols": [
+        "fixtureBlueprint"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the cached scene and timeline built from a blueprint"
+      },
+      "from": "apps/rama/canvas/pick.ts",
+      "symbols": [
+        "siteModel"
+      ],
+      "to": "apps/rama/canvas/frame.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a rectangle with position and size"
+      },
+      "from": "apps/rama/canvas/pick.ts",
+      "symbols": [
+        "Box"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "whether a brick is built at a given point in the replay"
+      },
+      "from": "apps/rama/canvas/pick.ts",
+      "symbols": [
+        "brickState"
+      ],
+      "to": "apps/rama/canvas/timeline.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/pick.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the scene laid out from a blueprint"
+      },
+      "from": "apps/rama/canvas/timeline.test.ts",
+      "symbols": [
+        "layout"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the event under way at a given point in a lift; whether a brick is built at a given point in the replay; a replay time shown as clock text with its UTC offset; the replay clock between the previous commit and this one; the local hour of day in a commit's own time zone; a time zone offset in minutes read from a timestamp; the build timeline worked out from a blueprint and its scene"
+      },
+      "from": "apps/rama/canvas/timeline.test.ts",
+      "symbols": [
+        "activeEvent",
+        "brickState",
+        "clockText",
+        "currentTime",
+        "localHour",
+        "offsetMinutes",
+        "timeline"
+      ],
+      "to": "apps/rama/canvas/timeline.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests"
+      },
+      "from": "apps/rama/canvas/timeline.test.ts",
+      "symbols": [
+        "fixtureBlueprint"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the laid-out site: size, ground, building and floors"
+      },
+      "from": "apps/rama/canvas/timeline.ts",
+      "symbols": [
+        "Scene"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "commits that deleted a large number of lines from a file"
+      },
+      "from": "apps/rama/canvas/timeline.ts",
+      "symbols": [
+        "demolitions"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/timeline.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the side panel showing the trust report, a commit, or a single file; the shape of what the side panel is showing: report, commit or file"
+      },
+      "from": "apps/rama/components/inspector/Inspector.test.tsx",
+      "symbols": [
+        "Inspector",
+        "View"
+      ],
+      "to": "apps/rama/components/inspector/Inspector.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests"
+      },
+      "from": "apps/rama/components/inspector/Inspector.test.tsx",
+      "symbols": [
+        "fixtureBlueprint"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "commits that deleted a large number of lines from a file; the headline figures of a project in one summary; how many code files are directly tested, out of all code files"
+      },
+      "from": "apps/rama/components/inspector/Inspector.test.tsx",
+      "symbols": [
+        "demolitions",
+        "summary",
+        "testCoverage"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the plain-English wording for one file-to-file import, with its confirmation state; the short lowercase name of a layer's floor; a plain paragraph on which files a file depends on, grouped by floor"
+      },
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "edgePhrase",
+        "floorName",
+        "reviewerParagraph"
+      ],
+      "to": "apps/rama/components/inspector/words.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the sorted list of distinct commit authors; per-file counts of dependencies, users and test status; lines added, lines deleted and tests added by one commit; commits that deleted a large number of lines from a file; the sorted list of environment variables the files use; the code file with the most lines; minutes from the first commit to the last; the files that the most other files import; the files changed by the most commits; the headline figures of a project in one summary; how many code files are directly tested, out of all code files"
+      },
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "authors",
+        "brickFigures",
+        "commitTotals",
+        "demolitions",
+        "envVars",
+        "heaviestCodeBrick",
+        "historySpan",
+        "loadBearing",
+        "mostReworked",
+        "summary",
+        "testCoverage"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "Blueprint",
+        "ImportEdge"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the plain-English wording for one file-to-file import, with its confirmation state; a plain paragraph on which files a file depends on, grouped by floor"
+      },
+      "from": "apps/rama/components/inspector/words.test.ts",
+      "symbols": [
+        "edgePhrase",
+        "reviewerParagraph"
+      ],
+      "to": "apps/rama/components/inspector/words.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a test helper that builds one import link between two files; a made-up sample blueprint for tests; a test helper that builds one file entry for a blueprint"
+      },
+      "from": "apps/rama/components/inspector/words.test.ts",
+      "symbols": [
+        "edge",
+        "fixtureBlueprint",
+        "node"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "per-file counts of dependencies, users and test status"
+      },
+      "from": "apps/rama/components/inspector/words.test.ts",
+      "symbols": [
+        "brickFigures"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of per-file figures: what it needs, what uses it, whether tested"
+      },
+      "from": "apps/rama/components/inspector/words.ts",
+      "symbols": [
+        "BrickFigures"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/inspector/words.ts",
+      "symbols": [
+        "Blueprint",
+        "ImportEdge"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the painter that draws a site's state onto the canvas and returns its frame"
+      },
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "draw"
+      ],
+      "to": "apps/rama/canvas/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the cached scene and timeline built from a blueprint"
+      },
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "siteModel"
+      ],
+      "to": "apps/rama/canvas/frame.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the colour for a given layer"
+      },
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "layerColor"
+      ],
+      "to": "apps/rama/canvas/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "what lies under a click: the door, the office, a built brick or nothing; a screen click position converted to scene coordinates"
+      },
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "pick",
+        "toScene"
+      ],
+      "to": "apps/rama/canvas/pick.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "whether a brick is built at a given point in the replay; a replay time shown as clock text with its UTC offset; the replay clock between the previous commit and this one"
+      },
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "brickState",
+        "clockText",
+        "currentTime"
+      ],
+      "to": "apps/rama/canvas/timeline.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the side panel showing the trust report, a commit, or a single file; the shape of what the side panel is showing: report, commit or file"
+      },
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "Inspector",
+        "View"
+      ],
+      "to": "apps/rama/components/inspector/Inspector.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/test/blueprint.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode",
+        "Commit",
+        "ImportEdge"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
     },
     {
       "from": "packages/blueprint/bin/rama.mjs",
@@ -1223,6 +2088,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a comparison of two blueprints listing what was added, removed or changed; a readable text summary of a blueprint comparison"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
         "diffBlueprints",
@@ -1232,14 +2101,23 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "draft glossary phrases written by a model for entries still missing; draft file purposes written by a model for files still missing one"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
-        "draftGlossary"
+        "draftGlossary",
+        "draftPurposes"
       ],
       "to": "packages/blueprint/src/draft.ts",
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the settings for reading a repository into a blueprint; a blueprint built from a repository's commit or working tree"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
         "ExtractOptions",
@@ -1249,6 +2127,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the tracked files as they currently are in the working folder; the top folder of a git repository"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
         "readWorktree",
@@ -1258,6 +2140,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the glossary of phrases, keyed by file and symbol, with its shape"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
         "Glossary"
@@ -1266,6 +2152,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "JSON text with keys sorted into a stable order"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
         "canonicalJson"
@@ -1274,11 +2164,49 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the headline figures of a project in one summary"
+      },
       "from": "packages/blueprint/src/cli.ts",
       "symbols": [
         "summary"
       ],
       "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to register a site for the local member"
+      },
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "registerSite"
+      ],
+      "to": "packages/blueprint/src/register.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the location of the glossary file in a project; the location of the file purposes file in a project; the shape of a site's location: its checkout, blueprint file and options; a way to add a site from a local folder or remote source; a check that a site's blueprint file is up to date; the sorted list of known sites, leaving out the project's own; a way to find one site's location by its id; a site's glossary overlay file, or an empty one when missing; a reader for the text of files in a site's checkout; regenerating and saving a site's blueprint file; saving a glossary overlay file into a site's checkout"
+      },
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "GLOSSARY_FILE",
+        "PURPOSES_FILE",
+        "SiteLocation",
+        "addSite",
+        "checkSiteBlueprint",
+        "listSites",
+        "locateSite",
+        "readSiteOverlay",
+        "siteReader",
+        "writeSiteBlueprint",
+        "writeSiteOverlay"
+      ],
+      "to": "packages/blueprint/src/site.ts",
       "typeOnly": false
     },
     {
@@ -1290,6 +2218,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a comparison of two blueprints listing what was added, removed or changed; a readable text summary of a blueprint comparison"
+      },
       "from": "packages/blueprint/src/diff.test.ts",
       "symbols": [
         "diffBlueprints",
@@ -1307,6 +2239,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine; JSON text with keys sorted into a stable order"
+      },
       "from": "packages/blueprint/src/diff.ts",
       "symbols": [
         "byString",
@@ -1316,6 +2252,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the headline figures of a project in one summary"
+      },
       "from": "packages/blueprint/src/diff.ts",
       "symbols": [
         "summary"
@@ -1332,11 +2272,18 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the label naming the glossary drafting step, tied to the extractor version; the label naming the file-purpose drafting step, tied to the extractor version; draft glossary phrases written by a model for entries still missing; draft file purposes written by a model for files still missing one; the imported names that still have no glossary phrase; the files that still have no purpose statement"
+      },
       "from": "packages/blueprint/src/draft.test.ts",
       "symbols": [
         "DRAFT_COMPONENT",
+        "PURPOSE_COMPONENT",
         "draftGlossary",
-        "missingPhrases"
+        "draftPurposes",
+        "missingPhrases",
+        "missingPurposes"
       ],
       "to": "packages/blueprint/src/draft.ts",
       "typeOnly": false
@@ -1358,6 +2305,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the version number of the blueprint tool"
+      },
       "from": "packages/blueprint/src/draft.ts",
       "symbols": [
         "EXTRACTOR_VERSION"
@@ -1366,6 +2317,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the glossary of phrases, keyed by file and symbol, with its shape; the glossary phrase for a symbol imported from a file"
+      },
       "from": "packages/blueprint/src/draft.ts",
       "symbols": [
         "Glossary",
@@ -1375,6 +2330,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/draft.ts",
       "symbols": [
         "byString"
@@ -1399,6 +2358,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "draft glossary phrases written by a model for entries still missing"
+      },
       "from": "packages/blueprint/src/draft.vendor.test.ts",
       "symbols": [
         "draftGlossary"
@@ -1407,6 +2370,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a blueprint built from a repository's commit or working tree"
+      },
       "from": "packages/blueprint/src/draft.vendor.test.ts",
       "symbols": [
         "extract"
@@ -1415,6 +2382,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a temporary git repository for tests"
+      },
       "from": "packages/blueprint/src/draft.vendor.test.ts",
       "symbols": [
         "fixtureRepo"
@@ -1423,6 +2394,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the number of lines in a piece of text; a blueprint built from a repository's commit or working tree; whether a file looks like binary data rather than text"
+      },
       "from": "packages/blueprint/src/extract.test.ts",
       "symbols": [
         "countLines",
@@ -1433,6 +2408,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a way to attach glossary phrases to import edges"
+      },
       "from": "packages/blueprint/src/extract.test.ts",
       "symbols": [
         "mergeGlossary"
@@ -1441,6 +2420,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "JSON text with keys sorted into a stable order"
+      },
       "from": "packages/blueprint/src/extract.test.ts",
       "symbols": [
         "canonicalJson"
@@ -1449,6 +2432,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
       "from": "packages/blueprint/src/extract.test.ts",
       "symbols": [
         "FixtureRepo",
@@ -1458,6 +2445,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the package settings for the blueprint tool"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "default"
@@ -1466,6 +2457,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a file's path together with its contents; the date a commit was recorded; the repository's origin address with login details removed, if it has one; the names of branches that contain a given commit; the tracked files as they were at a given commit; the list of commits leading up to a given commit, oldest first; the names of tags reachable from a given commit; the tracked files as they currently are in the working folder; the commit a name points to, or nothing if it does not exist; the top folder of a git repository; the commit that a working-folder reading is based on"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "TreeFile",
@@ -1484,6 +2479,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the glossary of phrases, keyed by file and symbol, with its shape; a way to attach glossary phrases to import edges"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "Glossary",
@@ -1493,6 +2492,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "byString"
@@ -1501,6 +2504,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a project's custom layer settings; the layer a file belongs to, with the rule that chose it; a layer plan built from a project's custom settings and the defaults"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "LayersOverlay",
@@ -1511,6 +2518,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the imports, exports and environment use read from a source file"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "isCode",
@@ -1528,6 +2539,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the screens found from app routes and page files"
+      },
       "from": "packages/blueprint/src/extract.ts",
       "symbols": [
         "findScreens"
@@ -1546,6 +2561,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a check of whether a file path fits a glob pattern"
+      },
       "from": "packages/blueprint/src/git.ts",
       "symbols": [
         "matchGlob"
@@ -1554,6 +2573,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/git.ts",
       "symbols": [
         "byString"
@@ -1570,6 +2593,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a check of whether a file path fits a glob pattern"
+      },
       "from": "packages/blueprint/src/glob.test.ts",
       "symbols": [
         "matchGlob"
@@ -1578,6 +2605,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/glossary.ts",
       "symbols": [
         "byString"
@@ -1594,6 +2625,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a blueprint built from a repository's commit or working tree"
+      },
       "from": "packages/blueprint/src/golden.test.ts",
       "symbols": [
         "extract"
@@ -1602,6 +2637,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "JSON text with keys sorted into a stable order"
+      },
       "from": "packages/blueprint/src/golden.test.ts",
       "symbols": [
         "canonicalJson"
@@ -1626,6 +2665,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a comparison between two blueprints; a comparison of two blueprints listing what was added, removed or changed"
+      },
       "from": "packages/blueprint/src/index.ts",
       "symbols": [
         "BlueprintDiff",
@@ -1635,6 +2678,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "draft glossary phrases written by a model for entries still missing"
+      },
       "from": "packages/blueprint/src/index.ts",
       "symbols": [
         "draftGlossary"
@@ -1643,6 +2690,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the version number of the blueprint tool; the shape of the settings for reading a repository into a blueprint; the number of lines in a piece of text; a blueprint built from a repository's commit or working tree; whether a file looks like binary data rather than text"
+      },
       "from": "packages/blueprint/src/index.ts",
       "symbols": [
         "EXTRACTOR_VERSION",
@@ -1655,6 +2706,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the glossary of phrases, keyed by file and symbol, with its shape; the shape of a glossary entry, with its text and who confirmed it when; a way to attach glossary phrases to import edges"
+      },
       "from": "packages/blueprint/src/index.ts",
       "symbols": [
         "Glossary",
@@ -1665,6 +2720,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "JSON text with keys sorted into a stable order"
+      },
       "from": "packages/blueprint/src/index.ts",
       "symbols": [
         "canonicalJson"
@@ -1673,6 +2732,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the default named floors of a project, from foundation up to shell; the default rules that place files into layers; the layer a file belongs to, with the rule that chose it; a layer plan built from a project's custom settings and the defaults"
+      },
       "from": "packages/blueprint/src/index.ts",
       "symbols": [
         "DEFAULT_LAYERS",
@@ -1684,6 +2747,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the default rules that place files into layers; the layer a file belongs to, with the rule that chose it; a layer plan built from a project's custom settings and the defaults"
+      },
       "from": "packages/blueprint/src/layers.test.ts",
       "symbols": [
         "DEFAULT_RULES",
@@ -1694,6 +2761,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a check of whether a file path fits a glob pattern"
+      },
       "from": "packages/blueprint/src/layers.ts",
       "symbols": [
         "matchGlob"
@@ -1710,6 +2781,22 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "whether a file path counts as a code file"
+      },
+      "from": "packages/blueprint/src/metrics/index.ts",
+      "symbols": [
+        "isCode"
+      ],
+      "to": "packages/blueprint/src/files.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/metrics/index.ts",
       "symbols": [
         "byString"
@@ -1720,16 +2807,9 @@
     {
       "from": "packages/blueprint/src/metrics/index.ts",
       "symbols": [
-        "isCode"
-      ],
-      "to": "packages/blueprint/src/parse.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "packages/blueprint/src/metrics/index.ts",
-      "symbols": [
         "Blueprint",
-        "BrickNode"
+        "BrickNode",
+        "Commit"
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
@@ -1754,6 +2834,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the imports, exports and environment use read from a source file"
+      },
       "from": "packages/blueprint/src/parse.test.ts",
       "symbols": [
         "isCode",
@@ -1763,11 +2847,74 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the file endings counted as TypeScript or JavaScript code; whether a file path counts as a code file"
+      },
+      "from": "packages/blueprint/src/parse.ts",
+      "symbols": [
+        "CODE_EXTENSIONS",
+        "isCode"
+      ],
+      "to": "packages/blueprint/src/files.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/parse.ts",
       "symbols": [
         "byString"
       ],
       "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the component label for the blueprint site, with extractor version; a way to register a site for the local member"
+      },
+      "from": "packages/blueprint/src/register.test.ts",
+      "symbols": [
+        "SITE_COMPONENT",
+        "registerSite"
+      ],
+      "to": "packages/blueprint/src/register.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/register.test.ts",
+      "symbols": [
+        "createDb",
+        "runMigrations",
+        "seed",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the version number of the blueprint tool"
+      },
+      "from": "packages/blueprint/src/register.ts",
+      "symbols": [
+        "EXTRACTOR_VERSION"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/register.ts",
+      "symbols": [
+        "createDb",
+        "people",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
       "typeOnly": false
     },
     {
@@ -1779,6 +2926,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/resolve.ts",
       "symbols": [
         "byString"
@@ -1787,6 +2938,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a plain text sort order that is the same on every machine"
+      },
       "from": "packages/blueprint/src/screens.ts",
       "symbols": [
         "byString"
@@ -1804,6 +2959,118 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the location of the glossary file in a project; the location of the file purposes file in a project; the extraction settings for House of Rama's own repository; the error raised for site problems: not found, conflict or invalid; a way to add a site from a local folder or remote source; a check that a site's blueprint file is up to date; a way to record a person's confirmation of a dependency phrase; a way to record a person's confirmation of a file's purpose; the sorted list of known sites, leaving out the project's own; a way to find one site's location by its id; a site's saved blueprint, if it has one; saving a glossary overlay file into a site's checkout"
+      },
+      "from": "packages/blueprint/src/site.test.ts",
+      "symbols": [
+        "GLOSSARY_FILE",
+        "PURPOSES_FILE",
+        "SELF_EXTRACT",
+        "SiteError",
+        "addSite",
+        "checkSiteBlueprint",
+        "confirmEdge",
+        "confirmPurpose",
+        "listSites",
+        "locateSite",
+        "readSiteBlueprint",
+        "writeSiteOverlay"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "packages/blueprint/src/site.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a comparison of two blueprints listing what was added, removed or changed; a readable text summary of a blueprint comparison"
+      },
+      "from": "packages/blueprint/src/site.ts",
+      "symbols": [
+        "diffBlueprints",
+        "formatDiff"
+      ],
+      "to": "packages/blueprint/src/diff.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the settings for reading a repository into a blueprint; a blueprint built from a repository's commit or working tree"
+      },
+      "from": "packages/blueprint/src/site.ts",
+      "symbols": [
+        "ExtractOptions",
+        "extract"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the repository's origin address with login details removed, if it has one; the tracked files as they currently are in the working folder; a remote address without login details or the trailing git suffix"
+      },
+      "from": "packages/blueprint/src/site.ts",
+      "symbols": [
+        "originName",
+        "readWorktree",
+        "stripCredentials"
+      ],
+      "to": "packages/blueprint/src/git.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the glossary of phrases, keyed by file and symbol, with its shape"
+      },
+      "from": "packages/blueprint/src/site.ts",
+      "symbols": [
+        "Glossary"
+      ],
+      "to": "packages/blueprint/src/glossary.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "JSON text with keys sorted into a stable order"
+      },
+      "from": "packages/blueprint/src/site.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/site.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "opening a pool of database connections"
+      },
       "from": "packages/db/src/cli.ts",
       "symbols": [
         "createDb"
@@ -1812,6 +3079,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "applying all pending database migrations"
+      },
       "from": "packages/db/src/cli.ts",
       "symbols": [
         "runMigrations"
@@ -1820,6 +3091,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the setup that creates the local member and the project's own site"
+      },
       "from": "packages/db/src/cli.ts",
       "symbols": [
         "seed"
@@ -1836,6 +3111,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "opening a pool of database connections"
+      },
       "from": "packages/db/src/db.test.ts",
       "symbols": [
         "createDb"
@@ -1844,6 +3123,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "applying all pending database migrations"
+      },
       "from": "packages/db/src/db.test.ts",
       "symbols": [
         "runMigrations"
@@ -1852,6 +3135,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the audit log table, recording actions on rows for each site; the table that records each model call; the table of people; the table of sites, one per target repository"
+      },
       "from": "packages/db/src/db.test.ts",
       "symbols": [
         "auditLog",
@@ -1863,6 +3150,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the seed step's component label with its version; the setup that creates the local member and the project's own site"
+      },
       "from": "packages/db/src/db.test.ts",
       "symbols": [
         "SEED_COMPONENT",
@@ -1872,6 +3163,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the database handle; opening a pool of database connections"
+      },
       "from": "packages/db/src/index.ts",
       "symbols": [
         "Db",
@@ -1881,6 +3176,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the folder holding the database migrations; applying all pending database migrations"
+      },
       "from": "packages/db/src/index.ts",
       "symbols": [
         "MIGRATIONS_DIR",
@@ -1898,6 +3197,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the seed step's component label with its version; the id of the project's own site; the setup that creates the local member and the project's own site"
+      },
       "from": "packages/db/src/index.ts",
       "symbols": [
         "SEED_COMPONENT",
@@ -1908,6 +3211,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the database handle"
+      },
       "from": "packages/db/src/migrate.ts",
       "symbols": [
         "Db"
@@ -1916,6 +3223,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the database package's name, version and description"
+      },
       "from": "packages/db/src/seed.ts",
       "symbols": [
         "default"
@@ -1924,6 +3235,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the database handle"
+      },
       "from": "packages/db/src/seed.ts",
       "symbols": [
         "Db"
@@ -1932,6 +3247,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the table of people; the table of sites, one per target repository"
+      },
       "from": "packages/db/src/seed.ts",
       "symbols": [
         "people",
@@ -1941,6 +3260,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the allowed vendor names"
+      },
       "from": "packages/model/src/adapters.ts",
       "symbols": [
         "Vendor"
@@ -1949,6 +3272,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the outside services a model call needs; the shape of a row written to the model calls table; the error for a vendor stopping at its token limit; the function that makes a vendor model call from a prompt request"
+      },
       "from": "packages/model/src/call.test.ts",
       "symbols": [
         "CallDeps",
@@ -1960,6 +3287,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the error for a missing or unknown vendor setting; the vendor chosen for each role, refusing when builder and auditor match"
+      },
       "from": "packages/model/src/call.test.ts",
       "symbols": [
         "VendorGuardError",
@@ -1978,6 +3309,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the model package's name, version and description"
+      },
       "from": "packages/model/src/call.ts",
       "symbols": [
         "default"
@@ -1986,6 +3321,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "per-vendor model adapters with their key and model settings; the shape of a model reply: text, model, token counts, truncation; the shape of the web request function; an error for failed HTTP responses from a model vendor"
+      },
       "from": "packages/model/src/call.ts",
       "symbols": [
         "ADAPTERS",
@@ -1997,6 +3336,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the folder where the prompt files are kept; a loader that reads a named, versioned prompt"
+      },
       "from": "packages/model/src/call.ts",
       "symbols": [
         "PROMPTS_DIR",
@@ -2006,6 +3349,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the two roles a vendor can play, builder or auditor; the allowed vendor names; the vendor chosen for each role, refusing when builder and auditor match"
+      },
       "from": "packages/model/src/call.ts",
       "symbols": [
         "Role",
@@ -2016,6 +3363,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the function that makes a vendor model call from a prompt request"
+      },
       "from": "packages/model/src/call.vendor.test.ts",
       "symbols": [
         "call"
@@ -2024,6 +3375,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "an error for failed HTTP responses from a model vendor"
+      },
       "from": "packages/model/src/index.ts",
       "symbols": [
         "VendorHttpError"
@@ -2032,6 +3387,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the outside services a model call needs; the shape of a model call request: prompt, version, input, expected output; the shape of a model call's result: output, call id, vendor, attempts, tokens; the limit of three attempts per model call; the model module's component label with its version; the shape of a row written to the model calls table; an error type for model configuration problems; the error for model output that failed to parse; the error for a vendor stopping at its token limit; the function that makes a vendor model call from a prompt request"
+      },
       "from": "packages/model/src/index.ts",
       "symbols": [
         "CallDeps",
@@ -2049,6 +3408,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the folder where the prompt files are kept; the shape of a loaded prompt with its text and hash; a loader that reads a named, versioned prompt"
+      },
       "from": "packages/model/src/index.ts",
       "symbols": [
         "PROMPTS_DIR",
@@ -2059,6 +3422,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the two roles a vendor can play, builder or auditor; the list of known vendors, anthropic and openai; the allowed vendor names; the error for a missing or unknown vendor setting; the vendor chosen for each role, refusing when builder and auditor match"
+      },
       "from": "packages/model/src/index.ts",
       "symbols": [
         "Role",
@@ -2071,6 +3438,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the exported types gathered from the source files; the Blueprint schema document, written out from the collected types"
+      },
       "from": "packages/shared/src/doc.test.ts",
       "symbols": [
         "collectTypes",
@@ -2080,6 +3451,10 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of an audit finding"
+      },
       "from": "packages/shared/src/index.ts",
       "symbols": [
         "Finding"
@@ -2088,6 +3463,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a repository's extracted blueprint; the shape of one tracked file, drawn as a brick; the shape of a commit record; the shape of a figure's position on a screenshot; the shape of one file-to-file import link; the floor names a file can sit on; the shape of a screen and its route"
+      },
       "from": "packages/shared/src/index.ts",
       "symbols": [
         "Blueprint",
@@ -2102,6 +3481,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a confirmed decision belonging to a site; the shape of a person's signature on a site"
+      },
       "from": "packages/shared/src/index.ts",
       "symbols": [
         "Decision",
@@ -2111,6 +3494,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the explanation trail for a figure"
+      },
       "from": "packages/shared/src/index.ts",
       "symbols": [
         "Trail"
@@ -2119,6 +3506,10 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a person's signature on a site"
+      },
       "from": "packages/shared/src/trail.ts",
       "symbols": [
         "Signoff"
@@ -2133,9 +3524,112 @@
       ],
       "to": "packages/model/src/index.ts",
       "typeOnly": false
+    },
+    {
+      "from": "tests/stage-0.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the scene laid out from a blueprint"
+      },
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "layout"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to register a site for the local member"
+      },
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "registerSite"
+      ],
+      "to": "packages/blueprint/src/register.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source"
+      },
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "addSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "createDb",
+        "runMigrations",
+        "seed"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
     }
   ],
   "external": [
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
     {
       "dev": true,
       "manifest": "apps/rama/package.json",
@@ -2147,6 +3641,12 @@
       "manifest": "apps/rama/package.json",
       "name": "@types/react-dom",
       "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
     },
     {
       "dev": false,
@@ -2165,6 +3665,12 @@
       "manifest": "apps/rama/package.json",
       "name": "react-dom",
       "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "zod",
+      "version": "4.6.5"
     },
     {
       "dev": true,
@@ -2187,8 +3693,20 @@
     {
       "dev": true,
       "manifest": "package.json",
+      "name": "@rama/db",
+      "version": "workspace:^"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
       "name": "@rama/model",
       "version": "workspace:*"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@rama/shared",
+      "version": "workspace:^"
     },
     {
       "dev": true,
@@ -2207,6 +3725,18 @@
       "manifest": "package.json",
       "name": "globals",
       "version": "17.13.0"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "playwright",
+      "version": "1.64.1"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "postgres",
+      "version": "3.4.9"
     },
     {
       "dev": true,
@@ -2247,6 +3777,12 @@
     {
       "dev": false,
       "manifest": "packages/blueprint/package.json",
+      "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
       "name": "@rama/model",
       "version": "workspace:*"
     },
@@ -2255,6 +3791,18 @@
       "manifest": "packages/blueprint/package.json",
       "name": "@rama/shared",
       "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/blueprint/package.json",
+      "name": "postgres",
+      "version": "3.4.9"
     },
     {
       "dev": false,
@@ -2305,7 +3853,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T09:55:58Z",
+  "extractedAt": "2026-10-20T14:21:53Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -2351,11 +3899,15 @@
       "layerRule": "default: .env.example",
       "lines": 14,
       "path": ".env.example",
+      "purpose": {
+        "confirmed": false,
+        "text": "Template of the environment variables: database address, builder and auditor vendors (which must differ), API keys, model choices, local member name and commit label."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1868,
+      "bytes": 1978,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -2364,8 +3916,12 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 55,
+      "lines": 57,
       "path": ".github/workflows/check.yml",
+      "purpose": {
+        "confirmed": false,
+        "text": "Automated check that runs on every push and pull request: sets up a fresh database, migrates and seeds it, then runs the same checks as the local watcher."
+      },
       "test": false
     },
     {
@@ -2381,6 +3937,10 @@
       "layerRule": "default: .gitignore",
       "lines": 13,
       "path": ".gitignore",
+      "purpose": {
+        "confirmed": false,
+        "text": "List of files git should not track: installed packages, build output, secret environment files, working folders, logs and the read-only reference copies."
+      },
       "test": false
     },
     {
@@ -2396,6 +3956,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 1,
       "path": ".nvmrc",
+      "purpose": {
+        "confirmed": false,
+        "text": "Pins the Node.js version (22) the project is developed and checked with."
+      },
       "test": false
     },
     {
@@ -2411,6 +3975,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 15,
       "path": ".prettierignore",
+      "purpose": {
+        "confirmed": false,
+        "text": "List of files the code formatter must leave alone: read-only references, generated files, copied documents and build output."
+      },
       "test": false
     },
     {
@@ -2426,6 +3994,25 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 5,
       "path": ".prettierrc.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Code formatting style: single quotes, lines up to 100 characters, trailing commas everywhere."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 21094,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 527,
+      "path": ".rama/glossary.json",
       "test": false
     },
     {
@@ -2441,6 +4028,25 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 52,
       "path": ".rama/layers.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines the seven floors of the building and the file-path rules that decide which floor each file belongs to."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 27888,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 455,
+      "path": ".rama/purposes.json",
       "test": false
     },
     {
@@ -2456,6 +4062,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 91,
       "path": "CLAUDE.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Standing rules read at the start of every build session: what the product is, how work proceeds stage by stage, and the testing and safety rules."
+      },
       "test": false
     },
     {
@@ -2471,6 +4081,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 24,
       "path": "README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Front page of the project: what House of Rama is, how it is built stage by stage, and the setup steps before the first stage."
+      },
       "test": false
     },
     {
@@ -2486,6 +4100,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 3,
       "path": "apps/rama/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Describes the main web app and its current state: one home page showing the product line and short version label, started with the root dev command."
+      },
       "test": false
     },
     {
@@ -2503,6 +4121,10 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 21,
       "path": "apps/rama/app/api/health/route.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that the health check answers with success and the short commit, and says the commit is unknown when none is set."
+      },
       "test": true
     },
     {
@@ -2522,11 +4144,96 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 6,
       "path": "apps/rama/app/api/health/route.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The health check: reports that the app is running and which commit it is built from, or \"unknown\" when none is set."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 516,
+      "bytes": 4915,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 132,
+      "path": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3309,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ConfirmBody",
+        "ConfirmDeps",
+        "handleConfirm"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 102,
+      "path": "apps/rama/app/api/site/[siteId]/confirm/handler.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The logic for a member confirming a drafted dependency phrase or a brick's purpose: it checks the request, saves the confirmation to the site, and records who did it."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1504,
+      "changes": 0,
+      "env": [
+        "RAMA_MEMBER_NAME"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 51,
+      "path": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The web entry point for confirmations: connects the confirm logic to the database, the member's name and the site files, and writes each confirmation to the audit log."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7670,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 409,
+      "path": "apps/rama/app/globals.css",
+      "purpose": {
+        "confirmed": false,
+        "text": "The site-wide look: a dark product style with retro pixel lettering, colours, fonts and the layout of the construction-site screen and side panel."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 877,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2538,13 +4245,17 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 24,
+      "lines": 25,
       "path": "apps/rama/app/layout.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "Root HTML layout and metadata: the page title, the tagline, and the web fonts that fall back to system fonts when offline."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1085,
+      "bytes": 1294,
       "changes": 1,
       "env": [
         "GIT_SHA"
@@ -2555,27 +4266,383 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 32,
+      "lines": 38,
       "path": "apps/rama/app/page.test.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that the home page shows the name and short commit, says \"unknown\" when no commit is set, and that commit codes are cleaned up correctly."
+      },
       "test": true
     },
     {
       "binary": false,
-      "bytes": 365,
+      "bytes": 1020,
       "changes": 1,
       "env": [
         "GIT_SHA"
       ],
       "envDynamic": false,
       "exports": [
-        "default"
+        "default",
+        "dynamic"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 12,
+      "lines": 30,
       "path": "apps/rama/app/page.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "The home page: shows the House of Rama name, the build commit, a list of added sites with links, and a note on how to add one."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 776,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 20,
+      "path": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "The site office page for a site, explaining that discovery decisions will be recorded later and currently shows none, with a link back to the site."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2152,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 49,
+      "path": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 860,
+      "changes": 0,
+      "env": [
+        "RAMA_MEMBER_NAME"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 30,
+      "path": "apps/rama/app/site/[siteId]/page.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "The page for a single site: shows its construction view, or tells the reader to extract the Blueprint first if none exists yet."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 752,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 20,
+      "path": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "Placeholder Showroom page for a site: says real screens will appear once captured from the running app, with a link back to the site."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3365,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 99,
+      "path": "apps/rama/canvas/draw.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that the building painter draws the right things at each point of the replay, such as the cleared site, built bricks, the door and the banner."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 11315,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Ctx",
+        "draw"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 342,
+      "path": "apps/rama/canvas/draw.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Paints one picture of the building on a canvas: bricks, floors, sign, site office, scaffolds, cranes and digger, keeping no state of its own."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3878,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 102,
+      "path": "apps/rama/canvas/frame.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests what is visible at each moment of the replay: the cleared site, the brick being lifted, the digger, and the finished building."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 8262,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Frame",
+        "FrameBrick",
+        "SiteModel",
+        "SiteState",
+        "Sky",
+        "Verdict",
+        "frame",
+        "mix",
+        "siteModel",
+        "skyAt"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 247,
+      "path": "apps/rama/canvas/frame.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Works out everything visible at one instant of the replay as plain data, including the sky, so the painter only has to draw it."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4650,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 123,
+      "path": "apps/rama/canvas/layout.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that the building layout is repeatable, stacks floors in order, keeps bricks inside their floors and never overlaps two bricks."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6861,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BRICK_H",
+        "Box",
+        "BrickBox",
+        "Crane",
+        "FLOOR_PAD",
+        "FloorBox",
+        "GAP",
+        "MAX_BUILDING_W",
+        "MAX_CRANES",
+        "MAX_SCAFFOLDS",
+        "MIN_BUILDING_W",
+        "PLATE",
+        "Scaffold",
+        "Scene",
+        "brickWidth",
+        "buildingWidth",
+        "layout"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 214,
+      "path": "apps/rama/canvas/layout.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Decides where everything stands in the picture: floors, bricks sized by file length, scaffolds, cranes, the Showroom door and the site office."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1402,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CRANE_COLORS",
+        "IMPORTED_BY",
+        "IMPORTS",
+        "INK",
+        "UNTESTED",
+        "layerColor",
+        "layerShort"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 39,
+      "path": "apps/rama/canvas/palette.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The colours of the building: one per floor, one per crane, plus the markers for untested code and file connections."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1680,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 46,
+      "path": "apps/rama/canvas/pick.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that clicking the building finds the right brick, door or site office, and that pointer positions map correctly onto the scaled canvas."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1507,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Picked",
+        "pick",
+        "toScene"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 40,
+      "path": "apps/rama/canvas/pick.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Finds which brick, door or site office lies under a clicked point on the building, counting only bricks already built at that moment."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2991,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 83,
+      "path": "apps/rama/canvas/timeline.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests of the replay timeline: one lift per commit, how changes are labelled, how a brick moves from none to built, and the clock."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4974,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BrickState",
+        "EventKind",
+        "Lift",
+        "LiftEvent",
+        "Timeline",
+        "activeEvent",
+        "brickState",
+        "clockText",
+        "currentTime",
+        "localHour",
+        "offsetMinutes",
+        "timeline"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 136,
+      "path": "apps/rama/canvas/timeline.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The replay model: each commit becomes a lift where changed bricks get equal slots, lower floors first, with time of day taken from commit timestamps."
+      },
       "test": false
     },
     {
@@ -2594,11 +4661,117 @@
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 15,
       "path": "apps/rama/components/BuildStamp.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "Small label showing the short code of the commit the running app was built from, or \"unknown\" when it is missing."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 476,
+      "bytes": 3772,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 86,
+      "path": "apps/rama/components/inspector/Inspector.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 16880,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Inspector",
+        "View"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 514,
+      "path": "apps/rama/components/inspector/Inspector.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "The panel beside the building: the trust report, one commit, or one brick in plain English, with a Confirm control on unconfirmed drafted texts."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3160,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 76,
+      "path": "apps/rama/components/inspector/words.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests of the reviewer paragraph wording: what a brick needs, how many rely on it, and when the untested-risk warning appears."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3341,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "PhraseState",
+        "WARN_DEPENDANTS",
+        "edgePhrase",
+        "floorName",
+        "reviewerParagraph"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 74,
+      "path": "apps/rama/components/inspector/words.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The inspector's sentences, including the reviewer paragraph on what a brick needs, who relies on it and the risk, using figures from the metrics."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 11598,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "SiteView"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 327,
+      "path": "apps/rama/components/site/SiteView.tsx",
+      "purpose": {
+        "confirmed": false,
+        "text": "The site screen: the building drawn on a canvas, replay controls beneath it, and the inspector beside it, opening on the finished building."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 796,
       "changes": 1,
       "env": [
         "NEXT_DIST_DIR"
@@ -2611,13 +4784,17 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 11,
+      "lines": 15,
       "path": "apps/rama/next.config.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Web app build settings: separate output folder for tests, no auto-written agent rule files, and which workspace packages are compiled or kept server-only."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 514,
+      "bytes": 667,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2626,8 +4803,35 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 22,
+      "lines": 27,
       "path": "apps/rama/package.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "The web app's package manifest: its name, run and build commands, and the libraries it depends on."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3691,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "edge",
+        "fixtureBlueprint",
+        "node"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 126,
+      "path": "apps/rama/test/blueprint.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "A small sample building used by the app's tests: three floors, two builders, one demolition and one test."
+      },
       "test": false
     },
     {
@@ -2643,6 +4847,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 12,
       "path": "apps/rama/tsconfig.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "TypeScript settings for the main web app, building on the shared base settings and adding browser and React support."
+      },
       "test": false
     },
     {
@@ -2658,6 +4866,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 1,
       "path": "blueprint/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Note that this folder is produced automatically by the extraction tool, is never edited by hand, and that the build fails if it drifts."
+      },
       "test": false
     },
     {
@@ -2673,11 +4885,15 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 44,
       "path": "docker-compose.yml",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines the local setup: a Postgres database, plus optional app and watcher containers that run the whole stack in one go."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 8218,
+      "bytes": 12753,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -2686,8 +4902,12 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 73,
+      "lines": 89,
       "path": "docs/ARCHITECTURE.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Describes the system's components, planned parts, added folders and data model, updated at every stage with a list of what changed."
+      },
       "test": false
     },
     {
@@ -2703,26 +4923,34 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 188,
       "path": "docs/BLUEPRINT.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Generated reference of the shared data types that describe a repository, such as bricks and layers; never edited by hand."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 8734,
-      "changes": 6,
+      "bytes": 13388,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
+      "lastCommit": "cdc888da5d2235e3713129f463a19fb9c4fdfd47",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 65,
+      "lines": 82,
       "path": "docs/DECISIONS.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Dated log of decisions, newest first, including the answers the member gave to open questions at each stage."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 2001,
+      "bytes": 3023,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -2731,8 +4959,12 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 16,
+      "lines": 20,
       "path": "docs/KNOWN-GAPS.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "List of known shortcomings and missing pieces, updated in the same change that opens or closes each one."
+      },
       "test": false
     },
     {
@@ -2748,6 +4980,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 239,
       "path": "docs/MASTER-PROMPT.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "The master brief that drives the build stage by stage, setting out the rules, plan, reference inputs and what each stage must deliver."
+      },
       "test": false
     },
     {
@@ -2763,6 +4999,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 1,
       "path": "docs/reports/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains that each stage ends with a written report and lists what every report must contain."
+      },
       "test": false
     },
     {
@@ -2778,21 +5018,29 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 75,
       "path": "docs/reports/stage-0.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Report on Stage 0, the foundation: what was built, with the workspace, web app, shared types, database and model-call pieces."
+      },
       "test": false
     },
     {
       "binary": false,
       "bytes": 13973,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
-      "lastCommit": "93d6a9a345f981287fb90ca5a1c5b9e565f5e4a8",
+      "lastCommit": "cdc888da5d2235e3713129f463a19fb9c4fdfd47",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 116,
       "path": "docs/reports/stage-1.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Report on the first stage: what the blueprint tool reads from the code history and how it was built, and who reviewed it."
+      },
       "test": false
     },
     {
@@ -2808,6 +5056,10 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 35,
       "path": "docs/reports/stage-1.review.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Log of the independent model review runs for the first stage, with the verdict on each item checked."
+      },
       "test": false
     },
     {
@@ -2825,11 +5077,15 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 33,
       "path": "eslint.config.mjs",
+      "purpose": {
+        "confirmed": false,
+        "text": "Settings for the code-style checker: which folders it skips and the rules applied to the main app."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1509,
+      "bytes": 1454,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -2838,8 +5094,12 @@
       "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 43,
+      "lines": 47,
       "path": "package.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "The project's identity and shortcut commands for running, checking, testing and database work, plus the tools the whole project depends on."
+      },
       "test": false
     },
     {
@@ -2855,11 +5115,15 @@
       "layerRule": "overlay: packages/*",
       "lines": 3,
       "path": "packages/audit/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Placeholder note for the audit package, which is empty so far and points to other documents for its role."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 2090,
+      "bytes": 3093,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -2868,8 +5132,12 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 17,
+      "lines": 24,
       "path": "packages/blueprint/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains the blueprint package: how it reads a repository into a structured map, its command-line options, optional overlays and the figures it computes."
+      },
       "test": false
     },
     {
@@ -2885,11 +5153,15 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
       "path": "packages/blueprint/bin/rama.mjs",
+      "purpose": {
+        "confirmed": false,
+        "text": "Launcher for the command-line tool, which prepares the TypeScript loader and then starts the real program."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 524,
+      "bytes": 667,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2898,23 +5170,34 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 24,
+      "lines": 30,
       "path": "packages/blueprint/package.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Package description for the blueprint tool: what it offers to other packages, its command-line entry point and its dependencies."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 4415,
+      "bytes": 8133,
       "changes": 1,
-      "env": [],
+      "env": [
+        "DATABASE_URL",
+        "RAMA_MEMBER_NAME"
+      ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 110,
+      "lines": 207,
       "path": "packages/blueprint/src/cli.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The command-line program itself: reads the user's commands to extract, check, compare and draft descriptions for repositories, and manages tracked sites."
+      },
       "test": false
     },
     {
@@ -2930,6 +5213,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 46,
       "path": "packages/blueprint/src/diff.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests for comparing two blueprints: identical ones are reported as such, and added, changed and moved items are named."
+      },
       "test": true
     },
     {
@@ -2949,11 +5236,15 @@
       "layerRule": "overlay: packages/*",
       "lines": 99,
       "path": "packages/blueprint/src/diff.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Compares two Blueprints and reports what changed: header details, files, connections, commits, screens and metrics, for the diff command and drift failures."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 2346,
+      "bytes": 3978,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -2962,28 +5253,40 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 50,
+      "lines": 87,
       "path": "packages/blueprint/src/draft.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that drafting plain-English phrases only asks for symbols with no phrase, calls the model once with the right prompt, and keeps only unconfirmed drafts for requested items."
+      },
       "test": true
     },
     {
       "binary": false,
-      "bytes": 2937,
+      "bytes": 5283,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "DRAFT_COMPONENT",
         "DraftRequestItem",
+        "PURPOSE_COMPONENT",
+        "PurposeRequestItem",
         "draftGlossary",
-        "missingPhrases"
+        "draftPurposes",
+        "missingPhrases",
+        "missingPurposes"
       ],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 74,
+      "lines": 137,
       "path": "packages/blueprint/src/draft.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Asks the model for draft English phrases for imported symbols and one-sentence purposes for files lacking them, only on request, always left unconfirmed until a person confirms."
+      },
       "test": false
     },
     {
@@ -2999,11 +5302,15 @@
       "layerRule": "overlay: packages/*",
       "lines": 27,
       "path": "packages/blueprint/src/draft.vendor.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Live test that drafts real glossary phrases through the actual model vendor; excluded from automatic runs and checks the drafts stay unconfirmed."
+      },
       "test": true
     },
     {
       "binary": false,
-      "bytes": 10714,
+      "bytes": 12966,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -3012,13 +5319,17 @@
       "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 236,
+      "lines": 282,
       "path": "packages/blueprint/src/extract.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests extraction against a small fixture repository built with several commits, covering files, imports, screens, renames, binaries and glossary handling."
+      },
       "test": true
     },
     {
       "binary": false,
-      "bytes": 7215,
+      "bytes": 8395,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -3033,13 +5344,39 @@
       "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 193,
+      "lines": 217,
       "path": "packages/blueprint/src/extract.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Builds a Blueprint from a repository's git history and files, with no model, clock or network, so the same commit always gives identical output."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 9283,
+      "bytes": 399,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CODE_EXTENSIONS",
+        "isCode"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 8,
+      "path": "packages/blueprint/src/files.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines which file types count as code, kept separate so the browser app avoids loading the TypeScript compiler."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 9439,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -3056,6 +5393,7 @@
         "readTags",
         "readWorktree",
         "revParse",
+        "stripCredentials",
         "topLevel",
         "worktreeBase"
       ],
@@ -3063,8 +5401,12 @@
       "lastCommit": "c3f5c8aa2b19240980f489c59fef1fae464d48a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 231,
+      "lines": 235,
       "path": "packages/blueprint/src/git.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Wraps all git access for the extractor, fixing output formats and settings so the same repository gives identical results on any machine."
+      },
       "test": false
     },
     {
@@ -3080,6 +5422,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 19,
       "path": "packages/blueprint/src/glob.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests the path-pattern matcher: wildcards across folders, wildcards within one folder, alternatives in braces, and escaped dots."
+      },
       "test": true
     },
     {
@@ -3098,6 +5444,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 47,
       "path": "packages/blueprint/src/glob.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Matches file paths against patterns with wildcards and alternatives, used by the layer rules, with compiled patterns cached for reuse."
+      },
       "test": false
     },
     {
@@ -3118,6 +5468,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 41,
       "path": "packages/blueprint/src/glossary.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Reads the reviewed English phrases for imported names and attaches them to dependencies, marking a phrase confirmed only when every name has a confirmed phrase."
+      },
       "test": false
     },
     {
@@ -3133,6 +5487,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 64,
       "path": "packages/blueprint/src/golden.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Checks the extractor against the known reference project, confirming it counts files, lines, commits, authors, dependencies and environment variables exactly as expected."
+      },
       "test": true
     },
     {
@@ -3165,6 +5523,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 6,
       "path": "packages/blueprint/src/index.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The package's front door: lists everything the blueprint package offers to the rest of the project."
+      },
       "test": false
     },
     {
@@ -3183,6 +5545,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 22,
       "path": "packages/blueprint/src/json.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Writes data as consistent JSON with sorted keys, and supplies a text-sorting rule that gives the same order on every machine."
+      },
       "test": false
     },
     {
@@ -3198,6 +5564,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 86,
       "path": "packages/blueprint/src/layers.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that each default rule places the right kind of file on the right floor, both at the project root and inside a nested app."
+      },
       "test": true
     },
     {
@@ -3222,29 +5592,38 @@
       "layerRule": "overlay: packages/*",
       "lines": 105,
       "path": "packages/blueprint/src/layers.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines the floors and the rules that place each file on one, with defaults that a project's own settings can override."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 4200,
+      "bytes": 6100,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "BrickFigures",
         "Demolition",
         "Ranked",
         "authors",
         "branches",
+        "brickFigures",
+        "commitTotals",
         "commits",
         "demolitions",
         "envVars",
         "files",
         "heaviestCodeBrick",
+        "historySpan",
         "importEdges",
         "loadBearing",
         "mostReworked",
         "sideEffectImports",
         "summary",
+        "testCoverage",
         "tests",
         "textLines",
         "untestedBricks"
@@ -3253,13 +5632,17 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 107,
+      "lines": 152,
       "path": "packages/blueprint/src/metrics/index.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The numbers: one calculation for each figure, such as files, lines, commits, authors, dependencies and environment variables, so that other screens display them and never recount."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3576,
+      "bytes": 5044,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -3268,8 +5651,12 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 88,
+      "lines": 109,
       "path": "packages/blueprint/src/metrics/metrics.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests the figure calculations against a small made-up project with known files, dependencies, commits and authors."
+      },
       "test": true
     },
     {
@@ -3285,11 +5672,15 @@
       "layerRule": "overlay: packages/*",
       "lines": 78,
       "path": "packages/blueprint/src/parse.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that the source reader finds imports correctly, including renamed, default, side-effect, type-only, re-exported and dynamic imports, and ignores import-like text in comments."
+      },
       "test": true
     },
     {
       "binary": false,
-      "bytes": 8503,
+      "bytes": 8324,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -3304,8 +5695,57 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 208,
+      "lines": 204,
       "path": "packages/blueprint/src/parse.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Reads one JavaScript or TypeScript file and reports what it imports, what it exports and which environment variables it reads."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2087,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 44,
+      "path": "packages/blueprint/src/register.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Test that registering a site in a throwaway database adds it once for the local member, and refuses when the member name is missing or unknown."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1248,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "SITE_COMPONENT",
+        "registerSite"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 27,
+      "path": "packages/blueprint/src/register.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Records a cloned site in the database under the local member, leaving an existing record alone and refusing if that member does not exist."
+      },
       "test": false
     },
     {
@@ -3321,6 +5761,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 67,
       "path": "packages/blueprint/src/resolve.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that import paths are matched to the right project file, or marked as outside packages or unresolved, and never reach outside the repository."
+      },
       "test": true
     },
     {
@@ -3340,6 +5784,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 194,
       "path": "packages/blueprint/src/resolve.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Works out which project file an import points to, or whether it is an outside package or cannot be found."
+      },
       "test": false
     },
     {
@@ -3359,6 +5807,72 @@
       "layerRule": "overlay: packages/*",
       "lines": 107,
       "path": "packages/blueprint/src/screens.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Finds the pages of each Next.js app in a repository and the web address each page is served at."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8021,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 162,
+      "path": "packages/blueprint/src/site.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests for sites: locating them, adding them from a repository, reading their blueprint, and saving confirmed phrases and purposes."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 12096,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Confirmation",
+        "GLOSSARY_FILE",
+        "PURPOSES_FILE",
+        "SELF_EXTRACT",
+        "SELF_SITE_ID",
+        "SiteError",
+        "SiteLocation",
+        "SiteRecord",
+        "addSite",
+        "checkSiteBlueprint",
+        "confirmEdge",
+        "confirmPurpose",
+        "extractSite",
+        "houseRoot",
+        "isSiteId",
+        "listSites",
+        "locateSite",
+        "readSiteBlueprint",
+        "readSiteOverlay",
+        "siteReader",
+        "workDir",
+        "writeSiteBlueprint",
+        "writeSiteOverlay"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 280,
+      "path": "packages/blueprint/src/site.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Manages sites: cloning a target repository read-only, keeping its blueprint, and saving a named person's confirmed purposes and phrases in its overlay folder."
+      },
       "test": false
     },
     {
@@ -3377,6 +5891,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 60,
       "path": "packages/blueprint/test/fixture-repo.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Test helper that builds throwaway git repositories with fixed authors and dates so test histories are reproducible."
+      },
       "test": false
     },
     {
@@ -3392,6 +5910,10 @@
       "layerRule": "default: tsconfig",
       "lines": 4,
       "path": "packages/blueprint/tsconfig.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "TypeScript settings for the blueprint package, building on the shared base settings and covering its source folder."
+      },
       "test": false
     },
     {
@@ -3407,6 +5929,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 3,
       "path": "packages/ceremony/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Placeholder note for the ceremony package, pointing to the project documents and saying it is empty for now."
+      },
       "test": false
     },
     {
@@ -3422,6 +5948,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 7,
       "path": "packages/db/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Guide to the database package: where the schema and migrations live, the migrate and seed commands, and the rule that two tables are append-only."
+      },
       "test": false
     },
     {
@@ -3441,6 +5971,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 8,
       "path": "packages/db/drizzle.config.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Settings for the database migration tool: Postgres, where the schema lives, where migrations go, and a local fallback database address."
+      },
       "test": false
     },
     {
@@ -3456,6 +5990,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 68,
       "path": "packages/db/migrations/0000_init.sql",
+      "purpose": {
+        "confirmed": false,
+        "text": "The first migration: creates the audit log, model calls, people and sites tables, with the links between them."
+      },
       "test": false
     },
     {
@@ -3471,6 +6009,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 374,
       "path": "packages/db/migrations/meta/0000_snapshot.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Generated record of the database structure after the first migration, used by the migration tool to detect later changes."
+      },
       "test": false
     },
     {
@@ -3486,6 +6028,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 13,
       "path": "packages/db/migrations/meta/_journal.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Generated list of the migrations applied so far; it currently holds only the first one."
+      },
       "test": false
     },
     {
@@ -3501,6 +6047,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 24,
       "path": "packages/db/package.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Package manifest for the database package: its name, the commands to generate, migrate and seed, and its two libraries."
+      },
       "test": false
     },
     {
@@ -3518,6 +6068,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 27,
       "path": "packages/db/src/cli.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Command-line entry point that runs the database migrations or the seed, reading settings from the environment and the root settings file."
+      },
       "test": false
     },
     {
@@ -3538,6 +6092,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 13,
       "path": "packages/db/src/client.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Opens the connection to the Postgres database and hands back a handle plus a way to close it."
+      },
       "test": false
     },
     {
@@ -3555,6 +6113,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 118,
       "path": "packages/db/src/db.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that build a throwaway database, apply the migration and seed, and check the standard columns and the append-only tables."
+      },
       "test": true
     },
     {
@@ -3579,11 +6141,15 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 4,
       "path": "packages/db/src/index.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Front door of the database package: re-exports the schema, connection, migration and seed pieces for other packages to use."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 419,
+      "bytes": 672,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -3595,8 +6161,12 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 10,
+      "lines": 16,
       "path": "packages/db/src/migrate.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Applies any database changes that have not yet been run, using the migration files stored in the database package."
+      },
       "test": false
     },
     {
@@ -3618,6 +6188,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 75,
       "path": "packages/db/src/schema.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The data model: tables for people, sites and every outside model call, each recording when and by whom a row was created."
+      },
       "test": false
     },
     {
@@ -3637,6 +6211,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 34,
       "path": "packages/db/src/seed.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Sets up the starting data: the one local member and the \"self\" site for this repository, safe to run repeatedly, and refusing without a member name."
+      },
       "test": false
     },
     {
@@ -3652,6 +6230,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 4,
       "path": "packages/db/tsconfig.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "TypeScript settings for the database package, building on the shared project settings."
+      },
       "test": false
     },
     {
@@ -3667,6 +6249,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 12,
       "path": "packages/model/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains the model-calling module: vendor checks, prompt loading, retries, one logged record per call, and validated output."
+      },
       "test": false
     },
     {
@@ -3682,6 +6268,10 @@
       "layerRule": "default: package manifest",
       "lines": 17,
       "path": "packages/model/package.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Package manifest for the model module, which handles outside model calls with versioned prompts, vendor routing, retries and call records."
+      },
       "test": false
     },
     {
@@ -3705,6 +6295,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 133,
       "path": "packages/model/src/adapters.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Connects to each model vendor over plain web requests, returning the reply text and token counts, and flagging errors worth retrying."
+      },
       "test": false
     },
     {
@@ -3720,6 +6314,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 199,
       "path": "packages/model/src/call.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Automated tests of the model-calling function using faked vendor replies and a stand-in for saving call records."
+      },
       "test": true
     },
     {
@@ -3746,6 +6344,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 191,
       "path": "packages/model/src/call.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The single entry point for talking to a model vendor: checks vendors, loads the prompt, retries up to three times, records the call, returns checked output."
+      },
       "test": false
     },
     {
@@ -3761,6 +6363,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 31,
       "path": "packages/model/src/call.vendor.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Optional tests that call the real builder and auditor vendors and save real call records; excluded from the watcher and CI."
+      },
       "test": true
     },
     {
@@ -3796,6 +6402,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 12,
       "path": "packages/model/src/index.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Entry point of the model package: gathers the model-calling, vendor-choice and prompt-loading pieces so other packages import them from one place."
+      },
       "test": false
     },
     {
@@ -3815,6 +6425,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 30,
       "path": "packages/model/src/prompts.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Loads a versioned prompt file by name and version, and records a fingerprint of its text so every call can name the exact prompt used."
+      },
       "test": false
     },
     {
@@ -3836,6 +6450,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 29,
       "path": "packages/model/src/vendors.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Chooses the AI vendor for the builder and the auditor from settings, and refuses to run if they are missing, unknown or the same vendor."
+      },
       "test": false
     },
     {
@@ -3851,6 +6469,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 4,
       "path": "packages/model/test/fixtures/prompts/echo.v1.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "A sample prompt used only by tests of the model package, asking the model to reply with a given word."
+      },
       "test": false
     },
     {
@@ -3866,6 +6488,10 @@
       "layerRule": "default: tsconfig",
       "lines": 4,
       "path": "packages/model/tsconfig.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "TypeScript settings for the model package, building on the shared base settings and covering its source and test folders."
+      },
       "test": false
     },
     {
@@ -3881,6 +6507,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 3,
       "path": "packages/shared/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains that this package holds the data types shared across packages, and that the blueprint document is generated from their comments and checked for drift."
+      },
       "test": false
     },
     {
@@ -3896,6 +6526,10 @@
       "layerRule": "default: package manifest",
       "lines": 13,
       "path": "packages/shared/package.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Package manifest naming the shared-types package as private and pointing to its source entry file."
+      },
       "test": false
     },
     {
@@ -3913,6 +6547,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 19,
       "path": "packages/shared/src/audit.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines the shape of a finding: one verdict from an audit on one file, with the check, the explanation and where it points."
+      },
       "test": false
     },
     {
@@ -3936,6 +6574,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 130,
       "path": "packages/shared/src/blueprint.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines the shapes that describe the mapped repository: the floors, each file as a brick with its facts, and the imports linking bricks."
+      },
       "test": false
     },
     {
@@ -3954,6 +6596,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 41,
       "path": "packages/shared/src/ceremony.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Defines the shapes of a recorded decision from a discovery session and a named sign-off on a screen or brick."
+      },
       "test": false
     },
     {
@@ -3969,6 +6615,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 41,
       "path": "packages/shared/src/doc.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Tests that the generated documentation covers every shared type and field, rejects fields without a description, and escapes the pipe characters in table cells."
+      },
       "test": true
     },
     {
@@ -3996,6 +6646,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 12,
       "path": "packages/shared/src/index.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The front door of the shared package: it re-exports the shared record shapes for blueprints, trails, sign-offs and audit findings."
+      },
       "test": false
     },
     {
@@ -4013,6 +6667,10 @@
       "layerRule": "overlay: packages/*",
       "lines": 23,
       "path": "packages/shared/src/trail.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "The shape of a trail, which traces a figure on a screen back to its formula, inputs, data, build history and signature."
+      },
       "test": false
     },
     {
@@ -4028,6 +6686,10 @@
       "layerRule": "default: tsconfig",
       "lines": 4,
       "path": "packages/shared/tsconfig.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "TypeScript settings for the shared package, inheriting the project-wide base settings and covering its source folder."
+      },
       "test": false
     },
     {
@@ -4043,11 +6705,15 @@
       "layerRule": "overlay: packages/*",
       "lines": 3,
       "path": "packages/trace/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Short note pointing to the project documents that define this package's role; the package is empty until it is built."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 101560,
+      "bytes": 103035,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -4056,8 +6722,12 @@
       "lastCommit": "9a40e00bcca3dba55d3730910f9b4efb3b6cc167",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3171,
+      "lines": 3224,
       "path": "pnpm-lock.yaml",
+      "purpose": {
+        "confirmed": false,
+        "text": "Lockfile that pins the exact versions of every outside package the project and its workspace parts depend on."
+      },
       "test": false
     },
     {
@@ -4073,6 +6743,10 @@
       "layerRule": "default: package manifest",
       "lines": 3,
       "path": "pnpm-workspace.yaml",
+      "purpose": {
+        "confirmed": false,
+        "text": "Declares that the apps and packages folders together form one multi-part workspace."
+      },
       "test": false
     },
     {
@@ -4088,6 +6762,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 1,
       "path": "prompts/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains that prompts are stored as versioned files, never edited in place, and lists the prompts planned."
+      },
       "test": false
     },
     {
@@ -4103,6 +6781,29 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 16,
       "path": "prompts/glossary.v1.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Instructions for the AI to write short plain-English phrases describing what one file gets when it imports a symbol from another."
+      },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1392,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 15,
+      "path": "prompts/purpose.v1.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Instructions for the AI to write a one-sentence plain-English purpose for each file, shown at the top of its inspector."
+      },
       "test": false
     },
     {
@@ -4118,6 +6819,10 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 22,
       "path": "prompts/reviewer.v1.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Instructions for the independent reviewer, who checks each build stage against a fixed checklist and answers with findings in a set format."
+      },
       "test": false
     },
     {
@@ -4133,6 +6838,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 8,
       "path": "reference/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains the read-only reference folder: the weekend prototype, the EkBill walkthrough and the two repositories to clone here."
+      },
       "test": false
     },
     {
@@ -4148,6 +6857,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 571,
       "path": "reference/ekbill-ease-of-use-2026-10-18.html",
+      "purpose": {
+        "confirmed": false,
+        "text": "Saved web page of the EkBill ease-of-use walkthrough, kept as a read-only reference."
+      },
       "test": false
     },
     {
@@ -4163,6 +6876,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 113,
       "path": "reference/weekend-prototype/audit.js",
+      "purpose": {
+        "confirmed": false,
+        "text": "The scripted audit of the prototype: a pass, warning or fail verdict with a one-line finding for each file."
+      },
       "test": false
     },
     {
@@ -4178,6 +6895,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 88,
       "path": "reference/weekend-prototype/discovery.js",
+      "purpose": {
+        "confirmed": false,
+        "text": "The reconstructed discovery conversation between the client's people, the advisor and Rama, with the decisions it produced."
+      },
       "test": false
     },
     {
@@ -4193,6 +6914,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 47,
       "path": "reference/weekend-prototype/english.js",
+      "purpose": {
+        "confirmed": false,
+        "text": "The plain-English wording for each exported name in the repository, used to describe the links between files."
+      },
       "test": false
     },
     {
@@ -4208,6 +6933,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 159,
       "path": "reference/weekend-prototype/extract.py",
+      "purpose": {
+        "confirmed": false,
+        "text": "The script that reads a git repository and builds the project graph, sorting each file into a layer."
+      },
       "test": false
     },
     {
@@ -4223,6 +6952,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 1300,
       "path": "reference/weekend-prototype/graph.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "The extracted graph of the Procurement Studio project: its layers and, for each file, its layer, line count and purpose."
+      },
       "test": false
     },
     {
@@ -4238,6 +6971,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 827,
       "path": "reference/weekend-prototype/house-of-rama.html",
+      "purpose": {
+        "confirmed": false,
+        "text": "The working single-page House of Rama prototype, with its dark-themed layout and styling."
+      },
       "test": false
     },
     {
@@ -4373,6 +7110,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 228,
       "path": "reference/weekend-prototype/trace.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Worked figures for each vendor's quote: quoted price, tax, scope-gap fill and normalised total, plus the vendor rankings."
+      },
       "test": false
     },
     {
@@ -4388,6 +7129,10 @@
       "layerRule": "overlay: reference/**",
       "lines": 91,
       "path": "reference/weekend-prototype/traces.js",
+      "purpose": {
+        "confirmed": false,
+        "text": "Prototype data that links figures on captured screens to their explanation: the formula, the inputs and where the sample data lives."
+      },
       "test": false
     },
     {
@@ -4406,6 +7151,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 100,
       "path": "scripts/dev.mjs",
+      "purpose": {
+        "confirmed": false,
+        "text": "The command that starts the local development setup: it brings up the database, prepares it, then runs the app and the watcher together."
+      },
       "test": false
     },
     {
@@ -4425,6 +7174,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 121,
       "path": "scripts/gen-blueprint-doc.mjs",
+      "purpose": {
+        "confirmed": false,
+        "text": "Generates the Blueprint document from the shared type definitions, refusing to run if any type or field lacks a description, and can check the document is current."
+      },
       "test": false
     },
     {
@@ -4440,6 +7193,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 95,
       "path": "scripts/review.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Runs the independent stage review: sends the stage's changes to a different vendor's model acting as auditor and appends its verdict to a report."
+      },
       "test": false
     },
     {
@@ -4455,6 +7212,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 4,
       "path": "scripts/tsconfig.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "Type-checking settings for the scripts folder, built on the shared base settings."
+      },
       "test": false
     },
     {
@@ -4470,6 +7231,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 232,
       "path": "scripts/watch.mjs",
+      "purpose": {
+        "confirmed": false,
+        "text": "The continuous checker: on every save it runs linting, formatting, type checks, tests and drift checks, and records the results in a status file."
+      },
       "test": false
     },
     {
@@ -4485,11 +7250,33 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 1,
       "path": "tests/README.md",
+      "purpose": {
+        "confirmed": false,
+        "text": "Explains how the end-to-end tests are organised, and that tests calling a real model vendor run only when deliberately switched on."
+      },
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3007,
+      "bytes": 2786,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 77,
+      "path": "tests/dev-server.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1178,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -4498,8 +7285,12 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 83,
+      "lines": 31,
       "path": "tests/stage-0.e2e.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "End-to-end test that starts the real web app and checks the home page shows the product line and the short commit code."
+      },
       "test": true
     },
     {
@@ -4515,6 +7306,28 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 58,
       "path": "tests/stage-1.e2e.test.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "End-to-end test that runs the command-line tool on a real sample project, checking extraction, identical repeat runs, and that differences between versions are detected."
+      },
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 8019,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL",
+        "RAMA_E2E_LOG"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 187,
+      "path": "tests/stage-2.e2e.test.ts",
       "test": true
     },
     {
@@ -4530,6 +7343,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 19,
       "path": "tsconfig.base.json",
+      "purpose": {
+        "confirmed": false,
+        "text": "The shared TypeScript settings that every package in the project builds on, set to strict checking."
+      },
       "test": false
     },
     {
@@ -4549,6 +7366,10 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 29,
       "path": "vitest.config.ts",
+      "purpose": {
+        "confirmed": false,
+        "text": "Test runner setup: groups the tests of each package, the app and end-to-end checks, with time limits, and skips tests that call real model vendors unless requested."
+      },
       "test": false
     }
   ],
@@ -4556,14 +7377,113 @@
   "screens": [
     {
       "bricks": [
+        "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/page.tsx",
-        "apps/rama/components/BuildStamp.tsx"
+        "apps/rama/components/BuildStamp.tsx",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts"
       ],
       "file": "apps/rama/app/page.tsx",
       "id": "/",
       "name": "Home",
       "route": "/"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/globals.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/page.tsx",
+        "apps/rama/canvas/draw.ts",
+        "apps/rama/canvas/frame.ts",
+        "apps/rama/canvas/layout.ts",
+        "apps/rama/canvas/palette.ts",
+        "apps/rama/canvas/pick.ts",
+        "apps/rama/canvas/timeline.ts",
+        "apps/rama/components/inspector/Inspector.tsx",
+        "apps/rama/components/inspector/words.ts",
+        "apps/rama/components/site/SiteView.tsx",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/page.tsx",
+      "id": "/site/[siteId]",
+      "name": "Site › [siteId]",
+      "route": "/site/[siteId]"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/globals.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/discovery/page.tsx",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "id": "/site/[siteId]/discovery",
+      "name": "Site › [siteId] › Discovery",
+      "route": "/site/[siteId]/discovery"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/globals.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/showroom/page.tsx",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/showroom/page.tsx",
+      "id": "/site/[siteId]/showroom",
+      "name": "Site › [siteId] › Showroom",
+      "route": "/site/[siteId]/showroom"
     }
   ],
   "tags": [],

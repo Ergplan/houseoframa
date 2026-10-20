@@ -83,6 +83,27 @@ describe('metrics (one function per figure)', () => {
   it('heaviestCodeBrick ignores stylesheets', () => expect(m.heaviestCodeBrick(bp)?.path).toBe('lib/a.ts'));
   it('demolitions finds changes deleting at least 20 lines, by 1-based commit', () =>
     expect(m.demolitions(bp)).toEqual([{ commit: 2, sha: 'c2bbbbbb', path: 'lib/a.ts', deleted: 25 }]));
+  it('brickFigures gives each brick its dependencies, dependants and test state', () => {
+    const f = m.brickFigures(bp);
+    expect(f['lib/a.ts']).toEqual({ dependsOn: 0, usedBy: 2, tested: true });
+    expect(f['lib/b.ts']).toEqual({ dependsOn: 1, usedBy: 1, tested: false });
+    // A test is not itself tested; a stylesheet or image is not code, so neither applies.
+    expect(f['lib/a.test.ts']).toEqual({ dependsOn: 1, usedBy: 0, tested: null });
+    expect(f['app/globals.css']).toEqual({ dependsOn: 1, usedBy: 0, tested: null });
+    expect(Object.keys(f)).toHaveLength(5);
+  });
+  it('testCoverage counts code bricks with a test behind them, over code bricks that are not tests', () =>
+    expect(m.testCoverage(bp)).toEqual({ tested: 1, of: 2 }));
+  it('historySpan is the time from the first to the last commit, in minutes', () => {
+    const later = { ...bp, commits: [bp.commits[0]!, { ...bp.commits[2]!, at: '2026-01-01T06:30:00+05:30' }] };
+    expect(m.historySpan(later)).toBe(60);
+    expect(m.historySpan({ ...bp, commits: [] })).toBe(0);
+  });
+  it('commitTotals sums added and deleted lines and counts the test bricks a commit laid', () => {
+    expect(m.commitTotals(bp, bp.commits[2]!)).toEqual({ add: 1, del: 19, testsAdded: 0 });
+    const withTest = { ...bp.commits[0]!, changes: [{ path: 'lib/a.test.ts', kind: 'A' as const, add: 40, del: 0 }] };
+    expect(m.commitTotals(bp, withTest)).toEqual({ add: 40, del: 0, testsAdded: 1 });
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });

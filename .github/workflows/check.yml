@@ -40,6 +40,8 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Browser for the end-to-end tests
+        run: pnpm exec playwright install --with-deps chromium
       - name: Migrate and seed
         run: pnpm db:migrate && pnpm db:seed
       - name: Watcher checks

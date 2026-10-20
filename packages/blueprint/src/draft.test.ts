@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Blueprint } from '@rama/shared';
 import type { call } from '@rama/model';
-import { draftGlossary, missingPhrases, DRAFT_COMPONENT } from './draft.ts';
+import { draftGlossary, draftPurposes, missingPhrases, missingPurposes, DRAFT_COMPONENT, PURPOSE_COMPONENT } from './draft.ts';
 
 const bp = {
   repo: 'r',
@@ -46,5 +46,42 @@ describe('glossary drafting', () => {
     const all = { total: { text: 't' }, 'lib/calc.ts#default': { text: 'd' }, ROWS: { text: 'r' } };
     expect(await draftGlossary(bp, all, read, { siteId: 'self', call: fake })).toEqual({});
     expect(fake).not.toHaveBeenCalled();
+  });
+});
+
+describe('purpose drafting', () => {
+  const nodesBp = {
+    repo: 'r',
+    nodes: [
+      { path: 'lib/calc.ts', layer: 'logic', lines: 3, binary: false, exports: ['total', 'default'] },
+      { path: 'lib/data.ts', layer: 'data', lines: 1, binary: false, exports: ['ROWS'] },
+      { path: 'public/logo.png', layer: 'data', lines: 0, binary: true, exports: [] },
+      { path: 'empty.txt', layer: 'shell', lines: 0, binary: false, exports: [] },
+    ],
+  } as unknown as Blueprint;
+
+  it('asks only for text bricks with no purpose, with the head of each file', () => {
+    const todo = missingPurposes(nodesBp, { 'lib/data.ts': { text: 'The rows.' } }, read);
+    expect(todo).toEqual([
+      { path: 'lib/calc.ts', floor: 'logic', lines: 3, exports: ['total', 'default'], head: files['lib/calc.ts'] },
+    ]);
+  });
+
+  it('calls packages/model as the builder with purpose.v1 and keeps unconfirmed drafts for asked paths only', async () => {
+    const fake = vi.fn(async () => ({
+      output: {
+        purposes: [
+          { path: 'lib/calc.ts', text: ' Adds things up. ' },
+          { path: 'lib/elsewhere.ts', text: 'Not asked for.' },
+        ],
+      },
+    })) as unknown as typeof call;
+    expect(await draftPurposes(nodesBp, {}, read, { siteId: 'ekbill', call: fake })).toEqual({
+      'lib/calc.ts': { text: 'Adds things up.' },
+    });
+    expect(fake).toHaveBeenCalledTimes(1);
+    expect(fake).toHaveBeenCalledWith(
+      expect.objectContaining({ name: 'purpose', version: 1, role: 'builder', siteId: 'ekbill', createdBy: PURPOSE_COMPONENT }),
+    );
   });
 });

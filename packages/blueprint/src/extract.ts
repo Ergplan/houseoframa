@@ -1,5 +1,6 @@
 // extract(repoPath, opts) → Blueprint. Reads only git and the file tree; no model call, no clock,
 // no network (Invariant 6). The same commit always yields byte-identical canonical JSON.
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Blueprint, BrickNode, ImportEdge } from '@rama/shared';
 import pkg from '../package.json' with { type: 'json' };
@@ -35,6 +36,12 @@ export interface ExtractOptions {
   exclude?: string[];
   /** Repository identifier written to `Blueprint.repo` (default: the origin URL without credentials, else the directory name). */
   repo?: string;
+  /**
+   * Where the `.rama/` overlays are read from. `commit` (default) reads them from the extracted commit;
+   * `worktree` reads them from the working copy while code, history and refs still come from the commit:
+   * a site's Blueprint shows confirmations made since its last commit.
+   */
+  overlay?: 'commit' | 'worktree';
   /** Phrases to merge under the target's own `.rama/glossary.json` (whose entries win): fresh drafts. */
   glossaryExtra?: Glossary;
 }
@@ -74,6 +81,17 @@ function readOverlay<T>(read: (p: string) => string | null, file: string, schema
   return parsed.data;
 }
 
+/** A purpose from `.rama/purposes.json`: confirmed only with both a confirmer and a date (Invariant 6). */
+function purposeOf(entry: Glossary[string] | undefined): Pick<BrickNode, 'purpose'> {
+  if (!entry) return {};
+  const confirmed = Boolean(entry.confirmedBy && entry.confirmedAt);
+  return {
+    purpose: confirmed
+      ? { text: entry.text, confirmed, by: entry.confirmedBy!, at: entry.confirmedAt! }
+      : { text: entry.text, confirmed },
+  };
+}
+
 export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint {
   const root = topLevel(path.resolve(repoPath));
   const exclude = opts.exclude ?? [];
@@ -98,8 +116,13 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
   const sizes = new Map(tree.map((f) => [f.path, f.content.length]));
   const paths = tree.map((f) => f.path);
 
-  const plan = planLayers(readOverlay(read, '.rama/layers.json', LayersOverlaySchema) as LayersOverlay | null);
-  const glossary = { ...opts.glossaryExtra, ...readOverlay(read, '.rama/glossary.json', Glossary) };
+  const readOverlayFile =
+    opts.overlay === 'worktree' && !opts.worktree
+      ? (p: string) => (existsSync(path.join(root, p)) ? readFileSync(path.join(root, p), 'utf8') : null)
+      : read;
+  const plan = planLayers(readOverlay(readOverlayFile, '.rama/layers.json', LayersOverlaySchema) as LayersOverlay | null);
+  const glossary = { ...opts.glossaryExtra, ...readOverlay(readOverlayFile, '.rama/glossary.json', Glossary) };
+  const purposes = readOverlay(readOverlayFile, '.rama/purposes.json', Glossary) ?? {};
   const resolver = new Resolver({ files: new Set(paths), read });
 
   const edgeMap = new Map<string, ImportEdge>();
@@ -154,6 +177,7 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
       firstCommit: history[0] ?? '',
       lastCommit: history.at(-1) ?? '',
       changes: history.length,
+      ...purposeOf(purposes[p]),
     };
   });
 

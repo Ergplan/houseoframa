@@ -226,6 +226,10 @@ export function readTags(repo: string, sha: string): string[] {
 export function originName(repo: string): string | null {
   const res = spawnSync('git', ['-C', repo, 'config', '--get', 'remote.origin.url'], { encoding: 'utf8' });
   const url = res.status === 0 ? res.stdout.trim() : '';
-  if (!url) return null;
+  return url ? stripCredentials(url) : null;
+}
+
+/** A remote URL with any user:token@ part and a trailing `.git` removed. */
+export function stripCredentials(url: string): string {
   return url.replace(/^([a-z+]+:\/\/)[^@/]*@/i, '$1').replace(/\.git$/, '');
 }

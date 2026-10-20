@@ -41,6 +41,10 @@ beforeAll(() => {
       ROWS: { text: 'the rows', confirmedBy: 'Asha', confirmedAt: '2026-01-05' },
       'lib/calc.ts#total': { text: 'the row count' },
     }),
+    '.rama/purposes.json': JSON.stringify({
+      'lib/data.ts': { text: 'The rows the app counts.', confirmedBy: 'Asha', confirmedAt: '2026-01-05' },
+      'lib/calc.ts': { text: 'Counts the rows.' },
+    }),
   });
   shas.push(repo.commit('glossary', 'Asha'));
 });
@@ -147,6 +151,42 @@ describe('extract on a fixture repository', () => {
     expect(e('app/layout.tsx', 'app/globals.css').english).toBeUndefined();
   });
 
+  it('sets each brick\'s purpose from .rama/purposes.json: confirmed, draft, or absent', () => {
+    const by = (p: string) => extract(repo.dir).nodes.find((n) => n.path === p)!;
+    expect(by('lib/data.ts').purpose).toEqual({
+      text: 'The rows the app counts.',
+      confirmed: true,
+      by: 'Asha',
+      at: '2026-01-05',
+    });
+    expect(by('lib/calc.ts').purpose).toEqual({ text: 'Counts the rows.', confirmed: false });
+    expect(by('app/page.tsx').purpose).toBeUndefined();
+  });
+
+  it('reads .rama overlays from the working copy with overlay: worktree, code and refs from the commit', () => {
+    const head = repo.git('rev-parse', 'HEAD').trim();
+    repo.write({
+      '.rama/glossary.json': JSON.stringify({
+        'lib/calc.ts#total': { text: 'the row count', confirmedBy: 'Ravi', confirmedAt: '2026-01-06T10:00:00Z' },
+      }),
+      'lib/calc.ts': 'export const changed = 1;\n',
+    });
+    repo.git('branch', 'side', shas[0]!);
+    try {
+      const bp = extract(repo.dir, { overlay: 'worktree' });
+      expect(bp).toMatchObject({ commit: head, worktree: false, branches: ['main', 'side'] });
+      const edge = bp.edges.find((e) => e.from === 'app/page.tsx')!;
+      expect(edge.english).toEqual({ text: 'the row count', confirmed: true, by: 'Ravi', at: '2026-01-06T10:00:00Z' });
+      // Code is still read from the commit.
+      expect(bp.nodes.find((n) => n.path === 'lib/calc.ts')!.exports).toEqual(['total']);
+      // The default stays the commit's own overlay.
+      expect(extract(repo.dir).edges.find((e) => e.from === 'app/page.tsx')!.english!.confirmed).toBe(false);
+    } finally {
+      repo.git('checkout', '--', '.rama/glossary.json', 'lib/calc.ts');
+      repo.git('branch', '-D', 'side');
+    }
+  });
+
   it('confirms an edge only when every symbol has a confirmed phrase', () => {
     const [edge] = mergeGlossary([{ from: 'a', to: 'b', symbols: ['X', 'Y'], typeOnly: false }], {
       X: { text: 'the x', confirmedBy: 'Asha', confirmedAt: '2026-01-02' },
@@ -188,6 +228,12 @@ describe('extract on a fixture repository', () => {
       expect(() => extract(repo.dir)).toThrow(/\.rama\/layers\.json does not match its schema/);
     } finally {
       repo.git('reset', '-q', '--hard', 'HEAD~1');
+    }
+    repo.write({ '.rama/purposes.json': '{ "lib/data.ts": { "text": "" } }' });
+    try {
+      expect(() => extract(repo.dir, { overlay: 'worktree' })).toThrow(/\.rama\/purposes\.json does not match its schema/);
+    } finally {
+      repo.git('checkout', '--', '.rama/purposes.json');
     }
   });
 });

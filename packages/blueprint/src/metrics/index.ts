@@ -1,7 +1,7 @@
 // The numbers. One function per figure, each a pure function of a Blueprint (Invariant 7): the campus,
 // the inspector and the audit report display these and never recount.
-import type { Blueprint, BrickNode } from '@rama/shared';
-import { isCode } from '../parse.ts';
+import type { Blueprint, BrickNode, Commit } from '@rama/shared';
+import { isCode } from '../files.ts';
 import { byString } from '../json.ts';
 
 export interface Ranked {
@@ -88,6 +88,51 @@ export const demolitions = (bp: Blueprint, minDeleted = 20): Demolition[] =>
       .filter((ch) => (ch.del ?? 0) >= minDeleted)
       .map((ch) => ({ commit: i + 1, sha: c.sha, path: ch.path, deleted: ch.del! })),
   );
+
+export interface BrickFigures {
+  /** Distinct bricks this brick imports. */
+  dependsOn: number;
+  /** Distinct bricks that import this brick. */
+  usedBy: number;
+  /** Whether a test brick imports it directly; null when that does not apply (a test, or not code). */
+  tested: boolean | null;
+}
+
+/** Per brick: what it needs, what relies on it, and whether a test stands behind it. */
+export const brickFigures = (bp: Blueprint): Record<string, BrickFigures> => {
+  const untested = new Set(untestedBricks(bp));
+  const out: Record<string, BrickFigures> = {};
+  for (const n of bp.nodes) {
+    out[n.path] = { dependsOn: 0, usedBy: 0, tested: n.test || !isCode(n.path) ? null : !untested.has(n.path) };
+  }
+  for (const e of bp.edges) {
+    if (out[e.from]) out[e.from]!.dependsOn++;
+    if (out[e.to]) out[e.to]!.usedBy++;
+  }
+  return out;
+};
+
+/** Code bricks (not tests) with a test brick importing them directly, over all such code bricks. */
+export const testCoverage = (bp: Blueprint): { tested: number; of: number } => {
+  const of = bp.nodes.filter((n) => !n.test && isCode(n.path)).length;
+  return { tested: of - untestedBricks(bp).length, of };
+};
+
+/** Minutes from the first commit to the last. */
+export const historySpan = (bp: Blueprint): number => {
+  if (bp.commits.length < 2) return 0;
+  return Math.round((Date.parse(bp.commits.at(-1)!.at) - Date.parse(bp.commits[0]!.at)) / 60_000);
+};
+
+/** Lines a commit added and deleted, and how many test bricks it laid. */
+export const commitTotals = (bp: Blueprint, c: Commit): { add: number; del: number; testsAdded: number } => {
+  const tests = new Set(bp.nodes.filter((n) => n.test).map((n) => n.path));
+  return {
+    add: c.changes.reduce((s, x) => s + (x.add ?? 0), 0),
+    del: c.changes.reduce((s, x) => s + (x.del ?? 0), 0),
+    testsAdded: c.changes.filter((x) => x.kind === 'A' && tests.has(x.path)).length,
+  };
+};
 
 /** Every figure at once, for the CLI summary and the trust report. */
 export const summary = (bp: Blueprint) => ({

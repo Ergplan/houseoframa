@@ -3,11 +3,7 @@
 import ts from 'typescript';
 import { byString } from './json.ts';
 
-export const CODE_EXTENSIONS = ['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs'];
-
-export function isCode(path: string): boolean {
-  return CODE_EXTENSIONS.some((ext) => path.endsWith(ext)) && !path.endsWith('.d.ts');
-}
+export { CODE_EXTENSIONS, isCode } from './files.ts';
 
 export interface ImportRef {
   spec: string;

@@ -6,7 +6,8 @@
   "description": "git + source → Blueprint JSON; metrics; the `rama` CLI.",
   "exports": {
     ".": "./src/index.ts",
-    "./metrics": "./src/metrics/index.ts"
+    "./metrics": "./src/metrics/index.ts",
+    "./site": "./src/site.ts"
   },
   "bin": {
     "rama": "./bin/rama.mjs"
@@ -15,10 +16,15 @@
     "typecheck": "tsc --noEmit -p ."
   },
   "dependencies": {
+    "@rama/db": "workspace:*",
     "@rama/model": "workspace:*",
     "@rama/shared": "workspace:*",
+    "drizzle-orm": "0.45.3",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "postgres": "3.4.9"
   }
 }

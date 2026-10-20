@@ -1,0 +1,527 @@
+{
+  "apps/rama/app/api/health/route.ts#GET": {
+    "text": "a health check reporting ok and the short commit id"
+  },
+  "apps/rama/app/api/site/[siteId]/confirm/handler.ts#handleConfirm": {
+    "text": "the handler that confirms an edge or purpose for a site as the local member"
+  },
+  "apps/rama/app/page.tsx#default": {
+    "text": "the home page listing the sites"
+  },
+  "apps/rama/canvas/draw.ts#Ctx": {
+    "text": "the shape of the canvas drawing operations the painter needs"
+  },
+  "apps/rama/canvas/draw.ts#draw": {
+    "text": "the painter that draws a site's state onto the canvas and returns its frame"
+  },
+  "apps/rama/canvas/frame.ts#Frame": {
+    "text": "the shape of one picture of the site, with floors, bricks and crane hook"
+  },
+  "apps/rama/canvas/frame.ts#SiteState": {
+    "text": "the shape of what the site is showing: blueprint, commit step, progress and selection"
+  },
+  "apps/rama/canvas/frame.ts#frame": {
+    "text": "the frame worked out for a given site state"
+  },
+  "apps/rama/canvas/frame.ts#siteModel": {
+    "text": "the cached scene and timeline built from a blueprint"
+  },
+  "apps/rama/canvas/frame.ts#skyAt": {
+    "text": "the sky for a given hour of the day"
+  },
+  "apps/rama/canvas/layout.ts#BRICK_H": {
+    "text": "the fixed height of a brick"
+  },
+  "apps/rama/canvas/layout.ts#Box": {
+    "text": "the shape of a rectangle with position and size"
+  },
+  "apps/rama/canvas/layout.ts#BrickBox": {
+    "text": "the shape of a brick's box, with path, layer, colour and untested flag"
+  },
+  "apps/rama/canvas/layout.ts#Crane": {
+    "text": "the shape of a crane: author, label, position, colour and jib direction"
+  },
+  "apps/rama/canvas/layout.ts#FloorBox": {
+    "text": "the shape of one floor of the building"
+  },
+  "apps/rama/canvas/layout.ts#MAX_BUILDING_W": {
+    "text": "the widest a building may be"
+  },
+  "apps/rama/canvas/layout.ts#MAX_CRANES": {
+    "text": "the most cranes shown on a site"
+  },
+  "apps/rama/canvas/layout.ts#MAX_SCAFFOLDS": {
+    "text": "the most scaffolds shown on a site"
+  },
+  "apps/rama/canvas/layout.ts#MIN_BUILDING_W": {
+    "text": "the narrowest a building may be"
+  },
+  "apps/rama/canvas/layout.ts#Scene": {
+    "text": "the shape of the laid-out site: size, ground, building and floors"
+  },
+  "apps/rama/canvas/layout.ts#brickWidth": {
+    "text": "a brick's width worked out from its line count"
+  },
+  "apps/rama/canvas/layout.ts#layout": {
+    "text": "the scene laid out from a blueprint"
+  },
+  "apps/rama/canvas/palette.ts#CRANE_COLORS": {
+    "text": "the set of six crane colours"
+  },
+  "apps/rama/canvas/palette.ts#IMPORTED_BY": {
+    "text": "the amber highlight colour for imported-by links"
+  },
+  "apps/rama/canvas/palette.ts#IMPORTS": {
+    "text": "the teal highlight colour for imports"
+  },
+  "apps/rama/canvas/palette.ts#INK": {
+    "text": "the dark ink colour"
+  },
+  "apps/rama/canvas/palette.ts#UNTESTED": {
+    "text": "the red colour marking untested code"
+  },
+  "apps/rama/canvas/palette.ts#layerColor": {
+    "text": "the colour for a given layer"
+  },
+  "apps/rama/canvas/palette.ts#layerShort": {
+    "text": "a layer's short uppercase name"
+  },
+  "apps/rama/canvas/pick.ts#pick": {
+    "text": "what lies under a click: the door, the office, a built brick or nothing"
+  },
+  "apps/rama/canvas/pick.ts#toScene": {
+    "text": "a screen click position converted to scene coordinates"
+  },
+  "apps/rama/canvas/timeline.ts#LiftEvent": {
+    "text": "the shape of one timed brick event within a lift"
+  },
+  "apps/rama/canvas/timeline.ts#Timeline": {
+    "text": "the shape of the build history: lifts and which lift laid each brick"
+  },
+  "apps/rama/canvas/timeline.ts#activeEvent": {
+    "text": "the event under way at a given point in a lift"
+  },
+  "apps/rama/canvas/timeline.ts#brickState": {
+    "text": "whether a brick is built at a given point in the replay"
+  },
+  "apps/rama/canvas/timeline.ts#clockText": {
+    "text": "a replay time shown as clock text with its UTC offset"
+  },
+  "apps/rama/canvas/timeline.ts#currentTime": {
+    "text": "the replay clock between the previous commit and this one"
+  },
+  "apps/rama/canvas/timeline.ts#localHour": {
+    "text": "the local hour of day in a commit's own time zone"
+  },
+  "apps/rama/canvas/timeline.ts#offsetMinutes": {
+    "text": "a time zone offset in minutes read from a timestamp"
+  },
+  "apps/rama/canvas/timeline.ts#timeline": {
+    "text": "the build timeline worked out from a blueprint and its scene"
+  },
+  "apps/rama/components/BuildStamp.tsx#BuildStamp": {
+    "text": "a small label showing which commit the app was built from"
+  },
+  "apps/rama/components/BuildStamp.tsx#shortSha": {
+    "text": "the first seven characters of a commit id, or nothing if invalid"
+  },
+  "apps/rama/components/inspector/Inspector.tsx#Inspector": {
+    "text": "the side panel showing the trust report, a commit, or a single file"
+  },
+  "apps/rama/components/inspector/Inspector.tsx#View": {
+    "text": "the shape of what the side panel is showing: report, commit or file"
+  },
+  "apps/rama/components/inspector/words.ts#edgePhrase": {
+    "text": "the plain-English wording for one file-to-file import, with its confirmation state"
+  },
+  "apps/rama/components/inspector/words.ts#floorName": {
+    "text": "the short lowercase name of a layer's floor"
+  },
+  "apps/rama/components/inspector/words.ts#reviewerParagraph": {
+    "text": "a plain paragraph on which files a file depends on, grouped by floor"
+  },
+  "apps/rama/components/site/SiteView.tsx#SiteView": {
+    "text": "the screen for one site and its blueprint"
+  },
+  "apps/rama/test/blueprint.ts#edge": {
+    "text": "a test helper that builds one import link between two files"
+  },
+  "apps/rama/test/blueprint.ts#fixtureBlueprint": {
+    "text": "a made-up sample blueprint for tests"
+  },
+  "apps/rama/test/blueprint.ts#node": {
+    "text": "a test helper that builds one file entry for a blueprint"
+  },
+  "packages/blueprint/package.json#default": {
+    "text": "the package settings for the blueprint tool"
+  },
+  "packages/blueprint/src/diff.ts#BlueprintDiff": {
+    "text": "the shape of a comparison between two blueprints"
+  },
+  "packages/blueprint/src/diff.ts#diffBlueprints": {
+    "text": "a comparison of two blueprints listing what was added, removed or changed"
+  },
+  "packages/blueprint/src/diff.ts#formatDiff": {
+    "text": "a readable text summary of a blueprint comparison"
+  },
+  "packages/blueprint/src/draft.ts#DRAFT_COMPONENT": {
+    "text": "the label naming the glossary drafting step, tied to the extractor version"
+  },
+  "packages/blueprint/src/draft.ts#PURPOSE_COMPONENT": {
+    "text": "the label naming the file-purpose drafting step, tied to the extractor version"
+  },
+  "packages/blueprint/src/draft.ts#draftGlossary": {
+    "text": "draft glossary phrases written by a model for entries still missing"
+  },
+  "packages/blueprint/src/draft.ts#draftPurposes": {
+    "text": "draft file purposes written by a model for files still missing one"
+  },
+  "packages/blueprint/src/draft.ts#missingPhrases": {
+    "text": "the imported names that still have no glossary phrase"
+  },
+  "packages/blueprint/src/draft.ts#missingPurposes": {
+    "text": "the files that still have no purpose statement"
+  },
+  "packages/blueprint/src/extract.ts#EXTRACTOR_VERSION": {
+    "text": "the version number of the blueprint tool"
+  },
+  "packages/blueprint/src/extract.ts#ExtractOptions": {
+    "text": "the shape of the settings for reading a repository into a blueprint"
+  },
+  "packages/blueprint/src/extract.ts#countLines": {
+    "text": "the number of lines in a piece of text"
+  },
+  "packages/blueprint/src/extract.ts#extract": {
+    "text": "a blueprint built from a repository's commit or working tree"
+  },
+  "packages/blueprint/src/extract.ts#isBinary": {
+    "text": "whether a file looks like binary data rather than text"
+  },
+  "packages/blueprint/src/files.ts#CODE_EXTENSIONS": {
+    "text": "the file endings counted as TypeScript or JavaScript code"
+  },
+  "packages/blueprint/src/files.ts#isCode": {
+    "text": "whether a file path counts as a code file"
+  },
+  "packages/blueprint/src/git.ts#TreeFile": {
+    "text": "the shape of a file's path together with its contents"
+  },
+  "packages/blueprint/src/git.ts#committerDate": {
+    "text": "the date a commit was recorded"
+  },
+  "packages/blueprint/src/git.ts#originName": {
+    "text": "the repository's origin address with login details removed, if it has one"
+  },
+  "packages/blueprint/src/git.ts#readBranches": {
+    "text": "the names of branches that contain a given commit"
+  },
+  "packages/blueprint/src/git.ts#readCommitTree": {
+    "text": "the tracked files as they were at a given commit"
+  },
+  "packages/blueprint/src/git.ts#readHistory": {
+    "text": "the list of commits leading up to a given commit, oldest first"
+  },
+  "packages/blueprint/src/git.ts#readTags": {
+    "text": "the names of tags reachable from a given commit"
+  },
+  "packages/blueprint/src/git.ts#readWorktree": {
+    "text": "the tracked files as they currently are in the working folder"
+  },
+  "packages/blueprint/src/git.ts#revParse": {
+    "text": "the commit a name points to, or nothing if it does not exist"
+  },
+  "packages/blueprint/src/git.ts#stripCredentials": {
+    "text": "a remote address without login details or the trailing git suffix"
+  },
+  "packages/blueprint/src/git.ts#topLevel": {
+    "text": "the top folder of a git repository"
+  },
+  "packages/blueprint/src/git.ts#worktreeBase": {
+    "text": "the commit that a working-folder reading is based on"
+  },
+  "packages/blueprint/src/glob.ts#matchGlob": {
+    "text": "a check of whether a file path fits a glob pattern"
+  },
+  "packages/blueprint/src/glossary.ts#Glossary": {
+    "text": "the glossary of phrases, keyed by file and symbol, with its shape"
+  },
+  "packages/blueprint/src/glossary.ts#GlossaryEntry": {
+    "text": "the shape of a glossary entry, with its text and who confirmed it when"
+  },
+  "packages/blueprint/src/glossary.ts#mergeGlossary": {
+    "text": "a way to attach glossary phrases to import edges"
+  },
+  "packages/blueprint/src/glossary.ts#phraseFor": {
+    "text": "the glossary phrase for a symbol imported from a file"
+  },
+  "packages/blueprint/src/json.ts#byString": {
+    "text": "a plain text sort order that is the same on every machine"
+  },
+  "packages/blueprint/src/json.ts#canonicalJson": {
+    "text": "JSON text with keys sorted into a stable order"
+  },
+  "packages/blueprint/src/layers.ts#DEFAULT_LAYERS": {
+    "text": "the default named floors of a project, from foundation up to shell"
+  },
+  "packages/blueprint/src/layers.ts#DEFAULT_RULES": {
+    "text": "the default rules that place files into layers"
+  },
+  "packages/blueprint/src/layers.ts#LayersOverlay": {
+    "text": "the shape of a project's custom layer settings"
+  },
+  "packages/blueprint/src/layers.ts#assignLayer": {
+    "text": "the layer a file belongs to, with the rule that chose it"
+  },
+  "packages/blueprint/src/layers.ts#planLayers": {
+    "text": "a layer plan built from a project's custom settings and the defaults"
+  },
+  "packages/blueprint/src/metrics/index.ts#BrickFigures": {
+    "text": "the shape of per-file figures: what it needs, what uses it, whether tested"
+  },
+  "packages/blueprint/src/metrics/index.ts#authors": {
+    "text": "the sorted list of distinct commit authors"
+  },
+  "packages/blueprint/src/metrics/index.ts#brickFigures": {
+    "text": "per-file counts of dependencies, users and test status"
+  },
+  "packages/blueprint/src/metrics/index.ts#commitTotals": {
+    "text": "lines added, lines deleted and tests added by one commit"
+  },
+  "packages/blueprint/src/metrics/index.ts#demolitions": {
+    "text": "commits that deleted a large number of lines from a file"
+  },
+  "packages/blueprint/src/metrics/index.ts#envVars": {
+    "text": "the sorted list of environment variables the files use"
+  },
+  "packages/blueprint/src/metrics/index.ts#heaviestCodeBrick": {
+    "text": "the code file with the most lines"
+  },
+  "packages/blueprint/src/metrics/index.ts#historySpan": {
+    "text": "minutes from the first commit to the last"
+  },
+  "packages/blueprint/src/metrics/index.ts#loadBearing": {
+    "text": "the files that the most other files import"
+  },
+  "packages/blueprint/src/metrics/index.ts#mostReworked": {
+    "text": "the files changed by the most commits"
+  },
+  "packages/blueprint/src/metrics/index.ts#summary": {
+    "text": "the headline figures of a project in one summary"
+  },
+  "packages/blueprint/src/metrics/index.ts#testCoverage": {
+    "text": "how many code files are directly tested, out of all code files"
+  },
+  "packages/blueprint/src/parse.ts#parseSource": {
+    "text": "the imports, exports and environment use read from a source file"
+  },
+  "packages/blueprint/src/register.ts#SITE_COMPONENT": {
+    "text": "the component label for the blueprint site, with extractor version"
+  },
+  "packages/blueprint/src/register.ts#registerSite": {
+    "text": "a way to register a site for the local member"
+  },
+  "packages/blueprint/src/screens.ts#findScreens": {
+    "text": "the screens found from app routes and page files"
+  },
+  "packages/blueprint/src/site.ts#Confirmation": {
+    "text": "the shape of a confirmation result: confirmed keys, missing symbols, updated blueprint"
+  },
+  "packages/blueprint/src/site.ts#GLOSSARY_FILE": {
+    "text": "the location of the glossary file in a project"
+  },
+  "packages/blueprint/src/site.ts#PURPOSES_FILE": {
+    "text": "the location of the file purposes file in a project"
+  },
+  "packages/blueprint/src/site.ts#SELF_EXTRACT": {
+    "text": "the extraction settings for House of Rama's own repository"
+  },
+  "packages/blueprint/src/site.ts#SiteError": {
+    "text": "the error raised for site problems: not found, conflict or invalid"
+  },
+  "packages/blueprint/src/site.ts#SiteLocation": {
+    "text": "the shape of a site's location: its checkout, blueprint file and options"
+  },
+  "packages/blueprint/src/site.ts#addSite": {
+    "text": "a way to add a site from a local folder or remote source"
+  },
+  "packages/blueprint/src/site.ts#checkSiteBlueprint": {
+    "text": "a check that a site's blueprint file is up to date"
+  },
+  "packages/blueprint/src/site.ts#confirmEdge": {
+    "text": "a way to record a person's confirmation of a dependency phrase"
+  },
+  "packages/blueprint/src/site.ts#confirmPurpose": {
+    "text": "a way to record a person's confirmation of a file's purpose"
+  },
+  "packages/blueprint/src/site.ts#listSites": {
+    "text": "the sorted list of known sites, leaving out the project's own"
+  },
+  "packages/blueprint/src/site.ts#locateSite": {
+    "text": "a way to find one site's location by its id"
+  },
+  "packages/blueprint/src/site.ts#readSiteBlueprint": {
+    "text": "a site's saved blueprint, if it has one"
+  },
+  "packages/blueprint/src/site.ts#readSiteOverlay": {
+    "text": "a site's glossary overlay file, or an empty one when missing"
+  },
+  "packages/blueprint/src/site.ts#siteReader": {
+    "text": "a reader for the text of files in a site's checkout"
+  },
+  "packages/blueprint/src/site.ts#writeSiteBlueprint": {
+    "text": "regenerating and saving a site's blueprint file"
+  },
+  "packages/blueprint/src/site.ts#writeSiteOverlay": {
+    "text": "saving a glossary overlay file into a site's checkout"
+  },
+  "packages/blueprint/test/fixture-repo.ts#FixtureRepo": {
+    "text": "the shape of a throwaway test repository and its helpers"
+  },
+  "packages/blueprint/test/fixture-repo.ts#fixtureRepo": {
+    "text": "a temporary git repository for tests"
+  },
+  "packages/db/package.json#default": {
+    "text": "the database package's name, version and description"
+  },
+  "packages/db/src/client.ts#Db": {
+    "text": "the shape of the database handle"
+  },
+  "packages/db/src/client.ts#createDb": {
+    "text": "opening a pool of database connections"
+  },
+  "packages/db/src/migrate.ts#MIGRATIONS_DIR": {
+    "text": "the folder holding the database migrations"
+  },
+  "packages/db/src/migrate.ts#runMigrations": {
+    "text": "applying all pending database migrations"
+  },
+  "packages/db/src/schema.ts#auditLog": {
+    "text": "the audit log table, recording actions on rows for each site"
+  },
+  "packages/db/src/schema.ts#modelCalls": {
+    "text": "the table that records each model call"
+  },
+  "packages/db/src/schema.ts#people": {
+    "text": "the table of people"
+  },
+  "packages/db/src/schema.ts#sites": {
+    "text": "the table of sites, one per target repository"
+  },
+  "packages/db/src/seed.ts#SEED_COMPONENT": {
+    "text": "the seed step's component label with its version"
+  },
+  "packages/db/src/seed.ts#SELF_SITE_ID": {
+    "text": "the id of the project's own site"
+  },
+  "packages/db/src/seed.ts#seed": {
+    "text": "the setup that creates the local member and the project's own site"
+  },
+  "packages/model/package.json#default": {
+    "text": "the model package's name, version and description"
+  },
+  "packages/model/src/adapters.ts#ADAPTERS": {
+    "text": "per-vendor model adapters with their key and model settings"
+  },
+  "packages/model/src/adapters.ts#Completion": {
+    "text": "the shape of a model reply: text, model, token counts, truncation"
+  },
+  "packages/model/src/adapters.ts#Fetch": {
+    "text": "the shape of the web request function"
+  },
+  "packages/model/src/adapters.ts#VendorHttpError": {
+    "text": "an error for failed HTTP responses from a model vendor"
+  },
+  "packages/model/src/call.ts#CallDeps": {
+    "text": "the shape of the outside services a model call needs"
+  },
+  "packages/model/src/call.ts#CallRequest": {
+    "text": "the shape of a model call request: prompt, version, input, expected output"
+  },
+  "packages/model/src/call.ts#CallResult": {
+    "text": "the shape of a model call's result: output, call id, vendor, attempts, tokens"
+  },
+  "packages/model/src/call.ts#MAX_ATTEMPTS": {
+    "text": "the limit of three attempts per model call"
+  },
+  "packages/model/src/call.ts#MODEL_COMPONENT": {
+    "text": "the model module's component label with its version"
+  },
+  "packages/model/src/call.ts#ModelCallRow": {
+    "text": "the shape of a row written to the model calls table"
+  },
+  "packages/model/src/call.ts#ModelConfigError": {
+    "text": "an error type for model configuration problems"
+  },
+  "packages/model/src/call.ts#OutputParseError": {
+    "text": "the error for model output that failed to parse"
+  },
+  "packages/model/src/call.ts#OutputTruncatedError": {
+    "text": "the error for a vendor stopping at its token limit"
+  },
+  "packages/model/src/call.ts#call": {
+    "text": "the function that makes a vendor model call from a prompt request"
+  },
+  "packages/model/src/prompts.ts#PROMPTS_DIR": {
+    "text": "the folder where the prompt files are kept"
+  },
+  "packages/model/src/prompts.ts#Prompt": {
+    "text": "the shape of a loaded prompt with its text and hash"
+  },
+  "packages/model/src/prompts.ts#loadPrompt": {
+    "text": "a loader that reads a named, versioned prompt"
+  },
+  "packages/model/src/vendors.ts#Role": {
+    "text": "the two roles a vendor can play, builder or auditor"
+  },
+  "packages/model/src/vendors.ts#VENDORS": {
+    "text": "the list of known vendors, anthropic and openai"
+  },
+  "packages/model/src/vendors.ts#Vendor": {
+    "text": "the allowed vendor names"
+  },
+  "packages/model/src/vendors.ts#VendorGuardError": {
+    "text": "the error for a missing or unknown vendor setting"
+  },
+  "packages/model/src/vendors.ts#resolveVendors": {
+    "text": "the vendor chosen for each role, refusing when builder and auditor match"
+  },
+  "packages/shared/src/audit.ts#Finding": {
+    "text": "the shape of an audit finding"
+  },
+  "packages/shared/src/blueprint.ts#Blueprint": {
+    "text": "the shape of a repository's extracted blueprint"
+  },
+  "packages/shared/src/blueprint.ts#BrickNode": {
+    "text": "the shape of one tracked file, drawn as a brick"
+  },
+  "packages/shared/src/blueprint.ts#Commit": {
+    "text": "the shape of a commit record"
+  },
+  "packages/shared/src/blueprint.ts#FigureRef": {
+    "text": "the shape of a figure's position on a screenshot"
+  },
+  "packages/shared/src/blueprint.ts#ImportEdge": {
+    "text": "the shape of one file-to-file import link"
+  },
+  "packages/shared/src/blueprint.ts#Layer": {
+    "text": "the floor names a file can sit on"
+  },
+  "packages/shared/src/blueprint.ts#Screen": {
+    "text": "the shape of a screen and its route"
+  },
+  "packages/shared/src/ceremony.ts#Decision": {
+    "text": "the shape of a confirmed decision belonging to a site"
+  },
+  "packages/shared/src/ceremony.ts#Signoff": {
+    "text": "the shape of a person's signature on a site"
+  },
+  "packages/shared/src/trail.ts#Trail": {
+    "text": "the shape of the explanation trail for a figure"
+  },
+  "scripts/gen-blueprint-doc.mjs#collectTypes": {
+    "text": "the exported types gathered from the source files"
+  },
+  "scripts/gen-blueprint-doc.mjs#render": {
+    "text": "the Blueprint schema document, written out from the collected types"
+  }
+}

@@ -6,8 +6,8 @@ Updated every stage with a "what changed" list.
 
 Built:
 
-- `apps/rama` — Next.js 16 (App Router) app. Routes `/` (product line and short SHA) and `/api/health`. Will hold Site, Showroom, Discovery, Audit, Campus.
-- `packages/blueprint` (Stage 1) — `extract(repoPath, opts) → Blueprint` from git and the file tree only; `metrics` (one function per figure); `diffBlueprints`; `draftGlossary`; the `rama` CLI (`extract`, `diff`). The only writer of `blueprint/*.json`. See its README.
+- `apps/rama` — Next.js 16 (App Router) app. The Site (Stage 2): `canvas/` renders a Blueprint as a building (pure functions: `layout`, `timeline`, `frame`, `draw`, `pick`), `components/site/SiteView` runs the replay deck and the brick finder, `components/inspector/` shows the Trust report, a Commit and a Brick in English with Confirm controls. Will hold Showroom, Discovery, Audit, Campus.
+- `packages/blueprint` (Stage 1) — `extract(repoPath, opts) → Blueprint` from git and the file tree only; `metrics` (one function per figure, browser-safe); `diffBlueprints`; `draftGlossary` and `draftPurposes`; `site` (Stage 2: sites under `work/`, confirmations into a target's `.rama/`); the `rama` CLI (`extract`, `diff`, `site add|extract|check|draft|list`). The only writer of `blueprint/*.json` and `work/*/blueprint.json`. See its README.
 - `packages/shared` — the types of MASTER-PROMPT §8 (`Blueprint`, `BrickNode`, `ImportEdge`, `Commit`, `Screen`, `FigureRef`, `Trail`, `Decision`, `Signoff`, `Finding`), one doc comment per field. `docs/BLUEPRINT.md` is generated from them.
 - `packages/db` — Drizzle schema, the single migration `0000_init`, migrator and seed.
 - `packages/model` — `call()`, the one path to a model vendor: vendor guard, versioned prompt, Anthropic and OpenAI adapters over `fetch`, retries, one `model_calls` row per call.
@@ -24,6 +24,11 @@ Planned (folders hold only a README until their stage):
 - `blueprint/self.json` (Stage 1) — this repository's Blueprint, written only by `pnpm extract:self`.
 - `packages/blueprint/bin/` (Stage 1) — the `rama` executable (registers tsx, loads `src/cli.ts`).
 - `packages/blueprint/test/` (Stage 1) — test fixtures (`fixture-repo.ts` builds throwaway git repositories with fixed dates).
+- `apps/rama/canvas/` (Stage 2, in the locked layout) — the building renderer: pure functions over a Blueprint, ported from the weekend prototype.
+- `apps/rama/components/inspector/`, `apps/rama/components/site/` (Stage 2) — the inspector views with their wording, and the site view.
+- `apps/rama/test/` (Stage 2) — test fixtures for the app (`blueprint.ts`, a small hand-built Blueprint).
+- `work/<site>/` (Stage 2, gitignored) — `repo/` (the read-only clone; only `.rama/` is ever written), `site.json`, `blueprint.json`.
+- `tests/dev-server.ts` (Stage 2) — starts the real Next dev server for an e2e test on its own port and distDir.
 
 ## Data model
 
@@ -49,18 +54,28 @@ Stage 0 and 1 (real function names):
 - Extraction: `rama extract` → `extract()` → `readCommitTree()` or `readWorktree()` + `worktreeBase()` → `parseSource()` per code file → `Resolver.resolve()` per import → `mergeGlossary()` → `readHistory()` → `assignLayer()` per brick → `findScreens()` → `canonicalJson()`. `pnpm extract:self` writes `blueprint/self.json`; `pnpm check:self` (`--check`) fails on drift.
 - Watcher: `runChecks()` → eslint, prettier, `tsc --noEmit` per package, vitest changed projects then full suite, `drizzle()` (drizzle-kit check + regenerate-into-a-copy drift probe), `gen-blueprint-doc.mjs --check`, `pnpm check:self` → `.watch/status.json`.
 
+Stage 2:
+
+- `rama site add <src>` → `addSite()` (`git clone --no-hardlinks` into `work/<id>/repo`, `site.json`) → `writeSiteBlueprint()` → `extract(repoDir, {overlay: 'worktree'})` → `work/<id>/blueprint.json`; `registerSite()` inserts the `sites` row for the local member. `rama site draft <id>` → `draftGlossary()` + `draftPurposes()` → `call()` → unconfirmed entries in `.rama/glossary.json` and `.rama/purposes.json`, saved per batch → `writeSiteBlueprint()`.
+- `/site/[siteId]` → `locateSite()` → `readSiteBlueprint()` → `<SiteView>` → each animation frame `draw(ctx, state)` → `frame(state)` → `siteModel(bp)` (`layout()` + `timeline()`, memoised per Blueprint) → paint. Click → `toScene()` → `pick()` → `<Inspector view=brick>` → `reviewerParagraph()`, `edgePhrase()`, `brickFigures()`.
+- Confirm → `POST /api/site/[siteId]/confirm` → `handleConfirm()` → person id from `people` → `confirmEdge()` / `confirmPurpose()` (overlay write, `writeSiteBlueprint()`) → `audit_log` rows → `router.refresh()` re-reads the Blueprint.
+
 Intended end to end: `rama site add <repo>` → `extract()` → `blueprint/<site>.json` → `/site/[id]` renders → `capture()` → Showroom → `trail(figureId)` → walkthrough → `signoff()` → `gate()` in the target's CI → `audit()` → report → handover.
 
 ## Routes
 
-| Route         | Renders                                                                                              | Test                                                                  |
-| ------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `/api/health` | `{ ok: true, commit }` (`"unknown"` when `GIT_SHA` is unset)                                         | `apps/rama/app/api/health/route.test.ts`, `tests/stage-0.e2e.test.ts` |
-| `/`           | "House of Rama · Built on trust" and `commit <short SHA>` ("commit unknown" when `GIT_SHA` is unset) | `apps/rama/app/page.test.tsx`, `tests/stage-0.e2e.test.ts`            |
+| Route                             | Renders                                                                                                                                                                | Test                                                                                   |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `/site/[siteId]`                  | the building of a site (Blueprint from `work/<id>/blueprint.json`, or `blueprint/self.json` for `self`), replay deck, brick finder, inspector; 404 for an unknown site | `apps/rama/app/site/[siteId]/page.test.tsx`, `tests/stage-2.e2e.test.ts`               |
+| `/site/[siteId]/showroom`         | stub: the Showroom arrives in Stage 3                                                                                                                                  | `apps/rama/app/site/[siteId]/page.test.tsx`, `tests/stage-2.e2e.test.ts`               |
+| `/site/[siteId]/discovery`        | stub: the site office arrives in Stage 4                                                                                                                               | `apps/rama/app/site/[siteId]/page.test.tsx`, `tests/stage-2.e2e.test.ts`               |
+| `POST /api/site/[siteId]/confirm` | `{kind:'edge',from,to,shown}` or `{kind:'purpose',path,shown}` → confirms as the local member; 400/404/409/503 as documented in the handler                            | `apps/rama/app/api/site/[siteId]/confirm/handler.test.ts`, `tests/stage-2.e2e.test.ts` |
+| `/api/health`                     | `{ ok: true, commit }` (`"unknown"` when `GIT_SHA` is unset)                                                                                                           | `apps/rama/app/api/health/route.test.ts`, `tests/stage-0.e2e.test.ts`                  |
+| `/`                               | "House of Rama · Built on trust", `commit <short SHA>` ("commit unknown" when `GIT_SHA` is unset), and the list of sites                                               | `apps/rama/app/page.test.tsx`, `tests/stage-0.e2e.test.ts`                             |
 
 ## Continuous testing
 
-`scripts/watch.mjs` (watch mode under `pnpm dev`; `--once` in CI) writes `.watch/status.json` and `.watch/log.txt`. CI (`.github/workflows/check.yml`) runs `watch.mjs --once` against a Postgres 16 service. Vitest projects (root `vitest.config.ts`): `@rama/shared`, `@rama/db`, `@rama/model`, `@rama/blueprint`, `@rama/app`, `e2e`. CI clones Procurement Studio at fac615d into `reference/procurementstudio` for the golden test, checks out with full history, and checks out a pull request's head commit (not the synthetic merge) so `blueprint/self.json` is checked against the history a developer has. Real-vendor tests live in `*.vendor.test.ts`, are tagged `@vendor`, and run only with `RAMA_VENDOR_TESTS=1`.
+`scripts/watch.mjs` (watch mode under `pnpm dev`; `--once` in CI) writes `.watch/status.json` and `.watch/log.txt`. CI (`.github/workflows/check.yml`) runs `watch.mjs --once` against a Postgres 16 service. Vitest projects (root `vitest.config.ts`): `@rama/shared`, `@rama/db`, `@rama/model`, `@rama/blueprint`, `@rama/app`, `e2e`. CI clones Procurement Studio at fac615d into `reference/procurementstudio` for the golden test, checks out with full history, and checks out a pull request's head commit (not the synthetic merge) so `blueprint/self.json` is checked against the history a developer has. CI installs Chromium (`playwright install --with-deps chromium`) for the browser e2e tests. Real-vendor tests live in `*.vendor.test.ts`, are tagged `@vendor`, and run only with `RAMA_VENDOR_TESTS=1`.
 
 ## Deployment
 
@@ -71,3 +86,4 @@ One box. `docker-compose.yml`: `db` (Postgres 16) always; `app` and `watcher` un
 - 2026-10-19: document created before Stage 0.
 - 2026-10-20, Stage 0: monorepo wired (pnpm workspaces, Node 22, TypeScript 6.0.3); `apps/rama` with `/`; `packages/shared` types and generated `docs/BLUEPRINT.md`; `packages/db` with `sites`, `people`, `model_calls`, `audit_log`, one migration, append-only triggers, seed; `packages/model` `call()` with the vendor guard; watcher, `pnpm dev`, CI workflow; compose gains `app` and `watcher` under the `stack` profile.
 - 2026-10-20, Stage 1: `packages/blueprint` (extractor, metrics, diff, glossary drafting, `rama` CLI); Blueprint schema extended (`BrickNode.envDynamic`, `ImportEdge.typeOnly`, `Commit.changes[].from`, `Blueprint.worktree`, `Blueprint.unresolved`, `external[].dev` and `.manifest`); prompt `glossary.v1`; `.rama/layers.json` for this repository; `blueprint/self.json` checked in with a watcher and CI drift check; `/api/health`; CI clones the golden target.
+- 2026-10-20, Stage 2: the Site. `apps/rama/canvas` (layout, timeline, frame, draw, pick), the site view with replay, links, zoom and brick finder, the inspector (Trust report, Commit, Brick with English edges and Confirm), `/site/[siteId]` with Showroom and site-office stubs, `POST /api/site/[siteId]/confirm` (overlay write + `audit_log`); `packages/blueprint` gains `site` (`rama site add|extract|check|draft|list`), `register`, the purposes overlay and `overlay: 'worktree'`, `draftPurposes` (prompt `purpose.v1`), browser-safe metrics with `brickFigures`, `testCoverage`, `historySpan`, `commitTotals`; this repository's `.rama/glossary.json` and `.rama/purposes.json` (drafts); Playwright in CI.

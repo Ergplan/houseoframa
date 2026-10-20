@@ -16,6 +16,12 @@ describe('route /', () => {
     expect(html).toContain('commit 73a3e6b');
   });
 
+  it('lists the sites, this repository first', () => {
+    const html = renderToStaticMarkup(<Home />);
+    expect(html).toContain('href="/site/self"');
+    expect(html).toContain('House of Rama</a>');
+  });
+
   it('says the commit is unknown when GIT_SHA is missing', () => {
     delete process.env.GIT_SHA;
     expect(renderToStaticMarkup(<Home />)).toContain('commit unknown');

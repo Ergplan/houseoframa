@@ -1,0 +1,455 @@
+{
+  ".env.example": {
+    "text": "Template of the environment variables: database address, builder and auditor vendors (which must differ), API keys, model choices, local member name and commit label."
+  },
+  ".github/workflows/check.yml": {
+    "text": "Automated check that runs on every push and pull request: sets up a fresh database, migrates and seeds it, then runs the same checks as the local watcher."
+  },
+  ".gitignore": {
+    "text": "List of files git should not track: installed packages, build output, secret environment files, working folders, logs and the read-only reference copies."
+  },
+  ".nvmrc": {
+    "text": "Pins the Node.js version (22) the project is developed and checked with."
+  },
+  ".prettierignore": {
+    "text": "List of files the code formatter must leave alone: read-only references, generated files, copied documents and build output."
+  },
+  ".prettierrc.json": {
+    "text": "Code formatting style: single quotes, lines up to 100 characters, trailing commas everywhere."
+  },
+  ".rama/layers.json": {
+    "text": "Defines the seven floors of the building and the file-path rules that decide which floor each file belongs to."
+  },
+  "CLAUDE.md": {
+    "text": "Standing rules read at the start of every build session: what the product is, how work proceeds stage by stage, and the testing and safety rules."
+  },
+  "README.md": {
+    "text": "Front page of the project: what House of Rama is, how it is built stage by stage, and the setup steps before the first stage."
+  },
+  "apps/rama/README.md": {
+    "text": "Describes the main web app and its current state: one home page showing the product line and short version label, started with the root dev command."
+  },
+  "apps/rama/app/api/health/route.test.ts": {
+    "text": "Tests that the health check answers with success and the short commit, and says the commit is unknown when none is set."
+  },
+  "apps/rama/app/api/health/route.ts": {
+    "text": "The health check: reports that the app is running and which commit it is built from, or \"unknown\" when none is set."
+  },
+  "apps/rama/app/api/site/[siteId]/confirm/handler.ts": {
+    "text": "The logic for a member confirming a drafted dependency phrase or a brick's purpose: it checks the request, saves the confirmation to the site, and records who did it."
+  },
+  "apps/rama/app/api/site/[siteId]/confirm/route.ts": {
+    "text": "The web entry point for confirmations: connects the confirm logic to the database, the member's name and the site files, and writes each confirmation to the audit log."
+  },
+  "apps/rama/app/globals.css": {
+    "text": "The site-wide look: a dark product style with retro pixel lettering, colours, fonts and the layout of the construction-site screen and side panel."
+  },
+  "apps/rama/app/layout.tsx": {
+    "text": "Root HTML layout and metadata: the page title, the tagline, and the web fonts that fall back to system fonts when offline."
+  },
+  "apps/rama/app/page.test.tsx": {
+    "text": "Tests that the home page shows the name and short commit, says \"unknown\" when no commit is set, and that commit codes are cleaned up correctly."
+  },
+  "apps/rama/app/page.tsx": {
+    "text": "The home page: shows the House of Rama name, the build commit, a list of added sites with links, and a note on how to add one."
+  },
+  "apps/rama/app/site/[siteId]/discovery/page.tsx": {
+    "text": "The site office page for a site, explaining that discovery decisions will be recorded later and currently shows none, with a link back to the site."
+  },
+  "apps/rama/app/site/[siteId]/page.tsx": {
+    "text": "The page for a single site: shows its construction view, or tells the reader to extract the Blueprint first if none exists yet."
+  },
+  "apps/rama/app/site/[siteId]/showroom/page.tsx": {
+    "text": "Placeholder Showroom page for a site: says real screens will appear once captured from the running app, with a link back to the site."
+  },
+  "apps/rama/canvas/draw.test.ts": {
+    "text": "Tests that the building painter draws the right things at each point of the replay, such as the cleared site, built bricks, the door and the banner."
+  },
+  "apps/rama/canvas/draw.ts": {
+    "text": "Paints one picture of the building on a canvas: bricks, floors, sign, site office, scaffolds, cranes and digger, keeping no state of its own."
+  },
+  "apps/rama/canvas/frame.test.ts": {
+    "text": "Tests what is visible at each moment of the replay: the cleared site, the brick being lifted, the digger, and the finished building."
+  },
+  "apps/rama/canvas/frame.ts": {
+    "text": "Works out everything visible at one instant of the replay as plain data, including the sky, so the painter only has to draw it."
+  },
+  "apps/rama/canvas/layout.test.ts": {
+    "text": "Tests that the building layout is repeatable, stacks floors in order, keeps bricks inside their floors and never overlaps two bricks."
+  },
+  "apps/rama/canvas/layout.ts": {
+    "text": "Decides where everything stands in the picture: floors, bricks sized by file length, scaffolds, cranes, the Showroom door and the site office."
+  },
+  "apps/rama/canvas/palette.ts": {
+    "text": "The colours of the building: one per floor, one per crane, plus the markers for untested code and file connections."
+  },
+  "apps/rama/canvas/pick.test.ts": {
+    "text": "Tests that clicking the building finds the right brick, door or site office, and that pointer positions map correctly onto the scaled canvas."
+  },
+  "apps/rama/canvas/pick.ts": {
+    "text": "Finds which brick, door or site office lies under a clicked point on the building, counting only bricks already built at that moment."
+  },
+  "apps/rama/canvas/timeline.test.ts": {
+    "text": "Tests of the replay timeline: one lift per commit, how changes are labelled, how a brick moves from none to built, and the clock."
+  },
+  "apps/rama/canvas/timeline.ts": {
+    "text": "The replay model: each commit becomes a lift where changed bricks get equal slots, lower floors first, with time of day taken from commit timestamps."
+  },
+  "apps/rama/components/BuildStamp.tsx": {
+    "text": "Small label showing the short code of the commit the running app was built from, or \"unknown\" when it is missing."
+  },
+  "apps/rama/components/inspector/Inspector.tsx": {
+    "text": "The panel beside the building: the trust report, one commit, or one brick in plain English, with a Confirm control on unconfirmed drafted texts."
+  },
+  "apps/rama/components/inspector/words.test.ts": {
+    "text": "Tests of the reviewer paragraph wording: what a brick needs, how many rely on it, and when the untested-risk warning appears."
+  },
+  "apps/rama/components/inspector/words.ts": {
+    "text": "The inspector's sentences, including the reviewer paragraph on what a brick needs, who relies on it and the risk, using figures from the metrics."
+  },
+  "apps/rama/components/site/SiteView.tsx": {
+    "text": "The site screen: the building drawn on a canvas, replay controls beneath it, and the inspector beside it, opening on the finished building."
+  },
+  "apps/rama/next.config.ts": {
+    "text": "Web app build settings: separate output folder for tests, no auto-written agent rule files, and which workspace packages are compiled or kept server-only."
+  },
+  "apps/rama/package.json": {
+    "text": "The web app's package manifest: its name, run and build commands, and the libraries it depends on."
+  },
+  "apps/rama/test/blueprint.ts": {
+    "text": "A small sample building used by the app's tests: three floors, two builders, one demolition and one test."
+  },
+  "apps/rama/tsconfig.json": {
+    "text": "TypeScript settings for the main web app, building on the shared base settings and adding browser and React support."
+  },
+  "blueprint/README.md": {
+    "text": "Note that this folder is produced automatically by the extraction tool, is never edited by hand, and that the build fails if it drifts."
+  },
+  "docker-compose.yml": {
+    "text": "Defines the local setup: a Postgres database, plus optional app and watcher containers that run the whole stack in one go."
+  },
+  "docs/ARCHITECTURE.md": {
+    "text": "Describes the system's components, planned parts, added folders and data model, updated at every stage with a list of what changed."
+  },
+  "docs/BLUEPRINT.md": {
+    "text": "Generated reference of the shared data types that describe a repository, such as bricks and layers; never edited by hand."
+  },
+  "docs/DECISIONS.md": {
+    "text": "Dated log of decisions, newest first, including the answers the member gave to open questions at each stage."
+  },
+  "docs/KNOWN-GAPS.md": {
+    "text": "List of known shortcomings and missing pieces, updated in the same change that opens or closes each one."
+  },
+  "docs/MASTER-PROMPT.md": {
+    "text": "The master brief that drives the build stage by stage, setting out the rules, plan, reference inputs and what each stage must deliver."
+  },
+  "docs/reports/README.md": {
+    "text": "Explains that each stage ends with a written report and lists what every report must contain."
+  },
+  "docs/reports/stage-0.md": {
+    "text": "Report on Stage 0, the foundation: what was built, with the workspace, web app, shared types, database and model-call pieces."
+  },
+  "docs/reports/stage-1.md": {
+    "text": "Report on the first stage: what the blueprint tool reads from the code history and how it was built, and who reviewed it."
+  },
+  "docs/reports/stage-1.review.md": {
+    "text": "Log of the independent model review runs for the first stage, with the verdict on each item checked."
+  },
+  "eslint.config.mjs": {
+    "text": "Settings for the code-style checker: which folders it skips and the rules applied to the main app."
+  },
+  "package.json": {
+    "text": "The project's identity and shortcut commands for running, checking, testing and database work, plus the tools the whole project depends on."
+  },
+  "packages/audit/README.md": {
+    "text": "Placeholder note for the audit package, which is empty so far and points to other documents for its role."
+  },
+  "packages/blueprint/README.md": {
+    "text": "Explains the blueprint package: how it reads a repository into a structured map, its command-line options, optional overlays and the figures it computes."
+  },
+  "packages/blueprint/bin/rama.mjs": {
+    "text": "Launcher for the command-line tool, which prepares the TypeScript loader and then starts the real program."
+  },
+  "packages/blueprint/package.json": {
+    "text": "Package description for the blueprint tool: what it offers to other packages, its command-line entry point and its dependencies."
+  },
+  "packages/blueprint/src/cli.ts": {
+    "text": "The command-line program itself: reads the user's commands to extract, check, compare and draft descriptions for repositories, and manages tracked sites."
+  },
+  "packages/blueprint/src/diff.test.ts": {
+    "text": "Tests for comparing two blueprints: identical ones are reported as such, and added, changed and moved items are named."
+  },
+  "packages/blueprint/src/diff.ts": {
+    "text": "Compares two Blueprints and reports what changed: header details, files, connections, commits, screens and metrics, for the diff command and drift failures."
+  },
+  "packages/blueprint/src/draft.test.ts": {
+    "text": "Tests that drafting plain-English phrases only asks for symbols with no phrase, calls the model once with the right prompt, and keeps only unconfirmed drafts for requested items."
+  },
+  "packages/blueprint/src/draft.ts": {
+    "text": "Asks the model for draft English phrases for imported symbols and one-sentence purposes for files lacking them, only on request, always left unconfirmed until a person confirms."
+  },
+  "packages/blueprint/src/draft.vendor.test.ts": {
+    "text": "Live test that drafts real glossary phrases through the actual model vendor; excluded from automatic runs and checks the drafts stay unconfirmed."
+  },
+  "packages/blueprint/src/extract.test.ts": {
+    "text": "Tests extraction against a small fixture repository built with several commits, covering files, imports, screens, renames, binaries and glossary handling."
+  },
+  "packages/blueprint/src/extract.ts": {
+    "text": "Builds a Blueprint from a repository's git history and files, with no model, clock or network, so the same commit always gives identical output."
+  },
+  "packages/blueprint/src/files.ts": {
+    "text": "Defines which file types count as code, kept separate so the browser app avoids loading the TypeScript compiler."
+  },
+  "packages/blueprint/src/git.ts": {
+    "text": "Wraps all git access for the extractor, fixing output formats and settings so the same repository gives identical results on any machine."
+  },
+  "packages/blueprint/src/glob.test.ts": {
+    "text": "Tests the path-pattern matcher: wildcards across folders, wildcards within one folder, alternatives in braces, and escaped dots."
+  },
+  "packages/blueprint/src/glob.ts": {
+    "text": "Matches file paths against patterns with wildcards and alternatives, used by the layer rules, with compiled patterns cached for reuse."
+  },
+  "packages/blueprint/src/glossary.ts": {
+    "text": "Reads the reviewed English phrases for imported names and attaches them to dependencies, marking a phrase confirmed only when every name has a confirmed phrase."
+  },
+  "packages/blueprint/src/golden.test.ts": {
+    "text": "Checks the extractor against the known reference project, confirming it counts files, lines, commits, authors, dependencies and environment variables exactly as expected."
+  },
+  "packages/blueprint/src/index.ts": {
+    "text": "The package's front door: lists everything the blueprint package offers to the rest of the project."
+  },
+  "packages/blueprint/src/json.ts": {
+    "text": "Writes data as consistent JSON with sorted keys, and supplies a text-sorting rule that gives the same order on every machine."
+  },
+  "packages/blueprint/src/layers.test.ts": {
+    "text": "Tests that each default rule places the right kind of file on the right floor, both at the project root and inside a nested app."
+  },
+  "packages/blueprint/src/layers.ts": {
+    "text": "Defines the floors and the rules that place each file on one, with defaults that a project's own settings can override."
+  },
+  "packages/blueprint/src/metrics/index.ts": {
+    "text": "The numbers: one calculation for each figure, such as files, lines, commits, authors, dependencies and environment variables, so that other screens display them and never recount."
+  },
+  "packages/blueprint/src/metrics/metrics.test.ts": {
+    "text": "Tests the figure calculations against a small made-up project with known files, dependencies, commits and authors."
+  },
+  "packages/blueprint/src/parse.test.ts": {
+    "text": "Tests that the source reader finds imports correctly, including renamed, default, side-effect, type-only, re-exported and dynamic imports, and ignores import-like text in comments."
+  },
+  "packages/blueprint/src/parse.ts": {
+    "text": "Reads one JavaScript or TypeScript file and reports what it imports, what it exports and which environment variables it reads."
+  },
+  "packages/blueprint/src/register.test.ts": {
+    "text": "Test that registering a site in a throwaway database adds it once for the local member, and refuses when the member name is missing or unknown."
+  },
+  "packages/blueprint/src/register.ts": {
+    "text": "Records a cloned site in the database under the local member, leaving an existing record alone and refusing if that member does not exist."
+  },
+  "packages/blueprint/src/resolve.test.ts": {
+    "text": "Tests that import paths are matched to the right project file, or marked as outside packages or unresolved, and never reach outside the repository."
+  },
+  "packages/blueprint/src/resolve.ts": {
+    "text": "Works out which project file an import points to, or whether it is an outside package or cannot be found."
+  },
+  "packages/blueprint/src/screens.ts": {
+    "text": "Finds the pages of each Next.js app in a repository and the web address each page is served at."
+  },
+  "packages/blueprint/src/site.test.ts": {
+    "text": "Tests for sites: locating them, adding them from a repository, reading their blueprint, and saving confirmed phrases and purposes."
+  },
+  "packages/blueprint/src/site.ts": {
+    "text": "Manages sites: cloning a target repository read-only, keeping its blueprint, and saving a named person's confirmed purposes and phrases in its overlay folder."
+  },
+  "packages/blueprint/test/fixture-repo.ts": {
+    "text": "Test helper that builds throwaway git repositories with fixed authors and dates so test histories are reproducible."
+  },
+  "packages/blueprint/tsconfig.json": {
+    "text": "TypeScript settings for the blueprint package, building on the shared base settings and covering its source folder."
+  },
+  "packages/ceremony/README.md": {
+    "text": "Placeholder note for the ceremony package, pointing to the project documents and saying it is empty for now."
+  },
+  "packages/db/README.md": {
+    "text": "Guide to the database package: where the schema and migrations live, the migrate and seed commands, and the rule that two tables are append-only."
+  },
+  "packages/db/drizzle.config.ts": {
+    "text": "Settings for the database migration tool: Postgres, where the schema lives, where migrations go, and a local fallback database address."
+  },
+  "packages/db/migrations/0000_init.sql": {
+    "text": "The first migration: creates the audit log, model calls, people and sites tables, with the links between them."
+  },
+  "packages/db/migrations/meta/0000_snapshot.json": {
+    "text": "Generated record of the database structure after the first migration, used by the migration tool to detect later changes."
+  },
+  "packages/db/migrations/meta/_journal.json": {
+    "text": "Generated list of the migrations applied so far; it currently holds only the first one."
+  },
+  "packages/db/package.json": {
+    "text": "Package manifest for the database package: its name, the commands to generate, migrate and seed, and its two libraries."
+  },
+  "packages/db/src/cli.ts": {
+    "text": "Command-line entry point that runs the database migrations or the seed, reading settings from the environment and the root settings file."
+  },
+  "packages/db/src/client.ts": {
+    "text": "Opens the connection to the Postgres database and hands back a handle plus a way to close it."
+  },
+  "packages/db/src/db.test.ts": {
+    "text": "Tests that build a throwaway database, apply the migration and seed, and check the standard columns and the append-only tables."
+  },
+  "packages/db/src/index.ts": {
+    "text": "Front door of the database package: re-exports the schema, connection, migration and seed pieces for other packages to use."
+  },
+  "packages/db/src/migrate.ts": {
+    "text": "Applies any database changes that have not yet been run, using the migration files stored in the database package."
+  },
+  "packages/db/src/schema.ts": {
+    "text": "The data model: tables for people, sites and every outside model call, each recording when and by whom a row was created."
+  },
+  "packages/db/src/seed.ts": {
+    "text": "Sets up the starting data: the one local member and the \"self\" site for this repository, safe to run repeatedly, and refusing without a member name."
+  },
+  "packages/db/tsconfig.json": {
+    "text": "TypeScript settings for the database package, building on the shared project settings."
+  },
+  "packages/model/README.md": {
+    "text": "Explains the model-calling module: vendor checks, prompt loading, retries, one logged record per call, and validated output."
+  },
+  "packages/model/package.json": {
+    "text": "Package manifest for the model module, which handles outside model calls with versioned prompts, vendor routing, retries and call records."
+  },
+  "packages/model/src/adapters.ts": {
+    "text": "Connects to each model vendor over plain web requests, returning the reply text and token counts, and flagging errors worth retrying."
+  },
+  "packages/model/src/call.test.ts": {
+    "text": "Automated tests of the model-calling function using faked vendor replies and a stand-in for saving call records."
+  },
+  "packages/model/src/call.ts": {
+    "text": "The single entry point for talking to a model vendor: checks vendors, loads the prompt, retries up to three times, records the call, returns checked output."
+  },
+  "packages/model/src/call.vendor.test.ts": {
+    "text": "Optional tests that call the real builder and auditor vendors and save real call records; excluded from the watcher and CI."
+  },
+  "packages/model/src/index.ts": {
+    "text": "Entry point of the model package: gathers the model-calling, vendor-choice and prompt-loading pieces so other packages import them from one place."
+  },
+  "packages/model/src/prompts.ts": {
+    "text": "Loads a versioned prompt file by name and version, and records a fingerprint of its text so every call can name the exact prompt used."
+  },
+  "packages/model/src/vendors.ts": {
+    "text": "Chooses the AI vendor for the builder and the auditor from settings, and refuses to run if they are missing, unknown or the same vendor."
+  },
+  "packages/model/test/fixtures/prompts/echo.v1.md": {
+    "text": "A sample prompt used only by tests of the model package, asking the model to reply with a given word."
+  },
+  "packages/model/tsconfig.json": {
+    "text": "TypeScript settings for the model package, building on the shared base settings and covering its source and test folders."
+  },
+  "packages/shared/README.md": {
+    "text": "Explains that this package holds the data types shared across packages, and that the blueprint document is generated from their comments and checked for drift."
+  },
+  "packages/shared/package.json": {
+    "text": "Package manifest naming the shared-types package as private and pointing to its source entry file."
+  },
+  "packages/shared/src/audit.ts": {
+    "text": "Defines the shape of a finding: one verdict from an audit on one file, with the check, the explanation and where it points."
+  },
+  "packages/shared/src/blueprint.ts": {
+    "text": "Defines the shapes that describe the mapped repository: the floors, each file as a brick with its facts, and the imports linking bricks."
+  },
+  "packages/shared/src/ceremony.ts": {
+    "text": "Defines the shapes of a recorded decision from a discovery session and a named sign-off on a screen or brick."
+  },
+  "packages/shared/src/doc.test.ts": {
+    "text": "Tests that the generated documentation covers every shared type and field, rejects fields without a description, and escapes the pipe characters in table cells."
+  },
+  "packages/shared/src/index.ts": {
+    "text": "The front door of the shared package: it re-exports the shared record shapes for blueprints, trails, sign-offs and audit findings."
+  },
+  "packages/shared/src/trail.ts": {
+    "text": "The shape of a trail, which traces a figure on a screen back to its formula, inputs, data, build history and signature."
+  },
+  "packages/shared/tsconfig.json": {
+    "text": "TypeScript settings for the shared package, inheriting the project-wide base settings and covering its source folder."
+  },
+  "packages/trace/README.md": {
+    "text": "Short note pointing to the project documents that define this package's role; the package is empty until it is built."
+  },
+  "pnpm-lock.yaml": {
+    "text": "Lockfile that pins the exact versions of every outside package the project and its workspace parts depend on."
+  },
+  "pnpm-workspace.yaml": {
+    "text": "Declares that the apps and packages folders together form one multi-part workspace."
+  },
+  "prompts/README.md": {
+    "text": "Explains that prompts are stored as versioned files, never edited in place, and lists the prompts planned."
+  },
+  "prompts/glossary.v1.md": {
+    "text": "Instructions for the AI to write short plain-English phrases describing what one file gets when it imports a symbol from another."
+  },
+  "prompts/purpose.v1.md": {
+    "text": "Instructions for the AI to write a one-sentence plain-English purpose for each file, shown at the top of its inspector."
+  },
+  "prompts/reviewer.v1.md": {
+    "text": "Instructions for the independent reviewer, who checks each build stage against a fixed checklist and answers with findings in a set format."
+  },
+  "reference/README.md": {
+    "text": "Explains the read-only reference folder: the weekend prototype, the EkBill walkthrough and the two repositories to clone here."
+  },
+  "reference/ekbill-ease-of-use-2026-10-18.html": {
+    "text": "Saved web page of the EkBill ease-of-use walkthrough, kept as a read-only reference."
+  },
+  "reference/weekend-prototype/audit.js": {
+    "text": "The scripted audit of the prototype: a pass, warning or fail verdict with a one-line finding for each file."
+  },
+  "reference/weekend-prototype/discovery.js": {
+    "text": "The reconstructed discovery conversation between the client's people, the advisor and Rama, with the decisions it produced."
+  },
+  "reference/weekend-prototype/english.js": {
+    "text": "The plain-English wording for each exported name in the repository, used to describe the links between files."
+  },
+  "reference/weekend-prototype/extract.py": {
+    "text": "The script that reads a git repository and builds the project graph, sorting each file into a layer."
+  },
+  "reference/weekend-prototype/graph.json": {
+    "text": "The extracted graph of the Procurement Studio project: its layers and, for each file, its layer, line count and purpose."
+  },
+  "reference/weekend-prototype/house-of-rama.html": {
+    "text": "The working single-page House of Rama prototype, with its dark-themed layout and styling."
+  },
+  "reference/weekend-prototype/trace.json": {
+    "text": "Worked figures for each vendor's quote: quoted price, tax, scope-gap fill and normalised total, plus the vendor rankings."
+  },
+  "reference/weekend-prototype/traces.js": {
+    "text": "Prototype data that links figures on captured screens to their explanation: the formula, the inputs and where the sample data lives."
+  },
+  "scripts/dev.mjs": {
+    "text": "The command that starts the local development setup: it brings up the database, prepares it, then runs the app and the watcher together."
+  },
+  "scripts/gen-blueprint-doc.mjs": {
+    "text": "Generates the Blueprint document from the shared type definitions, refusing to run if any type or field lacks a description, and can check the document is current."
+  },
+  "scripts/review.ts": {
+    "text": "Runs the independent stage review: sends the stage's changes to a different vendor's model acting as auditor and appends its verdict to a report."
+  },
+  "scripts/tsconfig.json": {
+    "text": "Type-checking settings for the scripts folder, built on the shared base settings."
+  },
+  "scripts/watch.mjs": {
+    "text": "The continuous checker: on every save it runs linting, formatting, type checks, tests and drift checks, and records the results in a status file."
+  },
+  "tests/README.md": {
+    "text": "Explains how the end-to-end tests are organised, and that tests calling a real model vendor run only when deliberately switched on."
+  },
+  "tests/stage-0.e2e.test.ts": {
+    "text": "End-to-end test that starts the real web app and checks the home page shows the product line and the short commit code."
+  },
+  "tests/stage-1.e2e.test.ts": {
+    "text": "End-to-end test that runs the command-line tool on a real sample project, checking extraction, identical repeat runs, and that differences between versions are detected."
+  },
+  "tsconfig.base.json": {
+    "text": "The shared TypeScript settings that every package in the project builds on, set to strict checking."
+  },
+  "vitest.config.ts": {
+    "text": "Test runner setup: groups the tests of each package, the app and end-to-end checks, with time limits, and skips tests that call real model vendors unless requested."
+  }
+}
