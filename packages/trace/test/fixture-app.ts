@@ -34,6 +34,11 @@ const routes = {
       orderTotal(OTHER) + '">' + rupees(orderTotal(OTHER)) + '</b></p>' +
       '<img alt="Sales chart" width="200" height="100" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect width="200" height="100" fill="#ddd"/></svg>') + '">' +
       '<img alt="" width="16" height="16" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"/>') + '">'),
+  // Taller than a screenshot may be: a video, a background image, an amount on top and one below the crop.
+  '/long': () =>
+    page('<video width="200" height="100"></video>' +
+      '<div style="width:200px;height:100px;background-image:url(data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg"/>') + ')"></div>' +
+      '<div style="height:13000px">Top ₹1</div><p>Bottom ₹2</p>'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
       '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +
@@ -95,6 +100,7 @@ export const figures = {
         { name: 'home', title: 'Shop', route: '/' },
         { name: 'order', route: '/orders/7', role: 'staff', steps: [{ waitFor: 'h1' }] },
         { name: 'moved', route: '/old-home' },
+        { name: 'long', route: '/long' },
       ],
     }),
     '.rama/figures.json': JSON.stringify({

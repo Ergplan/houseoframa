@@ -70,6 +70,11 @@ export function ShowroomView({
               {screen.landed ? (
                 <span className="real bad">redirected to {screen.landed}</span>
               ) : null}
+              {screen.croppedFrom ? (
+                <span className="real bad">
+                  cropped at {screen.height} of {screen.croppedFrom} px: figures below are not shown
+                </span>
+              ) : null}
               <span className="hint">{screen.bricks.length} bricks behind it</span>
             </div>
             <div className="shotview">

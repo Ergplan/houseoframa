@@ -128,23 +128,30 @@ function collectFigures(arg) {
   pass((t) => numberInWords(t));
   // Texts are read once everything is marked: each figure's own text, without the figures inside it.
   const texts = new Map(marked.map((el) => [el, residual(el)]));
-  // Figures drawn as pixels cannot be read, so every canvas, and every image large enough to hold a figure
-  // a person reads (48 × 32 px or more; icons are smaller), is marked untraced as a whole.
+  // Figures drawn as pixels cannot be read, so every canvas and video, and every image or CSS background
+  // image large enough to hold a figure a person reads (48 × 32 px or more), is marked untraced as a whole.
+  // Smaller images are icons: they cannot hold a legible figure, and marking them would make the honest
+  // rate untrue.
+  const LEGIBLE = (r) => r.width >= 48 && r.height >= 32;
   for (const el of candidates) {
     if (texts.has(el)) continue;
     const r = el.getBoundingClientRect();
     if (el.tagName === 'CANVAS') texts.set(el, 'canvas');
-    else if (el.tagName === 'IMG' && r.width >= 48 && r.height >= 32) {
+    else if (el.tagName === 'VIDEO') texts.set(el, 'video');
+    else if (el.tagName === 'IMG' && LEGIBLE(r)) {
       const name =
         el.getAttribute('alt') ||
         (el.getAttribute('src') ?? '').split('/').pop()?.split('?')[0] ||
         'unnamed';
       texts.set(el, `image: ${name.slice(0, 60)}`);
+    } else if (LEGIBLE(r) && /url\(/.test(window.getComputedStyle(el).backgroundImage)) {
+      texts.set(el, 'background image');
     }
   }
   for (const el of candidates) {
     if (!texts.has(el)) continue;
-    const pixels = el.tagName === 'CANVAS' || el.tagName === 'IMG';
+    const pixels =
+      ['CANVAS', 'VIDEO', 'IMG'].includes(el.tagName) || texts.get(el) === 'background image';
     out.push({
       id: null,
       origin: 'detected',

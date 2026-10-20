@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { extract } from '@rama/blueprint';
 import type { Blueprint } from '@rama/shared';
-import { capture, type Capture } from '../src/capture.ts';
+import { capture, MAX_SHOT_HEIGHT, type Capture } from '../src/capture.ts';
 import { showroomOf } from '../src/showroom.ts';
 import { fixtureApp } from './fixture-app.ts';
 import type { FixtureRepo } from '../../blueprint/test/fixture-repo.ts';
@@ -34,7 +34,8 @@ describe('capture', () => {
     expect(cap.screens.map((s) => [s.name, s.route, s.title])).toEqual([
       ['home', '/', 'Shop'],
       ['order', '/orders/7?as=staff', bp.screens.find((x) => x.route === '/orders/[id]')!.name],
-      ['moved', '/old-home', 'moved'], // no route of its own in the Blueprint: it redirects to / (see "redirects")
+      ['moved', '/old-home', 'moved'],
+      ['long', '/long', 'long'], // no route of its own in the Blueprint: it redirects to / (see "redirects")
     ]);
     for (const s of cap.screens) {
       const png = readFileSync(path.join(out, 'shots', s.shot));
@@ -134,6 +135,18 @@ describe('capture', () => {
   });
 });
 
+describe('pixels and long pages', () => {
+  it('marks a video and a CSS background image untraced, and crops a page taller than a shot, saying so', () => {
+    const long = cap.screens.find((x) => x.name === 'long')!;
+    expect(long.figures.map((f) => f.text)).toEqual(['video', 'background image', 'Top ₹1']);
+    expect(long.height).toBe(MAX_SHOT_HEIGHT);
+    expect(long.croppedFrom).toBeGreaterThan(MAX_SHOT_HEIGHT);
+    // The amount below the crop is not on the screenshot: it is neither shown nor counted.
+    expect(long.figures.some((f) => f.text.includes('₹2'))).toBe(false);
+    expect(cap.screens.find((x) => x.name === 'home')!.croppedFrom).toBeUndefined();
+  });
+});
+
 describe('redirects', () => {
   it('records where a screen landed when its route redirected, and nothing when it did not', () => {
     const moved = cap.screens.find((x) => x.name === 'moved')!;
@@ -174,8 +187,11 @@ describe('showroom', () => {
       'moved/untraced:moved:1',
       'moved/untraced:moved:2',
       'moved/untraced:moved:3',
+      'long/untraced:long:1',
+      'long/untraced:long:2',
+      'long/untraced:long:3',
     ]);
-    expect(s.counts).toEqual({ shown: 21, traced: 6 });
+    expect(s.counts).toEqual({ shown: 24, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

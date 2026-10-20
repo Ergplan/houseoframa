@@ -15,6 +15,8 @@ export interface ShowroomScreen {
   route: string;
   /** Set when the screen redirected: where it actually landed. */
   landed?: string;
+  /** Set when the page was taller than the shot: its full height. */
+  croppedFrom?: number;
   role: string | null;
   shot: string;
   width: number;
@@ -50,6 +52,7 @@ export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
     title: s.title,
     route: s.route,
     ...(s.landed ? { landed: s.landed } : {}),
+    ...(s.croppedFrom ? { croppedFrom: s.croppedFrom } : {}),
     role: s.role,
     shot: s.shot,
     width: s.width,

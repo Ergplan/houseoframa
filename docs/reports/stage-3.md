@@ -30,7 +30,7 @@ All five figures re-execute and match at 4f28628.
   - **`capture(site, blueprint, {outDir})`** (`rama-trace capture <site>`).
     - It builds the target's app in its checkout (`npm run build`) and starts it with no secrets: PATH, HOME and NODE_ENV only, so no database URL and no vendor keys.
     - Playwright drives it through `.rama/screens.json`: route, role, steps and name.
-    - Each screen is photographed full-page into `work/<site>/shots/<name>.png`, with the viewport grown to the page so fixed bars sit where the user sees them.
+    - Each screen is photographed full-page up to 12,000 px (`MAX_SHOT_HEIGHT`); a taller page is cropped, the Showroom says so, and figures below the crop are left out, into `work/<site>/shots/<name>.png`. The viewport is grown to the page so fixed bars sit where the user sees them.
     - Each screen records the bricks that render it, taken from the route's import closure in the Blueprint.
     - Figures are found: traced ones by `data-rama-figure` (the convention) or the overlay's selector. Untraced ones are amounts and percentages, at the smallest element that holds one (even split across elements), elements whose whole text is a number, and (conservatively) numbers inside words, wherever no traced figure covers them. Identifiers, dates, years and times are left alone. What this misses or over-marks is in KNOWN-GAPS.
     - Every traced figure is re-executed with the target's own function.
@@ -180,7 +180,13 @@ Rather than patch case by case, detection now works on **residual text**. Each e
 2. **Invariant 2 (code): the same figure twice on one screen** with different arguments shared one run and trail. Appearance keys now carry the occurrence (`home/order-total`, `home/order-total~2`). Capture and the Showroom both use `appearanceKeys()`, and each hotspot opens its own trail. The fixture's home shows `order-total` twice (₹28.00 and ₹15.00), each matching its own screen.
 3. **Report claim: "one trail per appearance"** was not true within a screen. It is now (finding 2).
 
-(Run 7 below.)
+**Run 7 (at 58970ab): one code defect, one by-design item, and one report claim.**
+
+1. **Invariant 2 (code): videos and CSS background images** could hold figures with no mark. Now every `<video>`, and every CSS background image of 48 × 32 px or more, is marked untraced like images and canvases. A fixture page with a video and a background image pins it.
+2. **By design, not changed: images smaller than 48 × 32 px are not marked.** They are icons and cannot hold a figure a person reads. Marking every icon as an "untraced figure" would make the Showroom's honest rate untrue (rule 12: a true picture beats a complete one).
+3. **Report claim: "full-page".** Screenshots stop at 12,000 px. The claim now says so, and so does the code: a taller page is recorded `croppedFrom` its full height, the Showroom says "cropped at 12,000 of N px", and figures below the crop are left out (they are not on the screenshot). A fixture page 13,000 px tall pins it.
+
+(Run 8 below.)
 
 ## Real model cost
 

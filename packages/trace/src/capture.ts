@@ -29,6 +29,8 @@ import { runInSandbox } from './sandbox.ts';
 import { codeAt, type RunResult } from './trail.ts';
 
 export const CAPTURE_VERSION = 1;
+/** Screenshots are full-page up to this height; a taller page is cropped, and says so. */
+export const MAX_SHOT_HEIGHT = 12_000;
 
 export interface CapturedFigure {
   id: string;
@@ -49,6 +51,8 @@ export interface CapturedScreen {
   role: string | null;
   /** Where the browser ended up (path and query), when a redirect took it somewhere other than `route`. */
   landed?: string;
+  /** Set when the page was taller than MAX_SHOT_HEIGHT: its full height. The shot is cropped, and figures below it are left out. */
+  croppedFrom?: number;
   /** File name under shots/. */
   shot: string;
   width: number;
@@ -288,7 +292,10 @@ export async function capture(
         cfg.viewport.height,
         await page.evaluate(() => document.documentElement.scrollHeight),
       );
-      await page.setViewportSize({ width: cfg.viewport.width, height: Math.min(height, 12_000) });
+      await page.setViewportSize({
+        width: cfg.viewport.width,
+        height: Math.min(height, MAX_SHOT_HEIGHT),
+      });
       await page.waitForTimeout(250);
       const arg = {
         overlay: Object.entries(overlay)
@@ -311,19 +318,23 @@ export async function capture(
         route,
         ...(landedAt !== route ? { landed: landedAt } : {}),
         role: s.role ?? null,
+        ...(height > size.height ? { croppedFrom: height } : {}),
         shot,
         width: size.width,
         height: size.height,
         blueprintScreen: match?.id ?? null,
         bricks: match?.bricks ?? [],
-        figures: raw.map((f) => ({
-          id: f.id ?? `untraced:${s.name}:${++n}`,
-          origin: f.origin,
-          text: f.text,
-          box: f.box,
-          ...(f.args ? { args: JSON.parse(f.args) as unknown[] } : {}),
-          ...(f.value !== null && f.value !== undefined ? { value: f.value } : {}),
-        })),
+        // A figure below a cropped shot is not on the screenshot, so it is not shown (nor counted).
+        figures: raw
+          .filter((f) => f.box.y < size.height)
+          .map((f) => ({
+            id: f.id ?? `untraced:${s.name}:${++n}`,
+            origin: f.origin,
+            text: f.text,
+            box: f.box,
+            ...(f.args ? { args: JSON.parse(f.args) as unknown[] } : {}),
+            ...(f.value !== null && f.value !== undefined ? { value: f.value } : {}),
+          })),
       });
     }
   } finally {
