@@ -65,20 +65,50 @@ function collectFigures(arg) {
   };
   const SKIP = ['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE'];
   const insideTraced = (node) => traced.some((t) => t === node || t.contains(node));
-  const candidates = Array.from(document.querySelectorAll('body *')).filter(
+  const candidates = Array.from(document.querySelectorAll('body, body *')).filter(
     (el) => !SKIP.includes(el.tagName) && visible(el) && !insideTraced(el),
   );
   const marked = [];
-  const residual = (el) => {
-    const parts = [];
+  // The text nodes an element is judged by. <body> is judged by its own direct text only: everything else
+  // on the page belongs to an element below it, which is judged in its own right.
+  const residualNodes = (el) => {
+    const nodes = [];
     const walk = document.createTreeWalker(el, 4 /* NodeFilter.SHOW_TEXT */);
     for (let n = walk.nextNode(); n; n = walk.nextNode()) {
       const host = n.parentElement;
       if (!host || SKIP.includes(host.tagName) || !visible(host) || insideTraced(n)) continue;
+      if (el.tagName === 'BODY' && host !== el) continue;
       if (marked.some((m) => m !== el && el.contains(m) && m.contains(n))) continue; // a figure nested inside
-      parts.push(n.textContent);
+      nodes.push(n);
     }
-    return parts.join(' ').replace(/\s+/g, ' ').trim();
+    return nodes;
+  };
+  const residual = (el) =>
+    residualNodes(el)
+      .map((n) => n.textContent)
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  // A detected figure's hotspot is drawn around the text it was judged by (its residual text), not the
+  // whole element: tight around a split amount, around body text, and around the part of an element that is
+  // not a traced figure inside it.
+  const figureBox = (el) => {
+    const rects = residualNodes(el)
+      .map((n) => {
+        const r = document.createRange();
+        r.selectNodeContents(n);
+        return r.getBoundingClientRect();
+      })
+      .filter((r) => r.width > 0 && r.height > 0);
+    if (!rects.length) return box(el);
+    const left = Math.min(...rects.map((r) => r.left));
+    const top = Math.min(...rects.map((r) => r.top));
+    return {
+      x: Math.round(left + window.scrollX),
+      y: Math.round(top + window.scrollY),
+      w: Math.round(Math.max(...rects.map((r) => r.right)) - left),
+      h: Math.round(Math.max(...rects.map((r) => r.bottom)) - top),
+    };
   };
   const smallest = (els) =>
     els.filter((el) => !els.some((other) => other !== el && el.contains(other)));
@@ -100,7 +130,7 @@ function collectFigures(arg) {
   const texts = new Map(marked.map((el) => [el, residual(el)]));
   for (const el of candidates) {
     if (texts.has(el))
-      out.push({ id: null, origin: 'detected', text: texts.get(el), box: box(el) });
+      out.push({ id: null, origin: 'detected', text: texts.get(el), box: figureBox(el) });
   }
   return out;
 }

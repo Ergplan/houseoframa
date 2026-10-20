@@ -169,29 +169,31 @@ Other items from run 1 do not block the stage:
 
 Rather than patch case by case, detection now works on **residual text**. Each element is judged by its visible text that is not inside a traced figure or a figure already marked. Each pass repeats until nothing new qualifies. An element is marked wherever its own text holds a figure, at any depth, beside traced or untraced figures. The fixture's "Delivery ₹99 / Tax ₹10" pins it, and both are marked. EkBill's count is unchanged at 7 of 155.
 
-(Run 5 below.)
+**Run 5 (at ca52460): two code defects, both fixed with tests in this commit.**
+
+1. **Invariant 2 (code): text directly in `<body>` was never considered** (detection scanned `body *`). Body is now included, judged by its own direct text. A detected figure's hotspot is now drawn around the text it was judged by, not the whole element, so a body-level figure does not cover the screen. The fixture's "Tip ₹5" directly in `<body>` pins it.
+2. **Invariant 7 (code): the Brick view counted its "On screen" screens itself.** `screensRendering()` in `packages/blueprint/metrics` now does it, with a test, and the view only displays the result.
+
+(Run 6 below.)
 
 ## Real model cost
 
-`pnpm cost 3`, prices set 2026-10-20 at ₹94.92 per US$:
+From `pnpm cost 3` (`model_calls` since `stage-3-start`; prices set 2026-10-20 at ₹94.92 per US$; `gpt-6.1-sol`'s price from third-party lists):
 
-| Purpose                                   | Model             | Calls (attempts) | Input tokens | Output tokens | Cost    |
-| ----------------------------------------- | ----------------- | ---------------- | ------------ | ------------- | ------- |
-| EkBill phrases, redrafted through barrels | claude-sonnet-5-5 | 8 (8)            | 61,483       | 22,316        | ₹33     |
-| EkBill purposes, the 10 that had failed   | claude-sonnet-5-5 | 1 (2)            | 20,588       | 1,349         | ₹5      |
-| Self phrases, redrafted                   | claude-sonnet-5-5 | 1 (1)            | 4,965        | 2,059         | ₹3      |
-| **Total before review**                   |                   | **10 (11)**      | **87,036**   | **25,724**    | **₹41** |
+Model calls since 2026-10-20T15:43:53Z (prices set 2026-10-20; ₹94.92 per US$, 2026-10-19)
 
-Independent reviewer (auditor vendor):
+| Prompt   | Site   | Model             | Status | Calls (attempts) | Input tokens | Output tokens | Cost |
+| -------- | ------ | ----------------- | ------ | ---------------- | ------------ | ------------- | ---- |
+| glossary | ekbill | claude-sonnet-5-5 | ok     | 9 (9)            | 65,195       | 24,013        | ₹35  |
+| purpose  | ekbill | claude-sonnet-5-5 | ok     | 3 (5)            | 42,645       | 3,058         | ₹11  |
+| glossary | self   | claude-sonnet-5-5 | ok     | 1 (1)            | 4,965        | 2,059         | ₹3   |
+| reviewer | self   | gpt-6.1-sol       | ok     | 5 (5)            | 3,19,962     | 6,737         | ₹67  |
 
-| Run         | Model       | Input tokens | Output tokens | Cost |
-| ----------- | ----------- | ------------ | ------------- | ---- |
-| 1 (54a9f3e) | gpt-6.1-sol | 58,824       | 1,369         | ₹12  |
-| 2 (e05abd1) | gpt-6.1-sol | 62,388       | 1,211         | ₹13  |
-| 3 (72a697b) | gpt-6.1-sol | 64,493       | 1,129         | ₹13  |
-| 4 (5e07e88) | gpt-6.1-sol | 65,874       | 1,138         | ₹14  |
+Total: ₹116
 
-**Stage total so far: ₹93** (`pnpm cost 3`). Further review runs are added below.
+- **Drafting:** the member-requested redraft through barrel files, the 10 purposes that had failed, and EkBill's new symbols and files at 4f28628.
+- **Reviewer:** every run up to run 5.
+- **Not yet included:** later review runs, recorded in `docs/reports/stage-3.review.md`.
 
 ## Open questions
 

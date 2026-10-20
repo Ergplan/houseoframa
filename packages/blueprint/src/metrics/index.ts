@@ -205,6 +205,10 @@ export const dependenciesByFloor = (bp: Blueprint, path: string): { layer: strin
     .map(([layer, paths]) => ({ layer, paths }));
 };
 
+/** The captured screens (Stage 3; any list carrying each screen's bricks) that a brick helps render. */
+export const screensRendering = <S extends { bricks: string[] }>(screens: S[], path: string): S[] =>
+  screens.filter((s) => s.bricks.includes(path));
+
 /** Every figure at once, for the CLI summary and the trust report. */
 export const summary = (bp: Blueprint) => ({
   files: files(bp),

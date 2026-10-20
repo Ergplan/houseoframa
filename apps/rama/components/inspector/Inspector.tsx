@@ -19,6 +19,7 @@ import {
   loadBearing,
   mostReworked,
   screensOf,
+  screensRendering,
   summary,
   testCoverage,
 } from '@rama/blueprint/metrics';
@@ -328,7 +329,7 @@ function BrickView({
   const history = brickHistory(bp, path);
   const born = history.laidIn === null ? null : history.entries.find((e) => e.laid)!;
   const screens = screensOf(bp, path);
-  const photographed = captured.filter((s) => s.bricks.includes(path));
+  const photographed = screensRendering(captured, path);
   const floor = bp.layers.find((l) => l.id === n.layer);
 
   const confirmControl = (key: string, body: object, label: string) =>

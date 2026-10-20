@@ -43,7 +43,7 @@ describe('stage 3 e2e', () => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(`${server.browserUrl}/site/shop/showroom`);
-    await page.locator('.lede b', { hasText: '4 of 15' }).waitFor({ timeout: 60_000 });
+    await page.locator('.lede b', { hasText: '4 of 17' }).waitFor({ timeout: 60_000 });
 
     // The real screenshot is served and loaded.
     const img = page.locator('.shotwrap img');
@@ -52,7 +52,7 @@ describe('stage 3 e2e', () => {
       .toBe(390);
 
     // The untraced amount is outlined as untraced, and says so when clicked.
-    const untraced = page.locator('.hot.untraced');
+    const untraced = page.locator('.hot.untraced[data-figure="untraced:home:2"]');
     await expect(untraced.getAttribute('aria-label')).resolves.toBe('Untraced figure ₹99');
 
     // Click the traced hotspot (once React is live) and read the trail's formula.

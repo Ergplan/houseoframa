@@ -66,7 +66,8 @@ describe('capture', () => {
     const home = cap.screens[0]!.figures;
     expect(home.map((f) => [f.id, f.origin, f.text])).toEqual([
       ['order-total', 'attribute', '₹28.00'],
-      ['untraced:home:1', 'detected', '₹99'],
+      ['untraced:home:1', 'detected', 'Tip ₹5'], // text directly in <body>
+      ['untraced:home:2', 'detected', '₹99'],
     ]);
     expect(home[0]).toMatchObject({
       args: [
@@ -151,6 +152,7 @@ describe('showroom', () => {
     ]);
     expect(ids(false)).toEqual([
       'home/untraced:home:1',
+      'home/untraced:home:2',
       'order/vat',
       'order/untraced:order:1',
       'order/untraced:order:2',
@@ -161,8 +163,9 @@ describe('showroom', () => {
       'order/untraced:order:7',
       'order/untraced:order:8',
       'moved/untraced:moved:1',
+      'moved/untraced:moved:2',
     ]);
-    expect(s.counts).toEqual({ shown: 15, traced: 4 });
+    expect(s.counts).toEqual({ shown: 17, traced: 4 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'moved/order-total',

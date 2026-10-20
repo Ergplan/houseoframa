@@ -148,6 +148,15 @@ describe('metrics (one function per figure)', () => {
       { layer: 'logic', paths: ['lib/a.ts'] },
     ]);
   });
+  it('screensRendering picks the captured screens whose bricks include a brick', () => {
+    const shots = [
+      { name: 'home', bricks: ['lib/a.ts', 'lib/b.ts'] },
+      { name: 'bills', bricks: ['lib/b.ts'] },
+    ];
+    expect(m.screensRendering(shots, 'lib/b.ts').map((x) => x.name)).toEqual(['home', 'bills']);
+    expect(m.screensRendering(shots, 'lib/a.ts').map((x) => x.name)).toEqual(['home']);
+    expect(m.screensRendering(shots, 'app/globals.css')).toEqual([]);
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });

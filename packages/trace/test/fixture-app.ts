@@ -28,7 +28,7 @@ const page = (body) => '<!doctype html><html><body style="margin:0;font:16px san
 const routes = {
   '/': () =>
     page('<h1>Shop</h1><p data-rama-figure="order-total" data-rama-args=\\'' + JSON.stringify([LINES]) + '\\' data-rama-value="' +
-      orderTotal(LINES) + '">' + rupees(orderTotal(LINES)) + '</p><p>Delivery <span>₹99</span></p>'),
+      orderTotal(LINES) + '">' + rupees(orderTotal(LINES)) + '</p><p>Delivery <span>₹99</span></p>Tip ₹5'),
   '/orders/7': (q) =>
     page('<h1>Order 7</h1><p id="count">' + lineCount(LINES) + ' lines</p><p data-rama-figure="vat">₹4.20</p>' +
       '<p id="role">' + (q.get('as') ?? 'owner') + '</p><p id="env">' + (process.env.DATABASE_URL || process.env.OPENAI_API_KEY ? 'secrets' : 'none') + '</p>' +
