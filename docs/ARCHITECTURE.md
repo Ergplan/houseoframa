@@ -58,7 +58,7 @@ Stage 2:
 
 - `rama site add <src>` → `addSite()` (`git clone --no-hardlinks` into `work/<id>/repo`, `site.json`) → `writeSiteBlueprint()` → `extract(repoDir, {overlay: 'worktree'})` → `work/<id>/blueprint.json`; `registerSite()` inserts the `sites` row for the local member. `rama site draft <id>` → `draftGlossary()` + `draftPurposes()` → `call()` → unconfirmed entries in `.rama/glossary.json` and `.rama/purposes.json`, saved per batch → `writeSiteBlueprint()`.
 - `/site/[siteId]` → `locateSite()` → `readSiteBlueprint()` → `<SiteView>` → each animation frame `draw(ctx, state)` → `frame(state)` → `siteModel(bp)` (`layout()` + `timeline()`, memoised per Blueprint) → paint. Click → `toScene()` → `pick()` → `<Inspector view=brick>` → `reviewerParagraph()`, `edgePhrase()`, `brickFigures()`.
-- Confirm → `POST /api/site/[siteId]/confirm` → `handleConfirm()` → person id from `people` → `confirmEdge()` / `confirmPurpose()` (overlay write, `writeSiteBlueprint()`) → `audit_log` rows → `router.refresh()` re-reads the Blueprint.
+- Confirm → `POST /api/site/[siteId]/confirm` → `handleConfirm()` → person id from `people` → `snapshotOverlay()` → `confirmEdge()` / `confirmPurpose()` (overlay write, `writeSiteBlueprint()`) → `audit_log` rows (on failure `restoreOverlay()`, 503) → `router.refresh()` re-reads the Blueprint.
 
 Intended end to end: `rama site add <repo>` → `extract()` → `blueprint/<site>.json` → `/site/[id]` renders → `capture()` → Showroom → `trail(figureId)` → walkthrough → `signoff()` → `gate()` in the target's CI → `audit()` → report → handover.
 

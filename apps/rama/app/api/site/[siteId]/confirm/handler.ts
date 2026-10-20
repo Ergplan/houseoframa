@@ -1,7 +1,8 @@
 // The local member confirms a drafted phrase (a dependency edge) or a brick's drafted purpose. The
 // confirmation is written to the target's own `.rama/` overlay in its checkout (Invariant 1), the
 // site's Blueprint is regenerated from it, and the write is appended to audit_log with the person
-// (Invariant 8). No auth until Stage 6 (rule 11): the person is the single local member.
+// (Invariant 8). A confirmation is never left without its audit row: if the row cannot be written, the
+// overlay is put back as it was. No auth until Stage 6 (rule 11): the person is the single local member.
 import { z } from 'zod';
 import type { Confirmation, SiteLocation } from '@rama/blueprint/site';
 
@@ -41,6 +42,9 @@ export interface ConfirmDeps {
     personId: string;
     at: Date;
   }) => Promise<void>;
+  /** The overlay file as it stands, and how to put it back if the audit row cannot be written. */
+  snapshot: (site: SiteLocation, file: string) => string | null;
+  restore: (site: SiteLocation, file: string, snapshot: string | null) => void;
   now: () => Date;
 }
 
@@ -69,6 +73,8 @@ export async function handleConfirm(
   }
 
   const at = deps.now();
+  const file = body.data.kind === 'edge' ? '.rama/glossary.json' : '.rama/purposes.json';
+  const before = deps.snapshot(site, file);
   let result: Confirmation;
   try {
     const b = body.data;
@@ -83,14 +89,22 @@ export async function handleConfirm(
   }
 
   if (result.confirmed.length) {
-    await deps.log({
-      siteId: site.id,
-      file: body.data.kind === 'edge' ? '.rama/glossary.json' : '.rama/purposes.json',
-      keys: result.confirmed,
-      text: body.data.shown,
-      personId,
-      at,
-    });
+    try {
+      await deps.log({
+        siteId: site.id,
+        file,
+        keys: result.confirmed,
+        text: body.data.shown,
+        personId,
+        at,
+      });
+    } catch (err) {
+      deps.restore(site, file, before);
+      return fail(
+        503,
+        `not confirmed: the audit log could not be written (${(err as Error).message})`,
+      );
+    }
   }
   return Response.json({
     ok: true,

@@ -203,6 +203,20 @@ export function writeSiteOverlay(site: SiteLocation, file: string, value: Glossa
   writeFileSync(full, canonicalJson(value));
 }
 
+/** The overlay file's exact bytes (null when absent), to put back if a confirmation cannot be recorded. */
+export function snapshotOverlay(site: SiteLocation, file: string): string | null {
+  const full = path.join(site.repoDir, file);
+  return existsSync(full) ? readFileSync(full, 'utf8') : null;
+}
+
+/** Puts an overlay file back as it was and regenerates the site's Blueprint. */
+export function restoreOverlay(site: SiteLocation, file: string, snapshot: string | null): Blueprint {
+  const full = path.join(site.repoDir, file);
+  if (snapshot === null) rmSync(full, { force: true });
+  else writeFileSync(full, snapshot);
+  return writeSiteBlueprint(site);
+}
+
 /** The text bricks of the site's checkout as they stand on disk, for drafting. */
 export function siteReader(site: SiteLocation): (p: string) => string | null {
   const texts = new Map(readWorktree(site.repoDir, site.options.exclude ?? []).map((f) => [f.path, f.content.toString('utf8')]));

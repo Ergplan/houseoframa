@@ -1,6 +1,12 @@
 import { eq } from 'drizzle-orm';
 import { auditLog, createDb, people } from '@rama/db';
-import { confirmEdge, confirmPurpose, locateSite } from '@rama/blueprint/site';
+import {
+  confirmEdge,
+  confirmPurpose,
+  locateSite,
+  restoreOverlay,
+  snapshotOverlay,
+} from '@rama/blueprint/site';
 import { handleConfirm } from './handler';
 
 export const dynamic = 'force-dynamic';
@@ -46,6 +52,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ siteId: string
           })),
         );
       }),
+    snapshot: snapshotOverlay,
+    restore: (site, file, snap) => void restoreOverlay(site, file, snap),
     now: () => new Date(),
   });
 }

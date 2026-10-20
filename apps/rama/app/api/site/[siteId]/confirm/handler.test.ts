@@ -2,7 +2,14 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { addSite, confirmEdge, confirmPurpose, locateSite } from '@rama/blueprint/site';
+import {
+  addSite,
+  confirmEdge,
+  confirmPurpose,
+  locateSite,
+  restoreOverlay,
+  snapshotOverlay,
+} from '@rama/blueprint/site';
 import {
   fixtureRepo,
   type FixtureRepo,
@@ -41,6 +48,8 @@ const deps = (over: Partial<ConfirmDeps> = {}): ConfirmDeps & { log: ReturnType<
     personId: async () => 'person-1',
     confirmEdge,
     confirmPurpose,
+    snapshot: snapshotOverlay,
+    restore: (site, file, snap) => void restoreOverlay(site, file, snap),
     now: () => at,
     ...over,
     log: (over.log as ReturnType<typeof vi.fn>) ?? log,
@@ -79,6 +88,26 @@ describe('POST /api/site/[siteId]/confirm', () => {
       personId: 'person-1',
       at,
     });
+  });
+
+  it('puts the overlay back and answers 503 when the audit row cannot be written', async () => {
+    const file = path.join(work, 'fixture/repo/.rama/purposes.json');
+    const before = readFileSync(file, 'utf8');
+    const res = await handleConfirm(
+      'fixture',
+      { kind: 'purpose', path: 'lib/data.ts', shown: 'The rows.' },
+      deps({ log: vi.fn(async () => Promise.reject(new Error('insert refused'))) }),
+    );
+    expect(res.status).toBe(503);
+    expect(await res.json()).toMatchObject({
+      ok: false,
+      error: expect.stringMatching(/not confirmed.*insert refused/),
+    });
+    expect(readFileSync(file, 'utf8')).toBe(before);
+    const bp = JSON.parse(readFileSync(path.join(work, 'fixture/blueprint.json'), 'utf8'));
+    expect(bp.nodes.find((n: { path: string }) => n.path === 'lib/data.ts').purpose.confirmed).toBe(
+      false,
+    );
   });
 
   it('confirms a purpose', async () => {

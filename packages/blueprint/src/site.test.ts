@@ -14,6 +14,8 @@ import {
   SELF_EXTRACT,
   SiteError,
   writeSiteOverlay,
+  snapshotOverlay,
+  restoreOverlay,
   GLOSSARY_FILE,
   PURPOSES_FILE,
 } from './site.ts';
@@ -134,6 +136,19 @@ describe('sites', () => {
     expect(res.confirmed).toEqual(['lib/calc.ts#total']);
     expect(res.missing).toEqual(['half']);
     expect(res.blueprint.edges.find((e) => e.from === 'app/page.tsx')!.english).toEqual({ text: 'the row count', confirmed: false });
+  });
+
+  it('restores an overlay exactly, or removes one that did not exist, and regenerates the Blueprint', () => {
+    const site = locateSite('fixture', env)!;
+    const before = snapshotOverlay(site, PURPOSES_FILE);
+    confirmPurpose(site, { path: 'lib/data.ts', shown: 'The rows.' }, 'Asha', at);
+    const bp = restoreOverlay(site, PURPOSES_FILE, before);
+    expect(snapshotOverlay(site, PURPOSES_FILE)).toBe(before);
+    expect(bp.nodes.find((n) => n.path === 'lib/data.ts')!.purpose).toEqual({ text: 'The rows.', confirmed: false });
+    expect(snapshotOverlay(site, '.rama/none.json')).toBeNull();
+    writeSiteOverlay(site, '.rama/none.json', {});
+    restoreOverlay(site, '.rama/none.json', null);
+    expect(snapshotOverlay(site, '.rama/none.json')).toBeNull();
   });
 
   it('writes overlays as canonical JSON', () => {
