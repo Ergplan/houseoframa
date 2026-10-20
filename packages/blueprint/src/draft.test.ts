@@ -84,4 +84,22 @@ describe('purpose drafting', () => {
       expect.objectContaining({ name: 'purpose', version: 1, role: 'builder', siteId: 'ekbill', createdBy: PURPOSE_COMPONENT }),
     );
   });
+
+  it('skips a batch that fails after retries when asked to, and drafts the rest', async () => {
+    const many = { ...nodesBp, nodes: Array.from({ length: 12 }, (_, i) => ({ path: `f${i}.ts`, layer: 'logic', lines: 1, binary: false, exports: [] })) } as unknown as Blueprint;
+    const text = (p: string) => (p.startsWith('f') ? 'export const x = 1;\n' : null);
+    let n = 0;
+    const flaky = vi.fn(async (req: { input: { files: { path: string }[] } }) => {
+      if (n++ === 0) throw new Error('reply is not JSON');
+      return { output: { purposes: req.input.files.map((f) => ({ path: f.path, text: 'A file.' })) } };
+    }) as unknown as typeof call;
+    const skipped: string[][] = [];
+    const drafted = await draftPurposes(many, {}, text, { siteId: 's', call: flaky, onError: (_e, keys) => skipped.push(keys) });
+    expect(skipped).toHaveLength(1);
+    expect(skipped[0]).toHaveLength(10); // the first batch of ten
+    expect(Object.keys(drafted)).toHaveLength(2);
+    // Without onError the failure is thrown.
+    n = 0;
+    await expect(draftPurposes(many, {}, text, { siteId: 's', call: flaky })).rejects.toThrow('reply is not JSON');
+  });
 });

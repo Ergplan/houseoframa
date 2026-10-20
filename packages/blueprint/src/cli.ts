@@ -177,6 +177,7 @@ async function site(args: ReturnType<typeof parseArgs>): Promise<number> {
           writeSiteOverlay(s, GLOSSARY_FILE, { ...d, ...existing });
           console.error(`phrases: ${done}/${total}`);
         },
+        onError: (err, keys) => console.error(`phrases: skipped a batch of ${keys.length} (${err.message.slice(0, 120)})`),
       });
       console.error(`drafted ${Object.keys(drafted).length} unconfirmed phrases into ${GLOSSARY_FILE}`);
     }
@@ -188,6 +189,7 @@ async function site(args: ReturnType<typeof parseArgs>): Promise<number> {
           writeSiteOverlay(s, PURPOSES_FILE, { ...d, ...existing });
           console.error(`purposes: ${done}/${total}`);
         },
+        onError: (err, keys) => console.error(`purposes: skipped a batch of ${keys.length} (${err.message.slice(0, 120)})`),
       });
       console.error(`drafted ${Object.keys(drafted).length} unconfirmed purposes into ${PURPOSES_FILE}`);
     }

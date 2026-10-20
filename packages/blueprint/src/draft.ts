@@ -20,6 +20,28 @@ const DraftOutput = z.object({
   phrases: z.array(z.object({ key: z.string(), text: z.string().min(1).max(200) })),
 });
 
+export interface DraftOptions {
+  siteId: string;
+  call?: typeof modelCall;
+  /** Called after each batch with everything drafted so far, so the caller can save as it goes. */
+  onBatch?: (drafted: Glossary, done: number, total: number) => void;
+  /**
+   * Called when a batch fails after packages/model's retries; that batch is skipped and drafting goes
+   * on (its keys stay without a draft, shown as unknown). Without it, the failure is thrown.
+   */
+  onError?: (err: Error, keys: string[]) => void;
+}
+
+async function attempt<T>(opts: DraftOptions, keys: string[], run: () => Promise<T>): Promise<T | null> {
+  try {
+    return await run();
+  } catch (err) {
+    if (!opts.onError) throw err;
+    opts.onError(err as Error, keys);
+    return null;
+  }
+}
+
 export interface DraftRequestItem {
   key: string;
   file: string;
@@ -53,22 +75,25 @@ export async function draftGlossary(
   bp: Blueprint,
   glossary: Glossary,
   read: (p: string) => string | null,
-  opts: { siteId: string; call?: typeof modelCall; onBatch?: (drafted: Glossary, done: number, total: number) => void },
+  opts: DraftOptions,
 ): Promise<Glossary> {
   const call = opts.call ?? modelCall;
   const todo = missingPhrases(bp, glossary, read);
   const drafted: Glossary = {};
   for (let i = 0; i < todo.length; i += BATCH) {
     const batch = todo.slice(i, i + BATCH);
-    const res = await call({
-      name: 'glossary',
-      version: 1,
-      input: { repo: bp.repo, symbols: batch },
-      output: DraftOutput,
-      role: 'builder',
-      siteId: opts.siteId,
-      createdBy: DRAFT_COMPONENT,
-    });
+    const res = await attempt(opts, batch.map((b) => b.key), () =>
+      call({
+        name: 'glossary',
+        version: 1,
+        input: { repo: bp.repo, symbols: batch },
+        output: DraftOutput,
+        role: 'builder',
+        siteId: opts.siteId,
+        createdBy: DRAFT_COMPONENT,
+      }),
+    );
+    if (!res) continue;
     const asked = new Set(batch.map((b) => b.key));
     for (const p of res.output.phrases) {
       // Only keys that were asked for; a draft never carries a confirmation.
@@ -110,23 +135,26 @@ export async function draftPurposes(
   bp: Blueprint,
   purposes: Glossary,
   read: (p: string) => string | null,
-  opts: { siteId: string; call?: typeof modelCall; onBatch?: (drafted: Glossary, done: number, total: number) => void },
+  opts: DraftOptions,
 ): Promise<Glossary> {
   const call = opts.call ?? modelCall;
   const todo = missingPurposes(bp, purposes, read);
   const drafted: Glossary = {};
   for (let i = 0; i < todo.length; i += PURPOSE_BATCH) {
     const batch = todo.slice(i, i + PURPOSE_BATCH);
-    const res = await call({
-      name: 'purpose',
-      version: 1,
-      input: { repo: bp.repo, files: batch },
-      output: PurposeOutput,
-      role: 'builder',
-      siteId: opts.siteId,
-      createdBy: PURPOSE_COMPONENT,
-      maxTokens: 2000,
-    });
+    const res = await attempt(opts, batch.map((b) => b.path), () =>
+      call({
+        name: 'purpose',
+        version: 1,
+        input: { repo: bp.repo, files: batch },
+        output: PurposeOutput,
+        role: 'builder',
+        siteId: opts.siteId,
+        createdBy: PURPOSE_COMPONENT,
+        maxTokens: 4000,
+      }),
+    );
+    if (!res) continue;
     const asked = new Set(batch.map((b) => b.path));
     for (const p of res.output.purposes) {
       if (asked.has(p.path)) drafted[p.path] = { text: p.text.trim() };

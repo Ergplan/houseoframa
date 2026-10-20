@@ -85,15 +85,22 @@ export function draw(ctx: Ctx, state: SiteState): Frame {
   s.cranes.forEach((c, i) => {
     drawCrane(s, c, R, text);
     if (f.activeCrane === i) {
-      R(c.x - 40, s.top - 130, 80, 14, INK);
-      text('BUILDING', c.x, s.top - 126, 6, '#fff', 'center');
+      R(c.x - 40, s.top - 140, 80, 14, INK);
+      text('BUILDING', c.x, s.top - 136, 6, '#fff', 'center');
     }
   });
   drawOffice(s.office, s.ground, R, text);
   drawScaffolds(s, R, text);
 
   for (const { floor, built, total } of f.floors) {
-    if (!built) continue;
+    if (!built) {
+      // Not started yet: the bare frame of the floor, so the floors above do not float.
+      if (f.cleared) continue;
+      R(b.x, floor.y - 6, b.w, 6, '#3a3746');
+      R(b.x, floor.y, 3, floor.h, '#3a3746');
+      R(b.x + b.w - 3, floor.y, 3, floor.h, '#3a3746');
+      continue;
+    }
     R(b.x, floor.y - 6, b.w, 6, '#4a4658');
     R(b.x, floor.y, b.w, floor.h, '#262233');
     R(b.x, floor.y, 2, floor.h, '#5a566a');
@@ -279,7 +286,9 @@ function drawCrane(s: Scene, c: Crane, R: Rect, text: Text) {
     R(c.x - 4, yy - 12, 8, 2, INK);
     R(c.x - 4, yy - 6, 8, 2, INK);
   }
-  const reach = Math.min(400, s.building.w * 0.8);
+  // Each jib reaches a little past the gap to its neighbour, so two cranes never cross.
+  const spacing = s.building.w / (s.cranes.length + 1);
+  const reach = Math.round(Math.min(400, Math.max(140, spacing * 1.2)));
   if (c.jib === 'right') {
     R(c.x - 70, jy, reach, 8, c.color);
     R(c.x - 70, jy + 8, 60, 4, INK);
