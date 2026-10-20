@@ -25,6 +25,15 @@ jobs:
       NEXT_TELEMETRY_DISABLED: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          # blueprint/self.json carries the full history, and must be checked against the commit a
+          # developer made, not GitHub's synthetic merge commit for a pull request.
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Clone the golden target (MASTER-PROMPT §7.1)
+        run: |
+          git clone --quiet https://github.com/Ergplan/procurementstudio reference/procurementstudio
+          git -C reference/procurementstudio checkout --quiet fac615d
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:

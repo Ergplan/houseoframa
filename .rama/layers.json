@@ -1,0 +1,52 @@
+{
+  "layers": [
+    { "id": "reference", "label": "Reference — read-only inputs, never imported" },
+    { "id": "foundation", "label": "Foundation — manifests, config, CI, scripts" },
+    { "id": "data", "label": "Data — schema, migrations, prompts" },
+    { "id": "logic", "label": "Logic — packages" },
+    { "id": "api", "label": "API — server routes" },
+    { "id": "interface", "label": "Interface — components and the building renderer" },
+    { "id": "shell", "label": "Shell — routes, docs, end-to-end tests" }
+  ],
+  "rules": [
+    { "layer": "reference", "name": "reference/**", "match": ["reference/**"] },
+    {
+      "layer": "foundation",
+      "name": "repo config, CI and scripts",
+      "match": [
+        "scripts/**",
+        ".github/**",
+        "docker-compose.yml",
+        "*.config.{ts,mjs,js}",
+        "tsconfig.base.json",
+        ".prettierrc.json",
+        ".prettierignore",
+        ".nvmrc",
+        ".rama/**",
+        "CLAUDE.md",
+        "packages/*/bin/**"
+      ]
+    },
+    {
+      "layer": "data",
+      "name": "packages/db, prompts",
+      "match": ["packages/db/**", "prompts/**"]
+    },
+    { "layer": "api", "name": "apps/rama/app/api/**", "match": ["apps/rama/app/api/**"] },
+    {
+      "layer": "interface",
+      "name": "apps/rama components and canvas",
+      "match": ["apps/rama/components/**", "apps/rama/canvas/**"]
+    },
+    {
+      "layer": "logic",
+      "name": "packages/*",
+      "match": ["packages/*/src/**", "packages/*/test/**", "packages/*/README.md"]
+    },
+    {
+      "layer": "shell",
+      "name": "app routes, docs, e2e tests",
+      "match": ["apps/rama/**", "docs/**", "tests/**", "blueprint/**", "README.md"]
+    }
+  ]
+}

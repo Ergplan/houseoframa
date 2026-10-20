@@ -31,8 +31,9 @@ Source: `packages/shared/src/blueprint.ts`
 | `test` | `boolean` | yes | True when the file is a test file. |
 | `exports` | `string[]` | yes | Names the file exports. |
 | `env` | `string[]` | yes | Environment variable names the file reads. |
-| `firstCommit` | `string` | yes | SHA of the commit that added the file. |
-| `lastCommit` | `string` | yes | SHA of the most recent commit that changed the file. |
+| `envDynamic` | `boolean` | yes | True when the file also reads an environment variable whose name the extractor could not resolve. |
+| `firstCommit` | `string` | yes | SHA of the oldest commit in the extracted history that touched the file; empty when none did (a pending file). |
+| `lastCommit` | `string` | yes | SHA of the most recent commit in the extracted history that touched the file; empty when none did. |
 | `changes` | `number` | yes | Number of commits that changed the file. |
 | `purpose` | `{ text: string; confirmed: boolean; by?: string; at?: string }` | no | What the brick is for, in English: from the `.rama/` overlay when confirmed, otherwise an unconfirmed draft. |
 
@@ -46,7 +47,8 @@ Source: `packages/shared/src/blueprint.ts`
 | --- | --- | --- | --- |
 | `from` | `string` | yes | Path of the importing brick. |
 | `to` | `string` | yes | Path of the imported brick. |
-| `symbols` | `string[]` | yes | Symbols imported across the edge. |
+| `symbols` | `string[]` | yes | Symbols imported across the edge: names, `default`, or `*` for a namespace, re-export-all or dynamic import; empty for a side-effect import. |
+| `typeOnly` | `boolean` | yes | True when every import across the edge is type-only, so it carries no runtime dependency. |
 | `english` | `{ text: string; confirmed: boolean; by?: string; at?: string }` | no | The dependency in English, from `.rama/glossary.json`; unconfirmed until a named person confirms it. |
 
 ## Commit
@@ -62,7 +64,7 @@ Source: `packages/shared/src/blueprint.ts`
 | `at` | `string` | yes | Commit timestamp, ISO 8601. |
 | `author` | `string` | yes | Author name. |
 | `subject` | `string` | yes | First line of the commit message. |
-| `changes` | `{ path: string; kind: 'A' \| 'M' \| 'D' \| 'R'; add: number \| null; del: number \| null }[]` | yes | Per-file changes: kind (Added, Modified, Deleted, Renamed) and line counts, null for binary files. |
+| `changes` | `{ path: string; kind: 'A' \| 'M' \| 'D' \| 'R'; add: number \| null; del: number \| null; from?: string; }[]` | yes | Per-file changes: kind (Added, Modified, Deleted, Renamed), line counts (null for binary files), and the old path of a rename. |
 
 ## Screen
 
@@ -101,16 +103,18 @@ Source: `packages/shared/src/blueprint.ts`
 | Field | Type | Required | Meaning |
 | --- | --- | --- | --- |
 | `repo` | `string` | yes | Repository identifier (URL or path) the Blueprint was extracted from. |
-| `commit` | `string` | yes | SHA of the commit extracted. |
-| `extractedAt` | `string` | yes | Time of extraction, ISO 8601. |
+| `commit` | `string` | yes | SHA of the commit extracted; with `worktree`, the commit the working tree sits on. Empty when there is no history. |
+| `worktree` | `boolean` | yes | True when files were read from a working tree with changes pending on top of `commit` (how this repository renders itself). |
+| `extractedAt` | `string` | yes | Committer date of `commit`, ISO 8601: deterministic, so re-extracting the same commit is byte-identical. |
 | `extractorVersion` | `string` | yes | Version of the extractor that wrote the Blueprint. |
 | `layers` | `{ id: Layer; label: string }[]` | yes | The floors, bottom to top. |
 | `nodes` | `BrickNode[]` | yes | One brick per tracked file. |
 | `edges` | `ImportEdge[]` | yes | Resolved internal imports. |
-| `external` | `{ name: string; version: string }[]` | yes | External dependencies with their declared versions. |
+| `unresolved` | `{ from: string; spec: string }[]` | yes | Relative or aliased imports that point inside the repository but match no tracked file. |
+| `external` | `{ name: string; version: string; dev: boolean; manifest: string }[]` | yes | External dependencies with their declared versions, the manifest declaring them, and whether they are dev-only. |
 | `commits` | `Commit[]` | yes | Full history, oldest first. |
-| `branches` | `string[]` | yes | Branch names. |
-| `tags` | `string[]` | yes | Tag names. |
+| `branches` | `string[]` | yes | Branch names (local and remote, deduplicated); empty in a worktree extraction, where refs depend on the machine. |
+| `tags` | `string[]` | yes | Tag names; empty in a worktree extraction. |
 | `screens` | `Screen[]` | yes | Screens discovered from the app's routes. |
 
 ## Trail

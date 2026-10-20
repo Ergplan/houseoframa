@@ -2,6 +2,21 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-20 — Stage 1: the Blueprint
+
+- **Schema additions** (additive; MASTER-PROMPT §8 fields unchanged): `BrickNode.envDynamic` (a read of `process.env[x]` the extractor could not name, shown rather than hidden); `ImportEdge.typeOnly` (a type-only import carries no runtime dependency, so screens' import closures skip it); `Commit.changes[].from` (old path of a rename); `Blueprint.worktree`; `Blueprint.unresolved` (internal-looking imports that match no file); `external[].dev` and `external[].manifest` (a monorepo has many manifests).
+- **Edges are true; the metric is defined.** A side-effect import (`import './globals.css'`) is an edge with no symbols. The "import edges" figure counts edges that import at least one name, which is what the weekend regex measured (50 on Procurement Studio); side-effect imports are their own figure (1 there). All 51 edges are in the Blueprint.
+- **Default imports are recorded as `default`**, the name actually exported, not the importer's local binding (the weekend graph used local names such as `Studio`). The glossary keys them `path#default`.
+- **Heaviest brick means heaviest code brick** (JS/TS source). §7.1 calls lib/data.ts (367 lines) the heaviest "text brick, package-lock excluded", but app/globals.css has 401 lines; only the code reading matches the weekend figure.
+- **Untested brick** = a non-test code brick that no test file imports directly.
+- **`extractedAt` is the committer date** of the extracted commit, not the clock, so re-extraction is byte-identical. `short` is the first 7 characters of the SHA, not git's auto-abbreviation (which grows with the object count and differs between machines).
+- **Commit mode reads git's object store**, never the working tree; the same commit is the same Blueprint on any machine.
+- **This repository carries its own Blueprint through worktree mode.** A file inside a commit cannot name that commit, and history grows with every commit. So `blueprint/self.json` is the working tree on top of a base commit: `HEAD` when changes are pending, otherwise the parent of the last commit that touched a non-excluded path. The file generated before a commit then equals the file regenerated after it, and a commit touching only `blueprint/` changes nothing. Branches and tags are left out of a worktree extraction because they differ between machines (a developer's local branches, CI's checkout).
+- **House-stack layer rules match at any depth**, so a monorepo app (`apps/web/app/**`) and a `src/` tree place like a root app. §7.2 names `app/layout*`, `app/page*`, `app/globals.css` for the shell; the default extends that to all of `app/**` outside `app/api/**`, because nested route files are shell too. Lockfiles count as package manifests. Unmatched files go to the shell with the rule `fallback: no rule matched`, so the fallback is visible, never silent.
+- **Glossary keys** are a bare symbol or `path#symbol` (the latter wins). An edge's English joins its symbols' phrases and is confirmed only when every symbol has a confirmed phrase.
+- **Drafting is separate from extraction.** `extract()` never calls a model; `--draft-glossary` drafts through `packages/model` (prompt `glossary.v1`, builder vendor), writes drafts without a confirmation into the overlay, and never overwrites an existing phrase.
+- **The `rama` bin registers tsx** and loads the TypeScript source, consistent with packages being consumed as source.
+
 ## 2026-10-20 — Auditor model
 
 - The auditor and the independent reviewer use OpenAI `gpt-6.1-sol` (`OPENAI_MODEL`), chosen by the member. It was the only model id visible to the key containing "gpt", "sol" and "6.1". First real call: ok on the first attempt.

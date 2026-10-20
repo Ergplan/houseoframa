@@ -35,10 +35,17 @@ const PROJECTS = [
   { name: '@rama/shared', dirs: ['packages/shared/', 'scripts/gen-blueprint-doc.mjs'] },
   { name: '@rama/db', dirs: ['packages/db/'] },
   { name: '@rama/model', dirs: ['packages/model/', 'prompts/'] },
+  { name: '@rama/blueprint', dirs: ['packages/blueprint/'] },
   { name: '@rama/app', dirs: ['apps/rama/'] },
   { name: 'e2e', dirs: ['tests/'] },
 ];
-const TS_PACKAGES = ['packages/shared', 'packages/db', 'packages/model', 'apps/rama'];
+const TS_PACKAGES = [
+  'packages/shared',
+  'packages/db',
+  'packages/model',
+  'packages/blueprint',
+  'apps/rama',
+];
 const IGNORED = [
   /(^|\/)node_modules(\/|$)/,
   /^\.git(\/|$)/,
@@ -167,14 +174,8 @@ async function runChecks(changed) {
       command('node', ['scripts/gen-blueprint-doc.mjs', '--check']),
     ),
   );
-  // Rule 14 starts at Stage 2 and the extractor arrives in Stage 1; until then there is nothing to compare.
-  checks.push({
-    name: 'blueprint self drift',
-    ok: true,
-    skipped: true,
-    ms: 0,
-    detail: 'skipped: packages/blueprint has no extractor until Stage 1 (`rama extract .`)',
-  });
+  // Rule 14: `rama extract .` must match the checked-in blueprint/self.json (`pnpm extract:self` regenerates it).
+  checks.push(await check('blueprint self drift', command('pnpm', ['-s', 'check:self'])));
 
   const status = { ok: checks.every((c) => c.ok), checks, at: new Date().toISOString() };
   mkdirSync('.watch', { recursive: true });

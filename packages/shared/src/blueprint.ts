@@ -21,9 +21,11 @@ export interface BrickNode {
   exports: string[];
   /** Environment variable names the file reads. */
   env: string[];
-  /** SHA of the commit that added the file. */
+  /** True when the file also reads an environment variable whose name the extractor could not resolve. */
+  envDynamic: boolean;
+  /** SHA of the oldest commit in the extracted history that touched the file; empty when none did (a pending file). */
   firstCommit: string;
-  /** SHA of the most recent commit that changed the file. */
+  /** SHA of the most recent commit in the extracted history that touched the file; empty when none did. */
   lastCommit: string;
   /** Number of commits that changed the file. */
   changes: number;
@@ -37,8 +39,10 @@ export interface ImportEdge {
   from: string;
   /** Path of the imported brick. */
   to: string;
-  /** Symbols imported across the edge. */
+  /** Symbols imported across the edge: names, `default`, or `*` for a namespace, re-export-all or dynamic import; empty for a side-effect import. */
   symbols: string[];
+  /** True when every import across the edge is type-only, so it carries no runtime dependency. */
+  typeOnly: boolean;
   /** The dependency in English, from `.rama/glossary.json`; unconfirmed until a named person confirms it. */
   english?: { text: string; confirmed: boolean; by?: string; at?: string };
 }
@@ -55,8 +59,14 @@ export interface Commit {
   author: string;
   /** First line of the commit message. */
   subject: string;
-  /** Per-file changes: kind (Added, Modified, Deleted, Renamed) and line counts, null for binary files. */
-  changes: { path: string; kind: 'A' | 'M' | 'D' | 'R'; add: number | null; del: number | null }[];
+  /** Per-file changes: kind (Added, Modified, Deleted, Renamed), line counts (null for binary files), and the old path of a rename. */
+  changes: {
+    path: string;
+    kind: 'A' | 'M' | 'D' | 'R';
+    add: number | null;
+    del: number | null;
+    from?: string;
+  }[];
 }
 
 /** A screen of the target's app: a route and the bricks that render it. */
@@ -91,9 +101,11 @@ export interface FigureRef {
 export interface Blueprint {
   /** Repository identifier (URL or path) the Blueprint was extracted from. */
   repo: string;
-  /** SHA of the commit extracted. */
+  /** SHA of the commit extracted; with `worktree`, the commit the working tree sits on. Empty when there is no history. */
   commit: string;
-  /** Time of extraction, ISO 8601. */
+  /** True when files were read from a working tree with changes pending on top of `commit` (how this repository renders itself). */
+  worktree: boolean;
+  /** Committer date of `commit`, ISO 8601: deterministic, so re-extracting the same commit is byte-identical. */
   extractedAt: string;
   /** Version of the extractor that wrote the Blueprint. */
   extractorVersion: string;
@@ -103,13 +115,15 @@ export interface Blueprint {
   nodes: BrickNode[];
   /** Resolved internal imports. */
   edges: ImportEdge[];
-  /** External dependencies with their declared versions. */
-  external: { name: string; version: string }[];
+  /** Relative or aliased imports that point inside the repository but match no tracked file. */
+  unresolved: { from: string; spec: string }[];
+  /** External dependencies with their declared versions, the manifest declaring them, and whether they are dev-only. */
+  external: { name: string; version: string; dev: boolean; manifest: string }[];
   /** Full history, oldest first. */
   commits: Commit[];
-  /** Branch names. */
+  /** Branch names (local and remote, deduplicated); empty in a worktree extraction, where refs depend on the machine. */
   branches: string[];
-  /** Tag names. */
+  /** Tag names; empty in a worktree extraction. */
   tags: string[];
   /** Screens discovered from the app's routes. */
   screens: Screen[];

@@ -16,6 +16,12 @@ export default defineConfig({
       project('@rama/shared', 'packages/shared', ['src/**/*.test.ts']),
       project('@rama/db', 'packages/db', ['src/**/*.test.ts'], 30_000),
       project('@rama/model', 'packages/model', ['src/**/*.test.ts']),
+      project(
+        '@rama/blueprint',
+        'packages/blueprint',
+        ['src/**/*.test.ts', 'test/**/*.test.ts'],
+        60_000,
+      ),
       project('@rama/app', 'apps/rama', ['**/*.test.{ts,tsx}']),
       project('e2e', 'tests', ['**/*.e2e.test.ts'], 120_000),
     ],

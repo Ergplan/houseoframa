@@ -1,0 +1,4055 @@
+{
+  "branches": [],
+  "commit": "199b82329d8773a919e7fbe2e7dc9caf23c97688",
+  "commits": [
+    {
+      "at": "2026-10-20T13:13:14+05:30",
+      "author": "Claude Fable 5.1",
+      "changes": [
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "A",
+          "path": ".env.example"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "A",
+          "path": ".github/workflows/check.yml"
+        },
+        {
+          "add": 10,
+          "del": 0,
+          "kind": "A",
+          "path": ".gitignore"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "A",
+          "path": ".nvmrc"
+        },
+        {
+          "add": 91,
+          "del": 0,
+          "kind": "A",
+          "path": "CLAUDE.md"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "A",
+          "path": "README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/README.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "A",
+          "path": "blueprint/README.md"
+        },
+        {
+          "add": 12,
+          "del": 0,
+          "kind": "A",
+          "path": "docker-compose.yml"
+        },
+        {
+          "add": 31,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 22,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 239,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/MASTER-PROMPT.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/README.md"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "A",
+          "path": "package.json"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/blueprint/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/ceremony/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/trace/README.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "pnpm-workspace.yaml"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "A",
+          "path": "prompts/README.md"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/README.md"
+        },
+        {
+          "add": 571,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/ekbill-ease-of-use-2026-10-18.html"
+        },
+        {
+          "add": 113,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/audit.js"
+        },
+        {
+          "add": 88,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/discovery.js"
+        },
+        {
+          "add": 47,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/english.js"
+        },
+        {
+          "add": 159,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/extract.py"
+        },
+        {
+          "add": 1300,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/graph.json"
+        },
+        {
+          "add": 827,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/house-of-rama.html"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/advisory.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/boq.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/history.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/intel.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/master.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/package.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/site.jpg"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "reference/weekend-prototype/shots/walk.jpg"
+        },
+        {
+          "add": 228,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/trace.json"
+        },
+        {
+          "add": 91,
+          "del": 0,
+          "kind": "A",
+          "path": "reference/weekend-prototype/traces.js"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "A",
+          "path": "scripts/watch.mjs"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/README.md"
+        }
+      ],
+      "sha": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "short": "73a3e6b",
+      "subject": "House of Rama: master prompt, rules, reference inputs and repo skeleton"
+    },
+    {
+      "at": "2026-10-20T08:19:49Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "M",
+          "path": ".env.example"
+        },
+        {
+          "add": 38,
+          "del": 5,
+          "kind": "M",
+          "path": ".github/workflows/check.yml"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": ".gitignore"
+        },
+        {
+          "add": 15,
+          "del": 0,
+          "kind": "A",
+          "path": ".prettierignore"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "A",
+          "path": ".prettierrc.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/README.md"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/layout.tsx"
+        },
+        {
+          "add": 32,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/page.test.tsx"
+        },
+        {
+          "add": 12,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/page.tsx"
+        },
+        {
+          "add": 15,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/BuildStamp.tsx"
+        },
+        {
+          "add": 11,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/next.config.ts"
+        },
+        {
+          "add": 22,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/package.json"
+        },
+        {
+          "add": 12,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/tsconfig.json"
+        },
+        {
+          "add": 35,
+          "del": 3,
+          "kind": "M",
+          "path": "docker-compose.yml"
+        },
+        {
+          "add": 54,
+          "del": 22,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 184,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/BLUEPRINT.md"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 6,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 71,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-0.md"
+        },
+        {
+          "add": 33,
+          "del": 0,
+          "kind": "A",
+          "path": "eslint.config.mjs"
+        },
+        {
+          "add": 26,
+          "del": 2,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/db/README.md"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/drizzle.config.ts"
+        },
+        {
+          "add": 68,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/migrations/0000_init.sql"
+        },
+        {
+          "add": 374,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/migrations/meta/0000_snapshot.json"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/migrations/meta/_journal.json"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/package.json"
+        },
+        {
+          "add": 27,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/cli.ts"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/client.ts"
+        },
+        {
+          "add": 118,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/db.test.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/index.ts"
+        },
+        {
+          "add": 10,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/migrate.ts"
+        },
+        {
+          "add": 75,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/schema.ts"
+        },
+        {
+          "add": 34,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/src/seed.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/tsconfig.json"
+        },
+        {
+          "add": 10,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/model/README.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/package.json"
+        },
+        {
+          "add": 127,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/adapters.ts"
+        },
+        {
+          "add": 188,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/call.test.ts"
+        },
+        {
+          "add": 172,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/call.ts"
+        },
+        {
+          "add": 30,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/call.vendor.test.ts"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/index.ts"
+        },
+        {
+          "add": 30,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/prompts.ts"
+        },
+        {
+          "add": 29,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/src/vendors.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/test/fixtures/prompts/echo.v1.md"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/model/tsconfig.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/shared/README.md"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/package.json"
+        },
+        {
+          "add": 19,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/src/audit.ts"
+        },
+        {
+          "add": 116,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/src/blueprint.ts"
+        },
+        {
+          "add": 41,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/src/ceremony.ts"
+        },
+        {
+          "add": 41,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/src/doc.test.ts"
+        },
+        {
+          "add": 12,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/src/index.ts"
+        },
+        {
+          "add": 23,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/src/trail.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/shared/tsconfig.json"
+        },
+        {
+          "add": 3144,
+          "del": 0,
+          "kind": "A",
+          "path": "pnpm-lock.yaml"
+        },
+        {
+          "add": 100,
+          "del": 0,
+          "kind": "A",
+          "path": "scripts/dev.mjs"
+        },
+        {
+          "add": 121,
+          "del": 0,
+          "kind": "A",
+          "path": "scripts/gen-blueprint-doc.mjs"
+        },
+        {
+          "add": 230,
+          "del": 9,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/README.md"
+        },
+        {
+          "add": 69,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/stage-0.e2e.test.ts"
+        },
+        {
+          "add": 19,
+          "del": 0,
+          "kind": "A",
+          "path": "tsconfig.base.json"
+        },
+        {
+          "add": 23,
+          "del": 0,
+          "kind": "A",
+          "path": "vitest.config.ts"
+        }
+      ],
+      "sha": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "short": "1e5eab5",
+      "subject": "Stage 0: foundation — workspace, app, shared types, db, model, watcher, CI"
+    },
+    {
+      "at": "2026-10-20T08:39:42Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 8,
+          "del": 5,
+          "kind": "M",
+          "path": "docs/reports/stage-0.md"
+        },
+        {
+          "add": 7,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/model/src/adapters.ts"
+        },
+        {
+          "add": 15,
+          "del": 4,
+          "kind": "M",
+          "path": "packages/model/src/call.test.ts"
+        },
+        {
+          "add": 24,
+          "del": 5,
+          "kind": "M",
+          "path": "packages/model/src/call.ts"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/model/src/call.vendor.test.ts"
+        },
+        {
+          "add": 8,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/model/src/index.ts"
+        }
+      ],
+      "sha": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "short": "2adfcea",
+      "subject": "model: fail fast on token-limit replies; sum tokens across attempts"
+    },
+    {
+      "at": "2026-10-20T08:40:38Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": ".env.example"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 0,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-0.md"
+        }
+      ],
+      "sha": "199b82329d8773a919e7fbe2e7dc9caf23c97688",
+      "short": "199b823",
+      "subject": "docs: auditor model is gpt-6.1-sol, chosen by the member"
+    }
+  ],
+  "edges": [
+    {
+      "from": "apps/rama/app/api/health/route.test.ts",
+      "symbols": [
+        "GET"
+      ],
+      "to": "apps/rama/app/api/health/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/health/route.ts",
+      "symbols": [
+        "shortSha"
+      ],
+      "to": "apps/rama/components/BuildStamp.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "apps/rama/app/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/page.test.tsx",
+      "symbols": [
+        "shortSha"
+      ],
+      "to": "apps/rama/components/BuildStamp.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/page.tsx",
+      "symbols": [
+        "BuildStamp"
+      ],
+      "to": "apps/rama/components/BuildStamp.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/bin/rama.mjs",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/blueprint/src/cli.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "diffBlueprints",
+        "formatDiff"
+      ],
+      "to": "packages/blueprint/src/diff.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "draftGlossary"
+      ],
+      "to": "packages/blueprint/src/draft.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "ExtractOptions",
+        "extract"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "readWorktree",
+        "topLevel"
+      ],
+      "to": "packages/blueprint/src/git.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "Glossary"
+      ],
+      "to": "packages/blueprint/src/glossary.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "summary"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/diff.test.ts",
+      "symbols": [
+        "diffBlueprints",
+        "formatDiff"
+      ],
+      "to": "packages/blueprint/src/diff.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/diff.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/diff.ts",
+      "symbols": [
+        "byString",
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/diff.ts",
+      "symbols": [
+        "summary"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/diff.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/draft.test.ts",
+      "symbols": [
+        "DRAFT_COMPONENT",
+        "draftGlossary",
+        "missingPhrases"
+      ],
+      "to": "packages/blueprint/src/draft.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.test.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/draft.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/draft.ts",
+      "symbols": [
+        "EXTRACTOR_VERSION"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.ts",
+      "symbols": [
+        "Glossary",
+        "phraseFor"
+      ],
+      "to": "packages/blueprint/src/glossary.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/draft.vendor.test.ts",
+      "symbols": [
+        "draftGlossary"
+      ],
+      "to": "packages/blueprint/src/draft.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.vendor.test.ts",
+      "symbols": [
+        "extract"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/draft.vendor.test.ts",
+      "symbols": [
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.test.ts",
+      "symbols": [
+        "countLines",
+        "extract",
+        "isBinary"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.test.ts",
+      "symbols": [
+        "mergeGlossary"
+      ],
+      "to": "packages/blueprint/src/glossary.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.test.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "packages/blueprint/package.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "TreeFile",
+        "committerDate",
+        "readBranches",
+        "readCommitTree",
+        "readHistory",
+        "readTags",
+        "readWorktree",
+        "revParse",
+        "topLevel",
+        "worktreeBase"
+      ],
+      "to": "packages/blueprint/src/git.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "Glossary",
+        "mergeGlossary"
+      ],
+      "to": "packages/blueprint/src/glossary.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "LayersOverlay",
+        "assignLayer",
+        "planLayers"
+      ],
+      "to": "packages/blueprint/src/layers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "isCode",
+        "parseSource"
+      ],
+      "to": "packages/blueprint/src/parse.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "Resolver"
+      ],
+      "to": "packages/blueprint/src/resolve.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "findScreens"
+      ],
+      "to": "packages/blueprint/src/screens.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/extract.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode",
+        "ImportEdge"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/git.ts",
+      "symbols": [
+        "matchGlob"
+      ],
+      "to": "packages/blueprint/src/glob.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/git.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/git.ts",
+      "symbols": [
+        "Commit"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/glob.test.ts",
+      "symbols": [
+        "matchGlob"
+      ],
+      "to": "packages/blueprint/src/glob.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/glossary.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/glossary.ts",
+      "symbols": [
+        "ImportEdge"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/golden.test.ts",
+      "symbols": [
+        "extract"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/golden.test.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/golden.test.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/golden.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/index.ts",
+      "symbols": [
+        "BlueprintDiff",
+        "diffBlueprints"
+      ],
+      "to": "packages/blueprint/src/diff.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/index.ts",
+      "symbols": [
+        "draftGlossary"
+      ],
+      "to": "packages/blueprint/src/draft.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/index.ts",
+      "symbols": [
+        "EXTRACTOR_VERSION",
+        "ExtractOptions",
+        "countLines",
+        "extract",
+        "isBinary"
+      ],
+      "to": "packages/blueprint/src/extract.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/index.ts",
+      "symbols": [
+        "Glossary",
+        "GlossaryEntry",
+        "mergeGlossary"
+      ],
+      "to": "packages/blueprint/src/glossary.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/index.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/index.ts",
+      "symbols": [
+        "DEFAULT_LAYERS",
+        "DEFAULT_RULES",
+        "assignLayer",
+        "planLayers"
+      ],
+      "to": "packages/blueprint/src/layers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/layers.test.ts",
+      "symbols": [
+        "DEFAULT_RULES",
+        "assignLayer",
+        "planLayers"
+      ],
+      "to": "packages/blueprint/src/layers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/layers.ts",
+      "symbols": [
+        "matchGlob"
+      ],
+      "to": "packages/blueprint/src/glob.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/layers.ts",
+      "symbols": [
+        "Layer"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/metrics/index.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/metrics/index.ts",
+      "symbols": [
+        "isCode"
+      ],
+      "to": "packages/blueprint/src/parse.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/metrics/index.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/metrics/metrics.test.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/metrics/metrics.test.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode",
+        "Commit",
+        "ImportEdge"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/src/parse.test.ts",
+      "symbols": [
+        "isCode",
+        "parseSource"
+      ],
+      "to": "packages/blueprint/src/parse.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/parse.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/resolve.test.ts",
+      "symbols": [
+        "Resolver"
+      ],
+      "to": "packages/blueprint/src/resolve.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/resolve.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/screens.ts",
+      "symbols": [
+        "byString"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/screens.ts",
+      "symbols": [
+        "ImportEdge",
+        "Screen"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/db/src/cli.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/client.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/cli.ts",
+      "symbols": [
+        "runMigrations"
+      ],
+      "to": "packages/db/src/migrate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/cli.ts",
+      "symbols": [
+        "seed"
+      ],
+      "to": "packages/db/src/seed.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/client.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/db/src/schema.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/db.test.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/client.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/db.test.ts",
+      "symbols": [
+        "runMigrations"
+      ],
+      "to": "packages/db/src/migrate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/db.test.ts",
+      "symbols": [
+        "auditLog",
+        "modelCalls",
+        "people",
+        "sites"
+      ],
+      "to": "packages/db/src/schema.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/db.test.ts",
+      "symbols": [
+        "SEED_COMPONENT",
+        "seed"
+      ],
+      "to": "packages/db/src/seed.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/index.ts",
+      "symbols": [
+        "Db",
+        "createDb"
+      ],
+      "to": "packages/db/src/client.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/index.ts",
+      "symbols": [
+        "MIGRATIONS_DIR",
+        "runMigrations"
+      ],
+      "to": "packages/db/src/migrate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/db/src/schema.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/index.ts",
+      "symbols": [
+        "SEED_COMPONENT",
+        "SELF_SITE_ID",
+        "seed"
+      ],
+      "to": "packages/db/src/seed.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/migrate.ts",
+      "symbols": [
+        "Db"
+      ],
+      "to": "packages/db/src/client.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/db/src/seed.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "packages/db/package.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/seed.ts",
+      "symbols": [
+        "Db"
+      ],
+      "to": "packages/db/src/client.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/db/src/seed.ts",
+      "symbols": [
+        "people",
+        "sites"
+      ],
+      "to": "packages/db/src/schema.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/adapters.ts",
+      "symbols": [
+        "Vendor"
+      ],
+      "to": "packages/model/src/vendors.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/model/src/call.test.ts",
+      "symbols": [
+        "CallDeps",
+        "ModelCallRow",
+        "OutputTruncatedError",
+        "call"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.test.ts",
+      "symbols": [
+        "VendorGuardError",
+        "resolveVendors"
+      ],
+      "to": "packages/model/src/vendors.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.ts",
+      "symbols": [
+        "createDb",
+        "modelCalls"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "packages/model/package.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.ts",
+      "symbols": [
+        "ADAPTERS",
+        "Completion",
+        "Fetch",
+        "VendorHttpError"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.ts",
+      "symbols": [
+        "PROMPTS_DIR",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/prompts.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.ts",
+      "symbols": [
+        "Role",
+        "Vendor",
+        "resolveVendors"
+      ],
+      "to": "packages/model/src/vendors.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/call.vendor.test.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "VendorHttpError"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "CallDeps",
+        "CallRequest",
+        "CallResult",
+        "MAX_ATTEMPTS",
+        "MODEL_COMPONENT",
+        "ModelCallRow",
+        "ModelConfigError",
+        "OutputParseError",
+        "OutputTruncatedError",
+        "call"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "PROMPTS_DIR",
+        "Prompt",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/prompts.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "Role",
+        "VENDORS",
+        "Vendor",
+        "VendorGuardError",
+        "resolveVendors"
+      ],
+      "to": "packages/model/src/vendors.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/shared/src/doc.test.ts",
+      "symbols": [
+        "collectTypes",
+        "render"
+      ],
+      "to": "scripts/gen-blueprint-doc.mjs",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/shared/src/index.ts",
+      "symbols": [
+        "Finding"
+      ],
+      "to": "packages/shared/src/audit.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/shared/src/index.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode",
+        "Commit",
+        "FigureRef",
+        "ImportEdge",
+        "Layer",
+        "Screen"
+      ],
+      "to": "packages/shared/src/blueprint.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/shared/src/index.ts",
+      "symbols": [
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/ceremony.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/shared/src/index.ts",
+      "symbols": [
+        "Trail"
+      ],
+      "to": "packages/shared/src/trail.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/shared/src/trail.ts",
+      "symbols": [
+        "Signoff"
+      ],
+      "to": "packages/shared/src/ceremony.ts",
+      "typeOnly": true
+    }
+  ],
+  "external": [
+    {
+      "dev": true,
+      "manifest": "apps/rama/package.json",
+      "name": "@types/react",
+      "version": "19.3.0"
+    },
+    {
+      "dev": true,
+      "manifest": "apps/rama/package.json",
+      "name": "@types/react-dom",
+      "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "next",
+      "version": "16.3.8"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "react",
+      "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "react-dom",
+      "version": "19.3.0"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@eslint/js",
+      "version": "10.0.1"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@next/eslint-plugin-next",
+      "version": "16.3.8"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@types/node",
+      "version": "22.20.5"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "eslint",
+      "version": "10.12.0"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "globals",
+      "version": "17.13.0"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "prettier",
+      "version": "3.9.9"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "tsx",
+      "version": "4.23.15"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "typescript-eslint",
+      "version": "8.71.1"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "vitest",
+      "version": "5.0.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
+      "name": "@rama/model",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
+      "name": "tsx",
+      "version": "4.23.15"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/db/package.json",
+      "name": "drizzle-kit",
+      "version": "0.31.11"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/db/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/db/package.json",
+      "name": "postgres",
+      "version": "3.4.9"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/model/package.json",
+      "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/model/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    }
+  ],
+  "extractedAt": "2026-10-20T08:40:38Z",
+  "extractorVersion": "0.1.0",
+  "layers": [
+    {
+      "id": "reference",
+      "label": "Reference — read-only inputs, never imported"
+    },
+    {
+      "id": "foundation",
+      "label": "Foundation — manifests, config, CI, scripts"
+    },
+    {
+      "id": "data",
+      "label": "Data — schema, migrations, prompts"
+    },
+    {
+      "id": "logic",
+      "label": "Logic — packages"
+    },
+    {
+      "id": "api",
+      "label": "API — server routes"
+    },
+    {
+      "id": "interface",
+      "label": "Interface — components and the building renderer"
+    },
+    {
+      "id": "shell",
+      "label": "Shell — routes, docs, end-to-end tests"
+    }
+  ],
+  "nodes": [
+    {
+      "binary": false,
+      "bytes": 633,
+      "changes": 3,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "199b82329d8773a919e7fbe2e7dc9caf23c97688",
+      "layer": "foundation",
+      "layerRule": "default: .env.example",
+      "lines": 14,
+      "path": ".env.example",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1868,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 55,
+      "path": ".github/workflows/check.yml",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 153,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: .gitignore",
+      "lines": 13,
+      "path": ".gitignore",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 1,
+      "path": ".nvmrc",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 303,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 15,
+      "path": ".prettierignore",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 73,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 5,
+      "path": ".prettierrc.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1710,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 52,
+      "path": ".rama/layers.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 10603,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 91,
+      "path": "CLAUDE.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1306,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 24,
+      "path": "README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 274,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 3,
+      "path": "apps/rama/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 643,
+      "changes": 0,
+      "env": [
+        "GIT_SHA"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 21,
+      "path": "apps/rama/app/api/health/route.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 275,
+      "changes": 0,
+      "env": [
+        "GIT_SHA"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "GET"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 6,
+      "path": "apps/rama/app/api/health/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 516,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "metadata"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 24,
+      "path": "apps/rama/app/layout.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1085,
+      "changes": 1,
+      "env": [
+        "GIT_SHA"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 32,
+      "path": "apps/rama/app/page.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 365,
+      "changes": 1,
+      "env": [
+        "GIT_SHA"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 12,
+      "path": "apps/rama/app/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 643,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildStamp",
+        "shortSha"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 15,
+      "path": "apps/rama/components/BuildStamp.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 476,
+      "changes": 1,
+      "env": [
+        "NEXT_DIST_DIR"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 11,
+      "path": "apps/rama/next.config.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 514,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 22,
+      "path": "apps/rama/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 333,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 12,
+      "path": "apps/rama/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 131,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 1,
+      "path": "blueprint/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1563,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 44,
+      "path": "docker-compose.yml",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8218,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 73,
+      "path": "docs/ARCHITECTURE.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 10086,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 188,
+      "path": "docs/BLUEPRINT.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7493,
+      "changes": 4,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "199b82329d8773a919e7fbe2e7dc9caf23c97688",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 56,
+      "path": "docs/DECISIONS.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2001,
+      "changes": 4,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "199b82329d8773a919e7fbe2e7dc9caf23c97688",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 16,
+      "path": "docs/KNOWN-GAPS.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 22676,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 239,
+      "path": "docs/MASTER-PROMPT.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 228,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 1,
+      "path": "docs/reports/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 9383,
+      "changes": 3,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "199b82329d8773a919e7fbe2e7dc9caf23c97688",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 75,
+      "path": "docs/reports/stage-0.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 856,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 33,
+      "path": "eslint.config.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1416,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 40,
+      "path": "package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 164,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 3,
+      "path": "packages/audit/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2090,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 17,
+      "path": "packages/blueprint/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 201,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 6,
+      "path": "packages/blueprint/bin/rama.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 524,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 24,
+      "path": "packages/blueprint/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4415,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 110,
+      "path": "packages/blueprint/src/cli.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1676,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 46,
+      "path": "packages/blueprint/src/diff.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4296,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BlueprintDiff",
+        "diffBlueprints",
+        "formatDiff"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 99,
+      "path": "packages/blueprint/src/diff.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2346,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 50,
+      "path": "packages/blueprint/src/draft.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2937,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "DRAFT_COMPONENT",
+        "DraftRequestItem",
+        "draftGlossary",
+        "missingPhrases"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 74,
+      "path": "packages/blueprint/src/draft.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1466,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 27,
+      "path": "packages/blueprint/src/draft.vendor.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 9639,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 210,
+      "path": "packages/blueprint/src/extract.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7114,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "EXTRACTOR_VERSION",
+        "ExtractOptions",
+        "countLines",
+        "extract",
+        "isBinary"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 192,
+      "path": "packages/blueprint/src/extract.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8441,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "TreeFile",
+        "committerDate",
+        "git",
+        "isExcluded",
+        "pathspec",
+        "readBranches",
+        "readCommitTree",
+        "readHistory",
+        "readTags",
+        "readWorktree",
+        "revParse",
+        "topLevel",
+        "worktreeBase"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 215,
+      "path": "packages/blueprint/src/git.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 824,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 19,
+      "path": "packages/blueprint/src/glob.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1317,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "globToRegExp",
+        "matchGlob"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 47,
+      "path": "packages/blueprint/src/glob.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1937,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Glossary",
+        "GlossaryEntry",
+        "mergeGlossary",
+        "phraseFor"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 41,
+      "path": "packages/blueprint/src/glossary.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2780,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 64,
+      "path": "packages/blueprint/src/golden.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 411,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BlueprintDiff",
+        "DEFAULT_LAYERS",
+        "DEFAULT_RULES",
+        "EXTRACTOR_VERSION",
+        "ExtractOptions",
+        "Glossary",
+        "GlossaryEntry",
+        "assignLayer",
+        "canonicalJson",
+        "countLines",
+        "diffBlueprints",
+        "draftGlossary",
+        "extract",
+        "isBinary",
+        "mergeGlossary",
+        "planLayers"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 6,
+      "path": "packages/blueprint/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 856,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "byString",
+        "canonicalJson"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 22,
+      "path": "packages/blueprint/src/json.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4021,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 86,
+      "path": "packages/blueprint/src/layers.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4262,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "DEFAULT_LAYERS",
+        "DEFAULT_RULES",
+        "FALLBACK_LAYER",
+        "LayerPlan",
+        "LayerRule",
+        "LayersOverlay",
+        "assignLayer",
+        "planLayers"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 105,
+      "path": "packages/blueprint/src/layers.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4200,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Demolition",
+        "Ranked",
+        "authors",
+        "branches",
+        "commits",
+        "demolitions",
+        "envVars",
+        "files",
+        "heaviestCodeBrick",
+        "importEdges",
+        "loadBearing",
+        "mostReworked",
+        "sideEffectImports",
+        "summary",
+        "tests",
+        "textLines",
+        "untestedBricks"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 107,
+      "path": "packages/blueprint/src/metrics/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3576,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 88,
+      "path": "packages/blueprint/src/metrics/metrics.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3909,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 78,
+      "path": "packages/blueprint/src/parse.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 8503,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CODE_EXTENSIONS",
+        "ImportRef",
+        "SourceFacts",
+        "isCode",
+        "parseSource"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 208,
+      "path": "packages/blueprint/src/parse.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3334,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 67,
+      "path": "packages/blueprint/src/resolve.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7941,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Resolution",
+        "Resolver",
+        "ResolverInput"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 194,
+      "path": "packages/blueprint/src/resolve.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4010,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "findAppRoots",
+        "findScreens",
+        "routeFor"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 107,
+      "path": "packages/blueprint/src/screens.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2076,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 60,
+      "path": "packages/blueprint/test/fixture-repo.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 66,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/blueprint/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 167,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 3,
+      "path": "packages/ceremony/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 395,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 7,
+      "path": "packages/db/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 254,
+      "changes": 1,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 8,
+      "path": "packages/db/drizzle.config.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3277,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 68,
+      "path": "packages/db/migrations/0000_init.sql",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 9168,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 374,
+      "path": "packages/db/migrations/meta/0000_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 198,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 13,
+      "path": "packages/db/migrations/meta/_journal.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 563,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 24,
+      "path": "packages/db/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 969,
+      "changes": 1,
+      "env": [
+        "RAMA_MEMBER_NAME"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 27,
+      "path": "packages/db/src/cli.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 523,
+      "changes": 1,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "Db",
+        "createDb"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 13,
+      "path": "packages/db/src/client.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4369,
+      "changes": 1,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 118,
+      "path": "packages/db/src/db.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 204,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*",
+        "Db",
+        "MIGRATIONS_DIR",
+        "SEED_COMPONENT",
+        "SELF_SITE_ID",
+        "createDb",
+        "runMigrations",
+        "seed"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 4,
+      "path": "packages/db/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 419,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "MIGRATIONS_DIR",
+        "runMigrations"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 10,
+      "path": "packages/db/src/migrate.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2621,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "APPEND_ONLY_TABLES",
+        "auditLog",
+        "modelCalls",
+        "people",
+        "sites"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 75,
+      "path": "packages/db/src/schema.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1332,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "SEED_COMPONENT",
+        "SELF_SITE_ID",
+        "seed"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 34,
+      "path": "packages/db/src/seed.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 87,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 4,
+      "path": "packages/db/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 830,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 12,
+      "path": "packages/model/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 390,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 17,
+      "path": "packages/model/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3771,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ADAPTERS",
+        "Completion",
+        "CompletionRequest",
+        "Fetch",
+        "VendorHttpError",
+        "anthropicComplete",
+        "openaiComplete"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 133,
+      "path": "packages/model/src/adapters.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7314,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 199,
+      "path": "packages/model/src/call.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6362,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CallDeps",
+        "CallRequest",
+        "CallResult",
+        "MAX_ATTEMPTS",
+        "MODEL_COMPONENT",
+        "ModelCallRow",
+        "ModelConfigError",
+        "OutputParseError",
+        "OutputTruncatedError",
+        "call"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 191,
+      "path": "packages/model/src/call.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1168,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 31,
+      "path": "packages/model/src/call.vendor.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 434,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CallDeps",
+        "CallRequest",
+        "CallResult",
+        "MAX_ATTEMPTS",
+        "MODEL_COMPONENT",
+        "ModelCallRow",
+        "ModelConfigError",
+        "OutputParseError",
+        "OutputTruncatedError",
+        "PROMPTS_DIR",
+        "Prompt",
+        "Role",
+        "VENDORS",
+        "Vendor",
+        "VendorGuardError",
+        "VendorHttpError",
+        "call",
+        "loadPrompt",
+        "resolveVendors"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "2adfcea1f7d92de1280690c86f54f2d5bb0acbc4",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 12,
+      "path": "packages/model/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1115,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "PROMPTS_DIR",
+        "Prompt",
+        "loadPrompt"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 30,
+      "path": "packages/model/src/prompts.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1225,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Role",
+        "VENDORS",
+        "Vendor",
+        "VendorGuardError",
+        "resolveVendors"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 29,
+      "path": "packages/model/src/vendors.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 189,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 4,
+      "path": "packages/model/test/fixtures/prompts/echo.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 74,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/model/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 370,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 3,
+      "path": "packages/shared/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 277,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 13,
+      "path": "packages/shared/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 585,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Finding"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 19,
+      "path": "packages/shared/src/audit.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5439,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Blueprint",
+        "BrickNode",
+        "Commit",
+        "FigureRef",
+        "ImportEdge",
+        "Layer",
+        "Screen"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 130,
+      "path": "packages/shared/src/blueprint.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1448,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Decision",
+        "Signoff"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 41,
+      "path": "packages/shared/src/ceremony.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1448,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 41,
+      "path": "packages/shared/src/doc.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 261,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Blueprint",
+        "BrickNode",
+        "Commit",
+        "Decision",
+        "FigureRef",
+        "Finding",
+        "ImportEdge",
+        "Layer",
+        "Screen",
+        "Signoff",
+        "Trail"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 12,
+      "path": "packages/shared/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1105,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Trail"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 23,
+      "path": "packages/shared/src/trail.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 66,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/shared/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 164,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 3,
+      "path": "packages/trace/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 101412,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 3165,
+      "path": "pnpm-lock.yaml",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 36,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 3,
+      "path": "pnpm-workspace.yaml",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 189,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1,
+      "path": "prompts/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1208,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 16,
+      "path": "prompts/glossary.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1266,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 8,
+      "path": "reference/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 336584,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 571,
+      "path": "reference/ekbill-ease-of-use-2026-10-18.html",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 13194,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 113,
+      "path": "reference/weekend-prototype/audit.js",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 11884,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 88,
+      "path": "reference/weekend-prototype/discovery.js",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5130,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 47,
+      "path": "reference/weekend-prototype/english.js",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8178,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 159,
+      "path": "reference/weekend-prototype/extract.py",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 24231,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 1300,
+      "path": "reference/weekend-prototype/graph.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 106240,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 827,
+      "path": "reference/weekend-prototype/house-of-rama.html",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 44115,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/advisory.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 188575,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/boq.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 52178,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/history.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 27675,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/intel.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 59564,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/master.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 60556,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/package.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 100016,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/site.jpg",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 91634,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 0,
+      "path": "reference/weekend-prototype/shots/walk.jpg",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4453,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 228,
+      "path": "reference/weekend-prototype/trace.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 14037,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "layer": "reference",
+      "layerRule": "overlay: reference/**",
+      "lines": 91,
+      "path": "reference/weekend-prototype/traces.js",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3281,
+      "changes": 1,
+      "env": [
+        "DATABASE_URL",
+        "GIT_SHA"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 100,
+      "path": "scripts/dev.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4546,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "DOC_PATH",
+        "collectTypes",
+        "render"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 121,
+      "path": "scripts/gen-blueprint-doc.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7598,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 231,
+      "path": "scripts/watch.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 305,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 1,
+      "path": "tests/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3007,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 83,
+      "path": "tests/stage-0.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2546,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 58,
+      "path": "tests/stage-1.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 458,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 19,
+      "path": "tsconfig.base.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1113,
+      "changes": 1,
+      "env": [
+        "RAMA_VENDOR_TESTS"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 29,
+      "path": "vitest.config.ts",
+      "test": false
+    }
+  ],
+  "repo": "Ergplan/houseoframa",
+  "screens": [
+    {
+      "bricks": [
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/page.tsx",
+        "apps/rama/components/BuildStamp.tsx"
+      ],
+      "file": "apps/rama/app/page.tsx",
+      "id": "/",
+      "name": "Home",
+      "route": "/"
+    }
+  ],
+  "tags": [],
+  "unresolved": [],
+  "worktree": true
+}
