@@ -186,7 +186,9 @@ function collectFigures(arg) {
     if (tag === 'CANVAS') found.push('canvas');
     if (tag === 'VIDEO') found.push('video');
     if (tag === 'IFRAME') found.push('frame'); // another document, not read: marked whatever its size
-    if ((tag === 'IMG' || tag === 'IMAGE') && LEGIBLE(r)) {
+    if (tag === 'OBJECT' || tag === 'EMBED') found.push('embedded document'); // likewise
+    const imageButton = tag === 'INPUT' && el.type === 'image';
+    if ((tag === 'IMG' || tag === 'IMAGE' || imageButton) && LEGIBLE(r)) {
       const src = el.getAttribute('src') ?? el.getAttribute('href') ?? '';
       const name =
         el.getAttribute('alt') ||

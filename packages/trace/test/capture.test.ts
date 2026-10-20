@@ -159,6 +159,8 @@ describe('figures without a text node of their own', () => {
       '₹99',
       '₹7',
       '₹250', // an empty field's placeholder is what it shows; "Name" is not a figure
+      'image: Pay', // an image button is pixels
+      'embedded document', // <object> / <embed>: another document, not read
       'frame',
       '₹3',
       'component: x-closed', // may draw inside a closed shadow root, which cannot be read
@@ -236,8 +238,10 @@ describe('showroom', () => {
       'more/untraced:more:12',
       'more/untraced:more:13',
       'more/untraced:more:14',
+      'more/untraced:more:15',
+      'more/untraced:more:16',
     ]);
-    expect(s.counts).toEqual({ shown: 40, traced: 6 });
+    expect(s.counts).toEqual({ shown: 42, traced: 6 });
     expect(Object.keys(s.trails).sort()).toEqual([
       'home/order-total',
       'home/order-total~2',

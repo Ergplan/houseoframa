@@ -44,6 +44,8 @@ const routes = {
   '/more': () =>
     page('<style>.pre::before { content: "₹7"; }</style>' +
       '<input type="button" value="₹99"> <span class="pre"></span> <input placeholder="₹250"> <input placeholder="Name">' +
+      '<input type="image" alt="Pay" width="200" height="30" src="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="30"/>') + '">' +
+      '<object width="200" height="60" data="data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60"/>') + '"></object>' +
       '<iframe width="200" height="100" srcdoc="<p>₹1</p>"></iframe>' +
       '<x-total></x-total><script>customElements.define("x-total", class extends HTMLElement { constructor() { super(); this.attachShadow({ mode: "open" }).innerHTML = "<b>₹3</b>"; } });</script>' +
       '<x-closed></x-closed><script>customElements.define("x-closed", class extends HTMLElement { constructor() { super(); this.attachShadow({ mode: "closed" }).innerHTML = "<b>₹4</b>"; } });</script>' +

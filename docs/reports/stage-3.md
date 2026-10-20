@@ -213,7 +213,9 @@ The fixture's counter (42) and closed component (₹4) are both marked. EkBill h
 
 **Run 13 (at 394825d): one code defect, fixed with a regression test in this commit.** An empty field shows its placeholder (`<input placeholder="₹99">`), which was not read. An empty input or textarea is now judged by its placeholder. The fixture's "₹250" placeholder is marked and its "Name" placeholder is not a figure. EkBill stays at 7 of 158.
 
-(Run 14 below.)
+**Run 14 (at e445581): one code defect, fixed with regression tests in this commit.** An image button (`<input type="image">`) is pixels and was not covered. It is now marked like an image. `<object>` and `<embed>`, which show another document like a frame does, are marked "embedded document". The fixture's image button and object are both marked. EkBill stays at 7 of 158.
+
+(Run 15 below.)
 
 ## Real model cost
 
