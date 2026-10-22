@@ -11,11 +11,11 @@ Built:
 - `packages/shared` — the types of MASTER-PROMPT §8 (`Blueprint`, `BrickNode`, `ImportEdge`, `Commit`, `Screen`, `FigureRef`, `Trail`, `Decision`, `Signoff`, `Finding`), one doc comment per field. `docs/BLUEPRINT.md` is generated from them.
 - `packages/db` — Drizzle schema, the single migration `0000_init`, migrator and seed.
 - `packages/trace` (Stage 3) — `capture()` photographs a target's real screens from its built app (Playwright, no secrets), finds every figure (traced by `data-rama-figure` or the `.rama/figures.json` overlay, untraced otherwise), re-executes traced figures with the target's own functions in a sandboxed Node process, and `buildTrail()` / `showroomOf()` turn a capture into the Showroom. CLI `rama-trace`. Convention: `docs/HOUSE-STYLE.md`.
+- `packages/ceremony` (Stage 4) — decision cards and discovery sessions, named signatures (append-only in Postgres and mirrored to the target's `.rama/decisions.jsonl` and `.rama/signoffs.jsonl`), the supersede chain, the merge gate (`rama gate <repoPath> --base <commit>`), the walkthrough script, and imports of reconstructed records. CLI `rama-ceremony`.
 - `packages/model` — `call()`, the one path to a model vendor: vendor guard, versioned prompt, Anthropic and OpenAI adapters over `fetch`, retries, one `model_calls` row per call. `prices.ts` is the one dated price table (US$ per million tokens per model, the rupee rate, sources); `pnpm cost <stage>` turns a stage's `model_calls` into tokens and rupees.
 
 Planned (folders hold only a README until their stage):
 
-- `packages/ceremony` (Stage 4) — decisions, signoffs (append-only), the merge gate, walkthrough script.
 - `packages/audit` (Stage 5) — plain-code checks, auditor-vendor narration and report.
 
 ## Folders added
@@ -32,22 +32,25 @@ Planned (folders hold only a README until their stage):
 - `apps/rama/components/showroom/` (Stage 3) — the Showroom view and the trail panel.
 - `work/<site>/capture.json`, `work/<site>/shots/` (Stage 3, gitignored) — the last capture and its screenshots.
 - `docs/HOUSE-STYLE.md` (Stage 3) — the convention a house-stack target follows to make its figures traceable.
+- `packages/ceremony/bin/`, `packages/ceremony/test/` (Stage 4) — the `rama-ceremony` executable; tests.
 - `tests/dev-server.ts` (Stage 2) — starts the real Next dev server for an e2e test on its own port and distDir.
 
 ## Data model
 
 Every table carries `site_id`, `created_at`, `created_by` (Invariant 8); `site_id` is nullable only on `people`. `created_by` is a person id or `rama:<component>@<version>`.
 
-| Table                | Purpose                                                                                                           | Append-only                                  | Since   |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------- |
-| `sites`              | one per target repository; primary key is `site_id`; `member_id` is the owning person                             | no                                           | Stage 0 |
-| `people`             | members and reviewers; `name` unique; `site_id` optional home site                                                | no                                           | Stage 0 |
-| `model_calls`        | one row per model call: prompt, version, sha256, role, vendor, model, input, output, status, attempts, tokens, ms | yes (trigger refuses UPDATE/DELETE/TRUNCATE) | Stage 0 |
-| `audit_log`          | every write to the append-only ceremony tables                                                                    | yes (trigger)                                | Stage 0 |
-| `decisions`          | discovery decision cards                                                                                          | yes                                          | Stage 4 |
-| `signoffs`           | signatures on screens/bricks at a commit                                                                          | yes                                          | Stage 4 |
-| `audits`, `findings` | auditor reports and per-brick verdicts                                                                            | yes                                          | Stage 5 |
-| `bookings`           | pod bookings                                                                                                      | no                                           | Stage 6 |
+| Table                | Purpose                                                                                                                                                      | Append-only                                  | Since   |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- | ------- |
+| `sites`              | one per target repository; primary key is `site_id`; `member_id` is the owning person                                                                        | no                                           | Stage 0 |
+| `people`             | members and reviewers; `name` unique; `site_id` optional home site                                                                                           | no                                           | Stage 0 |
+| `model_calls`        | one row per model call: prompt, version, sha256, role, vendor, model, input, output, status, attempts, tokens, ms                                            | yes (trigger refuses UPDATE/DELETE/TRUNCATE) | Stage 0 |
+| `audit_log`          | every write to the append-only ceremony tables                                                                                                               | yes (trigger)                                | Stage 0 |
+| `discovery_sessions` | a discovery session in the site office; `reconstructed` and `source` when rebuilt from a record                                                              | yes (trigger)                                | Stage 4 |
+| `discovery_turns`    | one turn of a session: speaker, text, `draft` for a question Rama drafted                                                                                    | yes (trigger)                                | Stage 4 |
+| `decisions`          | decision cards (§8 Decision); a change is a new card with `supersedes`; every insert audited by trigger                                                      | yes (trigger)                                | Stage 4 |
+| `signoffs`           | named signatures on a screen or brick at a commit (§8 Signoff); a reversal is a new row with `supersedes` (and `withdrawn`); every insert audited by trigger | yes (trigger)                                | Stage 4 |
+| `audits`, `findings` | auditor reports and per-brick verdicts                                                                                                                       | yes                                          | Stage 5 |
+| `bookings`           | pod bookings                                                                                                                                                 | no                                           | Stage 6 |
 
 ## Critical path
 

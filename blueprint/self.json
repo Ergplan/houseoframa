@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
+  "commit": "b14039a4f50289da6c2477a09a455af0f94b72bf",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -3472,6 +3472,33 @@
       "sha": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
       "short": "3d5528b",
       "subject": "Fix reviewer run 16: a trail's formula is read with the TypeScript parser"
+    },
+    {
+      "at": "2026-10-20T20:27:03Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 117,
+          "del": 30,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 13,
+          "del": 13,
+          "kind": "M",
+          "path": "docs/reports/stage-3.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-3.review.md"
+        }
+      ],
+      "sha": "b14039a4f50289da6c2477a09a455af0f94b72bf",
+      "short": "b14039a",
+      "subject": "Stage 3: report with reviewer findings, cost and open questions"
     }
   ],
   "edges": [
@@ -5537,6 +5564,382 @@
       "typeOnly": true
     },
     {
+      "from": "packages/ceremony/bin/rama-ceremony.mjs",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ceremony/src/cli.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
+      },
+      "from": "packages/ceremony/src/cli.ts",
+      "symbols": [
+        "locateSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/cli.ts",
+      "symbols": [
+        "formatGate",
+        "runGate"
+      ],
+      "to": "packages/ceremony/src/gate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/cli.ts",
+      "symbols": [
+        "ImportedSession",
+        "parseDecisionsLog",
+        "parseWeekendSession"
+      ],
+      "to": "packages/ceremony/src/imports.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/cli.ts",
+      "symbols": [
+        "addTurn",
+        "decide",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/store.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "packages/ceremony/src/cli.ts",
+      "symbols": [
+        "createDb",
+        "discoverySessions"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/ceremony/src/discovery.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/discovery.ts",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/src/gate.ts",
+      "symbols": [
+        "extract"
+      ],
+      "to": "packages/blueprint/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/gate.ts",
+      "symbols": [
+        "isCode"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/gate.ts",
+      "symbols": [
+        "SIGNOFFS_FILE",
+        "SignoffRecord",
+        "parseLines",
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/gate.ts",
+      "symbols": [
+        "Blueprint",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/src/index.ts",
+      "symbols": [
+        "DISCOVERY_COMPONENT",
+        "draftQuestion"
+      ],
+      "to": "packages/ceremony/src/discovery.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/index.ts",
+      "symbols": [
+        "GateInput",
+        "GateResult",
+        "GateScreen",
+        "evaluateGate",
+        "formatGate",
+        "passingFromReport",
+        "runGate"
+      ],
+      "to": "packages/ceremony/src/gate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/index.ts",
+      "symbols": [
+        "ImportedDecision",
+        "ImportedSession",
+        "ImportedTurn",
+        "parseDecisionsLog",
+        "parseWeekendSession"
+      ],
+      "to": "packages/ceremony/src/imports.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/index.ts",
+      "symbols": [
+        "DecideInput",
+        "SessionWithTurns",
+        "SignInput",
+        "SiteRef",
+        "addTurn",
+        "currentDecisions",
+        "decide",
+        "listDecisions",
+        "listSessions",
+        "listSignoffs",
+        "sign",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/store.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/index.ts",
+      "symbols": [
+        "WalkthroughStep",
+        "walkthrough"
+      ],
+      "to": "packages/ceremony/src/walkthrough.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/records.ts",
+      "symbols": [
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/src/store.ts",
+      "symbols": [
+        "DECISIONS_FILE",
+        "SIGNOFFS_FILE",
+        "appendRecord",
+        "checkChain"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/store.ts",
+      "symbols": [
+        "Db",
+        "decisions",
+        "discoverySessions",
+        "discoveryTurns",
+        "signoffs"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/store.ts",
+      "symbols": [
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/src/walkthrough.ts",
+      "symbols": [
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/walkthrough.ts",
+      "symbols": [
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/src/walkthrough.ts",
+      "symbols": [
+        "appearanceKeys"
+      ],
+      "to": "packages/trace/src/keys.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/walkthrough.ts",
+      "symbols": [
+        "Showroom"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "packages/ceremony/test/gate.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/gate.test.ts",
+      "symbols": [
+        "formatGate",
+        "runGate"
+      ],
+      "to": "packages/ceremony/src/gate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/gate.test.ts",
+      "symbols": [
+        "line"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/gate.test.ts",
+      "symbols": [
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/test/imports.test.ts",
+      "symbols": [
+        "parseDecisionsLog",
+        "parseWeekendSession"
+      ],
+      "to": "packages/ceremony/src/imports.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/store.test.ts",
+      "symbols": [
+        "SIGNOFFS_FILE",
+        "readDecisions",
+        "readSignoffs",
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/store.test.ts",
+      "symbols": [
+        "addTurn",
+        "currentDecisions",
+        "decide",
+        "listDecisions",
+        "listSessions",
+        "listSignoffs",
+        "sign",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/store.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations; the one-time setup of the local member and the self site, safe to repeat"
+      },
+      "from": "packages/ceremony/test/store.test.ts",
+      "symbols": [
+        "createDb",
+        "runMigrations",
+        "seed"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/walkthrough.test.ts",
+      "symbols": [
+        "walkthrough"
+      ],
+      "to": "packages/ceremony/src/walkthrough.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/walkthrough.test.ts",
+      "symbols": [
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/test/walkthrough.test.ts",
+      "symbols": [
+        "Showroom"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": true
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "opening a pool of database connections"
@@ -5612,8 +6015,12 @@
       "from": "packages/db/src/db.test.ts",
       "symbols": [
         "auditLog",
+        "decisions",
+        "discoverySessions",
+        "discoveryTurns",
         "modelCalls",
         "people",
+        "signoffs",
         "sites"
       ],
       "to": "packages/db/src/schema.ts",
@@ -6705,6 +7112,12 @@
     {
       "dev": true,
       "manifest": "package.json",
+      "name": "@rama/ceremony",
+      "version": "workspace:*"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
       "name": "@rama/db",
       "version": "workspace:^"
     },
@@ -6841,6 +7254,66 @@
       "version": "4.6.5"
     },
     {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "@rama/model",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "@rama/trace",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/ceremony/package.json",
+      "name": "postgres",
+      "version": "3.4.9"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "tsx",
+      "version": "4.23.15"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ceremony/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
       "dev": true,
       "manifest": "packages/db/package.json",
       "name": "drizzle-kit",
@@ -6907,7 +7380,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-20T20:22:41Z",
+  "extractedAt": "2026-10-20T20:27:03Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -8036,7 +8509,7 @@
     },
     {
       "binary": false,
-      "bytes": 16229,
+      "bytes": 17503,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -8045,7 +8518,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 101,
+      "lines": 104,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -8055,7 +8528,7 @@
     },
     {
       "binary": false,
-      "bytes": 10514,
+      "bytes": 10775,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -8064,7 +8537,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 191,
+      "lines": 193,
       "path": "docs/BLUEPRINT.md",
       "purpose": {
         "confirmed": false,
@@ -8253,12 +8726,12 @@
     {
       "binary": false,
       "bytes": 28380,
-      "changes": 18,
+      "changes": 19,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "54a9f3e0568272662c20a9b4b103fa8afc03df26",
-      "lastCommit": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
+      "lastCommit": "b14039a4f50289da6c2477a09a455af0f94b72bf",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 253,
@@ -8268,12 +8741,12 @@
     {
       "binary": false,
       "bytes": 139035,
-      "changes": 16,
+      "changes": 17,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e05abd1272d5441e422c5eddd3597571a49de37a",
-      "lastCommit": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
+      "lastCommit": "b14039a4f50289da6c2477a09a455af0f94b72bf",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 283,
@@ -8303,7 +8776,7 @@
     },
     {
       "binary": false,
-      "bytes": 1555,
+      "bytes": 1630,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -8312,7 +8785,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 50,
+      "lines": 52,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -8398,7 +8871,7 @@
     },
     {
       "binary": false,
-      "bytes": 8382,
+      "bytes": 8831,
       "changes": 3,
       "env": [
         "DATABASE_URL",
@@ -8410,7 +8883,7 @@
       "lastCommit": "335e537ea700b01bc2b15f12126dd81ff6f65a9c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 209,
+      "lines": 216,
       "path": "packages/blueprint/src/cli.ts",
       "purpose": {
         "confirmed": false,
@@ -8819,7 +9292,7 @@
     },
     {
       "binary": false,
-      "bytes": 9387,
+      "bytes": 9407,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -8843,6 +9316,7 @@
         "heaviestCodeBrick",
         "historySpan",
         "importEdges",
+        "isCode",
         "loadBearing",
         "mostReworked",
         "screensOf",
@@ -8858,7 +9332,7 @@
       "lastCommit": "8a9621151796bad98a2643b9d8399915efae98be",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 227,
+      "lines": 229,
       "path": "packages/blueprint/src/metrics/index.ts",
       "purpose": {
         "confirmed": false,
@@ -9165,6 +9639,313 @@
     },
     {
       "binary": false,
+      "bytes": 195,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 6,
+      "path": "packages/ceremony/bin/rama-ceremony.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 765,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 32,
+      "path": "packages/ceremony/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3943,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "IMPORT_COMPONENT"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 108,
+      "path": "packages/ceremony/src/cli.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1301,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "DISCOVERY_COMPONENT",
+        "draftQuestion"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 35,
+      "path": "packages/ceremony/src/discovery.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8187,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GateInput",
+        "GateResult",
+        "GateScreen",
+        "evaluateGate",
+        "formatGate",
+        "passingFromReport",
+        "runGate"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 216,
+      "path": "packages/ceremony/src/gate.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5976,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ImportedDecision",
+        "ImportedSession",
+        "ImportedTurn",
+        "parseDecisionsLog",
+        "parseWeekendSession"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 174,
+      "path": "packages/ceremony/src/imports.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 685,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*",
+        "DISCOVERY_COMPONENT",
+        "DecideInput",
+        "GateInput",
+        "GateResult",
+        "GateScreen",
+        "ImportedDecision",
+        "ImportedSession",
+        "ImportedTurn",
+        "SessionWithTurns",
+        "SignInput",
+        "SiteRef",
+        "WalkthroughStep",
+        "addTurn",
+        "currentDecisions",
+        "decide",
+        "draftQuestion",
+        "evaluateGate",
+        "formatGate",
+        "listDecisions",
+        "listSessions",
+        "listSignoffs",
+        "parseDecisionsLog",
+        "parseWeekendSession",
+        "passingFromReport",
+        "runGate",
+        "sign",
+        "startSession",
+        "walkthrough"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 33,
+      "path": "packages/ceremony/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5687,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ChainError",
+        "DECISIONS_FILE",
+        "DecisionRecord",
+        "SIGNOFFS_FILE",
+        "SignoffRecord",
+        "appendRecord",
+        "checkChain",
+        "line",
+        "parseLines",
+        "readDecisions",
+        "readSignoffs",
+        "signaturesInForce"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 159,
+      "path": "packages/ceremony/src/records.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8190,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "DecideInput",
+        "SessionWithTurns",
+        "SignInput",
+        "SiteRef",
+        "addTurn",
+        "currentDecisions",
+        "decide",
+        "listDecisions",
+        "listSessions",
+        "listSignoffs",
+        "sign",
+        "startSession"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 253,
+      "path": "packages/ceremony/src/store.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3466,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "WalkthroughStep",
+        "walkthrough"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 80,
+      "path": "packages/ceremony/src/walkthrough.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7269,
+      "changes": 0,
+      "env": [
+        "RAMA_GATE"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 184,
+      "path": "packages/ceremony/test/gate.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3548,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 103,
+      "path": "packages/ceremony/test/imports.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7631,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 227,
+      "path": "packages/ceremony/test/store.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4070,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 136,
+      "path": "packages/ceremony/test/walkthrough.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 74,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/ceremony/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 395,
       "changes": 2,
       "env": [],
@@ -9226,6 +10007,21 @@
     },
     {
       "binary": false,
+      "bytes": 5882,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 96,
+      "path": "packages/db/migrations/0001_ceremony.sql",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 9168,
       "changes": 1,
       "env": [],
@@ -9245,7 +10041,22 @@
     },
     {
       "binary": false,
-      "bytes": 198,
+      "bytes": 20802,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 823,
+      "path": "packages/db/migrations/meta/0001_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 334,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -9254,7 +10065,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 13,
+      "lines": 20,
       "path": "packages/db/migrations/meta/_journal.json",
       "purpose": {
         "confirmed": false,
@@ -9328,7 +10139,7 @@
     },
     {
       "binary": false,
-      "bytes": 4369,
+      "bytes": 7426,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -9339,7 +10150,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 118,
+      "lines": 212,
       "path": "packages/db/src/db.test.ts",
       "purpose": {
         "confirmed": false,
@@ -9399,22 +10210,27 @@
     },
     {
       "binary": false,
-      "bytes": 2621,
+      "bytes": 6083,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "APPEND_ONLY_TABLES",
+        "AUDITED_TABLES",
         "auditLog",
+        "decisions",
+        "discoverySessions",
+        "discoveryTurns",
         "modelCalls",
         "people",
+        "signoffs",
         "sites"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 75,
+      "lines": 161,
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -9855,7 +10671,7 @@
     },
     {
       "binary": false,
-      "bytes": 1448,
+      "bytes": 1703,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -9867,7 +10683,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 41,
+      "lines": 45,
       "path": "packages/shared/src/ceremony.ts",
       "purpose": {
         "confirmed": false,
@@ -10016,7 +10832,7 @@
     },
     {
       "binary": false,
-      "bytes": 16092,
+      "bytes": 16100,
       "changes": 6,
       "env": [
         "HOME",
@@ -10234,7 +11050,7 @@
     },
     {
       "binary": false,
-      "bytes": 3165,
+      "bytes": 3321,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -10249,7 +11065,7 @@
       "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 88,
+      "lines": 91,
       "path": "packages/trace/src/showroom.ts",
       "test": false
     },
@@ -10337,7 +11153,7 @@
     },
     {
       "binary": false,
-      "bytes": 103688,
+      "bytes": 104600,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -10346,7 +11162,7 @@
       "lastCommit": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3251,
+      "lines": 3288,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -10390,6 +11206,21 @@
         "confirmed": false,
         "text": "Explains that prompts are stored as versioned files, never edited in place, and lists the prompts planned."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 933,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 9,
+      "path": "prompts/discovery.v1.md",
       "test": false
     },
     {
@@ -10859,7 +11690,7 @@
     },
     {
       "binary": false,
-      "bytes": 7685,
+      "bytes": 7768,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -10868,7 +11699,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 234,
+      "lines": 236,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -11020,7 +11851,7 @@
     },
     {
       "binary": false,
-      "bytes": 1456,
+      "bytes": 1603,
       "changes": 3,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -11033,7 +11864,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 34,
+      "lines": 40,
       "path": "vitest.config.ts",
       "purpose": {
         "confirmed": false,

@@ -20,6 +20,8 @@ export interface Decision {
   at: string;
   /** True when the record was reconstructed after the fact rather than captured live. */
   reconstructed?: boolean;
+  /** The Decision this one replaces, when any (decisions are append-only too). */
+  supersedes?: string;
 }
 
 /** A named signature on a screen or brick at a commit. Append-only: a reversal is a new Signoff that supersedes the old one. */
@@ -38,4 +40,6 @@ export interface Signoff {
   at: string;
   /** The Signoff this one reverses or replaces, when any. */
   supersedes?: string;
+  /** True when this Signoff withdraws the one it supersedes (the target is then unsigned), false or absent when it signs. */
+  withdrawn?: boolean;
 }

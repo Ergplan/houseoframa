@@ -37,6 +37,7 @@ const PROJECTS = [
   { name: '@rama/model', dirs: ['packages/model/', 'prompts/'] },
   { name: '@rama/blueprint', dirs: ['packages/blueprint/'] },
   { name: '@rama/trace', dirs: ['packages/trace/'] },
+  { name: '@rama/ceremony', dirs: ['packages/ceremony/'] },
   { name: '@rama/app', dirs: ['apps/rama/'] },
   { name: 'e2e', dirs: ['tests/'] },
 ];
@@ -46,6 +47,7 @@ const TS_PACKAGES = [
   'packages/model',
   'packages/blueprint',
   'packages/trace',
+  'packages/ceremony',
   'apps/rama',
   'scripts',
 ];

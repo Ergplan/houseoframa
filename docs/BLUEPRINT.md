@@ -156,6 +156,7 @@ Source: `packages/shared/src/ceremony.ts`
 | `by` | `string` | yes | The person who recorded the decision. |
 | `at` | `string` | yes | When the decision was recorded, ISO 8601. |
 | `reconstructed` | `boolean` | no | True when the record was reconstructed after the fact rather than captured live. |
+| `supersedes` | `string` | no | The Decision this one replaces, when any (decisions are append-only too). |
 
 ## Signoff
 
@@ -172,6 +173,7 @@ Source: `packages/shared/src/ceremony.ts`
 | `statement` | `string` | yes | The statement the person signed. |
 | `at` | `string` | yes | When it was signed, ISO 8601. |
 | `supersedes` | `string` | no | The Signoff this one reverses or replaces, when any. |
+| `withdrawn` | `boolean` | no | True when this Signoff withdraws the one it supersedes (the target is then unsigned), false or absent when it signs. |
 
 ## Finding
 

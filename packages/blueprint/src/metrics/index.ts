@@ -2,6 +2,8 @@
 // the inspector and the audit report display these and never recount.
 import type { Blueprint, BrickNode, Commit, Screen } from '@rama/shared';
 import { isCode } from '../files.ts';
+
+export { isCode };
 import { byString } from '../json.ts';
 
 export interface Ranked {

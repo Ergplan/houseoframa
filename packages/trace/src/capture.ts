@@ -291,7 +291,7 @@ export async function capture(
       // Grow the viewport to the page so fixed bars sit where the user sees them, and everything is in one shot.
       const height = Math.max(
         cfg.viewport.height,
-        await page.evaluate(() => document.documentElement.scrollHeight),
+        (await page.evaluate('document.documentElement.scrollHeight')) as number,
       );
       await page.setViewportSize({
         width: cfg.viewport.width,

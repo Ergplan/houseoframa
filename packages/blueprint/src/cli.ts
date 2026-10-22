@@ -36,7 +36,8 @@ const USAGE = `usage:
   rama site extract <id>
   rama site check <id>
   rama site draft <id> [--only glossary|purposes]
-  rama site list`;
+  rama site list
+  rama gate <repoPath> --base <commit> [--test-report <file>]`;
 
 const envFile = fileURLToPath(new URL('../../../.env', import.meta.url));
 if (existsSync(envFile)) process.loadEnvFile(envFile);
@@ -71,6 +72,12 @@ async function main(argv: string[]): Promise<number> {
   }
 
   if (command === 'site') return site(args);
+  if (command === 'gate') {
+    // The gate lives in packages/ceremony (which depends on this package); loaded by path so the `rama`
+    // command can offer it without a dependency cycle. It reads process.argv itself.
+    await import(new URL('../../ceremony/src/cli.ts', import.meta.url).href);
+    return new Promise<number>(() => {}); // the gate's own process.exit ends the run
+  }
   if (command !== 'extract') throw new Error(USAGE);
   const repoPath = args.positional[0];
   if (!repoPath) throw new Error(USAGE);

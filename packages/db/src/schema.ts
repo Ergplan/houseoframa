@@ -2,6 +2,7 @@
 // site_id is nullable only on people. created_by is a person id or `rama:<component>@<version>`.
 import {
   bigint,
+  boolean,
   integer,
   jsonb,
   pgTable,
@@ -71,5 +72,90 @@ export const auditLog = pgTable('audit_log', {
   ...provenance,
 });
 
-/** Tables whose rows are never updated or deleted; the migration installs a trigger that refuses both. */
-export const APPEND_ONLY_TABLES = ['model_calls', 'audit_log'] as const;
+/** A discovery session (Stage 4): the conversation in the site office. Append-only. */
+export const discoverySessions = pgTable('discovery_sessions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  title: text('title').notNull(),
+  /** True when rebuilt afterwards from a record (a weekend reconstruction, a decisions log), not held live. */
+  reconstructed: boolean('reconstructed').notNull().default(false),
+  /** Where a reconstructed session came from. */
+  source: text('source'),
+  ...provenance,
+});
+
+/** One turn of a discovery session. Append-only; a model's draft is marked as one. */
+export const discoveryTurns = pgTable('discovery_turns', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  sessionId: uuid('session_id')
+    .notNull()
+    .references(() => discoverySessions.id),
+  seq: integer('seq').notNull(),
+  /** The speaker's role or name: "member", "Rama", "Procurement Head". */
+  speaker: text('speaker').notNull(),
+  text: text('text').notNull(),
+  /** True for a question Rama drafted through packages/model: unconfirmed until the member uses it. */
+  draft: boolean('draft').notNull().default(false),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  ...provenance,
+});
+
+/** Decision cards (MASTER-PROMPT §8 Decision). Append-only: a change is a new card that supersedes the old. */
+export const decisions = pgTable('decisions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  sessionId: uuid('session_id').references(() => discoverySessions.id),
+  title: text('title').notNull(),
+  statement: text('statement').notNull(),
+  bricks: jsonb('bricks').$type<string[]>().notNull(),
+  screenId: text('screen_id'),
+  status: text('status', { enum: ['decided', 'open', 'not-built'] }).notNull(),
+  /** The person who decided, by name. */
+  by: text('by').notNull(),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  reconstructed: boolean('reconstructed').notNull().default(false),
+  supersedes: uuid('supersedes').references((): AnyPgColumn => decisions.id),
+  ...provenance,
+});
+
+/** Signatures (MASTER-PROMPT §8 Signoff). Append-only: a reversal is a new row that supersedes the old. */
+export const signoffs = pgTable('signoffs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  /** The person who signed, by name, and their row. */
+  person: text('person').notNull(),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  targetKind: text('target_kind', { enum: ['screen', 'brick'] }).notNull(),
+  targetId: text('target_id').notNull(),
+  targetCommit: text('target_commit').notNull(),
+  statement: text('statement').notNull(),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  supersedes: uuid('supersedes').references((): AnyPgColumn => signoffs.id),
+  /** True when this row withdraws the signature it supersedes. */
+  withdrawn: boolean('withdrawn').notNull().default(false),
+  ...provenance,
+});
+
+/** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
+export const APPEND_ONLY_TABLES = [
+  'model_calls',
+  'audit_log',
+  'discovery_sessions',
+  'discovery_turns',
+  'decisions',
+  'signoffs',
+] as const;
+
+/** Tables whose every insert also appends an audit_log row, written by a trigger (Invariant 8). */
+export const AUDITED_TABLES = ['decisions', 'signoffs'] as const;

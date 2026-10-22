@@ -25,12 +25,14 @@
     "rama": "rama",
     "review": "tsx scripts/review.ts",
     "cost": "tsx scripts/cost.ts",
-    "rama-trace": "rama-trace"
+    "rama-trace": "rama-trace",
+    "rama-ceremony": "rama-ceremony"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@next/eslint-plugin-next": "16.3.8",
     "@rama/blueprint": "workspace:*",
+    "@rama/ceremony": "workspace:*",
     "@rama/db": "workspace:^",
     "@rama/model": "workspace:*",
     "@rama/shared": "workspace:^",

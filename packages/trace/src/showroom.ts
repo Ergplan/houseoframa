@@ -21,6 +21,8 @@ export interface ShowroomScreen {
   shot: string;
   width: number;
   height: number;
+  /** The Blueprint screen (route) this capture is of: what a signature names. */
+  blueprintScreen: string | null;
   bricks: string[];
   figures: FigureRef[];
 }
@@ -57,6 +59,7 @@ export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
     shot: s.shot,
     width: s.width,
     height: s.height,
+    blueprintScreen: s.blueprintScreen,
     bricks: s.bricks,
     figures: (() => {
       const keys = appearanceKeys(s.name, s.figures);

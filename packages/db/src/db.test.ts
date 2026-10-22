@@ -5,7 +5,16 @@ import { randomBytes } from 'node:crypto';
 import postgres from 'postgres';
 import { createDb } from './client.ts';
 import { runMigrations } from './migrate.ts';
-import { auditLog, modelCalls, people, sites } from './schema.ts';
+import {
+  auditLog,
+  decisions,
+  discoverySessions,
+  discoveryTurns,
+  modelCalls,
+  people,
+  signoffs,
+  sites,
+} from './schema.ts';
 import { seed, SEED_COMPONENT } from './seed.ts';
 
 const serverUrl = process.env.DATABASE_URL;
@@ -41,8 +50,12 @@ describe('packages/db', () => {
       select table_name from information_schema.tables where table_schema = 'public' order by table_name`;
     expect(tables.map((t) => t.table_name)).toEqual([
       'audit_log',
+      'decisions',
+      'discovery_sessions',
+      'discovery_turns',
       'model_calls',
       'people',
+      'signoffs',
       'sites',
     ]);
   });
@@ -51,7 +64,16 @@ describe('packages/db', () => {
     const cols = await conn.sql<{ table_name: string; column_name: string; is_nullable: string }[]>`
       select table_name, column_name, is_nullable from information_schema.columns
       where table_schema = 'public' and column_name in ('site_id', 'created_at', 'created_by')`;
-    for (const table of ['sites', 'people', 'model_calls', 'audit_log']) {
+    for (const table of [
+      'sites',
+      'people',
+      'model_calls',
+      'audit_log',
+      'discovery_sessions',
+      'discovery_turns',
+      'decisions',
+      'signoffs',
+    ]) {
       const mine = cols.filter((c) => c.table_name === table);
       expect(mine.map((c) => c.column_name).sort(), table).toEqual([
         'created_at',
@@ -114,5 +136,77 @@ describe('packages/db', () => {
     }
     expect(await conn.db.select().from(modelCalls)).toHaveLength(1);
     expect(await conn.db.select().from(auditLog)).toHaveLength(1);
+  });
+
+  it('keeps the ceremony tables append-only and audits every decision and signoff in the same insert', async () => {
+    const [member] = await conn.db.select().from(people);
+    const [session] = await conn.db
+      .insert(discoverySessions)
+      .values({ siteId: 'self', title: 'Kick-off', createdBy: member!.id })
+      .returning();
+    await conn.db.insert(discoveryTurns).values({
+      siteId: 'self',
+      sessionId: session!.id,
+      seq: 1,
+      speaker: 'member',
+      text: 'We bill from a phone.',
+      at: new Date('2026-10-22T10:00:00Z'),
+      createdBy: member!.id,
+    });
+    const [card] = await conn.db
+      .insert(decisions)
+      .values({
+        siteId: 'self',
+        sessionId: session!.id,
+        title: 'Phone first',
+        statement: 'Every screen is designed at 390 px.',
+        bricks: ['app/page.tsx'],
+        status: 'decided',
+        by: 'Test Member',
+        at: new Date('2026-10-22T10:01:00Z'),
+        createdBy: member!.id,
+      })
+      .returning();
+    const [first] = await conn.db
+      .insert(signoffs)
+      .values({
+        siteId: 'self',
+        person: 'Test Member',
+        personId: member!.id,
+        targetKind: 'screen',
+        targetId: '/',
+        targetCommit: 'abc1234',
+        statement: 'Home shows what is due.',
+        at: new Date('2026-10-22T10:02:00Z'),
+        createdBy: member!.id,
+      })
+      .returning();
+    // A reversal is a new row that supersedes the old one.
+    await conn.db.insert(signoffs).values({
+      siteId: 'self',
+      person: 'Test Member',
+      personId: member!.id,
+      targetKind: 'screen',
+      targetId: '/',
+      targetCommit: 'abc1234',
+      statement: 'Withdrawn: the dues total is wrong.',
+      at: new Date('2026-10-22T10:03:00Z'),
+      supersedes: first!.id,
+      createdBy: member!.id,
+    });
+
+    for (const table of ['discovery_sessions', 'discovery_turns', 'decisions', 'signoffs']) {
+      await expect(conn.sql.unsafe(`UPDATE ${table} SET created_by = 'tamper'`)).rejects.toThrow(
+        /append-only/,
+      );
+      await expect(conn.sql.unsafe(`DELETE FROM ${table}`)).rejects.toThrow(/append-only/);
+      await expect(conn.sql.unsafe(`TRUNCATE ${table} CASCADE`)).rejects.toThrow(/append-only/);
+    }
+    const audited = await conn.sql<{ table_name: string; row_id: string; created_by: string }[]>`
+      select table_name, row_id, created_by from audit_log where table_name in ('decisions', 'signoffs') order by id`;
+    expect(audited.map((a) => a.table_name)).toEqual(['decisions', 'signoffs', 'signoffs']);
+    expect(audited[0]).toMatchObject({ row_id: card!.id, created_by: member!.id });
+    expect(audited[1]!.row_id).toBe(first!.id);
+    expect(await conn.db.select().from(signoffs)).toHaveLength(2);
   });
 });

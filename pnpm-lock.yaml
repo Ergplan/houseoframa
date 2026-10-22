@@ -17,6 +17,9 @@ importers:
       '@rama/blueprint':
         specifier: workspace:*
         version: link:packages/blueprint
+      '@rama/ceremony':
+        specifier: workspace:*
+        version: link:packages/ceremony
       '@rama/db':
         specifier: workspace:^
         version: link:packages/db
@@ -111,6 +114,40 @@ importers:
       '@rama/shared':
         specifier: workspace:*
         version: link:../shared
+      drizzle-orm:
+        specifier: 0.45.3
+        version: 0.45.3(postgres@3.4.9)
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+    devDependencies:
+      postgres:
+        specifier: 3.4.9
+        version: 3.4.9
+
+  packages/ceremony:
+    dependencies:
+      '@rama/blueprint':
+        specifier: workspace:*
+        version: link:../blueprint
+      '@rama/db':
+        specifier: workspace:*
+        version: link:../db
+      '@rama/model':
+        specifier: workspace:*
+        version: link:../model
+      '@rama/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@rama/trace':
+        specifier: workspace:*
+        version: link:../trace
       drizzle-orm:
         specifier: 0.45.3
         version: 0.45.3(postgres@3.4.9)
