@@ -32,3 +32,6 @@ Updated in the same commit as the code that opens or closes a gap.
 - (Stage 5) This repository's own audit has zero defects. Its notes stand: untested code bricks, silenced lint with reasons, empty catch blocks in scripts and test helpers, environment fallbacks for local defaults, unsigned screens, and drafted phrases nobody confirmed. The latest report lists them at `/site/self/audit`.
 - (Stage 6) No mail service is configured: sign-in links go to the server log (the outbox) until `SMTP_URL` is set. On this machine, `pnpm rama-member link <email>` prints a link.
 - (Stage 6) Members are added by command (`rama-member add`); there is no invitation flow in the app.
+- (Stage 6) **Not yet deployed on the pod box.** The box stack was built and run on the build machine (docs/DEPLOY.md, Verified). Running it on the prototype pod box needs the box itself (its address, and access to it), which the user holds.
+- (Stage 6) The box serves plain http on `APP_PORT`; https is a reverse proxy in front of it (docs/DEPLOY.md), not part of the compose file.
+- (Stage 6) Backups stay on the box (`backups/`); copying them off the box is not set up.

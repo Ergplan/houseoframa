@@ -1,0 +1,12 @@
+# The image is built from the source; never from a local install, local data or secrets.
+**/node_modules
+**/.next
+**/.next-e2e
+**/.next-build
+.git
+.watch
+work
+backups
+.env
+.env.*
+!.env.example

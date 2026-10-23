@@ -35,6 +35,7 @@ Planned (folders hold only a README until their stage):
 - `packages/ceremony/bin/`, `packages/ceremony/test/` (Stage 4) — the `rama-ceremony` executable; tests.
 - `packages/ceremony/ci/` (Stage 4) — `rama-gate.yml`, the GitHub Actions workflow a target includes (`rama-ceremony install-gate <site>` writes it pinned to a House of Rama ref).
 - `packages/audit/bin/`, `packages/audit/src/checks/`, `packages/audit/test/` (Stage 5) — the `rama-audit` executable, the checks of §7.3, tests.
+- `deploy/` (Stage 6): the pod box's compose file and the backup script; `Dockerfile` and `.dockerignore` at the root.
 - `apps/rama/server/` (Stage 6) — server-only helpers: the session (`currentMember`, `requireMember`, `pageSite`, `ownedSite`), route authorization (`authSite`, `authMember`, `authManager`), mail for sign-in links.
 - `apps/rama/components/auth/`, `apps/rama/components/audit/` (Stages 5–6) — the sign-in form; the report confirmation.
 - `apps/rama/components/ceremony/` (Stage 4) — the walkthrough and the site office (discovery) views.
@@ -142,7 +143,10 @@ Intended end to end: `rama site add <repo>` → `extract()` → `blueprint/<site
 
 ## Deployment
 
-One box. `docker-compose.yml`: `db` (Postgres 16) always; `app` and `watcher` under the `stack` profile (`docker compose --profile stack up`). The host workflow is `pnpm dev`. Full deploy is Stage 6.
+One box.
+
+- Development: `docker-compose.yml` runs `db` (Postgres 16) under `pnpm dev`, and `app` and `watcher` under the `stack` profile.
+- The pod box (Stage 6): `deploy/compose.box.yml` runs `db` (inside the box only), `app` (the `Dockerfile`: a production build with git and Chromium, migrating and seeding at start), `backup` (nightly `pg_dump`, `deploy/backup.sh`) and `watcher` (`--profile checks`). Steps, environment, restore and update are in `docs/DEPLOY.md`.
 
 ## What changed
 
