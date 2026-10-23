@@ -115,7 +115,10 @@ export function DiscoveryView({
             {s.turns.map((t) =>
               t.speaker === 'agenda' ? (
                 <h3 key={t.id} className="topic">
-                  <time>{t.at.slice(11, 16)}</time> {t.text}
+                  <time dateTime={t.at}>
+                    {t.at.slice(0, 10)} {t.at.slice(11, 16)} UTC
+                  </time>{' '}
+                  {t.text}
                 </h3>
               ) : (
                 <div
