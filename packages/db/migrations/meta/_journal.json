@@ -15,6 +15,13 @@
       "when": 1792711977786,
       "tag": "0001_ceremony",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792714938137,
+      "tag": "0002_supersede_once",
+      "breakpoints": true
     }
   ]
 }

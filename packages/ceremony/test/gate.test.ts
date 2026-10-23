@@ -177,6 +177,22 @@ describe('rama gate', () => {
     }
   });
 
+  it('sees a removed screen and a deleted brick as changes, which a test cannot cover', () => {
+    repo.git('rm', '-q', 'app/help/page.tsx', 'lib/bills.ts');
+    repo.write({ 'app/bills/page.tsx': 'export default function Bills() { return 0; }\n' });
+    repo.commit('remove help, drop the bills list');
+    try {
+      const r = runGate(repo.dir, change, { testReport: report(['lib/total.test.ts']) });
+      expect(r.screens.map((s) => [s.route, s.removed, s.changed, s.ok])).toEqual([
+        ['/bills', false, ['app/bills/page.tsx', 'lib/bills.ts'], false],
+        ['/help', true, ['app/help/page.tsx'], false],
+      ]);
+      expect(formatGate(r)).toContain('✗ /help (removed): no signature');
+    } finally {
+      repo.git('reset', '-q', '--hard', change);
+    }
+  });
+
   it('passes when no screen changed, and refuses a base that is not a commit', () => {
     expect(runGate(repo.dir, change)).toMatchObject({ ok: true, screens: [] });
     expect(() => runGate(repo.dir, 'nope')).toThrow(/not a commit/);

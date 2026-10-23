@@ -1,13 +1,6 @@
 // Decisions and signatures as they travel with the code: one JSON object per line in the target's
 // `.rama/decisions.jsonl` and `.rama/signoffs.jsonl` (append-only, like their Postgres tables).
-import {
-  appendFileSync,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { z } from 'zod';
 import type { Decision, Signoff } from '@rama/shared';
@@ -99,24 +92,29 @@ function readFile<T>(repoDir: string, file: string, schema: z.ZodType<T>): T[] {
   return existsSync(full) ? parseLines(readFileSync(full, 'utf8'), schema, file) : [];
 }
 
-/**
- * Appends one record to a .jsonl file and returns a function that takes it back (puts the file back as
- * it was), for when the database transaction it mirrors does not commit.
- */
-export function appendRecord(
-  repoDir: string,
-  file: string,
-  record: Decision | Signoff,
-): () => void {
+/** Appends one record to a .jsonl file, creating it (and `.rama/`) when needed. */
+export function appendRecord(repoDir: string, file: string, record: Decision | Signoff): void {
   const full = path.join(repoDir, file);
   mkdirSync(path.dirname(full), { recursive: true });
-  const existed = existsSync(full);
-  const text = existed ? readFileSync(full, 'utf8') : '';
+  const text = existsSync(full) ? readFileSync(full, 'utf8') : '';
   appendFileSync(full, (text && !text.endsWith('\n') ? '\n' : '') + line(record) + '\n');
-  return () => {
-    if (existed) writeFileSync(full, text);
-    else rmSync(full, { force: true });
-  };
+}
+
+/**
+ * Brings a mirror up to the committed rows, append-only: every row (in the order given) whose id has no
+ * line yet is appended. A line is never removed or rewritten. Returns how many were appended.
+ */
+export function syncMirror(repoDir: string, file: string, rows: (Decision | Signoff)[]): number {
+  const full = path.join(repoDir, file);
+  const present = new Set(
+    (existsSync(full) ? readFileSync(full, 'utf8') : '')
+      .split('\n')
+      .filter((l) => l.trim())
+      .map((l) => (JSON.parse(l) as { id?: string }).id),
+  );
+  const missing = rows.filter((r) => !present.has(r.id));
+  for (const r of missing) appendRecord(repoDir, file, r);
+  return missing.length;
 }
 
 /**

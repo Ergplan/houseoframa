@@ -23,6 +23,7 @@ export {
   listDecisions,
   listSessions,
   listSignoffs,
+  MirrorError,
   sign,
   startSession,
   type DecideInput,

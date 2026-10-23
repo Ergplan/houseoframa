@@ -4,6 +4,9 @@ import { readFileSync } from 'node:fs';
 
 const yml = readFileSync(new URL('../ci/rama-gate.yml', import.meta.url), 'utf8');
 
+const job = (name: string) =>
+  yml.split(/^ {2}(?=\w[\w-]*:$)/m).find((j) => j.startsWith(`${name}:`))!;
+
 describe('ci/rama-gate.yml', () => {
   it('runs from the base branch, so a pull request cannot edit the gate that judges it', () => {
     expect(yml).toMatch(/^on:\n {2}pull_request_target:/m);
@@ -12,17 +15,26 @@ describe('ci/rama-gate.yml', () => {
 
   it('holds a read-only token, keeps no credentials and passes no secret to the code it runs', () => {
     expect(yml).toMatch(/^permissions:\n {2}contents: read$/m);
-    expect(yml.match(/persist-credentials: false/g)).toHaveLength(2);
+    expect(yml.match(/persist-credentials: false/g)).toHaveLength(3);
     expect(yml).not.toContain('secrets.');
   });
 
-  it("runs House of Rama's gate at a pinned ref against the pull request's base, with the test report", () => {
-    expect(yml).toContain('repository: Ergplan/houseoframa');
-    expect(yml).toMatch(
-      /pnpm --dir rama rama gate "\$GITHUB_WORKSPACE\/target"\n\s+--base "\$\{\{ github\.event\.pull_request\.base\.sha \}\}"\n\s+--test-report/,
+  it("runs the target's code only in the tests job, which has no House of Rama checkout", () => {
+    const tests = job('tests');
+    expect(tests).toContain('npm ci');
+    expect(tests).not.toContain('Ergplan/houseoframa');
+    const gate = job('gate');
+    expect(gate).not.toMatch(/\bnpm\b|\bnpx\b/);
+    expect(gate).toContain('repository: Ergplan/houseoframa');
+  });
+
+  it("gates whatever the tests job did, with House of Rama's gate at a pinned ref against the pull request's base", () => {
+    expect(job('tests')).toContain('continue-on-error: true');
+    expect(job('gate')).toMatch(/needs: tests\n\s+if: \$\{\{ !cancelled\(\) \}\}/);
+    expect(job('gate')).toMatch(
+      /pnpm --dir rama rama gate "\$GITHUB_WORKSPACE\/target" --base "\$BASE" "\$@"/,
     );
-    // The step that runs the target's tests cannot fail the job; the gate step is the verdict.
-    expect(yml.split('- name: Gate')[1]).not.toContain('|| true');
+    expect(job('gate').split('- name: Gate')[1]).not.toContain('|| true');
   });
 });
 

@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX "decisions_supersedes_once" ON "decisions" USING btree ("supersedes");--> statement-breakpoint
+CREATE UNIQUE INDEX "signoffs_supersedes_once" ON "signoffs" USING btree ("supersedes");

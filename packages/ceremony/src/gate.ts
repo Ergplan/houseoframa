@@ -14,6 +14,8 @@ import { parseLines, SIGNOFFS_FILE, SignoffRecord, signaturesInForce } from './r
 export interface GateScreen {
   id: string;
   route: string;
+  /** True when the screen was at the base and is gone at HEAD: removing a screen is a change too. */
+  removed: boolean;
   /** Its bricks that changed since the base. */
   changed: string[];
   /** The last commit since the base that touched one of its bricks. */
@@ -37,6 +39,8 @@ export interface GateResult {
 
 export interface GateInput {
   bp: Blueprint;
+  /** The Blueprint at the base: its screens and their bricks count too, so a deletion is a change. */
+  baseBp?: Blueprint | null;
   base: string;
   /** Commits after the base, oldest first, with the paths each touched. */
   changes: { sha: string; paths: string[] }[];
@@ -58,8 +62,22 @@ export function evaluateGate(input: GateInput): GateResult {
     testsOf.set(e.to, [...(testsOf.get(e.to) ?? []), e.from]);
   }
 
+  // Every screen at HEAD or at the base, with the bricks it had at either: a screen that was removed, or a
+  // brick deleted from a screen, is still seen as changed.
+  const all = new Map<string, { id: string; route: string; bricks: string[]; removed: boolean }>();
+  for (const s of input.baseBp?.screens ?? [])
+    all.set(s.id, { id: s.id, route: s.route, bricks: [...s.bricks], removed: true });
+  for (const s of bp.screens) {
+    const before = all.get(s.id);
+    all.set(s.id, {
+      id: s.id,
+      route: s.route,
+      bricks: [...new Set([...(before?.bricks ?? []), ...s.bricks])],
+      removed: false,
+    });
+  }
   const screens: GateScreen[] = [];
-  for (const screen of bp.screens) {
+  for (const screen of [...all.values()].sort((a, b) => a.route.localeCompare(b.route))) {
     const touching = input.changes.filter((c) => c.paths.some((p) => screen.bricks.includes(p)));
     if (!touching.length) continue;
     const changed = [
@@ -96,6 +114,7 @@ export function evaluateGate(input: GateInput): GateResult {
     screens.push({
       id: screen.id,
       route: screen.route,
+      removed: screen.removed,
       changed,
       changeCommit,
       signature: signedAfter ? sig : null,
@@ -148,6 +167,12 @@ export function runGate(
     problems.push(`${base} is not an ancestor of HEAD`);
   }
   const bp = extract(repoDir);
+  let baseBp: Blueprint | null = null;
+  try {
+    baseBp = extract(repoDir, { rev: baseSha });
+  } catch (err) {
+    problems.push(`the base ${baseSha.slice(0, 7)} could not be read: ${(err as Error).message}`);
+  }
   const log = git(repoDir, [
     'log',
     '--reverse',
@@ -192,7 +217,15 @@ export function runGate(
       problems.push(`the test report ${opts.testReport} does not exist`);
     else passing = passingFromReport(opts.testReport, repoDir);
   }
-  return evaluateGate({ bp, base: baseSha, changes, signoffs, passingTests: passing, problems });
+  return evaluateGate({
+    bp,
+    baseBp,
+    base: baseSha,
+    changes,
+    signoffs,
+    passingTests: passing,
+    problems,
+  });
 }
 
 /** The gate's verdict as a person reads it in a CI log. */
@@ -203,7 +236,7 @@ export function formatGate(r: GateResult): string {
   for (const p of r.problems) lines.push(`  ✗ ${p}`);
   if (!r.screens.length) lines.push('  no screen changed since the base');
   for (const s of r.screens) {
-    lines.push(`  ${s.ok ? '✓' : '✗'} ${s.route}: ${s.reason}`);
+    lines.push(`  ${s.ok ? '✓' : '✗'} ${s.route}${s.removed ? ' (removed)' : ''}: ${s.reason}`);
     lines.push(`      changed: ${s.changed.join(', ')} (last at ${s.changeCommit.slice(0, 7)})`);
   }
   if (!r.ok) {

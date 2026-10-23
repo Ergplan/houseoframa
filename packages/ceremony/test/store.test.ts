@@ -1,7 +1,7 @@
 // The ceremony's writes, against a fresh throwaway database: rows, mirrors and the chain.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomBytes } from 'node:crypto';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import postgres from 'postgres';
@@ -15,6 +15,7 @@ import {
   listDecisions,
   listSessions,
   listSignoffs,
+  MirrorError,
   sign,
   startSession,
 } from '../src/store.ts';
@@ -265,7 +266,8 @@ describe('importRecord', () => {
         log([card('A', 'a'), card('B', 'b'), card('C', 'c')]),
       );
       expect(nothing).toMatchObject({ sessionId: null, added: 0, superseded: 0, unchanged: 3 });
-      const cards = readDecisions(other);
+      // One site, one repository in real use; here site self is shared, so its other cards are left out.
+      const cards = readDecisions(other).filter((d) => ['A', 'B', 'C'].includes(d.title));
       expect(
         cards.map((d) => [d.title, d.statement, Boolean(d.supersedes), d.reconstructed]),
       ).toEqual([
@@ -296,5 +298,79 @@ describe('importRecord', () => {
     };
     await importRecord(conn.db, site, s);
     await expect(importRecord(conn.db, site, s)).rejects.toThrow(/already imported/);
+  });
+});
+
+describe('the mirror under concurrency and failure', () => {
+  const at = (m: number) => new Date(Date.UTC(2026, 9, 23, 9, m));
+  const signHere = (dir: string, over: Partial<Parameters<typeof sign>[2]> = {}) =>
+    sign(
+      conn.db,
+      { id: 'self', repoDir: dir },
+      {
+        person: 'Asha Rao',
+        personId: memberId,
+        target: { kind: 'screen', id: '/race', commit: 'abc1234' },
+        statement: 'ok',
+        at: at(0),
+        ...over,
+      },
+    );
+
+  it('lets exactly one of two concurrent writes supersede a signature, and the file matches the rows', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'rama-race-'));
+    try {
+      const first = await signHere(dir);
+      const results = await Promise.allSettled([
+        signHere(dir, { supersedes: first.id, statement: 'a', at: at(1) }),
+        signHere(dir, { supersedes: first.id, statement: 'b', at: at(1) }),
+      ]);
+      expect(results.map((r) => r.status).sort()).toEqual(['fulfilled', 'rejected']);
+      expect(
+        String((results.find((r) => r.status === 'rejected') as PromiseRejectedResult).reason),
+      ).toMatch(/already superseded/);
+      const rows = (await listSignoffs(conn.db, 'self')).filter((s) => s.target.id === '/race');
+      expect(readSignoffs(dir).filter((s) => s.target.id === '/race')).toEqual(rows);
+      // The file holds exactly the site's committed rows, in the order they were recorded.
+      expect(readSignoffs(dir)).toEqual(await listSignoffs(conn.db, 'self'));
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('refuses a fork in the database itself, whatever the code above it does', async () => {
+    const [prior] = await conn.sql`select id from signoffs where supersedes is null limit 1`;
+    const [taken] =
+      await conn.sql`select supersedes from signoffs where supersedes is not null limit 1`;
+    await expect(
+      conn.sql`insert into signoffs (site_id, person, person_id, target_kind, target_id, target_commit, statement, at, supersedes, created_by)
+               values ('self', 'x', ${memberId}, 'screen', '/gst', 'abc1234', 'fork', now(), ${taken!.supersedes}, 'test')`,
+    ).rejects.toThrow(/signoffs_supersedes_once/);
+    expect(prior).toBeDefined();
+  });
+
+  it('never holds a line the database does not, and appends a lost line on the next write', async () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'rama-repair-'));
+    try {
+      // `.rama` as a plain file: the mirror cannot be written, but the signature is recorded.
+      writeFileSync(path.join(dir, '.rama'), 'not a directory');
+      const err = await signHere(dir, {
+        target: { kind: 'screen', id: '/repair', commit: 'abc1234' },
+      }).catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(MirrorError);
+      const recorded = (err as MirrorError).record;
+      expect((await listSignoffs(conn.db, 'self')).some((s) => s.id === recorded.id)).toBe(true);
+      // The disk is fixed; the next write appends the lost line first, then its own.
+      rmSync(path.join(dir, '.rama'));
+      const next = await signHere(dir, {
+        target: { kind: 'screen', id: '/repair', commit: 'abc1234' },
+        supersedes: recorded.id,
+        at: at(2),
+      });
+      const lines = readSignoffs(dir).filter((s) => s.target.id === '/repair');
+      expect(lines.map((s) => s.id)).toEqual([recorded.id, next.id]);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

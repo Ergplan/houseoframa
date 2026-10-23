@@ -10,6 +10,7 @@ import {
   timestamp,
   uuid,
   type AnyPgColumn,
+  uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 const provenance = {
@@ -106,46 +107,60 @@ export const discoveryTurns = pgTable('discovery_turns', {
 });
 
 /** Decision cards (MASTER-PROMPT §8 Decision). Append-only: a change is a new card that supersedes the old. */
-export const decisions = pgTable('decisions', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  siteId: text('site_id')
-    .notNull()
-    .references(() => sites.siteId),
-  sessionId: uuid('session_id').references(() => discoverySessions.id),
-  title: text('title').notNull(),
-  statement: text('statement').notNull(),
-  bricks: jsonb('bricks').$type<string[]>().notNull(),
-  screenId: text('screen_id'),
-  status: text('status', { enum: ['decided', 'open', 'not-built'] }).notNull(),
-  /** The person who decided, by name. */
-  by: text('by').notNull(),
-  at: timestamp('at', { withTimezone: true }).notNull(),
-  reconstructed: boolean('reconstructed').notNull().default(false),
-  supersedes: uuid('supersedes').references((): AnyPgColumn => decisions.id),
-  ...provenance,
-});
+export const decisions = pgTable(
+  'decisions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    siteId: text('site_id')
+      .notNull()
+      .references(() => sites.siteId),
+    sessionId: uuid('session_id').references(() => discoverySessions.id),
+    title: text('title').notNull(),
+    statement: text('statement').notNull(),
+    bricks: jsonb('bricks').$type<string[]>().notNull(),
+    screenId: text('screen_id'),
+    status: text('status', { enum: ['decided', 'open', 'not-built'] }).notNull(),
+    /** The person who decided, by name. */
+    by: text('by').notNull(),
+    at: timestamp('at', { withTimezone: true }).notNull(),
+    reconstructed: boolean('reconstructed').notNull().default(false),
+    supersedes: uuid('supersedes').references((): AnyPgColumn => decisions.id),
+    ...provenance,
+  },
+  (t) => [
+    // A card is superseded at most once: the chain never forks, even under concurrent writes.
+    uniqueIndex('decisions_supersedes_once').on(t.supersedes),
+  ],
+);
 
 /** Signatures (MASTER-PROMPT §8 Signoff). Append-only: a reversal is a new row that supersedes the old. */
-export const signoffs = pgTable('signoffs', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  siteId: text('site_id')
-    .notNull()
-    .references(() => sites.siteId),
-  /** The person who signed, by name, and their row. */
-  person: text('person').notNull(),
-  personId: uuid('person_id')
-    .notNull()
-    .references(() => people.id),
-  targetKind: text('target_kind', { enum: ['screen', 'brick'] }).notNull(),
-  targetId: text('target_id').notNull(),
-  targetCommit: text('target_commit').notNull(),
-  statement: text('statement').notNull(),
-  at: timestamp('at', { withTimezone: true }).notNull(),
-  supersedes: uuid('supersedes').references((): AnyPgColumn => signoffs.id),
-  /** True when this row withdraws the signature it supersedes. */
-  withdrawn: boolean('withdrawn').notNull().default(false),
-  ...provenance,
-});
+export const signoffs = pgTable(
+  'signoffs',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    siteId: text('site_id')
+      .notNull()
+      .references(() => sites.siteId),
+    /** The person who signed, by name, and their row. */
+    person: text('person').notNull(),
+    personId: uuid('person_id')
+      .notNull()
+      .references(() => people.id),
+    targetKind: text('target_kind', { enum: ['screen', 'brick'] }).notNull(),
+    targetId: text('target_id').notNull(),
+    targetCommit: text('target_commit').notNull(),
+    statement: text('statement').notNull(),
+    at: timestamp('at', { withTimezone: true }).notNull(),
+    supersedes: uuid('supersedes').references((): AnyPgColumn => signoffs.id),
+    /** True when this row withdraws the signature it supersedes. */
+    withdrawn: boolean('withdrawn').notNull().default(false),
+    ...provenance,
+  },
+  (t) => [
+    // A signature is superseded at most once: the chain never forks, even under concurrent writes.
+    uniqueIndex('signoffs_supersedes_once').on(t.supersedes),
+  ],
+);
 
 /** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
 export const APPEND_ONLY_TABLES = [

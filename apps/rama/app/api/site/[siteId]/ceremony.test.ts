@@ -123,13 +123,27 @@ describe('POST /api/site/[siteId]/sign', () => {
     ).toBe(503);
   });
 
-  it('answers a broken chain with 409 and lets other errors through', async () => {
+  it('answers a broken chain with 409, a pending mirror line as recorded with a warning, and lets other errors through', async () => {
     const chain = deps({
       sign: async () => {
         throw new ChainError('s1 is already superseded');
       },
     }).d;
     expect((await handleSign('shop', body, chain)).status).toBe(409);
+    const pending = Object.assign(
+      new Error('s1 is recorded, but .rama/signoffs.jsonl could not be written'),
+      {
+        name: 'MirrorError',
+        record: { id: 's1' },
+      },
+    );
+    const late = await json(
+      await handleSign('shop', body, deps({ sign: async () => Promise.reject(pending) }).d),
+    );
+    expect(late).toEqual({
+      status: 200,
+      body: { ok: true, record: { id: 's1' }, warning: pending.message },
+    });
     const boom = deps({ sign: async () => Promise.reject(new Error('disk full')) }).d;
     await expect(handleSign('shop', body, boom)).rejects.toThrow('disk full');
   });

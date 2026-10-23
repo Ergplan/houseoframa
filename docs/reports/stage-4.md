@@ -20,13 +20,13 @@ Date: 2026-10-23. Tag at start: `stage-4-start` (b14039a). Builder: Claude Opus 
   - Every insert into `decisions` and `signoffs` writes an `audit_log` row by trigger, in the same transaction.
   - Every row carries `site_id`, `created_at` and `created_by`.
 - **`packages/ceremony`:**
-  - **Records.** `.rama/decisions.jsonl` and `.rama/signoffs.jsonl` in the target are mirrors of the database rows, written in the same step. A line is taken back if the row does not commit.
-  - **Supersede chain.** A change or a reversal is a new row that supersedes the old one. A withdrawal is a row with `withdrawn: true`. A chain may not fork or change target.
+  - **Records.** `.rama/decisions.jsonl` and `.rama/signoffs.jsonl` in the target mirror the committed database rows. One advisory lock per site serialises the writes: the chain check and insert, then the file write. The file only ever gets committed rows, appended. A line that could not be written is appended by the next write.
+  - **Supersede chain.** A change or a reversal is a new row that supersedes the old one. A withdrawal is a row with `withdrawn: true`. A chain may not fork (checked under the lock, and refused by a unique index on `supersedes`) or change target.
   - **The gate.** `rama gate <repo> --base <commit> [--test-report <json>]`. A screen whose bricks changed since the base passes on either of two things:
     - a signature in force, made at or after the screen's last change;
     - a passing test behind every changed code brick.
-      It fails whatever the screens say if a signature line that was there at the base was changed or removed. It reads nothing from the target that could switch it off.
-  - **`ci/rama-gate.yml`.** The workflow a target includes. It runs on `pull_request_target`, so the copy on the base branch judges a pull request. It has a read-only token, no secrets, and runs House of Rama at a pinned ref. `rama-ceremony install-gate <site>` writes it into a target's checkout.
+      Screens at the base count too, so a removed screen or a deleted brick needs a signature. It fails whatever the screens say if a signature line that was there at the base was changed or removed. It reads nothing from the target that could switch it off.
+  - **`ci/rama-gate.yml`.** The workflow a target includes. It runs on `pull_request_target`, so the copy on the base branch judges a pull request. It has a read-only token and no secrets, in two jobs on two runners. The target's tests run in one job and only produce a report. The gate job never runs target code and runs House of Rama at a pinned ref. `rama-ceremony install-gate <site>` writes it into a target's checkout.
   - **The walkthrough script.** One step per Blueprint screen, holding all its captured views. Each step has the statement to sign, built from the traced figures and the decided cards (no model), the trails, and the signature in force (current or stale).
   - **Imports.** The weekend's session and a decisions log, as reconstructed records. A corrected re-import is reconciled append-only.
   - **Rama's next question.** Drafted with prompt `discovery.v1` through `packages/model` and stored as a draft turn.
@@ -87,21 +87,25 @@ The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinn
   - a signature before the change;
   - a replacement, then a withdrawal;
   - a rewritten signature file;
+  - a removed screen and a deleted brick, which count as changes;
   - `.rama/gate.json`, `rama.config.json` and `RAMA_GATE=off`, all ignored;
   - nothing changed;
   - a bad base.
 - **Supersede chain** against a real database (`test/store.test.ts`):
   - a replacement, then a withdrawal;
   - a fork, a jump to another target, and a bare withdrawal, each refused;
+  - two concurrent supersessions of one signature: exactly one succeeds;
+  - a fork inserted straight into the database, refused by the unique index;
   - the file equals the rows;
-  - nothing is mirrored for a refused row.
+  - nothing is mirrored for a refused row;
+  - a mirror that cannot be written: the row is recorded (`MirrorError`), and the next write appends the lost line first.
 - **Imports:** the weekend session, both heading forms of a decisions log, and the reconciliation, both pure and against the database.
 - **Walkthrough script:**
   - steps, statements and stale signatures (`test/walkthrough.test.ts`);
   - the page, rendered over a fixture site (`showroom/page.test.tsx`).
 - **Routes:** every new route has handler tests covering 200, 400, 404, 409, 502 and 503 (`app/api/site/[siteId]/ceremony.test.ts`), plus the site office page against a throwaway database.
 - **Canvas:** marks red, then amber and green after signing (`canvas/frame.test.ts`). Metrics: `signatureCoverage` and `brickMarks`.
-- **Workflow:** `pull_request_target`, a read-only token, no secrets, a pinned ref, and the test step unable to fail the job (`test/workflow.test.ts`).
+- **Workflow** (`test/workflow.test.ts`): `pull_request_target`, a read-only token, no secrets, target code only in the tests job (no House of Rama checkout there), and the gate job running whatever the tests job did.
 - **E2E on EkBill** (`tests/stage-4.ekbill.test.ts`, local), on a clone with its capture and a throwaway database:
   - a Playwright walkthrough in the real app signs `/gst` and `/dues`;
   - both land in Postgres, in `audit_log` and in `.rama/signoffs.jsonl`;
@@ -120,7 +124,14 @@ The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinn
 
 ## Reviewer findings
 
-(Filled in after the reviewer runs.)
+Run 1 at e7d17b6 found three code defects and three report claims. All are fixed, each with a test:
+
+1. **Target code could reach the gate in CI.** An install script in a pull request could rewrite House of Rama's checkout on the same runner. Fixed: two jobs on two runners, and the gate job never runs target code.
+2. **The gate saw only HEAD's screens.** A removed screen, or a brick deleted from a screen, went unseen. Fixed: screens and bricks at the base count too.
+3. **Rolling back a mirror line could erase another writer's committed line.** Fixed: one advisory lock per site, and only committed rows are appended, forward.
+4. **(Report)** "Mirrors are written in the same step" overstated it. Fixed: reworded to the new design.
+5. **(Report)** "A chain may not fork" did not hold under concurrency. Fixed: the lock, plus a unique index on `supersedes`.
+6. **(Report)** "The test step cannot fail the job" was false: `npm ci` could abort it. Fixed: the gate job runs whatever the tests job did.
 
 ## Real model cost
 

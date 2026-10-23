@@ -2,11 +2,14 @@
 # .github/workflows/ from github.com/Ergplan/houseoframa packages/ceremony/ci/rama-gate.yml.
 #
 # It runs on pull_request_target, so the version of this file that judges a pull request is the one on
-# the base branch: a pull request cannot edit or switch off the gate that judges it. The gate itself is
-# House of Rama's code at a pinned ref, not the target's, and reads no configuration from the target.
-# The token is read-only and no secret is passed, because the target's tests (the pull request's code)
-# run here to produce the test report. Make "rama gate" a required check in the branch protection rules;
-# that setting lives outside the repository's files.
+# the base branch: a pull request cannot edit or switch off the gate that judges it. Two jobs on two
+# runners keep the target's code away from the gate:
+#   tests  runs the pull request's tests (its code) for a report, with a read-only token, no secrets and
+#          no House of Rama checkout; whatever it does, it ends on its own runner;
+#   gate   never runs the target's code: it checks the pull request out as data, runs House of Rama's
+#          gate at a pinned ref, and reads the report as a list of passed test files, nothing more.
+# The gate reads no configuration from the target. Make "rama gate" a required check in the branch
+# protection rules; that setting lives outside the repository's files.
 name: rama gate
 
 on:
@@ -17,11 +20,34 @@ permissions:
   contents: read
 
 jobs:
+  tests:
+    name: target tests (report only)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx vitest run --project unit --reporter=json --outputFile=rama-tests.json
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: rama-tests
+          path: rama-tests.json
+          if-no-files-found: ignore
+
   gate:
     name: rama gate
+    needs: tests
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the pull request (full history, no credentials kept)
+      - name: Check out the pull request as data (full history, no credentials kept)
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -47,14 +73,17 @@ jobs:
       - name: Install House of Rama
         run: pnpm --dir rama install --frozen-lockfile
 
-      - name: Run the target's tests for the report (a failure here only means fewer bricks are covered)
-        working-directory: target
-        run: |
-          npm ci
-          npx vitest run --project unit --reporter=json --outputFile="$RUNNER_TEMP/rama-tests.json" || true
+      - name: Fetch the test report (absent when the tests job wrote none)
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: rama-tests
+          path: ${{ runner.temp }}/report
 
       - name: Gate
-        run: >
-          pnpm --dir rama rama gate "$GITHUB_WORKSPACE/target"
-          --base "${{ github.event.pull_request.base.sha }}"
-          --test-report "$RUNNER_TEMP/rama-tests.json"
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          REPORT: ${{ runner.temp }}/report/rama-tests.json
+        run: |
+          if [ -f "$REPORT" ]; then set -- --test-report "$REPORT"; fi
+          pnpm --dir rama rama gate "$GITHUB_WORKSPACE/target" --base "$BASE" "$@"

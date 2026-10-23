@@ -54,7 +54,10 @@ async function actor(siteId: string, deps: CeremonyDeps): Promise<Actor | Respon
 }
 
 const refused = (err: unknown) => {
-  const e = err as Error;
+  const e = err as Error & { record?: unknown };
+  // Recorded in Postgres; only the target's mirror line is pending (the next write appends it).
+  if (e.name === 'MirrorError')
+    return Response.json({ ok: true, record: e.record, warning: e.message });
   if (e.name === 'ChainError' || /already superseded|does not exist/.test(e.message))
     return fail(409, e.message);
   throw err;

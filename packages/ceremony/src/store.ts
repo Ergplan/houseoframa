@@ -1,12 +1,61 @@
 // Writes of the ceremony: discovery sessions and turns, decision cards, signatures. Each is an insert into
 // an append-only table (the database refuses UPDATE and DELETE, and audits decisions and signoffs by
-// trigger), and decisions and signoffs are mirrored, in the same step, to the target's
-// `.rama/decisions.jsonl` and `.rama/signoffs.jsonl` so the record travels with the code. If the
-// database does not commit, the mirrored line is taken back.
-import { and, asc, eq } from 'drizzle-orm';
+// trigger), and decisions and signoffs are mirrored to the target's `.rama/decisions.jsonl` and
+// `.rama/signoffs.jsonl` so the record travels with the code.
+//
+// A site's writes are serialised by one advisory lock: the chain check and the insert run in one
+// transaction holding it, and the mirror is written afterwards in a second one, from the committed rows.
+// So the file never holds a row the database does not, and two writers never append at once. A line
+// that could not be written (a crash, a full disk) is appended by the next write (`syncMirror`): the
+// mirror lags, never lies, and is repaired forward, append-only.
+import { asc, eq, sql } from 'drizzle-orm';
 import type { Decision, Signoff } from '@rama/shared';
 import { decisions, discoverySessions, discoveryTurns, signoffs, type Db } from '@rama/db';
-import { appendRecord, checkChain, DECISIONS_FILE, SIGNOFFS_FILE } from './records.ts';
+import { checkChain, DECISIONS_FILE, SIGNOFFS_FILE, syncMirror } from './records.ts';
+
+const lockSite = (tx: Db, siteId: string) =>
+  tx.execute(sql`select pg_advisory_xact_lock(hashtext('rama-ceremony'), hashtext(${siteId}))`);
+
+/** Runs `fn` in a transaction holding the site's ceremony lock until it commits or rolls back. */
+const underSiteLock = <T>(db: Db, siteId: string, fn: (tx: Db) => Promise<T>): Promise<T> =>
+  db.transaction(async (tx) => {
+    await lockSite(tx as unknown as Db, siteId);
+    return fn(tx as unknown as Db);
+  });
+
+/** The row is recorded (and returned as `record`), but its mirror line could not be written yet. */
+export class MirrorError extends Error {
+  override name = 'MirrorError';
+  constructor(
+    message: string,
+    readonly record: Decision | Signoff,
+  ) {
+    super(message);
+  }
+}
+
+/** After a committed insert: the mirror catches up with every committed row of the site, the new one included. */
+async function publish(
+  db: Db,
+  site: SiteRef,
+  file: string,
+  rows: (tx: Db) => Promise<(Decision | Signoff)[]>,
+  record: Decision | Signoff,
+): Promise<void> {
+  try {
+    // Under the lock again, after the commit: no other writer appends at the same time.
+    await underSiteLock(
+      db,
+      site.id,
+      async (tx) => void syncMirror(site.repoDir, file, await rows(tx)),
+    );
+  } catch (err) {
+    throw new MirrorError(
+      `${record.id} is recorded, but ${file} could not be written (${(err as Error).message}); the next write appends it`,
+      record,
+    );
+  }
+}
 
 export interface SiteRef {
   id: string;
@@ -40,15 +89,24 @@ const toDecision = (r: typeof decisions.$inferSelect): Decision => ({
   ...(r.supersedes ? { supersedes: r.supersedes } : {}),
 });
 
+/** Rows in the order they were recorded, which is the order of their mirror lines. */
 export async function listSignoffs(db: Db, siteId: string): Promise<Signoff[]> {
   return (
-    await db.select().from(signoffs).where(eq(signoffs.siteId, siteId)).orderBy(asc(signoffs.at))
+    await db
+      .select()
+      .from(signoffs)
+      .where(eq(signoffs.siteId, siteId))
+      .orderBy(asc(signoffs.createdAt), asc(signoffs.id))
   ).map(toSignoff);
 }
 
 export async function listDecisions(db: Db, siteId: string): Promise<Decision[]> {
   return (
-    await db.select().from(decisions).where(eq(decisions.siteId, siteId)).orderBy(asc(decisions.at))
+    await db
+      .select()
+      .from(decisions)
+      .where(eq(decisions.siteId, siteId))
+      .orderBy(asc(decisions.createdAt), asc(decisions.id))
   ).map(toDecision);
 }
 
@@ -70,47 +128,38 @@ export interface SignInput {
 
 /** A named signature: one append-only row (audited by trigger) and one line in `.rama/signoffs.jsonl`. */
 export async function sign(db: Db, site: SiteRef, input: SignInput): Promise<Signoff> {
-  let undo: (() => void) | null = null;
-  try {
-    return await db.transaction(async (tx) => {
-      const existing = (await tx.select().from(signoffs).where(eq(signoffs.siteId, site.id))).map(
-        toSignoff,
-      );
-      checkChain(existing, {
-        id: 'pending',
+  const record = await underSiteLock(db, site.id, async (one) => {
+    const existing = await listSignoffs(one, site.id);
+    checkChain(existing, {
+      id: 'pending',
+      siteId: site.id,
+      person: input.person,
+      target: input.target,
+      statement: input.statement,
+      at: input.at.toISOString(),
+      ...(input.supersedes ? { supersedes: input.supersedes } : {}),
+      ...(input.withdrawn ? { withdrawn: true } : {}),
+    });
+    const [row] = await one
+      .insert(signoffs)
+      .values({
         siteId: site.id,
         person: input.person,
-        target: input.target,
+        personId: input.personId,
+        targetKind: input.target.kind,
+        targetId: input.target.id,
+        targetCommit: input.target.commit,
         statement: input.statement,
-        at: input.at.toISOString(),
-        ...(input.supersedes ? { supersedes: input.supersedes } : {}),
-        ...(input.withdrawn ? { withdrawn: true } : {}),
-      });
-      const [row] = await tx
-        .insert(signoffs)
-        .values({
-          siteId: site.id,
-          person: input.person,
-          personId: input.personId,
-          targetKind: input.target.kind,
-          targetId: input.target.id,
-          targetCommit: input.target.commit,
-          statement: input.statement,
-          at: input.at,
-          supersedes: input.supersedes ?? null,
-          withdrawn: Boolean(input.withdrawn),
-          createdBy: input.personId,
-        })
-        .returning();
-      const record = toSignoff(row!);
-      undo = appendRecord(site.repoDir, SIGNOFFS_FILE, record);
-      return record;
-    });
-  } catch (err) {
-    // The row did not commit: take the mirrored line back, so the file never holds a signature the database does not.
-    (undo as (() => void) | null)?.();
-    throw err;
-  }
+        at: input.at,
+        supersedes: input.supersedes ?? null,
+        withdrawn: Boolean(input.withdrawn),
+        createdBy: input.personId,
+      })
+      .returning();
+    return toSignoff(row!);
+  });
+  await publish(db, site, SIGNOFFS_FILE, (tx) => listSignoffs(tx, site.id), record);
+  return record;
 }
 
 export interface DecideInput {
@@ -130,46 +179,35 @@ export interface DecideInput {
 
 /** A decision card: one append-only row (audited by trigger) and one line in `.rama/decisions.jsonl`. */
 export async function decide(db: Db, site: SiteRef, input: DecideInput): Promise<Decision> {
-  let undo: (() => void) | null = null;
-  try {
-    return await db.transaction(async (tx) => {
-      if (input.supersedes) {
-        const [prior] = await tx
-          .select()
-          .from(decisions)
-          .where(and(eq(decisions.siteId, site.id), eq(decisions.id, input.supersedes)));
-        if (!prior) throw new Error(`decision ${input.supersedes} does not exist`);
-        const [taken] = await tx
-          .select()
-          .from(decisions)
-          .where(eq(decisions.supersedes, input.supersedes));
-        if (taken) throw new Error(`decision ${input.supersedes} is already superseded`);
-      }
-      const [row] = await tx
-        .insert(decisions)
-        .values({
-          siteId: site.id,
-          sessionId: input.sessionId ?? null,
-          title: input.title,
-          statement: input.statement,
-          bricks: input.bricks,
-          screenId: input.screenId ?? null,
-          status: input.status,
-          by: input.by,
-          at: input.at,
-          reconstructed: Boolean(input.reconstructed),
-          supersedes: input.supersedes ?? null,
-          createdBy: input.createdBy,
-        })
-        .returning();
-      const record = toDecision(row!);
-      undo = appendRecord(site.repoDir, DECISIONS_FILE, record);
-      return record;
-    });
-  } catch (err) {
-    (undo as (() => void) | null)?.();
-    throw err;
-  }
+  const record = await underSiteLock(db, site.id, async (one) => {
+    const existing = await listDecisions(one, site.id);
+    if (input.supersedes) {
+      if (!existing.some((d) => d.id === input.supersedes))
+        throw new Error(`decision ${input.supersedes} does not exist`);
+      if (existing.some((d) => d.supersedes === input.supersedes))
+        throw new Error(`decision ${input.supersedes} is already superseded`);
+    }
+    const [row] = await one
+      .insert(decisions)
+      .values({
+        siteId: site.id,
+        sessionId: input.sessionId ?? null,
+        title: input.title,
+        statement: input.statement,
+        bricks: input.bricks,
+        screenId: input.screenId ?? null,
+        status: input.status,
+        by: input.by,
+        at: input.at,
+        reconstructed: Boolean(input.reconstructed),
+        supersedes: input.supersedes ?? null,
+        createdBy: input.createdBy,
+      })
+      .returning();
+    return toDecision(row!);
+  });
+  await publish(db, site, DECISIONS_FILE, (tx) => listDecisions(tx, site.id), record);
+  return record;
 }
 
 export interface SessionWithTurns {
