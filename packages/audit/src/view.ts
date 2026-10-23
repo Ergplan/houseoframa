@@ -135,5 +135,15 @@ export function auditScript(
   for (const n of audit.narration.filter((x) => !known.has(x.part)))
     steps.push({ kind: 'say', text: n.text, seconds: Math.max(2.4, n.text.length / 16) });
   steps.push({ kind: 'report', seconds: 1 });
+  // A large site would take minutes to fly: the scans share at most SCAN_BUDGET seconds at 1×, each
+  // shortened by the same factor, so a defect still holds the drone longest.
+  const scanning = steps.reduce((t, x) => t + (x.kind === 'scan' ? x.seconds : 0), 0);
+  if (scanning > SCAN_BUDGET) {
+    const k = SCAN_BUDGET / scanning;
+    for (const x of steps) if (x.kind === 'scan') x.seconds *= k;
+  }
   return steps;
 }
+
+/** Seconds of scanning, at 1×, that a replay may take whatever the size of the site. */
+export const SCAN_BUDGET = 120;
