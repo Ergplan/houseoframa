@@ -161,6 +161,10 @@ describe('every site page: to /login without a session, not found for another me
       '/site/[siteId]/audit',
       async () => (await import('./site/[siteId]/audit/page')).default as never,
     ],
+    [
+      '/site/[siteId]/triptych',
+      async () => (await import('./site/[siteId]/triptych/page')).default as never,
+    ],
   ];
   for (const [name, load] of pages) {
     it(name, async () => {
@@ -195,5 +199,74 @@ describe('/', () => {
     const ravi = renderToStaticMarkup(await Home());
     expect(ravi).toContain('href="/site/shop"');
     expect(ravi).not.toContain('href="/site/self"');
+  });
+});
+
+describe('the floor: booking needs a session, pages need a member, the pod light needs the controller token', () => {
+  it('POST /api/bookings answers 401 without a session', async () => {
+    const { POST } = await import('./api/bookings/route');
+    expect(
+      (
+        await POST(
+          post(null, {
+            pod: 1,
+            shift: 'game',
+            startsAt: '2026-10-23T09:00:00Z',
+            endsAt: '2026-10-23T10:00:00Z',
+          }),
+        )
+      ).status,
+    ).toBe(401);
+    expect(
+      (
+        await POST(
+          post('asha', {
+            pod: 9,
+            shift: 'game',
+            startsAt: '2026-10-23T09:00:00Z',
+            endsAt: '2026-10-23T10:00:00Z',
+          }),
+        )
+      ).status,
+    ).toBe(404);
+  });
+
+  it('/book and /pod/<n> send to /login without a session', async () => {
+    const { default: Book } = await import('./book/page');
+    const { default: Pod } = await import('./pod/[n]/page');
+    cookie = undefined;
+    await expect(Book()).rejects.toMatchObject({
+      digest: expect.stringMatching(/^NEXT_REDIRECT;[a-z]+;\/login;/),
+    });
+    await expect(Pod({ params: Promise.resolve({ n: '1' }) })).rejects.toMatchObject({
+      digest: expect.stringMatching(/^NEXT_REDIRECT;[a-z]+;\/login;/),
+    });
+    cookie = token.asha;
+    await expect(Pod({ params: Promise.resolve({ n: '1' }) })).rejects.toThrow(
+      /NEXT_HTTP_ERROR_FALLBACK;404/,
+    );
+  });
+
+  it('GET /api/pod/<n>/status refuses anyone without the controller token', async () => {
+    const { GET } = await import('./api/pod/[n]/status/route');
+    process.env.RAMA_POD_TOKEN = 'pod-secret';
+    try {
+      const ctx = { params: Promise.resolve({ n: '1' }) };
+      expect(
+        (await GET(new Request('http://rama.test/api/pod/1/status', as('asha')), ctx)).status,
+      ).toBe(401);
+      expect(
+        (
+          await GET(
+            new Request('http://rama.test/api/pod/1/status', {
+              headers: { authorization: 'Bearer pod-secret' },
+            }),
+            ctx,
+          )
+        ).status,
+      ).toBe(404);
+    } finally {
+      delete process.env.RAMA_POD_TOKEN;
+    }
   });
 });

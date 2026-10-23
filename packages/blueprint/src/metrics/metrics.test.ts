@@ -192,6 +192,31 @@ describe('metrics (one function per figure)', () => {
     const layered = { ...bp, layers: [{ id: 'logic', label: 'Logic' }], nodes: bp.nodes.map((n) => ({ ...n, layer: 'logic' })) };
     expect(m.auditFloorCounts(layered, fs)).toEqual([{ id: 'logic', label: 'Logic', bricks: 5, defects: 1, notes: 1 }]);
   });
+  it('activeBooking and overlaps read a pod timetable', () => {
+    const b = (pod: number, startsAt: string, endsAt: string) => ({ pod, siteId: 's', personId: 'p', shift: 'work' as const, startsAt, endsAt });
+    const day = [b(1, '2026-10-23T09:00:00Z', '2026-10-23T13:00:00Z'), b(1, '2026-10-23T13:00:00Z', '2026-10-23T17:00:00Z'), b(2, '2026-10-23T09:00:00Z', '2026-10-23T17:00:00Z')];
+    expect(m.activeBooking(day, 1, new Date('2026-10-23T12:59:59Z'))).toBe(day[0]);
+    expect(m.activeBooking(day, 1, new Date('2026-10-23T13:00:00Z'))).toBe(day[1]);
+    expect(m.activeBooking(day, 1, new Date('2026-10-23T17:00:00Z'))).toBeNull();
+    expect(m.activeBooking(day, 3, new Date('2026-10-23T12:00:00Z'))).toBeNull();
+    expect(m.overlaps(day[0]!, day[1]!)).toBe(false);
+    expect(m.overlaps(day[0]!, b(1, '2026-10-23T12:00:00Z', '2026-10-23T14:00:00Z'))).toBe(true);
+    expect(m.overlaps(day[0]!, day[2]!)).toBe(false);
+  });
+  it('podLight: off, pink, blue, amber, green as the site moves from work to signed and audited', () => {
+    const b = { ...bp, commit: 'c3', screens: [{ id: '/', name: 'Home', route: '/', file: 'app/page.tsx', bricks: ['lib/a.ts'] }] };
+    const work = { shift: 'work' as const, siteId: 's' };
+    const light = (over: Partial<Parameters<typeof m.podLight>[0]>) => m.podLight({ booking: work, bp: b, signedScreens: [], capturedCommit: null, audit: null, ...over });
+    expect(light({ booking: null })).toBe('off');
+    expect(light({ booking: { shift: 'game', siteId: null } })).toBe('pink');
+    expect(light({})).toBe('blue');
+    expect(light({ capturedCommit: 'c2' })).toBe('blue');
+    expect(light({ capturedCommit: 'c3' })).toBe('amber');
+    expect(light({ capturedCommit: 'c3', signedScreens: ['/'] })).toBe('blue');
+    expect(light({ capturedCommit: 'c3', signedScreens: ['/'], audit: { commit: 'c3', defects: 1 } })).toBe('blue');
+    expect(light({ capturedCommit: 'c3', signedScreens: ['/'], audit: { commit: 'c2', defects: 0 } })).toBe('blue');
+    expect(light({ capturedCommit: 'c3', signedScreens: ['/'], audit: { commit: 'c3', defects: 0 } })).toBe('green');
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });

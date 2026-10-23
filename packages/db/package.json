@@ -13,7 +13,8 @@
     "check": "drizzle-kit check",
     "migrate": "tsx src/cli.ts migrate",
     "seed": "tsx src/cli.ts seed",
-    "member": "tsx src/cli.ts member"
+    "member": "tsx src/cli.ts member",
+    "pod": "tsx src/cli.ts pod"
   },
   "dependencies": {
     "drizzle-orm": "0.45.3",

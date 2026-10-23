@@ -29,7 +29,8 @@
     "rama-trace": "rama-trace",
     "rama-ceremony": "rama-ceremony",
     "rama-audit": "rama-audit",
-    "rama-member": "pnpm --filter @rama/db member"
+    "rama-member": "pnpm --filter @rama/db member",
+    "rama-pod": "pnpm --filter @rama/db pod"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

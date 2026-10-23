@@ -11,6 +11,16 @@ One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are
 - **Mail by SMTP, with a local outbox.** With `SMTP_URL` set, the link is mailed. Without it (this machine), it is written to the server's log. `pnpm rama-member link <email>` prints one for whoever has this machine's shell. Which mail service the floor uses is the user's choice.
 - **A site belongs to one member, and another member's site does not exist.** Every page under /site redirects to /login without a session, and answers not found for a site the member does not own. Every site route answers 401 without a session and 404 for another's site. /api/health stays public. A manager sees the campus, not other members' sites.
 - **Members are added from the command line** (`pnpm rama-member add <email> <name> [--manager]`). The pre-Stage 6 local member keeps their sites and gains an email: for this build, the user's account email.
+- **The pod light is read from the records**, by `podLight()` in the metrics engine:
+  - **off:** no booking now;
+  - **pink:** game mode;
+  - **green:** every screen signed at the site's current commit, and that commit's audit found no defect;
+  - **amber (awaiting sign-off):** the screens are photographed at the current commit, and one is not signed there;
+  - **blue:** otherwise, work in progress. That includes code ahead of its photographs, and screens signed but not yet audited.
+    The prompt names the colours, not when each applies; this reading makes each one a fact a person can check.
+- **The pod controller authenticates with a bearer token** (`RAMA_POD_TOKEN`). It sees the light, the shift, the end of the booking and the site's name, not who booked it. Without a configured token the route answers 503, rather than serving the floor to anyone.
+- **Bookings cannot double-book a pod.** The overlap check and the insert hold the pod row's lock. A work booking names a site the member owns; game mode names none.
+- **The triptych is three full pages in frames** (Discovery, Site, Showroom), side by side when the window is at least 2400 px wide (three 4K screens), tabs otherwise. Each page keeps its own behaviour, narration included.
 - **Sign-ins and sessions are not append-only.** A link is spent and a session revoked by an update (`used_at`, `revoked_at`): they are credentials, not a record anyone signs. Like `people`, they carry no site (`site_id` is null).
 
 ## 2026-10-23 — Stage 5: the audit

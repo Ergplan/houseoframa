@@ -270,6 +270,48 @@ export const auditFloorCounts = (bp: Blueprint, findings: { brick: string; verdi
   }));
 };
 
+export type PodLight = 'off' | 'blue' | 'amber' | 'green' | 'pink';
+
+export interface PodBooking {
+  pod: number;
+  siteId: string | null;
+  personId: string;
+  shift: 'work' | 'game';
+  startsAt: string;
+  endsAt: string;
+}
+
+/** The booking of a pod at a moment, if any: starts at or before it, ends after it. */
+export const activeBooking = <B extends PodBooking>(bookings: B[], pod: number, at: Date): B | null =>
+  bookings.find((b) => b.pod === pod && Date.parse(b.startsAt) <= at.getTime() && at.getTime() < Date.parse(b.endsAt)) ?? null;
+
+/** Two bookings of one pod overlap when each starts before the other ends. */
+export const overlaps = (a: Pick<PodBooking, 'pod' | 'startsAt' | 'endsAt'>, b: Pick<PodBooking, 'pod' | 'startsAt' | 'endsAt'>) =>
+  a.pod === b.pod && Date.parse(a.startsAt) < Date.parse(b.endsAt) && Date.parse(b.startsAt) < Date.parse(a.endsAt);
+
+/**
+ * The pod's light (Stage 6): off with no booking; pink in game mode; for work on a site, green when every
+ * screen is signed at the Blueprint's commit and that commit's audit found no defect; amber (awaiting
+ * sign-off) when the screens are photographed at that commit and one is not signed there; blue otherwise:
+ * work in progress, the code ahead of its photographs.
+ */
+export function podLight(input: {
+  booking: Pick<PodBooking, 'shift' | 'siteId'> | null;
+  bp: Blueprint | null;
+  signedScreens: string[];
+  capturedCommit: string | null;
+  audit: { commit: string; defects: number } | null;
+}): PodLight {
+  const { booking, bp } = input;
+  if (!booking) return 'off';
+  if (booking.shift === 'game') return 'pink';
+  if (!bp) return 'blue';
+  const allSigned = bp.screens.length > 0 && signatureCoverage(bp, input.signedScreens).unsigned === 0;
+  if (allSigned && input.audit?.commit === bp.commit && input.audit.defects === 0) return 'green';
+  if (input.capturedCommit === bp.commit && !allSigned) return 'amber';
+  return 'blue';
+}
+
 /** Every figure at once, for the CLI summary and the trust report. */
 export const summary = (bp: Blueprint) => ({
   files: files(bp),

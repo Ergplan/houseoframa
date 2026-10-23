@@ -738,3 +738,33 @@ button:disabled {
 .audit-report code {
   font-size: 12px;
 }
+/* Triptych (Stage 6): three 3840×2160 screens, or tabs on one */
+.triptych {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.triptych-banner {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--dim);
+}
+.triptych-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px 12px;
+}
+.triptych-panes {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.triptych.wide .triptych-panes {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.triptych-panes iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: var(--bg);
+}

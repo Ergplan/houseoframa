@@ -6,6 +6,7 @@ import { createDb } from './client.ts';
 import { runMigrations } from './migrate.ts';
 import { seed } from './seed.ts';
 import { addMember, issueLink } from './auth.ts';
+import { pods } from './schema.ts';
 
 const envFile = fileURLToPath(new URL('../../../.env', import.meta.url));
 if (existsSync(envFile)) process.loadEnvFile(envFile);
@@ -40,8 +41,19 @@ try {
     if (!r) throw new Error(`no member signs in as ${email}`);
     const base = process.env.RAMA_BASE_URL ?? 'http://localhost:3000';
     console.log(`${base}/auth/verify?token=${r.token}`);
+  } else if (command === 'pod' && process.argv[3] === 'add') {
+    // rama-pod add <n> <name…>: a pod on the floor.
+    const n = Number(process.argv[4]);
+    const name = process.argv.slice(5).join(' ');
+    if (!Number.isInteger(n) || n < 1 || !name)
+      throw new Error('usage: rama-pod add <number> <name>');
+    await db
+      .insert(pods)
+      .values({ pod: n, name, createdBy: 'rama:db-cli@0.1.0' })
+      .onConflictDoNothing();
+    console.log(`pod ${n}: ${name}`);
   } else {
-    console.error('usage: cli.ts migrate|seed|member add|member link');
+    console.error('usage: cli.ts migrate|seed|member add|member link|pod add');
     process.exitCode = 2;
   }
 } finally {
