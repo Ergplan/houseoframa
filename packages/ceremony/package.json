@@ -6,6 +6,7 @@
   "description": "Decisions, signatures, the merge gate and the walkthrough.",
   "exports": {
     ".": "./src/index.ts",
+    "./gate": "./src/gate.ts",
     "./records": "./src/records.ts",
     "./walkthrough": "./src/walkthrough.ts"
   },

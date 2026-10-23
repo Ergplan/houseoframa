@@ -34,6 +34,7 @@ Planned (folders hold only a README until their stage):
 - `docs/HOUSE-STYLE.md` (Stage 3) — the convention a house-stack target follows to make its figures traceable.
 - `packages/ceremony/bin/`, `packages/ceremony/test/` (Stage 4) — the `rama-ceremony` executable; tests.
 - `packages/ceremony/ci/` (Stage 4) — `rama-gate.yml`, the GitHub Actions workflow a target includes (`rama-ceremony install-gate <site>` writes it pinned to a House of Rama ref).
+- `packages/audit/bin/`, `packages/audit/src/checks/`, `packages/audit/test/` (Stage 5) — the `rama-audit` executable, the checks of §7.3, tests.
 - `apps/rama/components/ceremony/` (Stage 4) — the walkthrough and the site office (discovery) views.
 - `tests/dev-server.ts` (Stage 2) — starts the real Next dev server for an e2e test on its own port and distDir.
 

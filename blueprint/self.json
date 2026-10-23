@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
+  "commit": "9b6d82259374d7f41df874ac478f3bd026e7415d",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -4279,6 +4279,33 @@
       "sha": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
       "short": "b89acfa",
       "subject": "Fix reviewer run 2: merges and renames gated; CI report paths portable"
+    },
+    {
+      "at": "2026-10-23T00:45:04Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 93,
+          "del": 24,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 15,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/reports/stage-4.md"
+        },
+        {
+          "add": 15,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-4.review.md"
+        }
+      ],
+      "sha": "9b6d82259374d7f41df874ac478f3bd026e7415d",
+      "short": "9b6d822",
+      "subject": "Stage 4: report with reviewer findings, cost and open questions"
     }
   ],
   "edges": [
@@ -5760,6 +5787,664 @@
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "packages/audit/bin/rama-audit.mjs",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/audit/src/cli.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/auditor.ts",
+      "symbols": [
+        "CheckFinding",
+        "CheckResults",
+        "CheckRun",
+        "Verdict",
+        "lower"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "JSON text with keys sorted into a stable order"
+      },
+      "from": "packages/audit/src/auditor.ts",
+      "symbols": [
+        "canonicalJson"
+      ],
+      "to": "packages/blueprint/src/json.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the sorted list of distinct commit authors"
+      },
+      "from": "packages/audit/src/auditor.ts",
+      "symbols": [
+        "authors"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/auditor.ts",
+      "symbols": [
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/audit/src/auditor.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/auditor.ts",
+      "symbols": [
+        "Blueprint",
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/checks/ceremony.ts",
+      "symbols": [
+        "CheckFinding",
+        "SITE"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/ceremony.ts",
+      "symbols": [
+        "changesSince"
+      ],
+      "to": "packages/ceremony/src/gate.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/ceremony.ts",
+      "symbols": [
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/ceremony.ts",
+      "symbols": [
+        "Blueprint",
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "openDecisions",
+        "unconfirmedGlossary",
+        "unsignedChanges"
+      ],
+      "to": "packages/audit/src/checks/ceremony.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "RunOptions",
+        "runChecks"
+      ],
+      "to": "packages/audit/src/checks/run.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "longUnauthRoute",
+        "staticChecks"
+      ],
+      "to": "packages/audit/src/checks/static.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "CheckFinding",
+        "CheckResults",
+        "CheckRun",
+        "sortFindings"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "ReadSource",
+        "sourceReader"
+      ],
+      "to": "packages/audit/src/source.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "isCode"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/index.ts",
+      "symbols": [
+        "Blueprint",
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/checks/run.ts",
+      "symbols": [
+        "CheckFinding",
+        "CheckRun",
+        "SITE"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/run.ts",
+      "symbols": [
+        "isCode"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/checks/run.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/checks/static.ts",
+      "symbols": [
+        "CheckFinding",
+        "CheckName"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/checks/static.ts",
+      "symbols": [
+        "lineOf",
+        "parse",
+        "walk"
+      ],
+      "to": "packages/audit/src/source.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/cli.ts",
+      "symbols": [
+        "auditChecks"
+      ],
+      "to": "packages/audit/src/checks/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/cli.ts",
+      "symbols": [
+        "latestAudit",
+        "runAudit",
+        "verifyReport"
+      ],
+      "to": "packages/audit/src/report.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
+      },
+      "from": "packages/audit/src/cli.ts",
+      "symbols": [
+        "locateSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/cli.ts",
+      "symbols": [
+        "listDecisions",
+        "listSignoffs"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "packages/audit/src/cli.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/cli.ts",
+      "symbols": [
+        "readCapture"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "AUDIT_COMPONENT",
+        "AppliedFinding",
+        "AuditorInput",
+        "AuditorOverreachError",
+        "AuditorReply",
+        "NumberedFinding",
+        "applyReply",
+        "askAuditor",
+        "auditorInput",
+        "inputsHash",
+        "number"
+      ],
+      "to": "packages/audit/src/auditor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "openDecisions",
+        "unconfirmedGlossary",
+        "unsignedChanges"
+      ],
+      "to": "packages/audit/src/checks/ceremony.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "CheckContext",
+        "auditChecks"
+      ],
+      "to": "packages/audit/src/checks/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "RunOptions",
+        "packageManager",
+        "parseTscErrors",
+        "scriptCommand",
+        "testFindings"
+      ],
+      "to": "packages/audit/src/checks/run.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "longUnauthRoute",
+        "staticChecks"
+      ],
+      "to": "packages/audit/src/checks/static.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "AuditReportBody",
+        "SignedReport",
+        "StoredAudit",
+        "latestAudit",
+        "reportBody",
+        "runAudit",
+        "signoffVerdicts",
+        "verifyReport"
+      ],
+      "to": "packages/audit/src/report.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/index.ts",
+      "symbols": [
+        "AuditStep",
+        "AuditView",
+        "auditScript"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "AUDIT_COMPONENT",
+        "AppliedFinding",
+        "AuditorInput",
+        "AuditorReply",
+        "askAuditor",
+        "auditorInput",
+        "inputsHash",
+        "number"
+      ],
+      "to": "packages/audit/src/auditor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "auditChecks"
+      ],
+      "to": "packages/audit/src/checks/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "RunOptions"
+      ],
+      "to": "packages/audit/src/checks/run.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "CheckRun",
+        "Verdict"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "listDecisions",
+        "listSignoffs"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the table of model calls"
+      },
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "Db",
+        "audits",
+        "findings",
+        "modelCalls"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
+        "Blueprint",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/source.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/src/view.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/test/auditor.test.ts",
+      "symbols": [
+        "AuditorInput",
+        "AuditorOverreachError",
+        "AuditorReply",
+        "applyReply",
+        "askAuditor",
+        "inputsHash",
+        "number"
+      ],
+      "to": "packages/audit/src/auditor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/auditor.test.ts",
+      "symbols": [
+        "CheckFinding"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/audit/test/auditor.test.ts",
+      "symbols": [
+        "VendorGuardError",
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/auditor.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "AuditorReply"
+      ],
+      "to": "packages/audit/src/auditor.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "openDecisions",
+        "unconfirmedGlossary",
+        "unsignedChanges"
+      ],
+      "to": "packages/audit/src/checks/ceremony.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "auditChecks"
+      ],
+      "to": "packages/audit/src/checks/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "SITE"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "latestAudit",
+        "runAudit",
+        "verifyReport"
+      ],
+      "to": "packages/audit/src/report.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "extract"
+      ],
+      "to": "packages/blueprint/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "sign"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls; running the database migrations; the one-time setup of the local member and the self site, safe to repeat"
+      },
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "createDb",
+        "modelCalls",
+        "runMigrations",
+        "seed"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/report.test.ts",
+      "symbols": [
+        "Blueprint",
+        "Decision",
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/audit/test/run.test.ts",
+      "symbols": [
+        "parseTscErrors",
+        "runChecks",
+        "scriptCommand",
+        "testFindings"
+      ],
+      "to": "packages/audit/src/checks/run.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/run.test.ts",
+      "symbols": [
+        "SITE"
+      ],
+      "to": "packages/audit/src/findings.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/run.test.ts",
+      "symbols": [
+        "extract"
+      ],
+      "to": "packages/blueprint/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "packages/audit/test/run.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/test/static.test.ts",
+      "symbols": [
+        "longUnauthRoute",
+        "staticChecks"
+      ],
+      "to": "packages/audit/src/checks/static.ts",
+      "typeOnly": false
     },
     {
       "from": "packages/blueprint/bin/rama.mjs",
@@ -7338,9 +8023,11 @@
       "from": "packages/db/src/db.test.ts",
       "symbols": [
         "auditLog",
+        "audits",
         "decisions",
         "discoverySessions",
         "discoveryTurns",
+        "findings",
         "modelCalls",
         "people",
         "signoffs",
@@ -8532,6 +9219,12 @@
     {
       "dev": true,
       "manifest": "package.json",
+      "name": "@rama/audit",
+      "version": "workspace:*"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
       "name": "@rama/blueprint",
       "version": "workspace:*"
     },
@@ -8628,6 +9321,72 @@
     {
       "dev": true,
       "manifest": "package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "@rama/ceremony",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "@rama/model",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "@rama/trace",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/audit/package.json",
+      "name": "postgres",
+      "version": "3.4.9"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "tsx",
+      "version": "4.23.15"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/audit/package.json",
       "name": "zod",
       "version": "4.6.5"
     },
@@ -8806,7 +9565,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T00:40:27Z",
+  "extractedAt": "2026-10-23T00:45:04Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -10159,7 +10918,7 @@
     },
     {
       "binary": false,
-      "bytes": 23007,
+      "bytes": 23156,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -10168,7 +10927,7 @@
       "lastCommit": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 121,
+      "lines": 122,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -10406,12 +11165,12 @@
     {
       "binary": false,
       "bytes": 13920,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e7d17b62d8850899d669249b55205a92d150d549",
-      "lastCommit": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
+      "lastCommit": "9b6d82259374d7f41df874ac478f3bd026e7415d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 165,
@@ -10421,12 +11180,12 @@
     {
       "binary": false,
       "bytes": 32994,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
-      "lastCommit": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
+      "lastCommit": "9b6d82259374d7f41df874ac478f3bd026e7415d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 57,
@@ -10456,7 +11215,7 @@
     },
     {
       "binary": false,
-      "bytes": 1630,
+      "bytes": 1696,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -10465,7 +11224,7 @@
       "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 52,
+      "lines": 54,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -10475,7 +11234,7 @@
     },
     {
       "binary": false,
-      "bytes": 164,
+      "bytes": 2254,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -10484,12 +11243,391 @@
       "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 3,
+      "lines": 17,
       "path": "packages/audit/README.md",
       "purpose": {
         "confirmed": false,
         "text": "Placeholder note for the audit package, which is empty so far and points to other documents for its role."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 174,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 6,
+      "path": "packages/audit/bin/rama-audit.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 780,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 32,
+      "path": "packages/audit/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8138,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AUDIT_COMPONENT",
+        "AppliedFinding",
+        "AuditorInput",
+        "AuditorOverreachError",
+        "AuditorReply",
+        "AuditorRun",
+        "NumberedFinding",
+        "applyReply",
+        "askAuditor",
+        "auditorInput",
+        "inputsHash",
+        "number"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 248,
+      "path": "packages/audit/src/auditor.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2875,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "openDecisions",
+        "unconfirmedGlossary",
+        "unsignedChanges"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 76,
+      "path": "packages/audit/src/checks/ceremony.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3352,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CheckContext",
+        "auditChecks"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 102,
+      "path": "packages/audit/src/checks/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7717,
+      "changes": 0,
+      "env": [
+        "HOME",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "RunOptions",
+        "Script",
+        "packageManager",
+        "parseTscErrors",
+        "runChecks",
+        "runScript",
+        "scriptCommand",
+        "testFindings"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 226,
+      "path": "packages/audit/src/checks/run.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8376,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "longUnauthRoute",
+        "staticChecks"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 250,
+      "path": "packages/audit/src/checks/static.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3656,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 107,
+      "path": "packages/audit/src/cli.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2232,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CHECKS",
+        "CheckFinding",
+        "CheckName",
+        "CheckResults",
+        "CheckRun",
+        "SITE",
+        "Verdict",
+        "brickVerdicts",
+        "lower",
+        "sortFindings",
+        "worse"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 72,
+      "path": "packages/audit/src/findings.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 855,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*",
+        "AUDIT_COMPONENT",
+        "AppliedFinding",
+        "AuditReportBody",
+        "AuditStep",
+        "AuditView",
+        "AuditorInput",
+        "AuditorOverreachError",
+        "AuditorReply",
+        "CheckContext",
+        "NumberedFinding",
+        "RunOptions",
+        "SignedReport",
+        "StoredAudit",
+        "applyReply",
+        "askAuditor",
+        "auditChecks",
+        "auditScript",
+        "auditorInput",
+        "inputsHash",
+        "latestAudit",
+        "longUnauthRoute",
+        "number",
+        "openDecisions",
+        "packageManager",
+        "parseTscErrors",
+        "reportBody",
+        "runAudit",
+        "scriptCommand",
+        "signoffVerdicts",
+        "staticChecks",
+        "testFindings",
+        "unconfirmedGlossary",
+        "unsignedChanges",
+        "verifyReport"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 35,
+      "path": "packages/audit/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8378,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AuditReportBody",
+        "RunAuditOptions",
+        "SignedReport",
+        "SignoffVerdict",
+        "StoredAudit",
+        "latestAudit",
+        "reportBody",
+        "runAudit",
+        "signoffVerdicts",
+        "verifyReport"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 277,
+      "path": "packages/audit/src/report.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1672,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ReadSource",
+        "lineOf",
+        "parse",
+        "sourceReader",
+        "walk"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 50,
+      "path": "packages/audit/src/source.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3487,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AuditStep",
+        "AuditView",
+        "Verdict",
+        "auditScript"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 97,
+      "path": "packages/audit/src/view.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5412,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 170,
+      "path": "packages/audit/test/auditor.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 9942,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 291,
+      "path": "packages/audit/test/report.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 5948,
+      "changes": 0,
+      "env": [
+        "RAMA_AUDIT_SECRET"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 147,
+      "path": "packages/audit/test/run.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 5693,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 144,
+      "path": "packages/audit/test/static.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 74,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/audit/tsconfig.json",
       "test": false
     },
     {
@@ -10532,7 +11670,7 @@
     },
     {
       "binary": false,
-      "bytes": 667,
+      "bytes": 698,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -10541,7 +11679,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 30,
+      "lines": 31,
       "path": "packages/blueprint/package.json",
       "purpose": {
         "confirmed": false,
@@ -11352,7 +12490,7 @@
     },
     {
       "binary": false,
-      "bytes": 765,
+      "bytes": 796,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11361,7 +12499,7 @@
       "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 32,
+      "lines": 33,
       "path": "packages/ceremony/package.json",
       "test": false
     },
@@ -11824,6 +12962,21 @@
     },
     {
       "binary": false,
+      "bytes": 2489,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 45,
+      "path": "packages/db/migrations/0003_audit.sql",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 9168,
       "changes": 1,
       "env": [],
@@ -11873,7 +13026,22 @@
     },
     {
       "binary": false,
-      "bytes": 476,
+      "bytes": 27341,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1083,
+      "path": "packages/db/migrations/meta/0003_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 609,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -11882,7 +13050,7 @@
       "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 27,
+      "lines": 34,
       "path": "packages/db/migrations/meta/_journal.json",
       "purpose": {
         "confirmed": false,
@@ -11956,7 +13124,7 @@
     },
     {
       "binary": false,
-      "bytes": 7426,
+      "bytes": 9025,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -11967,7 +13135,7 @@
       "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 212,
+      "lines": 262,
       "path": "packages/db/src/db.test.ts",
       "purpose": {
         "confirmed": false,
@@ -12027,7 +13195,7 @@
     },
     {
       "binary": false,
-      "bytes": 6536,
+      "bytes": 8351,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -12035,9 +13203,11 @@
         "APPEND_ONLY_TABLES",
         "AUDITED_TABLES",
         "auditLog",
+        "audits",
         "decisions",
         "discoverySessions",
         "discoveryTurns",
+        "findings",
         "modelCalls",
         "people",
         "signoffs",
@@ -12047,7 +13217,7 @@
       "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 176,
+      "lines": 223,
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -12970,7 +14140,7 @@
     },
     {
       "binary": false,
-      "bytes": 104765,
+      "bytes": 105757,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -12979,7 +14149,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3294,
+      "lines": 3334,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -13008,7 +14178,7 @@
     },
     {
       "binary": false,
-      "bytes": 189,
+      "bytes": 200,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -13023,6 +14193,21 @@
         "confirmed": false,
         "text": "Explains that prompts are stored as versioned files, never edited in place, and lists the prompts planned."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3218,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 29,
+      "path": "prompts/audit.v1.md",
       "test": false
     },
     {
@@ -13507,7 +14692,7 @@
     },
     {
       "binary": false,
-      "bytes": 7768,
+      "bytes": 7842,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -13516,7 +14701,7 @@
       "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 236,
+      "lines": 238,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -13700,7 +14885,7 @@
     },
     {
       "binary": false,
-      "bytes": 1603,
+      "bytes": 1703,
       "changes": 4,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -13713,7 +14898,7 @@
       "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 40,
+      "lines": 41,
       "path": "vitest.config.ts",
       "purpose": {
         "confirmed": false,

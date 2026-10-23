@@ -162,6 +162,51 @@ export const signoffs = pgTable(
   ],
 );
 
+/**
+ * Audit reports (Stage 5), one per run of the auditor on a site at a commit. Signed by the auditor's
+ * vendor and model (its model_calls row), with the hash of exactly what it was given.
+ */
+export const audits = pgTable('audits', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  /** The commit the checks ran on. */
+  commit: text('commit').notNull(),
+  vendor: text('vendor').notNull(),
+  model: text('model').notNull(),
+  callId: uuid('call_id')
+    .notNull()
+    .references(() => modelCalls.id),
+  /** sha256 of the canonical JSON the auditor received. */
+  inputsHash: text('inputs_hash').notNull(),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  /** Counts, checks run or not run, narration, alterations, time machine, verdict changes. */
+  report: jsonb('report').$type<Record<string, unknown>>().notNull(),
+  ...provenance,
+});
+
+/** One verdict per finding of an audit (MASTER-PROMPT §8 Finding): pass, note or defect on a brick. */
+export const findings = pgTable('findings', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  auditId: uuid('audit_id')
+    .notNull()
+    .references(() => audits.id),
+  brick: text('brick').notNull(),
+  check: text('check').notNull(),
+  verdict: text('verdict', { enum: ['pass', 'note', 'defect'] }).notNull(),
+  text: text('text').notNull(),
+  file: text('file'),
+  line: integer('line'),
+  /** The auditor's explanation when it downgraded the checks' verdict; the checks' verdict is kept too. */
+  checkVerdict: text('check_verdict', { enum: ['pass', 'note', 'defect'] }).notNull(),
+  auditorNote: text('auditor_note'),
+  ...provenance,
+});
+
 /** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
 export const APPEND_ONLY_TABLES = [
   'model_calls',
@@ -170,7 +215,9 @@ export const APPEND_ONLY_TABLES = [
   'discovery_turns',
   'decisions',
   'signoffs',
+  'audits',
+  'findings',
 ] as const;
 
 /** Tables whose every insert also appends an audit_log row, written by a trigger (Invariant 8). */
-export const AUDITED_TABLES = ['decisions', 'signoffs'] as const;
+export const AUDITED_TABLES = ['decisions', 'signoffs', 'audits', 'findings'] as const;

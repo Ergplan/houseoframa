@@ -7,9 +7,11 @@ import { createDb } from './client.ts';
 import { runMigrations } from './migrate.ts';
 import {
   auditLog,
+  audits,
   decisions,
   discoverySessions,
   discoveryTurns,
+  findings,
   modelCalls,
   people,
   signoffs,
@@ -50,9 +52,11 @@ describe('packages/db', () => {
       select table_name from information_schema.tables where table_schema = 'public' order by table_name`;
     expect(tables.map((t) => t.table_name)).toEqual([
       'audit_log',
+      'audits',
       'decisions',
       'discovery_sessions',
       'discovery_turns',
+      'findings',
       'model_calls',
       'people',
       'signoffs',
@@ -73,6 +77,8 @@ describe('packages/db', () => {
       'discovery_turns',
       'decisions',
       'signoffs',
+      'audits',
+      'findings',
     ]) {
       const mine = cols.filter((c) => c.table_name === table);
       expect(mine.map((c) => c.column_name).sort(), table).toEqual([
@@ -208,5 +214,49 @@ describe('packages/db', () => {
     expect(audited[0]).toMatchObject({ row_id: card!.id, created_by: member!.id });
     expect(audited[1]!.row_id).toBe(first!.id);
     expect(await conn.db.select().from(signoffs)).toHaveLength(2);
+  });
+
+  it('keeps audits and findings append-only and audits every insert', async () => {
+    const [call] = await conn.db.select().from(modelCalls).limit(1);
+    const [audit] = await conn.db
+      .insert(audits)
+      .values({
+        siteId: 'self',
+        commit: 'abc1234',
+        vendor: 'openai',
+        model: 'm',
+        callId: call!.id,
+        inputsHash: 'h',
+        at: new Date(),
+        report: {},
+        createdBy: 'rama:audit@0',
+      })
+      .returning();
+    const [finding] = await conn.db
+      .insert(findings)
+      .values({
+        siteId: 'self',
+        auditId: audit!.id,
+        brick: 'lib/a.ts',
+        check: 'any-type',
+        verdict: 'note',
+        checkVerdict: 'note',
+        text: 'any',
+        createdBy: 'rama:audit@0',
+      })
+      .returning();
+    for (const table of ['audits', 'findings']) {
+      await expect(conn.sql.unsafe(`UPDATE ${table} SET created_by = 'tamper'`)).rejects.toThrow(
+        /append-only/,
+      );
+      await expect(conn.sql.unsafe(`DELETE FROM ${table}`)).rejects.toThrow(/append-only/);
+      await expect(conn.sql.unsafe(`TRUNCATE ${table} CASCADE`)).rejects.toThrow(/append-only/);
+    }
+    const logged = await conn.sql<{ table_name: string; row_id: string }[]>`
+      select table_name, row_id from audit_log where table_name in ('audits', 'findings') order by id`;
+    expect(logged).toEqual([
+      { table_name: 'audits', row_id: audit!.id },
+      { table_name: 'findings', row_id: finding!.id },
+    ]);
   });
 });

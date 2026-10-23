@@ -6,6 +6,7 @@
   "description": "git + source → Blueprint JSON; metrics; the `rama` CLI.",
   "exports": {
     ".": "./src/index.ts",
+    "./json": "./src/json.ts",
     "./metrics": "./src/metrics/index.ts",
     "./site": "./src/site.ts"
   },

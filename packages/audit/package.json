@@ -1,0 +1,32 @@
+{
+  "name": "@rama/audit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The second opinion: plain-code checks, the auditor's report from a different vendor, the replay.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./view": "./src/view.ts"
+  },
+  "bin": {
+    "rama-audit": "./bin/rama-audit.mjs"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@rama/blueprint": "workspace:*",
+    "@rama/ceremony": "workspace:*",
+    "@rama/db": "workspace:*",
+    "@rama/model": "workspace:*",
+    "@rama/shared": "workspace:*",
+    "@rama/trace": "workspace:*",
+    "drizzle-orm": "0.45.3",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "postgres": "3.4.9"
+  }
+}

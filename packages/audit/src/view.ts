@@ -1,0 +1,97 @@
+// What the app shows of an audit, and the replay the drones fly: plain data, safe for the browser (no
+// database, no compiler). Ported from the weekend prototype's auditScript (reference/weekend-prototype/
+// audit.js): a phase per part, a scan per brick floor by floor, the auditor's narration spoken between.
+import type { Blueprint } from '@rama/shared';
+
+export type Verdict = 'pass' | 'note' | 'defect';
+
+export interface AuditView {
+  report: {
+    reportId: string;
+    vendor: string;
+    model: string;
+    at: string;
+    inputsHash: string;
+    callId: string;
+  };
+  commit: string;
+  counts: { defects: number; notes: number; passes: number; bricks: number };
+  runs: { check: string; ran: boolean; detail: string }[];
+  narration: { part: string; text: string }[];
+  alterations: {
+    title: string;
+    agentTime: string;
+    humanTime: string;
+    kind: string;
+    findings: string[];
+  }[];
+  timeMachine: { commit: string; what: string; shouldHave: string }[];
+  signoffs: {
+    screen: string;
+    person: string;
+    commit: string;
+    confirmed: boolean;
+    defects: string[];
+  }[];
+  builders: string[];
+  /** Each brick's verdict, and the findings that gave it (pass bricks have none listed). */
+  verdicts: Record<string, Verdict>;
+  findings: {
+    brick: string;
+    check: string;
+    verdict: Verdict;
+    checkVerdict: Verdict;
+    text: string;
+    file: string | null;
+    line: number | null;
+    auditorNote: string | null;
+  }[];
+}
+
+export type AuditStep =
+  | { kind: 'phase'; text: string; seconds: number }
+  | { kind: 'say'; text: string; seconds: number }
+  | { kind: 'scan'; path: string; verdict: Verdict; note: string; seconds: number }
+  | { kind: 'report'; seconds: number };
+
+/** The replay: discovery, each floor (its bricks left to right as the building lays them), screens, verdict. */
+export function auditScript(
+  audit: AuditView,
+  bp: Blueprint,
+  order: (layer: string) => string[],
+): AuditStep[] {
+  const steps: AuditStep[] = [];
+  const say = (part: string) => {
+    for (const n of audit.narration.filter((x) => x.part === part))
+      steps.push({ kind: 'say', text: n.text, seconds: Math.max(2.4, n.text.length / 16) });
+  };
+  steps.push({ kind: 'phase', text: 'Audit requested', seconds: 1.2 });
+  steps.push({ kind: 'phase', text: 'Discovery', seconds: 1.2 });
+  say('discovery');
+  for (const layer of bp.layers) {
+    const bricks = order(layer.id);
+    if (!bricks.length) continue;
+    steps.push({ kind: 'phase', text: `${layer.label.split(' — ')[0]} floor`, seconds: 1.2 });
+    say(layer.id);
+    for (const path of bricks) {
+      const verdict = audit.verdicts[path] ?? 'pass';
+      const first = audit.findings.find((f) => f.brick === path && f.verdict === verdict);
+      steps.push({
+        kind: 'scan',
+        path,
+        verdict,
+        note: first?.text ?? 'No check that ran found anything here.',
+        seconds: verdict === 'pass' ? 0.25 : verdict === 'note' ? 0.6 : 2.4,
+      });
+    }
+  }
+  steps.push({ kind: 'phase', text: 'Screens and sign-offs', seconds: 1.2 });
+  say('screens');
+  steps.push({ kind: 'phase', text: 'Verdict', seconds: 1.2 });
+  say('verdict');
+  const known = new Set(['discovery', 'screens', 'verdict', ...bp.layers.map((l) => l.id)]);
+  for (const n of audit.narration.filter((x) => !known.has(x.part)))
+    steps.push({ kind: 'say', text: n.text, seconds: Math.max(2.4, n.text.length / 16) });
+  steps.push({ kind: 'report', seconds: 1 });
+  return steps;
+}

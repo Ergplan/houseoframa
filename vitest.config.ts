@@ -28,6 +28,7 @@ export default defineConfig({
         ['src/**/*.test.ts', 'test/**/*.test.ts'],
         120_000,
       ),
+      project('@rama/audit', 'packages/audit', ['src/**/*.test.ts', 'test/**/*.test.ts'], 600_000),
       project('@rama/trace', 'packages/trace', ['src/**/*.test.ts', 'test/**/*.test.ts'], 120_000),
       project('@rama/app', 'apps/rama', ['**/*.test.{ts,tsx}']),
       project('e2e', 'tests', ['**/*.e2e.test.ts'], 120_000),
