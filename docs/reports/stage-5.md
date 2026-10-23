@@ -109,6 +109,10 @@ Run 3 at 2022f73 found two more code defects. Both are fixed, each with a test:
 1. **A working-tree audit missed screens changed after their signature.** It skipped a screen signed at HEAD even when its bricks had uncommitted changes. Fixed: uncommitted changes count when the Blueprint was read from the working tree.
 2. **An alteration could be labelled "defect" without a defect behind it.** Fixed: an alteration of kind `defect` must cite a defect the checks found and the auditor did not lower, or the reply is refused.
 
+Run 4 at 9cc2d5f found one code defect, now fixed with a test:
+
+1. **The panel counted confirmed sign-offs itself** (Invariant 7). Fixed: `auditSignoffCounts()` in `packages/blueprint/metrics`, which the panel displays.
+
 ## Real model cost
 
 (Filled in after the reviewer runs.)

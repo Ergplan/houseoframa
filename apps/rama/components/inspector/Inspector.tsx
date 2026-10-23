@@ -23,6 +23,7 @@ import {
   signatureCoverage,
   summary,
   testCoverage,
+  auditSignoffCounts,
 } from '@rama/blueprint/metrics';
 import { edgePhrase, floorName, reviewerParagraph } from './words';
 import type { AuditView } from '@rama/audit/view';
@@ -684,6 +685,7 @@ function AuditPanel({
   const c = audit.counts;
   const confirmed = audit.signoffs.filter((s) => s.confirmed);
   const rejected = audit.signoffs.filter((s) => !s.confirmed);
+  const signed = auditSignoffCounts(audit.signoffs);
   return (
     <>
       <h2>
@@ -709,7 +711,7 @@ function AuditPanel({
         </div>
         <div>
           <b>
-            {confirmed.length} / {audit.signoffs.length}
+            {signed.confirmed} / {signed.of}
           </b>
           <small>sign-offs confirmed</small>
         </div>

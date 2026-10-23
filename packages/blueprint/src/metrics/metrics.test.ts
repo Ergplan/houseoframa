@@ -178,6 +178,10 @@ describe('metrics (one function per figure)', () => {
     expect(m.brickMarks(b, [])).toEqual({ 'lib/b.ts': 'red' });
     expect(m.brickMarks(b, ['/'])).toEqual({ 'lib/a.ts': 'green', 'lib/b.ts': 'amber' });
   });
+  it('auditSignoffCounts counts the sign-offs an audit confirmed and rejected', () => {
+    expect(m.auditSignoffCounts([{ confirmed: true }, { confirmed: false }, { confirmed: true }])).toEqual({ confirmed: 2, rejected: 1, of: 3 });
+    expect(m.auditSignoffCounts([])).toEqual({ confirmed: 0, rejected: 0, of: 0 });
+  });
   it('auditCounts and auditFloorCounts total an audit: findings by verdict, and bricks no finding flags', () => {
     const fs = [
       { brick: 'lib/a.ts', verdict: 'defect' as const },

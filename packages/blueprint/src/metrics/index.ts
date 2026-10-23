@@ -251,6 +251,13 @@ export const auditCounts = (bp: Blueprint, findings: { brick: string; verdict: A
   };
 };
 
+/** Sign-offs an audit confirmed and rejected, of all it judged (the report panel's figure). */
+export const auditSignoffCounts = (signoffs: { confirmed: boolean }[]) => ({
+  confirmed: signoffs.filter((s) => s.confirmed).length,
+  rejected: signoffs.filter((s) => !s.confirmed).length,
+  of: signoffs.length,
+});
+
 /** An audit's totals per floor: bricks on it, defects and notes on its bricks. */
 export const auditFloorCounts = (bp: Blueprint, findings: { brick: string; verdict: AuditVerdict }[]) => {
   const layerOf = new Map(bp.nodes.map((n) => [n.path, n.layer]));
