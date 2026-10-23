@@ -75,7 +75,7 @@ Each signature:
 
 The other six steps (`/`, `/bills`, `/bills/new`, `/customers`, `/items`, `/aap`) have no traced figure. You can sign them too, or leave them.
 
-The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinned to a House of Rama commit of this stage (`rama-ceremony install-gate ekbill --ref <commit>` re-pins it). It is not committed to EkBill and not pushed: committing `.rama/` and the workflow is the EkBill team's act.
+The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinned to House of Rama b89acfa, this stage's last code commit (`rama-ceremony install-gate ekbill --ref <commit>` re-pins it). It is not committed to EkBill and not pushed: committing `.rama/` and the workflow is the EkBill team's act.
 
 ## Tests
 
@@ -114,7 +114,7 @@ The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinn
   - a rewritten signature fails the gate.
 - **E2E, CI-safe** (`tests/stage-4.e2e.test.ts`): the `rama` executable exits 1 with the unsigned screen named, 0 once a signature is committed, and 2 with the usage.
 - **`@vendor`:** one real drafted question (`test/discovery.vendor.test.ts`): "When you say the bill has to show GST correctly, what are the rules you follow today: which GST rate or rates do you charge, and does it change depending on the customer or the item?"
-- **Watcher:** green, 317 tests at f7e3648.
+- **Watcher:** green, 326 tests at b89acfa.
 
 ## Deviations from the prompt
 
@@ -141,9 +141,21 @@ Run 2 at 7869800 found three more code defects and one report claim. All are fix
 3. **The CI report held absolute paths from the tests runner**, so no test ever matched on the gate's runner. Fixed: the tests job names files by repository path, and a test reproduces the hand-over.
 4. **(Report)** The coverage claim was too broad for the cases above. Fixed: it is now true and states them.
 
+Run 3 at b89acfa found no code defect. Its two notes need runtime evidence a diff cannot carry, and stand:
+
+- it cannot see the generators and drift checks behind `docs/BLUEPRINT.md` and `blueprint/self.json` (they are earlier stages' code; the watcher's checks pass);
+- it cannot see the imports, the installed workflow, the running app, the watcher or the costs. These are in this report, not in the diff.
+
 ## Real model cost
 
-`pnpm cost 4` before the review: two `discovery.v1` calls (the vendor test, run twice), 808 input and 132 output tokens, ₹0.28.
+`pnpm cost 4` (prices set 2026-10-20; ₹94.92 per US$):
+
+| Prompt                                         | Model               | Calls | Input tokens | Output tokens | Cost  |
+| ---------------------------------------------- | ------------------- | ----- | ------------ | ------------- | ----- |
+| `discovery.v1` (the `@vendor` test, run twice) | `claude-sonnet-5-5` | 2     | 808          | 132           | ₹0.28 |
+| `reviewer.v1` (three runs)                     | `gpt-6.1-sol`       | 3     | 2,90,590     | 7,223         | ₹62   |
+
+Total: ₹62.
 
 ## Open questions
 
