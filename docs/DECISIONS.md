@@ -2,6 +2,17 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-23 — Stage 5: the audit
+
+- **The checks run the target's own scripts.** `typecheck`, `build` and `test` are the scripts in its `package.json`, run with the package manager its lockfile names, in its checkout, with PATH and HOME only (no House of Rama secret reaches the target). A target without such a script gets the check reported as not run, never as a pass. This repository gained a root `build` script (`NEXT_DIST_DIR=.next-build`) so its own audit runs the build, away from the dev server's `.next`.
+- **Coverage per brick is read from the test report and the import graph**, not from instrumented line coverage. A code brick is covered when a test file that imports it passed. When only failing tests import it, it is a defect, and so is each failing test file. When no test imports it, it is a note. Line coverage would need each target's coverage tooling, and would be a different number.
+- **Severity.** Defects: a compiler error, a failed build, a failing test, a long route with no sign-in check, and a fixed position taken from a sorted list. Everything else is a note: silenced lint, swallowed errors, `any`, constants in formula files, browser storage, environment fallbacks, unsigned changes, unconfirmed phrases, open decisions. They are true observations, not proof that something is wrong. A fixed position read after the list's length is tested is not flagged (after the first real run, where EkBill's `matchCustomer` reads `close[1]` only when `close.length > 1`).
+- **Formula files are the files of the site's traced figures** (the capture's mappings). A site with no traced figure has no formula file, and the report says so.
+- **The auditor cannot add a defect, by construction.** Its reply has no field for a finding. `applyReply()` refuses a reply that names a finding it was not given, raises a verdict, or cites a commit that is not in the history; then nothing is stored. It may lower a verdict, with a reason: both the checks' verdict and the auditor's reason are stored. It is given the totals so it never counts lists (after the first EkBill run, where it said 130 decisions for the 129 it was sent).
+- **Signed means traceable to the auditor's own call.** The report names the vendor, model and `model_calls` row. `inputs_hash` is the sha256 of the canonical JSON the auditor received. `verifyReport()` recomputes it from that row, and the report page verifies it on every view.
+- **Sign-offs confirmed or rejected by plain code**: a signature in force is rejected when a brick of its screen carries a defect in the audit, and confirmed otherwise.
+- **Audits are run from the command line** (`rama-audit run <site>`): a run builds and tests the target for minutes. The app shows and replays the latest audit, and does not start one.
+
 ## 2026-10-23 — Stage 4: the ceremony
 
 - **Continuing without stopping between stages**, on the user's word after Stage 3 ("Yes and please continue for next 12 hours", 2026-10-22). Each stage still gets its own tag, tests, review and report. The five open questions of the Stage 3 report take the recommended defaults until the user answers: icons stay unmarked; figures stay on fixture data; EkBill's overlay stays; the OpenAI price stays marked third-party.

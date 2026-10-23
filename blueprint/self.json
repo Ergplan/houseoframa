@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+  "commit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -4519,6 +4519,63 @@
       "sha": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "short": "0680d5d",
       "subject": "Stage 5: the audit's checks, the auditor's reading, the signed report"
+    },
+    {
+      "at": "2026-10-23T17:56:51Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": ".gitignore"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": ".prettierignore"
+        },
+        {
+          "add": 316,
+          "del": 103,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "eslint.config.mjs"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 36,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/audit/src/checks/static.ts"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/audit/test/static.test.ts"
+        },
+        {
+          "add": 19,
+          "del": 8,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        }
+      ],
+      "sha": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
+      "short": "da776e3",
+      "subject": "Stage 5: length-checked positions spared; build check for self; watcher survives vanished folders"
     }
   ],
   "edges": [
@@ -4955,6 +5012,73 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
+      "symbols": [
+        "AuditorInput",
+        "inputsHash"
+      ],
+      "to": "packages/audit/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls; running the database migrations; the one-time setup of the local member and the self site, safe to repeat"
+      },
+      "from": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
+      "symbols": [
+        "audits",
+        "createDb",
+        "findings",
+        "modelCalls",
+        "runMigrations",
+        "seed"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "symbols": [
+        "latestAudit",
+        "verifyReport"
+      ],
+      "to": "packages/audit/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
         "DiscoveryView"
@@ -5084,6 +5208,23 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "latestAudit"
+      ],
+      "to": "packages/audit/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "AuditView",
+        "toAuditView"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
@@ -5103,6 +5244,18 @@
         "signaturesInForce"
       ],
       "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
       "typeOnly": false
     },
     {
@@ -5285,6 +5438,57 @@
       ],
       "to": "packages/trace/src/showroom.ts",
       "typeOnly": false
+    },
+    {
+      "from": "apps/rama/canvas/audit.test.ts",
+      "symbols": [
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "to": "apps/rama/canvas/audit.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a brick's box, with path, layer, colour and untested flag"
+      },
+      "from": "apps/rama/canvas/audit.test.ts",
+      "symbols": [
+        "BrickBox"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/canvas/audit.test.ts",
+      "symbols": [
+        "AuditStep"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a brick's box, with path, layer, colour and untested flag"
+      },
+      "from": "apps/rama/canvas/audit.ts",
+      "symbols": [
+        "BrickBox"
+      ],
+      "to": "apps/rama/canvas/layout.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/canvas/audit.ts",
+      "symbols": [
+        "AuditStep",
+        "Verdict"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
     },
     {
       "english": {
@@ -5728,6 +5932,7 @@
       },
       "from": "apps/rama/components/inspector/Inspector.test.tsx",
       "symbols": [
+        "AuditRunView",
         "Inspector",
         "View"
       ],
@@ -5747,6 +5952,14 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/components/inspector/Inspector.test.tsx",
+      "symbols": [
+        "AuditView"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "commits that deleted a large number of lines from a file; the headline figures of a project in one summary; how many code files are directly tested, out of all code files"
@@ -5761,6 +5974,14 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "LogEntry"
+      ],
+      "to": "apps/rama/canvas/audit.ts",
+      "typeOnly": true
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the plain-English wording for one file-to-file import, with its confirmation state; the short lowercase name of a layer's floor; a plain paragraph on which files a file depends on, grouped by floor"
@@ -5773,6 +5994,14 @@
       ],
       "to": "apps/rama/components/inspector/words.ts",
       "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "AuditView"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
     },
     {
       "english": {
@@ -5906,6 +6135,18 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "AuditRun",
+        "LogEntry",
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "to": "apps/rama/canvas/audit.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the painter that draws a site's state onto the canvas and returns its frame"
@@ -5980,6 +6221,15 @@
         "View"
       ],
       "to": "apps/rama/components/inspector/Inspector.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "AuditView",
+        "auditScript"
+      ],
+      "to": "packages/audit/src/view.ts",
       "typeOnly": false
     },
     {
@@ -6367,7 +6617,8 @@
       "symbols": [
         "AuditStep",
         "AuditView",
-        "auditScript"
+        "auditScript",
+        "toAuditView"
       ],
       "to": "packages/audit/src/view.ts",
       "typeOnly": false
@@ -9336,9 +9587,150 @@
       ],
       "to": "tests/dev-server.ts",
       "typeOnly": false
+    },
+    {
+      "from": "tests/stage-5.e2e.test.ts",
+      "symbols": [
+        "AuditorInput",
+        "inputsHash",
+        "number"
+      ],
+      "to": "packages/audit/src/auditor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-5.e2e.test.ts",
+      "symbols": [
+        "auditChecks"
+      ],
+      "to": "packages/audit/src/checks/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source"
+      },
+      "from": "tests/stage-5.e2e.test.ts",
+      "symbols": [
+        "addSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "tests/stage-5.e2e.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls; running the database migrations; the one-time setup of the local member and the self site, safe to repeat; the table of sites, one per target repository"
+      },
+      "from": "tests/stage-5.e2e.test.ts",
+      "symbols": [
+        "audits",
+        "createDb",
+        "findings",
+        "modelCalls",
+        "runMigrations",
+        "seed",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-5.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-5.vendor.ekbill.test.ts",
+      "symbols": [
+        "latestAudit",
+        "runAudit",
+        "verifyReport"
+      ],
+      "to": "packages/audit/src/report.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source; a way to find one site's location by its id; a site's saved blueprint, if it has one"
+      },
+      "from": "tests/stage-5.vendor.ekbill.test.ts",
+      "symbols": [
+        "addSite",
+        "locateSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations; the one-time setup of the local member and the self site, safe to repeat; the table of sites, one per target repository"
+      },
+      "from": "tests/stage-5.vendor.ekbill.test.ts",
+      "symbols": [
+        "createDb",
+        "runMigrations",
+        "seed",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-5.vendor.ekbill.test.ts",
+      "symbols": [
+        "captureDir",
+        "readCapture"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-5.vendor.ekbill.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
     }
   ],
   "external": [
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "@rama/audit",
+      "version": "workspace:*"
+    },
     {
       "dev": false,
       "manifest": "apps/rama/package.json",
@@ -9778,7 +10170,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T17:40:57Z",
+  "extractedAt": "2026-10-23T17:56:51Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -9852,12 +10244,12 @@
     {
       "binary": false,
       "bytes": 166,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "foundation",
       "layerRule": "default: .gitignore",
       "lines": 14,
@@ -9890,12 +10282,12 @@
     {
       "binary": false,
       "bytes": 316,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 16,
@@ -10323,7 +10715,7 @@
     },
     {
       "binary": false,
-      "bytes": 12837,
+      "bytes": 13909,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -10332,7 +10724,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 684,
+      "lines": 740,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -10409,6 +10801,41 @@
     },
     {
       "binary": false,
+      "bytes": 4359,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 127,
+      "path": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6191,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 177,
+      "path": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1654,
       "changes": 2,
       "env": [
@@ -10450,7 +10877,7 @@
     },
     {
       "binary": false,
-      "bytes": 1817,
+      "bytes": 2406,
       "changes": 3,
       "env": [
         "RAMA_MEMBER_NAME"
@@ -10464,7 +10891,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 56,
+      "lines": 75,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -10534,7 +10961,44 @@
     },
     {
       "binary": false,
-      "bytes": 3365,
+      "bytes": 2558,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 63,
+      "path": "apps/rama/canvas/audit.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3691,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AuditRun",
+        "Drone",
+        "LogEntry",
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 120,
+      "path": "apps/rama/canvas/audit.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4270,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -10543,7 +11007,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 99,
+      "lines": 127,
       "path": "apps/rama/canvas/draw.test.ts",
       "purpose": {
         "confirmed": false,
@@ -10553,7 +11017,7 @@
     },
     {
       "binary": false,
-      "bytes": 11935,
+      "bytes": 13606,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -10565,7 +11029,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 354,
+      "lines": 408,
       "path": "apps/rama/canvas/draw.ts",
       "purpose": {
         "confirmed": false,
@@ -10594,7 +11058,7 @@
     },
     {
       "binary": false,
-      "bytes": 8709,
+      "bytes": 9668,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -10614,7 +11078,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 255,
+      "lines": 282,
       "path": "apps/rama/canvas/frame.ts",
       "purpose": {
         "confirmed": false,
@@ -10871,7 +11335,7 @@
     },
     {
       "binary": false,
-      "bytes": 4989,
+      "bytes": 9306,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -10880,17 +11344,18 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 123,
+      "lines": 256,
       "path": "apps/rama/components/inspector/Inspector.test.tsx",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 17852,
+      "bytes": 25248,
       "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "AuditRunView",
         "CapturedScreen",
         "Inspector",
         "View"
@@ -10899,7 +11364,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 536,
+      "lines": 758,
       "path": "apps/rama/components/inspector/Inspector.tsx",
       "purpose": {
         "confirmed": false,
@@ -10988,7 +11453,7 @@
     },
     {
       "binary": false,
-      "bytes": 12693,
+      "bytes": 16793,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -10999,7 +11464,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 351,
+      "lines": 463,
       "path": "apps/rama/components/site/SiteView.tsx",
       "purpose": {
         "confirmed": false,
@@ -11032,7 +11497,7 @@
     },
     {
       "binary": false,
-      "bytes": 763,
+      "bytes": 797,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -11041,7 +11506,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 30,
+      "lines": 31,
       "path": "apps/rama/package.json",
       "purpose": {
         "confirmed": false,
@@ -11131,7 +11596,7 @@
     },
     {
       "binary": false,
-      "bytes": 23156,
+      "bytes": 27547,
       "changes": 13,
       "env": [],
       "envDynamic": false,
@@ -11140,7 +11605,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 122,
+      "lines": 127,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -11169,7 +11634,7 @@
     },
     {
       "binary": false,
-      "bytes": 26868,
+      "bytes": 29649,
       "changes": 29,
       "env": [],
       "envDynamic": false,
@@ -11178,7 +11643,7 @@
       "lastCommit": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 120,
+      "lines": 131,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -11203,7 +11668,7 @@
     },
     {
       "binary": false,
-      "bytes": 6688,
+      "bytes": 7674,
       "changes": 19,
       "env": [],
       "envDynamic": false,
@@ -11212,7 +11677,7 @@
       "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 29,
+      "lines": 32,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -11408,14 +11873,14 @@
     {
       "binary": false,
       "bytes": 883,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 34,
@@ -11429,12 +11894,12 @@
     {
       "binary": false,
       "bytes": 1768,
-      "changes": 9,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 55,
@@ -11496,7 +11961,7 @@
     },
     {
       "binary": false,
-      "bytes": 8138,
+      "bytes": 9106,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11518,7 +11983,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 248,
+      "lines": 273,
       "path": "packages/audit/src/auditor.ts",
       "test": false
     },
@@ -11561,7 +12026,7 @@
     },
     {
       "binary": false,
-      "bytes": 7717,
+      "bytes": 8387,
       "changes": 1,
       "env": [
         "HOME",
@@ -11582,14 +12047,14 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 226,
+      "lines": 250,
       "path": "packages/audit/src/checks/run.ts",
       "test": false
     },
     {
       "binary": false,
       "bytes": 9753,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11597,7 +12062,7 @@
         "staticChecks"
       ],
       "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
-      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 285,
@@ -11621,7 +12086,7 @@
     },
     {
       "binary": false,
-      "bytes": 2232,
+      "bytes": 2335,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11642,13 +12107,13 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 72,
+      "lines": 74,
       "path": "packages/audit/src/findings.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 855,
+      "bytes": 868,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11685,6 +12150,7 @@
         "signoffVerdicts",
         "staticChecks",
         "testFindings",
+        "toAuditView",
         "unconfirmedGlossary",
         "unsignedChanges",
         "verifyReport"
@@ -11746,7 +12212,7 @@
     },
     {
       "binary": false,
-      "bytes": 3487,
+      "bytes": 4461,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11754,19 +12220,20 @@
         "AuditStep",
         "AuditView",
         "Verdict",
-        "auditScript"
+        "auditScript",
+        "toAuditView"
       ],
       "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 97,
+      "lines": 129,
       "path": "packages/audit/src/view.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 5412,
+      "bytes": 5786,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11775,7 +12242,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 170,
+      "lines": 186,
       "path": "packages/audit/test/auditor.test.ts",
       "test": true
     },
@@ -11798,7 +12265,7 @@
     },
     {
       "binary": false,
-      "bytes": 5948,
+      "bytes": 6103,
       "changes": 1,
       "env": [
         "RAMA_AUDIT_SECRET"
@@ -11809,19 +12276,19 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 147,
+      "lines": 152,
       "path": "packages/audit/test/run.test.ts",
       "test": true
     },
     {
       "binary": false,
       "bytes": 6134,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
-      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 157,
@@ -14353,7 +14820,7 @@
     },
     {
       "binary": false,
-      "bytes": 105757,
+      "bytes": 105852,
       "changes": 9,
       "env": [],
       "envDynamic": false,
@@ -14362,7 +14829,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3334,
+      "lines": 3337,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -14410,7 +14877,7 @@
     },
     {
       "binary": false,
-      "bytes": 3218,
+      "bytes": 3440,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -14419,7 +14886,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 29,
+      "lines": 30,
       "path": "prompts/audit.v1.md",
       "test": false
     },
@@ -14906,12 +15373,12 @@
     {
       "binary": false,
       "bytes": 8389,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 249,
@@ -15079,6 +15546,42 @@
     },
     {
       "binary": false,
+      "bytes": 8714,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 226,
+      "path": "tests/stage-5.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4239,
+      "changes": 0,
+      "env": [
+        "AUDITOR_VENDOR",
+        "BUILDER_VENDOR",
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 98,
+      "path": "tests/stage-5.vendor.ekbill.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 458,
       "changes": 1,
       "env": [],
@@ -15098,7 +15601,7 @@
     },
     {
       "binary": false,
-      "bytes": 1703,
+      "bytes": 1733,
       "changes": 5,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -15153,6 +15656,7 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/page.tsx",
+        "apps/rama/canvas/audit.ts",
         "apps/rama/canvas/draw.ts",
         "apps/rama/canvas/frame.ts",
         "apps/rama/canvas/layout.ts",
@@ -15162,13 +15666,25 @@
         "apps/rama/components/inspector/Inspector.tsx",
         "apps/rama/components/inspector/words.ts",
         "apps/rama/components/site/SiteView.tsx",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
         "packages/blueprint/package.json",
         "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
         "packages/blueprint/src/extract.ts",
         "packages/blueprint/src/files.ts",
         "packages/blueprint/src/git.ts",
         "packages/blueprint/src/glob.ts",
         "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
         "packages/blueprint/src/json.ts",
         "packages/blueprint/src/layers.ts",
         "packages/blueprint/src/metrics/index.ts",
@@ -15176,7 +15692,27 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
         "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
+        "packages/db/package.json",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/seed.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/vendors.ts",
         "packages/trace/src/keys.ts",
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts"
@@ -15185,6 +15721,65 @@
       "id": "/site/[siteId]",
       "name": "Site › [siteId]",
       "route": "/site/[siteId]"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/globals.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/audit/page.tsx",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
+        "packages/db/package.json",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/seed.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/vendors.ts",
+        "packages/trace/src/keys.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "id": "/site/[siteId]/audit",
+      "name": "Site › [siteId] › Audit",
+      "route": "/site/[siteId]/audit"
     },
     {
       "bricks": [

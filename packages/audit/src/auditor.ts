@@ -37,6 +37,15 @@ export interface AuditorInput {
   notesByCheck: Record<string, number>;
   screens: { route: string; signedBy: string | null; signedAt: string | null }[];
   decisions: { title: string; status: string; reconstructed: boolean }[];
+  /** Counted here so the auditor never has to count: what it says about totals comes from these. */
+  totals: {
+    bricks: number;
+    defects: number;
+    notes: number;
+    screens: number;
+    screensSigned: number;
+    decisions: { decided: number; open: number; notBuilt: number; reconstructed: number };
+  };
   commits: { short: string; at: string; author: string; subject: string; files: number }[];
   builders: string[];
 }
@@ -105,6 +114,7 @@ export function auditorInput(
   const layerOf = new Map(bp.nodes.map((n) => [n.path, n.layer]));
   const inForce = signaturesInForce(people.signoffs);
   const superseded = new Set(people.decisions.map((d) => d.supersedes).filter(Boolean));
+  const current = people.decisions.filter((d) => !superseded.has(d.id));
   return {
     site,
     commit: bp.commit,
@@ -128,9 +138,24 @@ export function auditorInput(
         signedAt: sig?.target.commit.slice(0, 7) ?? null,
       };
     }),
-    decisions: people.decisions
-      .filter((d) => !superseded.has(d.id))
-      .map((d) => ({ title: d.title, status: d.status, reconstructed: Boolean(d.reconstructed) })),
+    decisions: current.map((d) => ({
+      title: d.title,
+      status: d.status,
+      reconstructed: Boolean(d.reconstructed),
+    })),
+    totals: {
+      bricks: bp.nodes.length,
+      defects: numbered.filter((f) => f.verdict === 'defect').length,
+      notes: numbered.filter((f) => f.verdict === 'note').length,
+      screens: bp.screens.length,
+      screensSigned: bp.screens.filter((s) => inForce.has(`screen:${s.id}`)).length,
+      decisions: {
+        decided: current.filter((d) => d.status === 'decided').length,
+        open: current.filter((d) => d.status === 'open').length,
+        notBuilt: current.filter((d) => d.status === 'not-built').length,
+        reconstructed: current.filter((d) => d.reconstructed).length,
+      },
+    },
     commits: bp.commits.slice(-60).map((c) => ({
       short: c.short,
       at: c.at,

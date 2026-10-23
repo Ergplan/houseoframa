@@ -71,6 +71,9 @@ importers:
 
   apps/rama:
     dependencies:
+      '@rama/audit':
+        specifier: workspace:*
+        version: link:../../packages/audit
       '@rama/blueprint':
         specifier: workspace:*
         version: link:../../packages/blueprint

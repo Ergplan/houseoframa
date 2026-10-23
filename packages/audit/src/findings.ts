@@ -36,6 +36,8 @@ export interface CheckRun {
   ran: boolean;
   /** Why it did not run, or what it ran (the command). */
   detail: string;
+  /** What came of it, when it ran: an exit code, test files passed and failed. */
+  outcome?: string;
 }
 
 export interface CheckResults {

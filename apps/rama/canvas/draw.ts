@@ -17,6 +17,8 @@ export type Ctx = Pick<
   | 'moveTo'
   | 'lineTo'
   | 'stroke'
+  | 'closePath'
+  | 'fill'
   | 'createLinearGradient'
   | 'fillStyle'
   | 'strokeStyle'
@@ -116,9 +118,9 @@ export function draw(ctx: Ctx, state: SiteState): Frame {
   for (const fb of f.bricks) {
     drawBrick(ctx, fb.box, fb.box.x, fb.box.y, R, fb.mark);
     if (fb.verdict) {
-      ctx.strokeStyle = VERDICT_COLOR[fb.verdict];
-      ctx.lineWidth = 2;
-      ctx.strokeRect(fb.box.x - 1, fb.box.y - 1, fb.box.w + 2, fb.box.h + 2);
+      // The badge stays on the brick: green pass, amber note, red defect.
+      R(fb.box.x + fb.box.w - 7, fb.box.y - 3, 8, 8, INK);
+      R(fb.box.x + fb.box.w - 6, fb.box.y - 2, 6, 6, VERDICT_COLOR[fb.verdict]);
     }
     if (fb.change) {
       const fl = fb.change.kind === 'demolish' ? '#ff4d5e' : '#fff';
@@ -170,6 +172,7 @@ export function draw(ctx: Ctx, state: SiteState): Frame {
     R(0, 0, s.width, 22, 'rgba(0,0,0,.45)');
     text(f.banner, 10, 7, 7, '#ffb429');
   }
+  if (f.audit) drawAudit(ctx, f.audit, s, R, text, state.clock ?? 0);
   if (f.complete) {
     R(b.x + b.w / 2 - 130, s.top - 210, 260, 30, INK);
     text('ALL LIFTS IN · AWAITING SIGN-OFF', b.x + b.w / 2, s.top - 200, 6, '#5ad45a', 'center');
@@ -178,6 +181,57 @@ export function draw(ctx: Ctx, state: SiteState): Frame {
 }
 
 type Rect = (x: number, y: number, w: number, h: number, c: string) => void;
+
+// The audit drone, ported from the weekend prototype (reference/weekend-prototype/audit.js, DRONE).
+const DRONE = ['..P.....P..', '..PPPPPPP..', '...PVVVP...', '..PPPPPPP..', '..P.....P..'];
+const DRONE_PAL: Record<string, string> = { P: '#c98cff', V: '#ece8dc' };
+
+function drawAudit(
+  ctx: Ctx,
+  a: NonNullable<Frame['audit']>,
+  s: Scene,
+  R: Rect,
+  text: (
+    t: string,
+    x: number,
+    y: number,
+    size: number,
+    color: string,
+    align?: CanvasTextAlign,
+  ) => void,
+  now: number,
+) {
+  if (a.beam) {
+    const { from, box } = a.beam;
+    ctx.fillStyle = 'rgba(201,140,255,.22)';
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y + 8);
+    ctx.lineTo(box.x - 4, box.y + box.h + 2);
+    ctx.lineTo(box.x + box.w + 4, box.y + box.h + 2);
+    ctx.closePath();
+    ctx.fill();
+    const sy = box.y + ((now / 6) % (box.h + 4)) - 2;
+    R(box.x - 4, sy, box.w + 8, 2, 'rgba(236,232,220,.8)');
+  }
+  a.drones.forEach((d, i) => {
+    DRONE.forEach((row, y) =>
+      [...row].forEach((c, x) => {
+        if (DRONE_PAL[c]) R(d.x - 11 + x * 2, d.y - 5 + y * 2, 2, 2, DRONE_PAL[c]!);
+      }),
+    );
+    if (Math.floor(now / 60) % 2) {
+      R(d.x - 11, d.y - 5, 6, 2, '#fff');
+      R(d.x + 5, d.y - 5, 6, 2, '#fff');
+    }
+    R(d.x - 1, d.y + 5, 2, 2, '#5ad45a');
+    R(d.x - 34, d.y - 22, 68, 12, '#1a1200');
+    text(`AUDIT ${i + 1}`, d.x, d.y - 19, 6, '#c98cff', 'center');
+  });
+  if (a.label) {
+    R(0, 22, s.width, 18, 'rgba(12,11,19,.6)');
+    text(a.label, 10, 27, 6, '#c98cff');
+  }
+}
 type Text = (
   t: string,
   x: number,

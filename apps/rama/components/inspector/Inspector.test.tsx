@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { demolitions, summary, testCoverage } from '@rama/blueprint/metrics';
 import { fixtureBlueprint } from '../../test/blueprint';
-import { Inspector, type View } from './Inspector';
+import type { AuditView } from '@rama/audit/view';
+import { Inspector, type AuditRunView, type View } from './Inspector';
 
 const bp = fixtureBlueprint();
 const noop = () => {};
@@ -119,5 +120,137 @@ describe('Inspector: Brick', () => {
       />,
     );
     expect(none).not.toContain('On screen');
+  });
+});
+
+describe('Inspector: the audit', () => {
+  const audit: AuditView = {
+    report: {
+      reportId: 'r1234567-0000',
+      vendor: 'openai',
+      model: 'gpt-x',
+      at: '2026-10-23T18:00:00.000Z',
+      inputsHash: 'a'.repeat(64),
+      callId: 'c1',
+    },
+    commit: 'abc1234def',
+    counts: { defects: 1, notes: 1, passes: 3, bricks: 5 },
+    runs: [
+      {
+        check: 'typecheck',
+        ran: true,
+        detail: 'npm run typecheck',
+        outcome: 'exit 0, 0 compiler errors',
+      },
+      { check: 'build', ran: false, detail: 'no `build` script' },
+    ],
+    narration: [{ part: 'verdict', text: 'One defect.' }],
+    alterations: [
+      {
+        title: 'Generalise the spread',
+        agentTime: '15 min',
+        humanTime: 'review 15 min',
+        kind: 'defect',
+        findings: ['F1'],
+      },
+    ],
+    timeMachine: [{ commit: 'abc1234', what: 'Laid with no test.', shouldHave: 'A test then.' }],
+    signoffs: [
+      {
+        screen: '/',
+        person: 'Asha Rao',
+        commit: 'abc1234def',
+        confirmed: false,
+        defects: ['lib/data.ts'],
+      },
+    ],
+    builders: ['Asha Rao'],
+    verdicts: { 'lib/data.ts': 'defect', 'lib/calc.ts': 'note', 'app/page.tsx': 'pass' },
+    findings: [
+      {
+        brick: 'lib/data.ts',
+        check: 'positional-assumption',
+        verdict: 'defect',
+        checkVerdict: 'defect',
+        text: 'Takes item 2 of a sorted list.',
+        file: 'lib/data.ts',
+        line: 7,
+        auditorNote: null,
+      },
+      {
+        brick: 'lib/calc.ts',
+        check: 'any-type',
+        verdict: 'note',
+        checkVerdict: 'defect',
+        text: 'Typed as any.',
+        file: 'lib/calc.ts',
+        line: 3,
+        auditorNote: 'Only in a test helper.',
+      },
+    ],
+  };
+  const run = (mode: 'flying' | 'done', log: AuditRunView['log'] = []): AuditRunView => ({
+    mode,
+    log,
+    speak: false,
+    onSpeak: noop,
+    onSkip: noop,
+    onStop: noop,
+    onLight: noop,
+  });
+  const show = (view: View, r: AuditRunView) =>
+    renderToStaticMarkup(
+      <Inspector
+        siteId="fixture"
+        blueprint={bp}
+        view={view}
+        member="Asha Rao"
+        audit={audit}
+        auditRun={r}
+        onBrick={noop}
+        onCommit={noop}
+        onReport={noop}
+        onConfirmed={noop}
+      />,
+    );
+
+  it('shows the live log while the drones fly: phases, narration and findings', () => {
+    const html = show(
+      { kind: 'audit' },
+      run('flying', [
+        { kind: 'phase', text: 'Logic floor' },
+        { kind: 'finding', path: 'lib/data.ts', verdict: 'defect', text: 'Takes item 2.' },
+        { kind: 'say', text: 'One defect.' },
+      ]),
+    );
+    expect(html).toContain('Drones are flying the site.');
+    expect(html).toContain('<div class="aph">Logic floor</div>');
+    expect(html).toContain('class="afind defect"');
+    expect(html).toContain('Read the narration aloud');
+  });
+
+  it('shows the signed report: counts, checks run and not run, sign-offs rejected by a defect, alterations, time machine', () => {
+    const html = show({ kind: 'audit' }, run('done'));
+    expect(html).toMatch(
+      /1 defect(<!-- -->)?, (<!-- -->)?1(<!-- -->)? note(<!-- -->)?, (<!-- -->)?3(<!-- -->)? clean brick(<!-- -->)?s(<!-- -->)? of (<!-- -->)?5/,
+    );
+    expect(html).toContain('ran: exit 0, 0 compiler errors');
+    expect(html).toContain('not run: no `build` script');
+    expect(html).toMatch(/Rejected<\/span> \/, signed by Asha Rao: defects in/);
+    expect(html).toContain('Generalise the spread');
+    expect(html).toContain('A test then.');
+    expect(html).toContain('Signed by openai gpt-x, a different vendor from the builder');
+    expect(html).toContain('Light the defects');
+  });
+
+  it("puts the brick's latest verdict in the Brick view, with the auditor's reason for a lowered one", () => {
+    const html = show({ kind: 'brick', path: 'lib/calc.ts' }, run('done'));
+    expect(html).toContain('data-verdict="note"');
+    expect(html).toContain(
+      'The checks said defect; the auditor lowered it: Only in a test helper.',
+    );
+    expect(show({ kind: 'brick', path: 'app/page.tsx' }, run('done'))).toContain(
+      'No check that ran found anything here.',
+    );
   });
 });

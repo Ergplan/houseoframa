@@ -4,7 +4,8 @@ The user turn is JSON (`AuditorInput`):
 
 - `site`, `commit`: what was audited.
 - `floors`: the building's floors (layers), each with its number of bricks (files), defects and notes.
-- `runs`: each check, whether it ran, and what it ran or why not. A check that did not run proves nothing either way: say so; never call it passed.
+- `runs`: each check, whether it ran, what it ran or why not, and its `outcome` (exit code, test files passed and failed). A check that did not run proves nothing either way: say so; never call it passed.
+- `totals`: the counts (bricks, defects, notes, screens and screens signed, decisions by status). Every total you state comes from here; never count lists yourself.
 - `defects`: every defect the checks found, each with an `id` (`F12`), `brick`, `check`, `text`, `file`, `line`.
 - `notes`: a sample of notes per check, and `notesByCheck`: how many notes each check made in all.
 - `screens`: each screen and who signed it, at which commit, or null when nobody did.

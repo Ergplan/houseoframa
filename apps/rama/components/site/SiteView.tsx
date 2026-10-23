@@ -13,6 +13,14 @@ import { layerColor } from '../../canvas/palette';
 import { pick, toScene } from '../../canvas/pick';
 import { brickState, clockText, currentTime } from '../../canvas/timeline';
 import { Inspector, type CapturedScreen, type View } from '../inspector/Inspector';
+import { auditScript, type AuditView } from '@rama/audit/view';
+import {
+  finishAudit,
+  startAudit,
+  stepAudit,
+  type AuditRun,
+  type LogEntry,
+} from '../../canvas/audit';
 
 const SPEEDS = [1, 2, 4] as const;
 const PER_SECOND = 0.22; // progress through one lift per second at 1×
@@ -25,6 +33,7 @@ export function SiteView({
   captured = [],
   signedScreens = [],
   initialBrick = null,
+  audit = null,
 }: {
   siteId: string;
   name: string;
@@ -36,6 +45,8 @@ export function SiteView({
   signedScreens?: string[];
   /** A brick to open on arrival (`?brick=`), as a decision card's link does. */
   initialBrick?: string | null;
+  /** The site's latest audit (Stage 5), or null when it has none. */
+  audit?: AuditView | null;
 }) {
   const router = useRouter();
   const { scene, timeline } = siteModel(blueprint);
@@ -60,7 +71,19 @@ export function SiteView({
   const canvas = useRef<HTMLCanvasElement>(null);
   const live = useRef({ k, p, playing, speed, links, selection, hover: hover?.path ?? null });
   live.current = { k, p, playing, speed, links, selection, hover: hover?.path ?? null };
-  const glow = useMemo(() => new Set<string>(selection ? [selection] : []), [selection]);
+  // The audit: off, its replay flying (the run lives in a ref, stepped every frame), or done with its
+  // badges left on the building. `lit` holds the defects lit by "Light the defects".
+  const [auditMode, setAuditMode] = useState<'off' | 'flying' | 'done'>('off');
+  const [auditLog, setAuditLog] = useState<LogEntry[]>([]);
+  const [speak, setSpeak] = useState(false);
+  const [lit, setLit] = useState<string[]>([]);
+  const run = useRef<AuditRun | null>(null);
+  const auditLive = useRef({ mode: auditMode, speak });
+  auditLive.current = { mode: auditMode, speak };
+  const glow = useMemo(
+    () => new Set<string>([...(selection ? [selection] : []), ...lit]),
+    [selection, lit],
+  );
 
   // One animation loop: advances the replay while playing and repaints every frame.
   useEffect(() => {
@@ -87,6 +110,22 @@ export function SiteView({
         setK(nk);
         setP(np);
       }
+      const r = run.current;
+      if (r && !r.done) {
+        const next = stepAudit(r, dt * s.speed, (path) => scene.byPath.get(path));
+        run.current = next;
+        if (next.log.length !== r.log.length) {
+          const fresh = next.log.slice(r.log.length);
+          setAuditLog(next.log);
+          if (auditLive.current.speak) {
+            for (const l of fresh)
+              if (l.kind === 'say')
+                window.speechSynthesis?.speak(new SpeechSynthesisUtterance(l.text));
+          }
+        }
+        if (next.done) setAuditMode('done');
+      }
+      const shown = run.current;
       const ctx = canvas.current?.getContext('2d');
       if (ctx) {
         draw(ctx, {
@@ -95,7 +134,17 @@ export function SiteView({
           progress: live.current.p,
           selection: s.selection,
           glow,
-          audit: null,
+          audit:
+            shown && audit
+              ? shown.done
+                ? { verdicts: audit.verdicts }
+                : {
+                    verdicts: shown.verdicts,
+                    drones: shown.drones,
+                    scan: shown.scan,
+                    label: `AUDIT IN PROGRESS · SECOND OPINION · ${audit.report.vendor.toUpperCase()} ${audit.report.model.toUpperCase()} · COMMIT ${audit.commit.slice(0, 7).toUpperCase()}`,
+                  }
+              : null,
           hover: s.hover,
           links: s.links,
           clock: now,
@@ -107,7 +156,39 @@ export function SiteView({
     raf = requestAnimationFrame(tick);
     setReady(true);
     return () => cancelAnimationFrame(raf);
-  }, [blueprint, glow, lifts, signedScreens]);
+  }, [blueprint, glow, lifts, signedScreens, audit, scene]);
+
+  const startReplay = () => {
+    if (!audit) return;
+    setPlaying(false);
+    setK(lifts);
+    setP(1);
+    setSelection(null);
+    setLit([]);
+    // Bricks floor by floor, left to right, as the building lays them.
+    const order = (layer: string) =>
+      [...scene.byPath.values()]
+        .filter((b) => b.layer === layer)
+        .sort((a, b) => a.y - b.y || a.x - b.x)
+        .map((b) => b.path);
+    run.current = startAudit(auditScript(audit, blueprint, order), scene.top, scene.width);
+    setAuditLog([]);
+    setAuditMode('flying');
+    setView({ kind: 'audit' });
+  };
+  const stopReplay = () => {
+    window.speechSynthesis?.cancel();
+    run.current = null;
+    setAuditMode('off');
+    setLit([]);
+    setView({ kind: 'report' });
+  };
+  const skipReplay = () => {
+    if (!run.current) return;
+    run.current = finishAudit(run.current, (path) => scene.byPath.get(path));
+    setAuditLog(run.current.log);
+    setAuditMode('done');
+  };
 
   const select = useCallback(
     (path: string) => {
@@ -254,6 +335,19 @@ export function SiteView({
               >
                 Links: {links ? 'on' : 'off'}
               </button>
+              <button
+                className={auditMode !== 'off' ? 'on' : ''}
+                disabled={!audit}
+                title={
+                  audit
+                    ? `Audit of ${audit.commit.slice(0, 7)} by ${audit.report.vendor} ${audit.report.model}`
+                    : 'No audit of this site yet: pnpm rama-audit run <site>'
+                }
+                onClick={() => (auditMode === 'off' ? startReplay() : stopReplay())}
+                aria-pressed={auditMode !== 'off'}
+              >
+                {auditMode === 'off' ? 'Audit' : '■ Stop audit'}
+              </button>
               <button className={fit ? '' : 'on'} onClick={() => setFit(!fit)} aria-pressed={!fit}>
                 {fit ? 'Zoom 1:1' : 'Fit'}
               </button>
@@ -337,6 +431,24 @@ export function SiteView({
           member={member}
           captured={captured}
           signedScreens={signedScreens}
+          audit={audit}
+          auditRun={{
+            mode: auditMode,
+            log: auditLog,
+            speak,
+            onSpeak: (on) => {
+              setSpeak(on);
+              if (!on) window.speechSynthesis?.cancel();
+            },
+            onSkip: skipReplay,
+            onStop: stopReplay,
+            onLight: () =>
+              setLit(
+                audit
+                  ? audit.findings.filter((f) => f.verdict === 'defect').map((f) => f.brick)
+                  : [],
+              ),
+          }}
           onBrick={select}
           onCommit={(i) => goTo(i + 1)}
           onReport={() => {

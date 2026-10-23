@@ -26,8 +26,17 @@ export interface SiteState {
   selection: string | null;
   /** Paths outlined with a pulse (a screen's bricks, a search hit). */
   glow: ReadonlySet<string>;
-  /** Auditor verdicts per brick (Stage 5); null when no audit is shown. */
-  audit: { verdicts: Record<string, Verdict> } | null;
+  /**
+   * The audit shown (Stage 5): verdicts per brick (the badges), and while the replay plays, the drones and
+   * the brick under a beam. Null when no audit is shown.
+   */
+  audit: {
+    verdicts: Record<string, Verdict>;
+    drones?: { x: number; y: number }[];
+    scan?: { path: string; drone: number } | null;
+    /** The banner while the drones fly. */
+    label?: string;
+  } | null;
   hover?: string | null;
   /** Draw import cables for the hovered or selected brick. */
   links?: boolean;
@@ -141,6 +150,12 @@ export interface Frame {
   selected: BrickBox | null;
   time: { ms: number; offset: number } | null;
   event: LiftEvent | null;
+  /** The drones, the beam from one of them to the brick it scans, and the audit's banner. */
+  audit: {
+    drones: { x: number; y: number }[];
+    beam: { from: { x: number; y: number }; box: BrickBox } | null;
+    label: string;
+  } | null;
 }
 
 const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
@@ -238,6 +253,18 @@ export function frame(state: SiteState): Frame {
       lift && !state.audit
         ? `COMMIT ${k}/${tl.lifts.length}  ${lift.short}  ${lift.subject.toUpperCase().slice(0, 52)}`
         : null,
+    audit: state.audit
+      ? {
+          drones: state.audit.drones ?? [],
+          beam: (() => {
+            const sc = state.audit!.scan;
+            const box = sc ? scene.byPath.get(sc.path) : undefined;
+            const from = sc ? state.audit!.drones?.[sc.drone] : undefined;
+            return box && from && builtSet.has(box.path) ? { from, box } : null;
+          })(),
+          label: state.audit.label ?? '',
+        }
+      : null,
     complete: tl.lifts.length > 0 && k === tl.lifts.length && p >= 1,
     door: k >= 1,
     cables,

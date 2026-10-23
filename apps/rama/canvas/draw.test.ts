@@ -31,6 +31,10 @@ function recorder() {
     stroke() {
       calls.push({ op: 'stroke', args: [], style: this.strokeStyle });
     },
+    closePath() {},
+    fill() {
+      calls.push({ op: 'fill', args: [], style: this.fillStyle });
+    },
     createLinearGradient: () => ({ addColorStop() {} }),
   };
   return { ctx: ctx as unknown as Ctx, calls };
@@ -95,5 +99,29 @@ describe('draw', () => {
         draw(ctx, { ...base, blueprint: self, commitIndex: k, progress: 0.5 }),
       ).not.toThrow();
     }
+  });
+
+  it('paints the audit: a badge on each brick with a verdict, the drones, the beam, and the banner', () => {
+    const { ctx, calls } = recorder();
+    const path = bp.nodes.find((n) => n.path === 'lib/data.ts')!.path;
+    draw(ctx, {
+      ...base,
+      commitIndex: 99,
+      progress: 1,
+      audit: {
+        verdicts: { [path]: 'defect' },
+        drones: [
+          { x: 100, y: 80 },
+          { x: 300, y: 80 },
+        ],
+        scan: { path, drone: 0 },
+        label: 'AUDIT IN PROGRESS',
+      },
+    });
+    expect(calls.some((c) => c.op === 'fillRect' && c.style === '#ff5a6a')).toBe(true);
+    expect(texts(calls)).toEqual(
+      expect.arrayContaining(['AUDIT 1', 'AUDIT 2', 'AUDIT IN PROGRESS']),
+    );
+    expect(calls.filter((c) => c.op === 'fill')).toHaveLength(1);
   });
 });

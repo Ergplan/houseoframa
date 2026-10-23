@@ -108,6 +108,14 @@ describe('inputsHash', () => {
     decisions: [],
     commits: [],
     builders: ['A'],
+    totals: {
+      bricks: 0,
+      defects: 0,
+      notes: 0,
+      screens: 0,
+      screensSigned: 0,
+      decisions: { decided: 0, open: 0, notBuilt: 0, reconstructed: 0 },
+    },
   } as AuditorInput;
   it('is the same for the same inputs, whatever the key order, and changes with any input', () => {
     const reordered = Object.fromEntries(
@@ -132,6 +140,14 @@ describe('askAuditor', () => {
     decisions: [],
     commits: [],
     builders: [],
+    totals: {
+      bricks: 0,
+      defects: 0,
+      notes: 0,
+      screens: 0,
+      screensSigned: 0,
+      decisions: { decided: 0, open: 0, notBuilt: 0, reconstructed: 0 },
+    },
   } as AuditorInput;
 
   it('asks the auditor role with prompt audit.v1', async () => {

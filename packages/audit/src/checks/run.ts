@@ -40,7 +40,11 @@ export function scriptCommand(
 export function runScript(repoDir: string, argv: string[], timeoutMs: number) {
   const r = spawnSync(argv[0]!, argv.slice(1), {
     cwd: repoDir,
-    env: { PATH: process.env.PATH ?? '', HOME: process.env.HOME ?? '', CI: '1' },
+    env: {
+      PATH: process.env.PATH ?? '',
+      HOME: process.env.HOME ?? '',
+      CI: '1',
+    } as unknown as NodeJS.ProcessEnv,
     encoding: 'utf8',
     timeout: timeoutMs,
     maxBuffer: 256 * 1024 * 1024,
@@ -164,8 +168,13 @@ export function runChecks(
     });
   else {
     const r = runScript(repoDir, tc, timeout);
-    runs.push({ check: 'typecheck', ran: true, detail: tc.join(' ') });
     const errs = parseTscErrors(r.output, bricks);
+    runs.push({
+      check: 'typecheck',
+      ran: true,
+      detail: tc.join(' '),
+      outcome: `exit ${r.status ?? 'none (timed out)'}, ${errs.length} compiler error${errs.length === 1 ? '' : 's'}`,
+    });
     findings.push(...errs);
     if (r.status !== 0 && !errs.length) {
       findings.push({
@@ -186,7 +195,12 @@ export function runChecks(
     });
   else {
     const r = runScript(repoDir, build, timeout);
-    runs.push({ check: 'build', ran: true, detail: build.join(' ') });
+    runs.push({
+      check: 'build',
+      ran: true,
+      detail: build.join(' '),
+      outcome: `exit ${r.status ?? 'none (timed out)'}`,
+    });
     if (r.status !== 0)
       findings.push({
         brick: SITE,
@@ -215,8 +229,18 @@ export function runChecks(
           detail: `\`${test.join(' ')}\` wrote no JSON report (exit ${r.status}): ${tail(r.output, 300)}`,
         });
       } else {
-        runs.push({ check: 'test-coverage-per-brick', ran: true, detail: test.join(' ') });
-        findings.push(...testFindings(bp, JSON.parse(readFileSync(out, 'utf8')), repoDir));
+        const report = JSON.parse(readFileSync(out, 'utf8')) as {
+          testResults?: { name: string; status: string }[];
+        };
+        const files = report.testResults ?? [];
+        const passed = files.filter((t) => t.status === 'passed').length;
+        runs.push({
+          check: 'test-coverage-per-brick',
+          ran: true,
+          detail: test.join(' '),
+          outcome: `exit ${r.status}, ${passed} test file${passed === 1 ? '' : 's'} passed, ${files.length - passed} failed`,
+        });
+        findings.push(...testFindings(bp, report, repoDir));
       }
     }
   } finally {

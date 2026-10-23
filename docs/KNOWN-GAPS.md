@@ -2,7 +2,6 @@
 
 Updated in the same commit as the code that opens or closes a gap.
 
-- The prototype audit was scripted by the builder's vendor; Stage 5 replaces it with a second-vendor auditor.
 - EkBill has no `data-rama-figure` instrumentation. Its five headline figures are traced by an overlay in its working clone (`.rama/figures.json`, hand-written harnesses); the other 156 figures on its 12 captured screens are untraced (at 4f28628). Instrumenting EkBill itself (HOUSE-STYLE §1–2) is the EkBill team's work.
 - No city layout; a single building per site. EkBill (916 bricks) fits in one building about 1,500 scene pixels wide; at fit-to-screen its bricks are about half size, so `Zoom 1:1` or the brick finder is the way to reach a small one.
 - (Stage 0) `model_calls` records tokens, not money: no price table is in code, so cost in a stage report is given in tokens unless a price is stated by the vendor's invoice.
@@ -27,3 +26,7 @@ Updated in the same commit as the code that opens or closes a gap.
 - (Stage 4) In CI the target's own tests (the pull request's code) produce the test report, in a job of their own. A pull request can make its tests report passes falsely, and then the test path lets a screen through; it cannot reach the gate or the signature file at the base. A new signature line in the pull request itself can name any person: anyone with write access can append a signature in someone else's name. Names are not authenticated until Stage 6.
 - (Stage 4) Discovery turns are stored in Postgres only; they are not mirrored to the target (decision cards and signatures are). Dictation uses the browser's speech recognition where it exists (Chrome); elsewhere the member types.
 - (Stage 4) A decision card can be superseded but not withdrawn; a card that should not stand is superseded by one with status `open` or `not-built`.
+- (Stage 5) The audit's checks are pattern checks: a swallowed error, an `any` or a constant is found, not judged. Coverage per brick is "a passing test imports it", not lines executed. The auditor may lower a verdict with a reason, and a person reads it.
+- (Stage 5) `long-unauth-route` recognises a sign-in check by name (`auth`, `session`, `getViewer`, `cookies()` and similar) in the route file. A check hidden behind another name, or in middleware, is not seen, and the route is reported.
+- (Stage 5) The audit runs the target's scripts on this machine with PATH and HOME only. A target whose tests need a database or keys reports those tests as failed or not run. EkBill's `test` script runs its unit project only, so its integration tests are not part of its audit.
+- (Stage 5) This repository's own audit has zero defects. Its notes stand: untested code bricks, silenced lint with reasons, empty catch blocks in scripts and test helpers, environment fallbacks for local defaults, unsigned screens, and drafted phrases nobody confirmed. The latest report lists them at `/site/self/audit`.

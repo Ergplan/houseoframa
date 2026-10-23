@@ -94,6 +94,11 @@ describe('runChecks (the target own scripts, PATH and HOME only)', () => {
     let r = runChecks(repo.dir, extract(repo.dir));
     expect(r.runs.every((x) => x.ran)).toBe(true);
     expect(r.runs[0]!.detail).toBe('npm run typecheck');
+    expect(r.runs.map((x) => x.outcome)).toEqual([
+      'exit 2, 1 compiler error',
+      'exit 1',
+      'exit 0, 1 test file passed, 1 failed',
+    ]);
     expect(r.findings.map((f) => [f.check, f.brick, f.verdict])).toEqual([
       ['typecheck', 'lib/c.ts', 'defect'],
       ['build', SITE, 'defect'],

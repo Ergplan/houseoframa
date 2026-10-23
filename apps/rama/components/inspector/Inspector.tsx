@@ -25,6 +25,8 @@ import {
   testCoverage,
 } from '@rama/blueprint/metrics';
 import { edgePhrase, floorName, reviewerParagraph } from './words';
+import type { AuditView } from '@rama/audit/view';
+import type { LogEntry } from '../../canvas/audit';
 
 /** A screen photographed from the target's built app (Stage 3), with the bricks that render it. */
 export interface CapturedScreen {
@@ -35,7 +37,21 @@ export interface CapturedScreen {
 }
 
 export type View =
-  { kind: 'report' } | { kind: 'commit'; index: number } | { kind: 'brick'; path: string };
+  | { kind: 'report' }
+  | { kind: 'commit'; index: number }
+  | { kind: 'brick'; path: string }
+  | { kind: 'audit' };
+
+/** The audit replay as the inspector shows it: its log while the drones fly, its report when done. */
+export interface AuditRunView {
+  mode: 'off' | 'flying' | 'done';
+  log: LogEntry[];
+  speak: boolean;
+  onSpeak: (on: boolean) => void;
+  onSkip: () => void;
+  onStop: () => void;
+  onLight: () => void;
+}
 
 interface Props {
   siteId: string;
@@ -45,6 +61,9 @@ interface Props {
   captured?: CapturedScreen[];
   /** Screens with a signature in force at the Blueprint's commit (Stage 4). */
   signedScreens?: string[];
+  /** The site's latest audit (Stage 5), and its replay. */
+  audit?: AuditView | null;
+  auditRun?: AuditRunView;
   onBrick: (path: string) => void;
   onCommit: (index: number) => void;
   onReport: () => void;
@@ -70,6 +89,9 @@ export function Inspector(props: Props) {
       {view.kind === 'report' && <TrustReport {...props} />}
       {view.kind === 'commit' && <CommitView {...props} index={view.index} />}
       {view.kind === 'brick' && <BrickView key={view.path} {...props} path={view.path} />}
+      {view.kind === 'audit' && props.audit && props.auditRun && (
+        <AuditPanel audit={props.audit} run={props.auditRun} onBrick={props.onBrick} />
+      )}
     </aside>
   );
 }
@@ -323,6 +345,7 @@ function BrickView({
   path,
   member,
   captured = [],
+  audit,
   onBrick,
   onCommit,
   onReport,
@@ -413,6 +436,7 @@ function BrickView({
       <div className="reviewer">
         <b>For the reviewer.</b> {reviewerParagraph(bp, path, f)}
       </div>
+      {audit && <BrickVerdict audit={audit} path={path} />}
       <dl className="kv">
         <dt>Size</dt>
         <dd>
@@ -531,6 +555,204 @@ function BrickView({
         {!history.entries.length && 'none in the extracted history'}
       </p>
       <button onClick={onReport}>◀ Trust report</button>
+    </>
+  );
+}
+
+const VERDICT_WORD = { pass: 'Pass', note: 'Note', defect: 'Defect' } as const;
+const VERDICT_PILL = { pass: 'green', note: 'amber', defect: 'red' } as const;
+
+/** The brick's verdict in the site's latest audit, with the findings behind it. */
+function BrickVerdict({ audit, path }: { audit: AuditView; path: string }) {
+  const v = audit.verdicts[path];
+  const mine = audit.findings.filter((f) => f.brick === path && f.verdict !== 'pass');
+  return (
+    <div className="verdict" data-verdict={v ?? 'none'}>
+      <h4>
+        Latest audit · {audit.commit.slice(0, 7)} ·{' '}
+        {v ? (
+          <span className={`pill ${VERDICT_PILL[v]}`}>{VERDICT_WORD[v]}</span>
+        ) : (
+          'not in that audit'
+        )}
+      </h4>
+      {v === 'pass' && <p className="note">No check that ran found anything here.</p>}
+      <ul>
+        {mine.map((f, i) => (
+          <li key={i}>
+            <span className={`pill ${VERDICT_PILL[f.verdict]}`}>{VERDICT_WORD[f.verdict]}</span>{' '}
+            {f.text}
+            {f.line ? <small> (line {f.line})</small> : null}
+            {f.auditorNote && (
+              <small>
+                {' '}
+                The checks said {f.checkVerdict}; the auditor lowered it: {f.auditorNote}
+              </small>
+            )}
+          </li>
+        ))}
+      </ul>
+      <p className="note">
+        Signed by {audit.report.vendor} {audit.report.model} on {fmtDate(audit.report.at)}, a
+        different vendor from the builder.
+      </p>
+    </div>
+  );
+}
+
+/** The audit replay's live log while the drones fly, then the signed report. */
+function AuditPanel({
+  audit,
+  run,
+  onBrick,
+}: {
+  audit: AuditView;
+  run: AuditRunView;
+  onBrick: (p: string) => void;
+}) {
+  const head = (
+    <p>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <input
+          type="checkbox"
+          checked={run.speak}
+          onChange={(e) => run.onSpeak(e.target.checked)}
+        />{' '}
+        Read the narration aloud
+      </label>
+    </p>
+  );
+  if (run.mode === 'flying') {
+    return (
+      <>
+        <h2>Audit · live</h2>
+        <p className="big">Drones are flying the site.</p>
+        {head}
+        <div className="alog" data-log={run.log.length}>
+          {run.log.map((l, i) =>
+            l.kind === 'phase' ? (
+              <div key={i} className="aph">
+                {l.text}
+              </div>
+            ) : l.kind === 'say' ? (
+              <div key={i} className="asay">
+                {l.text}
+              </div>
+            ) : (
+              <div key={i} className={`afind ${l.verdict}`}>
+                <span className={`pill ${VERDICT_PILL[l.verdict]}`}>{VERDICT_WORD[l.verdict]}</span>{' '}
+                <Lnk path={l.path} onBrick={onBrick} />
+                <div className="en">{l.text}</div>
+              </div>
+            ),
+          )}
+        </div>
+        <p>
+          <button onClick={run.onSkip}>Skip to the report</button>{' '}
+          <button onClick={run.onStop}>■ Stop audit</button>
+        </p>
+      </>
+    );
+  }
+  const c = audit.counts;
+  const confirmed = audit.signoffs.filter((s) => s.confirmed);
+  const rejected = audit.signoffs.filter((s) => !s.confirmed);
+  return (
+    <>
+      <h2>Audit report · {audit.commit.slice(0, 7)}</h2>
+      <p className={`big${c.defects ? ' red' : ''}`} data-defects={c.defects}>
+        {c.defects} defect{c.defects === 1 ? '' : 's'}, {c.notes} note{c.notes === 1 ? '' : 's'},{' '}
+        {c.passes} clean brick{c.passes === 1 ? '' : 's'} of {c.bricks}.
+      </p>
+      <div className="stat">
+        <div>
+          <b>{c.defects}</b>
+          <small>defects</small>
+        </div>
+        <div>
+          <b>{c.notes}</b>
+          <small>notes</small>
+        </div>
+        <div>
+          <b>{c.passes}</b>
+          <small>clean bricks</small>
+        </div>
+        <div>
+          <b>
+            {confirmed.length} / {audit.signoffs.length}
+          </b>
+          <small>sign-offs confirmed</small>
+        </div>
+      </div>
+      {head}
+      <h3>Checks</h3>
+      <ul className="runs">
+        {audit.runs.map((r) => (
+          <li key={r.check} data-ran={r.ran}>
+            <code>{r.check}</code>{' '}
+            {r.ran ? `ran${r.outcome ? `: ${r.outcome}` : ''}` : `not run: ${r.detail}`}
+          </li>
+        ))}
+      </ul>
+      <h3>Sign-offs</h3>
+      {audit.signoffs.length === 0 ? (
+        <p>None exist, so none can be confirmed or rejected. Every screen is unsigned.</p>
+      ) : (
+        <ul>
+          {confirmed.map((s) => (
+            <li key={s.screen}>
+              <span className="pill green">Confirmed</span> {s.screen}, signed by {s.person} at{' '}
+              {s.commit.slice(0, 7)}
+            </li>
+          ))}
+          {rejected.map((s) => (
+            <li key={s.screen}>
+              <span className="pill red">Rejected</span> {s.screen}, signed by {s.person}: defects
+              in{' '}
+              {s.defects.map((d) => (
+                <Lnk key={d} path={d} onBrick={onBrick} />
+              ))}
+            </li>
+          ))}
+        </ul>
+      )}
+      <h3>Alterations and estimates</h3>
+      <div className="links">
+        {audit.alterations.map((a, i) => (
+          <div className="dep" key={i}>
+            <div>{a.title}</div>
+            <div className="en">
+              agent {a.agentTime} · {a.humanTime} · {a.kind}
+            </div>
+          </div>
+        ))}
+      </div>
+      <h3>Time machine · what could have gone better</h3>
+      <div className="links">
+        {audit.timeMachine.map((t, i) => (
+          <div className="dep" key={i}>
+            <div>
+              <code>{t.commit}</code> {t.what}
+            </div>
+            <div className="en">{t.shouldHave}</div>
+          </div>
+        ))}
+      </div>
+      <h3>Who did what</h3>
+      <p>{audit.builders.join(' · ') || 'No builder recorded.'}</p>
+      <p className="note">
+        Signed by {audit.report.vendor} {audit.report.model}, a different vendor from the builder,
+        on {fmtTime(audit.report.at)}. Report {audit.report.reportId.slice(0, 8)}; inputs hash{' '}
+        <code>{audit.report.inputsHash.slice(0, 16)}…</code>. The checks are plain code; the auditor
+        wrote the narration, the alterations and the time machine, and may only lower a verdict,
+        with a reason.
+      </p>
+      <p>
+        <button className="primary" onClick={run.onLight} disabled={!c.defects}>
+          Light the defects
+        </button>{' '}
+        <button onClick={run.onStop}>◀ Trust report</button>
+      </p>
     </>
   );
 }

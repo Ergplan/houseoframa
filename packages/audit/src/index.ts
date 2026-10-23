@@ -32,4 +32,4 @@ export {
   type SignedReport,
   type StoredAudit,
 } from './report.ts';
-export { auditScript, type AuditStep, type AuditView } from './view.ts';
+export { auditScript, toAuditView, type AuditStep, type AuditView } from './view.ts';

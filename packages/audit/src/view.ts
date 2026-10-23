@@ -16,7 +16,7 @@ export interface AuditView {
   };
   commit: string;
   counts: { defects: number; notes: number; passes: number; bricks: number };
-  runs: { check: string; ran: boolean; detail: string }[];
+  runs: { check: string; ran: boolean; detail: string; outcome?: string }[];
   narration: { part: string; text: string }[];
   alterations: {
     title: string;
@@ -46,6 +46,38 @@ export interface AuditView {
     line: number | null;
     auditorNote: string | null;
   }[];
+}
+
+/** The view of a stored audit (report.ts `latestAudit`), with each brick's verdict from its findings. */
+export function toAuditView(stored: {
+  report: AuditView['report'];
+  commit: string;
+  body: Pick<
+    AuditView,
+    'counts' | 'runs' | 'narration' | 'alterations' | 'timeMachine' | 'signoffs' | 'builders'
+  >;
+  findings: AuditView['findings'];
+}): AuditView {
+  const rank = { pass: 0, note: 1, defect: 2 } as const;
+  const verdicts: Record<string, Verdict> = {};
+  for (const f of stored.findings) {
+    const was = verdicts[f.brick];
+    if (!was || rank[f.verdict] > rank[was]) verdicts[f.brick] = f.verdict;
+  }
+  const b = stored.body;
+  return {
+    report: stored.report,
+    commit: stored.commit,
+    counts: b.counts,
+    runs: b.runs,
+    narration: b.narration,
+    alterations: b.alterations,
+    timeMachine: b.timeMachine,
+    signoffs: b.signoffs,
+    builders: b.builders,
+    verdicts,
+    findings: stored.findings,
+  };
 }
 
 export type AuditStep =
