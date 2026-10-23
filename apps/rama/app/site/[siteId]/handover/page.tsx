@@ -98,9 +98,12 @@ export default async function Handover({ params }: { params: Promise<{ siteId: s
         <dl className="kv">
           <dt>Code</dt>
           <dd>{st.bp.repo}</dd>
-          <dt>Commit</dt>
+          <dt>{st.handover ? 'Handed over at' : 'Commit'}</dt>
           <dd>
-            <code>{st.bp.commit.slice(0, 7)}</code>
+            <code>{(st.handover?.commit ?? st.bp.commit).slice(0, 7)}</code>
+            {st.handover && st.handover.commit !== st.bp.commit
+              ? ` (the code has moved on to ${st.bp.commit.slice(0, 7)} since)`
+              : ''}
           </dd>
           <dt>Deploy</dt>
           <dd>

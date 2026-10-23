@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
+  "commit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6001,6 +6001,27 @@
       "sha": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
       "short": "28854a9",
       "subject": "Stage 6: end-to-end on a real target; home page hydrates cleanly"
+    },
+    {
+      "at": "2026-10-23T20:47:51Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 49,
+          "del": 7,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 115,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-6.md"
+        }
+      ],
+      "sha": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
+      "short": "17fc5b4",
+      "subject": "Stage 6: draft report"
     }
   ],
   "edges": [
@@ -8869,7 +8890,8 @@
         "PodBooking",
         "PodLight",
         "activeBooking",
-        "podLight"
+        "podLight",
+        "signatureCoverage"
       ],
       "to": "packages/blueprint/src/metrics/index.ts",
       "typeOnly": false
@@ -13417,7 +13439,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T20:44:29Z",
+  "extractedAt": "2026-10-23T20:47:51Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -13792,7 +13814,7 @@
     },
     {
       "binary": false,
-      "bytes": 3245,
+      "bytes": 3270,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -13801,7 +13823,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 100,
+      "lines": 101,
       "path": "apps/rama/app/api/bookings/handler.test.ts",
       "test": true
     },
@@ -14543,7 +14565,7 @@
     },
     {
       "binary": false,
-      "bytes": 5285,
+      "bytes": 5511,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -14555,7 +14577,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 143,
+      "lines": 146,
       "path": "apps/rama/app/site/[siteId]/handover/page.tsx",
       "test": false
     },
@@ -15353,7 +15375,7 @@
     },
     {
       "binary": false,
-      "bytes": 1688,
+      "bytes": 1660,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -15388,7 +15410,7 @@
     },
     {
       "binary": false,
-      "bytes": 5352,
+      "bytes": 5548,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -15405,13 +15427,13 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 155,
+      "lines": 164,
       "path": "apps/rama/server/floor.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 7732,
+      "bytes": 8035,
       "changes": 1,
       "env": [
         "DATABASE_URL",
@@ -15423,7 +15445,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 205,
+      "lines": 209,
       "path": "apps/rama/server/handover.test.ts",
       "test": true
     },
@@ -15941,7 +15963,22 @@
     },
     {
       "binary": false,
-      "bytes": 7584,
+      "bytes": 8171,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
+      "lastCommit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 118,
+      "path": "docs/reports/stage-6.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 10569,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -15950,8 +15987,8 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 115,
-      "path": "docs/reports/stage-6.md",
+      "lines": 20,
+      "path": "docs/reports/stage-6.review.md",
       "test": false
     },
     {

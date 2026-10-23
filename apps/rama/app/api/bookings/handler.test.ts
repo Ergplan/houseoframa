@@ -66,6 +66,7 @@ describe('GET /api/pod/<n>/status', () => {
             commit: 'c',
             screens: 1,
             signedScreens: [],
+            unsigned: 1,
             capturedCommit: 'c',
             audit: null,
           },

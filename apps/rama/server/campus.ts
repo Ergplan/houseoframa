@@ -30,7 +30,7 @@ export async function campusInputs(
       siteId: r.siteId,
       name: r.name,
       owner: r.owner,
-      unsignedScreens: st ? st.screens - st.signedScreens.length : 0,
+      unsignedScreens: st?.unsigned ?? 0,
       auditPassed: Boolean(st?.audit && st.audit.commit === st.commit && st.audit.defects === 0),
       handedOverAt: h ? h.at.toISOString() : null,
       checkins: cs.map((c) => ({ at: c.at.toISOString(), inUse: c.inUse })),

@@ -3,7 +3,13 @@
 // its latest audit.
 import { and, asc, eq, gt, lt } from 'drizzle-orm';
 import { bookings, pods, sites, type Db, type Member } from '@rama/db';
-import { activeBooking, podLight, type PodBooking, type PodLight } from '@rama/blueprint/metrics';
+import {
+  activeBooking,
+  podLight,
+  signatureCoverage,
+  type PodBooking,
+  type PodLight,
+} from '@rama/blueprint/metrics';
 import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
@@ -15,6 +21,8 @@ export interface SiteState {
   commit: string | null;
   screens: number;
   signedScreens: string[];
+  /** Screens not signed at the Blueprint's commit (metrics.signatureCoverage). */
+  unsigned: number;
   capturedCommit: string | null;
   audit: { commit: string; defects: number; at: string } | null;
 }
@@ -36,6 +44,7 @@ export async function siteState(db: Db, siteId: string): Promise<SiteState | nul
     commit: bp?.commit ?? null,
     screens: bp?.screens.length ?? 0,
     signedScreens: signed,
+    unsigned: bp ? signatureCoverage(bp, signed).unsigned : 0,
     capturedCommit: readCapture(site.id)?.commit ?? null,
     audit: a ? { commit: a.commit, defects: a.body.counts.defects, at: a.report.at } : null,
   };

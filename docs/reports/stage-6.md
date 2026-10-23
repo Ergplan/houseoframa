@@ -54,7 +54,7 @@ Open the printed link (it works once, for 15 minutes). The home page then lists 
   - readiness is `handoverReady()` in metrics: every screen signed, the audit clean, and the structure confirmed;
   - the structure is drafted from the import graph (bricks at least three others import) and confirmed by a named person into `.rama/structure.json`;
   - handing over writes an append-only, audited `handovers` row;
-  - the structural certificate and the keys page are read from it;
+  - the structural certificate is read from it, and the keys page names the handed-over commit beside the site's code;
   - after handover, the owner records check-ins.
 - **Deploy:** the `Dockerfile` and `deploy/compose.box.yml`:
   - Postgres inside the box;
@@ -100,7 +100,10 @@ Open the printed link (it works once, for 15 minutes). The home page then lists 
 
 ## Reviewer findings
 
-(Filled in after the reviewer runs.)
+Run 1 at 17fc5b4 found one code defect and one report claim. Both are fixed:
+
+1. **Campus counted unsigned screens itself** (Invariant 7), as screens minus signatures, which disagreed with the light and the handover check for a signature on a screen the Blueprint no longer has. Fixed: `signatureCoverage()` from metrics, with a test.
+2. **(Report)** "The certificate and the keys page are read from the handover row" overstated it: the keys page showed the current commit. Fixed: after handover it names the handed-over commit, and says when the code has moved on since.
 
 ## Real model cost
 

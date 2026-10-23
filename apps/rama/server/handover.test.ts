@@ -201,5 +201,9 @@ describe('/campus', () => {
     expect(f).toMatchObject({ sites: 2, auditsPassed: 1, inUseAt90: { inUse: 1, of: 1 } });
     expect(html).toContain('data-pod="1" data-light="green"');
     for (const p of f.signaturesPending) expect(html).toContain(`data-pending="${p.person}"`);
+    // The unsigned count is metrics.signatureCoverage's, as the light and the handover use: a signature
+    // for a screen the Blueprint does not have counts for nothing.
+    const shop = (await campusInputs(conn.db)).sites.find((x) => x.siteId === 'shop')!;
+    expect(shop.unsignedScreens).toBe(0);
   });
 });
