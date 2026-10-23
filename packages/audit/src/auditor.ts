@@ -198,11 +198,21 @@ export function applyReply(
     changes.set(c.finding, c);
   }
   for (const a of reply.alterations) {
-    for (const id of a.findings)
+    for (const id of a.findings) {
       if (!byId.has(id))
         throw new AuditorOverreachError(
           `the alteration "${a.title}" cites ${id}, a finding the checks did not make`,
         );
+    }
+    // An alteration called a defect must stand on a defect the checks found and the auditor kept.
+    if (
+      a.kind === 'defect' &&
+      !a.findings.some((id) => byId.get(id)!.verdict === 'defect' && changes.get(id) === undefined)
+    ) {
+      throw new AuditorOverreachError(
+        `the alteration "${a.title}" is called a defect, but cites no defect the checks found`,
+      );
+    }
   }
   for (const t of reply.timeMachine) {
     if (!bp.commits.some((c) => c.sha.startsWith(t.commit) || c.short === t.commit)) {

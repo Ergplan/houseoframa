@@ -22,7 +22,7 @@ Date: 2026-10-23. Tag at start: `stage-5-start` (9b6d822). Builder: Claude Opus 
 - **The auditor:** prompt `audit.v1`, role auditor, so `AUDITOR_VENDOR`. The vendor guard refuses before any call when it would be the builder's vendor.
   - **It is given:** the check results, a Blueprint summary and the totals.
   - **It writes:** the narration (discovery, each floor, screens, verdict), the alterations with agent-time and human-time estimates, and the time machine.
-  - **It may lower a verdict, with a reason.** It cannot add a finding: its reply has no field for one. `applyReply()` refuses a reply that names a finding it was not given, raises a verdict, or cites a commit outside the history, and then nothing is stored.
+  - **It may lower a verdict, with a reason.** It cannot add a finding: its reply has no field for one, and an alteration it calls a defect must cite a defect the checks found. `applyReply()` refuses a reply that names a finding it was not given, raises a verdict, or cites a commit outside the history, and then nothing is stored.
 - **The report:** `runAudit()` writes it in one transaction. `signoffVerdicts()` confirms or rejects each signature in force by the defects on its screen, in plain code. `verifyReport()` recomputes the hash from the auditor's own `model_calls` row.
 - **`apps/rama`:**
   - **Audit mode on the building:**
@@ -103,6 +103,11 @@ Run 2 at 1367af4 found two more code defects and one report claim. All are fixed
 1. **The auditor's reason for lowering a verdict was shown unmarked.** It is model text too. Fixed: it carries the same drafted or confirmed marker in the Brick view and on the report page.
 2. **A test command that failed before writing its report gave no finding.** Fixed: a non-zero exit with no report is a defect. Exit 0 with no report credits no test and is reported as not run.
 3. **(Report)** "All model-written text is marked" was incomplete because of point 1. Now true.
+
+Run 3 at 2022f73 found two more code defects. Both are fixed, each with a test:
+
+1. **A working-tree audit missed screens changed after their signature.** It skipped a screen signed at HEAD even when its bricks had uncommitted changes. Fixed: uncommitted changes count when the Blueprint was read from the working tree.
+2. **An alteration could be labelled "defect" without a defect behind it.** Fixed: an alteration of kind `defect` must cite a defect the checks found and the auditor did not lower, or the reply is refused.
 
 ## Real model cost
 

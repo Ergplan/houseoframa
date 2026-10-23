@@ -47,6 +47,15 @@ describe('the model may not add a defect the checks did not find', () => {
     const out = applyReply(
       all,
       reply({
+        alterations: [
+          {
+            title: 'Name the three-bid rule',
+            agentTime: '10 min',
+            humanTime: 'committee 15 min',
+            kind: 'note',
+            findings: ['F1'],
+          },
+        ],
         verdictChanges: [{ finding: 'F1', to: 'note', why: 'Only ever three bids, by contract.' }],
       }),
       bp,
@@ -82,6 +91,22 @@ describe('the model may not add a defect the checks did not find', () => {
         bp,
       ),
     ).toThrow(/not in the history/);
+    // A defect-labelled alteration must stand on a defect the checks found and the auditor did not lower.
+    const defectWithout = (findings: string[], changes: AuditorReply['verdictChanges'] = []) =>
+      reply({
+        alterations: [{ title: 'x', agentTime: '1 h', humanTime: '-', kind: 'defect', findings }],
+        verdictChanges: changes,
+      });
+    expect(() => applyReply(all, defectWithout([]), bp)).toThrow(/cites no defect/);
+    expect(() => applyReply(all, defectWithout(['F2']), bp)).toThrow(/cites no defect/);
+    expect(() =>
+      applyReply(
+        all,
+        defectWithout(['F1'], [{ finding: 'F1', to: 'note', why: 'by contract' }]),
+        bp,
+      ),
+    ).toThrow(/cites no defect/);
+    expect(() => applyReply(all, defectWithout(['F1', 'F2']), bp)).not.toThrow();
   });
 
   it('has no field to add a finding: a reply that tries is not a valid reply', () => {

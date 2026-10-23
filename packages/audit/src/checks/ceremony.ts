@@ -1,10 +1,31 @@
 // Checks over the people's record: screens changed since their signature (or never signed), phrases
 // nobody confirmed, decisions left open or not built. All are notes: they say what is unconfirmed, not
 // that the code is wrong.
+import { spawnSync } from 'node:child_process';
 import type { Blueprint, Decision, Signoff } from '@rama/shared';
 import { changesSince } from '@rama/ceremony/gate';
 import { signaturesInForce } from '@rama/ceremony/records';
 import { SITE, type CheckFinding } from '../findings.ts';
+
+/** Paths changed in the working tree on top of HEAD (tracked and untracked): for a working-tree Blueprint. */
+function worktreeChanges(repoDir: string): string[] {
+  const r = spawnSync(
+    'git',
+    ['-C', repoDir, 'status', '--porcelain', '-z', '--untracked-files=all'],
+    {
+      encoding: 'utf8',
+    },
+  );
+  const out: string[] = [];
+  const fields = (r.stdout ?? '').split('\0').filter(Boolean);
+  for (let i = 0; i < fields.length; i++) {
+    const f = fields[i]!;
+    out.push(f.slice(3));
+    // A rename or copy is followed by its old path.
+    if (f[0] === 'R' || f[0] === 'C') out.push(fields[++i]!);
+  }
+  return out;
+}
 
 export function unsignedChanges(
   repoDir: string,
@@ -13,6 +34,8 @@ export function unsignedChanges(
 ): CheckFinding[] {
   const inForce = signaturesInForce(signoffs);
   const out: CheckFinding[] = [];
+  // A Blueprint read from the working tree carries its uncommitted changes: they count as changes too.
+  const local = bp.worktree ? worktreeChanges(repoDir) : [];
   for (const s of bp.screens) {
     const sig = inForce.get(`screen:${s.id}`);
     if (!sig) {
@@ -25,12 +48,13 @@ export function unsignedChanges(
       });
       continue;
     }
-    if (sig.target.commit === bp.commit) continue;
     let changed: string[];
     try {
-      changed = [
-        ...new Set(changesSince(repoDir, sig.target.commit).flatMap((c) => c.paths)),
-      ].filter((p) => s.bricks.includes(p));
+      const since =
+        sig.target.commit === bp.commit
+          ? []
+          : changesSince(repoDir, sig.target.commit).flatMap((c) => c.paths);
+      changed = [...new Set([...since, ...local])].filter((p) => s.bricks.includes(p));
     } catch {
       changed = s.bricks;
     }

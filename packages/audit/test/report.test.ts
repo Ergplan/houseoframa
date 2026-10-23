@@ -75,6 +75,28 @@ describe('ceremony checks', () => {
     ]);
   });
 
+  it('unsigned-change: on a working-tree Blueprint, counts local changes after a signature at HEAD', () => {
+    repo.write({
+      'app/page.tsx':
+        "import { spread } from '../lib/bids';\nexport default function Home() { return spread([4, 5, 6]); }\n",
+    });
+    try {
+      const wt = extract(repo.dir, { worktree: true });
+      const f = unsignedChanges(repo.dir, wt, [
+        sig('s1', '/', wt.commit),
+        sig('s2', '/help', wt.commit),
+      ]);
+      expect(f.map((x) => [x.brick, x.text])).toEqual([
+        [
+          'app/page.tsx',
+          `The screen / changed since Asha Rao signed it at ${wt.commit.slice(0, 7)} (app/page.tsx).`,
+        ],
+      ]);
+    } finally {
+      repo.git('checkout', '-q', '--', 'app/page.tsx');
+    }
+  });
+
   it('unconfirmed-glossary: notes the bricks whose import phrases are drafts; confirmed ones are not', () => {
     const edges = [
       {
@@ -253,7 +275,10 @@ describe('runAudit', () => {
       formulaFiles: [],
       run: false,
       call: auditor(
-        answer({ verdictChanges: [{ finding: 'F1', to: 'note', why: 'Three bids by contract.' }] }),
+        answer({
+          alterations: [],
+          verdictChanges: [{ finding: 'F1', to: 'note', why: 'Three bids by contract.' }],
+        }),
       ),
     });
     expect(body.counts.defects).toBe(0);
