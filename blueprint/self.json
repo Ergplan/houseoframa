@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
+  "commit": "f7e3648691580ad70d2b3ff825bf914fac38e508",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -4009,6 +4009,39 @@
       "sha": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "short": "7fdd71b",
       "subject": "Stage 4: walkthrough, site office, signatures on the building, gate CI"
+    },
+    {
+      "at": "2026-10-23T00:15:35Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 91,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/ceremony/DiscoveryView.test.tsx"
+        },
+        {
+          "add": 4,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/ceremony/DiscoveryView.tsx"
+        },
+        {
+          "add": 444,
+          "del": 118,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 16,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/ceremony/README.md"
+        }
+      ],
+      "sha": "f7e3648691580ad70d2b3ff825bf914fac38e508",
+      "short": "f7e3648",
+      "subject": "Stage 4: site office times say their zone; office view tests; ceremony README"
     }
   ],
   "edges": [
@@ -6837,6 +6870,23 @@
       "typeOnly": true
     },
     {
+      "from": "packages/ceremony/test/discovery.test.ts",
+      "symbols": [
+        "DISCOVERY_COMPONENT",
+        "draftQuestion"
+      ],
+      "to": "packages/ceremony/src/discovery.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/discovery.vendor.test.ts",
+      "symbols": [
+        "draftQuestion"
+      ],
+      "to": "packages/ceremony/src/discovery.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
@@ -8509,7 +8559,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T00:10:37Z",
+  "extractedAt": "2026-10-23T00:15:35Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -9554,12 +9604,12 @@
     {
       "binary": false,
       "bytes": 2718,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "f7e3648691580ad70d2b3ff825bf914fac38e508",
+      "lastCommit": "f7e3648691580ad70d2b3ff825bf914fac38e508",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 91,
@@ -9569,14 +9619,14 @@
     {
       "binary": false,
       "bytes": 10764,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "DiscoveryView"
       ],
       "firstCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
-      "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
+      "lastCommit": "f7e3648691580ad70d2b3ff825bf914fac38e508",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 319,
@@ -10104,6 +10154,21 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 283,
       "path": "docs/reports/stage-3.review.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 10169,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 134,
+      "path": "docs/reports/stage-4.md",
       "test": false
     },
     {
@@ -10977,12 +11042,12 @@
     {
       "binary": false,
       "bytes": 2297,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "f7e3648691580ad70d2b3ff825bf914fac38e508",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 18,
@@ -11275,6 +11340,36 @@
       "lines": 80,
       "path": "packages/ceremony/src/walkthrough.ts",
       "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1443,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 44,
+      "path": "packages/ceremony/test/discovery.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1051,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 29,
+      "path": "packages/ceremony/test/discovery.vendor.test.ts",
+      "test": true
     },
     {
       "binary": false,
