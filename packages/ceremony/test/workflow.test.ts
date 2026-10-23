@@ -28,6 +28,33 @@ describe('ci/rama-gate.yml', () => {
     expect(gate).toContain('repository: Ergplan/houseoframa');
   });
 
+  it('names test files by repository path before handing the report over, as passingFromReport reads them', async () => {
+    const step = job('tests').split('- name: Name each test file')[1]!.split('- uses:')[0]!;
+    const script = /node -e '([\s\S]*?)'\n/.exec(step)![1]!.replace(/\n\s+/g, ' ');
+    const { mkdtempSync, rmSync, writeFileSync } = await import('node:fs');
+    const { tmpdir } = await import('node:os');
+    const path = await import('node:path');
+    const { execFileSync } = await import('node:child_process');
+    const { passingFromReport } = await import('../src/gate.ts');
+    const tests = mkdtempSync(path.join(tmpdir(), 'rama-tests-job-'));
+    const gate = mkdtempSync(path.join(tmpdir(), 'rama-gate-job-'));
+    try {
+      const report = path.join(tests, 'rama-tests.json');
+      writeFileSync(
+        report,
+        JSON.stringify({
+          testResults: [{ name: path.join(tests, 'lib/x.test.ts'), status: 'passed' }],
+        }),
+      );
+      execFileSync(process.execPath, ['-e', script], { cwd: tests });
+      // Read on another runner, against another checkout's root.
+      expect([...passingFromReport(report, path.join(gate, 'target'))]).toEqual(['lib/x.test.ts']);
+    } finally {
+      rmSync(tests, { recursive: true, force: true });
+      rmSync(gate, { recursive: true, force: true });
+    }
+  });
+
   it("gates whatever the tests job did, with House of Rama's gate at a pinned ref against the pull request's base", () => {
     expect(job('tests')).toContain('continue-on-error: true');
     expect(job('gate')).toMatch(/needs: tests\n\s+if: \$\{\{ !cancelled\(\) \}\}/);

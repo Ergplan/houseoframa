@@ -193,6 +193,57 @@ describe('rama gate', () => {
     }
   });
 
+  it('sees an edit that arrives only through a merge, and judges it at the merge commit', () => {
+    const main = repo.git('rev-parse', '--abbrev-ref', 'HEAD').trim();
+    repo.git('checkout', '-q', '-b', 'side');
+    repo.write({ 'lib/bills.ts': 'export const BILLS = [9];\n' });
+    repo.commit('side edit');
+    repo.git('checkout', '-q', main);
+    repo.git(
+      '-c',
+      'user.name=t',
+      '-c',
+      'user.email=t@example.invalid',
+      'merge',
+      '-q',
+      '--no-ff',
+      '-m',
+      'merge side',
+      'side',
+    );
+    const merge = repo.git('rev-parse', 'HEAD').trim();
+    try {
+      const r = runGate(repo.dir, change);
+      expect(r.screens.map((s) => [s.route, s.changeCommit])).toEqual([['/bills', merge]]);
+      expect(r.ok).toBe(false);
+    } finally {
+      repo.git('reset', '-q', '--hard', change);
+      repo.git('branch', '-q', '-D', 'side');
+    }
+  });
+
+  it('sees a screen renamed away: the old route is a removed screen that needs its own signature', () => {
+    // Same content under a new path: git records a rename (R100).
+    repo.write({ 'app/assist/page.tsx': 'export default function Help() { return null; }\n' });
+    repo.git('rm', '-q', 'app/help/page.tsx');
+    repo.commit('move help to assist');
+    const moved = repo.git('rev-parse', 'HEAD').trim();
+    try {
+      withSignoffs(
+        [line(sign({ target: { kind: 'screen', id: '/assist', commit: moved } }))],
+        () => {
+          const r = runGate(repo.dir, change);
+          expect(r.screens.map((s) => [s.route, s.removed, s.ok])).toEqual([
+            ['/assist', false, true],
+            ['/help', true, false],
+          ]);
+        },
+      );
+    } finally {
+      repo.git('reset', '-q', '--hard', change);
+    }
+  });
+
   it('passes when no screen changed, and refuses a base that is not a commit', () => {
     expect(runGate(repo.dir, change)).toMatchObject({ ok: true, screens: [] });
     expect(() => runGate(repo.dir, 'nope')).toThrow(/not a commit/);

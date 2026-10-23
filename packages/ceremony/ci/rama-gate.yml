@@ -34,6 +34,14 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npx vitest run --project unit --reporter=json --outputFile=rama-tests.json
+      - name: Name each test file by its repository path (the gate job checks the target out elsewhere)
+        if: ${{ !cancelled() }}
+        run: >
+          node -e 'const fs = require("fs"), path = require("path");
+          if (!fs.existsSync("rama-tests.json")) process.exit(0);
+          const r = JSON.parse(fs.readFileSync("rama-tests.json", "utf8"));
+          for (const t of r.testResults ?? []) t.name = path.relative(process.cwd(), t.name).split(path.sep).join("/");
+          fs.writeFileSync("rama-tests.json", JSON.stringify(r));'
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

@@ -25,7 +25,7 @@ Date: 2026-10-23. Tag at start: `stage-4-start` (b14039a). Builder: Claude Opus 
   - **The gate.** `rama gate <repo> --base <commit> [--test-report <json>]`. A screen whose bricks changed since the base passes on either of two things:
     - a signature in force, made at or after the screen's last change;
     - a passing test behind every changed code brick.
-      Screens at the base count too, so a removed screen or a deleted brick needs a signature. It fails whatever the screens say if a signature line that was there at the base was changed or removed. It reads nothing from the target that could switch it off.
+      Screens at the base count too, so a removed screen or a deleted brick needs a signature. History is read along the first-parent chain with each merge's full diff and both paths of a rename, so an edit merged in, or a screen renamed away, is seen. It fails whatever the screens say if a signature line that was there at the base was changed or removed. It reads nothing from the target that could switch it off.
   - **`ci/rama-gate.yml`.** The workflow a target includes. It runs on `pull_request_target`, so the copy on the base branch judges a pull request. It has a read-only token and no secrets, in two jobs on two runners. The target's tests run in one job and only produce a report. The gate job never runs target code and runs House of Rama at a pinned ref. `rama-ceremony install-gate <site>` writes it into a target's checkout.
   - **The walkthrough script.** One step per Blueprint screen, holding all its captured views. Each step has the statement to sign, built from the traced figures and the decided cards (no model), the trails, and the signature in force (current or stale).
   - **Imports.** The weekend's session and a decisions log, as reconstructed records. A corrected re-import is reconciled append-only.
@@ -88,6 +88,7 @@ The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinn
   - a replacement, then a withdrawal;
   - a rewritten signature file;
   - a removed screen and a deleted brick, which count as changes;
+  - an edit that arrives only through a merge (judged at the merge commit), and a screen renamed away (the old route needs its own signature);
   - `.rama/gate.json`, `rama.config.json` and `RAMA_GATE=off`, all ignored;
   - nothing changed;
   - a bad base.
@@ -105,7 +106,7 @@ The gate workflow is at `work/ekbill/repo/.github/workflows/rama-gate.yml`, pinn
   - the page, rendered over a fixture site (`showroom/page.test.tsx`).
 - **Routes:** every new route has handler tests covering 200, 400, 404, 409, 502 and 503 (`app/api/site/[siteId]/ceremony.test.ts`), plus the site office page against a throwaway database.
 - **Canvas:** marks red, then amber and green after signing (`canvas/frame.test.ts`). Metrics: `signatureCoverage` and `brickMarks`.
-- **Workflow** (`test/workflow.test.ts`): `pull_request_target`, a read-only token, no secrets, target code only in the tests job (no House of Rama checkout there), and the gate job running whatever the tests job did.
+- **Workflow** (`test/workflow.test.ts`): `pull_request_target`, a read-only token, no secrets, target code only in the tests job (no House of Rama checkout there), the gate job running whatever the tests job did, and the report's test files named by repository path so the gate's runner reads them.
 - **E2E on EkBill** (`tests/stage-4.ekbill.test.ts`, local), on a clone with its capture and a throwaway database:
   - a Playwright walkthrough in the real app signs `/gst` and `/dues`;
   - both land in Postgres, in `audit_log` and in `.rama/signoffs.jsonl`;
@@ -132,6 +133,13 @@ Run 1 at e7d17b6 found three code defects and three report claims. All are fixed
 4. **(Report)** "Mirrors are written in the same step" overstated it. Fixed: reworded to the new design.
 5. **(Report)** "A chain may not fork" did not hold under concurrency. Fixed: the lock, plus a unique index on `supersedes`.
 6. **(Report)** "The test step cannot fail the job" was false: `npm ci` could abort it. Fixed: the gate job runs whatever the tests job did.
+
+Run 2 at 7869800 found three more code defects and one report claim. All are fixed, each with a test:
+
+1. **Merges were unseen.** `git log --name-only` leaves merge diffs out, so an edit that arrived only by a merge escaped the gate. Fixed: the gate reads the first-parent chain with each merge's diff.
+2. **Renames named only their new path**, so a screen renamed away was missed. Fixed: both paths count.
+3. **The CI report held absolute paths from the tests runner**, so no test ever matched on the gate's runner. Fixed: the tests job names files by repository path, and a test reproduces the hand-over.
+4. **(Report)** The coverage claim was too broad for the cases above. Fixed: it is now true and states them.
 
 ## Real model cost
 

@@ -149,6 +149,45 @@ export function passingFromReport(reportFile: string, repoDir: string): Set<stri
   );
 }
 
+/**
+ * The commits from `base` to HEAD along the first-parent chain, oldest first, with every path each one
+ * changed: a merge commit carries everything it brought in (diffed against its first parent), and a rename
+ * or copy names both its old and its new path, so a screen merged in or renamed away is still seen.
+ */
+export function changesSince(repoDir: string, base: string): { sha: string; paths: string[] }[] {
+  const log = git(repoDir, [
+    'log',
+    '--reverse',
+    '--first-parent',
+    '-m',
+    '--format=%x1e%H',
+    '--name-status',
+    '-M',
+    '-z',
+    `${base}..HEAD`,
+  ]).stdout;
+  return log
+    .split('\x1e')
+    .filter(Boolean)
+    .map((rec) => {
+      // `<sha>\0\n<status>\0<path>\0…`; a rename or copy (R100, C75) carries its old and new path.
+      const [head = '', ...fields] = rec.split('\0').map((f) => f.replace(/^\n+/, ''));
+      const paths: string[] = [];
+      for (let i = 0; i < fields.length; i++) {
+        const status = fields[i]!;
+        if (!status) continue;
+        if (/^[RC]\d*$/.test(status)) {
+          paths.push(fields[i + 1] ?? '', fields[i + 2] ?? '');
+          i += 2;
+        } else {
+          paths.push(fields[i + 1] ?? '');
+          i += 1;
+        }
+      }
+      return { sha: head.trim(), paths: [...new Set(paths.filter(Boolean))] };
+    });
+}
+
 /** Runs the gate on a checkout: HEAD against `base`. */
 export function runGate(
   repoDir: string,
@@ -173,21 +212,7 @@ export function runGate(
   } catch (err) {
     problems.push(`the base ${baseSha.slice(0, 7)} could not be read: ${(err as Error).message}`);
   }
-  const log = git(repoDir, [
-    'log',
-    '--reverse',
-    '--format=%x1e%H',
-    '--name-only',
-    '-M',
-    `${baseSha}..HEAD`,
-  ]).stdout;
-  const changes = log
-    .split('\x1e')
-    .filter(Boolean)
-    .map((rec) => {
-      const [sha, ...paths] = rec.split('\n').map((l) => l.trim());
-      return { sha: sha!, paths: paths.filter(Boolean) };
-    });
+  const changes = changesSince(repoDir, baseSha);
 
   // The signature file travels with the code. It must only ever grow: lines already at the base stay.
   const at = (rev: string) => {
