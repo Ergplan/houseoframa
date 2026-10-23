@@ -98,6 +98,12 @@ Run 1 at d1472a5 found six code defects. All are fixed, each with a test:
 5. **The scripts could run on other code than the report names.** Fixed: the audit extracts the Blueprint from the checkout as it is, and runs the scripts only when the checkout is the audited commit.
 6. **A brick newer than the audit was shown as a pass.** Fixed: it gets no badge, the replay says how many there are, and the panel says when the building has moved on.
 
+Run 2 at 1367af4 found two more code defects and one report claim. All are fixed, each with a test:
+
+1. **The auditor's reason for lowering a verdict was shown unmarked.** It is model text too. Fixed: it carries the same drafted or confirmed marker in the Brick view and on the report page.
+2. **A test command that failed before writing its report gave no finding.** Fixed: a non-zero exit with no report is a defect. Exit 0 with no report credits no test and is reported as not run.
+3. **(Report)** "All model-written text is marked" was incomplete because of point 1. Now true.
+
 ## Real model cost
 
 (Filled in after the reviewer runs.)

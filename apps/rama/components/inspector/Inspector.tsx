@@ -592,7 +592,11 @@ function BrickVerdict({ audit, path }: { audit: AuditView; path: string }) {
             {f.auditorNote && (
               <small>
                 {' '}
-                The checks said {f.checkVerdict}; the auditor lowered it: {f.auditorNote}
+                The checks said {f.checkVerdict}; the auditor lowered it: {f.auditorNote}{' '}
+                <DraftState
+                  confirmations={audit.confirmations}
+                  by={`${audit.report.vendor} ${audit.report.model}`}
+                />
               </small>
             )}
           </li>

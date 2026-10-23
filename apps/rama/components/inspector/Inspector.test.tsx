@@ -254,6 +254,8 @@ describe('Inspector: the audit', () => {
     expect(html).toContain(
       'The checks said defect; the auditor lowered it: Only in a test helper.',
     );
+    const note = /Only in a test helper\.([^]*?)<\/small>/.exec(html)![1]!;
+    expect(note).toContain('data-draft="unconfirmed"');
     expect(show({ kind: 'brick', path: 'app/page.tsx' }, run('done'))).toContain(
       'No check that ran found anything here.',
     );

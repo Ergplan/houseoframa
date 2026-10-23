@@ -142,6 +142,23 @@ describe('runChecks (the target own scripts, PATH and HOME only)', () => {
     ]);
   });
 
+  it('fails a test command that exits non-zero before writing a report; one that exits 0 without a report credits nothing', () => {
+    repo.write({
+      ...pkg({ test: 'node tools/fake-vitest.cjs' }),
+      'tools/fake-vitest.cjs': "console.error('Cannot find module vitest'); process.exit(1);\n",
+    });
+    repo.commit('a runner that crashes before its report');
+    let r = runChecks(repo.dir, extract(repo.dir), { skip: ['typecheck', 'build'] });
+    expect(r.runs.at(-1)).toMatchObject({ ran: true, outcome: 'exit 1, no report' });
+    expect(r.findings.filter((f) => f.brick === SITE).map((f) => f.verdict)).toEqual(['defect']);
+    expect(r.findings.find((f) => f.brick === SITE)!.text).toContain('Cannot find module vitest');
+    repo.write({ 'tools/fake-vitest.cjs': "console.log('nothing to do');\n" });
+    repo.commit('a runner that reports nothing');
+    r = runChecks(repo.dir, extract(repo.dir), { skip: ['typecheck', 'build'] });
+    expect(r.runs.at(-1)).toMatchObject({ ran: false });
+    expect(r.findings.filter((f) => f.brick === SITE)).toEqual([]);
+  });
+
   it('does not run the scripts on a checkout that is not the audited code', () => {
     const bp = extract(repo.dir);
     repo.write({ 'lib/a.ts': 'export const a = 42;\n' });

@@ -246,11 +246,25 @@ export function runChecks(
       });
     } else {
       const r = runScript(repoDir, test, timeout);
-      if (!existsSync(out)) {
+      if (!existsSync(out) && r.status !== 0) {
+        // The tests failed before they could report: that is a failed run, whatever the reason.
+        runs.push({
+          check: 'test-coverage-per-brick',
+          ran: true,
+          detail: test.join(' '),
+          outcome: `exit ${r.status ?? 'none (timed out)'}, no report`,
+        });
+        findings.push({
+          brick: SITE,
+          check: 'test-coverage-per-brick',
+          verdict: 'defect',
+          text: `\`${test.join(' ')}\` failed before writing a report (exit ${r.status ?? 'none'}): ${tail(r.output)}`,
+        });
+      } else if (!existsSync(out)) {
         runs.push({
           check: 'test-coverage-per-brick',
           ran: false,
-          detail: `\`${test.join(' ')}\` wrote no JSON report (exit ${r.status}): ${tail(r.output, 300)}`,
+          detail: `\`${test.join(' ')}\` exited 0 but wrote no JSON report, so no test can be credited: ${tail(r.output, 300)}`,
         });
       } else {
         const report = JSON.parse(readFileSync(out, 'utf8')) as {

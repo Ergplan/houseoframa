@@ -98,8 +98,8 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
       </section>
       <section className="session" data-section="drafted">
         <p>
-          The narration, the alterations and the time machine are the auditor's words, not the
-          checks':{' '}
+          The narration, the alterations, the time machine and the auditor&apos;s reasons for
+          lowering a verdict are its words, not the checks&apos;:{' '}
           <DraftState
             confirmations={stored.confirmations}
             by={`${report.vendor} ${report.model}`}
@@ -179,7 +179,11 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
                   {f.auditorNote ? (
                     <small>
                       {' '}
-                      (checks said {f.checkVerdict}; auditor: {f.auditorNote})
+                      (checks said {f.checkVerdict}; auditor: {f.auditorNote}){' '}
+                      <DraftState
+                        confirmations={stored.confirmations}
+                        by={`${report.vendor} ${report.model}`}
+                      />
                     </small>
                   ) : null}
                 </li>
