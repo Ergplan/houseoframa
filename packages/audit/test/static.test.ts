@@ -105,6 +105,19 @@ describe('positional-assumption', () => {
       ['positional-assumption', 'defect', 4],
     ]);
   });
+  it('leaves an access alone when the list length is tested first', () => {
+    const src = [
+      'const close = [...xs].sort((a, b) => a - b);',
+      'if (close.length > 1 && close[0] < close[1]) go();',
+      'const two = close.length >= 2 ? close[1] : null;',
+      'function f() {',
+      '  if (close.length < 3) return;',
+      '  return close[2];',
+      '}',
+      '',
+    ].join('\n');
+    expect(checks(src)).toEqual([]);
+  });
   it('leaves the first item, the last by length, and unsorted lists alone', () => {
     const src =
       'const s = [...xs].sort();\nconst lo = s[0];\nconst hi = s[s.length - 1];\nconst top = s.at(-1);\nconst third = row[2];\n';

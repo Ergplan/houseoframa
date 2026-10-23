@@ -56,7 +56,7 @@ const TS_PACKAGES = [
 const IGNORED = [
   /(^|\/)node_modules(\/|$)/,
   /^\.git(\/|$)/,
-  /(^|\/)\.next(-e2e)?(\/|$)/,
+  /(^|\/)\.next(-e2e|-build)?(\/|$)/,
   /^\.watch(\/|$)/,
   /^work(\/|$)/,
   /^reference(\/|$)/,
@@ -226,13 +226,24 @@ function schedule() {
   }, 300);
 }
 
-watch(ROOT, { recursive: true }, (_event, file) => {
-  if (!file) return;
-  const rel = file.split(path.sep).join('/');
-  if (IGNORED.some((re) => re.test(rel))) return;
-  pending.add(rel);
-  schedule();
-});
+// Node's recursive watch on Linux follows every folder, ignored ones too, and fails when a folder
+// vanishes while it is being read (an end-to-end test's own .next-e2e dist dir, removed when the test
+// ends). A failed watcher is replaced, so the watcher outlives the test runs it watches.
+function startWatching() {
+  const w = watch(ROOT, { recursive: true }, (_event, file) => {
+    if (!file) return;
+    const rel = file.split(path.sep).join('/');
+    if (IGNORED.some((re) => re.test(rel))) return;
+    pending.add(rel);
+    schedule();
+  });
+  w.on('error', (err) => {
+    console.log(`[watch] file watcher failed (${err.code ?? err.message}); watching again`);
+    w.close();
+    setTimeout(startWatching, 1000);
+  });
+}
+startWatching();
 
 console.log('[watch] watching for saves; status in .watch/status.json');
 await cycle(null);

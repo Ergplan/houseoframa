@@ -13,6 +13,7 @@ export default defineConfig(
       '**/node_modules/**',
       '**/.next/**',
       '**/.next-e2e/**',
+      '**/.next-build/**',
       '**/next-env.d.ts',
       'packages/db/migrations/**',
       'blueprint/**',

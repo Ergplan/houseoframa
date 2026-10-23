@@ -36,6 +36,37 @@ const isEmptyHandler = (n: ts.Node | undefined): boolean => {
   );
 };
 
+/**
+ * True when the list's length is tested before the access: in an enclosing condition (`if`, `? :`, the
+ * left of `&&` or `||`), or in an `if` earlier in an enclosing block (an early return). A checked length
+ * is a checked assumption.
+ */
+function lengthGuarded(sf: ts.SourceFile, access: ts.Node, name: string): boolean {
+  const mentions = (n: ts.Node | undefined) =>
+    Boolean(n) && new RegExp(`\\b${name}\\.length\\b`).test(n!.getText(sf));
+  let child: ts.Node = access;
+  for (let p = access.parent; p; child = p, p = p.parent) {
+    if (ts.isIfStatement(p) && child !== p.expression && mentions(p.expression)) return true;
+    if (ts.isConditionalExpression(p) && child !== p.condition && mentions(p.condition))
+      return true;
+    if (
+      ts.isBinaryExpression(p) &&
+      child === p.right &&
+      [ts.SyntaxKind.AmpersandAmpersandToken, ts.SyntaxKind.BarBarToken].includes(
+        p.operatorToken.kind,
+      ) &&
+      mentions(p.left)
+    ) {
+      return true;
+    }
+    if (ts.isBlock(p) || ts.isSourceFile(p)) {
+      const before = p.statements.slice(0, p.statements.indexOf(child as ts.Statement));
+      if (before.some((st) => ts.isIfStatement(st) && mentions(st.expression))) return true;
+    }
+  }
+  return false;
+}
+
 export function staticChecks(
   file: string,
   src: string,
@@ -165,7 +196,11 @@ export function staticChecks(
       Number(n.argumentExpression.text) >= 1
     ) {
       const target = n.expression;
-      if (isSortCall(target) || (ts.isIdentifier(target) && sorted.has(target.text))) {
+      const guarded = ts.isIdentifier(target) && lengthGuarded(sf, n, target.text);
+      if (
+        !guarded &&
+        (isSortCall(target) || (ts.isIdentifier(target) && sorted.has(target.text)))
+      ) {
         report(
           'positional-assumption',
           'defect',

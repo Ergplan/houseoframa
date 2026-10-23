@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "9b6d82259374d7f41df874ac478f3bd026e7415d",
+  "commit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -4306,6 +4306,219 @@
       "sha": "9b6d82259374d7f41df874ac478f3bd026e7415d",
       "short": "9b6d822",
       "subject": "Stage 4: report with reviewer findings, cost and open questions"
+    },
+    {
+      "at": "2026-10-23T17:40:57Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 1354,
+          "del": 169,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 3,
+          "del": 1,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 15,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/audit/README.md"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/bin/rama-audit.mjs"
+        },
+        {
+          "add": 32,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/package.json"
+        },
+        {
+          "add": 248,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/auditor.ts"
+        },
+        {
+          "add": 76,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/checks/ceremony.ts"
+        },
+        {
+          "add": 102,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/checks/index.ts"
+        },
+        {
+          "add": 226,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/checks/run.ts"
+        },
+        {
+          "add": 250,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/checks/static.ts"
+        },
+        {
+          "add": 107,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/cli.ts"
+        },
+        {
+          "add": 72,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/findings.ts"
+        },
+        {
+          "add": 35,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/index.ts"
+        },
+        {
+          "add": 277,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/report.ts"
+        },
+        {
+          "add": 50,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/source.ts"
+        },
+        {
+          "add": 97,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/src/view.ts"
+        },
+        {
+          "add": 170,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/test/auditor.test.ts"
+        },
+        {
+          "add": 291,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/test/report.test.ts"
+        },
+        {
+          "add": 147,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/test/run.test.ts"
+        },
+        {
+          "add": 144,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/test/static.test.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/tsconfig.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/package.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/ceremony/package.json"
+        },
+        {
+          "add": 45,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/migrations/0003_audit.sql"
+        },
+        {
+          "add": 1083,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/db/migrations/meta/0003_snapshot.json"
+        },
+        {
+          "add": 7,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/db/migrations/meta/_journal.json"
+        },
+        {
+          "add": 50,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/db/src/db.test.ts"
+        },
+        {
+          "add": 48,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/db/src/schema.ts"
+        },
+        {
+          "add": 40,
+          "del": 0,
+          "kind": "M",
+          "path": "pnpm-lock.yaml"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "prompts/README.md"
+        },
+        {
+          "add": 29,
+          "del": 0,
+          "kind": "A",
+          "path": "prompts/audit.v1.md"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "vitest.config.ts"
+        }
+      ],
+      "sha": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "short": "0680d5d",
+      "subject": "Stage 5: the audit's checks, the auditor's reading, the signed report"
     }
   ],
   "edges": [
@@ -9565,7 +9778,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T00:45:04Z",
+  "extractedAt": "2026-10-23T17:40:57Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -9638,7 +9851,7 @@
     },
     {
       "binary": false,
-      "bytes": 153,
+      "bytes": 166,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -9647,7 +9860,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "foundation",
       "layerRule": "default: .gitignore",
-      "lines": 13,
+      "lines": 14,
       "path": ".gitignore",
       "purpose": {
         "confirmed": false,
@@ -9676,7 +9889,7 @@
     },
     {
       "binary": false,
-      "bytes": 303,
+      "bytes": 316,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -9685,7 +9898,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 15,
+      "lines": 16,
       "path": ".prettierignore",
       "purpose": {
         "confirmed": false,
@@ -10919,12 +11132,12 @@
     {
       "binary": false,
       "bytes": 23156,
-      "changes": 12,
+      "changes": 13,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "b89acfae83bfb338f11b78df18e55559ae97aa6a",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 122,
@@ -11194,7 +11407,7 @@
     },
     {
       "binary": false,
-      "bytes": 856,
+      "bytes": 883,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -11205,7 +11418,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 33,
+      "lines": 34,
       "path": "eslint.config.mjs",
       "purpose": {
         "confirmed": false,
@@ -11215,16 +11428,16 @@
     },
     {
       "binary": false,
-      "bytes": 1696,
-      "changes": 8,
+      "bytes": 1768,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 54,
+      "lines": 55,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -11235,12 +11448,12 @@
     {
       "binary": false,
       "bytes": 2254,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 17,
@@ -11254,12 +11467,12 @@
     {
       "binary": false,
       "bytes": 174,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
@@ -11269,12 +11482,12 @@
     {
       "binary": false,
       "bytes": 780,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 32,
@@ -11284,7 +11497,7 @@
     {
       "binary": false,
       "bytes": 8138,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11301,8 +11514,8 @@
         "inputsHash",
         "number"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 248,
@@ -11312,7 +11525,7 @@
     {
       "binary": false,
       "bytes": 2875,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11320,8 +11533,8 @@
         "unconfirmedGlossary",
         "unsignedChanges"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 76,
@@ -11331,15 +11544,15 @@
     {
       "binary": false,
       "bytes": 3352,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CheckContext",
         "auditChecks"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 102,
@@ -11349,7 +11562,7 @@
     {
       "binary": false,
       "bytes": 7717,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "HOME",
         "PATH"
@@ -11365,8 +11578,8 @@
         "scriptCommand",
         "testFindings"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 226,
@@ -11375,31 +11588,31 @@
     },
     {
       "binary": false,
-      "bytes": 8376,
-      "changes": 0,
+      "bytes": 9753,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "longUnauthRoute",
         "staticChecks"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 250,
+      "lines": 285,
       "path": "packages/audit/src/checks/static.ts",
       "test": false
     },
     {
       "binary": false,
       "bytes": 3656,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 107,
@@ -11409,7 +11622,7 @@
     {
       "binary": false,
       "bytes": 2232,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11425,8 +11638,8 @@
         "sortFindings",
         "worse"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 72,
@@ -11436,7 +11649,7 @@
     {
       "binary": false,
       "bytes": 855,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11476,8 +11689,8 @@
         "unsignedChanges",
         "verifyReport"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 35,
@@ -11487,7 +11700,7 @@
     {
       "binary": false,
       "bytes": 8378,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11502,8 +11715,8 @@
         "signoffVerdicts",
         "verifyReport"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 277,
@@ -11513,7 +11726,7 @@
     {
       "binary": false,
       "bytes": 1672,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11523,8 +11736,8 @@
         "sourceReader",
         "walk"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 50,
@@ -11534,7 +11747,7 @@
     {
       "binary": false,
       "bytes": 3487,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -11543,8 +11756,8 @@
         "Verdict",
         "auditScript"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 97,
@@ -11554,12 +11767,12 @@
     {
       "binary": false,
       "bytes": 5412,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 170,
@@ -11569,14 +11782,14 @@
     {
       "binary": false,
       "bytes": 9942,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 291,
@@ -11586,14 +11799,14 @@
     {
       "binary": false,
       "bytes": 5948,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "RAMA_AUDIT_SECRET"
       ],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 147,
@@ -11602,28 +11815,28 @@
     },
     {
       "binary": false,
-      "bytes": 5693,
-      "changes": 0,
+      "bytes": 6134,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 144,
+      "lines": 157,
       "path": "packages/audit/test/static.test.ts",
       "test": true
     },
     {
       "binary": false,
       "bytes": 74,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: tsconfig",
       "lines": 4,
@@ -11671,12 +11884,12 @@
     {
       "binary": false,
       "bytes": 698,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 31,
@@ -12491,12 +12704,12 @@
     {
       "binary": false,
       "bytes": 796,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
-      "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 33,
@@ -12963,12 +13176,12 @@
     {
       "binary": false,
       "bytes": 2489,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 45,
@@ -13027,12 +13240,12 @@
     {
       "binary": false,
       "bytes": 27341,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 1083,
@@ -13042,12 +13255,12 @@
     {
       "binary": false,
       "bytes": 609,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 34,
@@ -13125,14 +13338,14 @@
     {
       "binary": false,
       "bytes": 9025,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 262,
@@ -13196,7 +13409,7 @@
     {
       "binary": false,
       "bytes": 8351,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -13214,7 +13427,7 @@
         "sites"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 223,
@@ -14141,12 +14354,12 @@
     {
       "binary": false,
       "bytes": 105757,
-      "changes": 8,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 3334,
@@ -14179,12 +14392,12 @@
     {
       "binary": false,
       "bytes": 200,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 1,
@@ -14198,12 +14411,12 @@
     {
       "binary": false,
       "bytes": 3218,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 29,
@@ -14692,16 +14905,16 @@
     },
     {
       "binary": false,
-      "bytes": 7842,
-      "changes": 6,
+      "bytes": 8389,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 238,
+      "lines": 249,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -14886,7 +15099,7 @@
     {
       "binary": false,
       "bytes": 1703,
-      "changes": 4,
+      "changes": 5,
       "env": [
         "RAMA_VENDOR_TESTS"
       ],
@@ -14895,7 +15108,7 @@
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
+      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 41,
