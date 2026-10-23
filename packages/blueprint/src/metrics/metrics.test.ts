@@ -217,6 +217,43 @@ describe('metrics (one function per figure)', () => {
     expect(light({ capturedCommit: 'c3', signedScreens: ['/'], audit: { commit: 'c2', defects: 0 } })).toBe('blue');
     expect(light({ capturedCommit: 'c3', signedScreens: ['/'], audit: { commit: 'c3', defects: 0 } })).toBe('green');
   });
+  it('handoverReady says what stands between a site and its handover', () => {
+    const b = { ...bp, commit: 'c3cccccc', screens: [{ id: '/', name: 'Home', route: '/', file: 'app/page.tsx', bricks: [] }] };
+    expect(m.handoverReady({ bp: b, signedScreens: [], audit: null, structureConfirmedAt: null }).reasons).toEqual([
+      '1 of 1 screens are not signed at c3ccccc',
+      'no audit of c3ccccc',
+      'nobody has confirmed the structure',
+    ]);
+    expect(m.handoverReady({ bp: b, signedScreens: ['/'], audit: { commit: 'c3cccccc', defects: 2 }, structureConfirmedAt: 'x' }).reasons).toEqual(['the audit of c3ccccc found 2 defects']);
+    expect(m.handoverReady({ bp: b, signedScreens: ['/'], audit: { commit: 'c3cccccc', defects: 0 }, structureConfirmedAt: 'x' })).toEqual({ ready: true, reasons: [] });
+  });
+  it('campusFigures: signatures pending by name, audits passed, products in use at 90 days', () => {
+    const site = (over: Partial<m.CampusSite>): m.CampusSite => ({ siteId: 's', owner: 'Asha', unsignedScreens: 0, auditPassed: false, handedOverAt: null, checkins: [], ...over });
+    const now = new Date('2027-03-01T00:00:00Z');
+    const f = m.campusFigures(
+      [
+        site({ owner: 'Asha', unsignedScreens: 3 }),
+        site({ owner: 'Ravi', unsignedScreens: 1 }),
+        site({ owner: 'Asha', unsignedScreens: 2, auditPassed: true }),
+        // Handed over 120 days ago; in use at 95 days, still in use.
+        site({ auditPassed: true, handedOverAt: '2026-11-01T00:00:00Z', checkins: [{ at: '2027-02-04T00:00:00Z', inUse: true }] }),
+        // Handed over 120 days ago; in use at 30 days, nothing said at 90.
+        site({ handedOverAt: '2026-11-01T00:00:00Z', checkins: [{ at: '2026-12-01T00:00:00Z', inUse: true }] }),
+        // Handed over 20 days ago: not yet due.
+        site({ handedOverAt: '2027-02-09T00:00:00Z', checkins: [{ at: '2027-02-20T00:00:00Z', inUse: true }] }),
+      ],
+      now,
+    );
+    expect(f).toEqual({
+      sites: 6,
+      signaturesPending: [
+        { person: 'Asha', screens: 5 },
+        { person: 'Ravi', screens: 1 },
+      ],
+      auditsPassed: 2,
+      inUseAt90: { inUse: 1, of: 2 },
+    });
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });

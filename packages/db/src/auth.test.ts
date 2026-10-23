@@ -61,6 +61,22 @@ describe('members', () => {
         createdBy: 'test',
       }),
     ).toMatchObject({ role: 'manager' });
+    expect(
+      await addMember(conn.db, {
+        email: 'asha@example.com',
+        name: 'Asha Rao',
+        role: 'manager',
+        createdBy: 'test',
+      }),
+    ).toMatchObject({ id: asha.id, role: 'manager' });
+    expect(
+      await addMember(conn.db, {
+        email: 'asha@example.com',
+        name: 'Asha Rao',
+        role: 'member',
+        createdBy: 'test',
+      }),
+    ).toMatchObject({ role: 'member' });
   });
 });
 

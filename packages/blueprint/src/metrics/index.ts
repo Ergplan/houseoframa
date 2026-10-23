@@ -312,6 +312,63 @@ export function podLight(input: {
   return 'blue';
 }
 
+/**
+ * A site is ready for handover when every screen is signed at its current commit, that commit's audit
+ * found no defect, and a named person confirmed the structure (which bricks are load-bearing).
+ */
+export const handoverReady = (input: {
+  bp: Blueprint;
+  signedScreens: string[];
+  audit: { commit: string; defects: number } | null;
+  structureConfirmedAt: string | null;
+}) => {
+  const coverage = signatureCoverage(input.bp, input.signedScreens);
+  const reasons: string[] = [];
+  if (!input.bp.screens.length) reasons.push('the site has no screen to sign');
+  else if (coverage.unsigned) reasons.push(`${coverage.unsigned} of ${coverage.of} screens are not signed at ${input.bp.commit.slice(0, 7)}`);
+  if (!input.audit || input.audit.commit !== input.bp.commit) reasons.push(`no audit of ${input.bp.commit.slice(0, 7)}`);
+  else if (input.audit.defects) reasons.push(`the audit of ${input.bp.commit.slice(0, 7)} found ${input.audit.defects} defect${input.audit.defects === 1 ? '' : 's'}`);
+  if (!input.structureConfirmedAt) reasons.push('nobody has confirmed the structure');
+  return { ready: reasons.length === 0, reasons };
+};
+
+export interface CampusSite {
+  siteId: string;
+  owner: string;
+  /** Screens not signed at the site's current commit. */
+  unsignedScreens: number;
+  /** The latest audit is of the current commit and found no defect. */
+  auditPassed: boolean;
+  /** When the site was handed over, if it was. */
+  handedOverAt: string | null;
+  /** The owner's check-ins after handover: when, and whether the product was in use. */
+  checkins: { at: string; inUse: boolean }[];
+}
+
+/**
+ * The campus's figures (Stage 6): signatures pending by name (screens unsigned, per owner), audits passed,
+ * and products in use at 90 days: of the sites handed over at least 90 days ago, those whose latest
+ * check-in made 90 days or more after handover says the product is in use.
+ */
+export const campusFigures = (sitesOn: CampusSite[], now: Date) => {
+  const pending = new Map<string, number>();
+  for (const s of sitesOn) if (s.unsignedScreens) pending.set(s.owner, (pending.get(s.owner) ?? 0) + s.unsignedScreens);
+  const DAY = 86_400_000;
+  const due = sitesOn.filter((s) => s.handedOverAt && now.getTime() - Date.parse(s.handedOverAt) >= 90 * DAY);
+  const inUse = due.filter((s) => {
+    const late = s.checkins
+      .filter((c) => Date.parse(c.at) - Date.parse(s.handedOverAt!) >= 90 * DAY)
+      .sort((a, b) => Date.parse(b.at) - Date.parse(a.at))[0];
+    return late?.inUse === true;
+  });
+  return {
+    sites: sitesOn.length,
+    signaturesPending: [...pending].map(([person, screens]) => ({ person, screens })).sort((a, b) => b.screens - a.screens || a.person.localeCompare(b.person)),
+    auditsPassed: sitesOn.filter((s) => s.auditPassed).length,
+    inUseAt90: { inUse: inUse.length, of: due.length },
+  };
+};
+
 /** Every figure at once, for the CLI summary and the trust report. */
 export const summary = (bp: Blueprint) => ({
   files: files(bp),

@@ -114,6 +114,15 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     'GET shots/[name]',
     async () => (await import('./api/site/[siteId]/shots/[name]/route')).GET as Handler,
   ],
+  [
+    'POST structure/confirm',
+    async () => (await import('./api/site/[siteId]/structure/confirm/route')).POST as Handler,
+  ],
+  [
+    'POST handover',
+    async () => (await import('./api/site/[siteId]/handover/route')).POST as Handler,
+  ],
+  ['POST checkin', async () => (await import('./api/site/[siteId]/checkin/route')).POST as Handler],
 ];
 
 describe('every site route: 401 without a session, 404 for another member’s site, through for the owner', () => {
@@ -125,11 +134,13 @@ describe('every site route: 401 without a session, 404 for another member’s si
       expect((await h(post(null), ctx('nope'))).status).toBe(401);
       expect((await h(post('ravi'), ctx('self'))).status).toBe(404);
       expect((await h(post('asha'), ctx('nope'))).status).toBe(404);
-      // The owner passes authorization: whatever comes back, it is not a refusal of who they are.
-      expect([401, 403]).not.toContain((await h(post('asha'), ctx('self'))).status);
-      expect(
-        (await h(post('asha'), ctx('self'))).status === 404 && name !== 'GET shots/[name]',
-      ).toBe(false);
+      expect((await h(post('asha'), ctx('shop'))).status).toBe(404);
+      // The owner passes authorization: whatever comes back, it is not a refusal of who they are. This
+      // runs on Ravi's site, a throwaway clone, so a route that writes to its checkout (the structure)
+      // never touches this repository.
+      const owner = (await h(post('ravi'), ctx('shop'))).status;
+      expect([401, 403]).not.toContain(owner);
+      expect(owner === 404 && name !== 'GET shots/[name]').toBe(false);
     });
   }
 
@@ -164,6 +175,10 @@ describe('every site page: to /login without a session, not found for another me
     [
       '/site/[siteId]/triptych',
       async () => (await import('./site/[siteId]/triptych/page')).default as never,
+    ],
+    [
+      '/site/[siteId]/handover',
+      async () => (await import('./site/[siteId]/handover/page')).default as never,
     ],
   ];
   for (const [name, load] of pages) {
@@ -245,6 +260,16 @@ describe('the floor: booking needs a session, pages need a member, the pod light
     await expect(Pod({ params: Promise.resolve({ n: '1' }) })).rejects.toThrow(
       /NEXT_HTTP_ERROR_FALLBACK;404/,
     );
+  });
+
+  it('/campus is for a manager only: /login without a session, not found for a member', async () => {
+    const { default: Campus } = await import('./campus/page');
+    cookie = undefined;
+    await expect(Campus()).rejects.toMatchObject({
+      digest: expect.stringMatching(/^NEXT_REDIRECT;[a-z]+;\/login;/),
+    });
+    cookie = token.asha;
+    await expect(Campus()).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
   });
 
   it('GET /api/pod/<n>/status refuses anyone without the controller token', async () => {

@@ -61,6 +61,7 @@ describe('packages/db', () => {
       'discovery_sessions',
       'discovery_turns',
       'findings',
+      'handovers',
       'login_links',
       'model_calls',
       'people',
@@ -92,6 +93,7 @@ describe('packages/db', () => {
       'pods',
       'bookings',
       'checkins',
+      'handovers',
     ]) {
       const mine = cols.filter((c) => c.table_name === table);
       expect(mine.map((c) => c.column_name).sort(), table).toEqual([

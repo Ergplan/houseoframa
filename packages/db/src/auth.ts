@@ -30,7 +30,16 @@ export async function addMember(
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
     throw new Error(`not an email address: ${input.email}`);
   const [byEmail] = await db.select().from(people).where(eq(people.email, email));
-  if (byEmail) return byEmail;
+  if (byEmail) {
+    // Asked again with a role: the role changes (a member made the floor manager, or back).
+    if (!input.role || input.role === byEmail.role) return byEmail;
+    const [p] = await db
+      .update(people)
+      .set({ role: input.role })
+      .where(eq(people.id, byEmail.id))
+      .returning();
+    return p!;
+  }
   const [byName] = await db.select().from(people).where(eq(people.name, input.name));
   if (byName) {
     if (byName.email) throw new Error(`"${input.name}" already signs in as ${byName.email}`);

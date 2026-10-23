@@ -8,7 +8,8 @@
     ".": "./src/index.ts",
     "./gate": "./src/gate.ts",
     "./records": "./src/records.ts",
-    "./walkthrough": "./src/walkthrough.ts"
+    "./walkthrough": "./src/walkthrough.ts",
+    "./structure": "./src/structure.ts"
   },
   "bin": {
     "rama-ceremony": "./bin/rama-ceremony.mjs"

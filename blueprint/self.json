@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+  "commit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -5599,6 +5599,153 @@
       "sha": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "short": "472c548",
       "subject": "Stage 6: members sign in by email link; every site page and route is authorized"
+    },
+    {
+      "at": "2026-10-23T20:04:19Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": ".env.example"
+        },
+        {
+          "add": 100,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/bookings/handler.test.ts"
+        },
+        {
+          "add": 42,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/bookings/handler.ts"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/bookings/route.ts"
+        },
+        {
+          "add": 33,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/pod/[n]/status/handler.ts"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/pod/[n]/status/route.ts"
+        },
+        {
+          "add": 73,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/authz.test.tsx"
+        },
+        {
+          "add": 28,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/book/page.tsx"
+        },
+        {
+          "add": 30,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/globals.css"
+        },
+        {
+          "add": 42,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/pod/[n]/page.tsx"
+        },
+        {
+          "add": 10,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/site/[siteId]/triptych/page.tsx"
+        },
+        {
+          "add": 81,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/floor/BookForm.tsx"
+        },
+        {
+          "add": 57,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/floor/TriptychView.tsx"
+        },
+        {
+          "add": 184,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/server/floor.test.ts"
+        },
+        {
+          "add": 155,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/server/floor.ts"
+        },
+        {
+          "add": 1305,
+          "del": 177,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 10,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 10,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 42,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/index.ts"
+        },
+        {
+          "add": 25,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/metrics.test.ts"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/db/package.json"
+        },
+        {
+          "add": 13,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/db/src/cli.ts"
+        }
+      ],
+      "sha": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "short": "8442ddb",
+      "subject": "Stage 6: pods, bookings, the pod light and the triptych"
     }
   ],
   "edges": [
@@ -6086,6 +6233,47 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
+      "symbols": [
+        "CheckinBody",
+        "handleHandoverAction"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/handover/handlers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
+      "symbols": [
+        "checkIn"
+      ],
+      "to": "apps/rama/server/handover.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
+      "symbols": [
+        "withDb"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of what the confirm handler relies on; the handler that confirms an edge or purpose for a site as the local member"
@@ -6330,6 +6518,46 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "symbols": [
+        "handleHandoverAction"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/handover/handlers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "symbols": [
+        "handOver"
+      ],
+      "to": "apps/rama/server/handover.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "symbols": [
+        "withDb"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/site/[siteId]/shots/[name]/route.ts",
       "symbols": [
         "shotResponse"
@@ -6407,6 +6635,58 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "symbols": [
+        "handleHandoverAction"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/handover/handlers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "symbols": [
+        "HandoverError"
+      ],
+      "to": "apps/rama/server/handover.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "symbols": [
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "symbols": [
+        "confirmStructure"
+      ],
+      "to": "packages/ceremony/src/structure.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/auth/verify/route.ts",
       "symbols": [
         "authDeps"
@@ -6459,6 +6739,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
       "typeOnly": false
     },
@@ -6499,6 +6787,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/site/[siteId]/shots/[name]/route.ts",
       "typeOnly": false
     },
@@ -6515,7 +6811,23 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/book/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/campus/page.tsx",
       "typeOnly": false
     },
     {
@@ -6548,6 +6860,14 @@
         "*"
       ],
       "to": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/site/[siteId]/handover/page.tsx",
       "typeOnly": false
     },
     {
@@ -6661,6 +6981,31 @@
         "listSites"
       ],
       "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/campus/page.tsx",
+      "symbols": [
+        "campusInputs"
+      ],
+      "to": "apps/rama/server/campus.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/campus/page.tsx",
+      "symbols": [
+        "requireMember",
+        "withDb"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/campus/page.tsx",
+      "symbols": [
+        "campusFigures"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
       "typeOnly": false
     },
     {
@@ -6906,6 +7251,31 @@
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/handover/page.tsx",
+      "symbols": [
+        "Action"
+      ],
+      "to": "apps/rama/components/floor/Action.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/handover/page.tsx",
+      "symbols": [
+        "handoverState"
+      ],
+      "to": "apps/rama/server/handover.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/handover/page.tsx",
+      "symbols": [
+        "pageSite",
+        "withDb"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
     },
     {
       "english": {
@@ -8134,6 +8504,41 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/server/campus.ts",
+      "symbols": [
+        "PodState",
+        "allPods",
+        "podState",
+        "siteState"
+      ],
+      "to": "apps/rama/server/floor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/campus.ts",
+      "symbols": [
+        "CampusSite"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the table of people; the table of sites, one per target repository"
+      },
+      "from": "apps/rama/server/campus.ts",
+      "symbols": [
+        "Db",
+        "checkins",
+        "handovers",
+        "people",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/server/floor.test.ts",
       "symbols": [
         "book",
@@ -8258,6 +8663,174 @@
         "readCapture"
       ],
       "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/campus/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "campusInputs"
+      ],
+      "to": "apps/rama/server/campus.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "book"
+      ],
+      "to": "apps/rama/server/floor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "checkIn",
+        "handOver",
+        "handoverState"
+      ],
+      "to": "apps/rama/server/handover.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "campusFigures"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options; a way to add a site from a local folder or remote source; a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "addSite",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers; a temporary git repository for tests"
+      },
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "FixtureRepo",
+        "fixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "sign"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "confirmStructure"
+      ],
+      "to": "packages/ceremony/src/structure.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls; running the database migrations; the one-time setup of the local member and the self site, safe to repeat; the table of sites, one per target repository"
+      },
+      "from": "apps/rama/server/handover.test.ts",
+      "symbols": [
+        "Member",
+        "addMember",
+        "audits",
+        "createDb",
+        "issueLink",
+        "modelCalls",
+        "pods",
+        "redeemLink",
+        "runMigrations",
+        "seed",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.ts",
+      "symbols": [
+        "latestAudit"
+      ],
+      "to": "packages/audit/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.ts",
+      "symbols": [
+        "handoverReady"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options; a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/server/handover.ts",
+      "symbols": [
+        "SiteLocation",
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.ts",
+      "symbols": [
+        "readSignoffs",
+        "signaturesInForce"
+      ],
+      "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.ts",
+      "symbols": [
+        "Structure",
+        "confirmedFor",
+        "draftStructure",
+        "readStructure"
+      ],
+      "to": "packages/ceremony/src/structure.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/handover.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "audits",
+        "checkins",
+        "handovers"
+      ],
+      "to": "packages/db/src/index.ts",
       "typeOnly": false
     },
     {
@@ -10326,6 +10899,26 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the files that the most other files import"
+      },
+      "from": "packages/ceremony/src/structure.ts",
+      "symbols": [
+        "loadBearing"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/src/structure.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "packages/ceremony/src/walkthrough.ts",
       "symbols": [
         "signaturesInForce"
@@ -10471,6 +11064,25 @@
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/structure.test.ts",
+      "symbols": [
+        "confirmStructure",
+        "confirmedFor",
+        "draftStructure",
+        "readStructure"
+      ],
+      "to": "packages/ceremony/src/structure.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/structure.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
     },
     {
       "from": "packages/ceremony/test/walkthrough.test.ts",
@@ -12465,7 +13077,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T19:55:08Z",
+  "extractedAt": "2026-10-23T20:04:19Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -12501,12 +13113,12 @@
     {
       "binary": false,
       "bytes": 1106,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "foundation",
       "layerRule": "default: .env.example",
       "lines": 22,
@@ -12811,12 +13423,12 @@
     {
       "binary": false,
       "bytes": 3245,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 100,
@@ -12826,15 +13438,15 @@
     {
       "binary": false,
       "bytes": 1423,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "BookingBody",
         "handleBooking"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 42,
@@ -12844,15 +13456,15 @@
     {
       "binary": false,
       "bytes": 576,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "POST",
         "dynamic"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 14,
@@ -12906,14 +13518,14 @@
     {
       "binary": false,
       "bytes": 1312,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "handlePodStatus"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 33,
@@ -12923,7 +13535,7 @@
     {
       "binary": false,
       "bytes": 485,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "RAMA_POD_TOKEN"
       ],
@@ -12932,8 +13544,8 @@
         "GET",
         "dynamic"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 13,
@@ -13047,6 +13659,24 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 228,
       "path": "apps/rama/app/api/site/[siteId]/ceremony.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 869,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 17,
+      "path": "apps/rama/app/api/site/[siteId]/checkin/route.ts",
       "test": false
     },
     {
@@ -13183,6 +13813,42 @@
     },
     {
       "binary": false,
+      "bytes": 685,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CheckinBody",
+        "handleHandoverAction"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 16,
+      "path": "apps/rama/app/api/site/[siteId]/handover/handlers.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 650,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/handover/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 507,
       "changes": 2,
       "env": [],
@@ -13236,6 +13902,24 @@
     },
     {
       "binary": false,
+      "bytes": 986,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 20,
+      "path": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 246,
       "changes": 1,
       "env": [],
@@ -13254,8 +13938,8 @@
     },
     {
       "binary": false,
-      "bytes": 10260,
-      "changes": 1,
+      "bytes": 11358,
+      "changes": 2,
       "env": [
         "DATABASE_URL",
         "RAMA_POD_TOKEN",
@@ -13264,16 +13948,34 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 272,
+      "lines": 297,
       "path": "apps/rama/app/authz.test.tsx",
       "test": true
     },
     {
       "binary": false,
       "bytes": 903,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "dynamic"
+      ],
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 28,
+      "path": "apps/rama/app/book/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2864,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -13285,19 +13987,19 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 28,
-      "path": "apps/rama/app/book/page.tsx",
+      "lines": 82,
+      "path": "apps/rama/app/campus/page.tsx",
       "test": false
     },
     {
       "binary": false,
       "bytes": 14448,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 770,
@@ -13396,15 +14098,15 @@
     {
       "binary": false,
       "bytes": 1520,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "default",
         "dynamic"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 42,
@@ -13467,6 +14169,24 @@
         "confirmed": false,
         "text": "The site office page for a site, explaining that discovery decisions will be recorded later and currently shows none, with a link back to the site."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5285,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 143,
+      "path": "apps/rama/app/site/[siteId]/handover/page.tsx",
       "test": false
     },
     {
@@ -13550,15 +14270,15 @@
     {
       "binary": false,
       "bytes": 389,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "default",
         "dynamic"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 10,
@@ -13994,15 +14714,32 @@
     },
     {
       "binary": false,
-      "bytes": 2488,
+      "bytes": 1310,
       "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Action"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 51,
+      "path": "apps/rama/components/floor/Action.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2488,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "BookForm"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 81,
@@ -14012,14 +14749,14 @@
     {
       "binary": false,
       "bytes": 2076,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "TriptychView"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 57,
@@ -14246,16 +14983,33 @@
     },
     {
       "binary": false,
-      "bytes": 6544,
+      "bytes": 1688,
       "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "campusInputs"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 40,
+      "path": "apps/rama/server/campus.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 6544,
+      "changes": 1,
       "env": [
         "DATABASE_URL",
         "RAMA_WORK_DIR"
       ],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 184,
@@ -14265,7 +15019,7 @@
     {
       "binary": false,
       "bytes": 5352,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -14277,12 +15031,50 @@
         "podState",
         "siteState"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 155,
       "path": "apps/rama/server/floor.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7732,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL",
+        "RAMA_WORK_DIR"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 205,
+      "path": "apps/rama/server/handover.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3864,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "HandoverError",
+        "checkIn",
+        "handOver",
+        "handoverState"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 120,
+      "path": "apps/rama/server/handover.ts",
       "test": false
     },
     {
@@ -14428,16 +15220,16 @@
     },
     {
       "binary": false,
-      "bytes": 35890,
-      "changes": 16,
+      "bytes": 38492,
+      "changes": 17,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 149,
+      "lines": 155,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -14466,16 +15258,16 @@
     },
     {
       "binary": false,
-      "bytes": 34337,
-      "changes": 34,
+      "bytes": 35381,
+      "changes": 35,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 157,
+      "lines": 161,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -14756,12 +15548,12 @@
     {
       "binary": false,
       "bytes": 1866,
-      "changes": 11,
+      "changes": 12,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 57,
@@ -15673,8 +16465,8 @@
     },
     {
       "binary": false,
-      "bytes": 14146,
-      "changes": 8,
+      "bytes": 16997,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -15682,6 +16474,7 @@
         "BrickFigures",
         "BrickHistory",
         "BrickMark",
+        "CampusSite",
         "CommitBreakdown",
         "Demolition",
         "PodBooking",
@@ -15696,6 +16489,7 @@
         "brickFigures",
         "brickHistory",
         "brickMarks",
+        "campusFigures",
         "commitBreakdown",
         "commitTotals",
         "commits",
@@ -15703,6 +16497,7 @@
         "dependenciesByFloor",
         "envVars",
         "files",
+        "handoverReady",
         "heaviestCodeBrick",
         "historySpan",
         "importEdges",
@@ -15722,10 +16517,10 @@
         "untestedBricks"
       ],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "a4ec511d6505a576dd8208c7086fec5643f0330c",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 330,
+      "lines": 387,
       "path": "packages/blueprint/src/metrics/index.ts",
       "purpose": {
         "confirmed": false,
@@ -15735,16 +16530,16 @@
     },
     {
       "binary": false,
-      "bytes": 12029,
-      "changes": 7,
+      "bytes": 14211,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "a4ec511d6505a576dd8208c7086fec5643f0330c",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 222,
+      "lines": 259,
       "path": "packages/blueprint/src/metrics/metrics.test.ts",
       "purpose": {
         "confirmed": false,
@@ -16062,7 +16857,7 @@
     },
     {
       "binary": false,
-      "bytes": 796,
+      "bytes": 837,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -16071,7 +16866,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 33,
+      "lines": 34,
       "path": "packages/ceremony/package.json",
       "test": false
     },
@@ -16301,6 +17096,28 @@
     },
     {
       "binary": false,
+      "bytes": 2208,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "STRUCTURE_FILE",
+        "Structure",
+        "confirmStructure",
+        "confirmedFor",
+        "draftStructure",
+        "readStructure"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 57,
+      "path": "packages/ceremony/src/structure.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 3466,
       "changes": 1,
       "env": [],
@@ -16394,6 +17211,21 @@
       "layerRule": "overlay: packages/*",
       "lines": 376,
       "path": "packages/ceremony/test/store.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1727,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 49,
+      "path": "packages/ceremony/test/structure.test.ts",
       "test": true
     },
     {
@@ -16579,6 +17411,21 @@
     },
     {
       "binary": false,
+      "bytes": 1422,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 21,
+      "path": "packages/db/migrations/0006_handovers.sql",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 9168,
       "changes": 1,
       "env": [],
@@ -16673,7 +17520,22 @@
     },
     {
       "binary": false,
-      "bytes": 889,
+      "bytes": 45337,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1780,
+      "path": "packages/db/migrations/meta/0006_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1026,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -16682,7 +17544,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 48,
+      "lines": 55,
       "path": "packages/db/migrations/meta/_journal.json",
       "purpose": {
         "confirmed": false,
@@ -16693,12 +17555,12 @@
     {
       "binary": false,
       "bytes": 635,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 26,
@@ -16711,7 +17573,7 @@
     },
     {
       "binary": false,
-      "bytes": 4355,
+      "bytes": 4786,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -16722,13 +17584,13 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 108,
+      "lines": 124,
       "path": "packages/db/src/auth.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 4594,
+      "bytes": 4900,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -16749,14 +17611,14 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 132,
+      "lines": 141,
       "path": "packages/db/src/auth.ts",
       "test": false
     },
     {
       "binary": false,
       "bytes": 2750,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "RAMA_BASE_URL",
         "RAMA_MEMBER_NAME"
@@ -16764,7 +17626,7 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 61,
@@ -16801,7 +17663,7 @@
     },
     {
       "binary": false,
-      "bytes": 9982,
+      "bytes": 10020,
       "changes": 5,
       "env": [
         "DATABASE_URL"
@@ -16812,7 +17674,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 292,
+      "lines": 294,
       "path": "packages/db/src/db.test.ts",
       "purpose": {
         "confirmed": false,
@@ -16872,7 +17734,7 @@
     },
     {
       "binary": false,
-      "bytes": 12073,
+      "bytes": 12934,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -16888,6 +17750,7 @@
         "discoverySessions",
         "discoveryTurns",
         "findings",
+        "handovers",
         "loginLinks",
         "modelCalls",
         "people",
@@ -16900,7 +17763,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 333,
+      "lines": 358,
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -18751,6 +19614,71 @@
     },
     {
       "bricks": [
+        "apps/rama/app/campus/page.tsx",
+        "apps/rama/app/globals.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/server/campus.ts",
+        "apps/rama/server/floor.ts",
+        "apps/rama/server/session.ts",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
+        "packages/db/package.json",
+        "packages/db/src/auth.ts",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/seed.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/vendors.ts",
+        "packages/trace/src/keys.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts"
+      ],
+      "file": "apps/rama/app/campus/page.tsx",
+      "id": "/campus",
+      "name": "Campus",
+      "route": "/campus"
+    },
+    {
+      "bricks": [
         "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/login/page.tsx",
@@ -19013,6 +19941,70 @@
       "id": "/site/[siteId]/discovery",
       "name": "Site › [siteId] › Discovery",
       "route": "/site/[siteId]/discovery"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/globals.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/handover/page.tsx",
+        "apps/rama/components/floor/Action.tsx",
+        "apps/rama/server/handover.ts",
+        "apps/rama/server/session.ts",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/structure.ts",
+        "packages/ceremony/src/walkthrough.ts",
+        "packages/db/package.json",
+        "packages/db/src/auth.ts",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/seed.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/vendors.ts",
+        "packages/trace/src/keys.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/handover/page.tsx",
+      "id": "/site/[siteId]/handover",
+      "name": "Site › [siteId] › Handover",
+      "route": "/site/[siteId]/handover"
     },
     {
       "bricks": [

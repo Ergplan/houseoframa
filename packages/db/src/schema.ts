@@ -309,6 +309,29 @@ export const checkins = pgTable('checkins', {
   ...provenance,
 });
 
+/**
+ * A site handed over (Stage 6): at its final signed audit, with the structure a named person confirmed.
+ * Append-only and audited: the certificate and the keys page are read from it.
+ */
+export const handovers = pgTable('handovers', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  auditId: uuid('audit_id')
+    .notNull()
+    .references(() => audits.id),
+  commit: text('commit').notNull(),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  person: text('person').notNull(),
+  /** The load-bearing bricks as confirmed (.rama/structure.json at the time). */
+  structure: jsonb('structure').$type<Record<string, unknown>>().notNull(),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  ...provenance,
+});
+
 /** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
 export const APPEND_ONLY_TABLES = [
   'model_calls',
@@ -321,6 +344,7 @@ export const APPEND_ONLY_TABLES = [
   'findings',
   'audit_confirmations',
   'checkins',
+  'handovers',
 ] as const;
 
 /** Tables whose every insert also appends an audit_log row, written by a trigger (Invariant 8). */
@@ -330,4 +354,5 @@ export const AUDITED_TABLES = [
   'audits',
   'findings',
   'audit_confirmations',
+  'handovers',
 ] as const;

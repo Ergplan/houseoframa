@@ -20,6 +20,10 @@ One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are
     The prompt names the colours, not when each applies; this reading makes each one a fact a person can check.
 - **The pod controller authenticates with a bearer token** (`RAMA_POD_TOKEN`). It sees the light, the shift, the end of the booking and the site's name, not who booked it. Without a configured token the route answers 503, rather than serving the floor to anyone.
 - **Bookings cannot double-book a pod.** The overlap check and the insert hold the pod row's lock. A work booking names a site the member owns; game mode names none.
+- **Handover is a record, made when a site is ready.** Ready means every screen is signed at the current commit, that commit's audit is clean, and a named person has confirmed the structure (`handoverReady()` in metrics). The owner then hands over: an append-only `handovers` row naming the audit, the commit, the structure and the person. The certificate and the keys page are read from that row.
+- **The structure is drafted by plain code and confirmed by a person.** The draft is the bricks at least three others import, from the import graph (`loadBearing()`). It is shown as unconfirmed until the owner confirms it into `.rama/structure.json` for that commit.
+- **"In use at 90 days" is the owner's own check-in.** Of the sites handed over at least 90 days ago, it counts those whose latest check-in, made 90 days or more after handover, says in use. Nothing is inferred from traffic.
+- **The keys page does not invent a deploy.** House of Rama does not deploy targets, so the deploy reads "not recorded", with the site's code and commit.
 - **The triptych is three full pages in frames** (Discovery, Site, Showroom), side by side when the window is at least 2400 px wide (three 4K screens), tabs otherwise. Each page keeps its own behaviour, narration included.
 - **Sign-ins and sessions are not append-only.** A link is spent and a session revoked by an update (`used_at`, `revoked_at`): they are credentials, not a record anyone signs. Like `people`, they carry no site (`site_id` is null).
 
