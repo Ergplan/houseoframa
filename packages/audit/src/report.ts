@@ -40,6 +40,8 @@ export interface SignoffVerdict {
 }
 
 export interface AuditReportBody {
+  /** True when the Blueprint was read from the working tree on top of `commit` (this repository's own). */
+  worktree?: boolean;
   runs: CheckRun[];
   counts: { defects: number; notes: number; passes: number; bricks: number };
   narration: AuditorReply['narration'];
@@ -82,6 +84,7 @@ export function reportBody(
 ): AuditReportBody {
   const flagged = new Set(applied.filter((f) => f.finalVerdict !== 'pass').map((f) => f.brick));
   return {
+    ...(bp.worktree ? { worktree: true } : {}),
     runs,
     counts: {
       defects: applied.filter((f) => f.finalVerdict === 'defect').length,

@@ -659,7 +659,10 @@ function AuditPanel({
   const rejected = audit.signoffs.filter((s) => !s.confirmed);
   return (
     <>
-      <h2>Audit report · {audit.commit.slice(0, 7)}</h2>
+      <h2>
+        Audit report · {audit.commit.slice(0, 7)}
+        {audit.worktree ? ' + working tree' : ''}
+      </h2>
       <p className={`big${c.defects ? ' red' : ''}`} data-defects={c.defects}>
         {c.defects} defect{c.defects === 1 ? '' : 's'}, {c.notes} note{c.notes === 1 ? '' : 's'},{' '}
         {c.passes} clean brick{c.passes === 1 ? '' : 's'} of {c.bricks}.

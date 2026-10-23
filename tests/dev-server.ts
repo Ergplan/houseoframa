@@ -46,16 +46,23 @@ export async function startDevServer(
   server.stdout?.on('data', (d) => (output += d));
   server.stderr?.on('data', (d) => (output += d));
   const url = `http://127.0.0.1:${port}`;
+  const exited = new Promise<void>((resolve) => server.once('exit', () => resolve()));
   const stop = async () => {
-    if (server.pid) {
+    if (server.pid && server.exitCode === null && server.signalCode === null) {
       try {
         process.kill(-server.pid, 'SIGTERM');
       } catch {
         // already gone
       }
-      await new Promise((r) => setTimeout(r, 300));
+      // Next keeps writing its cache until it exits: wait for that (at most 10 s) before removing it.
+      await Promise.race([exited, new Promise((r) => setTimeout(r, 10_000))]);
     }
-    rmSync(path.join(appDir, distDir), { recursive: true, force: true });
+    rmSync(path.join(appDir, distDir), {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 200,
+    });
   };
   const deadline = Date.now() + 90_000;
   while (Date.now() < deadline) {

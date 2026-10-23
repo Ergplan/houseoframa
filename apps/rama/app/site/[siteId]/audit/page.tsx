@@ -53,6 +53,7 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
     <main className="office audit-report" data-report={report.reportId}>
       <h1>
         Audit report · {site.name} · <code>{stored.commit.slice(0, 7)}</code>
+        {body.worktree ? ' + working tree' : ''}
       </h1>
       <p className="big" data-defects={body.counts.defects}>
         {plural(body.counts.defects, 'defect')}, {plural(body.counts.notes, 'note')},{' '}

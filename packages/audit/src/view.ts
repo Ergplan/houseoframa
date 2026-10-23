@@ -15,6 +15,8 @@ export interface AuditView {
     callId: string;
   };
   commit: string;
+  /** True when the audited code was the working tree on top of `commit`. */
+  worktree?: boolean;
   counts: { defects: number; notes: number; passes: number; bricks: number };
   runs: { check: string; ran: boolean; detail: string; outcome?: string }[];
   narration: { part: string; text: string }[];
@@ -54,7 +56,14 @@ export function toAuditView(stored: {
   commit: string;
   body: Pick<
     AuditView,
-    'counts' | 'runs' | 'narration' | 'alterations' | 'timeMachine' | 'signoffs' | 'builders'
+    | 'worktree'
+    | 'counts'
+    | 'runs'
+    | 'narration'
+    | 'alterations'
+    | 'timeMachine'
+    | 'signoffs'
+    | 'builders'
   >;
   findings: AuditView['findings'];
 }): AuditView {
@@ -68,6 +77,7 @@ export function toAuditView(stored: {
   return {
     report: stored.report,
     commit: stored.commit,
+    ...(b.worktree ? { worktree: true } : {}),
     counts: b.counts,
     runs: b.runs,
     narration: b.narration,

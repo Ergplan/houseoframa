@@ -208,6 +208,7 @@ describe('runAudit', () => {
       inputsHash: expect.stringMatching(/^[0-9a-f]{64}$/),
     });
     expect(body.counts).toMatchObject({ defects: 1, bricks: bp.nodes.length });
+    expect(body.worktree).toBeUndefined();
     expect(body.runs.filter((r) => !r.ran).map((r) => r.check)).toEqual([
       'typecheck',
       'build',
