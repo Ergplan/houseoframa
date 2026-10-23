@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "739354a5a47522bc6b95e1098db48382242bedc9",
+  "commit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -5911,6 +5911,69 @@
       "sha": "739354a5a47522bc6b95e1098db48382242bedc9",
       "short": "739354a",
       "subject": "Stage 6: handover certificate, keys page, check-ins, campus"
+    },
+    {
+      "at": "2026-10-23T20:31:34Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 12,
+          "del": 0,
+          "kind": "A",
+          "path": ".dockerignore"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": ".gitignore"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "A",
+          "path": "Dockerfile"
+        },
+        {
+          "add": 312,
+          "del": 72,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 20,
+          "del": 0,
+          "kind": "A",
+          "path": "deploy/backup.sh"
+        },
+        {
+          "add": 65,
+          "del": 0,
+          "kind": "A",
+          "path": "deploy/compose.box.yml"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 89,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/DEPLOY.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        }
+      ],
+      "sha": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "short": "6346059",
+      "subject": "Stage 6: the pod box deploy (Dockerfile, compose, nightly backups) and DEPLOY.md"
     }
   ],
   "edges": [
@@ -12782,6 +12845,91 @@
       ],
       "to": "tests/session.ts",
       "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to add a site from a local folder or remote source"
+      },
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "addSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a throwaway test repository and its helpers"
+      },
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "FixtureRepo"
+      ],
+      "to": "packages/blueprint/test/fixture-repo.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "audits",
+        "createDb",
+        "modelCalls",
+        "pods"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "capture"
+      ],
+      "to": "packages/trace/src/capture.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "captureDir"
+      ],
+      "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "fixtureApp"
+      ],
+      "to": "packages/trace/test/fixture-app.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "signIn",
+        "throwawayDb"
+      ],
+      "to": "tests/session.ts",
+      "typeOnly": false
     }
   ],
   "external": [
@@ -13242,7 +13390,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T20:20:43Z",
+  "extractedAt": "2026-10-23T20:31:34Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -13278,12 +13426,12 @@
     {
       "binary": false,
       "bytes": 193,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 12,
@@ -13331,12 +13479,12 @@
     {
       "binary": false,
       "bytes": 175,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "foundation",
       "layerRule": "default: .gitignore",
       "lines": 15,
@@ -13475,12 +13623,12 @@
     {
       "binary": false,
       "bytes": 687,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 16,
@@ -14268,7 +14416,7 @@
     },
     {
       "binary": false,
-      "bytes": 2229,
+      "bytes": 2333,
       "changes": 3,
       "env": [
         "GIT_SHA"
@@ -14282,7 +14430,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 64,
+      "lines": 65,
       "path": "apps/rama/app/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -15397,12 +15545,12 @@
     {
       "binary": false,
       "bytes": 905,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 20,
@@ -15412,12 +15560,12 @@
     {
       "binary": false,
       "bytes": 1945,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 65,
@@ -15446,12 +15594,12 @@
     {
       "binary": false,
       "bytes": 38882,
-      "changes": 18,
+      "changes": 19,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 159,
@@ -15503,12 +15651,12 @@
     {
       "binary": false,
       "bytes": 4038,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 89,
@@ -15533,12 +15681,12 @@
     {
       "binary": false,
       "bytes": 8429,
-      "changes": 21,
+      "changes": 22,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 37,
@@ -19706,6 +19854,21 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 101,
       "path": "tests/stage-5.vendor.ekbill.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6608,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 164,
+      "path": "tests/stage-6.e2e.test.ts",
       "test": true
     },
     {

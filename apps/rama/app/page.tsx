@@ -22,7 +22,8 @@ export default async function Home() {
         </p>
       ) : (
         <>
-          <p style={{ marginTop: '2rem' }}>
+          {/* A div, not a p: the sign-out form inside would end a p early and break hydration. */}
+          <div style={{ marginTop: '2rem' }}>
             Signed in as <b>{member.name}</b>
             {member.role === 'manager' ? (
               <>
@@ -31,7 +32,7 @@ export default async function Home() {
               </>
             ) : null}{' '}
             · <SignOut />
-          </p>
+          </div>
           <h2 style={{ fontSize: '1rem', marginTop: '1rem' }}>Your sites</h2>
           {sites.length ? (
             <ul className="sites">
