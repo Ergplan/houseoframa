@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import type { Blueprint, Decision, Signoff } from '@rama/shared';
 import { canonicalJson } from '@rama/blueprint/json';
-import { authors } from '@rama/blueprint/metrics';
+import { auditCounts, auditFloorCounts, authors } from '@rama/blueprint/metrics';
 import { call as modelCall } from '@rama/model';
 import { signaturesInForce } from '@rama/ceremony/records';
 import {
@@ -111,21 +111,13 @@ export function auditorInput(
     notesByCheck[f.check] = (notesByCheck[f.check] ?? 0) + 1;
     if (notesByCheck[f.check]! <= NOTES_PER_CHECK) notes.push(f);
   }
-  const layerOf = new Map(bp.nodes.map((n) => [n.path, n.layer]));
   const inForce = signaturesInForce(people.signoffs);
   const superseded = new Set(people.decisions.map((d) => d.supersedes).filter(Boolean));
   const current = people.decisions.filter((d) => !superseded.has(d.id));
   return {
     site,
     commit: bp.commit,
-    floors: bp.layers.map((l) => ({
-      id: l.id,
-      label: l.label,
-      bricks: bp.nodes.filter((n) => n.layer === l.id).length,
-      defects: numbered.filter((f) => f.verdict === 'defect' && layerOf.get(f.brick) === l.id)
-        .length,
-      notes: numbered.filter((f) => f.verdict === 'note' && layerOf.get(f.brick) === l.id).length,
-    })),
+    floors: auditFloorCounts(bp, numbered),
     runs: results.runs,
     defects: numbered.filter((f) => f.verdict === 'defect'),
     notes,
@@ -144,9 +136,7 @@ export function auditorInput(
       reconstructed: Boolean(d.reconstructed),
     })),
     totals: {
-      bricks: bp.nodes.length,
-      defects: numbered.filter((f) => f.verdict === 'defect').length,
-      notes: numbered.filter((f) => f.verdict === 'note').length,
+      ...(({ bricks, defects, notes }) => ({ bricks, defects, notes }))(auditCounts(bp, numbered)),
       screens: bp.screens.length,
       screensSigned: bp.screens.filter((s) => inForce.has(`screen:${s.id}`)).length,
       decisions: {

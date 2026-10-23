@@ -18,7 +18,7 @@ Date: 2026-10-23. Tag at start: `stage-5-start` (9b6d822). Builder: Claude Opus 
   - **Static checks, over the TypeScript AST:** silenced lint, swallowed errors, `any`, constants in formula files (the files of the site's traced figures), browser-storage writes, environment fallbacks, long routes with no sign-in check, and a fixed position taken from a sorted list (one read after a length check is spared). Test files are left out.
   - **The target's own scripts:** `typecheck`, `build` and `test` from its `package.json`, with the package manager its lockfile names, run with PATH and HOME only. Coverage per brick comes from the test report and the import graph. Each run records its outcome (exit code, test files passed and failed).
   - **The people's record:** screens changed since their signature or never signed, unconfirmed phrases, and decisions left open or not built.
-  - A check that did not run is reported as not run, never as a pass.
+  - A check that did not run is reported as not run, never as a pass. The scripts run only when the checkout is the audited commit.
 - **The auditor:** prompt `audit.v1`, role auditor, so `AUDITOR_VENDOR`. The vendor guard refuses before any call when it would be the builder's vendor.
   - **It is given:** the check results, a Blueprint summary and the totals.
   - **It writes:** the narration (discovery, each floor, screens, verdict), the alterations with agent-time and human-time estimates, and the time machine.
@@ -89,7 +89,14 @@ Date: 2026-10-23. Tag at start: `stage-5-start` (9b6d822). Builder: Claude Opus 
 
 ## Reviewer findings
 
-(Filled in after the reviewer runs.)
+Run 1 at d1472a5 found six code defects. All are fixed, each with a test:
+
+1. **The auditor's narration, alterations and time machine were shown without an unconfirmed state** (Invariant 6). Fixed: they are marked "drafted by <vendor model>; unconfirmed" until a named person confirms them. The confirmation is a new append-only, audited table `audit_confirmations`, with route `POST /api/site/[siteId]/audit/confirm` and a button on the report page.
+2. **The report's totals were computed outside the metrics engine** (Invariant 7). Fixed: `auditCounts()` and `auditFloorCounts()` in `packages/blueprint/metrics`.
+3. **The length guard was too broad:** any `if` mentioning the length spared the read. Fixed: only a bound that covers the position, in a branch the bound proves (or after an exit it rules out).
+4. **A test command that exited non-zero, with every listed file passing, gave no finding.** Fixed: that is a defect, and an empty run is a note.
+5. **The scripts could run on other code than the report names.** Fixed: the audit extracts the Blueprint from the checkout as it is, and runs the scripts only when the checkout is the audited commit.
+6. **A brick newer than the audit was shown as a pass.** Fixed: it gets no badge, the replay says how many there are, and the panel says when the building has moved on.
 
 ## Real model cost
 

@@ -134,6 +134,7 @@ describe('Inspector: the audit', () => {
       callId: 'c1',
     },
     commit: 'abc1234def',
+    confirmations: [],
     counts: { defects: 1, notes: 1, passes: 3, bricks: 5 },
     runs: [
       {
@@ -241,6 +242,10 @@ describe('Inspector: the audit', () => {
     expect(html).toContain('A test then.');
     expect(html).toContain('Signed by openai gpt-x, a different vendor from the builder');
     expect(html).toContain('Light the defects');
+    // The auditor's words are drafted text until a named person confirms them (Invariant 6).
+    expect(html).toContain('data-draft="unconfirmed"');
+    // The fixture building is at another commit than the audit: the panel says so.
+    expect(html).toContain('data-moved');
   });
 
   it("puts the brick's latest verdict in the Brick view, with the auditor's reason for a lowered one", () => {

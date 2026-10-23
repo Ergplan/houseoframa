@@ -65,9 +65,29 @@ describe('auditScript', () => {
     });
   });
 
+  it('scans only bricks the audit saw, and says how many are newer than it', () => {
+    const steps = auditScript(view({ 'lib/0.ts': 'pass' }), bp(3), () => [
+      'lib/0.ts',
+      'lib/1.ts',
+      'lib/2.ts',
+    ]);
+    expect(steps.filter((s) => s.kind === 'scan').map((s) => s.kind === 'scan' && s.path)).toEqual([
+      'lib/0.ts',
+    ]);
+    expect(steps).toContainEqual({
+      kind: 'phase',
+      text: '2 bricks are newer than this audit and were not audited',
+      seconds: 2,
+    });
+  });
+
   it('keeps a large site within the scan budget at 1×, defects still the longest', () => {
     const paths = Array.from({ length: 2000 }, (_, i) => `lib/${i}.ts`);
-    const steps = auditScript(view({ 'lib/0.ts': 'defect' }), bp(2000), () => paths);
+    const steps = auditScript(
+      view(Object.fromEntries(paths.map((p, i) => [p, i === 0 ? 'defect' : 'pass']))),
+      bp(2000),
+      () => paths,
+    );
     const scans = steps.filter((s) => s.kind === 'scan');
     expect(scans.reduce((t, s) => t + s.seconds, 0)).toBeCloseTo(SCAN_BUDGET, 6);
     expect(scans[0]!.seconds).toBeGreaterThan(scans[1]!.seconds);
@@ -88,6 +108,7 @@ describe('toAuditView', () => {
     });
     const v = toAuditView({
       report: {} as AuditView['report'],
+      confirmations: [],
       commit: 'c',
       body: {
         counts: { defects: 1, notes: 1, passes: 1, bricks: 2 },

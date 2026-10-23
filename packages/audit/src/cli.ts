@@ -3,7 +3,7 @@
 // rama-audit show <site>                       the latest report, and whether its hash still verifies
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
+import { extractSite, locateSite } from '@rama/blueprint/site';
 import { createDb } from '@rama/db';
 import { readCapture } from '@rama/trace/showroom';
 import { listDecisions, listSignoffs } from '@rama/ceremony';
@@ -26,8 +26,10 @@ async function main(argv: string[]): Promise<number> {
   const [command, siteId] = argv;
   if (!command || !siteId) throw new Error(USAGE);
   const site = locateSite(siteId);
-  const bp = site ? readSiteBlueprint(site) : null;
-  if (!site || !bp) throw new Error(`no site "${siteId}" with a Blueprint`);
+  if (!site) throw new Error(`no site "${siteId}"`);
+  // The checkout as it is now, not the stored Blueprint, which may name an older commit: the scripts run
+  // on the checkout, and the report must name what they ran on.
+  const bp = extractSite(site);
   const formulaFiles = [
     ...new Set(Object.values(readCapture(site.id)?.mappings ?? {}).map((m) => m.file)),
   ].sort();

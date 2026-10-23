@@ -23,6 +23,8 @@ export {
   type NumberedFinding,
 } from './auditor.ts';
 export {
+  CONFIRM_STATEMENT,
+  confirmReport,
   latestAudit,
   reportBody,
   runAudit,

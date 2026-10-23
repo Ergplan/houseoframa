@@ -121,6 +121,47 @@ describe('runChecks (the target own scripts, PATH and HOME only)', () => {
     ]);
   });
 
+  it('fails a test run that exits non-zero though every listed file passed, and notes an empty run', () => {
+    const exits = (code: number, files: string) =>
+      `const o = process.argv.find((a) => a.startsWith('--outputFile=')).slice(13);\nrequire('fs').writeFileSync(o, JSON.stringify({ testResults: ${files} }));\nprocess.exit(${code});\n`;
+    repo.write({
+      ...pkg({ test: 'node tools/fake-vitest.cjs' }),
+      'tools/fake-vitest.cjs': exits(1, "[{ name: 'lib/a.test.ts', status: 'passed' }]"),
+    });
+    repo.commit('a runner that crashes after its report');
+    let r = runChecks(repo.dir, extract(repo.dir), { skip: ['typecheck', 'build'] });
+    expect(r.findings.filter((f) => f.brick === SITE).map((f) => f.verdict)).toEqual(['defect']);
+    expect(r.findings.find((f) => f.brick === SITE)!.text).toContain(
+      'exited 1 though no test file failed',
+    );
+    repo.write({ 'tools/fake-vitest.cjs': exits(0, '[]') });
+    repo.commit('a runner that finds nothing');
+    r = runChecks(repo.dir, extract(repo.dir), { skip: ['typecheck', 'build'] });
+    expect(r.findings.filter((f) => f.brick === SITE).map((f) => [f.verdict, f.text])).toEqual([
+      ['note', 'The test run reported no test file.'],
+    ]);
+  });
+
+  it('does not run the scripts on a checkout that is not the audited code', () => {
+    const bp = extract(repo.dir);
+    repo.write({ 'lib/a.ts': 'export const a = 42;\n' });
+    try {
+      const r = runChecks(repo.dir, bp);
+      expect(r.runs.map((x) => [x.ran, x.detail])).toEqual(
+        Array(3).fill([
+          false,
+          `not run: the checkout has changes to tracked files on top of ${bp.commit.slice(0, 7)}`,
+        ]),
+      );
+      repo.commit('moved on');
+      expect(runChecks(repo.dir, bp).runs[0]!.detail).toMatch(
+        /^not run: the checkout is at [0-9a-f]{7}, not the audited/,
+      );
+    } finally {
+      repo.git('reset', '-q', '--hard', bp.commit);
+    }
+  });
+
   it('gives the target no House of Rama secret', () => {
     process.env.RAMA_AUDIT_SECRET = 'do-not-leak';
     try {

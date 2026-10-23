@@ -178,6 +178,16 @@ describe('metrics (one function per figure)', () => {
     expect(m.brickMarks(b, [])).toEqual({ 'lib/b.ts': 'red' });
     expect(m.brickMarks(b, ['/'])).toEqual({ 'lib/a.ts': 'green', 'lib/b.ts': 'amber' });
   });
+  it('auditCounts and auditFloorCounts total an audit: findings by verdict, and bricks no finding flags', () => {
+    const fs = [
+      { brick: 'lib/a.ts', verdict: 'defect' as const },
+      { brick: 'lib/a.ts', verdict: 'note' as const },
+      { brick: 'lib/b.ts', verdict: 'pass' as const },
+    ];
+    expect(m.auditCounts(bp, fs)).toEqual({ defects: 1, notes: 1, passes: bp.nodes.length - 1, bricks: bp.nodes.length });
+    const layered = { ...bp, layers: [{ id: 'logic', label: 'Logic' }], nodes: bp.nodes.map((n) => ({ ...n, layer: 'logic' })) };
+    expect(m.auditFloorCounts(layered, fs)).toEqual([{ id: 'logic', label: 'Logic', bricks: 5, defects: 1, notes: 1 }]);
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });

@@ -105,19 +105,43 @@ describe('positional-assumption', () => {
       ['positional-assumption', 'defect', 4],
     ]);
   });
-  it('leaves an access alone when the list length is tested first', () => {
+  it('leaves an access alone when the length is tested first with a bound big enough', () => {
     const src = [
       'const close = [...xs].sort((a, b) => a - b);',
       'if (close.length > 1 && close[0] < close[1]) go();',
       'const two = close.length >= 2 ? close[1] : null;',
+      'const three = 2 < close.length && close.at(2);',
       'function f() {',
-      '  if (close.length < 3) return;',
+      '  if (!close.length || close.length < 3) return;',
       '  return close[2];',
+      '}',
+      'function g() {',
+      '  if (close.length <= 1) throw new Error("two needed");',
+      '  return close[1];',
       '}',
       '',
     ].join('\n');
     expect(checks(src)).toEqual([]);
   });
+
+  it('still flags an access whose length test is too small, does not exit, or guards the other branch', () => {
+    const src = [
+      'const s = [...xs].sort();',
+      'if (s.length > 1) use(s[2]);',
+      'function f() {',
+      '  if (s.length) log();',
+      '  return s[2];',
+      '}',
+      'function g() {',
+      '  if (s.length < 3) log(); else use(s[2]);',
+      '  return s[1];',
+      '}',
+      'const h = s.length || s[1];',
+      '',
+    ].join('\n');
+    expect(checks(src).map((c) => c[2])).toEqual([2, 5, 8, 9, 11]);
+  });
+
   it('leaves the first item, the last by length, and unsorted lists alone', () => {
     const src =
       'const s = [...xs].sort();\nconst lo = s[0];\nconst hi = s[s.length - 1];\nconst top = s.at(-1);\nconst third = row[2];\n';

@@ -235,6 +235,34 @@ export const brickMarks = (bp: Blueprint, signedScreens: string[]): Record<strin
   return out;
 };
 
+export type AuditVerdict = 'pass' | 'note' | 'defect';
+
+/**
+ * An audit's totals over a Blueprint (Stage 5): defect and note findings, and the bricks no finding
+ * flags. The audit report, the auditor's input and the app all show these numbers, from here.
+ */
+export const auditCounts = (bp: Blueprint, findings: { brick: string; verdict: AuditVerdict }[]) => {
+  const flagged = new Set(findings.filter((f) => f.verdict !== 'pass').map((f) => f.brick));
+  return {
+    defects: findings.filter((f) => f.verdict === 'defect').length,
+    notes: findings.filter((f) => f.verdict === 'note').length,
+    passes: bp.nodes.filter((n) => !flagged.has(n.path)).length,
+    bricks: bp.nodes.length,
+  };
+};
+
+/** An audit's totals per floor: bricks on it, defects and notes on its bricks. */
+export const auditFloorCounts = (bp: Blueprint, findings: { brick: string; verdict: AuditVerdict }[]) => {
+  const layerOf = new Map(bp.nodes.map((n) => [n.path, n.layer]));
+  return bp.layers.map((l) => ({
+    id: l.id,
+    label: l.label,
+    bricks: bp.nodes.filter((n) => n.layer === l.id).length,
+    defects: findings.filter((f) => f.verdict === 'defect' && layerOf.get(f.brick) === l.id).length,
+    notes: findings.filter((f) => f.verdict === 'note' && layerOf.get(f.brick) === l.id).length,
+  }));
+};
+
 /** Every figure at once, for the CLI summary and the trust report. */
 export const summary = (bp: Blueprint) => ({
   files: files(bp),

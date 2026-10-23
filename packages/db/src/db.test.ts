@@ -6,6 +6,7 @@ import postgres from 'postgres';
 import { createDb } from './client.ts';
 import { runMigrations } from './migrate.ts';
 import {
+  auditConfirmations,
   auditLog,
   audits,
   decisions,
@@ -51,6 +52,7 @@ describe('packages/db', () => {
     const tables = await conn.sql<{ table_name: string }[]>`
       select table_name from information_schema.tables where table_schema = 'public' order by table_name`;
     expect(tables.map((t) => t.table_name)).toEqual([
+      'audit_confirmations',
       'audit_log',
       'audits',
       'decisions',
@@ -79,6 +81,7 @@ describe('packages/db', () => {
       'signoffs',
       'audits',
       'findings',
+      'audit_confirmations',
     ]) {
       const mine = cols.filter((c) => c.table_name === table);
       expect(mine.map((c) => c.column_name).sort(), table).toEqual([
@@ -216,7 +219,7 @@ describe('packages/db', () => {
     expect(await conn.db.select().from(signoffs)).toHaveLength(2);
   });
 
-  it('keeps audits and findings append-only and audits every insert', async () => {
+  it('keeps audits, findings and their confirmations append-only and audits every insert', async () => {
     const [call] = await conn.db.select().from(modelCalls).limit(1);
     const [audit] = await conn.db
       .insert(audits)
@@ -245,7 +248,20 @@ describe('packages/db', () => {
         createdBy: 'rama:audit@0',
       })
       .returning();
-    for (const table of ['audits', 'findings']) {
+    const [person] = await conn.db.select().from(people).limit(1);
+    const [confirmation] = await conn.db
+      .insert(auditConfirmations)
+      .values({
+        siteId: 'self',
+        auditId: audit!.id,
+        person: person!.name,
+        personId: person!.id,
+        statement: 'read',
+        at: new Date(),
+        createdBy: person!.id,
+      })
+      .returning();
+    for (const table of ['audits', 'findings', 'audit_confirmations']) {
       await expect(conn.sql.unsafe(`UPDATE ${table} SET created_by = 'tamper'`)).rejects.toThrow(
         /append-only/,
       );
@@ -253,10 +269,11 @@ describe('packages/db', () => {
       await expect(conn.sql.unsafe(`TRUNCATE ${table} CASCADE`)).rejects.toThrow(/append-only/);
     }
     const logged = await conn.sql<{ table_name: string; row_id: string }[]>`
-      select table_name, row_id from audit_log where table_name in ('audits', 'findings') order by id`;
+      select table_name, row_id from audit_log where table_name in ('audits', 'findings', 'audit_confirmations') order by id`;
     expect(logged).toEqual([
       { table_name: 'audits', row_id: audit!.id },
       { table_name: 'findings', row_id: finding!.id },
+      { table_name: 'audit_confirmations', row_id: confirmation!.id },
     ]);
   });
 });

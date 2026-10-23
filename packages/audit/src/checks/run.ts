@@ -148,6 +148,23 @@ export interface RunOptions {
   timeoutMs?: number;
 }
 
+/**
+ * Why the checkout cannot stand for the audited code, or null when it can: it must be at the Blueprint's
+ * commit, and, unless the Blueprint was read from the working tree, have no change to a tracked file.
+ * Scripts run on the checkout as it is, so a mismatch would credit one commit with another's results.
+ */
+export function checkoutMismatch(repoDir: string, bp: Blueprint): string | null {
+  const git = (...args: string[]) =>
+    spawnSync('git', ['-C', repoDir, ...args], { encoding: 'utf8' });
+  const head = git('rev-parse', 'HEAD').stdout.trim();
+  if (head !== bp.commit)
+    return `the checkout is at ${head.slice(0, 7) || 'no commit'}, not the audited ${bp.commit.slice(0, 7)}`;
+  if (!bp.worktree && git('status', '--porcelain', '--untracked-files=no').stdout.trim()) {
+    return `the checkout has changes to tracked files on top of ${bp.commit.slice(0, 7)}`;
+  }
+  return null;
+}
+
 export function runChecks(
   repoDir: string,
   bp: Blueprint,
@@ -158,6 +175,13 @@ export function runChecks(
   const bricks = new Set(bp.nodes.map((n) => n.path));
   const timeout = opts.timeoutMs ?? 20 * 60_000;
   const skipped = (name: 'typecheck' | 'build' | 'test') => opts.skip?.includes(name);
+  const mismatch = checkoutMismatch(repoDir, bp);
+  if (mismatch) {
+    for (const check of ['typecheck', 'build', 'test-coverage-per-brick'] as const) {
+      runs.push({ check, ran: false, detail: `not run: ${mismatch}` });
+    }
+    return { runs, findings };
+  }
 
   const tc = scriptCommand(repoDir, 'typecheck');
   if (skipped('typecheck') || !tc)
@@ -241,6 +265,23 @@ export function runChecks(
           outcome: `exit ${r.status}, ${passed} test file${passed === 1 ? '' : 's'} passed, ${files.length - passed} failed`,
         });
         findings.push(...testFindings(bp, report, repoDir));
+        // A runner that fails outside any test file (a setup error, a crash after the report) still fails.
+        if (r.status !== 0 && files.every((t) => t.status === 'passed')) {
+          findings.push({
+            brick: SITE,
+            check: 'test-coverage-per-brick',
+            verdict: 'defect',
+            text: `\`${test.join(' ')}\` exited ${r.status} though no test file failed: ${tail(r.output)}`,
+          });
+        }
+        if (!files.length) {
+          findings.push({
+            brick: SITE,
+            check: 'test-coverage-per-brick',
+            verdict: 'note',
+            text: 'The test run reported no test file.',
+          });
+        }
       }
     }
   } finally {

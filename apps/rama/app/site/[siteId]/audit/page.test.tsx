@@ -1,10 +1,16 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { randomBytes } from 'node:crypto';
 import postgres from 'postgres';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createDb, modelCalls, runMigrations, seed, audits, findings } from '@rama/db';
-import { inputsHash, type AuditorInput } from '@rama/audit';
+import { confirmReport, inputsHash, type AuditorInput } from '@rama/audit';
 import AuditReport from './page';
+
+// The confirm button refreshes through the App Router, which a static render does not mount.
+vi.mock('next/navigation', async (orig) => ({
+  ...(await orig<typeof import('next/navigation')>()),
+  useRouter: () => ({ refresh: () => {} }),
+}));
 
 const params = (siteId: string) => ({ params: Promise.resolve({ siteId }) });
 const serverUrl = process.env.DATABASE_URL!;
@@ -119,6 +125,41 @@ describe('route /site/[siteId]/audit', () => {
     expect(html).toContain('Rejected');
     expect(html).toContain('Takes item 2 of a sorted list.');
     expect(html).toContain('One defect on the logic floor.');
+    // The auditor's words are drafted text: unconfirmed until a named person confirms them (Invariant 6).
+    expect(html).toContain('data-draft="unconfirmed"');
+    process.env.RAMA_MEMBER_NAME = 'Asha Rao';
+    expect(renderToStaticMarkup(await AuditReport(params('self')))).toContain(
+      'confirm it as Asha Rao</button>',
+    );
+    const again = createDb();
+    try {
+      const [a] = await again.sql`select id from audits limit 1`;
+      const [p] = await again.sql`select id from people where name = 'Asha Rao'`;
+      await confirmReport(again.db, {
+        siteId: 'self',
+        reportId: a!.id,
+        person: 'Asha Rao',
+        personId: p!.id,
+        at: new Date('2026-10-23T19:00:00Z'),
+      });
+      await expect(
+        confirmReport(again.db, {
+          siteId: 'other',
+          reportId: a!.id,
+          person: 'Asha Rao',
+          personId: p!.id,
+          at: new Date(),
+        }),
+      ).rejects.toThrow(/no audit report/);
+    } finally {
+      await again.close();
+    }
+    const confirmed = renderToStaticMarkup(await AuditReport(params('self')));
+    const pill = /data-draft="confirmed">([^]*?)<\/span>/
+      .exec(confirmed)![1]!
+      .replace(/<!-- -->/g, '');
+    expect(pill).toBe('drafted by openai gpt-x; confirmed by Asha Rao, 2026-10-23');
+    expect(confirmed).not.toContain('confirm it as');
   });
 
   it('is not found for an unknown site', async () => {

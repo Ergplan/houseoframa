@@ -26,6 +26,7 @@ import {
 } from '@rama/blueprint/metrics';
 import { edgePhrase, floorName, reviewerParagraph } from './words';
 import type { AuditView } from '@rama/audit/view';
+import { DraftState } from '../audit/ConfirmReport';
 import type { LogEntry } from '../../canvas/audit';
 
 /** A screen photographed from the target's built app (Stage 3), with the bricks that render it. */
@@ -90,7 +91,12 @@ export function Inspector(props: Props) {
       {view.kind === 'commit' && <CommitView {...props} index={view.index} />}
       {view.kind === 'brick' && <BrickView key={view.path} {...props} path={view.path} />}
       {view.kind === 'audit' && props.audit && props.auditRun && (
-        <AuditPanel audit={props.audit} run={props.auditRun} onBrick={props.onBrick} />
+        <AuditPanel
+          audit={props.audit}
+          run={props.auditRun}
+          building={props.blueprint.commit}
+          onBrick={props.onBrick}
+        />
       )}
     </aside>
   );
@@ -604,12 +610,21 @@ function BrickVerdict({ audit, path }: { audit: AuditView; path: string }) {
 function AuditPanel({
   audit,
   run,
+  building,
   onBrick,
 }: {
   audit: AuditView;
   run: AuditRunView;
+  /** The commit the building shows now: when it is not the audited one, the panel says so. */
+  building: string;
   onBrick: (p: string) => void;
 }) {
+  const moved = building !== audit.commit && (
+    <p className="note" data-moved>
+      This audit is of {audit.commit.slice(0, 7)}; the building is now at {building.slice(0, 7)}.
+      Bricks laid since were not audited and carry no badge.
+    </p>
+  );
   const head = (
     <p>
       <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -627,6 +642,14 @@ function AuditPanel({
       <>
         <h2>Audit · live</h2>
         <p className="big">Drones are flying the site.</p>
+        {moved}
+        <p className="note">
+          The narration is the auditor&apos;s:{' '}
+          <DraftState
+            confirmations={audit.confirmations}
+            by={`${audit.report.vendor} ${audit.report.model}`}
+          />
+        </p>
         {head}
         <div className="alog" data-log={run.log.length}>
           {run.log.map((l, i) =>
@@ -687,6 +710,7 @@ function AuditPanel({
           <small>sign-offs confirmed</small>
         </div>
       </div>
+      {moved}
       {head}
       <h3>Checks</h3>
       <ul className="runs">
@@ -719,7 +743,13 @@ function AuditPanel({
           ))}
         </ul>
       )}
-      <h3>Alterations and estimates</h3>
+      <h3>
+        Alterations and estimates{' '}
+        <DraftState
+          confirmations={audit.confirmations}
+          by={`${audit.report.vendor} ${audit.report.model}`}
+        />
+      </h3>
       <div className="links">
         {audit.alterations.map((a, i) => (
           <div className="dep" key={i}>
@@ -730,7 +760,13 @@ function AuditPanel({
           </div>
         ))}
       </div>
-      <h3>Time machine · what could have gone better</h3>
+      <h3>
+        Time machine · what could have gone better{' '}
+        <DraftState
+          confirmations={audit.confirmations}
+          by={`${audit.report.vendor} ${audit.report.model}`}
+        />
+      </h3>
       <div className="links">
         {audit.timeMachine.map((t, i) => (
           <div className="dep" key={i}>

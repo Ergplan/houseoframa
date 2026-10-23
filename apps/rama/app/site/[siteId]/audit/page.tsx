@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { locateSite } from '@rama/blueprint/site';
 import { latestAudit, verifyReport } from '@rama/audit';
 import { createDb } from '@rama/db';
+import { ConfirmReport, DraftState } from '../../../../components/audit/ConfirmReport';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,6 +47,7 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
     );
   }
   const { report, body } = stored;
+  const member = process.env.RAMA_MEMBER_NAME?.trim() || null;
   const flagged = stored.findings.filter((f) => f.verdict !== 'pass');
   const byCheck = new Map<string, typeof flagged>();
   for (const f of flagged) byCheck.set(f.check, [...(byCheck.get(f.check) ?? []), f]);
@@ -93,6 +95,22 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
             </li>
           ))}
         </ul>
+      </section>
+      <section className="session" data-section="drafted">
+        <p>
+          The narration, the alterations and the time machine are the auditor's words, not the
+          checks':{' '}
+          <DraftState
+            confirmations={stored.confirmations}
+            by={`${report.vendor} ${report.model}`}
+          />
+        </p>
+        {!stored.confirmations.length && member ? (
+          <ConfirmReport siteId={site.id} reportId={report.reportId} member={member} />
+        ) : null}
+        {!stored.confirmations.length && !member ? (
+          <p className="note">RAMA_MEMBER_NAME is not set, so there is no member to confirm as.</p>
+        ) : null}
       </section>
       <section className="session">
         <h2>Narration</h2>

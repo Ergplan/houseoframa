@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
+  "commit": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -4810,6 +4810,39 @@
       "sha": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
       "short": "5faa702",
       "subject": "Stage 5: reports say + working tree; e2e teardown waits for the dev server"
+    },
+    {
+      "at": "2026-10-23T18:45:49Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 117,
+          "del": 16,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 103,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-5.md"
+        },
+        {
+          "add": 10,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/audit/src/view.ts"
+        },
+        {
+          "add": 105,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/audit/test/view.test.ts"
+        }
+      ],
+      "sha": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
+      "short": "d1472a5",
+      "subject": "Stage 5: draft report; replay scans capped at 120 s at 1x"
     }
   ],
   "edges": [
@@ -4835,6 +4868,80 @@
         "shortSha"
       ],
       "to": "apps/rama/components/BuildStamp.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.test.ts",
+      "symbols": [
+        "ConfirmReportDeps",
+        "handleConfirmReport"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "symbols": [
+        "handleConfirmReport"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "symbols": [
+        "confirmReport"
+      ],
+      "to": "packages/audit/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of people"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "symbols": [
+        "createDb",
+        "people"
+      ],
+      "to": "packages/db/src/index.ts",
       "typeOnly": false
     },
     {
@@ -5257,6 +5364,7 @@
       "from": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
       "symbols": [
         "AuditorInput",
+        "confirmReport",
         "inputsHash"
       ],
       "to": "packages/audit/src/index.ts",
@@ -5277,6 +5385,15 @@
         "seed"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/audit/page.tsx",
+      "symbols": [
+        "ConfirmReport",
+        "DraftState"
+      ],
+      "to": "apps/rama/components/audit/ConfirmReport.tsx",
       "typeOnly": false
     },
     {
@@ -6216,6 +6333,14 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "DraftState"
+      ],
+      "to": "apps/rama/components/audit/ConfirmReport.tsx",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the plain-English wording for one file-to-file import, with its confirmation state; the short lowercase name of a layer's floor; a plain paragraph on which files a file depends on, grouped by floor"
@@ -6524,6 +6649,8 @@
       },
       "from": "packages/audit/src/auditor.ts",
       "symbols": [
+        "auditCounts",
+        "auditFloorCounts",
         "authors"
       ],
       "to": "packages/blueprint/src/metrics/index.ts",
@@ -6726,12 +6853,12 @@
     {
       "english": {
         "confirmed": false,
-        "text": "a way to find one site's location by its id; a site's saved blueprint, if it has one"
+        "text": "a way to find one site's location by its id"
       },
       "from": "packages/audit/src/cli.ts",
       "symbols": [
-        "locateSite",
-        "readSiteBlueprint"
+        "extractSite",
+        "locateSite"
       ],
       "to": "packages/blueprint/src/site.ts",
       "typeOnly": false
@@ -6835,8 +6962,10 @@
       "from": "packages/audit/src/index.ts",
       "symbols": [
         "AuditReportBody",
+        "CONFIRM_STATEMENT",
         "SignedReport",
         "StoredAudit",
+        "confirmReport",
         "latestAudit",
         "reportBody",
         "runAudit",
@@ -6900,6 +7029,14 @@
     {
       "from": "packages/audit/src/report.ts",
       "symbols": [
+        "auditCounts"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/audit/src/report.ts",
+      "symbols": [
         "listDecisions",
         "listSignoffs"
       ],
@@ -6922,6 +7059,7 @@
       "from": "packages/audit/src/report.ts",
       "symbols": [
         "Db",
+        "auditConfirmations",
         "audits",
         "findings",
         "modelCalls"
@@ -8739,6 +8877,7 @@
       },
       "from": "packages/db/src/db.test.ts",
       "symbols": [
+        "auditConfirmations",
         "auditLog",
         "audits",
         "decisions",
@@ -10423,7 +10562,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T18:41:00Z",
+  "extractedAt": "2026-10-23T18:45:49Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -10718,6 +10857,60 @@
         "confirmed": false,
         "text": "The health check: reports that the app is running and which commit it is built from, or \"unknown\" when none is set."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2123,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 55,
+      "path": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1945,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ConfirmReportBody",
+        "ConfirmReportDeps",
+        "handleConfirmReport"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 56,
+      "path": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1181,
+      "changes": 0,
+      "env": [
+        "RAMA_MEMBER_NAME"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 38,
+      "path": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
       "test": false
     },
     {
@@ -11054,10 +11247,11 @@
     },
     {
       "binary": false,
-      "bytes": 4359,
+      "bytes": 5977,
       "changes": 1,
       "env": [
-        "DATABASE_URL"
+        "DATABASE_URL",
+        "RAMA_MEMBER_NAME"
       ],
       "envDynamic": false,
       "exports": [],
@@ -11065,15 +11259,17 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 127,
+      "lines": 168,
       "path": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 6240,
+      "bytes": 7076,
       "changes": 2,
-      "env": [],
+      "env": [
+        "RAMA_MEMBER_NAME"
+      ],
       "envDynamic": false,
       "exports": [
         "default",
@@ -11083,7 +11279,7 @@
       "lastCommit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 178,
+      "lines": 196,
       "path": "apps/rama/app/site/[siteId]/audit/page.tsx",
       "test": false
     },
@@ -11539,6 +11735,24 @@
     },
     {
       "binary": false,
+      "bytes": 1918,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ConfirmReport",
+        "DraftState"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 71,
+      "path": "apps/rama/components/audit/ConfirmReport.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 2718,
       "changes": 1,
       "env": [],
@@ -11588,7 +11802,7 @@
     },
     {
       "binary": false,
-      "bytes": 9306,
+      "bytes": 9605,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -11597,13 +11811,13 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 256,
+      "lines": 261,
       "path": "apps/rama/components/inspector/Inspector.test.tsx",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 25314,
+      "bytes": 26423,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -11617,7 +11831,7 @@
       "lastCommit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 761,
+      "lines": 797,
       "path": "apps/rama/components/inspector/Inspector.tsx",
       "purpose": {
         "confirmed": false,
@@ -11849,7 +12063,7 @@
     },
     {
       "binary": false,
-      "bytes": 27547,
+      "bytes": 28042,
       "changes": 14,
       "env": [],
       "envDynamic": false,
@@ -11858,7 +12072,7 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 127,
+      "lines": 125,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -11887,7 +12101,7 @@
     },
     {
       "binary": false,
-      "bytes": 29649,
+      "bytes": 31235,
       "changes": 30,
       "env": [],
       "envDynamic": false,
@@ -11896,7 +12110,7 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 131,
+      "lines": 136,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -12125,7 +12339,22 @@
     },
     {
       "binary": false,
-      "bytes": 8402,
+      "bytes": 9753,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
+      "lastCommit": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 110,
+      "path": "docs/reports/stage-5.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 10460,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -12134,8 +12363,8 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 103,
-      "path": "docs/reports/stage-5.md",
+      "lines": 24,
+      "path": "docs/reports/stage-5.review.md",
       "test": false
     },
     {
@@ -12229,7 +12458,7 @@
     },
     {
       "binary": false,
-      "bytes": 9106,
+      "bytes": 8690,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -12251,7 +12480,7 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 273,
+      "lines": 263,
       "path": "packages/audit/src/auditor.ts",
       "test": false
     },
@@ -12294,7 +12523,7 @@
     },
     {
       "binary": false,
-      "bytes": 8387,
+      "bytes": 10238,
       "changes": 2,
       "env": [
         "HOME",
@@ -12304,6 +12533,7 @@
       "exports": [
         "RunOptions",
         "Script",
+        "checkoutMismatch",
         "packageManager",
         "parseTscErrors",
         "runChecks",
@@ -12315,13 +12545,13 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 250,
+      "lines": 291,
       "path": "packages/audit/src/checks/run.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 9753,
+      "bytes": 13063,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -12333,13 +12563,13 @@
       "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 285,
+      "lines": 379,
       "path": "packages/audit/src/checks/static.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3656,
+      "bytes": 3777,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -12348,7 +12578,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 107,
+      "lines": 109,
       "path": "packages/audit/src/cli.ts",
       "test": false
     },
@@ -12381,7 +12611,7 @@
     },
     {
       "binary": false,
-      "bytes": 868,
+      "bytes": 906,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -12395,6 +12625,7 @@
         "AuditorInput",
         "AuditorOverreachError",
         "AuditorReply",
+        "CONFIRM_STATEMENT",
         "CheckContext",
         "NumberedFinding",
         "RunOptions",
@@ -12405,6 +12636,7 @@
         "auditChecks",
         "auditScript",
         "auditorInput",
+        "confirmReport",
         "inputsHash",
         "latestAudit",
         "longUnauthRoute",
@@ -12427,22 +12659,24 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 35,
+      "lines": 37,
       "path": "packages/audit/src/index.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 8556,
+      "bytes": 9976,
       "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "AuditReportBody",
+        "CONFIRM_STATEMENT",
         "RunAuditOptions",
         "SignedReport",
         "SignoffVerdict",
         "StoredAudit",
+        "confirmReport",
         "latestAudit",
         "reportBody",
         "runAudit",
@@ -12453,7 +12687,7 @@
       "lastCommit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 280,
+      "lines": 319,
       "path": "packages/audit/src/report.ts",
       "test": false
     },
@@ -12480,8 +12714,8 @@
     },
     {
       "binary": false,
-      "bytes": 5180,
-      "changes": 3,
+      "bytes": 5879,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -12493,10 +12727,10 @@
         "toAuditView"
       ],
       "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
-      "lastCommit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
+      "lastCommit": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 149,
+      "lines": 164,
       "path": "packages/audit/src/view.ts",
       "test": false
     },
@@ -12534,7 +12768,7 @@
     },
     {
       "binary": false,
-      "bytes": 6103,
+      "bytes": 8044,
       "changes": 2,
       "env": [
         "RAMA_AUDIT_SECRET"
@@ -12545,13 +12779,13 @@
       "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 152,
+      "lines": 193,
       "path": "packages/audit/test/run.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 6134,
+      "bytes": 6900,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -12560,22 +12794,22 @@
       "lastCommit": "da776e3ae25137b5d34c84c12cd8a856d5bc1770",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 157,
+      "lines": 181,
       "path": "packages/audit/test/static.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 3289,
-      "changes": 0,
+      "bytes": 3897,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
+      "lastCommit": "d1472a58dd766fa8fcacf7a3b8e0aa81780dc937",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 105,
+      "lines": 126,
       "path": "packages/audit/test/view.test.ts",
       "test": true
     },
@@ -13074,17 +13308,20 @@
     },
     {
       "binary": false,
-      "bytes": 10607,
+      "bytes": 11902,
       "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "AuditVerdict",
         "BrickFigures",
         "BrickHistory",
         "BrickMark",
         "CommitBreakdown",
         "Demolition",
         "Ranked",
+        "auditCounts",
+        "auditFloorCounts",
         "authors",
         "branches",
         "brickFigures",
@@ -13117,7 +13354,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 253,
+      "lines": 281,
       "path": "packages/blueprint/src/metrics/index.ts",
       "purpose": {
         "confirmed": false,
@@ -13127,7 +13364,7 @@
     },
     {
       "binary": false,
-      "bytes": 8898,
+      "bytes": 9583,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -13136,7 +13373,7 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 183,
+      "lines": 193,
       "path": "packages/blueprint/src/metrics/metrics.test.ts",
       "purpose": {
         "confirmed": false,
@@ -13941,6 +14178,21 @@
     },
     {
       "binary": false,
+      "bytes": 1526,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 20,
+      "path": "packages/db/migrations/0004_audit_confirmations.sql",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 9168,
       "changes": 1,
       "env": [],
@@ -14005,7 +14257,22 @@
     },
     {
       "binary": false,
-      "bytes": 609,
+      "bytes": 30263,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1192,
+      "path": "packages/db/migrations/meta/0004_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 756,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -14014,7 +14281,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 34,
+      "lines": 41,
       "path": "packages/db/migrations/meta/_journal.json",
       "purpose": {
         "confirmed": false,
@@ -14088,7 +14355,7 @@
     },
     {
       "binary": false,
-      "bytes": 9025,
+      "bytes": 9624,
       "changes": 3,
       "env": [
         "DATABASE_URL"
@@ -14099,7 +14366,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 262,
+      "lines": 279,
       "path": "packages/db/src/db.test.ts",
       "purpose": {
         "confirmed": false,
@@ -14159,13 +14426,14 @@
     },
     {
       "binary": false,
-      "bytes": 8351,
+      "bytes": 9128,
       "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
         "APPEND_ONLY_TABLES",
         "AUDITED_TABLES",
+        "auditConfirmations",
         "auditLog",
         "audits",
         "decisions",
@@ -14181,7 +14449,7 @@
       "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 223,
+      "lines": 251,
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -15947,6 +16215,7 @@
         "apps/rama/canvas/palette.ts",
         "apps/rama/canvas/pick.ts",
         "apps/rama/canvas/timeline.ts",
+        "apps/rama/components/audit/ConfirmReport.tsx",
         "apps/rama/components/inspector/Inspector.tsx",
         "apps/rama/components/inspector/words.ts",
         "apps/rama/components/site/SiteView.tsx",
@@ -16011,6 +16280,7 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/audit/page.tsx",
+        "apps/rama/components/audit/ConfirmReport.tsx",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
         "packages/audit/src/checks/index.ts",

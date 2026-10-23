@@ -207,6 +207,27 @@ export const findings = pgTable('findings', {
   ...provenance,
 });
 
+/**
+ * A named person's confirmation of an audit report's drafted text (the auditor's narration, alterations
+ * and time machine), which stays marked unconfirmed until one exists (Invariant 6). Append-only.
+ */
+export const auditConfirmations = pgTable('audit_confirmations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  auditId: uuid('audit_id')
+    .notNull()
+    .references(() => audits.id),
+  person: text('person').notNull(),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  statement: text('statement').notNull(),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  ...provenance,
+});
+
 /** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
 export const APPEND_ONLY_TABLES = [
   'model_calls',
@@ -217,7 +238,14 @@ export const APPEND_ONLY_TABLES = [
   'signoffs',
   'audits',
   'findings',
+  'audit_confirmations',
 ] as const;
 
 /** Tables whose every insert also appends an audit_log row, written by a trigger (Invariant 8). */
-export const AUDITED_TABLES = ['decisions', 'signoffs', 'audits', 'findings'] as const;
+export const AUDITED_TABLES = [
+  'decisions',
+  'signoffs',
+  'audits',
+  'findings',
+  'audit_confirmations',
+] as const;

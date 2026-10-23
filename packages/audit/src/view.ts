@@ -17,6 +17,8 @@ export interface AuditView {
   commit: string;
   /** True when the audited code was the working tree on top of `commit`. */
   worktree?: boolean;
+  /** Who confirmed the auditor's drafted text; empty while it is unconfirmed (Invariant 6). */
+  confirmations: { person: string; at: string; statement: string }[];
   counts: { defects: number; notes: number; passes: number; bricks: number };
   runs: { check: string; ran: boolean; detail: string; outcome?: string }[];
   narration: { part: string; text: string }[];
@@ -53,6 +55,7 @@ export interface AuditView {
 /** The view of a stored audit (report.ts `latestAudit`), with each brick's verdict from its findings. */
 export function toAuditView(stored: {
   report: AuditView['report'];
+  confirmations: AuditView['confirmations'];
   commit: string;
   body: Pick<
     AuditView,
@@ -77,6 +80,7 @@ export function toAuditView(stored: {
   return {
     report: stored.report,
     commit: stored.commit,
+    confirmations: stored.confirmations,
     ...(b.worktree ? { worktree: true } : {}),
     counts: b.counts,
     runs: b.runs,
@@ -110,13 +114,17 @@ export function auditScript(
   steps.push({ kind: 'phase', text: 'Audit requested', seconds: 1.2 });
   steps.push({ kind: 'phase', text: 'Discovery', seconds: 1.2 });
   say('discovery');
+  let unaudited = 0;
   for (const layer of bp.layers) {
-    const bricks = order(layer.id);
+    // A brick the audit did not see (laid after it) gets no verdict and no scan: nothing is invented.
+    const all = order(layer.id);
+    const bricks = all.filter((p) => p in audit.verdicts);
+    unaudited += all.length - bricks.length;
     if (!bricks.length) continue;
     steps.push({ kind: 'phase', text: `${layer.label.split(' — ')[0]} floor`, seconds: 1.2 });
     say(layer.id);
     for (const path of bricks) {
-      const verdict = audit.verdicts[path] ?? 'pass';
+      const verdict = audit.verdicts[path]!;
       const first = audit.findings.find((f) => f.brick === path && f.verdict === verdict);
       steps.push({
         kind: 'scan',
@@ -126,6 +134,13 @@ export function auditScript(
         seconds: verdict === 'pass' ? 0.25 : verdict === 'note' ? 0.6 : 2.4,
       });
     }
+  }
+  if (unaudited) {
+    steps.push({
+      kind: 'phase',
+      text: `${unaudited} brick${unaudited === 1 ? ' is' : 's are'} newer than this audit and ${unaudited === 1 ? 'was' : 'were'} not audited`,
+      seconds: 2,
+    });
   }
   steps.push({ kind: 'phase', text: 'Screens and sign-offs', seconds: 1.2 });
   say('screens');

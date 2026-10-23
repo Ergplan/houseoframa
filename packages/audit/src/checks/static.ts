@@ -36,32 +36,120 @@ const isEmptyHandler = (n: ts.Node | undefined): boolean => {
   );
 };
 
+/** `name.length` (optionally `name?.length`). */
+const isLength = (sf: ts.SourceFile, e: ts.Expression, name: string) =>
+  ts.isPropertyAccessExpression(e) && e.name.text === 'length' && e.expression.getText(sf) === name;
+
+/** The least length a condition proves when it is true (0 when it proves nothing). */
+function provenWhenTrue(sf: ts.SourceFile, e: ts.Expression, name: string): number {
+  while (ts.isParenthesizedExpression(e)) e = e.expression;
+  if (isLength(sf, e, name)) return 1;
+  if (!ts.isBinaryExpression(e)) return 0;
+  const op = e.operatorToken.kind;
+  if (op === ts.SyntaxKind.AmpersandAmpersandToken)
+    return Math.max(provenWhenTrue(sf, e.left, name), provenWhenTrue(sf, e.right, name));
+  const lit = (x: ts.Expression) => (ts.isNumericLiteral(x) ? Number(x.text) : null);
+  const K = ts.SyntaxKind;
+  if (isLength(sf, e.left, name) && lit(e.right) !== null) {
+    const L = lit(e.right)!;
+    if (op === K.GreaterThanToken) return L + 1;
+    if (
+      op === K.GreaterThanEqualsToken ||
+      op === K.EqualsEqualsEqualsToken ||
+      op === K.EqualsEqualsToken
+    )
+      return L;
+  }
+  if (isLength(sf, e.right, name) && lit(e.left) !== null) {
+    const L = lit(e.left)!;
+    if (op === K.LessThanToken) return L + 1;
+    if (
+      op === K.LessThanEqualsToken ||
+      op === K.EqualsEqualsEqualsToken ||
+      op === K.EqualsEqualsToken
+    )
+      return L;
+  }
+  return 0;
+}
+
+/** The least length known after `if (cond) <exit>`: what the condition being false proves. */
+function provenWhenFalse(sf: ts.SourceFile, e: ts.Expression, name: string): number {
+  while (ts.isParenthesizedExpression(e)) e = e.expression;
+  if (ts.isPrefixUnaryExpression(e) && e.operator === ts.SyntaxKind.ExclamationToken)
+    return provenWhenTrue(sf, e.operand, name);
+  if (!ts.isBinaryExpression(e)) return 0;
+  const op = e.operatorToken.kind;
+  const K = ts.SyntaxKind;
+  if (op === K.BarBarToken)
+    return Math.max(provenWhenFalse(sf, e.left, name), provenWhenFalse(sf, e.right, name));
+  const lit = (x: ts.Expression) => (ts.isNumericLiteral(x) ? Number(x.text) : null);
+  if (isLength(sf, e.left, name) && lit(e.right) !== null) {
+    const L = lit(e.right)!;
+    if (op === K.LessThanToken) return L;
+    if (op === K.LessThanEqualsToken) return L + 1;
+    if ((op === K.EqualsEqualsEqualsToken || op === K.EqualsEqualsToken) && L === 0) return 1;
+  }
+  if (isLength(sf, e.right, name) && lit(e.left) !== null) {
+    const L = lit(e.left)!;
+    if (op === K.GreaterThanToken) return L;
+    if (op === K.GreaterThanEqualsToken) return L + 1;
+  }
+  return 0;
+}
+
+const exits = (st: ts.Statement): boolean => {
+  if (
+    ts.isReturnStatement(st) ||
+    ts.isThrowStatement(st) ||
+    ts.isContinueStatement(st) ||
+    ts.isBreakStatement(st)
+  )
+    return true;
+  return ts.isBlock(st) && st.statements.length > 0 && exits(st.statements.at(-1)!);
+};
+
 /**
- * True when the list's length is tested before the access: in an enclosing condition (`if`, `? :`, the
- * left of `&&` or `||`), or in an `if` earlier in an enclosing block (an early return). A checked length
- * is a checked assumption.
+ * True when the list is known to hold at least `need` items where it is read: in the true branch of an
+ * enclosing `if` or `? :`, or the right of an `&&`, whose condition proves it; or after an earlier
+ * `if (…) return` (or throw) in an enclosing block whose condition being false proves it.
  */
-function lengthGuarded(sf: ts.SourceFile, access: ts.Node, name: string): boolean {
-  const mentions = (n: ts.Node | undefined) =>
-    Boolean(n) && new RegExp(`\\b${name}\\.length\\b`).test(n!.getText(sf));
+function lengthGuarded(sf: ts.SourceFile, access: ts.Node, name: string, need: number): boolean {
   let child: ts.Node = access;
   for (let p = access.parent; p; child = p, p = p.parent) {
-    if (ts.isIfStatement(p) && child !== p.expression && mentions(p.expression)) return true;
-    if (ts.isConditionalExpression(p) && child !== p.condition && mentions(p.condition))
+    if (
+      ts.isIfStatement(p) &&
+      child === p.thenStatement &&
+      provenWhenTrue(sf, p.expression, name) >= need
+    )
+      return true;
+    if (
+      ts.isConditionalExpression(p) &&
+      child === p.whenTrue &&
+      provenWhenTrue(sf, p.condition, name) >= need
+    )
       return true;
     if (
       ts.isBinaryExpression(p) &&
       child === p.right &&
-      [ts.SyntaxKind.AmpersandAmpersandToken, ts.SyntaxKind.BarBarToken].includes(
-        p.operatorToken.kind,
-      ) &&
-      mentions(p.left)
+      p.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken &&
+      provenWhenTrue(sf, p.left, name) >= need
     ) {
       return true;
     }
     if (ts.isBlock(p) || ts.isSourceFile(p)) {
       const before = p.statements.slice(0, p.statements.indexOf(child as ts.Statement));
-      if (before.some((st) => ts.isIfStatement(st) && mentions(st.expression))) return true;
+      if (
+        before.some(
+          (st) =>
+            ts.isIfStatement(st) &&
+            !st.elseStatement &&
+            exits(st.thenStatement) &&
+            provenWhenFalse(sf, st.expression, name) >= need,
+        )
+      ) {
+        return true;
+      }
     }
   }
   return false;
@@ -196,7 +284,8 @@ export function staticChecks(
       Number(n.argumentExpression.text) >= 1
     ) {
       const target = n.expression;
-      const guarded = ts.isIdentifier(target) && lengthGuarded(sf, n, target.text);
+      const need = Number(n.argumentExpression.text) + 1;
+      const guarded = ts.isIdentifier(target) && lengthGuarded(sf, n, target.text, need);
       if (
         !guarded &&
         (isSortCall(target) || (ts.isIdentifier(target) && sorted.has(target.text)))
@@ -222,8 +311,13 @@ export function staticChecks(
           ? -Number(a.operand.text)
           : null;
       const target = n.expression.expression;
+      const guarded =
+        k !== null &&
+        ts.isIdentifier(target) &&
+        lengthGuarded(sf, n, target.text, k >= 0 ? k + 1 : -k);
       if (
         k !== null &&
+        !guarded &&
         (k >= 1 || k <= -2) &&
         (isSortCall(target) || (ts.isIdentifier(target) && sorted.has(target.text)))
       ) {

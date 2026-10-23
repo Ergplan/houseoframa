@@ -4,7 +4,8 @@
 // anyone can recompute it from that row.
 import { asc, desc, eq } from 'drizzle-orm';
 import type { Blueprint, Signoff } from '@rama/shared';
-import { audits, findings, modelCalls, type Db } from '@rama/db';
+import { auditCounts } from '@rama/blueprint/metrics';
+import { auditConfirmations, audits, findings, modelCalls, type Db } from '@rama/db';
 import { signaturesInForce } from '@rama/ceremony/records';
 import { listDecisions, listSignoffs } from '@rama/ceremony';
 import {
@@ -82,16 +83,13 @@ export function reportBody(
   signoffs: Signoff[],
   builders: string[],
 ): AuditReportBody {
-  const flagged = new Set(applied.filter((f) => f.finalVerdict !== 'pass').map((f) => f.brick));
   return {
     ...(bp.worktree ? { worktree: true } : {}),
     runs,
-    counts: {
-      defects: applied.filter((f) => f.finalVerdict === 'defect').length,
-      notes: applied.filter((f) => f.finalVerdict === 'note').length,
-      passes: bp.nodes.filter((n) => !flagged.has(n.path)).length,
-      bricks: bp.nodes.length,
-    },
+    counts: auditCounts(
+      bp,
+      applied.map((f) => ({ brick: f.brick, verdict: f.finalVerdict })),
+    ),
     narration: reply.narration,
     alterations: reply.alterations,
     timeMachine: reply.timeMachine,
@@ -209,6 +207,8 @@ export async function runAudit(
 
 export interface StoredAudit {
   report: SignedReport;
+  /** Named people who confirmed the auditor's drafted text; until one does, it is unconfirmed (Invariant 6). */
+  confirmations: { person: string; at: string; statement: string }[];
   commit: string;
   body: AuditReportBody;
   findings: {
@@ -236,7 +236,17 @@ export async function latestAudit(db: Db, siteId: string): Promise<StoredAudit |
     .from(findings)
     .where(eq(findings.auditId, a.id))
     .orderBy(asc(findings.brick), asc(findings.line));
+  const confirmed = await db
+    .select()
+    .from(auditConfirmations)
+    .where(eq(auditConfirmations.auditId, a.id))
+    .orderBy(asc(auditConfirmations.at));
   return {
+    confirmations: confirmed.map((c) => ({
+      person: c.person,
+      at: c.at.toISOString(),
+      statement: c.statement,
+    })),
     report: {
       reportId: a.id,
       vendor: a.vendor,
@@ -277,4 +287,33 @@ export async function verifyReport(
   return hash === report.inputsHash
     ? { ok: true }
     : { ok: false, why: 'what the auditor received does not hash to the report' };
+}
+
+export const CONFIRM_STATEMENT =
+  "I have read the auditor's narration, alterations and time machine for this report, and I confirm them as its text.";
+
+/** A named person confirms an audit report's drafted text: one append-only row, audited by trigger. */
+export async function confirmReport(
+  db: Db,
+  input: { siteId: string; reportId: string; person: string; personId: string; at: Date },
+): Promise<{ person: string; at: string; statement: string }> {
+  const [a] = await db
+    .select({ id: audits.id, siteId: audits.siteId })
+    .from(audits)
+    .where(eq(audits.id, input.reportId));
+  if (!a || a.siteId !== input.siteId)
+    throw new Error(`no audit report ${input.reportId} for site "${input.siteId}"`);
+  const [row] = await db
+    .insert(auditConfirmations)
+    .values({
+      siteId: input.siteId,
+      auditId: a.id,
+      person: input.person,
+      personId: input.personId,
+      statement: CONFIRM_STATEMENT,
+      at: input.at,
+      createdBy: input.personId,
+    })
+    .returning();
+  return { person: row!.person, at: row!.at.toISOString(), statement: row!.statement };
 }
