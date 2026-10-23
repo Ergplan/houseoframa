@@ -42,8 +42,10 @@ Date: 2026-10-23. Tag at start: `stage-5-start` (9b6d822). Builder: Claude Opus 
 
 | Site   | Commit                 | Defects | Notes | Clean bricks | Signed by                              | Verified |
 | ------ | ---------------------- | ------- | ----- | ------------ | -------------------------------------- | -------- |
-| EkBill | 4f28628                | 0       | 724   | 541 of 931   | openai `gpt-6.1-sol` (report 745fabc3) | yes      |
-| self   | da776e3 + working tree | 0       | 177   | 131 of 268   | openai `gpt-6.1-sol` (report 2e7fddfc) | yes      |
+| EkBill | 4f28628                | 0       | 724   | 541 of 931   | openai `gpt-6.1-sol` (report ac589b57) | yes      |
+| self   | a4ec511 + working tree | 0       | 179   | 136 of 277   | openai `gpt-6.1-sol` (report 2f94e1a2) | yes      |
+
+Both reports are the last audits, made with the finished code after the reviewer's last fix. Earlier runs stay in the record, append-only: EkBill e01a2978 and 745fabc3; self 2e7fddfc.
 
 **EkBill.**
 
@@ -60,7 +62,7 @@ Date: 2026-10-23. Tag at start: `stage-5-start` (9b6d822). Builder: Claude Opus 
 - The first run found one defect: EkBill's `matchCustomer` reads `close[1]` of a sorted list. I read the code. It does so only after `close.length > 1`, so that was a false defect. The check now spares a position read after a length check, with a test.
 - The first report (e01a2978) stays in the record, superseded by the later one.
 
-**This repository** has zero defects. Its notes are in KNOWN-GAPS.
+**This repository** has zero defects. All 14 checks ran: typecheck exit 0, build exit 0, and 54 test files passed, none failed. Its notes are in KNOWN-GAPS.
 
 ## Tests
 
@@ -79,7 +81,7 @@ Date: 2026-10-23. Tag at start: `stage-5-start` (9b6d822). Builder: Claude Opus 
   - in a real browser, the stored audit replays: Audit, the live log, Skip, the report, the brick's verdict;
   - the report page verifies.
 - **E2E on EkBill, `@vendor`** (`tests/stage-5.vendor.ekbill.test.ts`): a real audit of an EkBill copy by the auditor vendor, signed, verified, and read in the app. Passed.
-- **Watcher:** green.
+- **Watcher:** green at a4ec511, 389 tests.
 
 ## Deviations from the prompt
 
@@ -113,9 +115,22 @@ Run 4 at 9cc2d5f found one code defect, now fixed with a test:
 
 1. **The panel counted confirmed sign-offs itself** (Invariant 7). Fixed: `auditSignoffCounts()` in `packages/blueprint/metrics`, which the panel displays.
 
+Run 5 at a4ec511 found no code defect. Its two notes need runtime evidence a diff cannot carry, and stand:
+
+- it cannot see the generators and drift checks behind `blueprint/self.json` and `docs/BLUEPRINT.md` (earlier stages' code; the watcher's checks pass);
+- it cannot see the stored reports, the vendor test run or the watcher. They are in this report and in the database (`/site/ekbill/audit`, `/site/self/audit`).
+
 ## Real model cost
 
-(Filled in after the reviewer runs.)
+`pnpm cost 5` (prices set 2026-10-20; ₹94.92 per US$):
+
+| Prompt                    | Site   | Model         | Calls | Input tokens | Output tokens | Cost |
+| ------------------------- | ------ | ------------- | ----- | ------------ | ------------- | ---- |
+| `audit.v1`                | EkBill | `gpt-6.1-sol` | 3     | 38,174       | 8,155         | ₹15  |
+| `audit.v1`                | self   | `gpt-6.1-sol` | 2     | 15,770       | 4,652         | ₹7   |
+| `reviewer.v1` (five runs) | self   | `gpt-6.1-sol` | 5     | 5,07,970     | 10,129        | ₹106 |
+
+Total: ₹128. On top of that, the `@vendor` end-to-end made one auditor call, recorded in its throwaway database and dropped with it (about ₹5, like an EkBill audit).
 
 ## Open questions
 
