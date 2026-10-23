@@ -32,6 +32,7 @@ const toDecision = (r: typeof decisions.$inferSelect): Decision => ({
   statement: r.statement,
   bricks: r.bricks,
   ...(r.screenId ? { screenId: r.screenId } : {}),
+  ...(r.sessionId ? { sessionId: r.sessionId } : {}),
   status: r.status,
   by: r.by,
   at: r.at.toISOString(),

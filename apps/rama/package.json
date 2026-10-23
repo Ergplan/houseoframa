@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@rama/blueprint": "workspace:*",
+    "@rama/ceremony": "workspace:*",
     "@rama/db": "workspace:*",
     "@rama/shared": "workspace:*",
     "@rama/trace": "workspace:*",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0"
+    "@types/react-dom": "19.3.0",
+    "postgres": "3.4.9"
   }
 }

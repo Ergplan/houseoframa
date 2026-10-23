@@ -155,6 +155,7 @@ Source: `packages/shared/src/ceremony.ts`
 | `status` | `'decided' \| 'open' \| 'not-built'` | yes | Whether the decision is made, still open, or made but not built. |
 | `by` | `string` | yes | The person who recorded the decision. |
 | `at` | `string` | yes | When the decision was recorded, ISO 8601. |
+| `sessionId` | `string` | no | The discovery session the decision was taken in, when it was taken in one. |
 | `reconstructed` | `boolean` | no | True when the record was reconstructed after the fact rather than captured live. |
 | `supersedes` | `string` | no | The Decision this one replaces, when any (decisions are append-only too). |
 

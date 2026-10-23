@@ -18,6 +18,8 @@ export interface Decision {
   by: string;
   /** When the decision was recorded, ISO 8601. */
   at: string;
+  /** The discovery session the decision was taken in, when it was taken in one. */
+  sessionId?: string;
   /** True when the record was reconstructed after the fact rather than captured live. */
   reconstructed?: boolean;
   /** The Decision this one replaces, when any (decisions are append-only too). */

@@ -211,6 +211,30 @@ export const dependenciesByFloor = (bp: Blueprint, path: string): { layer: strin
 export const screensRendering = <S extends { bricks: string[] }>(screens: S[], path: string): S[] =>
   screens.filter((s) => s.bricks.includes(path));
 
+/** Screens signed (by id, at the Blueprint's commit; the caller decides which signatures are in force) over all screens. */
+export const signatureCoverage = (bp: Blueprint, signedScreens: string[]): { signed: number; unsigned: number; of: number } => {
+  const signed = bp.screens.filter((s) => signedScreens.includes(s.id)).length;
+  return { signed, unsigned: bp.screens.length - signed, of: bp.screens.length };
+};
+
+export type BrickMark = 'red' | 'amber' | 'green';
+
+/**
+ * The dot on each code brick (tests and non-code have none). On a signed screen: green when a test stands
+ * behind the brick, amber when only the signature does. Elsewhere: red when no test stands behind it.
+ */
+export const brickMarks = (bp: Blueprint, signedScreens: string[]): Record<string, BrickMark> => {
+  const figures = brickFigures(bp);
+  const signed = new Set(bp.screens.filter((s) => signedScreens.includes(s.id)).flatMap((s) => s.bricks));
+  const out: Record<string, BrickMark> = {};
+  for (const [path, f] of Object.entries(figures)) {
+    if (f.tested === null) continue;
+    if (signed.has(path)) out[path] = f.tested ? 'green' : 'amber';
+    else if (!f.tested) out[path] = 'red';
+  }
+  return out;
+};
+
 /** Every figure at once, for the CLI summary and the trust report. */
 export const summary = (bp: Blueprint) => ({
   files: files(bp),

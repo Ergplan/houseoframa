@@ -3,7 +3,7 @@
 // site's Blueprint; nothing is computed by a model and nothing is retyped.
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import type { Blueprint, FigureRef, Trail } from '@rama/shared';
+import type { Blueprint, FigureRef, Signoff, Trail } from '@rama/shared';
 import { workDir } from '@rama/blueprint/site';
 import type { Capture, CapturedScreen } from './capture.ts';
 import { appearanceKeys } from './keys.ts';
@@ -46,9 +46,21 @@ export function readCapture(siteId: string, env: NodeJS.ProcessEnv = process.env
   return existsSync(file) ? (JSON.parse(readFileSync(file, 'utf8')) as Capture) : null;
 }
 
-/** A figure is traced only when it has a mapping (a trail can be built); everything else is untraced. */
-export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
+/**
+ * A figure is traced only when it has a mapping; everything else is untraced. `signatures` are the ones
+ * in force by `<kind>:<id>` (Stage 4): a trail shows its screen's signature when it was made at the
+ * captured commit.
+ */
+export function showroomOf(
+  capture: Capture,
+  bp: Blueprint,
+  signatures: Map<string, Signoff> = new Map(),
+): Showroom {
   const trails: Record<string, Trail> = {};
+  const signedAt = (screenId: string | null) => {
+    const sig = screenId ? signatures.get(`screen:${screenId}`) : undefined;
+    return sig && sig.target.commit === capture.commit ? sig : null;
+  };
   const screen = (s: CapturedScreen): ShowroomScreen => ({
     name: s.name,
     title: s.title,
@@ -72,6 +84,7 @@ export function showroomOf(capture: Capture, bp: Blueprint): Showroom {
             code: mapping.code,
             shown: f.value ?? f.text,
             run: capture.runs[keys[i]!] ?? null,
+            signoff: signedAt(s.blueprintScreen),
           });
         }
         return { id: f.id, box: f.box, traced: Boolean(mapping), text: f.text };

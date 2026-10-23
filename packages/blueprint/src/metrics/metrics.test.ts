@@ -157,6 +157,27 @@ describe('metrics (one function per figure)', () => {
     expect(m.screensRendering(shots, 'lib/a.ts').map((x) => x.name)).toEqual(['home']);
     expect(m.screensRendering(shots, 'app/globals.css')).toEqual([]);
   });
+  it('signatureCoverage counts the screens signed at the Blueprint commit over all screens', () => {
+    const b = {
+      ...bp,
+      screens: [
+        { id: '/', name: 'Home', route: '/', file: 'app/page.tsx', bricks: ['lib/a.ts'] },
+        { id: '/b', name: 'B', route: '/b', file: 'app/b/page.tsx', bricks: ['lib/b.ts'] },
+      ],
+    };
+    expect(m.signatureCoverage(b, ['/'])).toEqual({ signed: 1, unsigned: 1, of: 2 });
+    expect(m.signatureCoverage(b, ['/', '/nowhere'])).toEqual({ signed: 1, unsigned: 1, of: 2 });
+  });
+  it('brickMarks: red for untested code, green when signed with a test, amber when signed without one', () => {
+    const b = {
+      ...bp,
+      screens: [
+        { id: '/', name: 'Home', route: '/', file: 'app/page.tsx', bricks: ['lib/a.ts', 'lib/b.ts', 'app/globals.css'] },
+      ],
+    };
+    expect(m.brickMarks(b, [])).toEqual({ 'lib/b.ts': 'red' });
+    expect(m.brickMarks(b, ['/'])).toEqual({ 'lib/a.ts': 'green', 'lib/b.ts': 'amber' });
+  });
   it('summary reports every figure from the same functions', () =>
     expect(m.summary(bp)).toMatchObject({ files: 5, importEdges: 2, authors: 2, heaviestCodeBrick: 'lib/a.ts' }));
 });

@@ -100,3 +100,37 @@ describe('frame', () => {
     expect(skyAt(12, scene).top).toBe('rgb(63,111,184)');
   });
 });
+
+describe('frame: signatures on the building', () => {
+  it("turns a signed screen's bricks green (with a test) or amber (without); red stays on unsigned untested code", () => {
+    const signedBp = {
+      ...bp,
+      screens: [
+        {
+          id: '/',
+          name: 'Home',
+          route: '/',
+          file: 'app/page.tsx',
+          bricks: ['app/page.tsx', 'lib/calc.ts', 'lib/fmt.ts'],
+        },
+      ],
+    };
+    const marks = (signed: string[]) =>
+      Object.fromEntries(
+        frame({
+          ...state({ commitIndex: 3, progress: 1 }),
+          blueprint: signedBp,
+          signedScreens: signed,
+        })
+          .bricks.filter((b) => b.mark)
+          .map((b) => [b.box.path, b.mark]),
+      );
+    expect(marks([])).toEqual({ 'app/page.tsx': 'red', 'lib/data.ts': 'red', 'lib/fmt.ts': 'red' });
+    expect(marks(['/'])).toEqual({
+      'app/page.tsx': 'amber',
+      'lib/calc.ts': 'green',
+      'lib/data.ts': 'red', // not on the signed screen
+      'lib/fmt.ts': 'amber',
+    });
+  });
+});

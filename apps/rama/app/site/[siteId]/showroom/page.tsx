@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture, showroomOf } from '@rama/trace/showroom';
+import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { ShowroomView } from '../../../../components/showroom/ShowroomView';
 
 export const dynamic = 'force-dynamic';
@@ -37,7 +38,7 @@ export default async function Showroom({
     <ShowroomView
       siteId={site.id}
       name={site.name}
-      showroom={showroomOf(capture, blueprint)}
+      showroom={showroomOf(capture, blueprint, signaturesInForce(readSignoffs(site.repoDir)))}
       initialScreen={one(q.screen)}
       initialFigure={one(q.figure)}
     />

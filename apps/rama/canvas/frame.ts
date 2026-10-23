@@ -1,6 +1,7 @@
 // frame(state) → everything visible at one instant of the replay, as plain data. draw() only paints a
 // frame, so what the building shows is tested here without a canvas.
 import type { Blueprint } from '@rama/shared';
+import { brickMarks, type BrickMark } from '@rama/blueprint/metrics';
 import { layout, type BrickBox, type FloorBox, type Scene } from './layout.ts';
 import {
   activeEvent,
@@ -30,6 +31,8 @@ export interface SiteState {
   hover?: string | null;
   /** Draw import cables for the hovered or selected brick. */
   links?: boolean;
+  /** Screens signed at the Blueprint's commit (Stage 4): their bricks' dots turn green or amber. */
+  signedScreens?: string[];
   /** Animation clock in ms for pulses and the JCB's arm; does not change what is built. */
   clock?: number;
 }
@@ -113,6 +116,8 @@ export interface FrameBrick {
   /** The brick changed by the event under way. */
   change?: { kind: 'modify' | 'demolish'; tag: string };
   verdict?: Verdict;
+  /** The brick's dot (packages/blueprint/metrics brickMarks): red, amber or green; none when absent. */
+  mark?: BrickMark;
 }
 
 export interface Frame {
@@ -156,6 +161,7 @@ export function frame(state: SiteState): Frame {
       : 10;
   const visible = (path: string) => brickState(tl, path, k, p);
 
+  const marks = brickMarks(bp, state.signedScreens ?? []);
   const bricks: FrameBrick[] = [];
   for (const box of scene.bricks) {
     const st = visible(box.path);
@@ -167,6 +173,8 @@ export function frame(state: SiteState): Frame {
     }
     const v = state.audit?.verdicts[box.path];
     if (v) fb.verdict = v;
+    const mark = marks[box.path];
+    if (mark) fb.mark = mark;
     bricks.push(fb);
   }
 

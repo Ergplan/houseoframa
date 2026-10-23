@@ -20,6 +20,7 @@ import {
   mostReworked,
   screensOf,
   screensRendering,
+  signatureCoverage,
   summary,
   testCoverage,
 } from '@rama/blueprint/metrics';
@@ -42,6 +43,8 @@ interface Props {
   view: View;
   member: string | null;
   captured?: CapturedScreen[];
+  /** Screens with a signature in force at the Blueprint's commit (Stage 4). */
+  signedScreens?: string[];
   onBrick: (path: string) => void;
   onCommit: (index: number) => void;
   onReport: () => void;
@@ -71,8 +74,9 @@ export function Inspector(props: Props) {
   );
 }
 
-function TrustReport({ blueprint: bp, onBrick }: Props) {
+function TrustReport({ siteId, blueprint: bp, signedScreens = [], onBrick }: Props) {
   const s = summary(bp);
+  const signing = signatureCoverage(bp, signedScreens);
   const cover = testCoverage(bp);
   const heavy = heaviestCodeBrick(bp);
   const hub = loadBearing(bp, 1)[0];
@@ -92,6 +96,10 @@ function TrustReport({ blueprint: bp, onBrick }: Props) {
         {bp.commit ? <code>{bp.commit.slice(0, 7)}</code> : 'no commit'}
         {last ? `, ${fmtDate(last.at)}` : ''}
         {bp.worktree ? ', with the changes in its working tree' : ''}.
+      </p>
+      <p className={signing.unsigned ? 'red' : ''} data-signed={signing.signed}>
+        {signing.signed} of {signing.of} screens signed at this commit; {signing.unsigned} unsigned.{' '}
+        {signing.of > 0 && <a href={`/site/${siteId}/walkthrough`}>Walk through the screens</a>}
       </p>
       <div className="stat">
         <div>
@@ -179,8 +187,9 @@ function TrustReport({ blueprint: bp, onBrick }: Props) {
         )}
       </dl>
       <p className="note">
-        A red dot is a code brick no test imports. Sign-off will ask for a green brick: a test that
-        passed, or a named person who confirmed the behaviour on a screen.
+        A red dot is a code brick no test imports. On a screen a named person signed, a brick with a
+        test behind it turns green, and one without turns amber: confirmed by a person, not by a
+        test.
       </p>
       <p className="note">
         Click a brick, or find it by path, to read it in English. Press Play to watch the site build

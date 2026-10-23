@@ -30,4 +30,5 @@ export {
   type SignInput,
   type SiteRef,
 } from './store.ts';
+export { importRecord, IMPORT_COMPONENT, type ImportOutcome } from './importer.ts';
 export { draftQuestion, DISCOVERY_COMPONENT } from './discovery.ts';

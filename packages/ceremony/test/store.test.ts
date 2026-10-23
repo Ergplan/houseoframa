@@ -7,6 +7,7 @@ import path from 'node:path';
 import postgres from 'postgres';
 import { createDb, runMigrations, seed } from '@rama/db';
 import { readDecisions, readSignoffs, signaturesInForce, SIGNOFFS_FILE } from '../src/records.ts';
+import { importRecord } from '../src/importer.ts';
 import {
   addTurn,
   currentDecisions,
@@ -223,5 +224,77 @@ describe('decisions and sessions', () => {
     } finally {
       rmSync(other, { recursive: true, force: true });
     }
+  });
+});
+
+describe('importRecord', () => {
+  const card = (title: string, statement: string) => ({
+    title,
+    statement,
+    bricks: [],
+    status: 'decided' as const,
+    by: 'the operator',
+    at: '2026-10-16T00:00:00Z',
+  });
+  const log = (decisions: ReturnType<typeof card>[]) => ({
+    title: 'Decisions imported (reconstructed)',
+    source: 'docs/DECISIONS.md @ abc1234',
+    turns: [],
+    decisions,
+  });
+
+  it('imports a source once as a reconstructed session, then reconciles a corrected parse append-only', async () => {
+    const other = mkdtempSync(path.join(tmpdir(), 'rama-import-'));
+    try {
+      const site = { id: 'self', repoDir: other };
+      const first = await importRecord(
+        conn.db,
+        site,
+        log([card('A', 'a'), card('B', 'b and the next section')]),
+      );
+      expect(first).toMatchObject({ added: 2, superseded: 0, unchanged: 0 });
+      const again = await importRecord(
+        conn.db,
+        site,
+        log([card('A', 'a'), card('B', 'b'), card('C', 'c')]),
+      );
+      expect(again).toMatchObject({ added: 1, superseded: 1, unchanged: 1, orphaned: [] });
+      const nothing = await importRecord(
+        conn.db,
+        site,
+        log([card('A', 'a'), card('B', 'b'), card('C', 'c')]),
+      );
+      expect(nothing).toMatchObject({ sessionId: null, added: 0, superseded: 0, unchanged: 3 });
+      const cards = readDecisions(other);
+      expect(
+        cards.map((d) => [d.title, d.statement, Boolean(d.supersedes), d.reconstructed]),
+      ).toEqual([
+        ['A', 'a', false, true],
+        ['B', 'b and the next section', false, true],
+        ['B', 'b', true, true],
+        ['C', 'c', false, true],
+      ]);
+      const sessions = (await listSessions(conn.db, 'self')).filter((s) =>
+        s.source?.startsWith('docs/DECISIONS.md'),
+      );
+      expect(sessions.map((s) => s.source)).toEqual([
+        'docs/DECISIONS.md @ abc1234',
+        'docs/DECISIONS.md @ abc1234 (correction 1)',
+      ]);
+    } finally {
+      rmSync(other, { recursive: true, force: true });
+    }
+  });
+
+  it('refuses to import a session with turns twice', async () => {
+    const site = { id: 'self', repoDir: repoDir };
+    const s = {
+      title: 'Weekend',
+      source: 'weekend.js',
+      turns: [{ speaker: 'Asha', text: 'Hi', at: '2026-09-28T10:00:00+05:30' }],
+      decisions: [],
+    };
+    await importRecord(conn.db, site, s);
+    await expect(importRecord(conn.db, site, s)).rejects.toThrow(/already imported/);
   });
 });

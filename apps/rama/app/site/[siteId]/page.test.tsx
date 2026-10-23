@@ -1,5 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { isValidElement, type ReactElement } from 'react';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { randomBytes } from 'node:crypto';
+import postgres from 'postgres';
+import { createDb, runMigrations, seed } from '@rama/db';
+import { startSession } from '@rama/ceremony';
+import { DiscoveryView } from '../../../components/ceremony/DiscoveryView';
+import { isValidElement, type ComponentProps, type ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import SitePage from './page';
@@ -31,11 +36,57 @@ describe('route /site/[siteId]', () => {
   });
 });
 
-describe('route /site/[siteId]/discovery (stub until Stage 4)', () => {
-  it('says what will be there and when, and shows nothing invented', async () => {
-    const office = renderToStaticMarkup(await Discovery(params('self')));
-    expect(office).toContain('Site office · House of Rama');
-    expect(office).toContain('Stage 4');
+describe('route /site/[siteId]/discovery', () => {
+  const dbName = `rama_test_${randomBytes(4).toString('hex')}`;
+  const serverUrl = process.env.DATABASE_URL!;
+  const original = process.env.DATABASE_URL;
+  const admin = postgres(serverUrl, { max: 1, onnotice: () => {} });
+
+  beforeAll(async () => {
+    await admin.unsafe(`CREATE DATABASE ${dbName}`);
+    process.env.DATABASE_URL = Object.assign(new URL(serverUrl), {
+      pathname: `/${dbName}`,
+    }).toString();
+    const conn = createDb();
+    await runMigrations(conn.db);
+    await seed(conn.db, { memberName: 'Asha Rao' });
+    await startSession(conn.db, 'self', {
+      title: 'Kick-off',
+      reconstructed: true,
+      source: 'a log',
+      createdBy: 'rama:test@0',
+    });
+    await conn.close();
+  });
+
+  afterAll(async () => {
+    process.env.DATABASE_URL = original;
+    await admin.unsafe(`DROP DATABASE IF EXISTS ${dbName} WITH (FORCE)`);
+    await admin.end();
+  });
+
+  it("shows the site's sessions and decision cards as recorded, and the member it records as", async () => {
+    const el = (await Discovery(params('self'))) as ReactElement<
+      ComponentProps<typeof DiscoveryView>
+    >;
+    expect(el.type).toBe(DiscoveryView);
+    expect(el.props.sessions.map((s) => [s.title, s.reconstructed, s.source])).toEqual([
+      ['Kick-off', true, 'a log'],
+    ]);
+    expect(el.props.decisions).toEqual([]);
+    expect(el.props.screens.length).toBeGreaterThan(0);
+  });
+
+  it('says the database could not be reached rather than showing an empty office', async () => {
+    const url = process.env.DATABASE_URL;
+    process.env.DATABASE_URL = 'postgres://rama:rama@127.0.0.1:1/none';
+    try {
+      expect(renderToStaticMarkup(await Discovery(params('self')))).toContain(
+        'could not be reached',
+      );
+    } finally {
+      process.env.DATABASE_URL = url;
+    }
   });
 
   it('is not found for an unknown site', async () => {

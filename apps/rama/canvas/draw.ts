@@ -4,6 +4,7 @@
 // prototype (reference/weekend-prototype/house-of-rama.html, "drawing helpers" and draw()).
 import { frame, type Frame, type SiteState } from './frame.ts';
 import type { Box, BrickBox, Crane, Scene } from './layout.ts';
+import type { BrickMark } from '@rama/blueprint/metrics';
 import { INK, UNTESTED, layerColor } from './palette.ts';
 
 /** The part of CanvasRenderingContext2D the renderer uses (so tests can record calls). */
@@ -113,7 +114,7 @@ export function draw(ctx: Ctx, state: SiteState): Frame {
   }
 
   for (const fb of f.bricks) {
-    drawBrick(ctx, fb.box, fb.box.x, fb.box.y, R);
+    drawBrick(ctx, fb.box, fb.box.x, fb.box.y, R, fb.mark);
     if (fb.verdict) {
       ctx.strokeStyle = VERDICT_COLOR[fb.verdict];
       ctx.lineWidth = 2;
@@ -304,14 +305,16 @@ function drawCrane(s: Scene, c: Crane, R: Rect, text: Text) {
   text(c.label, c.x, jy - 42, 6, c.color, 'center');
 }
 
-function drawBrick(ctx: Ctx, n: BrickBox, x: number, y: number, R: Rect) {
+const MARK_COLOR = { red: UNTESTED, amber: '#ffb429', green: '#5ad45a' } as const;
+
+function drawBrick(ctx: Ctx, n: BrickBox, x: number, y: number, R: Rect, mark?: BrickMark) {
   R(x, y, n.w, n.h, n.color || layerColor(n.layer));
   R(x, y, n.w, 2, 'rgba(255,255,255,.45)');
   R(x, y + n.h - 2, n.w, 2, 'rgba(0,0,0,.45)');
   R(x + n.w - 2, y, 2, n.h, 'rgba(0,0,0,.35)');
   for (let i = 10; i < n.w - 4; i += 14)
     R(x + i, y + (((i / 14) | 0) % 2 ? 2 : 7), 2, 5, 'rgba(0,0,0,.25)');
-  if (n.untested) R(x + 2, y + 2, 3, 3, UNTESTED);
+  if (mark) R(x + 2, y + 2, 3, 3, MARK_COLOR[mark]);
   if (n.binary) R(x + n.w - 6, y + 2, 3, 3, '#fff');
   void ctx;
 }

@@ -1,15 +1,25 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { addSite } from '@rama/blueprint/site';
+import { addSite, locateSite } from '@rama/blueprint/site';
+import { line } from '@rama/ceremony/records';
+import type { Signoff } from '@rama/shared';
 import type { Capture } from '@rama/trace';
 import {
   fixtureRepo,
   type FixtureRepo,
 } from '../../../../../../packages/blueprint/test/fixture-repo';
 import Showroom from './page';
+import Walkthrough from '../walkthrough/page';
+import { WalkthroughView } from '../../../../components/ceremony/WalkthroughView';
+
+// The walkthrough view refreshes through the App Router, which a static render does not mount.
+vi.mock('next/navigation', async (orig) => ({
+  ...(await orig<typeof import('next/navigation')>()),
+  useRouter: () => ({ refresh: () => {} }),
+}));
 import { shotResponse } from '../../../api/site/[siteId]/shots/[name]/shot';
 
 let repo: FixtureRepo;
@@ -144,7 +154,7 @@ describe('route /site/[siteId]/showroom', () => {
     expect(html).toContain('export function orderTotal(lines) {');
     expect(html).toMatch(/<code>lib\/total\.js(<!-- -->)?:(<!-- -->)?1<\/code>/);
     expect(html).toContain('Order lines: LINES (fixture)');
-    expect(html).toContain('Not signed. Signatures arrive in Stage 4');
+    expect(html).toContain('Not signed at this commit.');
   });
 
   it('says no screens were captured, rather than showing a mock-up, for a site without a capture', async () => {
@@ -173,5 +183,82 @@ describe('route /api/site/[siteId]/shots/[name]', () => {
     expect(shotResponse('shop', 'missing.png').status).toBe(404);
     expect(shotResponse('nope', 'home.png').status).toBe(404);
     expect(shotResponse('shop', 'home.PNG').status).toBe(404);
+  });
+});
+
+describe('signatures in the showroom and the walkthrough', () => {
+  const signoff = (commit: string, over: Partial<Signoff> = {}): Signoff => ({
+    id: 's1',
+    siteId: 'shop',
+    person: 'Asha Rao',
+    target: { kind: 'screen', id: '/', commit },
+    statement: 'Home shows the order total.',
+    at: '2026-10-22T10:00:00.000Z',
+    ...over,
+  });
+  const writeSignoffs = (lines: Signoff[]) => {
+    const dir = path.join(locateSite('shop')!.repoDir, '.rama');
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(path.join(dir, 'signoffs.jsonl'), lines.map((l) => line(l) + '\n').join(''));
+  };
+  const head = () => repo.git('rev-parse', 'HEAD').trim();
+  afterAll(() =>
+    rmSync(path.join(locateSite('shop')!.repoDir, '.rama'), { recursive: true, force: true }),
+  );
+
+  it("shows the screen's signature in its trail when it was made at the captured commit", async () => {
+    writeSignoffs([signoff(head())]);
+    const html = await render('shop', { figure: 'order-total' });
+    expect(html).toMatch(
+      /Signed by Asha Rao on 2026-10-22:(<!-- -->)? (<!-- -->)?Home shows the order total\./,
+    );
+    writeSignoffs([signoff('0000000')]);
+    expect(await render('shop', { figure: 'order-total' })).toContain('Not signed at this commit.');
+  });
+
+  it('builds one step per signable screen, with a statement from its traced figures, for the member to sign', async () => {
+    writeSignoffs([]);
+    process.env.RAMA_MEMBER_NAME = 'Asha Rao';
+    const el = (await Walkthrough({
+      params: Promise.resolve({ siteId: 'shop' }),
+    })) as React.ReactElement<React.ComponentProps<typeof WalkthroughView>>;
+    expect(el.type).toBe(WalkthroughView);
+    expect(el.props.commit).toBe(head());
+    expect(el.props.member).toBe('Asha Rao');
+    expect(el.props.steps.map((s) => [s.screenId, s.signature])).toEqual([['/', null]]);
+    expect(el.props.steps[0]!.statement).toBe(
+      'On / (Shop): Order total shows 2. I have looked at this screen and it shows what I expect.',
+    );
+    const html = renderToStaticMarkup(el);
+    expect(html).toContain('data-state="unsigned"');
+    expect(html).toContain('Confirm and sign as Asha Rao');
+    expect(html).toContain('<b>0 of 1</b>');
+  });
+
+  it('shows a signed screen as signed, and one signed at another commit as needing a new signature', async () => {
+    writeSignoffs([signoff(head())]);
+    let html = renderToStaticMarkup(
+      await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }),
+    );
+    expect(html).toContain('data-state="signed"');
+    expect(html).toContain('Withdraw my signature');
+    writeSignoffs([signoff('abc1234')]);
+    html = renderToStaticMarkup(await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }));
+    expect(html).toContain('data-state="stale"');
+  });
+
+  it('offers no signing without a member, and nothing to sign without a capture', async () => {
+    delete process.env.RAMA_MEMBER_NAME;
+    const html = renderToStaticMarkup(
+      await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }),
+    );
+    expect(html).toContain('RAMA_MEMBER_NAME is not set');
+    expect(html).not.toContain('Confirm and sign');
+    expect(
+      renderToStaticMarkup(await Walkthrough({ params: Promise.resolve({ siteId: 'self' }) })),
+    ).toContain('none have been captured');
+    await expect(Walkthrough({ params: Promise.resolve({ siteId: 'nope' }) })).rejects.toThrow(
+      /NEXT_HTTP_ERROR_FALLBACK;404/,
+    );
   });
 });

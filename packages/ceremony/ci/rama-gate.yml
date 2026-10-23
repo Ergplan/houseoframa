@@ -1,0 +1,60 @@
+# House of Rama merge gate (Invariant 4: nothing merges unsigned). Copied into a target's
+# .github/workflows/ from github.com/Ergplan/houseoframa packages/ceremony/ci/rama-gate.yml.
+#
+# It runs on pull_request_target, so the version of this file that judges a pull request is the one on
+# the base branch: a pull request cannot edit or switch off the gate that judges it. The gate itself is
+# House of Rama's code at a pinned ref, not the target's, and reads no configuration from the target.
+# The token is read-only and no secret is passed, because the target's tests (the pull request's code)
+# run here to produce the test report. Make "rama gate" a required check in the branch protection rules;
+# that setting lives outside the repository's files.
+name: rama gate
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: rama gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the pull request (full history, no credentials kept)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+          path: target
+
+      - name: Check out House of Rama at a pinned ref
+        uses: actions/checkout@v4
+        with:
+          repository: Ergplan/houseoframa
+          ref: RAMA_REF
+          persist-credentials: false
+          path: rama
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install House of Rama
+        run: pnpm --dir rama install --frozen-lockfile
+
+      - name: Run the target's tests for the report (a failure here only means fewer bricks are covered)
+        working-directory: target
+        run: |
+          npm ci
+          npx vitest run --project unit --reporter=json --outputFile="$RUNNER_TEMP/rama-tests.json" || true
+
+      - name: Gate
+        run: >
+          pnpm --dir rama rama gate "$GITHUB_WORKSPACE/target"
+          --base "${{ github.event.pull_request.base.sha }}"
+          --test-report "$RUNNER_TEMP/rama-tests.json"

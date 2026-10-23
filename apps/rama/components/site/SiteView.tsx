@@ -23,6 +23,8 @@ export function SiteView({
   blueprint,
   member,
   captured = [],
+  signedScreens = [],
+  initialBrick = null,
 }: {
   siteId: string;
   name: string;
@@ -30,6 +32,10 @@ export function SiteView({
   member: string | null;
   /** Screens photographed from the target's app (Stage 3), for the brick's On screen thumbnails. */
   captured?: CapturedScreen[];
+  /** Screens with a signature in force at the Blueprint's commit: their bricks' dots turn green or amber. */
+  signedScreens?: string[];
+  /** A brick to open on arrival (`?brick=`), as a decision card's link does. */
+  initialBrick?: string | null;
 }) {
   const router = useRouter();
   const { scene, timeline } = siteModel(blueprint);
@@ -40,11 +46,15 @@ export function SiteView({
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
   const [links, setLinks] = useState(false);
   const [fit, setFit] = useState(true);
-  const [selection, setSelection] = useState<string | null>(null);
+  const opening =
+    initialBrick && blueprint.nodes.some((n) => n.path === initialBrick) ? initialBrick : null;
+  const [selection, setSelection] = useState<string | null>(opening);
   const [hover, setHover] = useState<{ path: string; x: number; y: number; label: string } | null>(
     null,
   );
-  const [view, setView] = useState<View>({ kind: 'report' });
+  const [view, setView] = useState<View>(
+    opening ? { kind: 'brick', path: opening } : { kind: 'report' },
+  );
   // Set once the view is live in the browser (hydrated and painting), so a test can wait for it.
   const [ready, setReady] = useState(false);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -89,6 +99,7 @@ export function SiteView({
           hover: s.hover,
           links: s.links,
           clock: now,
+          signedScreens,
         });
       }
       raf = requestAnimationFrame(tick);
@@ -96,7 +107,7 @@ export function SiteView({
     raf = requestAnimationFrame(tick);
     setReady(true);
     return () => cancelAnimationFrame(raf);
-  }, [blueprint, glow, lifts]);
+  }, [blueprint, glow, lifts, signedScreens]);
 
   const select = useCallback(
     (path: string) => {
@@ -301,6 +312,14 @@ export function SiteView({
                 Code with no test behind it
               </span>
               <span>
+                <i style={{ background: '#ffb429', width: 7, height: 7, borderRadius: '50%' }} />
+                Signed, no test
+              </span>
+              <span>
+                <i style={{ background: '#5ad45a', width: 7, height: 7, borderRadius: '50%' }} />
+                Signed and tested
+              </span>
+              <span>
                 <i style={{ background: '#4fe3d8' }} />
                 Imports
               </span>
@@ -317,6 +336,7 @@ export function SiteView({
           view={view}
           member={member}
           captured={captured}
+          signedScreens={signedScreens}
           onBrick={select}
           onCommit={(i) => goTo(i + 1)}
           onReport={() => {

@@ -624,3 +624,61 @@ button:disabled {
   color: var(--red);
   border-color: rgba(255, 90, 106, 0.6);
 }
+/* Site office and walkthrough (Stage 4) */
+.office {
+  max-width: 860px;
+  margin: 16px 0;
+}
+.office .session {
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.office .topic {
+  margin: 18px 0 8px;
+  font-size: 13px;
+  color: var(--amber);
+}
+.office .topic time {
+  color: var(--dim);
+  margin-right: 6px;
+}
+.office .msg {
+  margin: 6px 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--line);
+}
+.office .msg.agent {
+  border-left-color: var(--cyan, #4fe3d8);
+}
+.office .msg.draft {
+  opacity: 0.8;
+  border-left-style: dashed;
+}
+.office .dec {
+  margin: 10px 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(90, 212, 90, 0.5);
+  border-radius: 10px;
+}
+.office .dec.red {
+  border-color: rgba(255, 90, 106, 0.5);
+}
+.office .dec .lnk {
+  margin-right: 8px;
+}
+.office form input,
+.office form textarea,
+.office form select {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  font: inherit;
+}
+.mon blockquote {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--amber);
+}

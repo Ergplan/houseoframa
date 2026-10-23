@@ -28,6 +28,7 @@ export const DecisionRecord = z
     status: z.enum(['decided', 'open', 'not-built']),
     by: z.string().min(1),
     at: iso,
+    sessionId: z.string().min(1).optional(),
     reconstructed: z.boolean().optional(),
     supersedes: z.string().min(1).optional(),
   })

@@ -1,24 +1,25 @@
 // rama gate <repoPath> --base <commit> [--test-report <vitest-or-jest.json>]
 // rama-ceremony import-session <site> <reference/weekend-prototype/discovery.js>
 // rama-ceremony import-decisions <site> [--from docs/DECISIONS.md]
+// rama-ceremony install-gate <site> [--ref <houseoframa ref>]
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { and, eq } from 'drizzle-orm';
 import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
-import { createDb, discoverySessions } from '@rama/db';
+import { createDb } from '@rama/db';
 import { formatGate, runGate } from './gate.ts';
+import { installGate } from './install.ts';
 import { parseDecisionsLog, parseWeekendSession, type ImportedSession } from './imports.ts';
-import { addTurn, decide, startSession } from './store.ts';
+import { importRecord } from './importer.ts';
 
 const envFile = fileURLToPath(new URL('../../../.env', import.meta.url));
 if (existsSync(envFile)) process.loadEnvFile(envFile);
 
-export const IMPORT_COMPONENT = 'rama:ceremony-import@0.1.0';
 const USAGE = `usage:
   rama gate <repoPath> --base <commit> [--test-report <file>]
   rama-ceremony import-session <site> <discovery.js>
-  rama-ceremony import-decisions <site> [--from docs/DECISIONS.md]`;
+  rama-ceremony import-decisions <site> [--from docs/DECISIONS.md]
+  rama-ceremony install-gate <site> [--ref <houseoframa ref>]`;
 
 const flag = (argv: string[], name: string) => {
   const i = argv.indexOf(name);
@@ -30,38 +31,11 @@ async function importSession(siteId: string, imported: ImportedSession): Promise
   if (!site) throw new Error(`no site "${siteId}"`);
   const { db, close } = createDb();
   try {
-    const [already] = await db
-      .select()
-      .from(discoverySessions)
-      .where(
-        and(eq(discoverySessions.siteId, siteId), eq(discoverySessions.source, imported.source)),
-      );
-    if (already)
-      throw new Error(
-        `${imported.source} is already imported for "${siteId}" (session ${already.id})`,
-      );
-    const sessionId = await startSession(db, siteId, {
-      title: imported.title,
-      reconstructed: true,
-      source: imported.source,
-      createdBy: IMPORT_COMPONENT,
-    });
-    for (const t of imported.turns) {
-      await addTurn(db, siteId, sessionId, {
-        speaker: t.speaker,
-        text: t.text,
-        at: new Date(t.at),
-        createdBy: IMPORT_COMPONENT,
-      });
-    }
-    for (const d of imported.decisions) {
-      await decide(
-        db,
-        { id: site.id, repoDir: site.repoDir },
-        { ...d, at: new Date(d.at), sessionId, reconstructed: true, createdBy: IMPORT_COMPONENT },
-      );
-    }
-    return `imported ${imported.turns.length} turns and ${imported.decisions.length} decision cards into "${siteId}", flagged reconstructed`;
+    const o = await importRecord(db, { id: site.id, repoDir: site.repoDir }, imported);
+    const orphaned = o.orphaned.length
+      ? `; ${o.orphaned.length} recorded cards are no longer in the source (kept): ${o.orphaned.join(', ')}`
+      : '';
+    return `"${siteId}" from ${imported.source}: ${o.turns} turns, ${o.added} cards added, ${o.superseded} superseded, ${o.unchanged} unchanged, all flagged reconstructed${orphaned}`;
   } finally {
     await close();
   }
@@ -94,6 +68,19 @@ async function main(argv: string[]): Promise<number> {
       `${from} @ ${bp.commit.slice(0, 7)}`,
     );
     console.error(await importSession(a, imported));
+    return 0;
+  }
+  if (command === 'install-gate') {
+    const site = a ? locateSite(a) : null;
+    if (!site) throw new Error(a ? `no site "${a}"` : USAGE);
+    const ref =
+      flag(argv, '--ref') ??
+      (await import('node:child_process'))
+        .execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' })
+        .trim();
+    console.error(
+      `wrote ${installGate(site.repoDir, ref)} (House of Rama at ${ref}); commit it in the target, and make "rama gate" a required check`,
+    );
     return 0;
   }
   throw new Error(USAGE);

@@ -308,3 +308,27 @@ describe('capture refusals', () => {
     expect(existsSync(path.join(out, 'shots', 'home.png'))).toBe(true);
   });
 });
+
+describe('showroom signatures', () => {
+  it("shows a screen's signature in its trails only when it was made at the captured commit", () => {
+    const sig = (commit: string) =>
+      new Map([
+        [
+          'screen:/',
+          {
+            id: 's1',
+            siteId: 'fixture',
+            person: 'Asha',
+            target: { kind: 'screen' as const, id: '/', commit },
+            statement: 'ok',
+            at: '2026-10-22T00:00:00Z',
+          },
+        ],
+      ]);
+    expect(showroomOf(cap, bp, sig(cap.commit)).trails['home/order-total']!.signoff?.person).toBe(
+      'Asha',
+    );
+    expect(showroomOf(cap, bp, sig('0000000')).trails['home/order-total']!.signoff).toBeNull();
+    expect(showroomOf(cap, bp).trails['order/order-total']!.signoff).toBeNull();
+  });
+});

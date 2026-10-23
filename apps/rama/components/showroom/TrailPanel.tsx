@@ -95,7 +95,7 @@ export function TrailPanel({ trail }: { trail: Trail }) {
           </p>
         ) : (
           <p className="note">
-            Not signed. Signatures arrive in Stage 4; until then no figure carries one.
+            Not signed at this commit. A named person signs the screen in the walkthrough.
           </p>
         )}
       </section>

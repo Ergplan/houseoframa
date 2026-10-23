@@ -1,7 +1,7 @@
 // trail(figure) → the path from a figure on a screen back to its formula, inputs, data, build history and
 // signature. Plain code (Invariant 6): it reads the Blueprint, the figure's mapping, what the screen
 // showed and what re-executing the target's own function gave. A value it does not have stays null.
-import type { Blueprint, Trail } from '@rama/shared';
+import type { Blueprint, Signoff, Trail } from '@rama/shared';
 import type { FigureMapping } from './config.ts';
 
 export interface RunResult {
@@ -22,6 +22,8 @@ export interface TrailSource {
   /** What the screen showed: the element's text, or its `data-rama-value` when it declares one. */
   shown: string | null;
   run: RunResult | null;
+  /** The signature in force on the figure's screen at the captured commit (Stage 4), or null. */
+  signoff?: Signoff | null;
 }
 
 /** Whitespace and non-breaking spaces do not make two figures different. */
@@ -55,7 +57,7 @@ export function buildTrail(bp: Blueprint, src: TrailSource): Trail {
     inputs: m.inputs.map((i) => ({ label: i.label, value: valueOf(i.label), source: i.source })),
     data: m.inputs.map((i) => (i.data ? `${i.label}: ${i.data}` : `${i.label}: not recorded`)),
     build,
-    signoff: null, // Stage 4
+    signoff: src.signoff ?? null,
     reexecuted: run !== null,
     result: {
       shown: src.shown,

@@ -1,12 +1,27 @@
 import { notFound } from 'next/navigation';
 import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
+import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { SiteView } from '../../../components/site/SiteView';
 
 export const dynamic = 'force-dynamic';
 
-export default async function SitePage({ params }: { params: Promise<{ siteId: string }> }) {
+/** Screens whose signature in force (from the target's .rama/signoffs.jsonl) names the Blueprint's commit. */
+function signedAt(repoDir: string, commit: string): string[] {
+  return [...signaturesInForce(readSignoffs(repoDir)).values()]
+    .filter((s) => s.target.kind === 'screen' && s.target.commit === commit)
+    .map((s) => s.target.id);
+}
+
+export default async function SitePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ siteId: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { siteId } = await params;
+  const brick = (await searchParams)?.brick;
   const site = locateSite(siteId);
   if (!site) notFound();
   const blueprint = readSiteBlueprint(site);
@@ -34,6 +49,8 @@ export default async function SitePage({ params }: { params: Promise<{ siteId: s
       blueprint={blueprint}
       member={process.env.RAMA_MEMBER_NAME?.trim() || null}
       captured={captured}
+      signedScreens={signedAt(site.repoDir, blueprint.commit)}
+      initialBrick={(Array.isArray(brick) ? brick[0] : brick) ?? null}
     />
   );
 }
