@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
+  "commit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6022,6 +6022,63 @@
       "sha": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
       "short": "17fc5b4",
       "subject": "Stage 6: draft report"
+    },
+    {
+      "at": "2026-10-23T20:55:11Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/api/bookings/handler.test.ts"
+        },
+        {
+          "add": 5,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/handover/page.tsx"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/server/campus.ts"
+        },
+        {
+          "add": 10,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/server/floor.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/server/handover.test.ts"
+        },
+        {
+          "add": 52,
+          "del": 15,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 5,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/stage-6.md"
+        },
+        {
+          "add": 20,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-6.review.md"
+        }
+      ],
+      "sha": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
+      "short": "720a3a7",
+      "subject": "Fix Stage 6 reviewer run 1: campus unsigned counts from metrics; keys page names the handed-over commit"
     }
   ],
   "edges": [
@@ -13439,7 +13496,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T20:47:51Z",
+  "extractedAt": "2026-10-23T20:55:11Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -13815,12 +13872,12 @@
     {
       "binary": false,
       "bytes": 3270,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 101,
@@ -14566,7 +14623,7 @@
     {
       "binary": false,
       "bytes": 5511,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -14574,7 +14631,7 @@
         "dynamic"
       ],
       "firstCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
-      "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 146,
@@ -15376,14 +15433,14 @@
     {
       "binary": false,
       "bytes": 1660,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "campusInputs"
       ],
       "firstCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
-      "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 40,
@@ -15411,7 +15468,7 @@
     {
       "binary": false,
       "bytes": 5548,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -15424,7 +15481,7 @@
         "siteState"
       ],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 164,
@@ -15434,7 +15491,7 @@
     {
       "binary": false,
       "bytes": 8035,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "DATABASE_URL",
         "RAMA_WORK_DIR"
@@ -15442,7 +15499,7 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
-      "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 209,
@@ -15963,31 +16020,31 @@
     },
     {
       "binary": false,
-      "bytes": 8171,
-      "changes": 1,
+      "bytes": 8722,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
-      "lastCommit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 118,
+      "lines": 124,
       "path": "docs/reports/stage-6.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 10569,
-      "changes": 0,
+      "bytes": 20304,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
+      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 20,
+      "lines": 36,
       "path": "docs/reports/stage-6.review.md",
       "test": false
     },

@@ -88,7 +88,7 @@ Open the printed link (it works once, for 15 minutes). The home page then lists 
   - an anonymous visitor was sent to /login;
   - the pod status refused without a token;
   - a backup restored into a fresh database.
-- **Watcher:** green, 442 tests at 28854a9.
+- **Watcher:** green, 442 tests at 720a3a7.
 
 ## Deviations and readings of the prompt
 
@@ -105,9 +105,15 @@ Run 1 at 17fc5b4 found one code defect and one report claim. Both are fixed:
 1. **Campus counted unsigned screens itself** (Invariant 7), as screens minus signatures, which disagreed with the light and the handover check for a signature on a screen the Blueprint no longer has. Fixed: `signatureCoverage()` from metrics, with a test.
 2. **(Report)** "The certificate and the keys page are read from the handover row" overstated it: the keys page showed the current commit. Fixed: after handover it names the handed-over commit, and says when the code has moved on since.
 
+Run 2 at 720a3a7 found no code defect. Its three notes need runtime evidence a diff cannot carry, and stand:
+
+- it cannot see the append-only writers and audit triggers from earlier stages (tested there, and in `packages/db/src/db.test.ts`);
+- it cannot see the generators and drift checks behind `blueprint/self.json` (the watcher's checks pass);
+- it cannot see the database records or the box run. They are in this report and in `docs/DEPLOY.md`.
+
 ## Real model cost
 
-(Filled in after the reviewer runs.)
+`pnpm cost 6`: two `reviewer.v1` runs on `gpt-6.1-sol`, 2,15,797 input and 2,907 output tokens, ₹44. Stage 6 made no other model call.
 
 ## Open questions
 
