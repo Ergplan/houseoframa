@@ -1,5 +1,5 @@
-import { notFound } from 'next/navigation';
-import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
+import { pageSite } from '../../../server/session';
+import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { latestAudit } from '@rama/audit';
@@ -40,8 +40,7 @@ export default async function SitePage({
 }) {
   const { siteId } = await params;
   const brick = (await searchParams)?.brick;
-  const site = locateSite(siteId);
-  if (!site) notFound();
+  const { member, site } = await pageSite(siteId);
   const blueprint = readSiteBlueprint(site);
   if (!blueprint) {
     return (
@@ -65,7 +64,7 @@ export default async function SitePage({
       siteId={site.id}
       name={site.name}
       blueprint={blueprint}
-      member={process.env.RAMA_MEMBER_NAME?.trim() || null}
+      member={member.name}
       captured={captured}
       signedScreens={signedAt(site.repoDir, blueprint.commit)}
       initialBrick={(Array.isArray(brick) ? brick[0] : brick) ?? null}

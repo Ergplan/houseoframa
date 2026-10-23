@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { locateSite } from '@rama/blueprint/site';
+import { pageSite } from '../../../../server/session';
 import { latestAudit, verifyReport } from '@rama/audit';
 import { createDb } from '@rama/db';
 import { ConfirmReport, DraftState } from '../../../../components/audit/ConfirmReport';
@@ -13,8 +12,7 @@ const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 /** The site's latest audit report, as signed: verified against the auditor's own model call on every view. */
 export default async function AuditReport({ params }: { params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
-  const site = locateSite(siteId);
-  if (!site) notFound();
+  const { member, site } = await pageSite(siteId);
   let stored: Awaited<ReturnType<typeof latestAudit>>;
   let verified: { ok: boolean; why?: string } | null = null;
   try {
@@ -47,7 +45,6 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
     );
   }
   const { report, body } = stored;
-  const member = process.env.RAMA_MEMBER_NAME?.trim() || null;
   const flagged = stored.findings.filter((f) => f.verdict !== 'pass');
   const byCheck = new Map<string, typeof flagged>();
   for (const f of flagged) byCheck.set(f.check, [...(byCheck.get(f.check) ?? []), f]);
@@ -105,11 +102,8 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
             by={`${report.vendor} ${report.model}`}
           />
         </p>
-        {!stored.confirmations.length && member ? (
-          <ConfirmReport siteId={site.id} reportId={report.reportId} member={member} />
-        ) : null}
-        {!stored.confirmations.length && !member ? (
-          <p className="note">RAMA_MEMBER_NAME is not set, so there is no member to confirm as.</p>
+        {!stored.confirmations.length ? (
+          <ConfirmReport siteId={site.id} reportId={report.reportId} member={member.name} />
         ) : null}
       </section>
       <section className="session">

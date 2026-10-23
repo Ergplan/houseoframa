@@ -22,6 +22,11 @@ vi.mock('next/navigation', async (orig) => ({
 }));
 import { shotResponse } from '../../../api/site/[siteId]/shots/[name]/shot';
 
+// A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
+vi.mock('../../../../server/session', async (orig) =>
+  (await import('../../../../test/session-mock')).sessionMock(await orig()),
+);
+
 let repo: FixtureRepo;
 let work: string;
 const original = process.env.RAMA_WORK_DIR;
@@ -218,7 +223,6 @@ describe('signatures in the showroom and the walkthrough', () => {
 
   it('builds one step per signable screen, with a statement from its traced figures, for the member to sign', async () => {
     writeSignoffs([]);
-    process.env.RAMA_MEMBER_NAME = 'Asha Rao';
     const el = (await Walkthrough({
       params: Promise.resolve({ siteId: 'shop' }),
     })) as React.ReactElement<React.ComponentProps<typeof WalkthroughView>>;
@@ -247,13 +251,11 @@ describe('signatures in the showroom and the walkthrough', () => {
     expect(html).toContain('data-state="stale"');
   });
 
-  it('offers no signing without a member, and nothing to sign without a capture', async () => {
-    delete process.env.RAMA_MEMBER_NAME;
+  it('signs as the signed-in member, and offers nothing to sign without a capture', async () => {
     const html = renderToStaticMarkup(
       await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }),
     );
-    expect(html).toContain('RAMA_MEMBER_NAME is not set');
-    expect(html).not.toContain('Confirm and sign');
+    expect(html).toContain('Confirm and sign as Asha Rao');
     expect(
       renderToStaticMarkup(await Walkthrough({ params: Promise.resolve({ siteId: 'self' }) })),
     ).toContain('none have been captured');

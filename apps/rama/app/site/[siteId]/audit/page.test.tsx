@@ -6,6 +6,11 @@ import { createDb, modelCalls, runMigrations, seed, audits, findings } from '@ra
 import { confirmReport, inputsHash, type AuditorInput } from '@rama/audit';
 import AuditReport from './page';
 
+// A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
+vi.mock('../../../../server/session', async (orig) =>
+  (await import('../../../../test/session-mock')).sessionMock(await orig()),
+);
+
 // The confirm button refreshes through the App Router, which a static render does not mount.
 vi.mock('next/navigation', async (orig) => ({
   ...(await orig<typeof import('next/navigation')>()),

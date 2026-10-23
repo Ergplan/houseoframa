@@ -16,6 +16,7 @@ import { captureDir, readCapture } from '../packages/trace/src/showroom.ts';
 import { readSignoffs } from '../packages/ceremony/src/records.ts';
 import { runGate, type GateResult } from '../packages/ceremony/src/gate.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { pageAs, signIn } from './session.ts';
 
 const SITE = 'ekbill-e2e';
 const MEMBER = 'Walkthrough Tester';
@@ -29,6 +30,7 @@ let env: NodeJS.ProcessEnv;
 let repoDir: string;
 let server: DevServer;
 let browser: Browser;
+let token: string;
 
 beforeAll(async () => {
   const ekbill = locateSite('ekbill')!;
@@ -59,10 +61,10 @@ beforeAll(async () => {
   });
   await conn.close();
 
-  server = await startDevServer(
-    { RAMA_WORK_DIR: work, DATABASE_URL: dbUrl, RAMA_MEMBER_NAME: MEMBER },
-    [`/site/${SITE}/walkthrough`],
-  );
+  token = await signIn(dbUrl, { name: MEMBER, email: 'walkthrough@example.com' });
+  server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
+    `/site/${SITE}/walkthrough`,
+  ]);
   browser = await chromium.launch();
 }, 600_000);
 
@@ -76,7 +78,7 @@ afterAll(async () => {
 
 describe('stage 4 on EkBill', () => {
   it("signs two screens in the walkthrough, under the member's name, in Postgres and in .rama/signoffs.jsonl", async () => {
-    const page = await browser.newPage();
+    const page = await pageAs(browser, server, token);
     try {
       await page.goto(`${server.browserUrl}/site/${SITE}/walkthrough`);
       for (const screen of SIGN) {

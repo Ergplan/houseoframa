@@ -55,18 +55,23 @@ describe('packages/db', () => {
       'audit_confirmations',
       'audit_log',
       'audits',
+      'bookings',
+      'checkins',
       'decisions',
       'discovery_sessions',
       'discovery_turns',
       'findings',
+      'login_links',
       'model_calls',
       'people',
+      'pods',
+      'sessions',
       'signoffs',
       'sites',
     ]);
   });
 
-  it('gives every table site_id, created_at and created_by; site_id nullable only on people', async () => {
+  it('gives every table site_id, created_at and created_by; site_id nullable only where a row may belong to no site', async () => {
     const cols = await conn.sql<{ table_name: string; column_name: string; is_nullable: string }[]>`
       select table_name, column_name, is_nullable from information_schema.columns
       where table_schema = 'public' and column_name in ('site_id', 'created_at', 'created_by')`;
@@ -82,6 +87,11 @@ describe('packages/db', () => {
       'audits',
       'findings',
       'audit_confirmations',
+      'login_links',
+      'sessions',
+      'pods',
+      'bookings',
+      'checkins',
     ]) {
       const mine = cols.filter((c) => c.table_name === table);
       expect(mine.map((c) => c.column_name).sort(), table).toEqual([
@@ -90,7 +100,10 @@ describe('packages/db', () => {
         'site_id',
       ]);
       for (const c of mine) {
-        const nullable = table === 'people' && c.column_name === 'site_id';
+        // A person, a sign-in, a pod and a game-mode booking belong to no site.
+        const nullable =
+          ['people', 'login_links', 'sessions', 'pods', 'bookings'].includes(table) &&
+          c.column_name === 'site_id';
         expect(c.is_nullable, `${table}.${c.column_name}`).toBe(nullable ? 'YES' : 'NO');
       }
     }

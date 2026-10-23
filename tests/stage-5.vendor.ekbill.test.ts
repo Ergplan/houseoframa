@@ -13,6 +13,7 @@ import { addSite, locateSite, readSiteBlueprint } from '../packages/blueprint/sr
 import { captureDir, readCapture } from '../packages/trace/src/showroom.ts';
 import { latestAudit, runAudit, verifyReport } from '../packages/audit/src/report.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { signIn, withSession } from './session.ts';
 
 const SITE = 'ekbill-audit';
 const serverUrl = process.env.DATABASE_URL!;
@@ -87,11 +88,13 @@ describe('@vendor stage 5 on EkBill', () => {
     } finally {
       await conn.close();
     }
-    server = await startDevServer(
-      { RAMA_WORK_DIR: work, DATABASE_URL: dbUrl, RAMA_MEMBER_NAME: 'Audit Tester' },
-      [`/site/${SITE}/audit`],
-    );
-    const html = await (await fetch(`${server.url}/site/${SITE}/audit`)).text();
+    server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
+      `/site/${SITE}/audit`,
+    ]);
+    const token = await signIn(dbUrl, { name: 'Audit Tester', email: 'audit@example.com' });
+    const html = await (
+      await fetch(`${server.url}/site/${SITE}/audit`, { headers: withSession(token) })
+    ).text();
     expect(html).toContain('data-verified="true"');
     expect(html).toContain(`Signed by <b>${process.env.AUDITOR_VENDOR}</b>`);
   }, 1_800_000);

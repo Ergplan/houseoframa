@@ -2,6 +2,17 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-23 — Stage 6: the floor edition
+
+- **Sign-in is an email link** (no passwords), as locked.
+  - **Links:** the token is 32 random bytes, and only its sha256 is stored. A link works once (spent by a single conditional update, so two simultaneous clicks cannot both succeed) and for 15 minutes.
+  - **Sessions:** a 30-day httpOnly, SameSite=Lax cookie, Secure when the app's address is https. The session is stored as a hash too, and sign-out revokes it.
+  - **The link request** answers the same whether or not the address belongs to a member.
+- **Mail by SMTP, with a local outbox.** With `SMTP_URL` set, the link is mailed. Without it (this machine), it is written to the server's log. `pnpm rama-member link <email>` prints one for whoever has this machine's shell. Which mail service the floor uses is the user's choice.
+- **A site belongs to one member, and another member's site does not exist.** Every page under /site redirects to /login without a session, and answers not found for a site the member does not own. Every site route answers 401 without a session and 404 for another's site. /api/health stays public. A manager sees the campus, not other members' sites.
+- **Members are added from the command line** (`pnpm rama-member add <email> <name> [--manager]`). The pre-Stage 6 local member keeps their sites and gains an email: for this build, the user's account email.
+- **Sign-ins and sessions are not append-only.** A link is spent and a session revoked by an update (`used_at`, `revoked_at`): they are credentials, not a record anyone signs. Like `people`, they carry no site (`site_id` is null).
+
 ## 2026-10-23 — Stage 5: the audit
 
 - **The checks run the target's own scripts.** `typecheck`, `build` and `test` are the scripts in its `package.json`, run with the package manager its lockfile names, in its checkout, with PATH and HOME only (no House of Rama secret reaches the target). A target without such a script gets the check reported as not run, never as a pass. This repository gained a root `build` script (`NEXT_DIST_DIR=.next-build`) so its own audit runs the build, away from the dev server's `.next`.

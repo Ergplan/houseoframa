@@ -18,11 +18,18 @@ const provenance = {
   createdBy: text('created_by').notNull(),
 };
 
-/** Members and reviewers. Until Stage 6 there is one: the local member. */
+/**
+ * Members and reviewers. A member signs in by a link mailed to `email` (Stage 6); a `manager` also sees
+ * the campus. Before Stage 6 there was one person, the local member, with no email.
+ */
 export const people = pgTable('people', {
   id: uuid('id').primaryKey().defaultRandom(),
   siteId: text('site_id').references((): AnyPgColumn => sites.siteId),
   name: text('name').notNull().unique(),
+  email: text('email').unique(),
+  role: text('role', { enum: ['member', 'manager'] })
+    .notNull()
+    .default('member'),
   ...provenance,
 });
 
@@ -228,6 +235,80 @@ export const auditConfirmations = pgTable('audit_confirmations', {
   ...provenance,
 });
 
+/**
+ * A magic sign-in link (Stage 6): only the sha256 of its token is kept. It works once (`used_at`) and
+ * until `expires_at`. `site_id` is null: a link belongs to a person, not a site.
+ */
+export const loginLinks = pgTable('login_links', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id').references(() => sites.siteId),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  tokenHash: text('token_hash').notNull().unique(),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+  usedAt: timestamp('used_at', { withTimezone: true }),
+  ...provenance,
+});
+
+/** A signed-in browser: the sha256 of the cookie's token, until it expires or is revoked (sign-out). */
+export const sessions = pgTable('sessions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id').references(() => sites.siteId),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  tokenHash: text('token_hash').notNull().unique(),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+  revokedAt: timestamp('revoked_at', { withTimezone: true }),
+  ...provenance,
+});
+
+/** A pod on the floor, by number, and the box it runs on. */
+export const pods = pgTable('pods', {
+  pod: integer('pod').primaryKey(),
+  siteId: text('site_id').references(() => sites.siteId),
+  name: text('name').notNull(),
+  ...provenance,
+});
+
+/**
+ * A booking of a pod (MASTER-PROMPT Stage 6): a member, a shift (`work` on a site, or `game` mode), and
+ * when. Opening /pod/<n> during a work booking loads its site.
+ */
+export const bookings = pgTable('bookings', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id').references(() => sites.siteId),
+  pod: integer('pod')
+    .notNull()
+    .references(() => pods.pod),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  shift: text('shift', { enum: ['work', 'game'] }).notNull(),
+  startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
+  endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
+  ...provenance,
+});
+
+/**
+ * A member's own report, some time after handover, of whether the product is in use (the campus's
+ * "in use at 90 days"). Append-only: a later check-in is a new row.
+ */
+export const checkins = pgTable('checkins', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  siteId: text('site_id')
+    .notNull()
+    .references(() => sites.siteId),
+  personId: uuid('person_id')
+    .notNull()
+    .references(() => people.id),
+  inUse: boolean('in_use').notNull(),
+  note: text('note'),
+  at: timestamp('at', { withTimezone: true }).notNull(),
+  ...provenance,
+});
+
 /** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
 export const APPEND_ONLY_TABLES = [
   'model_calls',
@@ -239,6 +320,7 @@ export const APPEND_ONLY_TABLES = [
   'audits',
   'findings',
   'audit_confirmations',
+  'checkins',
 ] as const;
 
 /** Tables whose every insert also appends an audit_log row, written by a trigger (Invariant 8). */

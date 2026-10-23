@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
+import { pageSite } from '../../../../server/session';
+import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture, showroomOf } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { ShowroomView } from '../../../../components/showroom/ShowroomView';
@@ -16,8 +16,7 @@ export default async function Showroom({
 }) {
   const { siteId } = await params;
   const q = (await searchParams) ?? {};
-  const site = locateSite(siteId);
-  if (!site) notFound();
+  const { site } = await pageSite(siteId);
   const capture = readCapture(site.id);
   const blueprint = readSiteBlueprint(site);
   if (!capture || !blueprint) {

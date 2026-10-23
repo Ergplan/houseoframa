@@ -17,6 +17,7 @@ import { auditChecks } from '../packages/audit/src/checks/index.ts';
 import { inputsHash, number, type AuditorInput } from '../packages/audit/src/auditor.ts';
 import { fixtureRepo, type FixtureRepo } from '../packages/blueprint/test/fixture-repo.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { pageAs, signIn, withSession } from './session.ts';
 
 const AUDIT = fileURLToPath(new URL('../packages/audit/bin/rama-audit.mjs', import.meta.url));
 const serverUrl = process.env.DATABASE_URL!;
@@ -27,6 +28,7 @@ let repo: FixtureRepo;
 let work: string;
 let server: DevServer;
 let browser: Browser;
+let token: string;
 
 beforeAll(async () => {
   repo = fixtureRepo();
@@ -145,10 +147,11 @@ beforeAll(async () => {
   ]);
   await conn.close();
 
-  server = await startDevServer(
-    { RAMA_WORK_DIR: work, DATABASE_URL: dbUrl, RAMA_MEMBER_NAME: 'Asha Rao' },
-    ['/site/shop', '/site/shop/audit'],
-  );
+  token = await signIn(dbUrl, { name: 'Asha Rao', email: 'asha@example.com' });
+  server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
+    '/site/shop',
+    '/site/shop/audit',
+  ]);
   browser = await chromium.launch();
 }, 300_000);
 
@@ -184,7 +187,7 @@ describe('stage 5 e2e', () => {
   });
 
   it('replays the audit on the building: drones, live log, the report, and the verdict in the brick view', async () => {
-    const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
+    const page = await pageAs(browser, server, token, { viewport: { width: 1400, height: 1000 } });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     try {
@@ -219,7 +222,9 @@ describe('stage 5 e2e', () => {
   });
 
   it('serves the report page, verified against the auditor call', async () => {
-    const html = await (await fetch(`${server.url}/site/shop/audit`)).text();
+    const html = await (
+      await fetch(`${server.url}/site/shop/audit`, { headers: withSession(token) })
+    ).text();
     expect(html).toContain('data-verified="true"');
     expect(html).toContain('One defect: the spread takes the third bid by position.');
   });

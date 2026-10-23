@@ -437,7 +437,7 @@ function BrickView({
           No purpose recorded for this brick yet. <PhraseState state="none" />
         </p>
       )}
-      {!member && <p className="note">Confirming needs a local member: set RAMA_MEMBER_NAME.</p>}
+      {!member && <p className="note">Confirming needs a signed-in member.</p>}
       {confirm.error && <p className="error">{confirm.error}</p>}
       {confirm.notice && <p className="note">{confirm.notice}</p>}
       <div className="reviewer">

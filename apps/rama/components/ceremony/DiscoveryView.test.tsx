@@ -84,7 +84,7 @@ describe('<DiscoveryView>', () => {
 
   it('records nothing without a member, and says when there is nothing recorded', () => {
     const html = render({ member: null, sessions: [], decisions: [] });
-    expect(html).toContain('RAMA_MEMBER_NAME is not set');
+    expect(html).toContain('Sign in to record a session.');
     expect(html).not.toContain('<form');
     expect(html).toContain('No session has been held or imported');
   });

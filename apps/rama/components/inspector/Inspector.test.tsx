@@ -66,13 +66,13 @@ describe('Inspector: Brick', () => {
     expect(html).toContain('a test imports it');
   });
 
-  it('offers Confirm only on unconfirmed drafts, and only with a local member', () => {
+  it('offers Confirm only on unconfirmed drafts, and only to a signed-in member', () => {
     const withMember = render({ kind: 'brick', path: 'lib/calc.ts' });
     expect(withMember.match(/>Confirm</g)).toHaveLength(1);
     expect(withMember).toContain('aria-label="Confirm the phrase for app/page.tsx → lib/calc.ts"');
     const without = render({ kind: 'brick', path: 'lib/calc.ts' }, null);
     expect(without).not.toContain('>Confirm<');
-    expect(without).toContain('Confirming needs a local member: set RAMA_MEMBER_NAME.');
+    expect(without).toContain('Confirming needs a signed-in member.');
   });
 
   it('shows a confirmed purpose with who and when, and binaries and tests honestly', () => {

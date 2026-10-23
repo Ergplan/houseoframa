@@ -14,11 +14,14 @@ import { captureDir } from '../packages/trace/src/showroom.ts';
 import { fixtureApp } from '../packages/trace/test/fixture-app.ts';
 import type { FixtureRepo } from '../packages/blueprint/test/fixture-repo.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { pageAs, signIn, throwawayDb } from './session.ts';
 
 let work: string;
 let app: FixtureRepo;
 let server: DevServer;
 let browser: Browser;
+let db: Awaited<ReturnType<typeof throwawayDb>>;
+let token: string;
 
 beforeAll(async () => {
   app = fixtureApp();
@@ -26,20 +29,27 @@ beforeAll(async () => {
   const env = { ...process.env, RAMA_WORK_DIR: work };
   const { site, blueprint } = addSite(app.dir, { id: 'shop', name: 'Shop', env });
   await capture(site, blueprint, { outDir: captureDir('shop', env) });
-  server = await startDevServer({ RAMA_WORK_DIR: work }, ['/site/shop/showroom']);
+  db = await throwawayDb('Asha Rao');
+  token = await signIn(db.url, { name: 'Asha Rao', email: 'asha@example.com' }, [
+    { id: 'shop', name: 'Shop', repo: app.dir },
+  ]);
+  server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: db.url }, [
+    '/site/shop/showroom',
+  ]);
   browser = await chromium.launch();
 }, 240_000);
 
 afterAll(async () => {
   await browser?.close();
   await server?.stop();
+  await db?.drop();
   app?.cleanup();
   if (work) rmSync(work, { recursive: true, force: true });
 });
 
 describe('stage 3 e2e', () => {
   it("opens the Showroom, clicks a traced figure's hotspot, and reads its formula", async () => {
-    const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
+    const page = await pageAs(browser, server, token, { viewport: { width: 1400, height: 1000 } });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(`${server.browserUrl}/site/shop/showroom`);

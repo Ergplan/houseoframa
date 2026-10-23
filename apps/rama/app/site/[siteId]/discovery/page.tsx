@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { pageSite } from '../../../../server/session';
 import { createDb } from '@rama/db';
-import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
+import { readSiteBlueprint } from '@rama/blueprint/site';
 import { listDecisions, listSessions, type SessionWithTurns } from '@rama/ceremony';
 import type { Decision } from '@rama/shared';
 import { DiscoveryView } from '../../../../components/ceremony/DiscoveryView';
@@ -10,8 +10,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function Discovery({ params }: { params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
-  const site = locateSite(siteId);
-  if (!site) notFound();
+  const { member, site } = await pageSite(siteId);
   let sessions: SessionWithTurns[];
   let decisions: Decision[];
   try {
@@ -41,7 +40,7 @@ export default async function Discovery({ params }: { params: Promise<{ siteId: 
     <DiscoveryView
       siteId={site.id}
       name={site.name}
-      member={process.env.RAMA_MEMBER_NAME?.trim() || null}
+      member={member.name}
       sessions={sessions}
       decisions={decisions}
       bricks={bp?.nodes.map((n) => n.path) ?? []}

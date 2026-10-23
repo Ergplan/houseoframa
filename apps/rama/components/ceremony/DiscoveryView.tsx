@@ -149,9 +149,7 @@ export function DiscoveryView({
           </section>
         )}
         {!member ? (
-          <p className="note">
-            RAMA_MEMBER_NAME is not set, so there is no member to record a session as.
-          </p>
+          <p className="note">Sign in to record a session.</p>
         ) : !live ? (
           <p>
             <button

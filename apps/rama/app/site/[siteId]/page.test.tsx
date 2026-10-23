@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { randomBytes } from 'node:crypto';
 import postgres from 'postgres';
 import { createDb, runMigrations, seed } from '@rama/db';
@@ -10,6 +10,11 @@ import { readFileSync } from 'node:fs';
 import SitePage from './page';
 import Discovery from './discovery/page';
 import { SiteView } from '../../../components/site/SiteView';
+
+// A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
+vi.mock('../../../server/session', async (orig) =>
+  (await import('../../../test/session-mock')).sessionMock(await orig()),
+);
 
 const params = (siteId: string) => ({ params: Promise.resolve({ siteId }) });
 const notFound = /NEXT_HTTP_ERROR_FALLBACK;404/;

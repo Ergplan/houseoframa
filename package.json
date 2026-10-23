@@ -28,7 +28,8 @@
     "cost": "tsx scripts/cost.ts",
     "rama-trace": "rama-trace",
     "rama-ceremony": "rama-ceremony",
-    "rama-audit": "rama-audit"
+    "rama-audit": "rama-audit",
+    "rama-member": "pnpm --filter @rama/db member"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

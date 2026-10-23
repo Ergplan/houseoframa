@@ -1,7 +1,12 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import Home from './page';
 import { shortSha } from '../components/BuildStamp';
+
+// A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
+vi.mock('../server/session', async (orig) =>
+  (await import('../test/session-mock')).sessionMock(await orig()),
+);
 
 const original = process.env.GIT_SHA;
 afterEach(() => {
@@ -9,22 +14,22 @@ afterEach(() => {
 });
 
 describe('route /', () => {
-  it('renders the name and the short SHA from GIT_SHA', () => {
+  it('renders the name and the short SHA from GIT_SHA', async () => {
     process.env.GIT_SHA = '73a3e6b0c1d2e3f405162738495a6b7c8d9e0f1a';
-    const html = renderToStaticMarkup(<Home />);
+    const html = renderToStaticMarkup(await Home());
     expect(html).toContain('House of Rama · Built on trust');
     expect(html).toContain('commit 73a3e6b');
   });
 
-  it('lists the sites, this repository first', () => {
-    const html = renderToStaticMarkup(<Home />);
+  it("lists the signed-in member's sites", async () => {
+    const html = renderToStaticMarkup(await Home());
     expect(html).toContain('href="/site/self"');
     expect(html).toContain('House of Rama</a>');
   });
 
-  it('says the commit is unknown when GIT_SHA is missing', () => {
+  it('says the commit is unknown when GIT_SHA is missing', async () => {
     delete process.env.GIT_SHA;
-    expect(renderToStaticMarkup(<Home />)).toContain('commit unknown');
+    expect(renderToStaticMarkup(await Home())).toContain('commit unknown');
   });
 });
 

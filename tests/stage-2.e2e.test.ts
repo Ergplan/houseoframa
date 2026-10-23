@@ -19,6 +19,7 @@ import { registerSite } from '../packages/blueprint/src/register.ts';
 import { fixtureRepo, type FixtureRepo } from '../packages/blueprint/test/fixture-repo.ts';
 import { layout } from '../apps/rama/canvas/layout.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { pageAs, signIn, withSession } from './session.ts';
 
 const MEMBER = 'E2E Member';
 const serverUrl = process.env.DATABASE_URL;
@@ -32,6 +33,7 @@ let work: string;
 let source: FixtureRepo;
 let server: DevServer;
 let browser: Browser;
+let token: string;
 
 beforeAll(async () => {
   await admin.unsafe(`CREATE DATABASE ${dbName}`);
@@ -62,10 +64,12 @@ beforeAll(async () => {
     testUrl,
   );
 
-  server = await startDevServer(
-    { DATABASE_URL: testUrl, RAMA_WORK_DIR: work, RAMA_MEMBER_NAME: MEMBER },
-    ['/site/self', '/site/fixture'],
-  );
+  // The member owns self (seed) and fixture (registerSite), and signs in by link.
+  token = await signIn(testUrl, { name: MEMBER, email: 'member@example.com' });
+  server = await startDevServer({ DATABASE_URL: testUrl, RAMA_WORK_DIR: work }, [
+    '/site/self',
+    '/site/fixture',
+  ]);
   browser = await chromium.launch();
 }, 180_000);
 
@@ -103,7 +107,7 @@ describe('stage 2 e2e', () => {
     const deps = self.edges.filter((e) => e.from === brick);
     expect(deps.length).toBeGreaterThan(3);
 
-    const page = await browser.newPage({ viewport: { width: 1500, height: 1000 } });
+    const page = await pageAs(browser, server, token, { viewport: { width: 1500, height: 1000 } });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto(`${server.browserUrl}/site/self`);
@@ -135,7 +139,7 @@ describe('stage 2 e2e', () => {
     const bp = JSON.parse(
       readFileSync(path.join(work, 'fixture/blueprint.json'), 'utf8'),
     ) as Blueprint;
-    const page = await browser.newPage({ viewport: { width: 1500, height: 1000 } });
+    const page = await pageAs(browser, server, token, { viewport: { width: 1500, height: 1000 } });
     await page.goto(`${server.browserUrl}/site/fixture`);
     await clickBrick(page, bp, 'lib/calc.ts');
     const row = page.locator(
@@ -180,8 +184,13 @@ describe('stage 2 e2e', () => {
 
   it('serves the Showroom and site office stubs, and 404 for an unknown site', async () => {
     for (const p of ['/site/self/showroom', '/site/self/discovery', '/site/fixture/showroom']) {
-      expect((await fetch(`${server.url}${p}`)).status).toBe(200);
+      expect((await fetch(`${server.url}${p}`, { headers: withSession(token) })).status).toBe(200);
     }
-    expect((await fetch(`${server.url}/site/nope`)).status).toBe(404);
+    expect((await fetch(`${server.url}/site/nope`, { headers: withSession(token) })).status).toBe(
+      404,
+    );
+    // Without a session, a site page sends to sign in.
+    const anon = await fetch(`${server.url}/site/self`, { redirect: 'manual' });
+    expect(anon.headers.get('location') ?? '').toMatch(/\/login$/);
   });
 });

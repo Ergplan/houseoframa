@@ -1,8 +1,8 @@
 // The ceremony routes' dependencies on the real database, checkout and model: one place, used by every
 // ceremony route. A connection is opened per call and closed after it.
 import { and, asc, eq } from 'drizzle-orm';
-import { createDb, discoverySessions, discoveryTurns, people } from '@rama/db';
-import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
+import { createDb, discoverySessions, discoveryTurns, type Member } from '@rama/db';
+import { readSiteBlueprint, type SiteLocation } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
 import {
   addTurn,
@@ -33,17 +33,16 @@ export async function readBody(req: Request): Promise<unknown> {
   }
 }
 
-export const ceremonyDeps = (): CeremonyDeps => ({
-  locate: (id) => locateSite(id),
+/**
+ * The deps for one authorized request: the site is the one the signed-in member owns (server/authorize),
+ * and every write is made as that member.
+ */
+export const ceremonyDeps = (auth: { member: Member; site: SiteLocation }): CeremonyDeps => ({
+  locate: (id) => (id === auth.site.id ? auth.site : null),
   blueprint: (site) => readSiteBlueprint(site),
   capturedCommit: (site) => readCapture(site.id)?.commit ?? null,
-  memberName: process.env.RAMA_MEMBER_NAME,
-  personId: (name) =>
-    withDb(async (db) => {
-      const [p] = await db.select({ id: people.id }).from(people).where(eq(people.name, name));
-      if (!p) throw new Error(`no person "${name}": run \`pnpm db:seed\``);
-      return p.id;
-    }),
+  memberName: auth.member.name,
+  personId: async () => auth.member.id,
   signoffs: (siteId) => withDb((db) => listSignoffs(db, siteId)),
   sign: (site, input) => withDb((db) => sign(db, site, input)),
   decide: (site, input) => withDb((db) => decide(db, site, input)),
