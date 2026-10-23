@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+  "commit": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -5974,6 +5974,33 @@
       "sha": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "short": "6346059",
       "subject": "Stage 6: the pod box deploy (Dockerfile, compose, nightly backups) and DEPLOY.md"
+    },
+    {
+      "at": "2026-10-23T20:44:29Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 3,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/app/page.tsx"
+        },
+        {
+          "add": 188,
+          "del": 25,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 164,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/stage-6.e2e.test.ts"
+        }
+      ],
+      "sha": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
+      "short": "28854a9",
+      "subject": "Stage 6: end-to-end on a real target; home page hydrates cleanly"
     }
   ],
   "edges": [
@@ -13390,7 +13417,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T20:31:34Z",
+  "extractedAt": "2026-10-23T20:44:29Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -14417,7 +14444,7 @@
     {
       "binary": false,
       "bytes": 2333,
-      "changes": 3,
+      "changes": 4,
       "env": [
         "GIT_SHA"
       ],
@@ -14427,7 +14454,7 @@
         "dynamic"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "lastCommit": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 65,
@@ -15910,6 +15937,21 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 90,
       "path": "docs/reports/stage-5.review.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 7584,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 115,
+      "path": "docs/reports/stage-6.md",
       "test": false
     },
     {
@@ -19859,12 +19901,12 @@
     {
       "binary": false,
       "bytes": 6608,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
+      "lastCommit": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 164,
