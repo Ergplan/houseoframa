@@ -144,7 +144,7 @@ Intended end to end: `rama site add <repo>` → `extract()` → `blueprint/<site
 One box.
 
 - Development: `docker-compose.yml` runs `db` (Postgres 16) under `pnpm dev`, and `app` and `watcher` under the `stack` profile.
-- The pod box (Stage 6): `deploy/compose.box.yml` runs `db` (inside the box only), `app` (the `Dockerfile`: a production build with git and Chromium, migrating and seeding at start), `backup` (nightly `pg_dump`, `deploy/backup.sh`) and `watcher` (`--profile checks`). Steps, environment, restore and update are in `docs/DEPLOY.md`.
+- The pod box (Stage 6): `deploy/compose.box.yml` runs `db` (inside the box only), `app` (the `Dockerfile`: a production build with git and Chromium, migrating and seeding at start), `backup` (nightly `pg_dump`, `deploy/backup.sh`, copied off the box by `BACKUP_COPY_COMMAND` when set) and `watcher` (`--profile checks`). Steps, environment, restore and update are in `docs/DEPLOY.md`.
 
 ## What changed
 

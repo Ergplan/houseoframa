@@ -56,6 +56,7 @@ services:
       PGDATABASE: rama
       BACKUP_HOUR: ${BACKUP_HOUR:-2}
       BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+      BACKUP_COPY_COMMAND: ${BACKUP_COPY_COMMAND:-}
     entrypoint: ['sh', '/deploy/backup.sh']
     volumes: ['./backup.sh:/deploy/backup.sh:ro', '../backups:/backups']
     depends_on:

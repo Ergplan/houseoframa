@@ -31,4 +31,4 @@ Updated in the same commit as the code that opens or closes a gap.
 - Sign-in is by username and password from `RAMA_ACCOUNTS` in `.env` (the user's decision, 2026-10-24). The passwords are stored there in plain text, readable by whoever can read the server's `.env`. There is no lockout after repeated failures, only a half-second pause, and no way to add or change an account from the app: edit `.env` and restart.
 - (Stage 6) **Not yet deployed on the pod box.** The box stack was built and run on the build machine (docs/DEPLOY.md, Verified). Running it on the prototype pod box needs the box itself (its address, and access to it), which the user holds.
 - (Stage 6) The box serves plain http on `APP_PORT`; https is a reverse proxy in front of it (docs/DEPLOY.md), not part of the compose file.
-- (Stage 6) Backups stay on the box (`backups/`); copying them off the box is not set up.
+- (Stage 6) Backups are copied off the box only when `BACKUP_COPY_COMMAND` is set (gaps 1). Where they go, and the tool and credentials that take them there, are the box owner's choice; none is set up.

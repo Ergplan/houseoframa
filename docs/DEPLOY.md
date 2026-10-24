@@ -61,6 +61,8 @@ docker compose -f deploy/compose.box.yml exec backup sh /deploy/backup.sh --now
 ls backups/
 ```
 
+To copy each night's dump off the box, set `BACKUP_COPY_COMMAND` in `.env`. It is a shell command run with the dump's path as `$1`, for example `rclone copy "$1" offsite:rama` or `scp "$1" backup@host:rama/`. A failed copy is logged, and the dump stays on the box either way.
+
 Restore into a fresh database, then point the app at it or rename it:
 
 ```
