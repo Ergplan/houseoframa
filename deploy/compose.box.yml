@@ -27,6 +27,8 @@ services:
     environment:
       DATABASE_URL: postgres://rama:${POSTGRES_PASSWORD}@db:5432/rama
       GIT_SHA: ${GIT_SHA:-unknown}
+      # The box's public address (from the --env-file), so it does not touch a local .env's own.
+      RAMA_BASE_URL: ${RAMA_BASE_URL:-}
     ports: ['${APP_PORT:-3000}:3000']
     volumes: ['work:/app/work']
     depends_on:

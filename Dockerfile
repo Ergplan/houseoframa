@@ -5,7 +5,10 @@ ARG GIT_SHA=unknown
 ENV GIT_SHA=$GIT_SHA \
     NEXT_TELEMETRY_DISABLED=1 \
     COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-RUN corepack enable
+RUN corepack enable \
+ # Site clones in the work volume may come from another user (copied in, or a restored backup): git must
+ # still read them. Every repository in this container is House of Rama's own site clone.
+ && git config --global --add safe.directory '*'
 WORKDIR /app
 COPY . .
 RUN pnpm install --frozen-lockfile \

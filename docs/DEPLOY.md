@@ -43,6 +43,14 @@ docker compose -f deploy/compose.box.yml --env-file .env up -d --build
 curl -s http://localhost:${APP_PORT:-3000}/api/health     # {"ok":true,"commit":"<GIT_SHA>"}
 ```
 
+### Settings that belong to the box only
+
+Keep box-only values in a second file, `.env.box` (git-ignored), passed as `--env-file .env.box`: `POSTGRES_PASSWORD`, `APP_PORT`, `RAMA_BASE_URL`, `GIT_SHA`. The app still reads `.env` for the accounts, the signing key and the vendor keys, and a development server on the same machine keeps its own address.
+
+### Reaching it from outside
+
+The box listens on `APP_PORT` on every interface. The cloud firewall must allow that port to the machine: on Google Cloud, an ingress rule for tcp:`APP_PORT` (for example 80) targeting the instance's network tag. Without it the app answers on the machine, but not from a browser elsewhere.
+
 ## 4. Pods and sites
 
 ```

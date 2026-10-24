@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
+  "commit": "038380a626ab7cddcc494feb386c4f4a734f02d3",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6757,6 +6757,33 @@
       "sha": "f3bb28351da240abb9494595d9815c99fbbb7b90",
       "short": "f3bb283",
       "subject": "Fix gaps-1 reviewer run 1: seals fail closed; credentials compared in full"
+    },
+    {
+      "at": "2026-10-24T05:39:00Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 215,
+          "del": 56,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 6,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/gaps-1.md"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/gaps-1.review.md"
+        }
+      ],
+      "sha": "038380a626ab7cddcc494feb386c4f4a734f02d3",
+      "short": "038380a",
+      "subject": "Gaps 1: report with reviewer findings"
     }
   ],
   "edges": [
@@ -14272,7 +14299,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T05:31:51Z",
+  "extractedAt": "2026-10-24T05:39:00Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -14360,7 +14387,7 @@
     },
     {
       "binary": false,
-      "bytes": 175,
+      "bytes": 184,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -14369,7 +14396,7 @@
       "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "foundation",
       "layerRule": "default: .gitignore",
-      "lines": 15,
+      "lines": 16,
       "path": ".gitignore",
       "purpose": {
         "confirmed": false,
@@ -14504,7 +14531,7 @@
     },
     {
       "binary": false,
-      "bytes": 687,
+      "bytes": 933,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -14513,7 +14540,7 @@
       "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 16,
+      "lines": 19,
       "path": "Dockerfile",
       "test": false
     },
@@ -16386,7 +16413,7 @@
     },
     {
       "binary": false,
-      "bytes": 1997,
+      "bytes": 2134,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -16395,7 +16422,7 @@
       "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 66,
+      "lines": 68,
       "path": "deploy/compose.box.yml",
       "test": false
     },
@@ -16477,7 +16504,7 @@
     },
     {
       "binary": false,
-      "bytes": 4301,
+      "bytes": 4974,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -16486,7 +16513,7 @@
       "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 89,
+      "lines": 97,
       "path": "docs/DEPLOY.md",
       "test": false
     },
@@ -16565,12 +16592,12 @@
     {
       "binary": false,
       "bytes": 5725,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2e53972a4854eefa5bf73a8a9f27117648088f8b",
-      "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
+      "lastCommit": "038380a626ab7cddcc494feb386c4f4a734f02d3",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 55,
@@ -16595,12 +16622,12 @@
     {
       "binary": false,
       "bytes": 18382,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
-      "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
+      "lastCommit": "038380a626ab7cddcc494feb386c4f4a734f02d3",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 35,
@@ -20701,7 +20728,7 @@
     },
     {
       "binary": false,
-      "bytes": 3123,
+      "bytes": 3605,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -20713,7 +20740,7 @@
       "lastCommit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 84,
+      "lines": 102,
       "path": "tests/dev-server.ts",
       "test": false
     },

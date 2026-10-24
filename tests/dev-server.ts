@@ -46,16 +46,34 @@ export async function startDevServer(
   server.stdout?.on('data', (d) => (output += d));
   server.stderr?.on('data', (d) => (output += d));
   const url = `http://127.0.0.1:${port}`;
-  const exited = new Promise<void>((resolve) => server.once('exit', () => resolve()));
+  /** True while any process of the server's group (pnpm, and Next under it) is alive. */
+  const groupAlive = () => {
+    try {
+      process.kill(-server.pid!, 0);
+      return true;
+    } catch {
+      return false;
+    }
+  };
   const stop = async () => {
-    if (server.pid && server.exitCode === null && server.signalCode === null) {
+    if (server.pid && groupAlive()) {
       try {
         process.kill(-server.pid, 'SIGTERM');
       } catch {
         // already gone
       }
-      // Next keeps writing its cache until it exits: wait for that (at most 10 s) before removing it.
-      await Promise.race([exited, new Promise((r) => setTimeout(r, 10_000))]);
+      // Next, a grandchild, can outlive pnpm and keep writing its cache: wait for the whole group to end
+      // (at most 10 s, then SIGKILL), so the folder is not removed under a live writer.
+      const deadline = Date.now() + 10_000;
+      while (groupAlive() && Date.now() < deadline) await new Promise((r) => setTimeout(r, 100));
+      if (groupAlive()) {
+        try {
+          process.kill(-server.pid, 'SIGKILL');
+        } catch {
+          // gone meanwhile
+        }
+        while (groupAlive()) await new Promise((r) => setTimeout(r, 50));
+      }
     }
     rmSync(path.join(appDir, distDir), {
       recursive: true,
