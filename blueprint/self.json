@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "463241481829daff249e4ae475c085ad1d628d0e",
+  "commit": "440db5f2c6e4741cecd55049c73f36b497cecbd6",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6829,6 +6829,27 @@
       "sha": "463241481829daff249e4ae475c085ad1d628d0e",
       "short": "4632414",
       "subject": "Deploy on the VM: box-only settings file, git reads any clone, e2e teardown waits for Next"
+    },
+    {
+      "at": "2026-10-24T12:23:58Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 58,
+          "del": 13,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        }
+      ],
+      "sha": "440db5f2c6e4741cecd55049c73f36b497cecbd6",
+      "short": "440db5f",
+      "subject": "KNOWN-GAPS: the box runs on the build VM; port 80 needs a firewall rule"
     }
   ],
   "edges": [
@@ -14344,7 +14365,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T12:14:15Z",
+  "extractedAt": "2026-10-24T12:23:58Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -16549,7 +16570,7 @@
     },
     {
       "binary": false,
-      "bytes": 4974,
+      "bytes": 5230,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -16579,13 +16600,13 @@
     },
     {
       "binary": false,
-      "bytes": 8736,
-      "changes": 26,
+      "bytes": 8959,
+      "changes": 27,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
+      "lastCommit": "440db5f2c6e4741cecd55049c73f36b497cecbd6",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 34,

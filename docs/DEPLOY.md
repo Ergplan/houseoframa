@@ -49,7 +49,7 @@ Keep box-only values in a second file, `.env.box` (git-ignored), passed as `--en
 
 ### Reaching it from outside
 
-The box listens on `APP_PORT` on every interface. The cloud firewall must allow that port to the machine: on Google Cloud, an ingress rule for tcp:`APP_PORT` (for example 80) targeting the instance's network tag. Without it the app answers on the machine, but not from a browser elsewhere.
+The box listens on `APP_PORT` on every interface. The cloud firewall must allow that port to the machine: on Google Cloud, an ingress rule for tcp:`APP_PORT` (for example 80) targeting the instance's network tag. Without it the app answers on the machine, but not from a browser elsewhere. On Google Cloud's default network, tcp:3389 is usually open to every VM already (the default `default-allow-rdp` rule), so `APP_PORT=3389` works with no firewall change. Port 80 needs the VM's `http-server` tag ("Allow HTTP traffic" in the VM's settings).
 
 ## 4. Pods and sites
 
