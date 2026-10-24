@@ -12,8 +12,11 @@ export interface Decision {
   bricks: string[];
   /** The screen the decision concerns, when there is one. */
   screenId?: string;
-  /** Whether the decision is made, still open, or made but not built. */
-  status: 'decided' | 'open' | 'not-built';
+  /**
+   * Whether the decision is made (only by a recorded yes, Stage 7), still open, made but not built, or
+   * withdrawn ("scrap everything" starts a new draft and withdraws the cards before it).
+   */
+  status: 'decided' | 'open' | 'not-built' | 'withdrawn';
   /** The person who recorded the decision. */
   by: string;
   /** When the decision was recorded, ISO 8601. */

@@ -43,9 +43,9 @@ afterAll(async () => {
 
 describe('route /site/[siteId]/audit', () => {
   it('says there is no audit yet rather than showing an empty report', async () => {
-    expect(renderToStaticMarkup(await AuditReport(params('self')))).toContain(
-      'No audit of this site yet.',
-    );
+    const html = renderToStaticMarkup(await AuditReport(params('self')));
+    expect(html).toContain('No audit of this site yet');
+    expect(html).toContain('Call the audit');
   });
 
   it('shows the signed report, verified against what the auditor received, with checks, sign-offs and findings', async () => {

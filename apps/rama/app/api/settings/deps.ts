@@ -22,7 +22,7 @@ export const settingsDeps = (req: Request): SettingsDeps => ({
     withDb(async (db) => {
       const key = await readSecret(db, name);
       if (!key) return null;
-      const r = await checkKey(name, key);
+      const r = await checkKey(name, key, fetch, { githubApi: process.env.RAMA_GITHUB_API });
       // The light is kept with a key entered in Settings; one read from the environment is only shown.
       const view = (await listSecrets(db)).find((v) => v.name === name);
       if (view?.source === 'settings') await recordSecretCheck(db, name, r);

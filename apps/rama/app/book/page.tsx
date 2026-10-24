@@ -20,7 +20,7 @@ export default async function Book() {
       {pods.length ? (
         <BookForm pods={pods} sites={sites} />
       ) : (
-        <p>No pod is set up yet (`pnpm rama-pod add &lt;n&gt; &lt;name&gt;`).</p>
+        <p>No pod is set up yet: the floor manager sets the pods up when the floor opens.</p>
       )}
       <Link href="/">◀ Home</Link>
     </main>

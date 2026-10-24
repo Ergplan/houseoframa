@@ -127,7 +127,7 @@ export const decisions = pgTable(
     statement: text('statement').notNull(),
     bricks: jsonb('bricks').$type<string[]>().notNull(),
     screenId: text('screen_id'),
-    status: text('status', { enum: ['decided', 'open', 'not-built'] }).notNull(),
+    status: text('status', { enum: ['decided', 'open', 'not-built', 'withdrawn'] }).notNull(),
     /** The person who decided, by name. */
     by: text('by').notNull(),
     at: timestamp('at', { withTimezone: true }).notNull(),

@@ -46,3 +46,11 @@ describe('checkKey', () => {
     }
   });
 });
+
+describe('checkKey against a stub GitHub', () => {
+  it('asks the given address instead of api.github.com', async () => {
+    const f = answer(200, { login: 'stub' });
+    await checkKey('GITHUB_TOKEN', 'ghp_x', f, { githubApi: 'http://127.0.0.1:9/' });
+    expect((f.mock.calls[0] as unknown as [string])[0]).toBe('http://127.0.0.1:9/user');
+  });
+});

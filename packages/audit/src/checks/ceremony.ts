@@ -89,7 +89,7 @@ export function openDecisions(bp: Blueprint, decisions: Decision[]): CheckFindin
   const files = new Set(bp.nodes.map((n) => n.path));
   const out: CheckFinding[] = [];
   for (const d of decisions) {
-    if (superseded.has(d.id) || d.status === 'decided') continue;
+    if (superseded.has(d.id) || d.status === 'decided' || d.status === 'withdrawn') continue;
     const text = `Decision "${d.title}" is ${d.status === 'open' ? 'still open' : 'decided but not built'}.`;
     const bricks = d.bricks.filter((b) => files.has(b));
     if (!bricks.length) out.push({ brick: SITE, check: 'open-decision', verdict: 'note', text });

@@ -772,3 +772,265 @@ button:disabled {
   display: block;
   margin: 8px 0;
 }
+
+/* Stage 7, the workbench. A placeholder palette until ergOS Harmony's tokens arrive (design/harmony/):
+   the names below are the ones the tokens will fill, swapped in one commit. */
+:root {
+  --h-green: #3ecf6e;
+  --h-red: #ff6b6b;
+  --h-grey: #8a8797;
+  --h-blue: #6aa8ff;
+  --h-radius: 10px;
+}
+.workbench {
+  max-width: 920px;
+}
+.workbench h2 {
+  font-size: 1.1rem;
+  margin: 1.6rem 0 0.5rem;
+}
+.workbench section {
+  border-top: 1px solid var(--line);
+  padding-top: 0.4rem;
+}
+.workbench input:not([type='hidden']) {
+  background: var(--panel2);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 9px;
+  font: inherit;
+  min-width: 0;
+}
+.workbench .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.workbench .row input {
+  flex: 1 1 240px;
+}
+.workbench .stack {
+  display: grid;
+  gap: 8px;
+  max-width: 560px;
+}
+.workbench .stack label {
+  display: grid;
+  gap: 4px;
+}
+.workbench button,
+.console button,
+.button {
+  background: var(--panel2);
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.workbench button.primary,
+.console button.primary,
+.button.primary {
+  background: var(--h-blue);
+  border-color: var(--h-blue);
+  color: #0c0b13;
+  font-weight: 600;
+}
+.workbench button.big {
+  font-size: 1.1rem;
+  padding: 10px 22px;
+}
+.workbench button:disabled,
+.console button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.whoami {
+  margin-top: 1.4rem;
+}
+.flag {
+  border-radius: var(--h-radius);
+  padding: 8px 12px;
+  margin: 10px 0;
+  border-left: 4px solid;
+}
+.flag.green {
+  border-color: var(--h-green);
+  background: rgba(62, 207, 110, 0.08);
+}
+.flag.grey {
+  border-color: var(--h-grey);
+  background: rgba(138, 135, 151, 0.12);
+}
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 1rem;
+}
+.picker .person {
+  display: grid;
+  gap: 2px;
+  min-width: 180px;
+  padding: 16px 18px;
+  text-align: left;
+  border-radius: var(--h-radius);
+}
+.picker .person small {
+  color: var(--dim);
+}
+.light {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.light.green {
+  background: var(--h-green);
+}
+.light.red {
+  background: var(--h-red);
+}
+.light.grey {
+  background: var(--h-grey);
+}
+.light-words.red {
+  color: var(--h-red);
+}
+.light-words.green {
+  color: var(--h-green);
+}
+.key {
+  padding: 10px 0 14px;
+  border-bottom: 1px dashed var(--line);
+}
+.key-head small {
+  color: var(--dim);
+  margin-left: 6px;
+}
+.steps {
+  list-style: none;
+  padding: 0;
+  margin: 0.6rem 0;
+  display: grid;
+  gap: 8px;
+}
+.steps li {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--panel);
+  border-left: 4px solid var(--h-grey);
+}
+.steps li.pass {
+  border-color: var(--h-green);
+}
+.steps li.fail {
+  border-color: var(--h-red);
+}
+.steps li small {
+  color: var(--dim);
+}
+.steps .mark {
+  font-weight: 700;
+}
+.steps .next {
+  color: var(--amber);
+}
+.verdict {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.verdict.passed {
+  color: var(--h-green);
+}
+.verdict.failed,
+.verdict.interrupted {
+  color: var(--h-red);
+}
+.with-console {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.site-col {
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .with-console {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.console {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--h-radius);
+  padding: 12px 14px;
+  font-size: 14px;
+}
+.console h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+.console h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  margin: 14px 0 6px;
+}
+.console .act {
+  margin: 4px 0;
+}
+.console .act button {
+  width: 100%;
+  text-align: left;
+}
+.console .why {
+  display: block;
+  color: var(--dim);
+  font-size: 12px;
+}
+.console .agenda,
+.console .lights {
+  padding-left: 1rem;
+  margin: 0;
+}
+.three-words .state {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin: 2px 2px 2px 0;
+  font-weight: 600;
+  font-size: 13px;
+}
+.three-words .verified {
+  background: rgba(106, 168, 255, 0.18);
+  color: var(--h-blue);
+}
+.three-words .confirmed {
+  background: rgba(62, 207, 110, 0.18);
+  color: var(--h-green);
+}
+.three-words .unverified {
+  background: rgba(138, 135, 151, 0.2);
+  color: var(--fg);
+}
+.scrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.pill.dim,
+.dec.dim {
+  opacity: 0.7;
+}

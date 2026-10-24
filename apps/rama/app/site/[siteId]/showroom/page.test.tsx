@@ -164,7 +164,7 @@ describe('route /site/[siteId]/showroom', () => {
   });
 
   it('says no screens were captured, rather than showing a mock-up, for a site without a capture', async () => {
-    expect(await render('self')).toContain('No screens have been captured for this site yet');
+    expect(await render('self')).toContain('No screens have been photographed for this site yet');
   });
 
   it('is not found for an unknown site', async () => {
@@ -259,7 +259,7 @@ describe('signatures in the showroom and the walkthrough', () => {
     expect(html).toContain('Confirm and sign as Asha Rao');
     expect(
       renderToStaticMarkup(await Walkthrough({ params: Promise.resolve({ siteId: 'self' }) })),
-    ).toContain('none have been captured');
+    ).toContain('none have been photographed');
     await expect(Walkthrough({ params: Promise.resolve({ siteId: 'nope' }) })).rejects.toThrow(
       /NEXT_HTTP_ERROR_FALLBACK;404/,
     );

@@ -3,6 +3,7 @@ import { pageSite } from '../../../../server/session';
 import { latestAudit, verifyReport } from '@rama/audit';
 import { createDb } from '@rama/db';
 import { ConfirmReport, DraftState } from '../../../../components/audit/ConfirmReport';
+import { ActForm } from '../../../../components/workbench/ActForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -37,9 +38,10 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
       <main className="stub">
         <h1>Audit · {site.name}</h1>
         <p>
-          No audit of this site yet. Run <code>pnpm rama-audit run {site.id}</code>: the checks,
-          then the auditor from a different vendor than the builder.
+          No audit of this site yet: the checks, then the auditor, a different company from the
+          builder.
         </p>
+        <ActForm siteId={site.id} act="call-audit" label="Call the audit" />
         <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
       </main>
     );

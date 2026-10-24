@@ -9,6 +9,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import SitePage from './page';
 import Discovery from './discovery/page';
+import { TrainerConsole } from '../../../components/workbench/TrainerConsole';
 import { SiteView } from '../../../components/site/SiteView';
 
 // A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
@@ -20,13 +21,28 @@ const params = (siteId: string) => ({ params: Promise.resolve({ siteId }) });
 const notFound = /NEXT_HTTP_ERROR_FALLBACK;404/;
 
 describe('route /site/[siteId]', () => {
-  it("renders the site view over the site's Blueprint (self: blueprint/self.json)", async () => {
-    const el = (await SitePage(params('self'))) as ReactElement<{
+  it("renders the console beside the site view over the site's Blueprint (self: blueprint/self.json)", async () => {
+    const page = (await SitePage(params('self'))) as ReactElement;
+    expect(isValidElement(page)).toBe(true);
+    // Find an element of a type in the page's tree.
+    const find = (node: unknown, type: unknown): ReactElement | null => {
+      if (!isValidElement(node))
+        return Array.isArray(node) ? (node.map((n) => find(n, type)).find(Boolean) ?? null) : null;
+      if (node.type === type) return node;
+      return find((node.props as { children?: unknown }).children, type);
+    };
+    const el = find(page, SiteView) as ReactElement<{
       blueprint: { repo: string; nodes: unknown[] };
       siteId: string;
+      screenStates: { tally: Record<string, number> };
     }>;
-    expect(isValidElement(el)).toBe(true);
-    expect(el.type).toBe(SiteView);
+    expect(el).not.toBeNull();
+    expect(find(page, TrainerConsole)).not.toBeNull();
+    expect(Object.keys(el.props.screenStates.tally)).toEqual([
+      'Verified',
+      'Confirmed',
+      'Unverified',
+    ]);
     const self = JSON.parse(
       readFileSync(new URL('../../../../../blueprint/self.json', import.meta.url), 'utf8'),
     );

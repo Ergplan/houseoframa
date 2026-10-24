@@ -349,7 +349,7 @@ export function SiteView({
                 title={
                   audit
                     ? `Audit of ${audit.commit.slice(0, 7)} by ${audit.report.vendor} ${audit.report.model}`
-                    : 'No audit of this site yet: pnpm rama-audit run <site>'
+                    : 'No audit of this site yet: press “Call the audit” in the console'
                 }
                 onClick={() => (auditMode === 'off' ? startReplay() : stopReplay())}
                 aria-pressed={auditMode !== 'off'}

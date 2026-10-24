@@ -1,70 +1,50 @@
-// Stage 4 on EkBill, the real target: a walkthrough in the real app signs two of its captured screens,
-// and the gate on EkBill's real history passes those two and fails a changed screen nobody signed.
-// Everything runs on a copy: a fresh clone of the EkBill checkout, its capture copied beside it, and a
-// throwaway database. The site's own records, and the user's signatures, are left untouched.
+// Stage 4 on the sample product (in place of EkBill since Stage 7): a walkthrough in the real app signs
+// two of its photographed screens, and the gate on its real history passes those two and fails a
+// changed screen nobody signed; a quiet rewrite of a signature fails the gate whatever the screens say.
+// Everything runs in a temporary work dir and a throwaway database, so it runs in CI.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import postgres from 'postgres';
 import { chromium, type Browser } from 'playwright';
-import { createDb, runMigrations, seed, signoffs, sites } from '@rama/db';
-import { addSite, locateSite } from '../packages/blueprint/src/site.ts';
-import { captureDir, readCapture } from '../packages/trace/src/showroom.ts';
+import { createDb, runMigrations, seed, signoffs } from '@rama/db';
 import { readSignoffs } from '../packages/ceremony/src/records.ts';
 import { runGate, type GateResult } from '../packages/ceremony/src/gate.ts';
 import { generateSigningKey } from '../packages/ceremony/src/seal.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { sampleSite } from './sample.ts';
 import { pageAs, signIn } from './session.ts';
 
-const SITE = 'ekbill-e2e';
+const SITE = 'chai';
 // The app seals every signature with this key; the gate checks seals against its public half.
 const KEY = generateSigningKey();
 const MEMBER = 'Walkthrough Tester';
-const SIGN = ['/gst', '/dues'];
+const SIGN = ['/', '/new'];
 const serverUrl = process.env.DATABASE_URL!;
 const dbName = `rama_test_${randomBytes(4).toString('hex')}`;
 const dbUrl = Object.assign(new URL(serverUrl), { pathname: `/${dbName}` }).toString();
 const admin = postgres(serverUrl, { max: 1, onnotice: () => {} });
 let work: string;
-let env: NodeJS.ProcessEnv;
 let repoDir: string;
 let server: DevServer;
 let browser: Browser;
 let token: string;
 
 beforeAll(async () => {
-  const ekbill = locateSite('ekbill')!;
   work = mkdtempSync(path.join(tmpdir(), 'rama-stage4-'));
-  env = { ...process.env, RAMA_WORK_DIR: work };
-  repoDir = addSite(ekbill.repoDir, { id: SITE, name: 'EkBill (e2e copy)', env }).site.repoDir;
-  // The capture of the real site, at the commit the clone is at.
-  for (const part of ['capture.json', 'shots']) {
-    cpSync(path.join(captureDir('ekbill'), part), path.join(captureDir(SITE, env), part), {
-      recursive: true,
-    });
-  }
-  const cap = readCapture(SITE, env)!;
-  expect(cap.commit).toBe(
-    execFileSync('git', ['-C', repoDir, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
-  );
+  const { site } = await sampleSite(work, SITE);
+  repoDir = site.repoDir;
 
   await admin.unsafe(`CREATE DATABASE ${dbName}`);
   const conn = createDb(dbUrl);
   await runMigrations(conn.db);
-  const { member } = await seed(conn.db, { memberName: MEMBER });
-  await conn.db.insert(sites).values({
-    siteId: SITE,
-    name: 'EkBill (e2e copy)',
-    repo: ekbill.repoDir,
-    memberId: member.id,
-    createdBy: 'rama:e2e@0',
-  });
+  await seed(conn.db, { memberName: MEMBER });
   await conn.close();
 
-  token = await signIn(dbUrl, { name: MEMBER });
+  token = await signIn(dbUrl, { name: MEMBER }, [{ id: SITE, name: 'Chai Stall', repo: repoDir }]);
   server = await startDevServer(
     { RAMA_WORK_DIR: work, DATABASE_URL: dbUrl, RAMA_SIGNING_KEY: KEY.privateKey },
     [`/site/${SITE}/walkthrough`],
@@ -80,15 +60,17 @@ afterAll(async () => {
   if (work) rmSync(work, { recursive: true, force: true });
 });
 
-describe('stage 4 on EkBill', () => {
+describe('stage 4 on the sample product', () => {
   it("signs two screens in the walkthrough, under the member's name, in Postgres and in .rama/signoffs.jsonl", async () => {
     const page = await pageAs(browser, server, token);
     try {
       await page.goto(`${server.browserUrl}/site/${SITE}/walkthrough`);
       for (const screen of SIGN) {
+        // The strip names each screen by its route, after its mark: match the whole route.
+        const route = screen.replace(/[/]/g, '\\/');
         await page
-          .locator('.strip button', { hasText: screen })
-          .filter({ hasNotText: `${screen}/` })
+          .locator('.strip button')
+          .filter({ hasText: new RegExp(`[○●·] ${route}$`) })
           .first()
           .click();
         const mon = page.locator(`aside.mon[data-screen="${screen}"]`);
@@ -118,7 +100,7 @@ describe('stage 4 on EkBill', () => {
   });
 
   it('gates on the real history: the two signed screens pass, a changed screen nobody signed fails', () => {
-    // The signatures travel with the code: commit them in the copy, as EkBill's team would.
+    // The signatures travel with the code: commit them in the copy, as the product's builder would.
     execFileSync('git', ['-C', repoDir, 'add', '.rama/signoffs.jsonl']);
     execFileSync('git', [
       '-C',
@@ -132,14 +114,14 @@ describe('stage 4 on EkBill', () => {
       '-m',
       'signatures',
     ]);
-    const r: GateResult = runGate(repoDir, 'HEAD~2', { publicKey: KEY.publicKey });
+    const r: GateResult = runGate(repoDir, 'HEAD~4', { publicKey: KEY.publicKey });
     const by = (route: string) => r.screens.find((s) => s.route === route)!;
     for (const s of SIGN)
       expect(by(s), s).toMatchObject({
         ok: true,
         reason: expect.stringMatching(new RegExp(`^signed by ${MEMBER} at `)),
       });
-    expect(by('/bills')).toMatchObject({
+    expect(by('/total')).toMatchObject({
       ok: false,
       reason: 'no signature, and no test report was given',
     });

@@ -18,7 +18,7 @@ export const DecisionRecord = z
     statement: z.string().min(1),
     bricks: z.array(z.string()),
     screenId: z.string().min(1).optional(),
-    status: z.enum(['decided', 'open', 'not-built']),
+    status: z.enum(['decided', 'open', 'not-built', 'withdrawn']),
     by: z.string().min(1),
     at: iso,
     sessionId: z.string().min(1).optional(),

@@ -5,6 +5,7 @@ import { readCapture, showroomOf } from '@rama/trace/showroom';
 import { readDecisions, readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { walkthrough } from '@rama/ceremony/walkthrough';
 import { WalkthroughView } from '../../../../components/ceremony/WalkthroughView';
+import { ActForm } from '../../../../components/workbench/ActForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,10 +18,8 @@ export default async function Walkthrough({ params }: { params: Promise<{ siteId
     return (
       <main className="stub">
         <h1>Walkthrough · {site.name}</h1>
-        <p>
-          A walkthrough signs real screens, and none have been captured for this site yet. Run{' '}
-          <code>pnpm rama-trace capture {site.id}</code>.
-        </p>
+        <p>A walkthrough signs real screens, and none have been photographed for this site yet.</p>
+        <ActForm siteId={site.id} act="photograph" label="Photograph the screens" />
         <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
       </main>
     );

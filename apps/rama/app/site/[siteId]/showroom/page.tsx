@@ -4,6 +4,7 @@ import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture, showroomOf } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { ShowroomView } from '../../../../components/showroom/ShowroomView';
+import { ActForm } from '../../../../components/workbench/ActForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,10 +25,10 @@ export default async function Showroom({
       <main className="stub">
         <h1>Showroom · {site.name}</h1>
         <p>
-          No screens have been captured for this site yet, so there is nothing to show rather than a
-          mock-up. Add a <code>.rama/screens.json</code> to the target (docs/HOUSE-STYLE.md) and run{' '}
-          <code>pnpm rama-trace capture {site.id}</code>.
+          No screens have been photographed for this site yet, so there is nothing to show rather
+          than a mock-up.
         </p>
+        <ActForm siteId={site.id} act="photograph" label="Photograph the screens" />
         <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
       </main>
     );

@@ -152,7 +152,7 @@ Source: `packages/shared/src/ceremony.ts`
 | `statement` | `string` | yes | The decision as stated and confirmed. |
 | `bricks` | `string[]` | yes | Paths of the bricks the decision concerns. |
 | `screenId` | `string` | no | The screen the decision concerns, when there is one. |
-| `status` | `'decided' \| 'open' \| 'not-built'` | yes | Whether the decision is made, still open, or made but not built. |
+| `status` | `'decided' \| 'open' \| 'not-built' \| 'withdrawn'` | yes | Whether the decision is made (only by a recorded yes, Stage 7), still open, made but not built, or withdrawn ("scrap everything" starts a new draft and withdraws the cards before it). |
 | `by` | `string` | yes | The person who recorded the decision. |
 | `at` | `string` | yes | When the decision was recorded, ISO 8601. |
 | `sessionId` | `string` | no | The discovery session the decision was taken in, when it was taken in one. |

@@ -124,21 +124,26 @@ export const DecideBody = z.object({
   statement: z.string().min(1).max(4000),
   bricks: z.array(z.string().min(1)).max(200).default([]),
   screenId: z.string().min(1).optional(),
-  status: z.enum(['decided', 'open', 'not-built']),
+  status: z.enum(['open', 'not-built']),
   supersedes: z.string().uuid().optional(),
 });
 
-/** A decision card, written at the moment the member confirms it. */
+/**
+ * A decision card, open (or made but not built). A card becomes decided only by a recorded yes
+ * (handleYes, Stage 7), never by writing it so.
+ */
 export async function handleDecide(
   siteId: string,
   raw: unknown,
   deps: CeremonyDeps,
 ): Promise<Response> {
+  if ((raw as { status?: unknown } | null)?.status === 'decided')
+    return fail(400, 'a card is decided only by a recorded yes: record it open, then say yes');
   const body = DecideBody.safeParse(raw);
   if (!body.success)
     return fail(
       400,
-      'expected {title, statement, status, bricks?, screenId?, sessionId?, supersedes?}',
+      'expected {title, statement, status: open | not-built, bricks?, screenId?, sessionId?, supersedes?}',
     );
   const a = await actor(siteId, deps);
   if (a instanceof Response) return a;
@@ -157,6 +162,92 @@ export async function handleDecide(
   } catch (err) {
     return refused(err);
   }
+}
+
+/**
+ * The recorded yes (Stage 7; spoken in Stage 10): the person's yes to a card in force that is open (or
+ * made but not built) writes a new card, decided, by that person, superseding it.
+ */
+export async function handleYes(
+  siteId: string,
+  raw: unknown,
+  deps: CeremonyDeps,
+): Promise<Response> {
+  const body = z.object({ id: z.string().min(1).max(64) }).safeParse(raw);
+  if (!body.success) return fail(400, 'expected {id}');
+  const a = await actor(siteId, deps);
+  if (a instanceof Response) return a;
+  const all = await deps.decisions(a.site.id);
+  const card = all.find((d) => d.id === body.data.id);
+  if (!card) return fail(404, 'no such card');
+  if (all.some((d) => d.supersedes === card.id))
+    return fail(409, 'this card has changed since the page was opened; reload and look again');
+  if (card.status === 'decided') return fail(409, 'this card is already decided');
+  if (card.status === 'withdrawn') return fail(409, 'this card was withdrawn');
+  try {
+    const d = await deps.decide(
+      { id: a.site.id, repoDir: a.site.repoDir },
+      {
+        title: card.title,
+        statement: card.statement,
+        bricks: card.bricks,
+        ...(card.screenId ? { screenId: card.screenId } : {}),
+        ...(card.sessionId ? { sessionId: card.sessionId } : {}),
+        status: 'decided',
+        by: a.member,
+        at: deps.now(),
+        supersedes: card.id,
+        createdBy: a.personId,
+      },
+    );
+    return Response.json({ ok: true, decision: d });
+  } catch (err) {
+    return refused(err);
+  }
+}
+
+/**
+ * "Scrap everything": a new draft, named, and every card in force withdrawn (each by a new card that
+ * supersedes it, so the old ones are kept). The new draft is a session in the site office.
+ */
+export async function handleScrap(
+  siteId: string,
+  raw: unknown,
+  deps: CeremonyDeps,
+): Promise<Response> {
+  const body = z.object({ name: z.string().trim().min(1).max(120) }).safeParse(raw);
+  if (!body.success) return fail(400, 'expected {name}: what to call the new draft');
+  const a = await actor(siteId, deps);
+  if (a instanceof Response) return a;
+  const all = await deps.decisions(a.site.id);
+  const superseded = new Set(all.map((d) => d.supersedes).filter(Boolean));
+  const current = all.filter((d) => !superseded.has(d.id) && d.status !== 'withdrawn');
+  try {
+    for (const card of current) {
+      await deps.decide(
+        { id: a.site.id, repoDir: a.site.repoDir },
+        {
+          title: card.title,
+          statement: card.statement,
+          bricks: card.bricks,
+          ...(card.screenId ? { screenId: card.screenId } : {}),
+          ...(card.sessionId ? { sessionId: card.sessionId } : {}),
+          status: 'withdrawn',
+          by: a.member,
+          at: deps.now(),
+          supersedes: card.id,
+          createdBy: a.personId,
+        },
+      );
+    }
+  } catch (err) {
+    return refused(err);
+  }
+  const sessionId = await deps.startSession(a.site.id, {
+    title: `Draft: ${body.data.name}`,
+    createdBy: a.personId,
+  });
+  return Response.json({ ok: true, sessionId, withdrawn: current.length });
 }
 
 export async function handleStartSession(

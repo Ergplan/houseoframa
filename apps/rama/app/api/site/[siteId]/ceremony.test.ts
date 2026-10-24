@@ -5,9 +5,11 @@ import { ChainError, checkChain } from '@rama/ceremony/records';
 import {
   handleAsk,
   handleDecide,
+  handleScrap,
   handleSign,
   handleStartSession,
   handleTurn,
+  handleYes,
   type CeremonyDeps,
 } from './ceremony';
 
@@ -165,7 +167,7 @@ describe('POST /api/site/[siteId]/decisions', () => {
       {
         title: 'Totals',
         statement: 'In rupees.',
-        status: 'decided',
+        status: 'open',
         bricks: ['lib/total.ts'],
         screenId: '/',
       },
@@ -174,6 +176,7 @@ describe('POST /api/site/[siteId]/decisions', () => {
     expect(r.status).toBe(200);
     expect(cards[0]).toMatchObject({
       title: 'Totals',
+      status: 'open',
       by: 'Asha Rao',
       createdBy: 'person-1',
       bricks: ['lib/total.ts'],
@@ -182,7 +185,7 @@ describe('POST /api/site/[siteId]/decisions', () => {
       (
         await handleDecide(
           'shop',
-          { title: 'x', statement: 'x', status: 'decided', bricks: ['nope.ts'] },
+          { title: 'x', statement: 'x', status: 'open', bricks: ['nope.ts'] },
           d,
         )
       ).status,
@@ -191,7 +194,7 @@ describe('POST /api/site/[siteId]/decisions', () => {
       (
         await handleDecide(
           'shop',
-          { title: 'x', statement: 'x', status: 'decided', screenId: '/nope' },
+          { title: 'x', statement: 'x', status: 'open', screenId: '/nope' },
           d,
         )
       ).status,
@@ -205,6 +208,72 @@ describe('POST /api/site/[siteId]/decisions', () => {
     expect(
       (await handleDecide('shop', { title: 'x', statement: 'x', status: 'open' }, taken)).status,
     ).toBe(409);
+  });
+});
+
+describe('a card is decided only by a recorded yes (Stage 7)', () => {
+  it('refuses to write a card decided', async () => {
+    const { d, cards } = deps();
+    const r = await json(
+      await handleDecide(
+        'shop',
+        { title: 'Totals', statement: 'In rupees.', status: 'decided' },
+        d,
+      ),
+    );
+    expect(r).toEqual({
+      status: 400,
+      body: {
+        ok: false,
+        error: 'a card is decided only by a recorded yes: record it open, then say yes',
+      },
+    });
+    expect(cards).toEqual([]);
+  });
+
+  it('the yes writes a decided card by the person who said it, superseding the open one', async () => {
+    const { d, cards } = deps({ memberName: 'Ravi', personId: async () => 'person-2' });
+    await handleDecide('shop', { title: 'Totals', statement: 'In rupees.', status: 'open' }, d);
+    const r = await handleYes('shop', { id: 'd1' }, d);
+    expect(r.status).toBe(200);
+    expect(cards[1]).toMatchObject({
+      title: 'Totals',
+      statement: 'In rupees.',
+      status: 'decided',
+      by: 'Ravi',
+      createdBy: 'person-2',
+      supersedes: 'd1',
+    });
+    // The open card is no longer in force; the decided one cannot be decided again.
+    expect((await handleYes('shop', { id: 'd1' }, d)).status).toBe(409);
+    expect((await handleYes('shop', { id: 'd2' }, d)).status).toBe(409);
+    expect((await handleYes('shop', { id: 'nope' }, d)).status).toBe(404);
+    expect((await handleYes('shop', {}, d)).status).toBe(400);
+  });
+
+  it('scrap everything withdraws every card in force and starts a named draft; the old cards stay', async () => {
+    const started: string[] = [];
+    const { d, cards } = deps({
+      startSession: async (_s, input) => {
+        started.push(input.title);
+        return SESSION;
+      },
+    });
+    await handleDecide('shop', { title: 'A', statement: 'a', status: 'open' }, d);
+    await handleDecide('shop', { title: 'B', statement: 'b', status: 'open' }, d);
+    await handleYes('shop', { id: 'd2' }, d);
+    const r = await json(await handleScrap('shop', { name: 'Second try' }, d));
+    expect(r).toEqual({ status: 200, body: { ok: true, sessionId: SESSION, withdrawn: 2 } });
+    expect(started).toEqual(['Draft: Second try']);
+    expect(cards.slice(3).map((c) => [c.title, c.status, c.supersedes])).toEqual([
+      ['A', 'withdrawn', 'd1'],
+      ['B', 'withdrawn', 'd3'],
+    ]);
+    expect(cards).toHaveLength(5);
+    // Withdrawn cards are not withdrawn again, and cannot be said yes to.
+    expect((await json(await handleScrap('shop', { name: 'Third' }, d))).body.withdrawn).toBe(0);
+    expect((await handleYes('shop', { id: 'd4' }, d)).status).toBe(409);
+    expect((await handleScrap('shop', {}, d)).status).toBe(400);
   });
 });
 

@@ -1,7 +1,8 @@
 'use client';
 // The site office: discovery sessions, turn by turn, and the decision cards they produced, each tied to
 // the bricks it became. A member types (or dictates, where the browser can) a turn; Rama may draft the
-// next question, shown as a draft; a decision card is written only when the member records it.
+// next question, shown as a draft; a card is recorded open and becomes decided only by a person's
+// recorded yes (Stage 7). "Scrap everything" withdraws every card and starts a named draft.
 // Layout ported from the weekend prototype's discovery overlay (reference/weekend-prototype/discovery.js).
 import { useState } from 'react';
 import Link from 'next/link';
@@ -39,10 +40,11 @@ export function DiscoveryView({
   const [card, setCard] = useState({
     title: '',
     statement: '',
-    status: 'decided',
+    status: 'open',
     bricks: '',
     screenId: '',
   });
+  const [draftName, setDraftName] = useState('');
   const live = sessions.filter((s) => !s.reconstructed).at(-1) ?? null;
   const api = async (path: string, body: unknown) => {
     setBusy(true);
@@ -91,10 +93,34 @@ export function DiscoveryView({
       </header>
       <p className="lede">
         <b>{decisions.filter((d) => d.status === 'decided').length}</b> decisions recorded,{' '}
-        {decisions.filter((d) => d.status !== 'decided').length} left open or not built.{' '}
-        <Link href={`/site/${siteId}`}>◀ Back to the site</Link>
+        {decisions.filter((d) => d.status === 'open' || d.status === 'not-built').length} left open
+        or not built
+        {decisions.some((d) => d.status === 'withdrawn')
+          ? `, ${decisions.filter((d) => d.status === 'withdrawn').length} withdrawn`
+          : ''}
+        . <Link href={`/site/${siteId}`}>◀ Back to the site</Link>
       </p>
       <div className="office">
+        {member && decisions.some((d) => d.status !== 'withdrawn') && (
+          <form
+            className="scrap"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              if (await api('decisions/scrap', { name: draftName })) setDraftName('');
+            }}
+          >
+            <input
+              placeholder="Name the new draft"
+              aria-label="New draft"
+              value={draftName}
+              onChange={(e) => setDraftName(e.target.value)}
+            />
+            <button type="submit" disabled={busy || !draftName.trim()}>
+              Scrap everything and start again
+            </button>
+            <small> Every card is withdrawn and kept; nothing is deleted.</small>
+          </form>
+        )}
         {sessions.length === 0 && decisions.length === 0 && (
           <p className="note">
             No session has been held or imported for this site yet. Nothing is shown that was not
@@ -136,7 +162,12 @@ export function DiscoveryView({
               ),
             )}
             {bySession(s.id).map((d) => (
-              <Card key={d.id} d={d} siteId={siteId} />
+              <Card
+                yes={member ? (id) => api('decisions/yes', { id }) : null}
+                key={d.id}
+                d={d}
+                siteId={siteId}
+              />
             ))}
           </section>
         ))}
@@ -144,7 +175,12 @@ export function DiscoveryView({
           <section className="session">
             <h2>Decisions outside a session</h2>
             {loose.map((d) => (
-              <Card key={d.id} d={d} siteId={siteId} />
+              <Card
+                yes={member ? (id) => api('decisions/yes', { id }) : null}
+                key={d.id}
+                d={d}
+                siteId={siteId}
+              />
             ))}
           </section>
         )}
@@ -214,7 +250,7 @@ export function DiscoveryView({
                   setCard({
                     title: '',
                     statement: '',
-                    status: 'decided',
+                    status: 'open',
                     bricks: '',
                     screenId: '',
                   });
@@ -239,7 +275,6 @@ export function DiscoveryView({
                 value={card.status}
                 onChange={(e) => setCard({ ...card, status: e.target.value })}
               >
-                <option value="decided">Decided</option>
                 <option value="open">Open</option>
                 <option value="not-built">Not built</option>
               </select>
@@ -283,17 +318,38 @@ export function DiscoveryView({
   );
 }
 
-function Card({ d, siteId }: { d: Decision; siteId: string }) {
-  const tone = d.status === 'decided' ? 'green' : 'red';
+const LABEL = {
+  decided: 'Decision',
+  open: 'Open',
+  'not-built': 'Not built',
+  withdrawn: 'Withdrawn',
+};
+
+function Card({
+  d,
+  siteId,
+  yes,
+}: {
+  d: Decision;
+  siteId: string;
+  /** Records the signed-in person's yes; null when nobody is signed in. */
+  yes: ((id: string) => Promise<boolean>) | null;
+}) {
+  const tone = d.status === 'decided' ? 'green' : d.status === 'withdrawn' ? 'dim' : 'red';
   return (
     <div className={`dec ${tone}`} data-decision={d.id}>
       <p>
-        <span className={`pill ${tone}`}>
-          {d.status === 'decided' ? 'Decision' : d.status === 'open' ? 'Open' : 'Not built'}
-        </span>{' '}
-        <b>{d.title}</b> {d.reconstructed && <span className="pill amber">reconstructed</span>}
+        <span className={`pill ${tone}`}>{LABEL[d.status]}</span> <b>{d.title}</b>{' '}
+        {d.reconstructed && <span className="pill amber">reconstructed</span>}
       </p>
       <p>{d.statement}</p>
+      {yes && (d.status === 'open' || d.status === 'not-built') && (
+        <p>
+          <button type="button" className="primary" onClick={() => void yes(d.id)}>
+            Yes, decided
+          </button>
+        </p>
+      )}
       <p className="note">
         {d.by}, {d.at.slice(0, 10)}
         {d.screenId ? (

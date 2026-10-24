@@ -97,8 +97,9 @@ export interface ProductDeps {
   now: () => Date;
 }
 
+/** RAMA_GITHUB_API replaces GitHub's address for an engineer's stub (the end-to-end test); unset in use. */
 export const defaultProductDeps = (): ProductDeps => ({
-  github: { fetch: globalThis.fetch, api: GITHUB_API },
+  github: { fetch: globalThis.fetch, api: process.env.RAMA_GITHUB_API || GITHUB_API },
   env: process.env,
   now: () => new Date(),
 });

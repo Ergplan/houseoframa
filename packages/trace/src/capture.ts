@@ -10,7 +10,6 @@ import { spawn, spawnSync, type ChildProcess } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { chromium, type Page } from 'playwright';
 import type { Blueprint } from '@rama/shared';
 import { canonicalJson } from '@rama/blueprint';
@@ -28,6 +27,7 @@ import { appearanceKeys } from './keys.ts';
 import { runInSandbox } from './sandbox.ts';
 import { codeAt } from './code.ts';
 import type { RunResult } from './trail.ts';
+import { traceSrcDir } from './here.ts';
 
 export const CAPTURE_VERSION = 1;
 /** Screenshots are full-page up to this height; a taller page is cropped, and says so. */
@@ -214,7 +214,8 @@ interface RawFigure {
  * JavaScript and sent as text: a TypeScript loader would wrap it in helpers the page does not have.
  */
 const PAGE_FIGURES = readFileSync(
-  fileURLToPath(new URL('./page-figures.js', import.meta.url)),
+  // traceSrcDir, not new URL(…, import.meta.url): see sandbox.ts.
+  path.join(traceSrcDir(), 'page-figures.js'),
   'utf8',
 );
 

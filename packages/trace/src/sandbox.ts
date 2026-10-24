@@ -6,15 +6,18 @@
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { pathToFileURL } from 'node:url';
+import { traceSrcDir } from './here.ts';
 
 const MARK = '@@RAMA-SANDBOX@@';
-const RUNNER = fileURLToPath(new URL('./sandbox-runner.mjs', import.meta.url));
+// Found through traceSrcDir, not `new URL('./sandbox-runner.mjs', import.meta.url)`: the app's bundler
+// takes the latter for a static asset, and the app runs captures since Stage 7.
+const RUNNER = path.join(traceSrcDir(), 'sandbox-runner.mjs');
 // tsx's full loader (what `node --import tsx` loads): it hooks both ES modules and CommonJS, which a
 // target's own packages may be compiled to.
 const TSX = pathToFileURL(
   path.join(
-    path.dirname(createRequire(import.meta.url).resolve('tsx/package.json')),
+    path.dirname(createRequire(path.join(traceSrcDir(), 'sandbox.ts')).resolve('tsx/package.json')),
     'dist/loader.mjs',
   ),
 ).href;

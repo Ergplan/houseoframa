@@ -135,7 +135,7 @@ export function testFindings(
         verdict: ran.length ? 'defect' : 'note',
         file: n.path,
         text: ran.length
-          ? `Every test behind it fails: ${ran.join(', ')}.`
+          ? `Every test file that reaches it fails: ${ran.join(', ')}.`
           : `The tests behind it did not run: ${behind.join(', ')}.`,
       });
     }

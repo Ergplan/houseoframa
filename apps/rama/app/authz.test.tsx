@@ -115,6 +115,14 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     async () => (await import('./api/site/[siteId]/decisions/route')).POST as Handler,
   ],
   [
+    'POST decisions/yes',
+    async () => (await import('./api/site/[siteId]/decisions/yes/route')).POST as Handler,
+  ],
+  [
+    'POST decisions/scrap',
+    async () => (await import('./api/site/[siteId]/decisions/scrap/route')).POST as Handler,
+  ],
+  [
     'POST discovery/sessions',
     async () => (await import('./api/site/[siteId]/discovery/sessions/route')).POST as Handler,
   ],
@@ -144,6 +152,7 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     async () => (await import('./api/site/[siteId]/handover/route')).POST as Handler,
   ],
   ['POST checkin', async () => (await import('./api/site/[siteId]/checkin/route')).POST as Handler],
+  ['POST act', async () => (await import('./api/site/[siteId]/act/route')).POST as Handler],
   [
     'POST repository',
     async () => (await import('./api/site/[siteId]/repository/route')).POST as Handler,
@@ -193,6 +202,30 @@ describe('every site route: 401 without a session, 404 for another member’s si
     } finally {
       await conn.close();
     }
+  });
+
+  it('POST /api/testdrive, /api/products and /api/settings/* need a session; Settings a trainer', async () => {
+    const td = await import('./api/testdrive/route');
+    expect((await td.POST(post(null))).status).toBe(401);
+    const products = await import('./api/products/route');
+    expect((await products.POST(post(null))).status).toBe(401);
+    const keys = await import('./api/settings/keys/route');
+    expect((await keys.POST(post(null))).status).toBe(401);
+    expect((await keys.POST(post('asha'))).status).toBe(403);
+    const gh = await import('./api/settings/github/route');
+    expect((await gh.POST(post('ravi'))).status).toBe(403);
+  });
+
+  it('/settings is a trainer’s: to /login without a session, not found for a customer', async () => {
+    const { default: Settings } = await import('./settings/page');
+    cookie = undefined;
+    await expect(Settings({})).rejects.toMatchObject({
+      digest: expect.stringMatching(/^NEXT_REDIRECT;[a-z]+;\/login;/),
+    });
+    cookie = token.asha;
+    await expect(Settings({})).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
+    cookie = token.tara;
+    expect(isValidElement(await Settings({}))).toBe(true);
   });
 
   it('GET /api/health stays public', async () => {

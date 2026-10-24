@@ -227,8 +227,7 @@ export function WalkthroughView({
               </>
             ) : (
               <p className="note">
-                RAMA_MEMBER_NAME is not set, so there is no member to sign as. Set it in{' '}
-                <code>.env</code> and reload.
+                Nobody is signed in, so there is nobody to sign as. Pick your name first.
               </p>
             )}
             {error && (

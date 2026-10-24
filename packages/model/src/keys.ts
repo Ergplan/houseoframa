@@ -54,12 +54,22 @@ export const KEY_HELP: Record<SecretName, { label: string; sentence: string }> =
   },
 };
 
-/** Makes the harmless call and turns its answer into a light and a sentence. Never echoes the key. */
-export async function checkKey(name: SecretName, key: string, f: Fetch = fetch): Promise<KeyCheck> {
+/**
+ * Makes the harmless call and turns its answer into a light and a sentence. Never echoes the key.
+ * `githubApi` replaces https://api.github.com (a stub's address in the end-to-end test).
+ */
+export async function checkKey(
+  name: SecretName,
+  key: string,
+  f: Fetch = fetch,
+  opts: { githubApi?: string } = {},
+): Promise<KeyCheck> {
   const w = WHAT[name];
+  const url =
+    name === 'GITHUB_TOKEN' && opts.githubApi ? `${opts.githubApi.replace(/\/$/, '')}/user` : w.url;
   let res: Response;
   try {
-    res = await f(w.url, { headers: w.headers(key), signal: AbortSignal.timeout(15_000) });
+    res = await f(url, { headers: w.headers(key), signal: AbortSignal.timeout(15_000) });
   } catch {
     return {
       ok: false,

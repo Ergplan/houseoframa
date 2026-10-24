@@ -23,7 +23,7 @@ function light(v: SecretView): { tone: 'green' | 'red' | 'grey'; words: string }
   if (v.check) return { tone: v.check.ok ? 'green' : 'red', words: v.check.sentence };
   if (v.source === 'environment')
     return { tone: 'grey', words: 'Read from the server’s setup file. Press Test to check it.' };
-  return { tone: 'grey', words: 'Entered, not tested yet. Press Test.' };
+  return { tone: 'grey', words: 'Entered, not checked yet. Press Test.' };
 }
 
 /** Settings (Stage 7): keys with lights, the GitHub account, the people, the design system. */
