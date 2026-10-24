@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "038380a626ab7cddcc494feb386c4f4a734f02d3",
+  "commit": "463241481829daff249e4ae475c085ad1d628d0e",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6784,6 +6784,51 @@
       "sha": "038380a626ab7cddcc494feb386c4f4a734f02d3",
       "short": "038380a",
       "subject": "Gaps 1: report with reviewer findings"
+    },
+    {
+      "at": "2026-10-24T12:14:15Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": ".gitignore"
+        },
+        {
+          "add": 4,
+          "del": 1,
+          "kind": "M",
+          "path": "Dockerfile"
+        },
+        {
+          "add": 43,
+          "del": 16,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "deploy/compose.box.yml"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DEPLOY.md"
+        },
+        {
+          "add": 22,
+          "del": 4,
+          "kind": "M",
+          "path": "tests/dev-server.ts"
+        }
+      ],
+      "sha": "463241481829daff249e4ae475c085ad1d628d0e",
+      "short": "4632414",
+      "subject": "Deploy on the VM: box-only settings file, git reads any clone, e2e teardown waits for Next"
     }
   ],
   "edges": [
@@ -14299,7 +14344,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T05:39:00Z",
+  "extractedAt": "2026-10-24T12:14:15Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -14388,12 +14433,12 @@
     {
       "binary": false,
       "bytes": 184,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
       "layer": "foundation",
       "layerRule": "default: .gitignore",
       "lines": 16,
@@ -14532,12 +14577,12 @@
     {
       "binary": false,
       "bytes": 933,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 19,
@@ -16414,12 +16459,12 @@
     {
       "binary": false,
       "bytes": 2134,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
+      "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 68,
@@ -16505,12 +16550,12 @@
     {
       "binary": false,
       "bytes": 4974,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
+      "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 97,
@@ -16534,7 +16579,7 @@
     },
     {
       "binary": false,
-      "bytes": 8639,
+      "bytes": 8736,
       "changes": 26,
       "env": [],
       "envDynamic": false,
@@ -20729,7 +20774,7 @@
     {
       "binary": false,
       "bytes": 3605,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -20737,7 +20782,7 @@
         "startDevServer"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "5faa7027a71c5fe77369e5d9a82db879a05385a9",
+      "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 102,
