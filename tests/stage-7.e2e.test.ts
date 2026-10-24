@@ -149,9 +149,10 @@ describe('stage 7 e2e', () => {
     // The dev server compiles a route the first time it is asked for it: slow under a busy watcher.
     await page.waitForURL(/\/testdrive$/, { timeout: 180_000 });
     await page
-      .locator('[data-status="passed"], [data-status="failed"]')
+      // The verdict by its class: the Next dev tools' badge carries a data-status of its own.
+      .locator('.rama-verdict[data-status="passed"], .rama-verdict[data-status="failed"]')
       .waitFor({ timeout: 300_000 });
-    const verdict = await page.locator('[data-status]').getAttribute('data-status');
+    const verdict = await page.locator('.rama-verdict').getAttribute('data-status');
     const steps = await page.locator('.steps li').allTextContents();
     expect(verdict, steps.join('\n')).toBe('passed');
     expect(steps).toHaveLength(7);

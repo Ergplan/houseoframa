@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "4f388b62f2e41a4390ca4aa46fe289a2e9715967",
+  "commit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8805,6 +8805,33 @@
       "sha": "4f388b62f2e41a4390ca4aa46fe289a2e9715967",
       "short": "4f388b6",
       "subject": "Stage 7: report after reviewer run 7"
+    },
+    {
+      "at": "2026-10-24T19:06:49Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 37,
+          "del": 10,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "tests/stage-7.e2e.test.ts"
+        }
+      ],
+      "sha": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
+      "short": "ab38ce7",
+      "subject": "Watcher ignores short-lived _tmp files; the Stage 7 e2e waits out first compiles on clicks"
     }
   ],
   "edges": [
@@ -18528,7 +18555,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T18:50:03Z",
+  "extractedAt": "2026-10-24T19:06:49Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -26695,12 +26722,12 @@
     {
       "binary": false,
       "bytes": 8889,
-      "changes": 10,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 263,
@@ -26960,16 +26987,16 @@
     },
     {
       "binary": false,
-      "bytes": 7902,
-      "changes": 4,
+      "bytes": 8023,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 177,
+      "lines": 178,
       "path": "tests/stage-7.e2e.test.ts",
       "test": true
     },
