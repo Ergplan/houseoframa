@@ -3,7 +3,7 @@
 // each step passes with a plain sentence, and the screens land in the three states the script expects.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomBytes } from 'node:crypto';
-import { existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import postgres from 'postgres';
@@ -109,5 +109,21 @@ describe('Test drive', () => {
     expect(latestTestDrive(['testdrive-1', 'testdrive-2', 'testdrive-10', 'chai'])).toBe(
       'testdrive-10',
     );
+  });
+});
+
+describe('the test run records what ran', () => {
+  it('per test file, the product functions its worker executed', () => {
+    const run = JSON.parse(
+      readFileSync(path.join(work, 'testdrive-1', 'tests.json'), 'utf8'),
+    ) as import('@rama/blueprint/metrics').TestRun;
+    expect(run.executed).toEqual({
+      'lib/money.test.ts': [
+        'lib/money.ts#dayGst',
+        'lib/money.ts#dayTotal',
+        'lib/money.ts#orderAmount',
+      ],
+      'lib/orders.test.ts': ['db/orders.ts#todaysOrders', 'lib/money.ts#orderCount'],
+    });
   });
 });

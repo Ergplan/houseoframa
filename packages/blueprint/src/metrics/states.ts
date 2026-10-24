@@ -1,5 +1,5 @@
-// Three states and one counting rule (Invariant 11). A screen is Verified (a test exercises it and passed
-// in the last run), Confirmed (a named person's sealed signature at or after its last change) or
+// Three states and one counting rule (Invariant 11). A screen is Verified (a test exercised it, as the
+// run's own record of what executed shows, and passed in the last run), Confirmed (a named person's sealed signature at or after its last change) or
 // Unverified; there is no fourth state, and "a test imports this file" is not one. Every count of
 // screens names its audience: "N of M customer screens signed". Plain functions of their inputs, so the
 // site, the inspector, the trainer console and the audit all show the same words (Invariant 7).
@@ -15,16 +15,19 @@ export interface TestRun {
   at: string;
   passing: string[];
   failing: string[];
+  /**
+   * Per test file, the product's functions that actually ran while it ran (`<file>#<function>`), from the
+   * run's V8 coverage. Absent when the run did not record it: then nothing it did counts as evidence.
+   */
+  executed?: Record<string, string[]>;
 }
 
-/** What each test file exercises, read from its source: functions it calls, pages it renders, routes it visits. */
+/** What each test file claims to exercise, read from its code: functions it calls, pages it renders. */
 export interface TestReach {
   /** `<file>#<function>` for each imported function the test calls. */
   calls: string[];
-  /** Page files whose default export the test imports (renders). */
+  /** Page files whose default export the test imports and uses (renders). */
   renders: string[];
-  /** Path literals in the test, such as '/total' handed to a browser or a fetch. */
-  routes: string[];
 }
 
 /** A figure on a screen, by the function that computes it. */
@@ -35,7 +38,7 @@ export interface FigureFn {
 
 /**
  * A source as code only: comments dropped, and every string or template literal replaced by a marker
- * `\u0000<n>\u0000` whose text is kept aside. What a test says in a comment or a string is not what it
+ * `\uE000<n>\uE000` whose text is kept aside. What a test says in a comment or a string is not what it
  * does. (A regular-expression literal holding a quote can throw this off; tests seldom have one.)
  */
 export function codeOf(src: string): { code: string; strings: string[] } {
@@ -66,7 +69,7 @@ export function codeOf(src: string): { code: string; strings: string[] } {
         else j++;
       }
       strings.push(src.slice(i + 1, j));
-      code += `\u0000${strings.length - 1}\u0000`;
+      code += `\uE000${strings.length - 1}\uE000`;
       i = j + 1;
     } else {
       code += c;
@@ -78,7 +81,7 @@ export function codeOf(src: string): { code: string; strings: string[] } {
 
 /** The local names a source gives its default imports, with the module each comes from. */
 function defaultImports(code: string, strings: string[]): { name: string; spec: string }[] {
-  return [...code.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,\s*\{[^}]*\})?\s*from\s*\u0000(\d+)\u0000/g)].map(
+  return [...code.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,\s*\{[^}]*\})?\s*from\s*\uE000(\d+)\uE000/g)].map(
     (m) => ({ name: m[1]!, spec: strings[Number(m[2])]! }),
   );
 }
@@ -97,17 +100,18 @@ function specNames(testFile: string, spec: string, file: string): boolean {
 }
 
 /**
- * What each test brick exercises. `read` gives a brick's source. A call is an imported name followed by
- * `(`. A render is a page's default export, imported and then used: as a JSX element or called. A route
- * is a path handed to a visiting call (goto, fetch, visit, request, get, post), as a literal or after a
- * base address in a template. Importing a file, or naming a path, is not enough (Invariant 11).
+ * What each test brick claims to exercise. `read` gives a brick's source, read as code only. A call is an
+ * imported name followed by `(`. A render is a page's default export, imported and then used: as a JSX
+ * element or called. Importing a file is not enough (Invariant 11). A claim counts only when the run's
+ * record shows the code ran (stateOf). A path handed to a browser is not counted: the run cannot show
+ * that the visit happened.
  */
 export function testReach(bp: Blueprint, read: (path: string) => string | null): Record<string, TestReach> {
   const out: Record<string, TestReach> = {};
   const pages = new Set(bp.screens.map((s) => s.file));
   for (const t of bp.nodes.filter((n) => n.test)) {
     const { code, strings } = codeOf(read(t.path) ?? '');
-    const reach: TestReach = { calls: [], renders: [], routes: [] };
+    const reach: TestReach = { calls: [], renders: [] };
     const defaults = defaultImports(code, strings);
     for (const e of bp.edges.filter((x) => x.from === t.path && !x.typeOnly)) {
       for (const sym of e.symbols) {
@@ -120,28 +124,11 @@ export function testReach(bp: Blueprint, read: (path: string) => string | null):
           reach.calls.push(`${e.to}#${sym}`);
       }
     }
-    // The first argument of a visiting call, when it is a literal: a path, or a base address then a path.
-    for (const m of code.matchAll(/\b(?:goto|fetch|visit|request|get|post)\s*\(\s*\u0000(\d+)\u0000/g)) {
-      const path = /^(?:\$\{[^}]*\})?(\/[A-Za-z0-9_\-/.[\]?=&]*)$/.exec(strings[Number(m[1])]!);
-      if (path) reach.routes.push(path[1]!);
-    }
     reach.calls = [...new Set(reach.calls)].sort();
     reach.renders = [...new Set(reach.renders)].sort();
-    reach.routes = [...new Set(reach.routes)].sort();
     out[t.path] = reach;
   }
   return out;
-}
-
-/** Whether a concrete path (`/bills/7`) is an instance of a route pattern (`/bills/[id]`). */
-function routeMatches(pattern: string, path: string): boolean {
-  const re = pattern
-    .split('/')
-    .map((seg) =>
-      /^\[\[?\.\.\./.test(seg) ? '.*' : /^\[.+\]$/.test(seg) ? '[^/]+' : seg.replace(/[.*+?^${}()|\\]/g, '\\$&'),
-    )
-    .join('/');
-  return new RegExp(`^${re}/?$`).test(path);
 }
 
 /** The last commit (in history order) that touched one of the screen's bricks; empty when none did. */
@@ -179,8 +166,9 @@ export interface StateOf {
 
 /**
  * The screen's state. Confirmed when a named person signed it (sealed) at or after its last change;
- * else Verified when a test that renders it, visits its route, or calls every one of its figure
- * functions passed in the last run, and that run is at or after its last change; else Unverified.
+ * else Verified when, in the last run (at or after its last change), a passing test rendered it or
+ * called every one of its figure functions: the test's code says so and the run's record shows that
+ * code ran; else Unverified.
  */
 export function stateOf(screen: Screen, input: StateInput): StateOf {
   const { bp, run } = input;
@@ -191,17 +179,14 @@ export function stateOf(screen: Screen, input: StateInput): StateOf {
 
   const fns = input.figures[screen.id] ?? [];
   const passing = new Set(run?.passing ?? []);
+  const ran = (t: string) => new Set(run?.executed?.[t] ?? []);
   const exercising = Object.entries(input.reach)
     .filter(([t]) => passing.has(t))
-    .filter(
-      ([, r]) =>
-        r.renders.includes(screen.file) ||
-        r.routes.some((p) => routeMatches(screen.route, p.split('?')[0]!)) ,
-    )
+    .filter(([t, r]) => r.renders.includes(screen.file) && [...ran(t)].some((x) => x.startsWith(`${screen.file}#`)))
     .map(([t]) => t);
   const callers = (f: FigureFn) =>
     Object.entries(input.reach)
-      .filter(([t, r]) => passing.has(t) && r.calls.includes(`${f.file}#${f.fn}`))
+      .filter(([t, r]) => passing.has(t) && r.calls.includes(`${f.file}#${f.fn}`) && ran(t).has(`${f.file}#${f.fn}`))
       .map(([t]) => t);
   const allCalled = fns.length > 0 && fns.every((f) => callers(f).length > 0);
   const tests = [...new Set([...exercising, ...(allCalled ? fns.flatMap(callers) : [])])].sort();
@@ -209,6 +194,7 @@ export function stateOf(screen: Screen, input: StateInput): StateOf {
   const verified = tests.length > 0 && fresh;
   if (verified) why.push(`Verified: ${tests.length === 1 ? 'a test checks it and passes' : `${tests.length} tests check it and pass`}.`);
   else if (!run) why.push('No test run is on record.');
+  else if (!run.executed) why.push('The last test run did not record what ran, so no test counts.');
   else if (tests.length && !fresh) why.push('Its tests passed before its last change; they have not run since.');
   else if (fns.length && !allCalled)
     why.push(

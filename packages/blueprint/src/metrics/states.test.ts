@@ -41,6 +41,11 @@ const passed = (): TestRun => ({
   at: '2026-10-24T10:00:00Z',
   passing: ['lib/money.test.ts', 'lib/orders.test.ts'],
   failing: [],
+  // What ran in each test file's worker, as the run's V8 coverage recorded it.
+  executed: {
+    'lib/money.test.ts': ['lib/money.ts#dayGst', 'lib/money.ts#dayTotal', 'lib/money.ts#orderAmount'],
+    'lib/orders.test.ts': ['db/orders.ts#todaysOrders', 'lib/money.ts#orderCount'],
+  },
 });
 const input = (over: Partial<StateInput> = {}): StateInput => ({
   bp,
@@ -104,16 +109,11 @@ describe('testReach: a render or a visit must happen, not just an import or a pa
     expect(reach(t, imp + '/* Total() */ const s = "render(<Total />)";', ['app/total/page.tsx']).renders).toEqual(
       [],
     );
-    expect(reach(t, "// await page.goto('/total');").routes).toEqual([]);
-    expect(reach(t, 'const s = "goto(\'/total\')";').routes).toEqual([]);
     expect(reach('lib/money.test.ts', "import { dayGst } from './money';\n// dayGst(1)").calls).toEqual([]);
   });
 
-  it('a path handed to a visiting call is a visit; a path merely named is not', () => {
-    const t = 'e2e/total.test.ts';
-    expect(reach(t, "const where = '/total';").routes).toEqual([]);
-    expect(reach(t, 'await page.goto(`${base}/total`);').routes).toEqual(['/total']);
-    expect(reach(t, "const r = await fetch('/new?as=staff');").routes).toEqual(['/new?as=staff']);
+  it('reads no visits: a path handed to a browser is not counted', () => {
+    expect(reach('e2e/total.test.ts', 'await page.goto(`${base}/total`);')).toEqual({ calls: [], renders: [] });
   });
 });
 
@@ -138,15 +138,30 @@ describe('stateOf', () => {
 
   it('a test that only imports a file is not evidence', () => {
     // A test importing the screen's module without calling its figure functions verifies nothing.
-    const reach = { 'lib/money.test.ts': { calls: [], renders: [], routes: [] } };
+    const reach = { 'lib/money.test.ts': { calls: [], renders: [] } };
     expect(stateOf(screen('/total'), input({ reach })).state).toBe('Unverified');
   });
 
-  it('a test that renders the page or visits its route verifies it', () => {
-    const renders = { 'lib/money.test.ts': { calls: [], renders: [screen('/new').file], routes: [] } };
-    expect(stateOf(screen('/new'), input({ reach: renders })).state).toBe('Verified');
-    const visits = { 'lib/money.test.ts': { calls: [], renders: [], routes: ['/new?as=staff'] } };
-    expect(stateOf(screen('/new'), input({ reach: visits })).state).toBe('Verified');
+  it('a test that renders the page verifies it, when the run shows the page ran', () => {
+    const file = screen('/new').file;
+    const renders = { 'lib/money.test.ts': { calls: [], renders: [file] } };
+    expect(stateOf(screen('/new'), input({ reach: renders })).state).toBe('Unverified');
+    const ran = { ...passed(), executed: { 'lib/money.test.ts': [`${file}#NewOrder`] } };
+    expect(stateOf(screen('/new'), input({ reach: renders, run: ran })).state).toBe('Verified');
+  });
+
+  it('a call the run did not execute (a helper never called, a skipped test) is not evidence', () => {
+    const run = {
+      ...passed(),
+      executed: { ...passed().executed, 'lib/money.test.ts': ['lib/money.ts#dayTotal', 'lib/money.ts#orderAmount'] },
+    };
+    const s = stateOf(screen('/total'), input({ run }));
+    expect(s.state).toBe('Unverified');
+    expect(s.why).toEqual(['No passing test checks dayGst.']);
+    const unrecorded = { ...passed(), executed: undefined };
+    expect(stateOf(screen('/total'), input({ run: unrecorded })).why).toEqual([
+      'The last test run did not record what ran, so no test counts.',
+    ]);
   });
 
   it('Confirmed: a sealed signature at or after the last change, and it wins over Verified', () => {

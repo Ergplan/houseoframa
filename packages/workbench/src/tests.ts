@@ -1,9 +1,13 @@
 // The product's own tests, run from a button (Stage 7): its `test` script with a JSON report, PATH and
 // HOME only, recorded as the last run in work/<site>/tests.json. "Verified" (Invariant 11) reads it.
+// The run also records, per test file, which of the product's functions actually ran: Node writes V8
+// coverage for each worker (NODE_V8_COVERAGE), and with Vitest's thread pool each test file runs in a
+// worker of its own, so what ran can be told test file by test file.
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { passingFromReport } from '@rama/ceremony';
 import { scriptCommand } from '@rama/audit';
 import type { TestRun } from '@rama/blueprint/metrics';
@@ -17,6 +21,49 @@ export function readTestRun(siteId: string, env: NodeJS.ProcessEnv = process.env
   return existsSync(f) ? (JSON.parse(readFileSync(f, 'utf8')) as TestRun) : null;
 }
 
+interface V8Coverage {
+  result: { url: string; functions: { functionName: string; ranges: { count: number }[] }[] }[];
+}
+
+/**
+ * Per test file, the product functions (`<file>#<name>`) that ran in its worker. A worker that ran more
+ * than one test file, or none, tells nothing about any one of them and is left out.
+ */
+export function executedByTest(
+  coverageDir: string,
+  repoDir: string,
+  testFiles: Set<string>,
+): Record<string, string[]> {
+  const out: Record<string, Set<string>> = {};
+  if (!existsSync(coverageDir)) return {};
+  const root = path.resolve(repoDir);
+  for (const f of readdirSync(coverageDir).filter((x) => x.endsWith('.json'))) {
+    const cov = JSON.parse(readFileSync(path.join(coverageDir, f), 'utf8')) as V8Coverage;
+    const scripts = cov.result
+      .map((s) => {
+        const url = s.url.split('?')[0]!;
+        const abs = url.startsWith('file://') ? fileURLToPath(url) : url;
+        const rel = path.relative(root, abs).split(path.sep).join('/');
+        return { rel, functions: s.functions };
+      })
+      .filter(
+        (s) =>
+          s.rel &&
+          !s.rel.startsWith('..') &&
+          !path.isAbsolute(s.rel) &&
+          !s.rel.includes('node_modules/'),
+      );
+    const tests = [...new Set(scripts.map((s) => s.rel).filter((r) => testFiles.has(r)))];
+    if (tests.length !== 1) continue;
+    const ran = (out[tests[0]!] ??= new Set());
+    for (const s of scripts.filter((x) => !testFiles.has(x.rel)))
+      for (const fn of s.functions)
+        if (fn.functionName && (fn.ranges[0]?.count ?? 0) > 0)
+          ran.add(`${s.rel}#${fn.functionName}`);
+  }
+  return Object.fromEntries(Object.entries(out).map(([t, set]) => [t, [...set].sort()]));
+}
+
 /** Runs the site's tests and records the run; throws a plain sentence when they cannot be run. */
 export function runSiteTests(
   site: SiteLocation,
@@ -25,8 +72,13 @@ export function runSiteTests(
 ): TestRun {
   const dir = mkdtempSync(path.join(tmpdir(), 'rama-tests-'));
   const out = path.join(dir, 'report.json');
+  const coverage = path.join(dir, 'coverage');
   try {
-    const argv = scriptCommand(site.repoDir, 'test', ['--reporter=json', `--outputFile=${out}`]);
+    const argv = scriptCommand(site.repoDir, 'test', [
+      '--reporter=json',
+      `--outputFile=${out}`,
+      '--pool=threads',
+    ]);
     if (!argv) throw new Error('This product has no tests to run yet.');
     spawnSync(argv[0]!, argv.slice(1), {
       cwd: site.repoDir,
@@ -35,6 +87,7 @@ export function runSiteTests(
         PATH: process.env.PATH ?? '',
         HOME: process.env.HOME ?? '',
         CI: '1',
+        NODE_V8_COVERAGE: coverage,
       } as unknown as NodeJS.ProcessEnv,
       encoding: 'utf8',
       timeout: 10 * 60_000,
@@ -54,6 +107,7 @@ export function runSiteTests(
       at: now().toISOString(),
       passing,
       failing: all.filter((t) => !passing.includes(t)).sort(),
+      executed: executedByTest(coverage, site.repoDir, new Set(all)),
     };
     writeFileSync(testRunFile(site.id, env), JSON.stringify(run, null, 2) + '\n');
     return run;
