@@ -48,16 +48,6 @@ export const sideEffectImports = (bp: Blueprint): number =>
 export const envVars = (bp: Blueprint): string[] =>
   [...new Set(bp.nodes.flatMap((n) => n.env))].sort(byString);
 
-/** Code bricks (not tests) that no test brick imports directly. */
-export const untestedBricks = (bp: Blueprint): string[] => {
-  const testPaths = new Set(bp.nodes.filter((n) => n.test).map((n) => n.path));
-  const tested = new Set(bp.edges.filter((e) => testPaths.has(e.from)).map((e) => e.to));
-  return bp.nodes
-    .filter((n) => !n.test && isCode(n.path) && !tested.has(n.path))
-    .map((n) => n.path)
-    .sort(byString);
-};
-
 /** Bricks with the most distinct importers. */
 export const loadBearing = (bp: Blueprint, top = 5): Ranked[] => {
   const counts = new Map<string, number>();
@@ -96,28 +86,20 @@ export interface BrickFigures {
   dependsOn: number;
   /** Distinct bricks that import this brick. */
   usedBy: number;
-  /** Whether a test brick imports it directly; null when that does not apply (a test, or not code). */
-  tested: boolean | null;
 }
 
-/** Per brick: what it needs, what relies on it, and whether a test stands behind it. */
+/**
+ * Per brick: what it needs and what relies on it. Whether a test imports a brick is not a confidence
+ * signal (Invariant 11): a screen's state comes from states.ts.
+ */
 export const brickFigures = (bp: Blueprint): Record<string, BrickFigures> => {
-  const untested = new Set(untestedBricks(bp));
   const out: Record<string, BrickFigures> = {};
-  for (const n of bp.nodes) {
-    out[n.path] = { dependsOn: 0, usedBy: 0, tested: n.test || !isCode(n.path) ? null : !untested.has(n.path) };
-  }
+  for (const n of bp.nodes) out[n.path] = { dependsOn: 0, usedBy: 0 };
   for (const e of bp.edges) {
     if (out[e.from]) out[e.from]!.dependsOn++;
     if (out[e.to]) out[e.to]!.usedBy++;
   }
   return out;
-};
-
-/** Code bricks (not tests) with a test brick importing them directly, over all such code bricks. */
-export const testCoverage = (bp: Blueprint): { tested: number; of: number } => {
-  const of = bp.nodes.filter((n) => !n.test && isCode(n.path)).length;
-  return { tested: of - untestedBricks(bp).length, of };
 };
 
 /** Minutes from the first commit to the last. */
@@ -217,21 +199,17 @@ export const signatureCoverage = (bp: Blueprint, signedScreens: string[]): { sig
   return { signed, unsigned: bp.screens.length - signed, of: bp.screens.length };
 };
 
-export type BrickMark = 'red' | 'amber' | 'green';
+export type BrickMark = 'green';
 
 /**
- * The dot on each code brick (tests and non-code have none). On a signed screen: green when a test stands
- * behind the brick, amber when only the signature does. Elsewhere: red when no test stands behind it.
+ * The dot on a code brick (tests and non-code have none): green when a named person signed a screen it
+ * renders. No dot otherwise: whether a test imports a brick says nothing a person should trust
+ * (Invariant 11).
  */
 export const brickMarks = (bp: Blueprint, signedScreens: string[]): Record<string, BrickMark> => {
-  const figures = brickFigures(bp);
   const signed = new Set(bp.screens.filter((s) => signedScreens.includes(s.id)).flatMap((s) => s.bricks));
   const out: Record<string, BrickMark> = {};
-  for (const [path, f] of Object.entries(figures)) {
-    if (f.tested === null) continue;
-    if (signed.has(path)) out[path] = f.tested ? 'green' : 'amber';
-    else if (!f.tested) out[path] = 'red';
-  }
+  for (const n of bp.nodes) if (!n.test && isCode(n.path) && signed.has(n.path)) out[n.path] = 'green';
   return out;
 };
 
@@ -380,8 +358,8 @@ export const summary = (bp: Blueprint) => ({
   importEdges: importEdges(bp),
   sideEffectImports: sideEffectImports(bp),
   envVars: envVars(bp).length,
-  untestedBricks: untestedBricks(bp).length,
   loadBearing: loadBearing(bp, 1)[0] ?? null,
   mostReworked: mostReworked(bp, 1)[0] ?? null,
   heaviestCodeBrick: heaviestCodeBrick(bp)?.path ?? null,
 });
+export * from './states.ts';

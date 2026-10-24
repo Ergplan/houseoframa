@@ -12,7 +12,12 @@ import { siteModel } from '../../canvas/frame';
 import { layerColor } from '../../canvas/palette';
 import { pick, toScene } from '../../canvas/pick';
 import { brickState, clockText, currentTime } from '../../canvas/timeline';
-import { Inspector, type CapturedScreen, type View } from '../inspector/Inspector';
+import {
+  Inspector,
+  type CapturedScreen,
+  type ScreenStates,
+  type View,
+} from '../inspector/Inspector';
 import { auditScript, type AuditView } from '@rama/audit/view';
 import {
   finishAudit,
@@ -32,6 +37,7 @@ export function SiteView({
   member,
   captured = [],
   signedScreens = [],
+  screenStates,
   initialBrick = null,
   audit = null,
 }: {
@@ -41,8 +47,10 @@ export function SiteView({
   member: string | null;
   /** Screens photographed from the target's app (Stage 3), for the brick's On screen thumbnails. */
   captured?: CapturedScreen[];
-  /** Screens with a signature in force at the Blueprint's commit: their bricks' dots turn green or amber. */
+  /** Screens with a signature in force at the Blueprint's commit: their code bricks' dots turn green. */
   signedScreens?: string[];
+  /** The screens in the three words, for the trust report (Invariant 11). */
+  screenStates?: ScreenStates;
   /** A brick to open on arrival (`?brick=`), as a decision card's link does. */
   initialBrick?: string | null;
   /** The site's latest audit (Stage 5), or null when it has none. */
@@ -402,16 +410,8 @@ export function SiteView({
                 </span>
               ))}
               <span>
-                <i style={{ background: '#ff5a6a', width: 7, height: 7, borderRadius: '50%' }} />
-                Code with no test behind it
-              </span>
-              <span>
-                <i style={{ background: '#ffb429', width: 7, height: 7, borderRadius: '50%' }} />
-                Signed, no test
-              </span>
-              <span>
                 <i style={{ background: '#5ad45a', width: 7, height: 7, borderRadius: '50%' }} />
-                Signed and tested
+                On a signed screen
               </span>
               <span>
                 <i style={{ background: '#4fe3d8' }} />
@@ -431,6 +431,7 @@ export function SiteView({
           member={member}
           captured={captured}
           signedScreens={signedScreens}
+          {...(screenStates ? { screenStates } : {})}
           audit={audit}
           auditRun={{
             mode: auditMode,

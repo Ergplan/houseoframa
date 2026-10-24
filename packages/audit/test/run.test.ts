@@ -62,7 +62,7 @@ describe('testFindings', () => {
     expect(f.map((x) => [x.brick, x.verdict, x.text])).toEqual([
       ['lib/b.test.ts', 'defect', 'This test file fails.'],
       ['lib/b.ts', 'defect', 'Every test behind it fails: lib/b.test.ts.'],
-      ['lib/c.ts', 'note', 'No test imports this brick.'],
+      ['lib/c.ts', 'note', 'No test file reaches this brick, so no test result speaks for it.'],
     ]);
   });
 });

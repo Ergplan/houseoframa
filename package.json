@@ -2,7 +2,7 @@
   "name": "house-of-rama",
   "private": true,
   "version": "0.0.1",
-  "description": "House of Rama — Built on trust. Agent-built software your whole company can watch, question and sign off.",
+  "description": "House of Rama \u2014 Built on trust. Agent-built software your whole company can watch, question and sign off.",
   "type": "module",
   "engines": {
     "node": ">=22 <23"
@@ -41,6 +41,7 @@
     "@rama/model": "workspace:*",
     "@rama/shared": "workspace:^",
     "@rama/trace": "workspace:*",
+    "@rama/workbench": "workspace:*",
     "@types/node": "22.20.5",
     "eslint": "10.12.0",
     "globals": "17.13.0",

@@ -1,7 +1,7 @@
 // call(): the only way House of Rama talks to a model vendor (rule 8).
 // Order: vendor guard → prompt → model and key → up to 3 attempts → one model_calls row → typed output.
 import type { z } from 'zod';
-import { createDb, modelCalls } from '@rama/db';
+import { createDb, modelCalls, secretFor, type SecretName } from '@rama/db';
 import pkg from '../package.json' with { type: 'json' };
 import { ADAPTERS, VendorHttpError, type Completion, type Fetch } from './adapters.ts';
 import { loadPrompt, PROMPTS_DIR } from './prompts.ts';
@@ -56,6 +56,8 @@ export type ModelCallRow = typeof modelCalls.$inferInsert;
 
 export interface CallDeps {
   env: Record<string, string | undefined>;
+  /** A vendor key: from Settings, or from the environment while Settings holds none (rule 11). */
+  secret: (name: SecretName) => Promise<string | undefined>;
   fetch: Fetch;
   promptsDir: string;
   /** Writes one model_calls row and returns its id. */
@@ -76,6 +78,7 @@ async function recordToDb(row: ModelCallRow): Promise<string> {
 
 const defaultDeps = (): CallDeps => ({
   env: process.env,
+  secret: (name) => secretFor(name),
   fetch: globalThis.fetch,
   promptsDir: PROMPTS_DIR,
   record: recordToDb,
@@ -116,8 +119,11 @@ export async function call<I, O>(
   const adapter = ADAPTERS[vendor];
   const model = deps.env[adapter.modelVar] || adapter.defaultModel;
   if (!model) throw new ModelConfigError(`${adapter.modelVar} is not set`);
-  const apiKey = deps.env[adapter.keyVar];
-  if (!apiKey) throw new ModelConfigError(`${adapter.keyVar} is not set`);
+  const apiKey = await deps.secret(adapter.keyVar);
+  if (!apiKey)
+    throw new ModelConfigError(
+      `${adapter.keyVar} is not set: enter the ${vendor === 'openai' ? 'OpenAI' : 'Anthropic'} key in Settings`,
+    );
 
   const format = req.format ?? 'json';
   const user = JSON.stringify(req.input);

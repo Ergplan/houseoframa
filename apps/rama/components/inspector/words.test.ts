@@ -21,25 +21,25 @@ describe('reviewer paragraph', () => {
     );
   });
 
-  it('with 4 dependants and no test: the warning', () => {
+  it('with 4 dependants: the warning', () => {
     const bp = fixtureBlueprint();
     for (const p of ['a', 'b', 'c']) {
       bp.nodes.push(node(`app/${p}.tsx`, 'shell'));
       bp.edges.push(edge(`app/${p}.tsx`, 'lib/fmt.ts', ['money']));
     }
     expect(para(bp, 'lib/fmt.ts')).toBe(
-      'It needs 1 other brick: 1 on the data floor (data). 4 bricks rely on it, so a change here is felt in all of them. With this many dependants and no test behind it, this is one of the bricks a reviewer should ask to see verified first.',
+      'It needs 1 other brick: 1 on the data floor (data). 4 bricks rely on it, so a change here is felt in all of them. With this many dependants, this is one of the bricks a reviewer should read first.',
     );
   });
 
-  it('with 4 dependants and a test behind it: no warning', () => {
+  it('with 4 dependants and a test importing it: the same warning (an import is not evidence)', () => {
     const bp = fixtureBlueprint();
     for (const p of ['a', 'b']) {
       bp.nodes.push(node(`app/${p}.tsx`, 'shell'));
       bp.edges.push(edge(`app/${p}.tsx`, 'lib/calc.ts', ['total']));
     }
     expect(para(bp, 'lib/calc.ts')).toBe(
-      'It needs 1 other brick: 1 on the data floor (data). 4 bricks rely on it, so a change here is felt in all of them.',
+      'It needs 1 other brick: 1 on the data floor (data). 4 bricks rely on it, so a change here is felt in all of them. With this many dependants, this is one of the bricks a reviewer should read first.',
     );
   });
 

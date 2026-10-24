@@ -5,7 +5,7 @@
 import type { Blueprint, ImportEdge } from '@rama/shared';
 import { dependenciesByFloor, type BrickFigures } from '@rama/blueprint/metrics';
 
-/** Bricks this many dependants or more, with no test behind them, get the reviewer's warning. */
+/** Bricks with this many dependants or more get the reviewer's warning. */
 export const WARN_DEPENDANTS = 4;
 
 const shortName = (path: string) =>
@@ -38,8 +38,8 @@ export function reviewerParagraph(bp: Blueprint, path: string, figures: BrickFig
         ? ' 1 brick relies on it, so a change here is felt there.'
         : ` ${m} bricks rely on it, so a change here is felt in all of them.`;
   const warn =
-    m >= WARN_DEPENDANTS && figures.tested === false
-      ? ' With this many dependants and no test behind it, this is one of the bricks a reviewer should ask to see verified first.'
+    m >= WARN_DEPENDANTS
+      ? ' With this many dependants, this is one of the bricks a reviewer should read first.'
       : '';
   return needs + used + warn;
 }

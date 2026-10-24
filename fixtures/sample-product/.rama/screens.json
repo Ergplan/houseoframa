@@ -1,0 +1,14 @@
+{
+  "app": {
+    "install": "npm install --no-audit --no-fund",
+    "build": "npm run build",
+    "start": "npm start -- -p {port}",
+    "ready": "/"
+  },
+  "viewport": { "width": 390, "height": 700 },
+  "screens": [
+    { "name": "orders", "title": "Today’s orders", "route": "/", "audience": "customer" },
+    { "name": "new", "title": "New order", "route": "/new", "audience": "customer" },
+    { "name": "total", "title": "Today’s total", "route": "/total", "audience": "staff" }
+  ]
+}

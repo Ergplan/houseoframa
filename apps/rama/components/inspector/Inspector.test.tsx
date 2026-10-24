@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { demolitions, summary, testCoverage } from '@rama/blueprint/metrics';
+import { demolitions, summary } from '@rama/blueprint/metrics';
 import { fixtureBlueprint } from '../../test/blueprint';
 import type { AuditView } from '@rama/audit/view';
 import { Inspector, type AuditRunView, type View } from './Inspector';
@@ -24,8 +24,7 @@ const render = (view: View, member: string | null = 'Asha Rao') =>
 describe('Inspector: Trust report', () => {
   it('shows the figures from packages/blueprint/metrics', () => {
     const html = render({ kind: 'report' });
-    const cover = testCoverage(bp);
-    expect(html).toContain(`${cover.tested} of ${cover.of} code bricks have a test behind them.`);
+    expect(html).toContain('No screen has a state yet');
     const s = summary(bp);
     expect(html).toContain(`<b>${s.files}</b><small>files · bricks</small>`);
     expect(html).toContain(`<b>${s.importEdges}</b><small>import links · cables</small>`);
@@ -33,6 +32,30 @@ describe('Inspector: Trust report', () => {
     expect(html).toContain(
       `Walls knocked out</dt><dd>${demolitions(bp).length} (changes deleting 20`,
     );
+  });
+});
+
+describe('Inspector: Trust report in the three words', () => {
+  it('shows the screens Verified, Confirmed and Unverified, and each count with its audience', () => {
+    const html = renderToStaticMarkup(
+      <Inspector
+        siteId="shop"
+        blueprint={bp}
+        view={{ kind: 'report' }}
+        member={null}
+        screenStates={{
+          tally: { Verified: 1, Confirmed: 1, Unverified: 1 },
+          counts: ['1 of 2 customer screens signed', '0 of 1 staff screen signed'],
+        }}
+        onBrick={noop}
+        onCommit={noop}
+        onReport={noop}
+        onConfirmed={noop}
+      />,
+    );
+    expect(html).toContain('1 Verified · 1 Confirmed ·');
+    expect(html).toContain('1 of 2 customer screens signed.');
+    expect(html).toContain('0 of 1 staff screen signed.');
   });
 });
 
@@ -63,7 +86,8 @@ describe('Inspector: Brick', () => {
     );
     expect(html).toContain('no English yet for total<span class="pill dim state">unknown</span>');
     expect(html).toContain('<span class="pill cyan">RATE</span>');
-    expect(html).toContain('a test imports it');
+    expect(html).toContain('<dt>Kind</dt><dd>code</dd>');
+    expect(html).not.toContain('a test imports it');
   });
 
   it('offers Confirm only on unconfirmed drafts, and only to a signed-in member', () => {

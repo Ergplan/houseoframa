@@ -47,6 +47,7 @@ function deps(fetchImpl: CallDeps['fetch'], env: Record<string, string | undefin
   const rows: ModelCallRow[] = [];
   const d: Partial<CallDeps> = {
     env,
+    secret: async (name) => env[name],
     fetch: fetchImpl,
     promptsDir,
     sleep: async () => {},
@@ -204,5 +205,27 @@ describe('call()', () => {
     await expect(call({ ...request, name: '../secrets', role: 'builder' }, d)).rejects.toThrow(
       /invalid prompt name/,
     );
+  });
+});
+
+describe('keys from Settings (rule 11)', () => {
+  it('sends the key Settings holds, not one from the environment', async () => {
+    const fetchImpl = vi.fn(async () => anthropicReply('{"echo":"brick"}'));
+    const { d } = deps(fetchImpl as unknown as CallDeps['fetch']);
+    d.secret = async (name) => (name === 'ANTHROPIC_API_KEY' ? 'key-from-settings' : undefined);
+    await call({ ...request, role: 'builder' }, d);
+    const init = (fetchImpl.mock.calls[0] as unknown as [string, RequestInit])[1];
+    expect((init.headers as Record<string, string>)['x-api-key']).toBe('key-from-settings');
+  });
+
+  it('refuses before calling, and says where to enter the key, when there is none', async () => {
+    const fetchImpl = vi.fn();
+    const { d, rows } = deps(fetchImpl as unknown as CallDeps['fetch']);
+    d.secret = async () => undefined;
+    await expect(call({ ...request, role: 'auditor' }, d)).rejects.toThrow(
+      /OPENAI_API_KEY is not set: enter the OpenAI key in Settings/,
+    );
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(rows).toEqual([]);
   });
 });

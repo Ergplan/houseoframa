@@ -19,3 +19,4 @@ export {
   type Cost,
   type ModelPrice,
 } from './prices.ts';
+export { checkKey, KEY_HELP, type KeyCheck } from './keys.ts';

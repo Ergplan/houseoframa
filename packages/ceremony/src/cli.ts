@@ -9,7 +9,7 @@ import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
 import { createDb } from '@rama/db';
 import { formatGate, runGate } from './gate.ts';
 import { installGate } from './install.ts';
-import { generateSigningKey, requireSealer, sealerFrom } from './seal.ts';
+import { appSealer, generateSigningKey, sealerFrom } from './seal.ts';
 import { parseDecisionsLog, parseWeekendSession, type ImportedSession } from './imports.ts';
 import { importRecord } from './importer.ts';
 
@@ -84,7 +84,7 @@ async function main(argv: string[]): Promise<number> {
         .execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' })
         .trim();
     // The workflow's gate counts only sealed signatures, so it needs this server's public key.
-    const sealer = requireSealer();
+    const sealer = appSealer();
     console.error(
       `wrote ${installGate(site.repoDir, ref, sealer.publicKey)} (House of Rama at ${ref}; seals checked against this server's key); commit it in the target, and make "rama gate" a required check`,
     );

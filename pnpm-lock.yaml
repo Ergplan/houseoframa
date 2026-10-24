@@ -35,6 +35,9 @@ importers:
       '@rama/trace':
         specifier: workspace:*
         version: link:packages/trace
+      '@rama/workbench':
+        specifier: workspace:*
+        version: link:packages/workbench
       '@types/node':
         specifier: 22.20.5
         version: 22.20.5
@@ -83,12 +86,18 @@ importers:
       '@rama/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@rama/model':
+        specifier: workspace:*
+        version: link:../../packages/model
       '@rama/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@rama/trace':
         specifier: workspace:*
         version: link:../../packages/trace
+      '@rama/workbench':
+        specifier: workspace:*
+        version: link:../../packages/workbench
       drizzle-orm:
         specifier: 0.45.3
         version: 0.45.3(postgres@3.4.9)
@@ -261,6 +270,40 @@ importers:
       zod:
         specifier: 4.6.5
         version: 4.6.5
+
+  packages/workbench:
+    dependencies:
+      '@rama/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@rama/blueprint':
+        specifier: workspace:*
+        version: link:../blueprint
+      '@rama/ceremony':
+        specifier: workspace:*
+        version: link:../ceremony
+      '@rama/db':
+        specifier: workspace:*
+        version: link:../db
+      '@rama/model':
+        specifier: workspace:*
+        version: link:../model
+      '@rama/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@rama/trace':
+        specifier: workspace:*
+        version: link:../trace
+      drizzle-orm:
+        specifier: 0.45.3
+        version: 0.45.3(postgres@3.4.9)
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+    devDependencies:
+      postgres:
+        specifier: 3.4.9
+        version: 3.4.9
 
 packages:
 

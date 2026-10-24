@@ -34,6 +34,5 @@ export function layerShort(label: string, id: string): string {
 }
 
 export const INK = '#1a1200';
-export const UNTESTED = '#ff4d5e';
 export const IMPORTS = '#4fe3d8';
 export const IMPORTED_BY = '#ffb429';

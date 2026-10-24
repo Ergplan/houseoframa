@@ -50,6 +50,8 @@ export interface CapturedScreen {
   title: string;
   route: string;
   role: string | null;
+  /** Who the screen is for (the screens file's `audience`): every count of screens names it. */
+  audience: 'customer' | 'staff' | 'admin';
   /** Where the browser ended up (path and query), when a redirect took it somewhere other than `route`. */
   landed?: string;
   /** Set when the page was taller than MAX_SHOT_HEIGHT: its full height. The shot is cropped, and figures below it are left out. */
@@ -319,6 +321,7 @@ export async function capture(
         route,
         ...(landedAt !== route ? { landed: landedAt } : {}),
         role: s.role ?? null,
+        audience: s.audience,
         ...(height > size.height ? { croppedFrom: height } : {}),
         shot,
         width: size.width,

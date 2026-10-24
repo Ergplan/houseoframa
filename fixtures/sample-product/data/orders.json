@@ -1,0 +1,8 @@
+{
+  "orders": [
+    { "id": 1, "item": "Masala chai", "cups": 2, "pricePaise": 1500 },
+    { "id": 2, "item": "Ginger chai", "cups": 1, "pricePaise": 1800 },
+    { "id": 3, "item": "Masala chai", "cups": 3, "pricePaise": 1500 },
+    { "id": 4, "item": "Lemon tea", "cups": 1, "pricePaise": 2000 }
+  ]
+}

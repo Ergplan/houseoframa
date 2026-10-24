@@ -1,6 +1,7 @@
 // Seals on signatures. House of Rama signs every signature record it writes with an Ed25519 private key
-// held by the server (RAMA_SIGNING_KEY, a secret in .env), over the record's canonical JSON without the
-// seal. The gate verifies the seal against the public key it is handed by the workflow on the base branch,
+// held by the server, over the record's canonical JSON without the seal. The key is RAMA_SIGNING_KEY when
+// an engineer set one in .env; otherwise the app generates its own on first use, in work/.signing-key
+// (rule 11: nobody types a command to get one). The gate verifies the seal against the public key it is handed by the workflow on the base branch,
 // so a signature line typed into `.rama/signoffs.jsonl` by hand, or edited, counts for nothing.
 import {
   createPrivateKey,
@@ -10,6 +11,9 @@ import {
   verify as edVerify,
   type KeyObject,
 } from 'node:crypto';
+import { chmodSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { homeDir } from '@rama/db';
 import type { Signoff } from '@rama/shared';
 import { line } from './records.ts';
 
@@ -83,4 +87,33 @@ export function generateSigningKey(): { privateKey: string; publicKey: string } 
     privateKey: privateKey.export({ format: 'der', type: 'pkcs8' }).toString('base64'),
     publicKey: publicKey.export({ format: 'der', type: 'spki' }).toString('base64'),
   };
+}
+
+/** work/.signing-key: RAMA_WORK_DIR when set, else work/ in the checkout. */
+export function signingKeyFile(env: Record<string, string | undefined> = process.env): string {
+  const work = env.RAMA_WORK_DIR
+    ? path.resolve(env.RAMA_WORK_DIR)
+    : path.join(homeDir(env), 'work');
+  return path.join(work, '.signing-key');
+}
+
+/**
+ * The app's sealer: RAMA_SIGNING_KEY when set, else the key in work/.signing-key, generated on first use
+ * (readable by this user only). The public key it gives is the one product gates are installed with.
+ */
+export function appSealer(env: Record<string, string | undefined> = process.env): Sealer {
+  const fromEnv = sealerFrom(env);
+  if (fromEnv) return fromEnv;
+  const file = signingKeyFile(env);
+  if (!existsSync(file)) {
+    mkdirSync(path.dirname(file), { recursive: true });
+    try {
+      writeFileSync(file, generateSigningKey().privateKey + '\n', { mode: 0o600, flag: 'wx' });
+      chmodSync(file, 0o600);
+    } catch (err) {
+      // Another request generated it first: use that one.
+      if ((err as NodeJS.ErrnoException).code !== 'EEXIST') throw err;
+    }
+  }
+  return sealerFrom({ RAMA_SIGNING_KEY: readFileSync(file, 'utf8').trim() })!;
 }

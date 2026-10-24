@@ -144,6 +144,10 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     async () => (await import('./api/site/[siteId]/handover/route')).POST as Handler,
   ],
   ['POST checkin', async () => (await import('./api/site/[siteId]/checkin/route')).POST as Handler],
+  [
+    'POST repository',
+    async () => (await import('./api/site/[siteId]/repository/route')).POST as Handler,
+  ],
 ];
 
 describe('every site route: 401 without a session, 404 for another member’s site, through for the owner', () => {
@@ -254,7 +258,7 @@ describe('/', () => {
   it('lists only the signed-in member’s own sites, and nothing without a session', async () => {
     const { default: Home } = await import('./page');
     cookie = undefined;
-    expect(renderToStaticMarkup(await Home())).toContain('to see your sites');
+    expect(renderToStaticMarkup(await Home())).toContain('Pick your name to see your products');
     cookie = token.asha;
     const asha = renderToStaticMarkup(await Home());
     expect(asha).toContain('href="/site/self"');

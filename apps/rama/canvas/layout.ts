@@ -4,7 +4,7 @@
 // Ported from the weekend prototype (reference/weekend-prototype/house-of-rama.html, "building
 // layout"); the fixed 440px building is replaced by a width that grows with the number of bricks.
 import type { Blueprint } from '@rama/shared';
-import { authors, brickFigures } from '@rama/blueprint/metrics';
+import { authors } from '@rama/blueprint/metrics';
 import { CRANE_COLORS, layerColor, layerShort } from './palette.ts';
 
 export const BRICK_H = 14;
@@ -31,8 +31,6 @@ export interface BrickBox extends Box {
   path: string;
   layer: string;
   color: string;
-  /** Red marker: code with no test importing it. */
-  untested: boolean;
   binary: boolean;
 }
 
@@ -91,7 +89,6 @@ export function buildingWidth(widths: number[]): number {
 }
 
 export function layout(bp: Blueprint): Scene {
-  const figures = brickFigures(bp);
   const order = bp.layers.map((l) => l.id);
   const extraLayers = [...new Set(bp.nodes.map((n) => n.layer))]
     .filter((id) => !order.includes(id))
@@ -147,7 +144,6 @@ export function layout(bp: Blueprint): Scene {
           y: y + FLOOR_PAD + ri * (BRICK_H + GAP),
           w: b.w,
           h: BRICK_H,
-          untested: figures[b.path]?.tested === false,
           binary: n.binary,
         });
       }

@@ -7,7 +7,16 @@ const config: NextConfig = {
   // live only in the root CLAUDE.md; the pointer to Next's bundled docs is in docs/DECISIONS.md.
   agentRules: false,
   // Workspace packages are TypeScript source (no build step between packages).
-  transpilePackages: ['@rama/blueprint', '@rama/db', '@rama/model', '@rama/shared', '@rama/trace'],
+  transpilePackages: [
+    '@rama/audit',
+    '@rama/blueprint',
+    '@rama/ceremony',
+    '@rama/db',
+    '@rama/model',
+    '@rama/shared',
+    '@rama/trace',
+    '@rama/workbench',
+  ],
   // The extractor parses with the TypeScript compiler and talks to git: server-only, never bundled.
   serverExternalPackages: ['typescript', 'postgres', 'playwright'],
 };

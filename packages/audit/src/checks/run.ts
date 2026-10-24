@@ -125,7 +125,7 @@ export function testFindings(
         check: 'test-coverage-per-brick',
         verdict: 'note',
         file: n.path,
-        text: 'No test imports this brick.',
+        text: 'No test file reaches this brick, so no test result speaks for it.',
       });
     } else if (!behind.some((t) => status.get(t) === 'passed')) {
       const ran = behind.filter((t) => status.has(t));

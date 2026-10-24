@@ -43,7 +43,11 @@ export const captureDir = (siteId: string, env: NodeJS.ProcessEnv = process.env)
 
 export function readCapture(siteId: string, env: NodeJS.ProcessEnv = process.env): Capture | null {
   const file = path.join(captureDir(siteId, env), 'capture.json');
-  return existsSync(file) ? (JSON.parse(readFileSync(file, 'utf8')) as Capture) : null;
+  if (!existsSync(file)) return null;
+  const c = JSON.parse(readFileSync(file, 'utf8')) as Capture;
+  // A capture made before screens named their audience (Stage 7) counts its screens as the customer's.
+  for (const s of c.screens) s.audience ??= 'customer';
+  return c;
 }
 
 /**

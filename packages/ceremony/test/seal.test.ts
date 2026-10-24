@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { Signoff } from '@rama/shared';
-import { generateSigningKey, sealerFrom, verifySeal } from '../src/seal.ts';
+import { appSealer, generateSigningKey, sealerFrom, verifySeal } from '../src/seal.ts';
+import { mkdtempSync, rmSync, statSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 
 const key = generateSigningKey();
 const other = generateSigningKey();
@@ -38,5 +41,22 @@ describe('seals on signatures', () => {
     expect(() => sealerFrom({ RAMA_SIGNING_KEY: key.publicKey })).toThrow(
       /not an Ed25519 private key/,
     );
+  });
+});
+
+describe('the app makes its own signing key (rule 11)', () => {
+  it('generates work/.signing-key once, readable by this user only, and keeps using it', () => {
+    const work = mkdtempSync(path.join(tmpdir(), 'rama-seal-'));
+    try {
+      const a = appSealer({ RAMA_WORK_DIR: work });
+      expect(statSync(path.join(work, '.signing-key')).mode & 0o777).toBe(0o600);
+      expect(appSealer({ RAMA_WORK_DIR: work }).publicKey).toBe(a.publicKey);
+      // An engineer's RAMA_SIGNING_KEY wins over the generated one.
+      expect(appSealer({ RAMA_WORK_DIR: work, RAMA_SIGNING_KEY: key.privateKey }).publicKey).toBe(
+        key.publicKey,
+      );
+    } finally {
+      rmSync(work, { recursive: true, force: true });
+    }
   });
 });

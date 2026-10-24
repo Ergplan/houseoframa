@@ -8,6 +8,7 @@ import { useMemo, useState } from 'react';
 import type { Blueprint, ImportEdge } from '@rama/shared';
 import {
   authors,
+  isCode,
   brickFigures,
   brickHistory,
   commitBreakdown,
@@ -22,7 +23,6 @@ import {
   screensRendering,
   signatureCoverage,
   summary,
-  testCoverage,
   auditSignoffCounts,
 } from '@rama/blueprint/metrics';
 import { edgePhrase, floorName, reviewerParagraph } from './words';
@@ -55,6 +55,13 @@ export interface AuditRunView {
   onLight: () => void;
 }
 
+/** The site's screens in the three words, from metrics stateOf and counts on the server. */
+export interface ScreenStates {
+  tally: { Verified: number; Confirmed: number; Unverified: number };
+  /** "2 of 3 customer screens signed", one per audience with screens. */
+  counts: string[];
+}
+
 interface Props {
   siteId: string;
   blueprint: Blueprint;
@@ -63,6 +70,8 @@ interface Props {
   captured?: CapturedScreen[];
   /** Screens with a signature in force at the Blueprint's commit (Stage 4). */
   signedScreens?: string[];
+  /** The screens in the three words (Invariant 11), with a count per audience; absent until known. */
+  screenStates?: ScreenStates;
   /** The site's latest audit (Stage 5), and its replay. */
   audit?: AuditView | null;
   auditRun?: AuditRunView;
@@ -103,10 +112,9 @@ export function Inspector(props: Props) {
   );
 }
 
-function TrustReport({ siteId, blueprint: bp, signedScreens = [], onBrick }: Props) {
+function TrustReport({ siteId, blueprint: bp, signedScreens = [], screenStates, onBrick }: Props) {
   const s = summary(bp);
   const signing = signatureCoverage(bp, signedScreens);
-  const cover = testCoverage(bp);
   const heavy = heaviestCodeBrick(bp);
   const hub = loadBearing(bp, 1)[0];
   const churn = mostReworked(bp, 1)[0];
@@ -117,9 +125,25 @@ function TrustReport({ siteId, blueprint: bp, signedScreens = [], onBrick }: Pro
   return (
     <>
       <h2>Trust report</h2>
-      <p className={`big${cover.tested < cover.of ? ' red' : ''}`}>
-        {cover.tested} of {cover.of} code bricks have a test behind them.
-      </p>
+      {screenStates ? (
+        <>
+          <p className="big" data-states>
+            {screenStates.tally.Verified} Verified · {screenStates.tally.Confirmed} Confirmed ·{' '}
+            {screenStates.tally.Unverified} Unverified
+          </p>
+          <p className="note">
+            Screens: Verified means a test checks it and passes; Confirmed means a named person
+            checked it; Unverified means nobody has checked it yet.
+          </p>
+          {screenStates.counts.map((c) => (
+            <p key={c}>{c}.</p>
+          ))}
+        </>
+      ) : (
+        <p className="big">
+          No screen has a state yet: its screens have not been photographed and its tests not run.
+        </p>
+      )}
       <p>
         Everything here was read from git, not from a plan. The building is the repository at{' '}
         {bp.commit ? <code>{bp.commit.slice(0, 7)}</code> : 'no commit'}
@@ -215,11 +239,7 @@ function TrustReport({ siteId, blueprint: bp, signedScreens = [], onBrick }: Pro
           </>
         )}
       </dl>
-      <p className="note">
-        A red dot is a code brick no test imports. On a screen a named person signed, a brick with a
-        test behind it turns green, and one without turns amber: confirmed by a person, not by a
-        test.
-      </p>
+      <p className="note">A green dot is code on a screen a named person signed.</p>
       <p className="note">
         Click a brick, or find it by path, to read it in English. Press Play to watch the site build
         in the order git recorded it.
@@ -475,16 +495,8 @@ function BrickView({
             ? `${history.reworked} time${history.reworked > 1 ? 's' : ''} since laid`
             : 'never since laid'}
         </dd>
-        <dt>Tested</dt>
-        <dd>
-          {f.tested === null ? (
-            <span className="pill dim">{n.test ? 'is a test' : 'not code'}</span>
-          ) : f.tested ? (
-            <span className="pill green">a test imports it</span>
-          ) : (
-            <span className="pill red">no test found</span>
-          )}
-        </dd>
+        <dt>Kind</dt>
+        <dd>{n.test ? 'is a test' : isCode(n.path) ? 'code' : 'not code'}</dd>
         {(n.env.length > 0 || n.envDynamic) && (
           <>
             <dt>Reads env</dt>

@@ -102,7 +102,7 @@ describe('frame', () => {
 });
 
 describe('frame: signatures on the building', () => {
-  it("turns a signed screen's bricks green (with a test) or amber (without); red stays on unsigned untested code", () => {
+  it("turns a signed screen's code bricks green, and marks nothing for whether a test imports it", () => {
     const signedBp = {
       ...bp,
       screens: [
@@ -125,12 +125,11 @@ describe('frame: signatures on the building', () => {
           .bricks.filter((b) => b.mark)
           .map((b) => [b.box.path, b.mark]),
       );
-    expect(marks([])).toEqual({ 'app/page.tsx': 'red', 'lib/data.ts': 'red', 'lib/fmt.ts': 'red' });
+    expect(marks([])).toEqual({});
     expect(marks(['/'])).toEqual({
-      'app/page.tsx': 'amber',
+      'app/page.tsx': 'green',
       'lib/calc.ts': 'green',
-      'lib/data.ts': 'red', // not on the signed screen
-      'lib/fmt.ts': 'amber',
+      'lib/fmt.ts': 'green',
     });
   });
 });

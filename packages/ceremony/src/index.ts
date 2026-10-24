@@ -35,9 +35,12 @@ export { importRecord, IMPORT_COMPONENT, type ImportOutcome } from './importer.t
 export { draftQuestion, DISCOVERY_COMPONENT } from './discovery.ts';
 export {
   generateSigningKey,
+  appSealer,
   requireSealer,
+  signingKeyFile,
   SealError,
   sealerFrom,
   verifySeal,
   type Sealer,
 } from './seal.ts';
+export { GATE_WORKFLOW, gateWorkflow, installGate } from './install.ts';

@@ -69,7 +69,6 @@ describe('metrics (one function per figure)', () => {
   it('importEdges counts edges that import names', () => expect(m.importEdges(bp)).toBe(2));
   it('sideEffectImports counts edges with no names', () => expect(m.sideEffectImports(bp)).toBe(1));
   it('envVars lists distinct names', () => expect(m.envVars(bp)).toEqual(['A', 'B']));
-  it('untestedBricks lists code bricks no test imports', () => expect(m.untestedBricks(bp)).toEqual(['lib/b.ts']));
   it('loadBearing ranks by importers, ties by path', () =>
     expect(m.loadBearing(bp, 2)).toEqual([
       { path: 'lib/a.ts', count: 2 },
@@ -83,17 +82,14 @@ describe('metrics (one function per figure)', () => {
   it('heaviestCodeBrick ignores stylesheets', () => expect(m.heaviestCodeBrick(bp)?.path).toBe('lib/a.ts'));
   it('demolitions finds changes deleting at least 20 lines, by 1-based commit', () =>
     expect(m.demolitions(bp)).toEqual([{ commit: 2, sha: 'c2bbbbbb', path: 'lib/a.ts', deleted: 25 }]));
-  it('brickFigures gives each brick its dependencies, dependants and test state', () => {
+  it('brickFigures gives each brick its dependencies and dependants, and no test signal (Invariant 11)', () => {
     const f = m.brickFigures(bp);
-    expect(f['lib/a.ts']).toEqual({ dependsOn: 0, usedBy: 2, tested: true });
-    expect(f['lib/b.ts']).toEqual({ dependsOn: 1, usedBy: 1, tested: false });
-    // A test is not itself tested; a stylesheet or image is not code, so neither applies.
-    expect(f['lib/a.test.ts']).toEqual({ dependsOn: 1, usedBy: 0, tested: null });
-    expect(f['app/globals.css']).toEqual({ dependsOn: 1, usedBy: 0, tested: null });
+    expect(f['lib/a.ts']).toEqual({ dependsOn: 0, usedBy: 2 });
+    expect(f['lib/b.ts']).toEqual({ dependsOn: 1, usedBy: 1 });
+    expect(f['lib/a.test.ts']).toEqual({ dependsOn: 1, usedBy: 0 });
+    expect(f['app/globals.css']).toEqual({ dependsOn: 1, usedBy: 0 });
     expect(Object.keys(f)).toHaveLength(5);
   });
-  it('testCoverage counts code bricks with a test behind them, over code bricks that are not tests', () =>
-    expect(m.testCoverage(bp)).toEqual({ tested: 1, of: 2 }));
   it('historySpan is the time from the first to the last commit, in minutes', () => {
     const later = { ...bp, commits: [bp.commits[0]!, { ...bp.commits[2]!, at: '2026-01-01T06:30:00+05:30' }] };
     expect(m.historySpan(later)).toBe(60);
@@ -168,15 +164,15 @@ describe('metrics (one function per figure)', () => {
     expect(m.signatureCoverage(b, ['/'])).toEqual({ signed: 1, unsigned: 1, of: 2 });
     expect(m.signatureCoverage(b, ['/', '/nowhere'])).toEqual({ signed: 1, unsigned: 1, of: 2 });
   });
-  it('brickMarks: red for untested code, green when signed with a test, amber when signed without one', () => {
+  it('brickMarks: green on the code of a signed screen, nothing else (no test-imports signal)', () => {
     const b = {
       ...bp,
       screens: [
         { id: '/', name: 'Home', route: '/', file: 'app/page.tsx', bricks: ['lib/a.ts', 'lib/b.ts', 'app/globals.css'] },
       ],
     };
-    expect(m.brickMarks(b, [])).toEqual({ 'lib/b.ts': 'red' });
-    expect(m.brickMarks(b, ['/'])).toEqual({ 'lib/a.ts': 'green', 'lib/b.ts': 'amber' });
+    expect(m.brickMarks(b, [])).toEqual({});
+    expect(m.brickMarks(b, ['/'])).toEqual({ 'lib/a.ts': 'green', 'lib/b.ts': 'green' });
   });
   it('auditSignoffCounts counts the sign-offs an audit confirmed and rejected', () => {
     expect(m.auditSignoffCounts([{ confirmed: true }, { confirmed: false }, { confirmed: true }])).toEqual({ confirmed: 2, rejected: 1, of: 3 });

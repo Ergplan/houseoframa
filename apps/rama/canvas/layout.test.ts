@@ -66,12 +66,9 @@ describe('layout', () => {
     });
   });
 
-  it('marks code with no test behind it, and binaries', () => {
+  it('marks binaries', () => {
     const s = layout(fixtureBlueprint());
-    expect(s.byPath.get('lib/calc.ts')!.untested).toBe(false);
-    expect(s.byPath.get('lib/fmt.ts')!.untested).toBe(true);
-    expect(s.byPath.get('lib/calc.test.ts')!.untested).toBe(false);
-    expect(s.byPath.get('public/logo.png')).toMatchObject({ untested: false, binary: true });
+    expect(s.byPath.get('public/logo.png')).toMatchObject({ binary: true });
   });
 
   it('grows the building with the number of bricks, within bounds', () => {

@@ -5,7 +5,7 @@
 import { frame, type Frame, type SiteState } from './frame.ts';
 import type { Box, BrickBox, Crane, Scene } from './layout.ts';
 import type { BrickMark } from '@rama/blueprint/metrics';
-import { INK, UNTESTED, layerColor } from './palette.ts';
+import { INK, layerColor } from './palette.ts';
 
 /** The part of CanvasRenderingContext2D the renderer uses (so tests can record calls). */
 export type Ctx = Pick<
@@ -359,7 +359,7 @@ function drawCrane(s: Scene, c: Crane, R: Rect, text: Text) {
   text(c.label, c.x, jy - 42, 6, c.color, 'center');
 }
 
-const MARK_COLOR = { red: UNTESTED, amber: '#ffb429', green: '#5ad45a' } as const;
+const MARK_COLOR = { green: '#5ad45a' } as const;
 
 function drawBrick(ctx: Ctx, n: BrickBox, x: number, y: number, R: Rect, mark?: BrickMark) {
   R(x, y, n.w, n.h, n.color || layerColor(n.layer));

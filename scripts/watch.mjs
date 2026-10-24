@@ -39,6 +39,10 @@ const PROJECTS = [
   { name: '@rama/trace', dirs: ['packages/trace/'] },
   { name: '@rama/ceremony', dirs: ['packages/ceremony/'] },
   { name: '@rama/audit', dirs: ['packages/audit/'] },
+  {
+    name: '@rama/workbench',
+    dirs: ['packages/workbench/', 'fixtures/', 'scripts/make-sample.mjs'],
+  },
   { name: '@rama/app', dirs: ['apps/rama/'] },
   { name: 'e2e', dirs: ['tests/'] },
 ];
@@ -50,6 +54,7 @@ const TS_PACKAGES = [
   'packages/trace',
   'packages/ceremony',
   'packages/audit',
+  'packages/workbench',
   'apps/rama',
   'scripts',
 ];

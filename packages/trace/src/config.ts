@@ -24,6 +24,11 @@ export const ScreenSpec = z.object({
   route: z.string().startsWith('/'),
   /** Who is looking; the app section's `roles` says how a role is put on. */
   role: z.string().min(1).optional(),
+  /**
+   * Who the screen is for, in the counting rule (Invariant 11): every count of screens names its
+   * audience. Customer when not said.
+   */
+  audience: z.enum(['customer', 'staff', 'admin']).default('customer'),
   steps: z.array(Step).default([]),
 });
 export type ScreenSpec = z.infer<typeof ScreenSpec>;

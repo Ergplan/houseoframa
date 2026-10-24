@@ -38,12 +38,23 @@ export const SiteRecord = z.object({
   /** Written to Blueprint.repo. */
   repo: z.string().min(1),
   addedAt: z.string().min(1),
+  /**
+   * A product is built inside House of Rama, in its own repository that House of Rama creates and pushes
+   * to (Stage 7); an outside site is only rendered, from a read-only clone. Absent means outside.
+   */
+  kind: z.enum(['product', 'outside']).optional(),
+  /** A product's one-line idea, as its maker said it. */
+  idea: z.string().optional(),
+  /** A product's repository on GitHub (https, no credentials), once it is created. */
+  remote: z.string().optional(),
 });
 export type SiteRecord = z.infer<typeof SiteRecord>;
 
 export interface SiteLocation {
   id: string;
   name: string;
+  /** product | outside (self is outside: House of Rama renders itself, it does not build itself here). */
+  kind: 'product' | 'outside';
   /** The checkout the Blueprint is extracted from and the overlay is written to. */
   repoDir: string;
   blueprintPath: string;
@@ -83,6 +94,7 @@ function selfLocation(env: NodeJS.ProcessEnv): SiteLocation {
   return {
     id: SELF_SITE_ID,
     name: 'House of Rama',
+    kind: 'outside',
     repoDir: root,
     blueprintPath: path.join(root, 'blueprint/self.json'),
     options: SELF_EXTRACT,
@@ -99,6 +111,7 @@ function fromRecord(record: SiteRecord, dir: string): SiteLocation {
   return {
     id: record.id,
     name: record.name,
+    kind: record.kind ?? 'outside',
     repoDir: path.join(dir, 'repo'),
     blueprintPath: path.join(dir, 'blueprint.json'),
     // HEAD's code, history and refs; the overlay as it stands in the working copy.
@@ -185,6 +198,59 @@ export function addSite(
     writeFileSync(path.join(dir, 'site.json'), canonicalJson(record));
     const site = fromRecord(record, dir);
     return { site, blueprint: writeSiteBlueprint(site) };
+  } catch (err) {
+    rmSync(dir, { recursive: true, force: true });
+    throw err;
+  }
+}
+
+/** The site's record (site.json), or null for "self" and an unknown site. */
+export function siteRecord(id: string, env: NodeJS.ProcessEnv = process.env): SiteRecord | null {
+  if (!isSiteId(id) || id === SELF_SITE_ID) return null;
+  return readRecord(path.join(workDir(env), id));
+}
+
+/** Changes a site's record (a product's remote, once its repository exists). */
+export function updateSiteRecord(
+  id: string,
+  patch: Partial<Pick<SiteRecord, 'remote' | 'name' | 'idea'>>,
+  env: NodeJS.ProcessEnv = process.env,
+): SiteRecord {
+  const dir = path.join(workDir(env), id);
+  const current = readRecord(dir);
+  if (!current) throw new SiteError(`no site "${id}"`, 'not-found');
+  const next = SiteRecord.parse({ ...current, ...patch });
+  writeFileSync(path.join(dir, 'site.json'), canonicalJson(next));
+  return next;
+}
+
+/**
+ * Creates a product's site: work/<id>/repo is a new git repository that `init` fills and commits, and
+ * site.json records it as a product. Refuses an existing id rather than overwrite it.
+ */
+export function createProductSite(
+  input: { id: string; name: string; idea: string; now?: () => Date; env?: NodeJS.ProcessEnv },
+  init: (repoDir: string) => void,
+): SiteLocation {
+  const env = input.env ?? process.env;
+  if (!isSiteId(input.id)) throw new SiteError(`"${input.id}" is not a site id: lowercase letters, digits and dashes`, 'invalid');
+  if (input.id === SELF_SITE_ID) throw new SiteError('"self" is this repository', 'invalid');
+  const dir = path.join(workDir(env), input.id);
+  if (existsSync(dir)) throw new SiteError(`site "${input.id}" already exists`, 'conflict');
+  mkdirSync(path.join(dir, 'repo'), { recursive: true });
+  try {
+    init(path.join(dir, 'repo'));
+    const record: SiteRecord = {
+      id: input.id,
+      name: input.name,
+      source: 'House of Rama',
+      repo: input.id,
+      addedAt: (input.now ?? (() => new Date()))().toISOString(),
+      kind: 'product',
+      idea: input.idea,
+    };
+    writeFileSync(path.join(dir, 'site.json'), canonicalJson(record));
+    return fromRecord(record, dir);
   } catch (err) {
     rmSync(dir, { recursive: true, force: true });
     throw err;

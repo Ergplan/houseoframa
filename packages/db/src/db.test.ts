@@ -65,7 +65,9 @@ describe('packages/db', () => {
       'model_calls',
       'people',
       'pods',
+      'secrets',
       'sessions',
+      'settings',
       'signoffs',
       'sites',
     ]);
@@ -92,6 +94,8 @@ describe('packages/db', () => {
       'bookings',
       'checkins',
       'handovers',
+      'secrets',
+      'settings',
     ]) {
       const mine = cols.filter((c) => c.table_name === table);
       expect(mine.map((c) => c.column_name).sort(), table).toEqual([
@@ -100,9 +104,10 @@ describe('packages/db', () => {
         'site_id',
       ]);
       for (const c of mine) {
-        // A person, a sign-in, a pod and a game-mode booking belong to no site.
+        // A person, a sign-in, a pod, a game-mode booking, a key and a setting belong to no site.
         const nullable =
-          ['people', 'sessions', 'pods', 'bookings'].includes(table) && c.column_name === 'site_id';
+          ['people', 'sessions', 'pods', 'bookings', 'secrets', 'settings'].includes(table) &&
+          c.column_name === 'site_id';
         expect(c.is_nullable, `${table}.${c.column_name}`).toBe(nullable ? 'YES' : 'NO');
       }
     }

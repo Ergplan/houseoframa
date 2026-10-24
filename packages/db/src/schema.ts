@@ -319,6 +319,35 @@ export const handovers = pgTable('handovers', {
   ...provenance,
 });
 
+/**
+ * The keys entered in Settings (Stage 7, rule 11): a vendor key or the GitHub token, encrypted at rest
+ * (AES-256-GCM) with the app's own key in work/.secret-key, never logged, never written to .env. `hint`
+ * is the last four characters, for the masked display. The last Test of the key is kept with it: the
+ * light and its sentence. A key is replaced or removed in place.
+ */
+export const secrets = pgTable('secrets', {
+  name: text('name').primaryKey(),
+  siteId: text('site_id').references(() => sites.siteId),
+  ciphertext: text('ciphertext').notNull(),
+  hint: text('hint').notNull(),
+  checkedAt: timestamp('checked_at', { withTimezone: true }),
+  checkOk: boolean('check_ok'),
+  checkSentence: text('check_sentence'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedBy: text('updated_by').notNull(),
+  ...provenance,
+});
+
+/** Plain settings (Stage 7): the GitHub account products are created under, and the like. */
+export const settings = pgTable('settings', {
+  key: text('key').primaryKey(),
+  siteId: text('site_id').references(() => sites.siteId),
+  value: jsonb('value').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedBy: text('updated_by').notNull(),
+  ...provenance,
+});
+
 /** Tables whose rows are never updated or deleted; the migrations install a trigger that refuses both. */
 export const APPEND_ONLY_TABLES = [
   'model_calls',

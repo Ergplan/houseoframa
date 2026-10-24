@@ -1,4 +1,5 @@
 // Vendor adapters over plain fetch. Each turns (system, user) into text plus token usage.
+import type { SecretName } from '@rama/db';
 import type { Vendor } from './vendors.ts';
 
 export interface Completion {
@@ -120,7 +121,12 @@ export async function openaiComplete(
 
 export const ADAPTERS: Record<
   Vendor,
-  { complete: typeof anthropicComplete; keyVar: string; modelVar: string; defaultModel?: string }
+  {
+    complete: typeof anthropicComplete;
+    keyVar: SecretName;
+    modelVar: string;
+    defaultModel?: string;
+  }
 > = {
   anthropic: {
     complete: anthropicComplete,

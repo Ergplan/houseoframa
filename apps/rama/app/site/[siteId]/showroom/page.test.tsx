@@ -60,6 +60,7 @@ beforeAll(() => {
         name: 'home',
         title: 'Shop',
         route: '/',
+        audience: 'customer',
         role: null,
         shot: 'home.png',
         width: 390,
