@@ -19,15 +19,16 @@ const provenance = {
 };
 
 /**
- * Members and reviewers. A member signs in by a link mailed to `email` (Stage 6); a `manager` also sees
- * the campus. Before Stage 6 there was one person, the local member, with no email.
+ * Members and reviewers. In version 1 a person picks their name from members.json: a `trainer` opens
+ * every site and the campus, a `customer` their own sites (Stage 7). With AUTH_MODE=password (the floor
+ * edition) an account signs in as a `member` or a `manager`, who also sees the campus. `email` is unused.
  */
 export const people = pgTable('people', {
   id: uuid('id').primaryKey().defaultRandom(),
   siteId: text('site_id').references((): AnyPgColumn => sites.siteId),
   name: text('name').notNull().unique(),
   email: text('email').unique(),
-  role: text('role', { enum: ['member', 'manager'] })
+  role: text('role', { enum: ['member', 'manager', 'trainer', 'customer'] })
     .notNull()
     .default('member'),
   ...provenance,

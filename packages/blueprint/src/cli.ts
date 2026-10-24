@@ -27,6 +27,7 @@ import {
   type SiteLocation,
 } from './site.ts';
 import { registerSite } from './register.ts';
+import { ownerName } from '@rama/db';
 
 const USAGE = `usage:
   rama extract <repoPath> [--out file] [--check file] [--rev R] [--worktree] [--exclude glob]...
@@ -149,8 +150,9 @@ async function site(args: ReturnType<typeof parseArgs>): Promise<number> {
     console.error(`wrote ${added.blueprintPath}`);
     console.error(JSON.stringify(summary(blueprint), null, 2));
     if (process.env.DATABASE_URL) {
-      await registerSite({ siteId: added.id, name: added.name, repo: blueprint.repo, memberName: process.env.RAMA_MEMBER_NAME });
-      console.error(`site "${added.id}" registered for ${process.env.RAMA_MEMBER_NAME}`);
+      const owner = ownerName();
+      await registerSite({ siteId: added.id, name: added.name, repo: blueprint.repo, memberName: owner });
+      console.error(`site "${added.id}" registered for ${owner}`);
     } else {
       console.error('DATABASE_URL is not set: the site is not registered, and model drafting for it will be refused');
     }

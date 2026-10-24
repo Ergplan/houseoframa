@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { campusFigures } from '@rama/blueprint/metrics';
+import { seesEverything } from '@rama/db';
 import { requireMember, withDb } from '../../server/session';
 import { campusInputs } from '../../server/campus';
 
@@ -11,7 +12,7 @@ const LIGHT = { off: 'dim', blue: 'cyan', amber: 'amber', green: 'green', pink: 
 /** The floor manager's campus (Stage 6): every number is metrics.campusFigures over the records. */
 export default async function Campus() {
   const member = await requireMember();
-  if (member.role !== 'manager') notFound();
+  if (!seesEverything(member)) notFound();
   const now = new Date();
   const { pods, sites } = await withDb((db) => campusInputs(db, now));
   const f = campusFigures(sites, now);

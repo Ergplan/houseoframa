@@ -12,5 +12,16 @@
   "road": "one building using another",
   "jetty": "an outside service the product talks to",
   "keys": "the repository, the deployment and how to ask for a change",
-  "banned": ["repo", "repository", "commit", "brick", "import", "route", "env", "schema", "endpoint", "SHA"]
+  "banned": [
+    "repo",
+    "repository",
+    "commit",
+    "brick",
+    "import",
+    "route",
+    "env",
+    "schema",
+    "endpoint",
+    "SHA"
+  ]
 }

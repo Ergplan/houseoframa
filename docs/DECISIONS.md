@@ -173,6 +173,7 @@ One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are
 - Repository is now github.com/Ergplan/houseoframa (was gitlab.com/venture6/house-of-rama for one day). CI is GitHub Actions (`.github/workflows/check.yml`). The build VM signs in with `gh`.
 
 ## 2026-10-24 — Version 1 is the Pod Edition; Stages 7–11 added on top of 0–6
+
 - Product construct adopted: `docs/POD-EDITION.md` (the member's "House of Rama · Pod Edition" document). Stages 0–6 and Gaps 1 stand as built; the tag `trail-edition` marks the end of that plan.
 - Voice: OpenAI GPT Live, a mouth not a mind (Invariant 9). English only at launch.
 - Three states (Verified / Confirmed / Unverified) and one counting rule (Invariant 11). The "a test imports this file" signal is removed.

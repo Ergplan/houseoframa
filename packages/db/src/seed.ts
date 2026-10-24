@@ -7,14 +7,23 @@ export const SEED_COMPONENT = `rama:db-seed@${pkg.version}`;
 export const SELF_SITE_ID = 'self';
 
 /**
- * Creates the single local member and the "self" site (this repository), owned by that member.
+ * Creates the first member (the first trainer in members.json, or RAMA_MEMBER_NAME) and the "self" site (this repository), owned by that member.
  * Idempotent: running it again changes nothing. Refuses without a member name rather than inventing one.
  */
-export async function seed(db: Db, opts: { memberName?: string }) {
+export async function seed(
+  db: Db,
+  opts: { memberName?: string; role?: 'member' | 'manager' | 'trainer' | 'customer' },
+) {
   const name = opts.memberName?.trim();
-  if (!name) throw new Error('RAMA_MEMBER_NAME is not set: the seed will not invent a member');
+  if (!name)
+    throw new Error(
+      'no member to seed: members.json names no trainer and RAMA_MEMBER_NAME is not set; the seed will not invent one',
+    );
 
-  await db.insert(people).values({ name, createdBy: SEED_COMPONENT }).onConflictDoNothing();
+  await db
+    .insert(people)
+    .values({ name, role: opts.role ?? 'member', createdBy: SEED_COMPONENT })
+    .onConflictDoNothing();
   const [member] = await db.select().from(people).where(eq(people.name, name));
   if (!member) throw new Error(`seed: person "${name}" was not created`);
 

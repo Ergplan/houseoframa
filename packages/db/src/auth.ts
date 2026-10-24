@@ -1,7 +1,8 @@
-// Sign-in by username and password (the user's decision, 2026-10-24: no email logins). The accounts are
-// configured in the environment (`RAMA_ACCOUNTS`, in .env, never in the source: CLAUDE.md rule 10), and
-// each is a person in `people` by name. A sign-in opens a session: a random 32-byte token in an httpOnly
-// cookie, of which only the sha256 is stored; it lasts SESSION_DAYS unless revoked (sign-out).
+// Sessions, and the floor edition's sign-in by username and password. In version 1 a person picks their
+// name from members.json (members.ts) and gets a session; with AUTH_MODE=password the accounts in
+// `RAMA_ACCOUNTS` sign in instead (the user's choice of 2026-10-24, kept for the floor edition). Either
+// way a sign-in opens a session: a random 32-byte token in an httpOnly cookie, of which only the sha256
+// is stored; it lasts SESSION_DAYS unless revoked (sign-out).
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { and, eq, gt, isNull } from 'drizzle-orm';
 import { z } from 'zod';
@@ -16,8 +17,12 @@ export interface Member {
   id: string;
   name: string;
   email: string | null;
-  role: 'member' | 'manager';
+  role: 'member' | 'manager' | 'trainer' | 'customer';
 }
+
+/** Whether a person sees every site and the campus: a trainer, or a floor manager. */
+export const seesEverything = (m: Pick<Member, 'role'>) =>
+  m.role === 'trainer' || m.role === 'manager';
 
 const Account = z
   .object({
@@ -74,7 +79,7 @@ export function checkCredentials(
 /** The person an account signs in as: found by name (the seeded member keeps their sites), created otherwise. */
 export async function ensurePerson(
   db: Db,
-  account: Pick<Account, 'name' | 'role'>,
+  account: { name: string; role: Member['role'] },
   createdBy: string,
 ): Promise<Member> {
   const [p] = await db.select().from(people).where(eq(people.name, account.name));

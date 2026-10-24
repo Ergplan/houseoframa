@@ -1,5 +1,5 @@
 // Registers a cloned site in Postgres so model calls made for it have a site row to point at
-// (model_calls.site_id) and it belongs to the local member (rule 11: no auth until Stage 6).
+// (model_calls.site_id) and it belongs to a person: the owner named by members.json (Stage 7).
 import { eq } from 'drizzle-orm';
 import { createDb, people, sites } from '@rama/db';
 import { EXTRACTOR_VERSION } from './extract.ts';
@@ -12,7 +12,7 @@ export async function registerSite(
   url = process.env.DATABASE_URL,
 ): Promise<void> {
   const name = input.memberName?.trim();
-  if (!name) throw new Error('RAMA_MEMBER_NAME is not set: a site belongs to the local member');
+  if (!name) throw new Error('no owner: members.json names no trainer and RAMA_MEMBER_NAME is not set');
   const { db, close } = createDb(url);
   try {
     const [member] = await db.select().from(people).where(eq(people.name, name));

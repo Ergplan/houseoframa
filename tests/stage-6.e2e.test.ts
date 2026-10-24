@@ -46,6 +46,7 @@ beforeAll(async () => {
       RAMA_WORK_DIR: work,
       DATABASE_URL: db.url,
       RAMA_POD_TOKEN: POD_TOKEN,
+      AUTH_MODE: 'password', // the floor edition's sign-in, kept behind the setting (Stage 7)
       RAMA_ACCOUNTS: ACCOUNTS,
       RAMA_SIGNING_KEY: generateSigningKey().privateKey,
     },

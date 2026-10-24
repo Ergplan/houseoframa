@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "440db5f2c6e4741cecd55049c73f36b497cecbd6",
+  "commit": "04d7a80d6df535fb8b608db4db124251fa173720",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6850,6 +6850,84 @@
       "sha": "440db5f2c6e4741cecd55049c73f36b497cecbd6",
       "short": "440db5f",
       "subject": "KNOWN-GAPS: the box runs on the build VM; port 80 needs a firewall rule"
+    },
+    {
+      "at": "2026-10-24T12:44:46Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 27,
+          "del": 6,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DEPLOY.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        }
+      ],
+      "sha": "3dc33330803780267f89a827034d42deefc4c55b",
+      "short": "3dc3333",
+      "subject": "Docs: the box on the VM is served on port 3389, open by default"
+    },
+    {
+      "at": "2026-10-24T19:44:16+05:30",
+      "author": "Claude Fable 5.1",
+      "changes": [
+        {
+          "add": 24,
+          "del": 8,
+          "kind": "M",
+          "path": "CLAUDE.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "A",
+          "path": "design/harmony/README.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "A",
+          "path": "design/harmony/glossary.json"
+        },
+        {
+          "add": 11,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 116,
+          "del": 13,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        },
+        {
+          "add": 33,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/POD-EDITION.md"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "A",
+          "path": "members.json"
+        }
+      ],
+      "sha": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "short": "04d7a80",
+      "subject": "Version 1 is the Pod Edition: construct, rules 15–17, Invariants 9–11, Stages 7–11"
     }
   ],
   "edges": [
@@ -6873,9 +6951,11 @@
       "from": "apps/rama/app/api/auth/deps.ts",
       "symbols": [
         "accountsFrom",
+        "authMode",
         "checkCredentials",
         "ensurePerson",
         "openSession",
+        "readMembers",
         "revokeSession"
       ],
       "to": "packages/db/src/index.ts",
@@ -6886,7 +6966,8 @@
       "symbols": [
         "AuthRouteDeps",
         "handleLogin",
-        "handleLogout"
+        "handleLogout",
+        "handlePick"
       ],
       "to": "apps/rama/app/api/auth/handlers.ts",
       "typeOnly": false
@@ -6919,7 +7000,9 @@
       "from": "apps/rama/app/api/auth/handlers.ts",
       "symbols": [
         "Account",
-        "Member"
+        "AuthMode",
+        "Member",
+        "MemberEntry"
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": true
@@ -6962,6 +7045,22 @@
         "tokenFromCookieHeader"
       ],
       "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/auth/pick/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/app/api/auth/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/auth/pick/route.ts",
+      "symbols": [
+        "handlePick"
+      ],
+      "to": "apps/rama/app/api/auth/handlers.ts",
       "typeOnly": false
     },
     {
@@ -7785,6 +7884,22 @@
     {
       "from": "apps/rama/app/authz.test.tsx",
       "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/app/api/auth/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "handlePick"
+      ],
+      "to": "apps/rama/app/api/auth/handlers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
         "*"
       ],
       "to": "apps/rama/app/api/bookings/route.ts",
@@ -8010,13 +8125,13 @@
     {
       "english": {
         "confirmed": false,
-        "text": "a database connection opened from a URL; running the database migrations; the one-time setup of the local member and the self site, safe to repeat; the table of sites, one per target repository"
+        "text": "a database connection opened from a URL; the table of people; running the database migrations; the one-time setup of the local member and the self site, safe to repeat; the table of sites, one per target repository"
       },
       "from": "apps/rama/app/authz.test.tsx",
       "symbols": [
         "createDb",
-        "ensurePerson",
-        "openSession",
+        "decisions",
+        "people",
         "runMigrations",
         "seed",
         "sites"
@@ -8088,9 +8203,26 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/campus/page.tsx",
+      "symbols": [
+        "seesEverything"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/layout.tsx",
       "symbols": [],
       "to": "apps/rama/app/globals.css",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/login/page.tsx",
+      "symbols": [
+        "authMode",
+        "readMembers"
+      ],
+      "to": "packages/db/src/index.ts",
       "typeOnly": false
     },
     {
@@ -9569,10 +9701,11 @@
     {
       "from": "apps/rama/server/authorize.ts",
       "symbols": [
-        "Member"
+        "Member",
+        "seesEverything"
       ],
       "to": "packages/db/src/index.ts",
-      "typeOnly": true
+      "typeOnly": false
     },
     {
       "from": "apps/rama/server/campus.ts",
@@ -9932,6 +10065,7 @@
         "Member",
         "createDb",
         "memberBySession",
+        "seesEverything",
         "sites"
       ],
       "to": "packages/db/src/index.ts",
@@ -10790,6 +10924,14 @@
         "writeSiteOverlay"
       ],
       "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/cli.ts",
+      "symbols": [
+        "ownerName"
+      ],
+      "to": "packages/db/src/index.ts",
       "typeOnly": false
     },
     {
@@ -12407,6 +12549,15 @@
       "typeOnly": false
     },
     {
+      "from": "packages/db/src/cli.ts",
+      "symbols": [
+        "ownerName",
+        "readMembers"
+      ],
+      "to": "packages/db/src/members.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "applying all pending database migrations"
@@ -12527,6 +12678,14 @@
       "typeOnly": false
     },
     {
+      "from": "packages/db/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/db/src/members.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the folder holding the database migrations; applying all pending database migrations"
@@ -12559,6 +12718,17 @@
         "seed"
       ],
       "to": "packages/db/src/seed.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/db/src/members.test.ts",
+      "symbols": [
+        "authMode",
+        "ownerName",
+        "parseMembers",
+        "readMembers"
+      ],
+      "to": "packages/db/src/members.ts",
       "typeOnly": false
     },
     {
@@ -14318,6 +14488,12 @@
     },
     {
       "dev": false,
+      "manifest": "packages/db/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
+      "dev": false,
       "manifest": "packages/model/package.json",
       "name": "@rama/db",
       "version": "workspace:*"
@@ -14365,7 +14541,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T12:23:58Z",
+  "extractedAt": "2026-10-24T19:44:16+05:30",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -14415,7 +14591,7 @@
     },
     {
       "binary": false,
-      "bytes": 1375,
+      "bytes": 1475,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -14424,7 +14600,7 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "foundation",
       "layerRule": "default: .env.example",
-      "lines": 24,
+      "lines": 27,
       "path": ".env.example",
       "purpose": {
         "confirmed": false,
@@ -14578,16 +14754,16 @@
     },
     {
       "binary": false,
-      "bytes": 10603,
-      "changes": 1,
+      "bytes": 14959,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 91,
+      "lines": 107,
       "path": "CLAUDE.md",
       "purpose": {
         "confirmed": false,
@@ -14650,7 +14826,7 @@
     },
     {
       "binary": false,
-      "bytes": 950,
+      "bytes": 1256,
       "changes": 2,
       "env": [
         "RAMA_BASE_URL"
@@ -14663,13 +14839,13 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 20,
+      "lines": 35,
       "path": "apps/rama/app/api/auth/deps.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3165,
+      "bytes": 4732,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -14678,26 +14854,27 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 85,
+      "lines": 126,
       "path": "apps/rama/app/api/auth/handlers.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 1997,
+      "bytes": 3140,
       "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "AuthRouteDeps",
         "handleLogin",
-        "handleLogout"
+        "handleLogout",
+        "handlePick"
       ],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 45,
+      "lines": 65,
       "path": "apps/rama/app/api/auth/handlers.ts",
       "test": false
     },
@@ -14735,6 +14912,24 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 9,
       "path": "apps/rama/app/api/auth/logout/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 262,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 9,
+      "path": "apps/rama/app/api/auth/pick/route.ts",
       "test": false
     },
     {
@@ -15237,7 +15432,7 @@
     },
     {
       "binary": false,
-      "bytes": 11222,
+      "bytes": 13493,
       "changes": 4,
       "env": [
         "DATABASE_URL",
@@ -15250,7 +15445,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 291,
+      "lines": 352,
       "path": "apps/rama/app/authz.test.tsx",
       "test": true
     },
@@ -15274,7 +15469,7 @@
     },
     {
       "binary": false,
-      "bytes": 2864,
+      "bytes": 2905,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -15286,7 +15481,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 82,
+      "lines": 83,
       "path": "apps/rama/app/campus/page.tsx",
       "test": false
     },
@@ -15333,7 +15528,7 @@
     },
     {
       "binary": false,
-      "bytes": 1044,
+      "bytes": 2175,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -15345,7 +15540,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 33,
+      "lines": 64,
       "path": "apps/rama/app/login/page.tsx",
       "test": false
     },
@@ -16245,7 +16440,7 @@
     },
     {
       "binary": false,
-      "bytes": 1649,
+      "bytes": 1675,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -16361,7 +16556,7 @@
     },
     {
       "binary": false,
-      "bytes": 2813,
+      "bytes": 3074,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -16379,7 +16574,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 77,
+      "lines": 78,
       "path": "apps/rama/server/session.ts",
       "test": false
     },
@@ -16494,6 +16689,36 @@
     },
     {
       "binary": false,
+      "bytes": 396,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "layer": "shell",
+      "layerRule": "default: README",
+      "lines": 3,
+      "path": "design/harmony/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 804,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 27,
+      "path": "design/harmony/glossary.json",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1563,
       "changes": 2,
       "env": [],
@@ -16551,16 +16776,16 @@
     },
     {
       "binary": false,
-      "bytes": 37902,
-      "changes": 39,
+      "bytes": 39325,
+      "changes": 40,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 173,
+      "lines": 185,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -16571,12 +16796,12 @@
     {
       "binary": false,
       "bytes": 5230,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
+      "lastCommit": "3dc33330803780267f89a827034d42deefc4c55b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 97,
@@ -16601,12 +16826,12 @@
     {
       "binary": false,
       "bytes": 8959,
-      "changes": 27,
+      "changes": 28,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "440db5f2c6e4741cecd55049c73f36b497cecbd6",
+      "lastCommit": "3dc33330803780267f89a827034d42deefc4c55b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 34,
@@ -16619,21 +16844,36 @@
     },
     {
       "binary": false,
-      "bytes": 22676,
-      "changes": 1,
+      "bytes": 34920,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 239,
+      "lines": 342,
       "path": "docs/MASTER-PROMPT.md",
       "purpose": {
         "confirmed": false,
         "text": "The master brief that drives the build stage by stage, setting out the rules, plan, reference inputs and what each stage must deliver."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3840,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 41,
+      "path": "docs/POD-EDITION.md",
       "test": false
     },
     {
@@ -16926,6 +17166,21 @@
         "confirmed": false,
         "text": "Settings for the code-style checker: which folders it skips and the rules applied to the main app."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 102,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "lastCommit": "04d7a80d6df535fb8b608db4db124251fa173720",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 4,
+      "path": "members.json",
       "test": false
     },
     {
@@ -17427,11 +17682,10 @@
     },
     {
       "binary": false,
-      "bytes": 8831,
+      "bytes": 8856,
       "changes": 4,
       "env": [
-        "DATABASE_URL",
-        "RAMA_MEMBER_NAME"
+        "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
@@ -17439,7 +17693,7 @@
       "lastCommit": "a3cb0b2cb048f725a406fb07b584dbe96538aee2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 216,
+      "lines": 218,
       "path": "packages/blueprint/src/cli.ts",
       "purpose": {
         "confirmed": false,
@@ -17997,7 +18251,7 @@
     },
     {
       "binary": false,
-      "bytes": 1248,
+      "bytes": 1258,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -19058,7 +19312,7 @@
     },
     {
       "binary": false,
-      "bytes": 596,
+      "bytes": 616,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -19067,7 +19321,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 25,
+      "lines": 26,
       "path": "packages/db/package.json",
       "purpose": {
         "confirmed": false,
@@ -19094,7 +19348,7 @@
     },
     {
       "binary": false,
-      "bytes": 4672,
+      "bytes": 4965,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -19108,30 +19362,29 @@
         "hashToken",
         "memberBySession",
         "openSession",
-        "revokeSession"
+        "revokeSession",
+        "seesEverything"
       ],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 135,
+      "lines": 140,
       "path": "packages/db/src/auth.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1530,
+      "bytes": 1716,
       "changes": 4,
-      "env": [
-        "RAMA_MEMBER_NAME"
-      ],
+      "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 39,
+      "lines": 42,
       "path": "packages/db/src/cli.ts",
       "purpose": {
         "confirmed": false,
@@ -19186,7 +19439,7 @@
     },
     {
       "binary": false,
-      "bytes": 231,
+      "bytes": 261,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -19204,12 +19457,51 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 5,
+      "lines": 6,
       "path": "packages/db/src/index.ts",
       "purpose": {
         "confirmed": false,
         "text": "Front door of the database package: re-exports the schema, connection, migration and seed pieces for other packages to use."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2108,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 49,
+      "path": "packages/db/src/members.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3018,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AuthMode",
+        "MEMBERS_FILE",
+        "MemberEntry",
+        "authMode",
+        "homeDir",
+        "ownerName",
+        "parseMembers",
+        "readMembers"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 74,
+      "path": "packages/db/src/members.ts",
       "test": false
     },
     {
@@ -19236,7 +19528,7 @@
     },
     {
       "binary": false,
-      "bytes": 12438,
+      "bytes": 12585,
       "changes": 9,
       "env": [],
       "envDynamic": false,
@@ -19264,7 +19556,7 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 344,
+      "lines": 345,
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -19274,7 +19566,7 @@
     },
     {
       "binary": false,
-      "bytes": 1332,
+      "bytes": 1552,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -19287,7 +19579,7 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 34,
+      "lines": 43,
       "path": "packages/db/src/seed.ts",
       "purpose": {
         "confirmed": false,
@@ -20187,7 +20479,7 @@
     },
     {
       "binary": false,
-      "bytes": 105739,
+      "bytes": 105911,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -20196,7 +20488,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3336,
+      "lines": 3340,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -20988,7 +21280,7 @@
     },
     {
       "binary": false,
-      "bytes": 6685,
+      "bytes": 6780,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -20997,7 +21289,7 @@
       "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 164,
+      "lines": 165,
       "path": "tests/stage-6.e2e.test.ts",
       "test": true
     },
@@ -21071,6 +21363,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts"
@@ -21127,6 +21420,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21193,6 +21487,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21216,7 +21511,15 @@
       "bricks": [
         "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
-        "apps/rama/app/login/page.tsx"
+        "apps/rama/app/login/page.tsx",
+        "packages/db/package.json",
+        "packages/db/src/auth.ts",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/seed.ts"
       ],
       "file": "apps/rama/app/login/page.tsx",
       "id": "/login",
@@ -21270,6 +21573,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21345,6 +21649,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21410,6 +21715,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21463,6 +21769,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21528,6 +21835,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21572,6 +21880,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",
@@ -21609,6 +21918,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts"
@@ -21645,6 +21955,7 @@
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
         "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
         "packages/db/src/migrate.ts",
         "packages/db/src/schema.ts",
         "packages/db/src/seed.ts",

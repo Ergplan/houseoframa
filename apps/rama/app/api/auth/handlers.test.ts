@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Account } from '@rama/db';
-import { handleLogin, handleLogout, type AuthRouteDeps } from './handlers';
+import { handleLogin, handleLogout, handlePick, type AuthRouteDeps } from './handlers';
 import { tokenFromCookieHeader } from '../../../server/session';
 
 const asha: Account = {
@@ -10,6 +10,15 @@ const asha: Account = {
   role: 'manager',
 };
 const deps = (over: Partial<AuthRouteDeps> = {}): AuthRouteDeps => ({
+  mode: 'password',
+  members: () => [
+    { name: 'Asha Rao', role: 'trainer' },
+    { name: 'Ravi', role: 'customer' },
+  ],
+  pick: vi.fn(async (e) => ({
+    sessionToken: 's2',
+    member: { id: 'p2', name: e.name, email: null, role: e.role },
+  })),
   check: vi.fn((u: string, p: string) => (u === 'asha' && p === 'correct horse' ? asha : null)),
   signIn: vi.fn(async () => ({
     sessionToken: 's1',
@@ -26,6 +35,38 @@ const form = (fields: Record<string, string>) => {
   for (const [k, v] of Object.entries(fields)) f.set(k, v);
   return f;
 };
+
+describe('POST /api/auth/pick', () => {
+  it('signs the picked person in: their session cookie, then home', async () => {
+    const d = deps({ mode: 'members' });
+    const r = await handlePick(form({ name: 'Ravi' }), d);
+    expect(r.status).toBe(303);
+    expect(r.headers.get('location')).toBe('https://rama.example/');
+    expect(r.headers.get('set-cookie')).toMatch(
+      /^rama_session=s2; Path=\/; HttpOnly; SameSite=Lax/,
+    );
+    expect(d.pick).toHaveBeenCalledWith({ name: 'Ravi', role: 'customer' });
+  });
+
+  it('refuses a name not in members.json, and is off when passwords are required', async () => {
+    const d = deps({ mode: 'members' });
+    for (const f of [form({ name: 'Mallory' }), form({}), null]) {
+      const r = await handlePick(f, d);
+      expect(r.headers.get('location')).toBe('https://rama.example/login?failed=1');
+      expect(r.headers.get('set-cookie')).toBeNull();
+    }
+    expect(d.pick).not.toHaveBeenCalled();
+    expect((await handlePick(form({ name: 'Ravi' }), deps())).status).toBe(404);
+  });
+
+  it('turns the password form off while people pick their names', async () => {
+    const r = await handleLogin(
+      form({ username: 'asha', password: 'correct horse' }),
+      deps({ mode: 'members' }),
+    );
+    expect(r.status).toBe(404);
+  });
+});
 
 describe('POST /api/auth/login', () => {
   it('signs a right username and password in: an httpOnly, Secure, SameSite session cookie, then home', async () => {

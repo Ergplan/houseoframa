@@ -1,10 +1,11 @@
-// Who is asking (Stage 6): the member a request's session cookie signs in, and the sites they may open.
-// A site belongs to one member (sites.member_id); a member sees only their own sites, and anyone else
-// is told the site does not exist. Used by every page and route under /site, /pod, /campus and /api.
+// Who is asking (Stage 6): the person a request's session cookie signs in, and the sites they may open.
+// A site belongs to one person (sites.member_id). A trainer (version 1) or a floor manager opens every
+// site; anyone else sees only their own, and is told another's site does not exist. Used by every page
+// and route under /site, /pod, /campus and /api.
 import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { eq } from 'drizzle-orm';
-import { createDb, memberBySession, sites, type Db, type Member } from '@rama/db';
+import { createDb, memberBySession, seesEverything, sites, type Db, type Member } from '@rama/db';
 import { locateSite, type SiteLocation } from '@rama/blueprint/site';
 
 export const SESSION_COOKIE = 'rama_session';
@@ -27,16 +28,15 @@ export function tokenFromCookieHeader(header: string | null): string | undefined
   return undefined;
 }
 
-/** The ids of the sites a member owns. */
+/** The ids of the sites a person may open: every registered site for a trainer or manager, else their own. */
 export async function siteIdsOf(db: Db, member: Member): Promise<Set<string>> {
-  const rows = await db
-    .select({ id: sites.siteId })
-    .from(sites)
-    .where(eq(sites.memberId, member.id));
+  const rows = seesEverything(member)
+    ? await db.select({ id: sites.siteId }).from(sites)
+    : await db.select({ id: sites.siteId }).from(sites).where(eq(sites.memberId, member.id));
   return new Set(rows.map((r) => r.id));
 }
 
-/** The site, when it exists and this member owns it; null otherwise (an unknown site and another's look alike). */
+/** The site, when it exists and this person may open it; null otherwise (an unknown site and another's look alike). */
 export async function ownedSite(
   db: Db,
   member: Member,
@@ -48,7 +48,8 @@ export async function ownedSite(
     .select({ memberId: sites.memberId })
     .from(sites)
     .where(eq(sites.siteId, site.id));
-  return row?.memberId === member.id ? site : null;
+  if (!row) return null;
+  return row.memberId === member.id || seesEverything(member) ? site : null;
 }
 
 /** The signed-in member of a page render, or null. */

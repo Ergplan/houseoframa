@@ -1,6 +1,8 @@
-// Authorization of every route and page (Stage 6), against real sessions in a throwaway database: two
-// members, each owning one site. No session: routes answer 401 and pages send to /login. The other
-// member's site: 404, the same as a site that does not exist. The owner gets through.
+// Authorization of every route and page (Stage 6), against real sessions in a throwaway database. Since
+// Stage 7 the sessions come from the picker ("Who are you?"): two customers, each owning one site, and a
+// trainer who opens both. No session: routes answer 401 and pages send to /login. Another customer's
+// site: 404, the same as a site that does not exist. The owner gets through, and what they write carries
+// the picked person.
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { randomBytes } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -9,7 +11,10 @@ import path from 'node:path';
 import postgres from 'postgres';
 import { isValidElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { createDb, ensurePerson, openSession, runMigrations, seed, sites } from '@rama/db';
+import { eq } from 'drizzle-orm';
+import { createDb, decisions, people, runMigrations, seed, sites } from '@rama/db';
+import { authDeps } from './api/auth/deps';
+import { handlePick } from './api/auth/handlers';
 import { addSite } from '@rama/blueprint/site';
 import { fixtureRepo, type FixtureRepo } from '../../../packages/blueprint/test/fixture-repo';
 
@@ -27,7 +32,25 @@ const dbName = `rama_test_${randomBytes(4).toString('hex')}`;
 const admin = postgres(serverUrl, { max: 1, onnotice: () => {} });
 let repo: FixtureRepo;
 let work: string;
-const token: Record<'asha' | 'ravi', string> = { asha: '', ravi: '' };
+const token: Record<'asha' | 'ravi' | 'tara', string> = { asha: '', ravi: '', tara: '' };
+const MEMBERS = [
+  { name: 'Asha Rao', role: 'customer' },
+  { name: 'Ravi', role: 'customer' },
+  { name: 'Tara', role: 'trainer' },
+] as const;
+
+/** Picks a name on "Who are you?" through the real handler and database; returns the session token. */
+async function pick(name: string): Promise<string> {
+  const f = new FormData();
+  f.set('name', name);
+  const r = await handlePick(f, {
+    ...authDeps(new Request('http://rama.test/api/auth/pick')),
+    mode: 'members',
+    members: () => [...MEMBERS],
+  });
+  const set = r.headers.get('set-cookie') ?? '';
+  return decodeURIComponent(/^rama_session=([^;]+)/.exec(set)![1]!);
+}
 
 beforeAll(async () => {
   await admin.unsafe(`CREATE DATABASE ${dbName}`);
@@ -46,13 +69,17 @@ beforeAll(async () => {
   const conn = createDb();
   await runMigrations(conn.db);
   await seed(conn.db, { memberName: 'Asha Rao' }); // Asha owns "self"
-  const asha = await ensurePerson(conn.db, { name: 'Asha Rao', role: 'member' }, 'test');
-  const ravi = await ensurePerson(conn.db, { name: 'Ravi', role: 'member' }, 'test');
-  await conn.db
-    .insert(sites)
-    .values({ siteId: 'shop', name: 'Shop', repo: repo.dir, memberId: ravi.id, createdBy: 'test' });
-  token.asha = await openSession(conn.db, asha.id);
-  token.ravi = await openSession(conn.db, ravi.id);
+  token.asha = await pick('Asha Rao');
+  token.ravi = await pick('Ravi');
+  token.tara = await pick('Tara');
+  const [ravi] = await conn.db.select().from(people).where(eq(people.name, 'Ravi'));
+  await conn.db.insert(sites).values({
+    siteId: 'shop',
+    name: 'Shop',
+    repo: repo.dir,
+    memberId: ravi!.id,
+    createdBy: 'test',
+  });
   await conn.close();
 });
 
@@ -66,7 +93,7 @@ afterAll(async () => {
   rmSync(work, { recursive: true, force: true });
 });
 
-const as = (who: 'asha' | 'ravi' | null, init: RequestInit = {}) =>
+const as = (who: 'asha' | 'ravi' | 'tara' | null, init: RequestInit = {}) =>
   ({
     ...init,
     headers: {
@@ -74,7 +101,7 @@ const as = (who: 'asha' | 'ravi' | null, init: RequestInit = {}) =>
       ...(who ? { cookie: `rama_session=${token[who]}` } : {}),
     },
   }) as RequestInit;
-const post = (who: 'asha' | 'ravi' | null, body: unknown = {}) =>
+const post = (who: 'asha' | 'ravi' | 'tara' | null, body: unknown = {}) =>
   new Request('http://rama.test/x', as(who, { method: 'POST', body: JSON.stringify(body) }));
 
 type Handler = (
@@ -135,8 +162,34 @@ describe('every site route: 401 without a session, 404 for another member’s si
       const owner = (await h(post('ravi'), ctx('shop'))).status;
       expect([401, 403]).not.toContain(owner);
       expect(owner === 404 && name !== 'GET shots/[name]').toBe(false);
+      // A trainer opens every site.
+      const trainer = (await h(post('tara'), ctx('shop'))).status;
+      expect([401, 403]).not.toContain(trainer);
+      expect(trainer === 404 && name !== 'GET shots/[name]').toBe(false);
     });
   }
+
+  it('what the picked person writes carries their name and their person id', async () => {
+    const { POST } = await import('./api/site/[siteId]/decisions/route');
+    const r = await POST(
+      post('ravi', {
+        title: 'Totals in rupees',
+        statement: 'Show totals in rupees.',
+        status: 'open',
+      }),
+      { params: Promise.resolve({ siteId: 'shop' }) },
+    );
+    expect(r.status).toBe(200);
+    const conn = createDb();
+    try {
+      const [ravi] = await conn.db.select().from(people).where(eq(people.name, 'Ravi'));
+      const [card] = await conn.db.select().from(decisions).where(eq(decisions.siteId, 'shop'));
+      expect(card).toMatchObject({ by: 'Ravi', createdBy: ravi!.id });
+      expect(ravi!.role).toBe('customer');
+    } finally {
+      await conn.close();
+    }
+  });
 
   it('GET /api/health stays public', async () => {
     const { GET } = await import('./api/health/route');
@@ -191,6 +244,8 @@ describe('every site page: to /login without a session, not found for another me
       cookie = token.asha;
       await expect(page(params('shop'))).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
       expect(isValidElement(await page(params('self')))).toBe(true);
+      cookie = token.tara;
+      expect(isValidElement(await page(params('self')))).toBe(true);
     });
   }
 });
@@ -208,6 +263,10 @@ describe('/', () => {
     const ravi = renderToStaticMarkup(await Home());
     expect(ravi).toContain('href="/site/shop"');
     expect(ravi).not.toContain('href="/site/self"');
+    cookie = token.tara;
+    const tara = renderToStaticMarkup(await Home());
+    expect(tara).toContain('href="/site/shop"');
+    expect(tara).toContain('href="/site/self"');
   });
 });
 
@@ -256,7 +315,7 @@ describe('the floor: booking needs a session, pages need a member, the pod light
     );
   });
 
-  it('/campus is for a manager only: /login without a session, not found for a member', async () => {
+  it('/campus is for a trainer or manager: /login without a session, not found for a customer', async () => {
     const { default: Campus } = await import('./campus/page');
     cookie = undefined;
     await expect(Campus()).rejects.toMatchObject({
@@ -264,6 +323,8 @@ describe('the floor: booking needs a session, pages need a member, the pod light
     });
     cookie = token.asha;
     await expect(Campus()).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
+    cookie = token.tara;
+    expect(isValidElement(await Campus())).toBe(true);
   });
 
   it('GET /api/pod/<n>/status refuses anyone without the controller token', async () => {
