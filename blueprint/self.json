@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "62cb424bfd3746213138eec70e3faf3e7120c60b",
+  "commit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8190,6 +8190,69 @@
       "sha": "62cb424bfd3746213138eec70e3faf3e7120c60b",
       "short": "62cb424",
       "subject": "Fix Stage 7 reviewer run 2: evidence is read from code, not comments or strings; grey flags"
+    },
+    {
+      "at": "2026-10-24T17:38:06Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 64,
+          "del": 24,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-7.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-7.review.md"
+        },
+        {
+          "add": 28,
+          "del": 13,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.test.ts"
+        },
+        {
+          "add": 25,
+          "del": 39,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.ts"
+        },
+        {
+          "add": 56,
+          "del": 2,
+          "kind": "M",
+          "path": "packages/workbench/src/tests.ts"
+        },
+        {
+          "add": 17,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/test/testdrive.test.ts"
+        }
+      ],
+      "sha": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+      "short": "4857039",
+      "subject": "Fix Stage 7 reviewer run 3: Verified needs the run's record of what executed"
     }
   ],
   "edges": [
@@ -10586,7 +10649,8 @@
       "symbols": [
         "jobStatus",
         "latestJob",
-        "siteStates"
+        "siteStates",
+        "unsaidSentence"
       ],
       "to": "packages/workbench/src/index.ts",
       "typeOnly": false
@@ -11697,10 +11761,11 @@
       "from": "apps/rama/components/workbench/TrainerConsole.tsx",
       "symbols": [
         "Job",
-        "SiteStates"
+        "SiteStates",
+        "unsaidSentence"
       ],
       "to": "packages/workbench/src/index.ts",
-      "typeOnly": true
+      "typeOnly": false
     },
     {
       "from": "apps/rama/server/auth-deps.ts",
@@ -16157,7 +16222,9 @@
     {
       "from": "packages/workbench/src/states.ts",
       "symbols": [
-        "readCapture"
+        "readCapture",
+        "readScreensConfig",
+        "screenForRoute"
       ],
       "to": "packages/trace/src/index.ts",
       "typeOnly": false
@@ -16342,6 +16409,37 @@
         "productId"
       ],
       "to": "packages/workbench/src/products.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options; a way to add a site from a local folder or remote source; regenerating and saving a site's blueprint file"
+      },
+      "from": "packages/workbench/test/states.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "addSite",
+        "writeSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/states.test.ts",
+      "symbols": [
+        "homeDir"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/states.test.ts",
+      "symbols": [
+        "siteStates",
+        "unsaidSentence"
+      ],
+      "to": "packages/workbench/src/states.ts",
       "typeOnly": false
     },
     {
@@ -17629,7 +17727,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T17:12:41Z",
+  "extractedAt": "2026-10-24T17:38:06Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -19076,7 +19174,7 @@
     },
     {
       "binary": false,
-      "bytes": 4351,
+      "bytes": 4480,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -19088,7 +19186,7 @@
       "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 121,
+      "lines": 124,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -19839,7 +19937,7 @@
     },
     {
       "binary": false,
-      "bytes": 5719,
+      "bytes": 5832,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -19851,7 +19949,7 @@
       "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 157,
+      "lines": 158,
       "path": "apps/rama/components/workbench/TrainerConsole.tsx",
       "test": false
     },
@@ -20290,12 +20388,12 @@
     {
       "binary": false,
       "bytes": 42916,
-      "changes": 42,
+      "changes": 43,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 195,
@@ -20338,13 +20436,13 @@
     },
     {
       "binary": false,
-      "bytes": 12296,
-      "changes": 29,
+      "bytes": 12443,
+      "changes": 30,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 43,
@@ -20662,13 +20760,13 @@
     },
     {
       "binary": false,
-      "bytes": 12093,
-      "changes": 2,
+      "bytes": 12312,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
-      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 91,
@@ -20677,16 +20775,16 @@
     },
     {
       "binary": false,
-      "bytes": 40130,
-      "changes": 2,
+      "bytes": 54033,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
-      "lastCommit": "62cb424bfd3746213138eec70e3faf3e7120c60b",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 59,
+      "lines": 77,
       "path": "docs/reports/stage-7.review.md",
       "test": false
     },
@@ -22041,23 +22139,23 @@
     },
     {
       "binary": false,
-      "bytes": 9483,
-      "changes": 3,
+      "bytes": 9803,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "62cb424bfd3746213138eec70e3faf3e7120c60b",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 206,
+      "lines": 209,
       "path": "packages/blueprint/src/metrics/states.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 10832,
-      "changes": 3,
+      "bytes": 11515,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -22078,10 +22176,10 @@
         "testReach"
       ],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "62cb424bfd3746213138eec70e3faf3e7120c60b",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 254,
+      "lines": 269,
       "path": "packages/blueprint/src/metrics/states.ts",
       "test": false
     },
@@ -24706,20 +24804,21 @@
     },
     {
       "binary": false,
-      "bytes": 3021,
+      "bytes": 4018,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "ScreenWithState",
         "SiteStates",
-        "siteStates"
+        "siteStates",
+        "unsaidSentence"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 95,
+      "lines": 117,
       "path": "packages/workbench/src/states.ts",
       "test": false
     },
@@ -24748,7 +24847,7 @@
     {
       "binary": false,
       "bytes": 5006,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "HOME",
         "PATH"
@@ -24761,7 +24860,7 @@
         "testRunFile"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 117,
@@ -24805,15 +24904,30 @@
     },
     {
       "binary": false,
+      "bytes": 2571,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 53,
+      "path": "packages/workbench/test/states.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 5263,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
+      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 129,
@@ -25674,7 +25788,7 @@
     },
     {
       "binary": false,
-      "bytes": 7632,
+      "bytes": 7833,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -25683,7 +25797,7 @@
       "lastCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 173,
+      "lines": 176,
       "path": "tests/stage-7.e2e.test.ts",
       "test": true
     },

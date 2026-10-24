@@ -26,7 +26,10 @@ export interface TestRun {
 export interface TestReach {
   /** `<file>#<function>` for each imported function the test calls. */
   calls: string[];
-  /** Page files whose default export the test imports and uses (renders). */
+  /**
+   * `<page file>#<component>` for each page whose default export the test imports and uses (renders).
+   * A page whose component has no name it can be recognised by in the run's record is left out.
+   */
   renders: string[];
 }
 
@@ -79,6 +82,16 @@ export function codeOf(src: string): { code: string; strings: string[] } {
   return { code, strings };
 }
 
+/** The name of a page's default export (`export default function Total`), as the run's record names it. */
+function pageComponent(src: string): string | null {
+  const { code } = codeOf(src);
+  return (
+    /export\s+default\s+(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/.exec(code)?.[1] ??
+    /export\s+default\s+([A-Za-z_$][\w$]*)\s*;?\s*$/m.exec(code)?.[1] ??
+    null
+  );
+}
+
 /** The local names a source gives its default imports, with the module each comes from. */
 function defaultImports(code: string, strings: string[]): { name: string; spec: string }[] {
   return [...code.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,\s*\{[^}]*\})?\s*from\s*\uE000(\d+)\uE000/g)].map(
@@ -119,7 +132,8 @@ export function testReach(bp: Blueprint, read: (path: string) => string | null):
           const used = defaults
             .filter((d) => specNames(t.path, d.spec, e.to))
             .some((d) => new RegExp(`<${d.name}[\\s/>]|\\b${d.name}\\s*\\(`).test(code));
-          if (used) reach.renders.push(e.to);
+          const component = pageComponent(read(e.to) ?? '');
+          if (used && component) reach.renders.push(`${e.to}#${component}`);
         } else if (sym !== '*' && sym !== 'default' && new RegExp(`\\b${sym}\\s*\\(`).test(code))
           reach.calls.push(`${e.to}#${sym}`);
       }
@@ -182,7 +196,8 @@ export function stateOf(screen: Screen, input: StateInput): StateOf {
   const ran = (t: string) => new Set(run?.executed?.[t] ?? []);
   const exercising = Object.entries(input.reach)
     .filter(([t]) => passing.has(t))
-    .filter(([t, r]) => r.renders.includes(screen.file) && [...ran(t)].some((x) => x.startsWith(`${screen.file}#`)))
+    // The page's own component ran in this test's worker: not just any function of its module.
+    .filter(([t, r]) => r.renders.some((k) => k.startsWith(`${screen.file}#`) && ran(t).has(k)))
     .map(([t]) => t);
   const callers = (f: FigureFn) =>
     Object.entries(input.reach)

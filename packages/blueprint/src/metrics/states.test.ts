@@ -95,10 +95,10 @@ describe('testReach: a render or a visit must happen, not just an import or a pa
     const t = 'app/total/page.test.tsx';
     expect(reach(t, "import Total from './page';\nexpect(Total).toBeDefined();", ['app/total/page.tsx']).renders).toEqual([]);
     expect(reach(t, "import Total from './page';\nrender(<Total />);", ['app/total/page.tsx']).renders).toEqual([
-      'app/total/page.tsx',
+      'app/total/page.tsx#Total',
     ]);
-    expect(reach(t, "import Total from './page';\nconst html = Total();", ['app/total/page.tsx']).renders).toEqual([
-      'app/total/page.tsx',
+    expect(reach(t, "import Page from './page';\nconst html = Page();", ['app/total/page.tsx']).renders).toEqual([
+      'app/total/page.tsx#Total',
     ]);
   });
 
@@ -142,10 +142,13 @@ describe('stateOf', () => {
     expect(stateOf(screen('/total'), input({ reach })).state).toBe('Unverified');
   });
 
-  it('a test that renders the page verifies it, when the run shows the page ran', () => {
+  it("a test that renders the page verifies it, when the run shows the page's own component ran", () => {
     const file = screen('/new').file;
-    const renders = { 'lib/money.test.ts': { calls: [], renders: [file] } };
+    const renders = { 'lib/money.test.ts': { calls: [], renders: [`${file}#NewOrder`] } };
     expect(stateOf(screen('/new'), input({ reach: renders })).state).toBe('Unverified');
+    // Another function of the page's module ran, not its component: not evidence.
+    const helper = { ...passed(), executed: { 'lib/money.test.ts': [`${file}#formatCups`] } };
+    expect(stateOf(screen('/new'), input({ reach: renders, run: helper })).state).toBe('Unverified');
     const ran = { ...passed(), executed: { 'lib/money.test.ts': [`${file}#NewOrder`] } };
     expect(stateOf(screen('/new'), input({ reach: renders, run: ran })).state).toBe('Verified');
   });

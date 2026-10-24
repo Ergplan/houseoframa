@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import type { Decision } from '@rama/shared';
 import type { SecretView } from '@rama/db';
-import type { Job, SiteStates } from '@rama/workbench';
+import { unsaidSentence, type Job, type SiteStates } from '@rama/workbench';
 import { ACTS, type Act } from '../../app/api/site/[siteId]/act/handler';
 import { JobSteps } from './JobSteps';
 
@@ -59,6 +59,7 @@ export function TrainerConsole(p: ConsoleProps) {
           {c.sentence}.
         </p>
       ))}
+      {p.states.unsaid ? <p className="note">{unsaidSentence(p.states.unsaid)}.</p> : null}
       {p.states.figures ? (
         <p className="note">
           {p.states.figures.traced} of {p.states.figures.shown} figures on the screens traced.

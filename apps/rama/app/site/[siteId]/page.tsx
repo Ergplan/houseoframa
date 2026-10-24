@@ -6,7 +6,7 @@ import { latestAudit } from '@rama/audit';
 import { toAuditView, type AuditView } from '@rama/audit/view';
 import { createDb, listSecrets, seesEverything, type Member } from '@rama/db';
 import { currentDecisions, listDecisions } from '@rama/ceremony';
-import { jobStatus, latestJob, siteStates } from '@rama/workbench';
+import { jobStatus, latestJob, siteStates, unsaidSentence } from '@rama/workbench';
 import type { Blueprint } from '@rama/shared';
 import { SiteView } from '../../../components/site/SiteView';
 import { TrainerConsole } from '../../../components/workbench/TrainerConsole';
@@ -112,7 +112,10 @@ export default async function SitePage({
           audit={await auditOf(site.id)}
           screenStates={{
             tally: cp.states.tally,
-            counts: cp.states.counts.map((c) => c.sentence),
+            counts: [
+              ...cp.states.counts.map((c) => c.sentence),
+              ...(cp.states.unsaid ? [unsaidSentence(cp.states.unsaid)] : []),
+            ],
           }}
         />
       </div>
