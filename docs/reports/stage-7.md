@@ -11,9 +11,9 @@ A person with no terminal opens the app, picks their name, enters keys in Settin
 **Harmony first.** ergOS Harmony arrived during the stage (`design/harmony/`, synced from `Ergplan/designsystem` d00bc9a), and the stage prompt now applies it first.
 
 - `apps/rama/app/harmony-tokens.css` is generated from `tokens.json`, both themes, with a drift check in the watcher and CI. The bundle's CSS and runtime are loaded from their verbatim copies, with Urbanist and JetBrains Mono.
-- The chrome is Harmony's components: the Sidebar and TopBar on every screen, `eg-btn` with one primary per view, chips for the three states and the key lights, the folder card as each screen's one green object (Test drive on the home page, the verdict on Test drive's page), and the activity timeline for a job's steps.
-- On a site, the trainer console is the Sidebar, on the site's page and on its Showroom, office, walkthrough, audit and handover. Exactly one of its acts is primary: the one possible now.
-- The app's older colour names are aliases of the tokens, so every remaining view follows them. The Brick canvas keeps its own colours inside the canvas.
+- The chrome is Harmony's components: the Sidebar and TopBar on every screen after "Who are you?" (the picker stands alone), `eg-btn` with one primary per view, chips for the three states and the key lights, the folder card as each screen's one green object (Test drive on the home page, the verdict on Test drive's page), and the activity timeline for a job's steps.
+- On a site, the trainer console is the Sidebar, on the site's page and on its Showroom, office, walkthrough, audit and handover. At most one of its acts is primary: the one possible now. None is, when that act waits on something, such as the audit on the OpenAI key; the greyed button then says what.
+- The app's older colour names are aliases of the tokens, so every remaining view follows them. The Brick canvas keeps its own colours inside the canvas, and so does the legend beneath it, which names those colours.
 - Settings shows the synced version.
 
 **People (rule 11).** `members.json` at the root, `[{name, role: trainer | customer}]`, is read at start (`packages/db/src/members.ts`). `/login` is "Who are you?": a button per person, which posts the name to `POST /api/auth/pick`. That opens a session for that person, the same sessions as before. A trainer opens every site, Settings and the campus; a customer opens their own sites. The Gaps 1 username-and-password form is kept behind `AUTH_MODE=password` for the floor edition; each mode answers 404 on the other's route. `RAMA_ACCOUNTS` is gone from `.env`. The seed and the command line give what they add to the first trainer (`ownerName`). The authorization tests now get their sessions through the picker's real handler and database, and check that what the picked person writes carries their name and person id.
@@ -85,7 +85,7 @@ No voice and no camera. With no keys set it needs no network either: the sample'
 
 ## Reviewer findings
 
-Six runs of the independent reviewer (OpenAI `gpt-6.1-sol`, fresh context; transcripts in `stage-7.review.md`). Each code defect was fixed and the reviewer rerun, until run 6 reported none.
+Seven runs of the independent reviewer (OpenAI `gpt-6.1-sol`, fresh context; transcripts in `stage-7.review.md`). Each code defect was fixed and the reviewer rerun, until runs 6 and 7 reported none.
 
 | Run | Code defects found                                                                                                                                                                                                                               | Fix                                                                                                                                                                                  |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -94,7 +94,7 @@ Six runs of the independent reviewer (OpenAI `gpt-6.1-sol`, fresh context; trans
 | 3   | A call in a helper nobody calls, or in a skipped test, still counted.                                                                                                                                                                            | Verified needs the run's own record of what executed: V8 coverage per test file's worker (`TestRun.executed`). Route visits are no longer counted, because the run cannot show them. |
 | 4   | Any executed function of a page's module counted as a render. Audiences came from the last capture, and defaulted to customer.                                                                                                                   | A render needs the page's own component to have run. Audiences come from the screens file as it is now; an unnamed screen counts as "not said".                                      |
 | 5   | Figure functions from a capture older than the current commit could make a screen Verified.                                                                                                                                                      | Figure evidence counts only from a capture at the current commit.                                                                                                                    |
-| 6   | None.                                                                                                                                                                                                                                            | —                                                                                                                                                                                    |
+| 6–7 | None (run 7 read the whole stage, the Harmony work included).                                                                                                                                                                                    | —                                                                                                                                                                                    |
 
 Report claims the reviewer corrected:
 
@@ -110,11 +110,10 @@ Findings that a diff cannot settle, listed every run as not-a-defect:
 
 ## Real model cost
 
-Six reviewer calls: 902,532 input and 11,222 output tokens on `gpt-6.1-sol`, **₹182** in all (`pnpm cost 7`). Test drive made no model call: its audit used the stand-in, since no key is set in the tests. No @vendor test was run.
+Seven reviewer calls: 1,145,312 input and 13,146 output tokens on `gpt-6.1-sol`, **₹230** in all (`pnpm cost 7`). Test drive made no model call: its audit used the stand-in, since no key is set in the tests. No @vendor test was run.
 
 ## Open questions
 
-1. The Harmony tokens (`design/harmony/tokens.json`): when they arrive, the placeholder palette is swapped in one commit.
-2. Should the real GitHub check (`github.vendor.test.ts`) run, and under which account? It leaves a private repository named `rama-vendor-check-<random>` behind.
-3. The box at http://34.131.209.81:3389 is reachable from anywhere, and with the picker anyone there can act as anyone. Keep the box on the picker (version 1), switch it to `AUTH_MODE=password` until the floor edition, or close the port?
-4. The second person in `members.json`: today Rachit Agarwal (trainer) and "Test drive" (customer, used by Test drive). Who else should be on it?
+1. Should the real GitHub check (`github.vendor.test.ts`) run, and under which account? It leaves a private repository named `rama-vendor-check-<random>` behind.
+2. The box at http://34.131.209.81:3389 is reachable from anywhere, and with the picker anyone there can act as anyone. Keep the box on the picker (version 1), switch it to `AUTH_MODE=password` until the floor edition, or close the port?
+3. The second person in `members.json`: today Rachit Agarwal (trainer) and "Test drive" (customer, used by Test drive). Who else should be on it?
