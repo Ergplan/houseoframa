@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { listSites } from '@rama/blueprint/site';
 import { seesEverything } from '@rama/db';
+import { isTestDriveSite, latestTestDrive } from '@rama/workbench';
 import { BuildStamp } from '../components/BuildStamp';
 import { Said } from '../components/workbench/Said';
 import { currentMember, siteIdsOf, withDb } from '../server/session';
@@ -20,7 +21,11 @@ export default async function Home({
   const member = await currentMember();
   const mine = member ? await withDb((db) => siteIdsOf(db, member)) : new Set<string>();
   const sites = listSites().filter((s) => mine.has(s.id));
-  const products = sites.filter((s) => s.kind === 'product');
+  // Every Test drive keeps its sample product; only the latest is listed.
+  const lastDrive = latestTestDrive(sites.map((s) => s.id));
+  const products = sites.filter(
+    (s) => s.kind === 'product' && (!isTestDriveSite(s.id) || s.id === lastDrive),
+  );
   const outside = sites.filter((s) => s.kind !== 'product');
   return (
     <main className="stub workbench">

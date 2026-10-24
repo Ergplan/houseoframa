@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "a194f6e5980a3f1849487429433ce8879e41220c",
+  "commit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8049,6 +8049,33 @@
       "sha": "a194f6e5980a3f1849487429433ce8879e41220c",
       "short": "a194f6e",
       "subject": "Stage 7: Test drive, jobs behind buttons, the trainer console, cards decided by a yes"
+    },
+    {
+      "at": "2026-10-24T16:58:17Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 547,
+          "del": 149,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 91,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-7.md"
+        },
+        {
+          "add": 3,
+          "del": 2,
+          "kind": "M",
+          "path": "tests/stage-7.e2e.test.ts"
+        }
+      ],
+      "sha": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
+      "short": "7810d44",
+      "subject": "Stage 7: draft report; the e2e waits out a first compile under load"
     }
   ],
   "edges": [
@@ -9994,6 +10021,15 @@
         "seesEverything"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/page.tsx",
+      "symbols": [
+        "isTestDriveSite",
+        "latestTestDrive"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": false
     },
     {
@@ -16023,13 +16059,12 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the shape of a site's location: its checkout, blueprint file and options; the sorted list of known sites, leaving out the project's own; regenerating and saving a site's blueprint file"
+        "text": "the shape of a site's location: its checkout, blueprint file and options; regenerating and saving a site's blueprint file"
       },
       "from": "packages/workbench/src/testdrive.ts",
       "symbols": [
         "SiteLocation",
         "createProductSite",
-        "listSites",
         "workDir",
         "writeSiteBlueprint"
       ],
@@ -16225,6 +16260,7 @@
     {
       "from": "packages/workbench/test/testdrive.test.ts",
       "symbols": [
+        "latestTestDrive",
         "startTestDrive"
       ],
       "to": "packages/workbench/src/testdrive.ts",
@@ -17479,7 +17515,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T16:48:24Z",
+  "extractedAt": "2026-10-24T16:58:17Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -18773,7 +18809,7 @@
     },
     {
       "binary": false,
-      "bytes": 4271,
+      "bytes": 4534,
       "changes": 5,
       "env": [
         "GIT_SHA"
@@ -18787,7 +18823,7 @@
       "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 125,
+      "lines": 130,
       "path": "apps/rama/app/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -20512,7 +20548,22 @@
     },
     {
       "binary": false,
-      "bytes": 11437,
+      "bytes": 11892,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
+      "lastCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 91,
+      "path": "docs/reports/stage-7.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 13757,
       "changes": 0,
       "env": [],
       "envDynamic": false,
@@ -20521,8 +20572,8 @@
       "lastCommit": "",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 91,
-      "path": "docs/reports/stage-7.md",
+      "lines": 24,
+      "path": "docs/reports/stage-7.review.md",
       "test": false
     },
     {
@@ -20578,7 +20629,7 @@
     },
     {
       "binary": false,
-      "bytes": 442,
+      "bytes": 449,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20694,7 +20745,7 @@
     },
     {
       "binary": false,
-      "bytes": 314,
+      "bytes": 352,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20711,7 +20762,7 @@
     },
     {
       "binary": false,
-      "bytes": 426,
+      "bytes": 720,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20722,7 +20773,7 @@
       "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
       "layer": "data",
       "layerRule": "default: schema and migrations",
-      "lines": 10,
+      "lines": 14,
       "path": "fixtures/sample-product/db/schema.ts",
       "test": false
     },
@@ -21876,7 +21927,7 @@
     },
     {
       "binary": false,
-      "bytes": 6707,
+      "bytes": 8208,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21885,13 +21936,13 @@
       "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 148,
+      "lines": 179,
       "path": "packages/blueprint/src/metrics/states.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 8140,
+      "bytes": 9581,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21915,7 +21966,7 @@
       "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 194,
+      "lines": 222,
       "path": "packages/blueprint/src/metrics/states.ts",
       "test": false
     },
@@ -24559,7 +24610,7 @@
     },
     {
       "binary": false,
-      "bytes": 7272,
+      "bytes": 7338,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -24567,9 +24618,9 @@
         "TEST_DRIVE_COMPONENT",
         "TEST_DRIVE_PERSON",
         "isTestDriveSite",
+        "latestTestDrive",
         "startTestDrive",
-        "testDrive",
-        "testDriveSites"
+        "testDrive"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
@@ -24638,7 +24689,7 @@
     },
     {
       "binary": false,
-      "bytes": 4455,
+      "bytes": 4694,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -24649,7 +24700,7 @@
       "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 107,
+      "lines": 113,
       "path": "packages/workbench/test/testdrive.test.ts",
       "test": true
     },
@@ -25508,12 +25559,12 @@
     {
       "binary": false,
       "bytes": 7632,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 173,
@@ -25573,13 +25624,25 @@
         "apps/rama/components/BuildStamp.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/server/session.ts",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
         "packages/blueprint/package.json",
         "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
         "packages/blueprint/src/extract.ts",
         "packages/blueprint/src/files.ts",
         "packages/blueprint/src/git.ts",
         "packages/blueprint/src/glob.ts",
         "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
         "packages/blueprint/src/json.ts",
         "packages/blueprint/src/layers.ts",
         "packages/blueprint/src/metrics/index.ts",
@@ -25588,6 +25651,16 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/install.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/seal.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
         "packages/db/package.json",
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
@@ -25597,7 +25670,33 @@
         "packages/db/src/schema.ts",
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
-        "packages/db/src/settings.ts"
+        "packages/db/src/settings.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/keys.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/vendors.ts",
+        "packages/trace/src/capture.ts",
+        "packages/trace/src/code.ts",
+        "packages/trace/src/config.ts",
+        "packages/trace/src/here.ts",
+        "packages/trace/src/index.ts",
+        "packages/trace/src/keys.ts",
+        "packages/trace/src/sandbox.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts",
+        "packages/workbench/src/actions.ts",
+        "packages/workbench/src/github.ts",
+        "packages/workbench/src/index.ts",
+        "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/modules.ts",
+        "packages/workbench/src/products.ts",
+        "packages/workbench/src/states.ts",
+        "packages/workbench/src/testdrive.ts",
+        "packages/workbench/src/tests.ts"
       ],
       "file": "apps/rama/app/page.tsx",
       "id": "apps/rama/app:/",

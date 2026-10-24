@@ -33,9 +33,31 @@ export interface FigureFn {
   file: string;
 }
 
+/** The local names a source gives its default imports, with the module each comes from. */
+function defaultImports(src: string): { name: string; spec: string }[] {
+  return [...src.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,\s*\{[^}]*\})?\s*from\s*['"]([^'"]+)['"]/g)].map(
+    (m) => ({ name: m[1]!, spec: m[2]! }),
+  );
+}
+
+/** Whether an import specifier, from a test file, names a given file (relative specifiers only). */
+function specNames(testFile: string, spec: string, file: string): boolean {
+  if (!spec.startsWith('.')) return false;
+  const parts = testFile.split('/').slice(0, -1);
+  for (const seg of spec.split('/')) {
+    if (seg === '..') parts.pop();
+    else if (seg !== '.') parts.push(seg);
+  }
+  const target = parts.join('/');
+  const bare = file.replace(/\.(tsx?|jsx?|mjs|cjs)$/, '');
+  return target === file || target === bare || `${target}/index` === bare;
+}
+
 /**
  * What each test brick exercises. `read` gives a brick's source. A call is an imported name followed by
- * `(`; a render is the import of a page's default export; a route is a quoted path literal.
+ * `(`. A render is a page's default export, imported and then used: as a JSX element or called. A route
+ * is a path handed to a visiting call (goto, fetch, visit, request, get, post), as a literal or after a
+ * base address in a template. Importing a file, or naming a path, is not enough (Invariant 11).
  */
 export function testReach(bp: Blueprint, read: (path: string) => string | null): Record<string, TestReach> {
   const out: Record<string, TestReach> = {};
@@ -43,14 +65,20 @@ export function testReach(bp: Blueprint, read: (path: string) => string | null):
   for (const t of bp.nodes.filter((n) => n.test)) {
     const src = read(t.path) ?? '';
     const reach: TestReach = { calls: [], renders: [], routes: [] };
+    const defaults = defaultImports(src);
     for (const e of bp.edges.filter((x) => x.from === t.path && !x.typeOnly)) {
       for (const sym of e.symbols) {
-        if (sym === 'default' && pages.has(e.to)) reach.renders.push(e.to);
-        else if (sym !== '*' && sym !== 'default' && new RegExp(`\\b${sym}\\s*\\(`).test(src))
+        if (sym === 'default' && pages.has(e.to)) {
+          const used = defaults
+            .filter((d) => specNames(t.path, d.spec, e.to))
+            .some((d) => new RegExp(`<${d.name}[\\s/>]|\\b${d.name}\\s*\\(`).test(src));
+          if (used) reach.renders.push(e.to);
+        } else if (sym !== '*' && sym !== 'default' && new RegExp(`\\b${sym}\\s*\\(`).test(src))
           reach.calls.push(`${e.to}#${sym}`);
       }
     }
-    for (const m of src.matchAll(/['"`](\/[A-Za-z0-9_\-/.[\]]*)['"`]/g)) reach.routes.push(m[1]!);
+    const VISIT = /\b(?:goto|fetch|visit|request|get|post)\s*\(\s*['"`](?:\$\{[^}]*\})?(\/[A-Za-z0-9_\-/.[\]?=&]*)['"`]/g;
+    for (const m of src.matchAll(VISIT)) reach.routes.push(m[1]!);
     reach.calls = [...new Set(reach.calls)].sort();
     reach.renders = [...new Set(reach.renders)].sort();
     reach.routes = [...new Set(reach.routes)].sort();

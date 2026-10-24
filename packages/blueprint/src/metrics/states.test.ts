@@ -74,6 +74,37 @@ describe('testReach', () => {
   });
 });
 
+describe('testReach: a render or a visit must happen, not just an import or a path', () => {
+  const withTest = (file: string, imports: string[]): Blueprint => ({
+    ...bp,
+    nodes: [...bp.nodes, { ...bp.nodes[0]!, path: file, test: true }],
+    edges: [
+      ...bp.edges,
+      ...imports.map((to) => ({ from: file, to, symbols: ['default'], typeOnly: false })),
+    ],
+  });
+  const reach = (file: string, src: string, imports: string[] = []) =>
+    testReach(withTest(file, imports), (p) => (p === file ? src : read(p)))[file]!;
+
+  it('a page imported and rendered (JSX or called) is a render; imported alone it is not', () => {
+    const t = 'app/total/page.test.tsx';
+    expect(reach(t, "import Total from './page';\nexpect(Total).toBeDefined();", ['app/total/page.tsx']).renders).toEqual([]);
+    expect(reach(t, "import Total from './page';\nrender(<Total />);", ['app/total/page.tsx']).renders).toEqual([
+      'app/total/page.tsx',
+    ]);
+    expect(reach(t, "import Total from './page';\nconst html = Total();", ['app/total/page.tsx']).renders).toEqual([
+      'app/total/page.tsx',
+    ]);
+  });
+
+  it('a path handed to a visiting call is a visit; a path merely named is not', () => {
+    const t = 'e2e/total.test.ts';
+    expect(reach(t, "const where = '/total';").routes).toEqual([]);
+    expect(reach(t, 'await page.goto(`${base}/total`);').routes).toEqual(['/total']);
+    expect(reach(t, "const r = await fetch('/new?as=staff');").routes).toEqual(['/new?as=staff']);
+  });
+});
+
 describe('stateOf', () => {
   it('Verified: every figure function of the screen is called by a test that passed in the last run', () => {
     const s = stateOf(screen('/total'), input());

@@ -1,12 +1,12 @@
 // Test drive (rule 16): the whole loop on the built-in sample product, with no voice, no camera and no
 // keys needed, reported as pass or fail in words with timings. Each run builds the sample afresh as its
-// own product (testdrive-<n>): its records are append-only, so a run never reuses another's.
+// own product (testdrive-<n>): its records are append-only, so a run never reuses another's, and an
+// earlier run's checkout is kept, signature journal and all (Invariant 3).
 import { execFileSync } from 'node:child_process';
 import { readdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import {
   createProductSite,
-  listSites,
   workDir,
   writeSiteBlueprint,
   type SiteLocation,
@@ -23,17 +23,13 @@ export const TEST_DRIVE_COMPONENT = 'rama:workbench-testdrive@0.1.0';
 const SAMPLE_NAME = 'Chai Stall (Test drive)';
 const SAMPLE_IDEA = 'A chai stall takes orders through the day and sees the day’s takings and GST.';
 
-/** The next run's site id; earlier runs' checkouts are cleared (their records stay in Postgres). */
+/** The next run's site id. Earlier runs are kept: their journals are append-only records too. */
 function nextSiteId(env: NodeJS.ProcessEnv): string {
-  const root = workDir(env);
   let n = 0;
   try {
-    for (const d of readdirSync(root)) {
+    for (const d of readdirSync(workDir(env))) {
       const m = /^testdrive-(\d+)$/.exec(d);
-      if (m) {
-        n = Math.max(n, Number(m[1]));
-        rmSync(path.join(root, d), { recursive: true, force: true });
-      }
+      if (m) n = Math.max(n, Number(m[1]));
     }
   } catch {
     // no work dir yet
@@ -182,7 +178,11 @@ export async function testDrive(
   await step('Audit', () => withDb((db) => callAudit(db, site, { standIn: true, env })));
 }
 
-/** Test drive sites, newest first: for the home page to tell a run's product from a real one. */
+/** Whether a site is a Test drive's sample product. */
 export const isTestDriveSite = (id: string) => /^testdrive-\d+$/.test(id);
-export const testDriveSites = (env: NodeJS.ProcessEnv = process.env) =>
-  listSites(env).filter((s) => isTestDriveSite(s.id));
+
+/** The latest Test drive's site id among these, for the home page to list that run only. */
+export const latestTestDrive = (ids: string[]): string | null =>
+  ids
+    .filter(isTestDriveSite)
+    .sort((a, b) => Number(b.split('-')[1]) - Number(a.split('-')[1]))[0] ?? null;

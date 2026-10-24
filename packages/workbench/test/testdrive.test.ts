@@ -10,7 +10,7 @@ import postgres from 'postgres';
 import { eq } from 'drizzle-orm';
 import { audits, createDb, decisions, runMigrations, signoffs, type Db } from '@rama/db';
 import { jobStatus, latestJob, readJob } from '../src/jobs.ts';
-import { startTestDrive } from '../src/testdrive.ts';
+import { latestTestDrive, startTestDrive } from '../src/testdrive.ts';
 
 const serverUrl = process.env.DATABASE_URL!;
 const dbName = `rama_test_${randomBytes(4).toString('hex')}`;
@@ -97,11 +97,17 @@ describe('Test drive', () => {
     });
   });
 
-  it('a second run starts a fresh product and clears the first one’s checkout', async () => {
+  it('a second run starts a fresh product and keeps the first one, signature journal and all', async () => {
     const { done } = startTestDrive(withDb, 'Asha Rao', env);
     const end = await done;
     expect(end.ok).toBe(true);
-    expect(existsSync(path.join(work, 'testdrive-1'))).toBe(false);
+    expect(end.about).toBe('testdrive-2');
+    expect(existsSync(path.join(work, 'testdrive-1', 'repo', '.rama', 'signoffs.jsonl'))).toBe(
+      true,
+    );
     expect(existsSync(path.join(work, 'testdrive-2', 'repo'))).toBe(true);
+    expect(latestTestDrive(['testdrive-1', 'testdrive-2', 'testdrive-10', 'chai'])).toBe(
+      'testdrive-10',
+    );
   });
 });

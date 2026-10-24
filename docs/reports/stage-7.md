@@ -24,12 +24,12 @@ A person with no terminal opens the app, picks their name, enters keys in Settin
 - the walkthrough and the gate on real history: `tests/stage-4.sample.e2e.test.ts`;
 - the real audit: `tests/stage-5.sample.vendor.e2e.test.ts`, @vendor.
 
-All three run in CI, which EkBill's could not.
+The first two run in CI and the watcher, which EkBill's could not; the vendor audit runs only on request, like every @vendor test.
 
 **Three states and one counting rule (Invariant 11).** `stateOf(screen)` in `packages/blueprint/src/metrics/states.ts` returns **Confirmed**, **Verified** or **Unverified**, with its evidence in plain words.
 
 - Confirmed: a sealed signature at or after the screen's last change.
-- Verified: a test that renders the screen, visits its route, or calls every one of its figure functions passed in the last run, at or after the last change.
+- Verified: a test passed in the last run, at or after the last change, that does one of three things. It renders the screen: imports its page and uses it as an element or calls it. It visits the screen's route: hands the path to `goto`, `fetch` or a similar call. Or it calls every one of the screen's figure functions. Importing a page, or merely naming a path, is not enough.
 - Unverified: neither.
 
 `testReach` reads from each test's source what it calls, renders and visits. `counts(screens, audience)` says "N of M <audience> screens signed", with the audience taken from the screens file. "A test imports this file" is gone from the trust report, the brick view, the reviewer's warning and the building's dots. A brick's dot is now green only on a signed screen. The audit's per-brick test note no longer words an import as confidence. `siteStates` (workbench) assembles a site's states from its capture, last test run and sealed signatures, and the trust report and the console show them.
@@ -38,7 +38,7 @@ All three run in CI, which EkBill's could not.
 
 **Test drive (rule 16).** One button on the home page starts it as a job; `/testdrive` shows the steps as they finish, each with its time and sentence, and pass or fail in words. The steps:
 
-1. Idea: the sample built afresh as `testdrive-<n>`, and its first card decided by a recorded yes.
+1. Idea: the sample built afresh as `testdrive-<n>` (earlier runs are kept, with their signature journals), and its first card decided by a recorded yes.
 2. Street: drawn from its history.
 3. Build: built and photographed, every figure traced and re-computed.
 4. Tests: the product's own tests.
@@ -46,7 +46,7 @@ All three run in CI, which EkBill's could not.
 6. Three states: two Confirmed, one Verified; "2 of 2 customer screens signed".
 7. Audit: by the auditor when the OpenAI key is set, otherwise by a stand-in that adds nothing and says so.
 
-No voice, no camera, no network. The sample's packages are links to House of Rama's own; this is why its build uses webpack (DECISIONS).
+No voice and no camera. With no keys set it needs no network either: the sample's packages are links to House of Rama's own, which is why its build uses webpack (DECISIONS). With the OpenAI key set, its audit asks the real auditor.
 
 **Jobs and buttons (rule 15).** Refresh the picture, Photograph the screens, Run the tests and Call the audit are jobs (`packages/workbench/src/jobs.ts`, `actions.ts`), recorded step by step in `work/.jobs/`. A failed step is a grey flag with a plain sentence and the next action. A page shows a job that was cut off by a restart as interrupted. Every screen that used to show a command (no Blueprint, nothing captured, no audit, no pod) now offers a button or says who does it. `apps/rama/components/wording.test.ts` fails if a page or component ever spells out a command, or if a page, component, audit finding or workbench sentence presents a test importing a file as confidence.
 
