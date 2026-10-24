@@ -59,6 +59,8 @@ const TS_PACKAGES = [
   'scripts',
 ];
 const IGNORED = [
+  // Short-lived files a tool writes and renames at once (_tmp_<pid>_<hex>): not a change of the source.
+  /(^|\/)_tmp_\d+_[0-9a-f]+$/,
   /(^|\/)node_modules(\/|$)/,
   /^\.git(\/|$)/,
   /(^|\/)\.next(-e2e|-build)?(\/|$)/,

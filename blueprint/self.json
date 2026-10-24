@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+  "commit": "4f388b62f2e41a4390ca4aa46fe289a2e9715967",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8778,6 +8778,33 @@
       "sha": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "short": "30f38d8",
       "subject": "Stage 7: Harmony first — tokens, bundle and the app's chrome in ergOS Harmony"
+    },
+    {
+      "at": "2026-10-24T18:50:03Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 333,
+          "del": 90,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 9,
+          "del": 10,
+          "kind": "M",
+          "path": "docs/reports/stage-7.md"
+        },
+        {
+          "add": 19,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-7.review.md"
+        }
+      ],
+      "sha": "4f388b62f2e41a4390ca4aa46fe289a2e9715967",
+      "short": "4f388b6",
+      "subject": "Stage 7: report after reviewer run 7"
     }
   ],
   "edges": [
@@ -18501,7 +18528,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T18:46:06Z",
+  "extractedAt": "2026-10-24T18:50:03Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -21888,12 +21915,12 @@
     {
       "binary": false,
       "bytes": 18335,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "07748373dbd29da7edb209399e2f7bee05efe7a7",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "4f388b62f2e41a4390ca4aa46fe289a2e9715967",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 119,
@@ -21903,12 +21930,12 @@
     {
       "binary": false,
       "bytes": 95743,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0520900aa2b01ee131aa9ede91d273e0a359002b",
-      "lastCommit": "c26db4e6253e7d2cca06a425ab210b3b96b35689",
+      "lastCommit": "4f388b62f2e41a4390ca4aa46fe289a2e9715967",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 129,
@@ -26667,7 +26694,7 @@
     },
     {
       "binary": false,
-      "bytes": 8753,
+      "bytes": 8889,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -26676,7 +26703,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 261,
+      "lines": 263,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -26933,7 +26960,7 @@
     },
     {
       "binary": false,
-      "bytes": 7865,
+      "bytes": 7902,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -26942,7 +26969,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 176,
+      "lines": 177,
       "path": "tests/stage-7.e2e.test.ts",
       "test": true
     },

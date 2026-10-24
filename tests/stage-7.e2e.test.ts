@@ -93,6 +93,7 @@ describe('stage 7 e2e', () => {
     // The dev server compiles a route the first time it is asked for it, slowly under a busy watcher;
     // a click waits for the navigation it starts.
     page.setDefaultNavigationTimeout(180_000);
+    page.setDefaultTimeout(180_000);
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(`${page.url()}: ${e.message.slice(0, 200)}`));
 
