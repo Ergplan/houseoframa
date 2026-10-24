@@ -1,4 +1,5 @@
-// Sign-in by email link, against a throwaway database: one-time links, expiry, sessions, revocation.
+// Sign-in by username and password, against a throwaway database: accounts from the environment,
+// constant-time checks, a person per account, sessions that expire and are revoked.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomBytes } from 'node:crypto';
 import postgres from 'postgres';
@@ -6,12 +7,12 @@ import { createDb } from './client.ts';
 import { runMigrations } from './migrate.ts';
 import { seed } from './seed.ts';
 import {
-  addMember,
+  accountsFrom,
+  checkCredentials,
+  ensurePerson,
   hashToken,
-  issueLink,
-  LINK_MINUTES,
   memberBySession,
-  redeemLink,
+  openSession,
   revokeSession,
   SESSION_DAYS,
 } from './auth.ts';
@@ -20,8 +21,14 @@ const serverUrl = process.env.DATABASE_URL!;
 const dbName = `rama_test_${randomBytes(4).toString('hex')}`;
 const admin = postgres(serverUrl, { max: 1, onnotice: () => {} });
 let conn: ReturnType<typeof createDb>;
-const t0 = new Date('2026-10-23T10:00:00Z');
+const t0 = new Date('2026-10-24T10:00:00Z');
 const later = (ms: number) => new Date(t0.getTime() + ms);
+const ENV = {
+  RAMA_ACCOUNTS: JSON.stringify([
+    { username: 'asha', password: 'correct horse', name: 'Asha Rao', role: 'manager' },
+    { username: 'ravi', password: 'battery staple', name: 'Ravi' },
+  ]),
+};
 
 beforeAll(async () => {
   await admin.unsafe(`CREATE DATABASE ${dbName}`);
@@ -36,89 +43,64 @@ afterAll(async () => {
   await admin.end();
 });
 
-describe('members', () => {
-  it('gives the local member an email, adds new members, and refuses a bad address or a second email', async () => {
-    const asha = await addMember(conn.db, {
-      email: ' Asha@Example.com ',
-      name: 'Asha Rao',
-      createdBy: 'test',
-    });
-    expect(asha).toMatchObject({ name: 'Asha Rao', email: 'asha@example.com', role: 'member' });
-    expect(
-      await addMember(conn.db, { email: 'ASHA@example.com', name: 'Someone', createdBy: 'test' }),
-    ).toMatchObject({ id: asha.id });
-    await expect(
-      addMember(conn.db, { email: 'other@example.com', name: 'Asha Rao', createdBy: 'test' }),
-    ).rejects.toThrow(/already signs in/);
-    await expect(
-      addMember(conn.db, { email: 'nope', name: 'X', createdBy: 'test' }),
-    ).rejects.toThrow(/not an email/);
-    expect(
-      await addMember(conn.db, {
-        email: 'ravi@example.com',
-        name: 'Ravi',
-        role: 'manager',
-        createdBy: 'test',
+describe('accounts', () => {
+  it('reads the accounts from RAMA_ACCOUNTS, members by default; none when unset', () => {
+    expect(accountsFrom(ENV).map((a) => [a.username, a.name, a.role])).toEqual([
+      ['asha', 'Asha Rao', 'manager'],
+      ['ravi', 'Ravi', 'member'],
+    ]);
+    expect(accountsFrom({})).toEqual([]);
+  });
+
+  it('refuses a malformed list, a short password, or a username twice, rather than locking everyone out quietly', () => {
+    expect(() => accountsFrom({ RAMA_ACCOUNTS: 'asha:pw' })).toThrow(/not JSON/);
+    expect(() =>
+      accountsFrom({
+        RAMA_ACCOUNTS: JSON.stringify([{ username: 'a', password: 'short', name: 'A' }]),
       }),
-    ).toMatchObject({ role: 'manager' });
-    expect(
-      await addMember(conn.db, {
-        email: 'asha@example.com',
-        name: 'Asha Rao',
-        role: 'manager',
-        createdBy: 'test',
-      }),
-    ).toMatchObject({ id: asha.id, role: 'manager' });
-    expect(
-      await addMember(conn.db, {
-        email: 'asha@example.com',
-        name: 'Asha Rao',
-        role: 'member',
-        createdBy: 'test',
-      }),
-    ).toMatchObject({ role: 'member' });
+    ).toThrow(/at least 8/);
+    const twice = [
+      { username: 'a', password: '12345678', name: 'A' },
+      { username: 'a', password: '87654321', name: 'B' },
+    ];
+    expect(() => accountsFrom({ RAMA_ACCOUNTS: JSON.stringify(twice) })).toThrow(/twice/);
+  });
+
+  it('opens only with the right username and password', () => {
+    const accounts = accountsFrom(ENV);
+    expect(checkCredentials(accounts, 'asha', 'correct horse')?.name).toBe('Asha Rao');
+    expect(checkCredentials(accounts, 'asha', 'battery staple')).toBeNull();
+    expect(checkCredentials(accounts, 'ravi', 'battery staple')?.name).toBe('Ravi');
+    expect(checkCredentials(accounts, 'nobody', 'correct horse')).toBeNull();
+    expect(checkCredentials(accounts, '', '')).toBeNull();
   });
 });
 
-describe('links and sessions', () => {
-  it('issues a link only for a member, and stores only its hash', async () => {
-    expect(await issueLink(conn.db, 'stranger@example.com', t0)).toBeNull();
-    const link = (await issueLink(conn.db, 'asha@example.com', t0))!;
-    expect(link.member.name).toBe('Asha Rao');
-    const rows = await conn.sql`select token_hash from login_links`;
-    expect(rows.map((r) => r.token_hash)).toEqual([hashToken(link.token)]);
-    expect(JSON.stringify(rows)).not.toContain(link.token);
-  });
-
-  it('spends a link once, before it expires, and opens a session that signs the member in until revoked or expired', async () => {
-    const link = (await issueLink(conn.db, 'asha@example.com', t0))!;
-    const s = (await redeemLink(conn.db, link.token, later(60_000)))!;
-    expect(s.member.name).toBe('Asha Rao');
-    expect(await redeemLink(conn.db, link.token, later(61_000))).toBeNull();
-    expect(await memberBySession(conn.db, s.sessionToken, later(120_000))).toMatchObject({
-      name: 'Asha Rao',
-      role: 'member',
+describe('people and sessions', () => {
+  it('signs an account in as the person of that name (the seeded member keeps their sites), with its role', async () => {
+    const asha = await ensurePerson(conn.db, { name: 'Asha Rao', role: 'manager' }, 'test');
+    const [seeded] = await conn.sql`select id from people where name = 'Asha Rao'`;
+    expect(asha).toMatchObject({ id: seeded!.id, role: 'manager' });
+    const ravi = await ensurePerson(conn.db, { name: 'Ravi', role: 'member' }, 'test');
+    expect(await ensurePerson(conn.db, { name: 'Ravi', role: 'member' }, 'test')).toMatchObject({
+      id: ravi.id,
     });
-    expect(
-      await memberBySession(conn.db, s.sessionToken, later(SESSION_DAYS * 86_400_000 + 61_000)),
-    ).toBeNull();
-    expect(await memberBySession(conn.db, 'forged', later(120_000))).toBeNull();
+  });
+
+  it('opens a session that signs the member in until it expires or is revoked, and stores only its hash', async () => {
+    const asha = await ensurePerson(conn.db, { name: 'Asha Rao', role: 'manager' }, 'test');
+    const token = await openSession(conn.db, asha.id, t0);
+    const rows = await conn.sql`select token_hash from sessions`;
+    expect(rows.map((r) => r.token_hash)).toContain(hashToken(token));
+    expect(JSON.stringify(rows)).not.toContain(token);
+    expect(await memberBySession(conn.db, token, later(60_000))).toMatchObject({
+      name: 'Asha Rao',
+      role: 'manager',
+    });
+    expect(await memberBySession(conn.db, token, later(SESSION_DAYS * 86_400_000 + 1))).toBeNull();
+    expect(await memberBySession(conn.db, 'forged', later(1))).toBeNull();
     expect(await memberBySession(conn.db, undefined)).toBeNull();
-    await revokeSession(conn.db, s.sessionToken, later(180_000));
-    expect(await memberBySession(conn.db, s.sessionToken, later(181_000))).toBeNull();
-  });
-
-  it('refuses an expired link', async () => {
-    const link = (await issueLink(conn.db, 'ravi@example.com', t0))!;
-    expect(await redeemLink(conn.db, link.token, later(LINK_MINUTES * 60_000 + 1))).toBeNull();
-  });
-
-  it('lets one of two simultaneous redemptions of a link through, never both', async () => {
-    const link = (await issueLink(conn.db, 'ravi@example.com', t0))!;
-    const both = await Promise.all([
-      redeemLink(conn.db, link.token, later(1000)),
-      redeemLink(conn.db, link.token, later(1000)),
-    ]);
-    expect(both.filter(Boolean)).toHaveLength(1);
+    await revokeSession(conn.db, token, later(120_000));
+    expect(await memberBySession(conn.db, token, later(121_000))).toBeNull();
   });
 });

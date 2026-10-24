@@ -147,7 +147,7 @@ beforeAll(async () => {
   ]);
   await conn.close();
 
-  token = await signIn(dbUrl, { name: 'Asha Rao', email: 'asha@example.com' });
+  token = await signIn(dbUrl, { name: 'Asha Rao' });
   server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
     '/site/shop',
     '/site/shop/audit',

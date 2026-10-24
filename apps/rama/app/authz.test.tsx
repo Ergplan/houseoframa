@@ -9,7 +9,7 @@ import path from 'node:path';
 import postgres from 'postgres';
 import { isValidElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { addMember, createDb, issueLink, redeemLink, runMigrations, seed, sites } from '@rama/db';
+import { createDb, ensurePerson, openSession, runMigrations, seed, sites } from '@rama/db';
 import { addSite } from '@rama/blueprint/site';
 import { fixtureRepo, type FixtureRepo } from '../../../packages/blueprint/test/fixture-repo';
 
@@ -46,19 +46,13 @@ beforeAll(async () => {
   const conn = createDb();
   await runMigrations(conn.db);
   await seed(conn.db, { memberName: 'Asha Rao' }); // Asha owns "self"
-  await addMember(conn.db, { email: 'asha@example.com', name: 'Asha Rao', createdBy: 'test' });
-  const ravi = await addMember(conn.db, {
-    email: 'ravi@example.com',
-    name: 'Ravi',
-    createdBy: 'test',
-  });
+  const asha = await ensurePerson(conn.db, { name: 'Asha Rao', role: 'member' }, 'test');
+  const ravi = await ensurePerson(conn.db, { name: 'Ravi', role: 'member' }, 'test');
   await conn.db
     .insert(sites)
     .values({ siteId: 'shop', name: 'Shop', repo: repo.dir, memberId: ravi.id, createdBy: 'test' });
-  for (const who of ['asha', 'ravi'] as const) {
-    const link = (await issueLink(conn.db, `${who}@example.com`))!;
-    token[who] = (await redeemLink(conn.db, link.token))!.sessionToken;
-  }
+  token.asha = await openSession(conn.db, asha.id);
+  token.ravi = await openSession(conn.db, ravi.id);
   await conn.close();
 });
 

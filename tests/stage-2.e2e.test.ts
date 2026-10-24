@@ -65,7 +65,7 @@ beforeAll(async () => {
   );
 
   // The member owns self (seed) and fixture (registerSite), and signs in by link.
-  token = await signIn(testUrl, { name: MEMBER, email: 'member@example.com' });
+  token = await signIn(testUrl, { name: MEMBER });
   server = await startDevServer({ DATABASE_URL: testUrl, RAMA_WORK_DIR: work }, [
     '/site/self',
     '/site/fixture',

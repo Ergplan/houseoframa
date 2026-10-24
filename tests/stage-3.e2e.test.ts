@@ -30,9 +30,7 @@ beforeAll(async () => {
   const { site, blueprint } = addSite(app.dir, { id: 'shop', name: 'Shop', env });
   await capture(site, blueprint, { outDir: captureDir('shop', env) });
   db = await throwawayDb('Asha Rao');
-  token = await signIn(db.url, { name: 'Asha Rao', email: 'asha@example.com' }, [
-    { id: 'shop', name: 'Shop', repo: app.dir },
-  ]);
+  token = await signIn(db.url, { name: 'Asha Rao' }, [{ id: 'shop', name: 'Shop', repo: app.dir }]);
   server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: db.url }, [
     '/site/shop/showroom',
   ]);

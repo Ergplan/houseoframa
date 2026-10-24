@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import postgres from 'postgres';
 import {
-  addMember,
+  ensurePerson,
   audits,
   createDb,
   modelCalls,
@@ -40,12 +40,8 @@ beforeAll(async () => {
   conn = createDb(Object.assign(new URL(serverUrl), { pathname: `/${dbName}` }).toString());
   await runMigrations(conn.db);
   await seed(conn.db, { memberName: 'Asha Rao' });
-  asha = await addMember(conn.db, {
-    email: 'asha@example.com',
-    name: 'Asha Rao',
-    createdBy: 'test',
-  });
-  ravi = await addMember(conn.db, { email: 'ravi@example.com', name: 'Ravi', createdBy: 'test' });
+  asha = await ensurePerson(conn.db, { name: 'Asha Rao', role: 'member' }, 'test');
+  ravi = await ensurePerson(conn.db, { name: 'Ravi', role: 'member' }, 'test');
   repo = fixtureRepo();
   repo.write({
     'next.config.mjs': 'export default {};\n',

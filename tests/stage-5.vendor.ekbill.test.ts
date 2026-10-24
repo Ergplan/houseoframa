@@ -91,7 +91,7 @@ describe('@vendor stage 5 on EkBill', () => {
     server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
       `/site/${SITE}/audit`,
     ]);
-    const token = await signIn(dbUrl, { name: 'Audit Tester', email: 'audit@example.com' });
+    const token = await signIn(dbUrl, { name: 'Audit Tester' });
     const html = await (
       await fetch(`${server.url}/site/${SITE}/audit`, { headers: withSession(token) })
     ).text();

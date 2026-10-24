@@ -235,22 +235,6 @@ export const auditConfirmations = pgTable('audit_confirmations', {
   ...provenance,
 });
 
-/**
- * A magic sign-in link (Stage 6): only the sha256 of its token is kept. It works once (`used_at`) and
- * until `expires_at`. `site_id` is null: a link belongs to a person, not a site.
- */
-export const loginLinks = pgTable('login_links', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  siteId: text('site_id').references(() => sites.siteId),
-  personId: uuid('person_id')
-    .notNull()
-    .references(() => people.id),
-  tokenHash: text('token_hash').notNull().unique(),
-  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
-  usedAt: timestamp('used_at', { withTimezone: true }),
-  ...provenance,
-});
-
 /** A signed-in browser: the sha256 of the cookie's token, until it expires or is revoked (sign-out). */
 export const sessions = pgTable('sessions', {
   id: uuid('id').primaryKey().defaultRandom(),

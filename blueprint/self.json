@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
+  "commit": "46f4b2f0204d8f8f0883a197657dc0c830cf8193",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6079,6 +6079,33 @@
       "sha": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "short": "720a3a7",
       "subject": "Fix Stage 6 reviewer run 1: campus unsigned counts from metrics; keys page names the handed-over commit"
+    },
+    {
+      "at": "2026-10-23T20:58:35Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 78,
+          "del": 21,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 8,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/stage-6.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-6.review.md"
+        }
+      ],
+      "sha": "46f4b2f0204d8f8f0883a197657dc0c830cf8193",
+      "short": "46f4b2f",
+      "subject": "Stage 6: report with reviewer findings, cost and open questions"
     }
   ],
   "edges": [
@@ -6093,15 +6120,6 @@
     {
       "from": "apps/rama/app/api/auth/deps.ts",
       "symbols": [
-        "deliver",
-        "signInMail"
-      ],
-      "to": "apps/rama/server/mail.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/app/api/auth/deps.ts",
-      "symbols": [
         "withDb"
       ],
       "to": "apps/rama/server/session.ts",
@@ -6110,8 +6128,10 @@
     {
       "from": "apps/rama/app/api/auth/deps.ts",
       "symbols": [
-        "issueLink",
-        "redeemLink",
+        "accountsFrom",
+        "checkCredentials",
+        "ensurePerson",
+        "openSession",
         "revokeSession"
       ],
       "to": "packages/db/src/index.ts",
@@ -6121,20 +6141,10 @@
       "from": "apps/rama/app/api/auth/handlers.test.ts",
       "symbols": [
         "AuthRouteDeps",
-        "handleLinkRequest",
-        "handleLogout",
-        "handleVerify"
+        "handleLogin",
+        "handleLogout"
       ],
       "to": "apps/rama/app/api/auth/handlers.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/app/api/auth/handlers.test.ts",
-      "symbols": [
-        "deliver",
-        "signInMail"
-      ],
-      "to": "apps/rama/server/mail.ts",
       "typeOnly": false
     },
     {
@@ -6148,7 +6158,7 @@
     {
       "from": "apps/rama/app/api/auth/handlers.test.ts",
       "symbols": [
-        "Member"
+        "Account"
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": true
@@ -6164,13 +6174,14 @@
     {
       "from": "apps/rama/app/api/auth/handlers.ts",
       "symbols": [
+        "Account",
         "Member"
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": true
     },
     {
-      "from": "apps/rama/app/api/auth/link/route.ts",
+      "from": "apps/rama/app/api/auth/login/route.ts",
       "symbols": [
         "authDeps"
       ],
@@ -6178,9 +6189,9 @@
       "typeOnly": false
     },
     {
-      "from": "apps/rama/app/api/auth/link/route.ts",
+      "from": "apps/rama/app/api/auth/login/route.ts",
       "symbols": [
-        "handleLinkRequest"
+        "handleLogin"
       ],
       "to": "apps/rama/app/api/auth/handlers.ts",
       "typeOnly": false
@@ -7020,22 +7031,6 @@
       "typeOnly": false
     },
     {
-      "from": "apps/rama/app/auth/verify/route.ts",
-      "symbols": [
-        "authDeps"
-      ],
-      "to": "apps/rama/app/api/auth/deps.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/app/auth/verify/route.ts",
-      "symbols": [
-        "handleVerify"
-      ],
-      "to": "apps/rama/app/api/auth/handlers.ts",
-      "typeOnly": false
-    },
-    {
       "from": "apps/rama/app/authz.test.tsx",
       "symbols": [
         "*"
@@ -7267,10 +7262,9 @@
       },
       "from": "apps/rama/app/authz.test.tsx",
       "symbols": [
-        "addMember",
         "createDb",
-        "issueLink",
-        "redeemLink",
+        "ensurePerson",
+        "openSession",
         "runMigrations",
         "seed",
         "sites"
@@ -7345,14 +7339,6 @@
       "from": "apps/rama/app/layout.tsx",
       "symbols": [],
       "to": "apps/rama/app/globals.css",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/app/login/page.tsx",
-      "symbols": [
-        "LoginForm"
-      ],
-      "to": "apps/rama/components/auth/LoginForm.tsx",
       "typeOnly": false
     },
     {
@@ -8921,9 +8907,9 @@
       "from": "apps/rama/server/floor.test.ts",
       "symbols": [
         "Member",
-        "addMember",
         "audits",
         "createDb",
+        "ensurePerson",
         "modelCalls",
         "pods",
         "runMigrations",
@@ -9092,13 +9078,12 @@
       "from": "apps/rama/server/handover.test.ts",
       "symbols": [
         "Member",
-        "addMember",
         "audits",
         "createDb",
-        "issueLink",
+        "ensurePerson",
         "modelCalls",
+        "openSession",
         "pods",
-        "redeemLink",
         "runMigrations",
         "seed",
         "sites"
@@ -11462,13 +11447,13 @@
     {
       "from": "packages/db/src/auth.test.ts",
       "symbols": [
-        "LINK_MINUTES",
         "SESSION_DAYS",
-        "addMember",
+        "accountsFrom",
+        "checkCredentials",
+        "ensurePerson",
         "hashToken",
-        "issueLink",
         "memberBySession",
-        "redeemLink",
+        "openSession",
         "revokeSession"
       ],
       "to": "packages/db/src/auth.ts",
@@ -11529,20 +11514,10 @@
       },
       "from": "packages/db/src/auth.ts",
       "symbols": [
-        "loginLinks",
         "people",
         "sessions"
       ],
       "to": "packages/db/src/schema.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "packages/db/src/cli.ts",
-      "symbols": [
-        "addMember",
-        "issueLink"
-      ],
-      "to": "packages/db/src/auth.ts",
       "typeOnly": false
     },
     {
@@ -12460,10 +12435,9 @@
       },
       "from": "tests/session.ts",
       "symbols": [
-        "addMember",
         "createDb",
-        "issueLink",
-        "redeemLink",
+        "ensurePerson",
+        "openSession",
         "runMigrations",
         "seed",
         "sites"
@@ -13078,12 +13052,6 @@
     {
       "dev": true,
       "manifest": "apps/rama/package.json",
-      "name": "@types/nodemailer",
-      "version": "6.4.17"
-    },
-    {
-      "dev": true,
-      "manifest": "apps/rama/package.json",
       "name": "@types/react",
       "version": "19.3.0"
     },
@@ -13104,12 +13072,6 @@
       "manifest": "apps/rama/package.json",
       "name": "next",
       "version": "16.3.8"
-    },
-    {
-      "dev": false,
-      "manifest": "apps/rama/package.json",
-      "name": "nodemailer",
-      "version": "6.9.16"
     },
     {
       "dev": true,
@@ -13496,7 +13458,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-23T20:55:11Z",
+  "extractedAt": "2026-10-23T20:58:35Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -13546,7 +13508,7 @@
     },
     {
       "binary": false,
-      "bytes": 1106,
+      "bytes": 1147,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -13555,7 +13517,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "foundation",
       "layerRule": "default: .env.example",
-      "lines": 22,
+      "lines": 21,
       "path": ".env.example",
       "purpose": {
         "confirmed": false,
@@ -13781,7 +13743,7 @@
     },
     {
       "binary": false,
-      "bytes": 807,
+      "bytes": 950,
       "changes": 1,
       "env": [
         "RAMA_BASE_URL"
@@ -13794,13 +13756,13 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 17,
+      "lines": 20,
       "path": "apps/rama/app/api/auth/deps.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 4154,
+      "bytes": 3165,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -13809,46 +13771,45 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 97,
+      "lines": 85,
       "path": "apps/rama/app/api/auth/handlers.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 2266,
+      "bytes": 1997,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "AuthRouteDeps",
-        "handleLinkRequest",
-        "handleLogout",
-        "handleVerify"
+        "handleLogin",
+        "handleLogout"
       ],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 60,
+      "lines": 45,
       "path": "apps/rama/app/api/auth/handlers.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 272,
-      "changes": 1,
+      "bytes": 264,
+      "changes": 0,
       "env": [],
       "envDynamic": false,
       "exports": [
         "POST",
         "dynamic"
       ],
-      "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "firstCommit": "",
+      "lastCommit": "",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 9,
-      "path": "apps/rama/app/api/auth/link/route.ts",
+      "path": "apps/rama/app/api/auth/login/route.ts",
       "test": false
     },
     {
@@ -14369,25 +14330,7 @@
     },
     {
       "binary": false,
-      "bytes": 246,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "GET",
-        "dynamic"
-      ],
-      "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "layer": "shell",
-      "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 8,
-      "path": "apps/rama/app/auth/verify/route.ts",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 11358,
+      "bytes": 11222,
       "changes": 3,
       "env": [
         "DATABASE_URL",
@@ -14400,7 +14343,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 297,
+      "lines": 291,
       "path": "apps/rama/app/authz.test.tsx",
       "test": true
     },
@@ -14442,7 +14385,7 @@
     },
     {
       "binary": false,
-      "bytes": 14448,
+      "bytes": 14500,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -14451,7 +14394,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 770,
+      "lines": 774,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -14483,7 +14426,7 @@
     },
     {
       "binary": false,
-      "bytes": 630,
+      "bytes": 1044,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -14495,7 +14438,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 23,
+      "lines": 33,
       "path": "apps/rama/app/login/page.tsx",
       "test": false
     },
@@ -15097,23 +15040,6 @@
     },
     {
       "binary": false,
-      "bytes": 1296,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "LoginForm"
-      ],
-      "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 42,
-      "path": "apps/rama/components/auth/LoginForm.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
       "bytes": 2719,
       "changes": 2,
       "env": [],
@@ -15376,7 +15302,7 @@
     },
     {
       "binary": false,
-      "bytes": 860,
+      "bytes": 797,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -15385,7 +15311,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 33,
+      "lines": 31,
       "path": "apps/rama/package.json",
       "purpose": {
         "confirmed": false,
@@ -15449,7 +15375,7 @@
     },
     {
       "binary": false,
-      "bytes": 6544,
+      "bytes": 6494,
       "changes": 1,
       "env": [
         "DATABASE_URL",
@@ -15461,7 +15387,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 184,
+      "lines": 180,
       "path": "apps/rama/server/floor.test.ts",
       "test": true
     },
@@ -15490,7 +15416,7 @@
     },
     {
       "binary": false,
-      "bytes": 8035,
+      "bytes": 7797,
       "changes": 2,
       "env": [
         "DATABASE_URL",
@@ -15502,7 +15428,7 @@
       "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 209,
+      "lines": 197,
       "path": "apps/rama/server/handover.test.ts",
       "test": true
     },
@@ -15524,25 +15450,6 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 120,
       "path": "apps/rama/server/handover.ts",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 1152,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "Mail",
-        "deliver",
-        "signInMail"
-      ],
-      "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
-      "layer": "shell",
-      "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 32,
-      "path": "apps/rama/server/mail.ts",
       "test": false
     },
     {
@@ -15699,7 +15606,7 @@
     },
     {
       "binary": false,
-      "bytes": 38882,
+      "bytes": 38004,
       "changes": 19,
       "env": [],
       "envDynamic": false,
@@ -15708,7 +15615,7 @@
       "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 159,
+      "lines": 158,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -15737,7 +15644,7 @@
     },
     {
       "binary": false,
-      "bytes": 35381,
+      "bytes": 36567,
       "changes": 36,
       "env": [],
       "envDynamic": false,
@@ -15746,7 +15653,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 161,
+      "lines": 167,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -15756,7 +15663,7 @@
     },
     {
       "binary": false,
-      "bytes": 4038,
+      "bytes": 3938,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -15765,7 +15672,7 @@
       "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 89,
+      "lines": 86,
       "path": "docs/DEPLOY.md",
       "test": false
     },
@@ -15786,7 +15693,7 @@
     },
     {
       "binary": false,
-      "bytes": 8429,
+      "bytes": 8317,
       "changes": 22,
       "env": [],
       "envDynamic": false,
@@ -15795,7 +15702,7 @@
       "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 37,
+      "lines": 34,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -15839,6 +15746,21 @@
         "confirmed": false,
         "text": "Explains that each stage ends with a written report and lists what every report must contain."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2139,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 18,
+      "path": "docs/reports/gaps-1.prompt.md",
       "test": false
     },
     {
@@ -16021,12 +15943,12 @@
     {
       "binary": false,
       "bytes": 8722,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "17fc5b4ed03b9dfb41ff045642a02048f86a9a3a",
-      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
+      "lastCommit": "46f4b2f0204d8f8f0883a197657dc0c830cf8193",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 124,
@@ -16036,12 +15958,12 @@
     {
       "binary": false,
       "bytes": 20304,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
-      "lastCommit": "720a3a747df6405ddcd58033bb9fb72e2a48854e",
+      "lastCommit": "46f4b2f0204d8f8f0883a197657dc0c830cf8193",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 36,
@@ -16071,7 +15993,7 @@
     },
     {
       "binary": false,
-      "bytes": 1866,
+      "bytes": 1814,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -16080,7 +16002,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 57,
+      "lines": 56,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -17950,6 +17872,21 @@
     },
     {
       "binary": false,
+      "bytes": 33,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1,
+      "path": "packages/db/migrations/0007_password_accounts.sql",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 9168,
       "changes": 1,
       "env": [],
@@ -18059,7 +17996,22 @@
     },
     {
       "binary": false,
-      "bytes": 1026,
+      "bytes": 42768,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1682,
+      "path": "packages/db/migrations/meta/0007_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1171,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -18068,7 +18020,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 55,
+      "lines": 62,
       "path": "packages/db/migrations/meta/_journal.json",
       "purpose": {
         "confirmed": false,
@@ -18078,7 +18030,7 @@
     },
     {
       "binary": false,
-      "bytes": 635,
+      "bytes": 596,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -18087,7 +18039,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 26,
+      "lines": 25,
       "path": "packages/db/package.json",
       "purpose": {
         "confirmed": false,
@@ -18097,7 +18049,7 @@
     },
     {
       "binary": false,
-      "bytes": 4786,
+      "bytes": 4599,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -18108,43 +18060,41 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 124,
+      "lines": 106,
       "path": "packages/db/src/auth.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 4900,
+      "bytes": 4519,
       "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
-        "AUTH_COMPONENT",
-        "LINK_MINUTES",
+        "Account",
         "Member",
         "SESSION_DAYS",
-        "addMember",
+        "accountsFrom",
+        "checkCredentials",
+        "ensurePerson",
         "hashToken",
-        "issueLink",
         "memberBySession",
-        "normalEmail",
-        "redeemLink",
+        "openSession",
         "revokeSession"
       ],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 141,
+      "lines": 132,
       "path": "packages/db/src/auth.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 2750,
+      "bytes": 1530,
       "changes": 3,
       "env": [
-        "RAMA_BASE_URL",
         "RAMA_MEMBER_NAME"
       ],
       "envDynamic": false,
@@ -18153,7 +18103,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 61,
+      "lines": 39,
       "path": "packages/db/src/cli.ts",
       "purpose": {
         "confirmed": false,
@@ -18187,7 +18137,7 @@
     },
     {
       "binary": false,
-      "bytes": 10020,
+      "bytes": 9953,
       "changes": 6,
       "env": [
         "DATABASE_URL"
@@ -18198,7 +18148,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 294,
+      "lines": 291,
       "path": "packages/db/src/db.test.ts",
       "purpose": {
         "confirmed": false,
@@ -18258,7 +18208,7 @@
     },
     {
       "binary": false,
-      "bytes": 12934,
+      "bytes": 12304,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -18275,7 +18225,6 @@
         "discoveryTurns",
         "findings",
         "handovers",
-        "loginLinks",
         "modelCalls",
         "people",
         "pods",
@@ -18287,7 +18236,7 @@
       "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 358,
+      "lines": 342,
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -19210,7 +19159,7 @@
     },
     {
       "binary": false,
-      "bytes": 106434,
+      "bytes": 105739,
       "changes": 11,
       "env": [],
       "envDynamic": false,
@@ -19219,7 +19168,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3356,
+      "lines": 3336,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -19724,7 +19673,7 @@
     },
     {
       "binary": false,
-      "bytes": 3981,
+      "bytes": 4505,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -19733,7 +19682,7 @@
       "lastCommit": "2de7f73f0126358c21e7ba61bef234f089ede534",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 97,
+      "lines": 106,
       "path": "scripts/review.ts",
       "purpose": {
         "confirmed": false,
@@ -19818,7 +19767,7 @@
     },
     {
       "binary": false,
-      "bytes": 2700,
+      "bytes": 2684,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -19834,7 +19783,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 72,
+      "lines": 75,
       "path": "tests/session.ts",
       "test": false
     },
@@ -19878,7 +19827,7 @@
     },
     {
       "binary": false,
-      "bytes": 8549,
+      "bytes": 8520,
       "changes": 2,
       "env": [
         "DATABASE_URL",
@@ -19896,7 +19845,7 @@
     },
     {
       "binary": false,
-      "bytes": 4253,
+      "bytes": 4217,
       "changes": 18,
       "env": [],
       "envDynamic": false,
@@ -19905,7 +19854,7 @@
       "lastCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 96,
+      "lines": 94,
       "path": "tests/stage-3.e2e.test.ts",
       "test": true
     },
@@ -19941,7 +19890,7 @@
     },
     {
       "binary": false,
-      "bytes": 6362,
+      "bytes": 6328,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -19958,7 +19907,7 @@
     },
     {
       "binary": false,
-      "bytes": 8903,
+      "bytes": 8876,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -19975,7 +19924,7 @@
     },
     {
       "binary": false,
-      "bytes": 4389,
+      "bytes": 4361,
       "changes": 2,
       "env": [
         "AUDITOR_VENDOR",
@@ -19994,7 +19943,7 @@
     },
     {
       "binary": false,
-      "bytes": 6608,
+      "bytes": 6557,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20003,7 +19952,7 @@
       "lastCommit": "28854a9b398a9e637c4db4fa8d1be43d258a7117",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 164,
+      "lines": 162,
       "path": "tests/stage-6.e2e.test.ts",
       "test": true
     },
@@ -20220,8 +20169,7 @@
       "bricks": [
         "apps/rama/app/globals.css",
         "apps/rama/app/layout.tsx",
-        "apps/rama/app/login/page.tsx",
-        "apps/rama/components/auth/LoginForm.tsx"
+        "apps/rama/app/login/page.tsx"
       ],
       "file": "apps/rama/app/login/page.tsx",
       "id": "/login",

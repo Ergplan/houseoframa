@@ -1,18 +1,16 @@
-// Sign-in by email link (Stage 6). No passwords. A link token and a session token are random 32 bytes;
-// only their sha256 is stored, so a database copy holds nothing to sign in with. A link works once and
-// for LINK_MINUTES; a session lasts SESSION_DAYS unless revoked (sign-out).
-import { createHash, randomBytes } from 'node:crypto';
+// Sign-in by username and password (the user's decision, 2026-10-24: no email logins). The accounts are
+// configured in the environment (`RAMA_ACCOUNTS`, in .env, never in the source: CLAUDE.md rule 10), and
+// each is a person in `people` by name. A sign-in opens a session: a random 32-byte token in an httpOnly
+// cookie, of which only the sha256 is stored; it lasts SESSION_DAYS unless revoked (sign-out).
+import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { and, eq, gt, isNull } from 'drizzle-orm';
+import { z } from 'zod';
 import type { Db } from './client.ts';
-import { loginLinks, people, sessions } from './schema.ts';
+import { people, sessions } from './schema.ts';
 
-export const LINK_MINUTES = 15;
 export const SESSION_DAYS = 30;
-export const AUTH_COMPONENT = 'rama:db-auth@0.1.0';
 
 export const hashToken = (token: string) => createHash('sha256').update(token).digest('hex');
-const newToken = () => randomBytes(32).toString('base64url');
-export const normalEmail = (email: string) => email.trim().toLowerCase();
 
 export interface Member {
   id: string;
@@ -21,95 +19,88 @@ export interface Member {
   role: 'member' | 'manager';
 }
 
-/** A member by email, or a new one; an existing person (the pre-Stage 6 local member) gains the email. */
-export async function addMember(
-  db: Db,
-  input: { email: string; name: string; role?: Member['role']; createdBy: string },
-): Promise<Member> {
-  const email = normalEmail(input.email);
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
-    throw new Error(`not an email address: ${input.email}`);
-  const [byEmail] = await db.select().from(people).where(eq(people.email, email));
-  if (byEmail) {
-    // Asked again with a role: the role changes (a member made the floor manager, or back).
-    if (!input.role || input.role === byEmail.role) return byEmail;
-    const [p] = await db
-      .update(people)
-      .set({ role: input.role })
-      .where(eq(people.id, byEmail.id))
-      .returning();
-    return p!;
-  }
-  const [byName] = await db.select().from(people).where(eq(people.name, input.name));
-  if (byName) {
-    if (byName.email) throw new Error(`"${input.name}" already signs in as ${byName.email}`);
-    const [p] = await db
-      .update(people)
-      .set({ email, ...(input.role ? { role: input.role } : {}) })
-      .where(eq(people.id, byName.id))
-      .returning();
-    return p!;
-  }
-  const [p] = await db
-    .insert(people)
-    .values({ name: input.name, email, role: input.role ?? 'member', createdBy: input.createdBy })
-    .returning();
-  return p!;
-}
+const Account = z
+  .object({
+    username: z.string().min(1).max(64),
+    password: z.string().min(8, 'a password needs at least 8 characters'),
+    name: z.string().min(1).max(120),
+    role: z.enum(['member', 'manager']).default('member'),
+  })
+  .strict();
+export type Account = z.infer<typeof Account>;
 
 /**
- * A sign-in link token for the member with this email, or null when no member has it (the caller says
- * the same thing either way, so the answer does not tell who is a member).
+ * The accounts in `RAMA_ACCOUNTS`: a JSON array of {username, password, name, role?}. None when unset.
+ * A malformed value is an error, not an empty list, so a typo cannot lock everyone out silently.
  */
-export async function issueLink(
-  db: Db,
-  email: string,
-  now = new Date(),
-): Promise<{ token: string; member: Member } | null> {
-  const [member] = await db
-    .select()
-    .from(people)
-    .where(eq(people.email, normalEmail(email)));
-  if (!member) return null;
-  const token = newToken();
-  await db.insert(loginLinks).values({
-    personId: member.id,
-    tokenHash: hashToken(token),
-    expiresAt: new Date(now.getTime() + LINK_MINUTES * 60_000),
-    createdBy: AUTH_COMPONENT,
-  });
-  return { token, member };
+export function accountsFrom(env: Record<string, string | undefined> = process.env): Account[] {
+  const raw = env.RAMA_ACCOUNTS?.trim();
+  if (!raw) return [];
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error('RAMA_ACCOUNTS is not JSON: expected [{"username","password","name","role"?}]');
+  }
+  const list = z.array(Account).parse(parsed);
+  const names = new Set(list.map((a) => a.username));
+  if (names.size !== list.length) throw new Error('RAMA_ACCOUNTS has a username twice');
+  return list;
 }
 
-/** Spends a link (once, before it expires) and opens a session. Null for a used, expired or unknown link. */
-export async function redeemLink(
+const same = (a: string, b: string) => {
+  const x = createHash('sha256').update(a).digest();
+  const y = createHash('sha256').update(b).digest();
+  return timingSafeEqual(x, y);
+};
+
+/** The account these credentials open, or null. Every account is compared, so timing does not tell which failed. */
+export function checkCredentials(
+  accounts: Account[],
+  username: string,
+  password: string,
+): Account | null {
+  let found: Account | null = null;
+  for (const a of accounts) {
+    const ok = same(a.username, username) && same(a.password, password);
+    if (ok) found = a;
+  }
+  return found;
+}
+
+/** The person an account signs in as: found by name (the seeded member keeps their sites), created otherwise. */
+export async function ensurePerson(
   db: Db,
-  token: string,
-  now = new Date(),
-): Promise<{ sessionToken: string; member: Member } | null> {
-  return db.transaction(async (tx) => {
-    const [link] = await tx
-      .update(loginLinks)
-      .set({ usedAt: now })
-      .where(
-        and(
-          eq(loginLinks.tokenHash, hashToken(token)),
-          isNull(loginLinks.usedAt),
-          gt(loginLinks.expiresAt, now),
-        ),
-      )
+  account: Pick<Account, 'name' | 'role'>,
+  createdBy: string,
+): Promise<Member> {
+  const [p] = await db.select().from(people).where(eq(people.name, account.name));
+  if (p) {
+    if (p.role === account.role) return p;
+    const [u] = await db
+      .update(people)
+      .set({ role: account.role })
+      .where(eq(people.id, p.id))
       .returning();
-    if (!link) return null;
-    const [member] = await tx.select().from(people).where(eq(people.id, link.personId));
-    const sessionToken = newToken();
-    await tx.insert(sessions).values({
-      personId: link.personId,
-      tokenHash: hashToken(sessionToken),
-      expiresAt: new Date(now.getTime() + SESSION_DAYS * 86_400_000),
-      createdBy: link.personId,
-    });
-    return { sessionToken, member: member! };
+    return u!;
+  }
+  const [n] = await db
+    .insert(people)
+    .values({ name: account.name, role: account.role, createdBy })
+    .returning();
+  return n!;
+}
+
+/** Opens a session for a person; returns the cookie's token (only its hash is stored). */
+export async function openSession(db: Db, personId: string, now = new Date()): Promise<string> {
+  const token = randomBytes(32).toString('base64url');
+  await db.insert(sessions).values({
+    personId,
+    tokenHash: hashToken(token),
+    expiresAt: new Date(now.getTime() + SESSION_DAYS * 86_400_000),
+    createdBy: personId,
   });
+  return token;
 }
 
 /** The member a session token signs in, or null when it is unknown, expired or revoked. */

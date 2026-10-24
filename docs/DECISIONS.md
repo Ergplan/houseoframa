@@ -2,6 +2,12 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-24 — Sign-in by username and password (the user's decision)
+
+- **No email logins: two username-and-password accounts, for now** (the user, 2026-10-24: "no email logins, only two simple username and passwords hardcoded in the system for now"). This replaces the locked decision "Access, Stage 6: email magic link" (CLAUDE.md §3).
+- **"Hardcoded" is read as configured on the server, not written in the source.** CLAUDE.md rule 10 forbids committing a secret. The accounts are `RAMA_ACCOUNTS` in `.env`: a JSON list of username, password, name and role. The two set up on this machine are `rachit` (Rachit Agarwal, manager) and `member2` (Second Member). Their passwords are in `.env` only, generated, and never printed or committed.
+- **How sign-in works.** Each account signs in as the person of that name, so the existing member keeps their sites. Passwords are compared in constant time, and a refused sign-in waits half a second. The session cookie is unchanged (httpOnly, SameSite=Lax, Secure on https, 30 days, revoked on sign-out). The email-link routes, the mail sending and the `login_links` table are removed (migration 0007), and so are `rama-member add|link`.
+
 ## 2026-10-23 — Stage 6: the floor edition
 
 - **Sign-in is an email link** (no passwords), as locked.

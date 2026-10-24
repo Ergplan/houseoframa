@@ -1,10 +1,10 @@
 // A signed-in member for an end-to-end test (Stage 6): every page and site route needs a session and a
-// site the member owns. The member signs in the real way (a link, redeemed); the browser carries the
-// session cookie, and plain fetches send it as a header.
+// site the member owns. The browser carries the session cookie, and plain fetches send it as a header.
+// (The sign-in form itself is driven in tests/stage-6.e2e.test.ts.)
 import { randomBytes } from 'node:crypto';
 import postgres from 'postgres';
 import type { Browser, BrowserContextOptions, Page } from 'playwright';
-import { addMember, createDb, issueLink, redeemLink, runMigrations, seed, sites } from '@rama/db';
+import { createDb, ensurePerson, openSession, runMigrations, seed, sites } from '@rama/db';
 import type { DevServer } from './dev-server.ts';
 
 /** A fresh database on the DATABASE_URL server, migrated and seeded with `memberName` owning "self". */
@@ -29,15 +29,19 @@ export async function throwawayDb(
   };
 }
 
-/** Gives the member an email, makes them own `siteIds` (registered if new), and signs them in. */
+/** Makes the member own `siteIds` (registered if new) and opens a session for them. */
 export async function signIn(
   url: string,
-  member: { name: string; email: string },
+  member: { name: string; role?: 'member' | 'manager' },
   siteIds: { id: string; name: string; repo: string }[] = [],
 ): Promise<string> {
   const conn = createDb(url);
   try {
-    const m = await addMember(conn.db, { ...member, createdBy: 'rama:e2e@0' });
+    const m = await ensurePerson(
+      conn.db,
+      { name: member.name, role: member.role ?? 'member' },
+      'rama:e2e@0',
+    );
     for (const s of siteIds) {
       await conn.db
         .insert(sites)
@@ -50,8 +54,7 @@ export async function signIn(
         })
         .onConflictDoNothing();
     }
-    const link = (await issueLink(conn.db, member.email))!;
-    return (await redeemLink(conn.db, link.token))!.sessionToken;
+    return await openSession(conn.db, m.id);
   } finally {
     await conn.close();
   }

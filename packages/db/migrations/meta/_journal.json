@@ -50,6 +50,13 @@
       "when": 1792785931031,
       "tag": "0006_handovers",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792816695340,
+      "tag": "0007_password_accounts",
+      "breakpoints": true
     }
   ]
 }

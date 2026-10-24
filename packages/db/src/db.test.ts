@@ -62,7 +62,6 @@ describe('packages/db', () => {
       'discovery_turns',
       'findings',
       'handovers',
-      'login_links',
       'model_calls',
       'people',
       'pods',
@@ -88,7 +87,6 @@ describe('packages/db', () => {
       'audits',
       'findings',
       'audit_confirmations',
-      'login_links',
       'sessions',
       'pods',
       'bookings',
@@ -104,8 +102,7 @@ describe('packages/db', () => {
       for (const c of mine) {
         // A person, a sign-in, a pod and a game-mode booking belong to no site.
         const nullable =
-          ['people', 'login_links', 'sessions', 'pods', 'bookings'].includes(table) &&
-          c.column_name === 'site_id';
+          ['people', 'sessions', 'pods', 'bookings'].includes(table) && c.column_name === 'site_id';
         expect(c.is_nullable, `${table}.${c.column_name}`).toBe(nullable ? 'YES' : 'NO');
       }
     }

@@ -1,5 +1,5 @@
 // Stage 6 end to end, on a real target (the house-convention fixture app, built and photographed): a
-// member signs in through the real link flow (the link read from the server's outbox), books a pod,
+// member signs in through the sign-in form (an account from RAMA_ACCOUNTS), books a pod,
 // opens it and gets the site's triptych, signs the site's screens in the walkthrough, and the pod's
 // light, read as the pod controller reads it, moves amber → blue, then green once a clean audit is on file.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -17,6 +17,9 @@ import { startDevServer, type DevServer } from './dev-server.ts';
 import { signIn, throwawayDb } from './session.ts';
 
 const POD_TOKEN = 'pod-controller-e2e';
+const ACCOUNTS = JSON.stringify([
+  { username: 'asha', password: 'asha-e2e-password', name: 'Asha Rao' },
+]);
 let app: FixtureRepo;
 let work: string;
 let db: Awaited<ReturnType<typeof throwawayDb>>;
@@ -32,15 +35,18 @@ beforeAll(async () => {
   commit = blueprint.commit;
   await capture(site, blueprint, { outDir: captureDir('shop', env) });
   db = await throwawayDb('Asha Rao');
-  // Asha has an email and owns the site; she will sign in by link in the browser, not with this token.
-  await signIn(db.url, { name: 'Asha Rao', email: 'asha@example.com' }, [
-    { id: 'shop', name: 'Shop', repo: app.dir },
-  ]);
+  // Asha owns the site; she signs in through the form in the browser, not with this token.
+  await signIn(db.url, { name: 'Asha Rao' }, [{ id: 'shop', name: 'Shop', repo: app.dir }]);
   const conn = createDb(db.url);
   await conn.db.insert(pods).values({ pod: 1, name: 'Prototype pod', createdBy: 'rama:e2e@0' });
   await conn.close();
   server = await startDevServer(
-    { RAMA_WORK_DIR: work, DATABASE_URL: db.url, RAMA_POD_TOKEN: POD_TOKEN },
+    {
+      RAMA_WORK_DIR: work,
+      DATABASE_URL: db.url,
+      RAMA_POD_TOKEN: POD_TOKEN,
+      RAMA_ACCOUNTS: ACCOUNTS,
+    },
     ['/login', '/book', '/pod/1', '/site/shop/walkthrough'],
   );
   browser = await chromium.launch();
@@ -61,24 +67,16 @@ const light = async () => {
   return ((await r.json()) as { light: string }).light;
 };
 
-/** Signs in the real way: asks for a link, reads it from the server's outbox, follows it. */
-async function signInByLink(page: Page) {
+/** Signs in the real way: the form, a wrong password first, then the right one. */
+async function signInByForm(page: Page) {
   await page.goto(`${server.browserUrl}/login`);
-  await page.getByLabel('Email').fill('asha@example.com');
-  await page.getByRole('button', { name: 'Send me a sign-in link' }).click();
-  await page.getByRole('status').waitFor();
-  let link: string | undefined;
-  await expect
-    .poll(
-      () =>
-        (link =
-          /\[outbox\] to asha@example\.com[^\n]*\n[\s\S]*?(http\S+\/auth\/verify\?token=\S+)/.exec(
-            server.output(),
-          )?.[1]),
-      { timeout: 30_000 },
-    )
-    .toBeTruthy();
-  await page.goto(link!.replace(/^https?:\/\/[^/]+/, server.browserUrl));
+  await page.getByLabel('Username').fill('asha');
+  await page.getByLabel('Password').fill('not her password');
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.getByRole('alert').waitFor();
+  await page.getByLabel('Username').fill('asha');
+  await page.getByLabel('Password').fill('asha-e2e-password');
+  await page.getByRole('button', { name: 'Sign in' }).click();
   await page.getByText('Signed in as').waitFor();
 }
 
@@ -90,7 +88,7 @@ describe('stage 6 e2e', () => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(`${page.url()}: ${e.message.slice(0, 200)}`));
     try {
-      await signInByLink(page);
+      await signInByForm(page);
 
       // Book pod 1 for work on the site, from now: the pod opens with the site's triptych.
       await page.goto(`${server.browserUrl}/book`);

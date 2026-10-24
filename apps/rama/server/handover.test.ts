@@ -9,13 +9,12 @@ import path from 'node:path';
 import postgres from 'postgres';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
-  addMember,
+  ensurePerson,
   audits,
   createDb,
-  issueLink,
   modelCalls,
   pods,
-  redeemLink,
+  openSession,
   runMigrations,
   seed,
   sites,
@@ -56,11 +55,7 @@ beforeAll(async () => {
   conn = createDb();
   await runMigrations(conn.db);
   await seed(conn.db, { memberName: 'Asha Rao' });
-  asha = await addMember(conn.db, {
-    email: 'asha@example.com',
-    name: 'Asha Rao',
-    createdBy: 'test',
-  });
+  asha = await ensurePerson(conn.db, { name: 'Asha Rao', role: 'member' }, 'test');
   repo = fixtureRepo();
   repo.write({
     'next.config.mjs': 'export default {};\n',
@@ -180,18 +175,11 @@ describe('/campus', () => {
       startsAt: new Date(Date.now() - 3_600_000),
       endsAt: new Date(Date.now() + 3_600_000),
     });
-    const ravi = await addMember(conn.db, {
-      email: 'ravi@example.com',
-      name: 'Ravi',
-      role: 'manager',
-      createdBy: 'test',
-    });
-    const sessionOf = async (email: string) =>
-      (await redeemLink(conn.db, (await issueLink(conn.db, email))!.token))!.sessionToken;
+    const ravi = await ensurePerson(conn.db, { name: 'Ravi', role: 'manager' }, 'test');
     const { default: Campus } = await import('../app/campus/page');
-    cookie = await sessionOf('asha@example.com');
+    cookie = await openSession(conn.db, asha.id);
     await expect(Campus()).rejects.toThrow(/NEXT_HTTP_ERROR_FALLBACK;404/);
-    cookie = await sessionOf(ravi.email!);
+    cookie = await openSession(conn.db, ravi.id);
     const html = renderToStaticMarkup(await Campus());
     const f = campusFigures((await campusInputs(conn.db)).sites, new Date());
     expect(html).toContain(`data-figure="audits-passed">${f.auditsPassed}</b>`);

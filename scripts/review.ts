@@ -1,7 +1,9 @@
 // The independent stage reviewer (CLAUDE.md §1, "Independent review"). It goes through packages/model
 // as the auditor role, so it is a different vendor from the builder (Invariant 5), and it receives
 // only the stage diff, CLAUDE.md and the stage prompt.
-//   pnpm review <stage>   → appends the run to docs/reports/stage-<N>.review.md and prints it
+//   pnpm review <stage>    → appends the run to docs/reports/stage-<N>.review.md and prints it
+//   pnpm review gaps-<n>   → work after the plan: the diff since tag gaps-<n>-start, reviewed against the
+//                            work order written before it started (docs/reports/gaps-<n>.prompt.md)
 import { execFileSync } from 'node:child_process';
 import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import { z } from 'zod';
@@ -35,24 +37,31 @@ const Review = z.object({
   ),
 });
 
-const stage = Number(process.argv[2]);
-if (!Number.isInteger(stage) || stage < 1) throw new Error('usage: pnpm review <stage>');
+const arg = process.argv[2] ?? '';
+const gaps = /^gaps-\d+$/.test(arg) ? arg : null;
+const stage = gaps ? 0 : Number(arg);
+if (!gaps && (!Number.isInteger(stage) || stage < 1))
+  throw new Error('usage: pnpm review <stage>|gaps-<n>');
 
 const git = (...args: string[]) =>
   execFileSync('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
-const base = `stage-${stage}-start`;
+const base = gaps ? `${gaps}-start` : `stage-${stage}-start`;
 const exclusions = Object.keys(ELIDED).map((p) => `:(exclude)${p}`);
 const elided = Object.entries(ELIDED)
   .filter(([p]) => git('diff', '--stat', `${base}..HEAD`, '--', p).trim())
   .map(([p, how]) => `# ${p}: changed; body left out of this diff (${how})`);
 const diff = [...elided, git('diff', `${base}..HEAD`, '--', '.', ...exclusions)].join('\n');
 
-const master = readFileSync('docs/MASTER-PROMPT.md', 'utf8');
-const heading = `### Stage ${stage} — `;
-const start = master.indexOf(heading);
-if (start === -1) throw new Error(`Stage ${stage} not found in docs/MASTER-PROMPT.md`);
-const end = master.indexOf('\n### Stage ', start + heading.length);
-const stagePrompt = master.slice(start, end === -1 ? master.indexOf('\n## ', start + 1) : end);
+function promptFor(): string {
+  if (gaps) return readFileSync(`docs/reports/${gaps}.prompt.md`, 'utf8');
+  const master = readFileSync('docs/MASTER-PROMPT.md', 'utf8');
+  const heading = `### Stage ${stage} — `;
+  const start = master.indexOf(heading);
+  if (start === -1) throw new Error(`Stage ${stage} not found in docs/MASTER-PROMPT.md`);
+  const end = master.indexOf('\n### Stage ', start + heading.length);
+  return master.slice(start, end === -1 ? master.indexOf('\n## ', start + 1) : end);
+}
+const stagePrompt = promptFor();
 
 const head = git('rev-parse', '--short', 'HEAD').trim();
 const res = await call({
@@ -85,7 +94,7 @@ const lines = [
     : ['No findings.']),
   '',
 ];
-const out = `docs/reports/stage-${stage}.review.md`;
+const out = gaps ? `docs/reports/${gaps}.review.md` : `docs/reports/stage-${stage}.review.md`;
 if (!existsSync(out))
   appendFileSync(
     out,

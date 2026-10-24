@@ -61,7 +61,7 @@ beforeAll(async () => {
   });
   await conn.close();
 
-  token = await signIn(dbUrl, { name: MEMBER, email: 'walkthrough@example.com' });
+  token = await signIn(dbUrl, { name: MEMBER });
   server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
     `/site/${SITE}/walkthrough`,
   ]);

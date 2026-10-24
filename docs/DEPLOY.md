@@ -23,8 +23,7 @@ Copy `.env.example` and fill in at least:
 POSTGRES_PASSWORD=<a long random string>
 RAMA_MEMBER_NAME=<the first member's name>
 RAMA_BASE_URL=https://<the box's address>
-SMTP_URL=smtps://<user>:<password>@<host>:465
-MAIL_FROM=House of Rama <no-reply@<domain>>
+RAMA_ACCOUNTS='[{"username":"rachit","password":"<8+ chars>","name":"Rachit Agarwal","role":"manager"},{"username":"member2","password":"<8+ chars>","name":"Second Member"}]'
 RAMA_POD_TOKEN=<a long random string, also given to the pod controller>
 BUILDER_VENDOR=anthropic
 AUDITOR_VENDOR=openai
@@ -34,7 +33,7 @@ OPENAI_MODEL=gpt-6.1-sol
 GIT_SHA=<git rev-parse --short HEAD>
 ```
 
-`DATABASE_URL` is set by the compose file. Without `SMTP_URL`, sign-in links are written to the app's log (`docker compose … logs app`), the outbox.
+`DATABASE_URL` is set by the compose file. Members sign in at `/login` with a username and password from `RAMA_ACCOUNTS`; to add or change an account, edit `.env` and restart the app.
 
 ## 3. Start
 
@@ -43,11 +42,9 @@ docker compose -f deploy/compose.box.yml --env-file .env up -d --build
 curl -s http://localhost:${APP_PORT:-3000}/api/health     # {"ok":true,"commit":"<GIT_SHA>"}
 ```
 
-## 4. Members, pods, sites
+## 4. Pods and sites
 
 ```
-docker compose -f deploy/compose.box.yml exec app pnpm rama-member add <email> <name> [--manager]
-docker compose -f deploy/compose.box.yml exec app pnpm rama-member link <email>   # a link, if mail is not set up
 docker compose -f deploy/compose.box.yml exec app pnpm rama-pod add 1 "Prototype pod"
 docker compose -f deploy/compose.box.yml exec app pnpm rama site add <gitUrl> --id <id>
 ```
