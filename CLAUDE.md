@@ -24,7 +24,7 @@ Sections 1–4 below are copied verbatim from `docs/MASTER-PROMPT.md`. The stage
 14. House of Rama renders itself. From Stage 2 on, `rama extract .` must succeed on this repository and the result is checked into `blueprint/self.json` and regenerated in CI.
 15. Nobody types a command. Everything a trainer or customer does is a button or a sentence. The CLI exists for engineers and CI only; the app never shows a command to a person, and a failed step is shown as a grey flag with a plain sentence and the builder's next action.
 16. Testable by non-coders. A **Test drive** button runs the whole loop on the built-in sample product (idea → street → build → walkthrough → audit) with no voice and no camera, in minutes, and reports pass or fail in words. It stays green at every stage from Stage 7 on.
-17. Lucid UI. The design system is ergOS Harmony (`design/harmony/`; tokens pending from the member, placeholder palette until they arrive, swapped in one commit). Plain words from `design/harmony/glossary.json`; no developer vocabulary at Street or Building level; every number says what it counts.
+17. Lucid UI. The design system is ergOS Harmony: `design/harmony/tokens.json` and the bundle are the only source of colour, type, spacing and radius; the mapping of House of Rama objects to Harmony is `design/harmony/README.md` and is followed exactly. Plain words from `design/harmony/glossary.json`; no developer vocabulary at Street or Building level; every number says what it counts.
 
 ### Independent review
 
@@ -66,7 +66,7 @@ These hold in every stage and override anything else in this document. If a stag
 | Access, floor edition | Sign-in (password or link) behind a setting, bookings, wallet; deferred | Decided when the pod floor opens |
 | First product | ergPLAN, a new app built inside House of Rama from the house-stack scaffold, in its own repository | Everything the floor will do, done once by us |
 | Fixtures | Procurement Studio (golden numbers, §7.1) and the built-in sample product for Test drive; EkBill is retired as a target | Deterministic tests, no private clones |
-| Design system | ergOS Harmony (`design/harmony/`); placeholder palette until its tokens arrive | One look across House of Rama and the products it builds |
+| Design system | ergOS Harmony (`design/harmony/`, synced from `Ergplan/designsystem` d00bc9a): tokens, bundle, VoiceBar, folder card | One look across House of Rama and the products it builds |
 
 Not reopened unless analysis of an existing codebase shows something materially better, recorded in `docs/DECISIONS.md`.
 

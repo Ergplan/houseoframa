@@ -182,3 +182,4 @@ One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are
 - First product: ergPLAN, in its own repository created by House of Rama under the GitHub account set in Settings.
 - Rendering: transparent isometric lakefront, three zoom levels. Design system ergOS Harmony; tokens pending from the member, placeholder palette until then.
 - Deferred: wallet, customer-owned GitHub at handover, fixed board camera (laptop webcam for now).
+- 2026-10-24 later: ergOS Harmony synced into `design/harmony/` from the Design System artifact (source `Ergplan/designsystem` d00bc9a, v1.3.0). The lakefront and every screen are drawn with Harmony tokens only; the object mapping is `design/harmony/README.md`. Stage 7 applies it first.

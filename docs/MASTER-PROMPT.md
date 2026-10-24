@@ -47,11 +47,13 @@ Deferred (notes in `docs/POD-EDITION.md`): wallet, customer-owned GitHub at hand
 ```
 Stage 7 makes House of Rama usable by people who are not coders, on a laptop, and amends the ceremony with the three states. After this stage nothing is typed in a terminal to use the product.
 
+Harmony first. Before anything else in this stage, load design/harmony (tokens.json, components/bundle.css and bundle.js, Urbanist and JetBrains Mono from Google Fonts) into apps/rama, generate tokens.css from tokens.json (both themes, data-theme on html), replace the current app chrome with Harmony's Sidebar, TopBar, Button, Chip, StatTile and FolderCard per design/harmony/README.md, and keep the Brick canvas's own colours only inside the canvas. The mapping table in design/harmony/README.md is the spec; one green object per screen.
+
 People. `members.json` at the repo root: [{name, role: trainer|customer}], read at start. The app opens with "Who are you?"; the chosen name is the person on every decision, confirmation and signature. Replace the Gaps 1 username-and-password sign-in with this picker; keep sessions and every authorization test (they now assert the picked person). Keep the password code behind a setting `AUTH_MODE=password` for the floor edition; default `members`. RAMA_ACCOUNTS leaves .env.
 
 Settings → Keys: Anthropic key, OpenAI key, GitHub token; each with one sentence saying what it is for and where to get it, a Test button making one harmless call, and a green or red light with the reason in words. Stored in Postgres (`secrets`, encrypted at rest with the app's own key in work/.secret-key, generated on first run, never committed), masked, never logged, never written to .env. packages/model and the GitHub client read from here; .env keys are read only when the table is empty, and the UI says so.
 
-Settings → GitHub: the account or organisation products are created under. "Create repository" creates it, installs the gate workflow with the public key, records it on the site. Settings → Harmony: shows "pending" until design/harmony/tokens.json exists.
+Settings → GitHub: the account or organisation products are created under. "Create repository" creates it, installs the gate workflow with the public key, records it on the site. Settings → Harmony: shows the synced version (design/harmony/tokens.json, Ergplan/designsystem d00bc9a).
 
 Products. A product is a site House of Rama builds (as against an outside site it only renders). "New product" asks for a name and a one-line idea and creates the site, its repository and its first decision card.
 
@@ -83,7 +85,7 @@ packages/stage:
 - Replay: timeline and sky over the street; cranes park at the building being built; audit drones fly building by building and badges stay.
 - Canvas 2D isometric: a 2:1 tile grid, depth-sorted, with pick() for buildings, facades, plots and bricks.
 
-apps/rama: the home of a site is the Street; zoom by click or by the words open / inside / show me the code; a breadcrumb in plain words (Street › Take an order › the code). Labels and sentences from design/harmony/glossary.json; a test greps the rendered DOM at Street and Building level for the glossary's banned list. Harmony tokens applied when design/harmony/tokens.json exists.
+apps/rama: the home of a site is the Street; zoom by click or by the words open / inside / show me the code; a breadcrumb in plain words (Street › Take an order › the code). Labels and sentences from design/harmony/glossary.json; a test greps the rendered DOM at Street and Building level for the glossary's banned list. Harmony tokens, bundle and the mapping in design/harmony/README.md are applied throughout; the lakefront is drawn only with Harmony tokens.
 
 Tests: layout determinism; pick at all three levels; banned-word test; facades appear after capture; flags follow stateOf; e2e: open the sample product, read every building's name from the Street, open one, open its code, run the audit and watch the drones.
 
