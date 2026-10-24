@@ -15,7 +15,7 @@ All six stages were built. The user asked to close the known gaps that need no i
 2. **Sealed signatures.**
    - House of Rama seals every signature record it writes with an Ed25519 key (`RAMA_SIGNING_KEY`, in `.env`); with no key configured it refuses to sign (503). The seal is in the row (`signoffs.seal`, migration 0008) and the mirrored line alike.
    - `rama gate --public-key` counts only lines whose seal verifies. The key comes from the workflow on the base branch, which `install-gate` writes (refusing without a key). A hand-typed line, an edited line or a forged withdrawal counts for nothing, and the gate lists it. Without a public key no signature counts.
-   - `rama-ceremony signing-key` wrote this machine's key to `.env` (not printed). EkBill's local workflow is re-pinned to 2a73cc7 with the public key.
+   - `rama-ceremony signing-key` wrote this machine's key to `.env` (not printed). EkBill's local workflow is re-pinned to f3bb283 with the public key.
 3. **Backups copied off the box.** `BACKUP_COPY_COMMAND` runs with each night's dump. A failed copy is logged, and the local dump is kept.
 4. **KNOWN-GAPS** loses its stale entries (the price table, the site-office stub, the email gaps) and says what is now true of signatures, sign-in and backups.
 
@@ -31,7 +31,7 @@ All six stages were built. The user asked to close the known gaps that need no i
   - the gate ignores typed and forged lines, and says when it checks nothing (`test/gate.test.ts`);
   - the workflow carries the key and refuses a non-base64 key (`test/workflow.test.ts`).
 - **Backups:** the real script with a stand-in `pg_dump`: dated dump, retention, copy, failed copy (`tests/backup.e2e.test.ts`).
-- **Watcher:** green.
+- **Watcher:** green (447 tests) at f3bb283, apart from the self Blueprint drift every commit leaves until the next regeneration.
 
 ## Reviewer findings
 
@@ -41,6 +41,10 @@ Run 1 at 2e53972 found two code defects and two report claims. All are fixed, ea
 2. **`sign()` accepted no sealer and wrote unsealed rows.** Fixed: a sealer is required. The app's sign route answers 503 until `RAMA_SIGNING_KEY` is set.
 3. **(Report)** "Every record is sealed" was not yet true. It is now, by point 2.
 4. **(Report)** "Constant time" was not: a wrong username skipped the password comparison. Fixed: both comparisons always run.
+
+Run 2 at f3bb283 found no code defect. Its note needs runtime evidence a diff cannot carry, and stands: it cannot see this machine's accounts, its key, EkBill's re-pinned workflow, the running-app check or the watcher.
+
+**A slip in process, said plainly.** Commit f3bb283 was made by a command that should have stopped on a red watcher status, and did not. The status it read was stale: it had run on an intermediate state, with two lint errors I fixed before committing. Before committing I had run lint, typecheck and the gate tests by hand. A fresh watcher run on the committed tree passed every check: lint, typecheck, and all 447 tests. Its one red check was the self Blueprint drift that every commit leaves until the next `extract:self`. Still, CLAUDE.md rule 4 says to commit only over a green status, and that commit did not wait for one.
 
 ## What still needs the user
 
