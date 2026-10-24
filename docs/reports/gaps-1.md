@@ -8,13 +8,13 @@ All six stages were built. The user asked to close the known gaps that need no i
 
 1. **Sign-in by username and password** (the user, 2026-10-24: "no email logins, only two simple username and passwords hardcoded in the system for now").
    - The accounts are `RAMA_ACCOUNTS` in `.env`, not in the source, because CLAUDE.md rule 10 forbids committing a secret.
-   - `/login` is a plain form. Passwords are compared in constant time, against every account each time. A refused sign-in pauses for half a second.
+   - `/login` is a plain form. Username and password are both compared, in constant time, against every account each time. A refused sign-in pauses for half a second.
    - An account signs in as the person of that name, so the existing member keeps their sites. Sessions are unchanged.
    - Two accounts are set up on this machine: `rachit` (Rachit Agarwal, manager) and `member2` (Second Member). Their passwords are in `.env` only.
    - The email-link routes, mail sending (`nodemailer`), `login_links` (migration 0007) and `rama-member add|link` are removed. The member-invitation item of the work order fell away with them.
 2. **Sealed signatures.**
-   - House of Rama signs every signature record it writes with an Ed25519 key (`RAMA_SIGNING_KEY`, in `.env`). The seal is in the row (`signoffs.seal`, migration 0008) and the mirrored line alike.
-   - `rama gate --public-key` counts only lines whose seal verifies. The key comes from the workflow on the base branch, which `install-gate` writes. A hand-typed line, an edited line or a forged withdrawal counts for nothing, and the gate lists it.
+   - House of Rama seals every signature record it writes with an Ed25519 key (`RAMA_SIGNING_KEY`, in `.env`); with no key configured it refuses to sign (503). The seal is in the row (`signoffs.seal`, migration 0008) and the mirrored line alike.
+   - `rama gate --public-key` counts only lines whose seal verifies. The key comes from the workflow on the base branch, which `install-gate` writes (refusing without a key). A hand-typed line, an edited line or a forged withdrawal counts for nothing, and the gate lists it. Without a public key no signature counts.
    - `rama-ceremony signing-key` wrote this machine's key to `.env` (not printed). EkBill's local workflow is re-pinned to 2a73cc7 with the public key.
 3. **Backups copied off the box.** `BACKUP_COPY_COMMAND` runs with each night's dump. A failed copy is logged, and the local dump is kept.
 4. **KNOWN-GAPS** loses its stale entries (the price table, the site-office stub, the email gaps) and says what is now true of signatures, sign-in and backups.
@@ -35,7 +35,12 @@ All six stages were built. The user asked to close the known gaps that need no i
 
 ## Reviewer findings
 
-(Filled in after the reviewer runs.)
+Run 1 at 2e53972 found two code defects and two report claims. All are fixed, each with a test:
+
+1. **The gate failed open.** Without a public key every line counted, and `install-gate` wrote keyless workflows. Fixed: without a key no signature counts, and `install-gate` refuses without one.
+2. **`sign()` accepted no sealer and wrote unsealed rows.** Fixed: a sealer is required. The app's sign route answers 503 until `RAMA_SIGNING_KEY` is set.
+3. **(Report)** "Every record is sealed" was not yet true. It is now, by point 2.
+4. **(Report)** "Constant time" was not: a wrong username skipped the password comparison. Fixed: both comparisons always run.
 
 ## What still needs the user
 

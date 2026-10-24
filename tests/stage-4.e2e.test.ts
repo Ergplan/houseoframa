@@ -3,16 +3,25 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import type { Signoff } from '@rama/shared';
 import { fixtureRepo, type FixtureRepo } from '../packages/blueprint/test/fixture-repo.ts';
 import { line } from '../packages/ceremony/src/records.ts';
+import { generateSigningKey, sealerFrom } from '../packages/ceremony/src/seal.ts';
+
+const KEY = generateSigningKey();
+const SEALER = sealerFrom({ RAMA_SIGNING_KEY: KEY.privateKey })!;
 
 let repo: FixtureRepo;
+/** A signature as House of Rama writes it: sealed. */
+const sealedSignoff = (r: Signoff): Signoff => ({ ...r, seal: SEALER.seal(r) });
 let base: string;
 let change: string;
 // The `rama` executable itself, so its exit codes are seen as CI sees them (pnpm reports any failure as 1).
 const RAMA = fileURLToPath(new URL('../packages/blueprint/bin/rama.mjs', import.meta.url));
 const gate = (...args: string[]) =>
-  spawnSync(process.execPath, [RAMA, 'gate', repo.dir, ...args], { encoding: 'utf8' });
+  spawnSync(process.execPath, [RAMA, 'gate', repo.dir, ...args, '--public-key', KEY.publicKey], {
+    encoding: 'utf8',
+  });
 
 beforeAll(() => {
   repo = fixtureRepo();
@@ -41,14 +50,16 @@ describe('rama gate (the command)', () => {
   it('exits 0 once a named signature at the change is committed with the code', () => {
     repo.write({
       '.rama/signoffs.jsonl':
-        line({
-          id: 's1',
-          siteId: 'fixture',
-          person: 'Asha Rao',
-          target: { kind: 'screen', id: '/', commit: change },
-          statement: 'Home shows the total.',
-          at: '2026-10-23T09:00:00Z',
-        }) + '\n',
+        line(
+          sealedSignoff({
+            id: 's1',
+            siteId: 'fixture',
+            person: 'Asha Rao',
+            target: { kind: 'screen', id: '/', commit: change },
+            statement: 'Home shows the total.',
+            at: '2026-10-23T09:00:00Z',
+          }),
+        ) + '\n',
     });
     repo.commit('sign home');
     const r = gate('--base', base);

@@ -14,6 +14,7 @@ import { captureDir } from '../packages/trace/src/showroom.ts';
 import { fixtureApp } from '../packages/trace/test/fixture-app.ts';
 import type { FixtureRepo } from '../packages/blueprint/test/fixture-repo.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { generateSigningKey } from '../packages/ceremony/src/seal.ts';
 import { signIn, throwawayDb } from './session.ts';
 
 const POD_TOKEN = 'pod-controller-e2e';
@@ -46,6 +47,7 @@ beforeAll(async () => {
       DATABASE_URL: db.url,
       RAMA_POD_TOKEN: POD_TOKEN,
       RAMA_ACCOUNTS: ACCOUNTS,
+      RAMA_SIGNING_KEY: generateSigningKey().privateKey,
     },
     ['/login', '/book', '/pod/1', '/site/shop/walkthrough'],
   );

@@ -73,13 +73,13 @@ describe('installGate', () => {
     const { gateWorkflow, installGate } = await import('../src/install.ts');
     const dir = mkdtempSync(path.join(tmpdir(), 'rama-install-'));
     try {
-      const file = installGate(dir, 'stage-4-start');
+      const file = installGate(dir, 'stage-4-start', 'MCowBQYDK2VwAyEAkey=');
       expect(file).toBe(path.join(dir, '.github/workflows/rama-gate.yml'));
       const text = readFileSync(file, 'utf8');
       expect(text).toContain('ref: stage-4-start');
       expect(text).not.toContain('RAMA_REF');
-      expect(() => gateWorkflow('main; rm -rf /')).toThrow(/not a git ref/);
-      expect(text).toContain("PUBLIC_KEY: ''");
+      expect(() => gateWorkflow('main; rm -rf /', 'MCowBQYDK2VwAyEAkey=')).toThrow(/not a git ref/);
+      expect(() => gateWorkflow('main', '')).toThrow(/not a base64 public key/);
       const keyed = readFileSync(
         installGate(dir, 'stage-4-start', 'MCowBQYDK2VwAyEAabc+/='),
         'utf8',

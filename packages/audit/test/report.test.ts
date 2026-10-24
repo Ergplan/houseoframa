@@ -6,7 +6,7 @@ import postgres from 'postgres';
 import type { Blueprint, Decision, Signoff } from '@rama/shared';
 import { extract } from '@rama/blueprint';
 import { createDb, modelCalls, runMigrations, seed } from '@rama/db';
-import { sign } from '@rama/ceremony';
+import { generateSigningKey, requireSealer, sign } from '@rama/ceremony';
 import { fixtureRepo, type FixtureRepo } from '../../blueprint/test/fixture-repo.ts';
 import { openDecisions, unconfirmedGlossary, unsignedChanges } from '../src/checks/ceremony.ts';
 import { auditChecks } from '../src/checks/index.ts';
@@ -210,6 +210,7 @@ describe('runAudit', () => {
       {
         person: 'Asha Rao',
         personId: memberId,
+        sealer: requireSealer({ RAMA_SIGNING_KEY: generateSigningKey().privateKey }),
         target: { kind: 'screen', id: '/', commit: bp.commit },
         statement: 'ok',
         at: new Date(),

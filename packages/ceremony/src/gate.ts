@@ -36,7 +36,7 @@ export interface GateResult {
   screens: GateScreen[];
   /** Problems that fail the gate whatever the screens say (a rewritten signature file, a bad base). */
   problems: string[];
-  /** Signature lines that counted for nothing because their seal did not verify (with --public-key). */
+  /** Signature lines that counted for nothing: their seal did not verify, or no public key was given. */
   unsealed: { id: string; person: string; target: string }[];
   /** True when signatures were checked against House of Rama's public key. */
   sealsChecked: boolean;
@@ -55,7 +55,8 @@ export interface GateInput {
   problems?: string[];
   /**
    * House of Rama's public key (base64 SPKI DER), given by the workflow on the base branch, never read from
-   * the target. With it, a signature counts only when its seal verifies; without it, every line counts.
+   * the target. A signature counts only when its seal verifies against it; without it no signature
+   * counts, and only passing tests let a changed screen through.
    */
   publicKey?: string | null;
 }
@@ -66,10 +67,8 @@ export function evaluateGate(input: GateInput): GateResult {
   const order = new Map(bp.commits.map((c, i) => [c.sha, i]));
   const unsealed = input.publicKey
     ? input.signoffs.filter((s) => !verifySeal(s, input.publicKey!))
-    : [];
-  const counted = input.publicKey
-    ? input.signoffs.filter((s) => !unsealed.includes(s))
     : input.signoffs;
+  const counted = input.signoffs.filter((s) => !unsealed.includes(s));
   const inForce = signaturesInForce(counted);
   const testsOf = new Map<string, string[]>();
   for (const e of bp.edges) {
@@ -282,14 +281,16 @@ export function formatGate(r: GateResult): string {
     `rama gate: ${r.ok ? 'PASS' : 'FAIL'} (${r.base.slice(0, 7)}..${r.head.slice(0, 7)})`,
   ];
   for (const p of r.problems) lines.push(`  ✗ ${p}`);
-  if (!r.sealsChecked)
+  if (!r.sealsChecked) {
     lines.push(
-      "  ! signatures not checked against House of Rama's key (no --public-key): any line counts",
+      '  ! no --public-key: no signature can be checked, so none counts; only passing tests let a screen through',
     );
-  for (const u of r.unsealed)
-    lines.push(
-      `  ! ignored: the signature ${u.id.slice(0, 8)} by ${u.person} on ${u.target} carries no valid seal`,
-    );
+  } else {
+    for (const u of r.unsealed)
+      lines.push(
+        `  ! ignored: the signature ${u.id.slice(0, 8)} by ${u.person} on ${u.target} carries no valid seal`,
+      );
+  }
   if (!r.screens.length) lines.push('  no screen changed since the base');
   for (const s of r.screens) {
     lines.push(`  ${s.ok ? '✓' : '✗'} ${s.route}${s.removed ? ' (removed)' : ''}: ${s.reason}`);

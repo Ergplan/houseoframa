@@ -144,6 +144,14 @@ describe('POST /api/site/[siteId]/sign', () => {
       status: 200,
       body: { ok: true, record: { id: 's1' }, warning: pending.message },
     });
+    const keyless = Object.assign(
+      new Error('RAMA_SIGNING_KEY is not set, so no signature can be sealed'),
+      { name: 'SealError' },
+    );
+    expect(
+      (await handleSign('shop', body, deps({ sign: async () => Promise.reject(keyless) }).d))
+        .status,
+    ).toBe(503);
     const boom = deps({ sign: async () => Promise.reject(new Error('disk full')) }).d;
     await expect(handleSign('shop', body, boom)).rejects.toThrow('disk full');
   });

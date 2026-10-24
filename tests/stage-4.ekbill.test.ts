@@ -15,10 +15,13 @@ import { addSite, locateSite } from '../packages/blueprint/src/site.ts';
 import { captureDir, readCapture } from '../packages/trace/src/showroom.ts';
 import { readSignoffs } from '../packages/ceremony/src/records.ts';
 import { runGate, type GateResult } from '../packages/ceremony/src/gate.ts';
+import { generateSigningKey } from '../packages/ceremony/src/seal.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
 import { pageAs, signIn } from './session.ts';
 
 const SITE = 'ekbill-e2e';
+// The app seals every signature with this key; the gate checks seals against its public half.
+const KEY = generateSigningKey();
 const MEMBER = 'Walkthrough Tester';
 const SIGN = ['/gst', '/dues'];
 const serverUrl = process.env.DATABASE_URL!;
@@ -62,9 +65,10 @@ beforeAll(async () => {
   await conn.close();
 
   token = await signIn(dbUrl, { name: MEMBER });
-  server = await startDevServer({ RAMA_WORK_DIR: work, DATABASE_URL: dbUrl }, [
-    `/site/${SITE}/walkthrough`,
-  ]);
+  server = await startDevServer(
+    { RAMA_WORK_DIR: work, DATABASE_URL: dbUrl, RAMA_SIGNING_KEY: KEY.privateKey },
+    [`/site/${SITE}/walkthrough`],
+  );
   browser = await chromium.launch();
 }, 600_000);
 
@@ -128,7 +132,7 @@ describe('stage 4 on EkBill', () => {
       '-m',
       'signatures',
     ]);
-    const r: GateResult = runGate(repoDir, 'HEAD~2');
+    const r: GateResult = runGate(repoDir, 'HEAD~2', { publicKey: KEY.publicKey });
     const by = (route: string) => r.screens.find((s) => s.route === route)!;
     for (const s of SIGN)
       expect(by(s), s).toMatchObject({
@@ -155,6 +159,8 @@ describe('stage 4 on EkBill', () => {
       '-qam',
       'rewrite',
     ]);
-    expect(runGate(repoDir, 'HEAD~1').problems[0]).toMatch(/rewritten/);
+    expect(runGate(repoDir, 'HEAD~1', { publicKey: KEY.publicKey }).problems[0]).toMatch(
+      /rewritten/,
+    );
   });
 });

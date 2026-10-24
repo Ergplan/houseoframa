@@ -127,8 +127,8 @@ export interface SignInput {
   supersedes?: string;
   withdrawn?: boolean;
   at: Date;
-  /** Seals the record with House of Rama's key (seal.ts); without one the record carries no seal. */
-  sealer?: Sealer | null;
+  /** Seals the record with House of Rama's key (seal.ts). Required: no signature is written unsealed. */
+  sealer: Sealer;
 }
 
 /** A named signature: one append-only row (audited by trigger) and one line in `.rama/signoffs.jsonl`. */
@@ -148,7 +148,7 @@ export async function sign(db: Db, site: SiteRef, input: SignInput): Promise<Sig
       ...(input.withdrawn ? { withdrawn: true } : {}),
     };
     checkChain(existing, draft);
-    const seal = input.sealer ? input.sealer.seal(draft) : null;
+    const seal = input.sealer.seal(draft);
     const [row] = await one
       .insert(signoffs)
       .values({

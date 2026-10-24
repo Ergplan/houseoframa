@@ -17,7 +17,7 @@ export interface CeremonyDeps {
   memberName: string | undefined;
   personId: (name: string) => Promise<string>;
   signoffs: (siteId: string) => Promise<Signoff[]>;
-  sign: (site: SiteRef, input: SignInput) => Promise<Signoff>;
+  sign: (site: SiteRef, input: Omit<SignInput, 'sealer'>) => Promise<Signoff>;
   decide: (site: SiteRef, input: DecideInput) => Promise<Decision>;
   startSession: (siteId: string, input: { title: string; createdBy: string }) => Promise<string>;
   addTurn: (
@@ -56,6 +56,8 @@ async function actor(siteId: string, deps: CeremonyDeps): Promise<Actor | Respon
 const refused = (err: unknown) => {
   const e = err as Error & { record?: unknown };
   // Recorded in Postgres; only the target's mirror line is pending (the next write appends it).
+  // No signing key configured: nothing can be signed until one is.
+  if (e.name === 'SealError') return fail(503, e.message);
   if (e.name === 'MirrorError')
     return Response.json({ ok: true, record: e.record, warning: e.message });
   if (e.name === 'ChainError' || /already superseded|does not exist/.test(e.message))

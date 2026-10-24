@@ -22,7 +22,7 @@ import {
 } from '@rama/db';
 import { addSite, readSiteBlueprint, type SiteLocation } from '@rama/blueprint/site';
 import { campusFigures } from '@rama/blueprint/metrics';
-import { sign } from '@rama/ceremony';
+import { generateSigningKey, requireSealer, sign } from '@rama/ceremony';
 import { confirmStructure } from '@rama/ceremony/structure';
 import { fixtureRepo, type FixtureRepo } from '../../../packages/blueprint/test/fixture-repo';
 import { checkIn, handOver, handoverState } from './handover';
@@ -107,6 +107,7 @@ describe('the handover', () => {
       {
         person: 'Asha Rao',
         personId: asha.id,
+        sealer: requireSealer({ RAMA_SIGNING_KEY: generateSigningKey().privateKey }),
         target: { kind: 'screen', id: '/', commit },
         statement: 'ok',
         at: new Date(),

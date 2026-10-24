@@ -62,7 +62,10 @@ export function checkCredentials(
 ): Account | null {
   let found: Account | null = null;
   for (const a of accounts) {
-    const ok = same(a.username, username) && same(a.password, password);
+    // Both compared every time (no short circuit), so a wrong username takes as long as a wrong password.
+    const user = same(a.username, username);
+    const pass = same(a.password, password);
+    const ok = user && pass;
     if (ok) found = a;
   }
   return found;

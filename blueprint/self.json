@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "001bd89e971288a6446de746433933575d8c413b",
+  "commit": "2e53972a4854eefa5bf73a8a9f27117648088f8b",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6577,6 +6577,27 @@
       "sha": "001bd89e971288a6446de746433933575d8c413b",
       "short": "001bd89",
       "subject": "Backups copied off the box: BACKUP_COPY_COMMAND runs with each night's dump"
+    },
+    {
+      "at": "2026-10-24T05:07:34Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 81,
+          "del": 15,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 46,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/gaps-1.md"
+        }
+      ],
+      "sha": "2e53972a4854eefa5bf73a8a9f27117648088f8b",
+      "short": "2e53972",
+      "subject": "Gaps 1: draft report"
     }
   ],
   "edges": [
@@ -6943,7 +6964,7 @@
     {
       "from": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
       "symbols": [
-        "sealerFrom"
+        "requireSealer"
       ],
       "to": "packages/ceremony/src/seal.ts",
       "typeOnly": false
@@ -9373,6 +9394,8 @@
     {
       "from": "apps/rama/server/floor.test.ts",
       "symbols": [
+        "generateSigningKey",
+        "requireSealer",
         "sign"
       ],
       "to": "packages/ceremony/src/index.ts",
@@ -9536,6 +9559,8 @@
     {
       "from": "apps/rama/server/handover.test.ts",
       "symbols": [
+        "generateSigningKey",
+        "requireSealer",
         "sign"
       ],
       "to": "packages/ceremony/src/index.ts",
@@ -10285,6 +10310,8 @@
     {
       "from": "packages/audit/test/report.test.ts",
       "symbols": [
+        "generateSigningKey",
+        "requireSealer",
         "sign"
       ],
       "to": "packages/ceremony/src/index.ts",
@@ -11471,6 +11498,7 @@
       "from": "packages/ceremony/src/cli.ts",
       "symbols": [
         "generateSigningKey",
+        "requireSealer",
         "sealerFrom"
       ],
       "to": "packages/ceremony/src/seal.ts",
@@ -11646,8 +11674,10 @@
     {
       "from": "packages/ceremony/src/index.ts",
       "symbols": [
+        "SealError",
         "Sealer",
         "generateSigningKey",
+        "requireSealer",
         "sealerFrom",
         "verifySeal"
       ],
@@ -11859,6 +11889,15 @@
     {
       "from": "packages/ceremony/test/gate.test.ts",
       "symbols": [
+        "TEST_KEY",
+        "TEST_SEALER"
+      ],
+      "to": "packages/ceremony/test/test-key.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ceremony/test/gate.test.ts",
+      "symbols": [
         "Signoff"
       ],
       "to": "packages/shared/src/index.ts",
@@ -11936,6 +11975,15 @@
       "typeOnly": false
     },
     {
+      "from": "packages/ceremony/test/store.test.ts",
+      "symbols": [
+        "TEST_KEY",
+        "TEST_SEALER"
+      ],
+      "to": "packages/ceremony/test/test-key.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "a database connection opened from a URL; running the database migrations; the one-time setup of the local member and the self site, safe to repeat"
@@ -11967,6 +12015,15 @@
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "packages/ceremony/test/test-key.ts",
+      "symbols": [
+        "generateSigningKey",
+        "sealerFrom"
+      ],
+      "to": "packages/ceremony/src/seal.ts",
+      "typeOnly": false
     },
     {
       "from": "packages/ceremony/test/walkthrough.test.ts",
@@ -13261,6 +13318,23 @@
       "typeOnly": false
     },
     {
+      "from": "tests/stage-4.e2e.test.ts",
+      "symbols": [
+        "generateSigningKey",
+        "sealerFrom"
+      ],
+      "to": "packages/ceremony/src/seal.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-4.e2e.test.ts",
+      "symbols": [
+        "Signoff"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "a way to add a site from a local folder or remote source; a way to find one site's location by its id"
@@ -13288,6 +13362,14 @@
         "readSignoffs"
       ],
       "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-4.ekbill.test.ts",
+      "symbols": [
+        "generateSigningKey"
+      ],
+      "to": "packages/ceremony/src/seal.ts",
       "typeOnly": false
     },
     {
@@ -13514,6 +13596,14 @@
       ],
       "to": "packages/blueprint/test/fixture-repo.ts",
       "typeOnly": true
+    },
+    {
+      "from": "tests/stage-6.e2e.test.ts",
+      "symbols": [
+        "generateSigningKey"
+      ],
+      "to": "packages/ceremony/src/seal.ts",
+      "typeOnly": false
     },
     {
       "english": {
@@ -14023,7 +14113,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T05:03:20Z",
+  "extractedAt": "2026-10-24T05:07:34Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -14581,7 +14671,7 @@
     },
     {
       "binary": false,
-      "bytes": 2753,
+      "bytes": 2769,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -14599,7 +14689,7 @@
     },
     {
       "binary": false,
-      "bytes": 8567,
+      "bytes": 8857,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -14608,13 +14698,13 @@
       "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 247,
+      "lines": 255,
       "path": "apps/rama/app/api/site/[siteId]/ceremony.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 8794,
+      "bytes": 8937,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -14632,7 +14722,7 @@
       "lastCommit": "78698003c3c87aa94451c007d01b7353fcf27e83",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 228,
+      "lines": 230,
       "path": "apps/rama/app/api/site/[siteId]/ceremony.ts",
       "test": false
     },
@@ -15940,7 +16030,7 @@
     },
     {
       "binary": false,
-      "bytes": 6494,
+      "bytes": 6615,
       "changes": 2,
       "env": [
         "DATABASE_URL",
@@ -15952,7 +16042,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 180,
+      "lines": 181,
       "path": "apps/rama/server/floor.test.ts",
       "test": true
     },
@@ -15981,7 +16071,7 @@
     },
     {
       "binary": false,
-      "bytes": 7797,
+      "bytes": 7918,
       "changes": 3,
       "env": [
         "DATABASE_URL",
@@ -15993,7 +16083,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 197,
+      "lines": 198,
       "path": "apps/rama/server/handover.test.ts",
       "test": true
     },
@@ -16209,7 +16299,7 @@
     },
     {
       "binary": false,
-      "bytes": 37592,
+      "bytes": 37902,
       "changes": 38,
       "env": [],
       "envDynamic": false,
@@ -16258,7 +16348,7 @@
     },
     {
       "binary": false,
-      "bytes": 8654,
+      "bytes": 8639,
       "changes": 25,
       "env": [],
       "envDynamic": false,
@@ -16315,16 +16405,16 @@
     },
     {
       "binary": false,
-      "bytes": 4014,
-      "changes": 0,
+      "bytes": 4768,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "2e53972a4854eefa5bf73a8a9f27117648088f8b",
+      "lastCommit": "2e53972a4854eefa5bf73a8a9f27117648088f8b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 46,
+      "lines": 51,
       "path": "docs/reports/gaps-1.md",
       "test": false
     },
@@ -16341,6 +16431,21 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 18,
       "path": "docs/reports/gaps-1.prompt.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8950,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 21,
+      "path": "docs/reports/gaps-1.review.md",
       "test": false
     },
     {
@@ -16934,7 +17039,7 @@
     },
     {
       "binary": false,
-      "bytes": 10799,
+      "bytes": 10920,
       "changes": 3,
       "env": [
         "DATABASE_URL"
@@ -16945,7 +17050,7 @@
       "lastCommit": "9cc2d5f7dfe54aeabcd81f5fab2706c59d591681",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 317,
+      "lines": 318,
       "path": "packages/audit/test/report.test.ts",
       "test": true
     },
@@ -17898,7 +18003,7 @@
     },
     {
       "binary": false,
-      "bytes": 4892,
+      "bytes": 4942,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -17907,7 +18012,7 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 118,
+      "lines": 119,
       "path": "packages/ceremony/src/cli.ts",
       "test": false
     },
@@ -17931,7 +18036,7 @@
     },
     {
       "binary": false,
-      "bytes": 11788,
+      "bytes": 11860,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -17949,7 +18054,7 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 305,
+      "lines": 306,
       "path": "packages/ceremony/src/gate.ts",
       "test": false
     },
@@ -17996,7 +18101,7 @@
     },
     {
       "binary": false,
-      "bytes": 869,
+      "bytes": 908,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -18013,6 +18118,7 @@
         "ImportedSession",
         "ImportedTurn",
         "MirrorError",
+        "SealError",
         "Sealer",
         "SessionWithTurns",
         "SignInput",
@@ -18032,6 +18138,7 @@
         "parseDecisionsLog",
         "parseWeekendSession",
         "passingFromReport",
+        "requireSealer",
         "runGate",
         "sealerFrom",
         "sign",
@@ -18043,13 +18150,13 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 36,
+      "lines": 43,
       "path": "packages/ceremony/src/index.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1251,
+      "bytes": 1244,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -18097,13 +18204,15 @@
     },
     {
       "binary": false,
-      "bytes": 2833,
+      "bytes": 3286,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "SealError",
         "Sealer",
         "generateSigningKey",
+        "requireSealer",
         "sealerFrom",
         "verifySeal"
       ],
@@ -18111,13 +18220,13 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 72,
+      "lines": 86,
       "path": "packages/ceremony/src/seal.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 10177,
+      "bytes": 10151,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -18216,7 +18325,7 @@
     },
     {
       "binary": false,
-      "bytes": 11417,
+      "bytes": 12777,
       "changes": 4,
       "env": [
         "RAMA_GATE"
@@ -18227,7 +18336,7 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 281,
+      "lines": 331,
       "path": "packages/ceremony/test/gate.test.ts",
       "test": true
     },
@@ -18263,7 +18372,7 @@
     },
     {
       "binary": false,
-      "bytes": 15029,
+      "bytes": 15213,
       "changes": 4,
       "env": [
         "DATABASE_URL"
@@ -18274,7 +18383,7 @@
       "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 406,
+      "lines": 414,
       "path": "packages/ceremony/test/store.test.ts",
       "test": true
     },
@@ -18295,6 +18404,24 @@
     },
     {
       "binary": false,
+      "bytes": 297,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "TEST_KEY",
+        "TEST_SEALER"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 5,
+      "path": "packages/ceremony/test/test-key.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 4070,
       "changes": 1,
       "env": [],
@@ -18310,7 +18437,7 @@
     },
     {
       "binary": false,
-      "bytes": 4490,
+      "bytes": 4571,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -18715,7 +18842,7 @@
     },
     {
       "binary": false,
-      "bytes": 4519,
+      "bytes": 4672,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -18735,7 +18862,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 132,
+      "lines": 135,
       "path": "packages/db/src/auth.ts",
       "test": false
     },
@@ -20541,7 +20668,7 @@
     },
     {
       "binary": false,
-      "bytes": 2492,
+      "bytes": 2945,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20550,13 +20677,13 @@
       "lastCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 64,
+      "lines": 75,
       "path": "tests/stage-4.e2e.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 6328,
+      "bytes": 6639,
       "changes": 3,
       "env": [
         "DATABASE_URL"
@@ -20567,7 +20694,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 160,
+      "lines": 166,
       "path": "tests/stage-4.ekbill.test.ts",
       "test": true
     },
@@ -20609,7 +20736,7 @@
     },
     {
       "binary": false,
-      "bytes": 6557,
+      "bytes": 6685,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -20618,7 +20745,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 162,
+      "lines": 164,
       "path": "tests/stage-6.e2e.test.ts",
       "test": true
     },

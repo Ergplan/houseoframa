@@ -33,4 +33,11 @@ export {
 } from './store.ts';
 export { importRecord, IMPORT_COMPONENT, type ImportOutcome } from './importer.ts';
 export { draftQuestion, DISCOVERY_COMPONENT } from './discovery.ts';
-export { generateSigningKey, sealerFrom, verifySeal, type Sealer } from './seal.ts';
+export {
+  generateSigningKey,
+  requireSealer,
+  SealError,
+  sealerFrom,
+  verifySeal,
+  type Sealer,
+} from './seal.ts';

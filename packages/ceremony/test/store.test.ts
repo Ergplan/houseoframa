@@ -8,6 +8,7 @@ import postgres from 'postgres';
 import { createDb, runMigrations, seed } from '@rama/db';
 import { readDecisions, readSignoffs, signaturesInForce, SIGNOFFS_FILE } from '../src/records.ts';
 import { importRecord } from '../src/importer.ts';
+import { TEST_KEY, TEST_SEALER } from './test-key.ts';
 import {
   addTurn,
   currentDecisions,
@@ -54,6 +55,7 @@ describe('signatures', () => {
     const s = await sign(conn.db, site(), {
       person: 'Asha Rao',
       personId: memberId,
+      sealer: TEST_SEALER,
       target: { kind: 'screen', id: '/gst', commit: 'abc1234' },
       statement: 'GST this quarter shows ₹21,483.',
       at: t(1),
@@ -69,6 +71,7 @@ describe('signatures', () => {
     const replaced = await sign(conn.db, site(), {
       person: 'Asha Rao',
       personId: memberId,
+      sealer: TEST_SEALER,
       target: { kind: 'screen', id: '/gst', commit: 'def5678' },
       statement: 'Re-signed at the new commit.',
       supersedes: first,
@@ -78,6 +81,7 @@ describe('signatures', () => {
       sign(conn.db, site(), {
         person: 'Asha Rao',
         personId: memberId,
+        sealer: TEST_SEALER,
         target: { kind: 'screen', id: '/gst', commit: 'def5678' },
         statement: 'x',
         supersedes: first,
@@ -88,6 +92,7 @@ describe('signatures', () => {
       sign(conn.db, site(), {
         person: 'Asha Rao',
         personId: memberId,
+        sealer: TEST_SEALER,
         target: { kind: 'screen', id: '/dues', commit: 'def5678' },
         statement: 'x',
         supersedes: replaced.id,
@@ -98,6 +103,7 @@ describe('signatures', () => {
       sign(conn.db, site(), {
         person: 'Asha Rao',
         personId: memberId,
+        sealer: TEST_SEALER,
         target: { kind: 'screen', id: '/gst', commit: 'def5678' },
         statement: 'x',
         withdrawn: true,
@@ -108,6 +114,7 @@ describe('signatures', () => {
     await sign(conn.db, site(), {
       person: 'Asha Rao',
       personId: memberId,
+      sealer: TEST_SEALER,
       target: { kind: 'screen', id: '/gst', commit: 'def5678' },
       statement: 'Withdrawn: the total is wrong.',
       supersedes: replaced.id,
@@ -128,6 +135,7 @@ describe('signatures', () => {
       sign(conn.db, site(), {
         person: 'Nobody',
         personId: '00000000-0000-0000-0000-000000000000',
+        sealer: TEST_SEALER,
         target: { kind: 'brick', id: 'x.ts', commit: 'abc1234' },
         statement: 'x',
         at: t(5),
@@ -310,6 +318,7 @@ describe('the mirror under concurrency and failure', () => {
       {
         person: 'Asha Rao',
         personId: memberId,
+        sealer: TEST_SEALER,
         target: { kind: 'screen', id: '/race', commit: 'abc1234' },
         statement: 'ok',
         at: at(0),
@@ -377,8 +386,7 @@ describe('the mirror under concurrency and failure', () => {
 
 describe('sealed signatures', () => {
   it('seals the record before the insert: the row and the mirrored line carry the same verifiable seal', async () => {
-    const { generateSigningKey, sealerFrom, verifySeal } = await import('../src/seal.ts');
-    const key = generateSigningKey();
+    const { verifySeal } = await import('../src/seal.ts');
     const dir = mkdtempSync(path.join(tmpdir(), 'rama-seal-'));
     try {
       const s = await sign(
@@ -387,16 +395,16 @@ describe('sealed signatures', () => {
         {
           person: 'Asha Rao',
           personId: memberId,
+          sealer: TEST_SEALER,
           target: { kind: 'screen', id: '/sealed', commit: 'abc1234' },
           statement: 'Sealed.',
           at: new Date('2026-10-24T09:00:00.123Z'),
-          sealer: sealerFrom({ RAMA_SIGNING_KEY: key.privateKey }),
         },
       );
-      expect(verifySeal(s, key.publicKey)).toBe(true);
+      expect(verifySeal(s, TEST_KEY.publicKey)).toBe(true);
       const line = readSignoffs(dir).find((x) => x.id === s.id)!;
       expect(line).toEqual(s);
-      expect(verifySeal(line, key.publicKey)).toBe(true);
+      expect(verifySeal(line, TEST_KEY.publicKey)).toBe(true);
       const [row] = await conn.sql`select seal from signoffs where id = ${s.id}`;
       expect(row!.seal).toBe(s.seal);
     } finally {

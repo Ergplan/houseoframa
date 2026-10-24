@@ -18,7 +18,7 @@ import {
   type Member,
 } from '@rama/db';
 import { addSite } from '@rama/blueprint/site';
-import { sign } from '@rama/ceremony';
+import { generateSigningKey, requireSealer, sign } from '@rama/ceremony';
 import { fixtureRepo, type FixtureRepo } from '../../../packages/blueprint/test/fixture-repo';
 import { book, podState } from './floor';
 
@@ -136,6 +136,7 @@ describe('the pod light', () => {
       {
         person: 'Asha Rao',
         personId: asha.id,
+        sealer: requireSealer({ RAMA_SIGNING_KEY: generateSigningKey().privateKey }),
         target: { kind: 'screen', id: '/', commit },
         statement: 'ok',
         at: now,

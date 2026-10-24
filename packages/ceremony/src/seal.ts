@@ -27,6 +27,20 @@ const privateFrom = (b64: string): KeyObject =>
 const publicFrom = (b64: string): KeyObject =>
   createPublicKey({ key: Buffer.from(b64, 'base64'), format: 'der', type: 'spki' });
 
+export class SealError extends Error {
+  override name = 'SealError';
+}
+
+/** The sealer for RAMA_SIGNING_KEY, or a SealError: no signature is written without one. */
+export function requireSealer(env: Record<string, string | undefined> = process.env): Sealer {
+  const s = sealerFrom(env);
+  if (!s)
+    throw new SealError(
+      'RAMA_SIGNING_KEY is not set, so no signature can be sealed: run `pnpm rama-ceremony signing-key`',
+    );
+  return s;
+}
+
 /** The sealer for RAMA_SIGNING_KEY (base64 PKCS#8 DER of an Ed25519 key), or null when none is configured. */
 export function sealerFrom(env: Record<string, string | undefined> = process.env): Sealer | null {
   const raw = env.RAMA_SIGNING_KEY?.trim();
