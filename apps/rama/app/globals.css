@@ -932,7 +932,9 @@ button:disabled {
   border-color: var(--h-green);
 }
 .steps li.fail {
-  border-color: var(--h-red);
+  /* A step that did not work is a grey flag (rule 15): what happened and what is next, not an alarm. */
+  border-color: var(--h-grey);
+  background: rgba(138, 135, 151, 0.14);
 }
 .steps li small {
   color: var(--dim);
@@ -952,7 +954,7 @@ button:disabled {
 }
 .verdict.failed,
 .verdict.interrupted {
-  color: var(--h-red);
+  color: var(--fg);
 }
 .with-console {
   display: grid;

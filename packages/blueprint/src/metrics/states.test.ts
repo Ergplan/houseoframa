@@ -97,6 +97,18 @@ describe('testReach: a render or a visit must happen, not just an import or a pa
     ]);
   });
 
+  it('what a test says in a comment or a string does not count', () => {
+    const t = 'app/total/page.test.tsx';
+    const imp = "import Total from './page';\n";
+    expect(reach(t, imp + '// render(<Total />);', ['app/total/page.tsx']).renders).toEqual([]);
+    expect(reach(t, imp + '/* Total() */ const s = "render(<Total />)";', ['app/total/page.tsx']).renders).toEqual(
+      [],
+    );
+    expect(reach(t, "// await page.goto('/total');").routes).toEqual([]);
+    expect(reach(t, 'const s = "goto(\'/total\')";').routes).toEqual([]);
+    expect(reach('lib/money.test.ts', "import { dayGst } from './money';\n// dayGst(1)").calls).toEqual([]);
+  });
+
   it('a path handed to a visiting call is a visit; a path merely named is not', () => {
     const t = 'e2e/total.test.ts';
     expect(reach(t, "const where = '/total';").routes).toEqual([]);

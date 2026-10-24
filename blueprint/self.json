@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
+  "commit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8076,6 +8076,81 @@
       "sha": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
       "short": "7810d44",
       "subject": "Stage 7: draft report; the e2e waits out a first compile under load"
+    },
+    {
+      "at": "2026-10-24T17:05:52Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 6,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/app/page.tsx"
+        },
+        {
+          "add": 124,
+          "del": 25,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 4,
+          "del": 4,
+          "kind": "M",
+          "path": "docs/reports/stage-7.md"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-7.review.md"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-product/README.md"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-product/db/orders.ts"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "fixtures/sample-product/db/schema.ts"
+        },
+        {
+          "add": 31,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.test.ts"
+        },
+        {
+          "add": 32,
+          "del": 4,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.ts"
+        },
+        {
+          "add": 12,
+          "del": 12,
+          "kind": "M",
+          "path": "packages/workbench/src/testdrive.ts"
+        },
+        {
+          "add": 9,
+          "del": 3,
+          "kind": "M",
+          "path": "packages/workbench/test/testdrive.test.ts"
+        }
+      ],
+      "sha": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
+      "short": "897ffdd",
+      "subject": "Fix Stage 7 reviewer run 1: stricter Verified evidence, Test drives keep their journals"
     }
   ],
   "edges": [
@@ -17515,7 +17590,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T16:58:17Z",
+  "extractedAt": "2026-10-24T17:05:52Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -18729,7 +18804,7 @@
     },
     {
       "binary": false,
-      "bytes": 19133,
+      "bytes": 19277,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -18738,7 +18813,7 @@
       "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1036,
+      "lines": 1038,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -18810,7 +18885,7 @@
     {
       "binary": false,
       "bytes": 4534,
-      "changes": 5,
+      "changes": 6,
       "env": [
         "GIT_SHA"
       ],
@@ -18820,7 +18895,7 @@
         "dynamic"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 130,
@@ -20549,12 +20624,12 @@
     {
       "binary": false,
       "bytes": 11892,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
-      "lastCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 91,
@@ -20563,16 +20638,16 @@
     },
     {
       "binary": false,
-      "bytes": 13757,
-      "changes": 0,
+      "bytes": 27091,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 24,
+      "lines": 42,
       "path": "docs/reports/stage-7.review.md",
       "test": false
     },
@@ -20630,12 +20705,12 @@
     {
       "binary": false,
       "bytes": 449,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "shell",
       "layerRule": "default: README",
       "lines": 8,
@@ -20746,14 +20821,14 @@
     {
       "binary": false,
       "bytes": 352,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "todaysOrders"
       ],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 8,
@@ -20763,14 +20838,14 @@
     {
       "binary": false,
       "bytes": 720,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "orders"
       ],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "data",
       "layerRule": "default: schema and migrations",
       "lines": 14,
@@ -21927,23 +22002,23 @@
     },
     {
       "binary": false,
-      "bytes": 8208,
-      "changes": 1,
+      "bytes": 8865,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 179,
+      "lines": 191,
       "path": "packages/blueprint/src/metrics/states.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 9581,
-      "changes": 1,
+      "bytes": 11224,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -21956,6 +22031,7 @@
         "StateOf",
         "TestReach",
         "TestRun",
+        "codeOf",
         "counts",
         "lastChangeOf",
         "stateOf",
@@ -21963,10 +22039,10 @@
         "testReach"
       ],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "319f0723830f719a9643aa5b2544ef559863b952",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 222,
+      "lines": 268,
       "path": "packages/blueprint/src/metrics/states.ts",
       "test": false
     },
@@ -24611,7 +24687,7 @@
     {
       "binary": false,
       "bytes": 7338,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -24623,7 +24699,7 @@
         "testDrive"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 188,
@@ -24690,14 +24766,14 @@
     {
       "binary": false,
       "bytes": 4694,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 113,

@@ -33,10 +33,53 @@ export interface FigureFn {
   file: string;
 }
 
+/**
+ * A source as code only: comments dropped, and every string or template literal replaced by a marker
+ * `\u0000<n>\u0000` whose text is kept aside. What a test says in a comment or a string is not what it
+ * does. (A regular-expression literal holding a quote can throw this off; tests seldom have one.)
+ */
+export function codeOf(src: string): { code: string; strings: string[] } {
+  const strings: string[] = [];
+  let code = '';
+  let i = 0;
+  while (i < src.length) {
+    const c = src[i]!;
+    const next = src[i + 1];
+    if (c === '/' && next === '/') {
+      while (i < src.length && src[i] !== '\n') i++;
+    } else if (c === '/' && next === '*') {
+      const end = src.indexOf('*/', i + 2);
+      i = end === -1 ? src.length : end + 2;
+    } else if (c === "'" || c === '"' || c === '`') {
+      let j = i + 1;
+      let depth = 0;
+      while (j < src.length) {
+        const d = src[j]!;
+        if (d === '\\') j += 2;
+        else if (c === '`' && d === '$' && src[j + 1] === '{') {
+          depth++;
+          j += 2;
+        } else if (c === '`' && d === '}' && depth > 0) {
+          depth--;
+          j++;
+        } else if (d === c && depth === 0) break;
+        else j++;
+      }
+      strings.push(src.slice(i + 1, j));
+      code += `\u0000${strings.length - 1}\u0000`;
+      i = j + 1;
+    } else {
+      code += c;
+      i++;
+    }
+  }
+  return { code, strings };
+}
+
 /** The local names a source gives its default imports, with the module each comes from. */
-function defaultImports(src: string): { name: string; spec: string }[] {
-  return [...src.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,\s*\{[^}]*\})?\s*from\s*['"]([^'"]+)['"]/g)].map(
-    (m) => ({ name: m[1]!, spec: m[2]! }),
+function defaultImports(code: string, strings: string[]): { name: string; spec: string }[] {
+  return [...code.matchAll(/import\s+([A-Za-z_$][\w$]*)\s*(?:,\s*\{[^}]*\})?\s*from\s*\u0000(\d+)\u0000/g)].map(
+    (m) => ({ name: m[1]!, spec: strings[Number(m[2])]! }),
   );
 }
 
@@ -63,22 +106,25 @@ export function testReach(bp: Blueprint, read: (path: string) => string | null):
   const out: Record<string, TestReach> = {};
   const pages = new Set(bp.screens.map((s) => s.file));
   for (const t of bp.nodes.filter((n) => n.test)) {
-    const src = read(t.path) ?? '';
+    const { code, strings } = codeOf(read(t.path) ?? '');
     const reach: TestReach = { calls: [], renders: [], routes: [] };
-    const defaults = defaultImports(src);
+    const defaults = defaultImports(code, strings);
     for (const e of bp.edges.filter((x) => x.from === t.path && !x.typeOnly)) {
       for (const sym of e.symbols) {
         if (sym === 'default' && pages.has(e.to)) {
           const used = defaults
             .filter((d) => specNames(t.path, d.spec, e.to))
-            .some((d) => new RegExp(`<${d.name}[\\s/>]|\\b${d.name}\\s*\\(`).test(src));
+            .some((d) => new RegExp(`<${d.name}[\\s/>]|\\b${d.name}\\s*\\(`).test(code));
           if (used) reach.renders.push(e.to);
-        } else if (sym !== '*' && sym !== 'default' && new RegExp(`\\b${sym}\\s*\\(`).test(src))
+        } else if (sym !== '*' && sym !== 'default' && new RegExp(`\\b${sym}\\s*\\(`).test(code))
           reach.calls.push(`${e.to}#${sym}`);
       }
     }
-    const VISIT = /\b(?:goto|fetch|visit|request|get|post)\s*\(\s*['"`](?:\$\{[^}]*\})?(\/[A-Za-z0-9_\-/.[\]?=&]*)['"`]/g;
-    for (const m of src.matchAll(VISIT)) reach.routes.push(m[1]!);
+    // The first argument of a visiting call, when it is a literal: a path, or a base address then a path.
+    for (const m of code.matchAll(/\b(?:goto|fetch|visit|request|get|post)\s*\(\s*\u0000(\d+)\u0000/g)) {
+      const path = /^(?:\$\{[^}]*\})?(\/[A-Za-z0-9_\-/.[\]?=&]*)$/.exec(strings[Number(m[1])]!);
+      if (path) reach.routes.push(path[1]!);
+    }
     reach.calls = [...new Set(reach.calls)].sort();
     reach.renders = [...new Set(reach.renders)].sort();
     reach.routes = [...new Set(reach.routes)].sort();
