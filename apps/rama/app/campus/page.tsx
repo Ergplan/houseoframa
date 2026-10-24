@@ -4,6 +4,7 @@ import { campusFigures } from '@rama/blueprint/metrics';
 import { seesEverything } from '@rama/db';
 import { requireMember, withDb } from '../../server/session';
 import { campusInputs } from '../../server/campus';
+import { Shell } from '../../components/harmony/Shell';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,67 +18,74 @@ export default async function Campus() {
   const { pods, sites } = await withDb((db) => campusInputs(db, now));
   const f = campusFigures(sites, now);
   return (
-    <main className="office campus" data-sites={f.sites}>
-      <h1>Campus</h1>
-      <div className="stat">
-        <div>
-          <b data-figure="audits-passed">{f.auditsPassed}</b>
-          <small>of {f.sites} sites audited clean at their commit</small>
+    <Shell
+      here="campus"
+      member={member}
+      crumbs={[{ label: 'Home', href: '/' }, { label: 'Campus' }]}
+    >
+      <main className="office campus" data-sites={f.sites}>
+        <h1>Campus</h1>
+        <div className="stat">
+          <div>
+            <b data-figure="audits-passed">{f.auditsPassed}</b>
+            <small>of {f.sites} sites audited clean at their commit</small>
+          </div>
+          <div>
+            <b data-figure="in-use-90">
+              {f.inUseAt90.inUse} / {f.inUseAt90.of}
+            </b>
+            <small>in use at 90 days (check-ins)</small>
+          </div>
         </div>
-        <div>
-          <b data-figure="in-use-90">
-            {f.inUseAt90.inUse} / {f.inUseAt90.of}
-          </b>
-          <small>in use at 90 days (check-ins)</small>
-        </div>
-      </div>
-      <section className="session">
-        <h2>Pods</h2>
-        {pods.length ? (
+        <section className="session">
+          <h2>Pods</h2>
+          {pods.length ? (
+            <ul>
+              {pods.map((p) => (
+                <li key={p.pod} data-pod={p.pod} data-light={p.light}>
+                  <span className={`pill ${LIGHT[p.light]}`}>{p.light}</span> Pod {p.pod} · {p.name}
+                  :{' '}
+                  {!p.booking
+                    ? 'free'
+                    : p.booking.shift === 'game'
+                      ? 'game mode'
+                      : `${p.site?.name ?? p.booking.siteId}`}
+                  {p.booking ? `, until ${p.booking.endsAt.slice(11, 16)} UTC` : ''}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No pod is set up yet.</p>
+          )}
+        </section>
+        <section className="session">
+          <h2>Signatures pending</h2>
+          {f.signaturesPending.length ? (
+            <ul>
+              {f.signaturesPending.map((p) => (
+                <li key={p.person} data-pending={p.person}>
+                  {p.person}: {p.screens} screen{p.screens === 1 ? '' : 's'}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>None.</p>
+          )}
+        </section>
+        <section className="session">
+          <h2>Sites</h2>
           <ul>
-            {pods.map((p) => (
-              <li key={p.pod} data-pod={p.pod} data-light={p.light}>
-                <span className={`pill ${LIGHT[p.light]}`}>{p.light}</span> Pod {p.pod} · {p.name}:{' '}
-                {!p.booking
-                  ? 'free'
-                  : p.booking.shift === 'game'
-                    ? 'game mode'
-                    : `${p.site?.name ?? p.booking.siteId}`}
-                {p.booking ? `, until ${p.booking.endsAt.slice(11, 16)} UTC` : ''}
+            {sites.map((s) => (
+              <li key={s.siteId}>
+                {s.name} ({s.owner}): {s.unsignedScreens} unsigned,{' '}
+                {s.auditPassed ? 'audit passed' : 'no clean audit at its commit'}
+                {s.handedOverAt ? `, handed over ${s.handedOverAt.slice(0, 10)}` : ''}
               </li>
             ))}
           </ul>
-        ) : (
-          <p>No pod is set up yet.</p>
-        )}
-      </section>
-      <section className="session">
-        <h2>Signatures pending</h2>
-        {f.signaturesPending.length ? (
-          <ul>
-            {f.signaturesPending.map((p) => (
-              <li key={p.person} data-pending={p.person}>
-                {p.person}: {p.screens} screen{p.screens === 1 ? '' : 's'}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>None.</p>
-        )}
-      </section>
-      <section className="session">
-        <h2>Sites</h2>
-        <ul>
-          {sites.map((s) => (
-            <li key={s.siteId}>
-              {s.name} ({s.owner}): {s.unsignedScreens} unsigned,{' '}
-              {s.auditPassed ? 'audit passed' : 'no clean audit at its commit'}
-              {s.handedOverAt ? `, handed over ${s.handedOverAt.slice(0, 10)}` : ''}
-            </li>
-          ))}
-        </ul>
-      </section>
-      <Link href="/">◀ Home</Link>
-    </main>
+        </section>
+        <Link href="/">◀ Home</Link>
+      </main>
+    </Shell>
   );
 }

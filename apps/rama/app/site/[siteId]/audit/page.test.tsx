@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { createDb, modelCalls, runMigrations, seed, audits, findings } from '@rama/db';
 import { confirmReport, inputsHash, type AuditorInput } from '@rama/audit';
 import AuditReport from './page';
+import { inner } from '../../../../test/shell';
 
 // A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
 vi.mock('../../../../server/session', async (orig) =>
@@ -43,7 +44,7 @@ afterAll(async () => {
 
 describe('route /site/[siteId]/audit', () => {
   it('says there is no audit yet rather than showing an empty report', async () => {
-    const html = renderToStaticMarkup(await AuditReport(params('self')));
+    const html = renderToStaticMarkup(inner(await AuditReport(params('self'))));
     expect(html).toContain('No audit of this site yet');
     expect(html).toContain('Call the audit');
   });
@@ -122,7 +123,7 @@ describe('route /site/[siteId]/audit', () => {
     } finally {
       await conn.close();
     }
-    const html = renderToStaticMarkup(await AuditReport(params('self')));
+    const html = renderToStaticMarkup(inner(await AuditReport(params('self'))));
     expect(html).toContain('data-verified="true"');
     expect(html).toMatch(/Signed by <b>openai<\/b> <code>gpt-x<\/code>/);
     expect(html).toContain('<b>not run: no `build` script</b>');
@@ -133,7 +134,7 @@ describe('route /site/[siteId]/audit', () => {
     // The auditor's words are drafted text: unconfirmed until a named person confirms them (Invariant 6).
     expect(html).toContain('data-draft="unconfirmed"');
     process.env.RAMA_MEMBER_NAME = 'Asha Rao';
-    expect(renderToStaticMarkup(await AuditReport(params('self')))).toContain(
+    expect(renderToStaticMarkup(inner(await AuditReport(params('self'))))).toContain(
       'confirm it as Asha Rao</button>',
     );
     const again = createDb();
@@ -159,7 +160,7 @@ describe('route /site/[siteId]/audit', () => {
     } finally {
       await again.close();
     }
-    const confirmed = renderToStaticMarkup(await AuditReport(params('self')));
+    const confirmed = renderToStaticMarkup(inner(await AuditReport(params('self'))));
     const pill = /data-draft="confirmed">([^]*?)<\/span>/
       .exec(confirmed)![1]!
       .replace(/<!-- -->/g, '');

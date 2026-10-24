@@ -80,7 +80,7 @@ async function signInByForm(page: Page) {
   await page.getByLabel('Username').fill('asha');
   await page.getByLabel('Password').fill('asha-e2e-password');
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await page.getByText('You are').waitFor();
+  await page.locator('.whoami').waitFor();
 }
 
 describe('stage 6 e2e', () => {

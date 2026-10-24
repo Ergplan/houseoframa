@@ -3,6 +3,7 @@ import { listSites } from '@rama/blueprint/site';
 import { requireMember, siteIdsOf, withDb } from '../../server/session';
 import { allPods } from '../../server/floor';
 import { BookForm } from '../../components/floor/BookForm';
+import { Shell } from '../../components/harmony/Shell';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,14 +16,20 @@ export default async function Book() {
     .filter((s) => mine.has(s.id))
     .map((s) => ({ id: s.id, name: s.name }));
   return (
-    <main className="stub">
-      <h1>Book a pod</h1>
-      {pods.length ? (
-        <BookForm pods={pods} sites={sites} />
-      ) : (
-        <p>No pod is set up yet: the floor manager sets the pods up when the floor opens.</p>
-      )}
-      <Link href="/">◀ Home</Link>
-    </main>
+    <Shell
+      here={null}
+      member={member}
+      crumbs={[{ label: 'Home', href: '/' }, { label: 'Book a pod' }]}
+    >
+      <main className="stub">
+        <h1>Book a pod</h1>
+        {pods.length ? (
+          <BookForm pods={pods} sites={sites} />
+        ) : (
+          <p>No pod is set up yet: the floor manager sets the pods up when the floor opens.</p>
+        )}
+        <Link href="/">◀ Home</Link>
+      </main>
+    </Shell>
   );
 }

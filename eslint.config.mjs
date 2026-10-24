@@ -17,6 +17,8 @@ export default defineConfig(
       '**/next-env.d.ts',
       'packages/db/migrations/**',
       'blueprint/**',
+      // ergOS Harmony's runtime, copied verbatim from Ergplan/designsystem.
+      'design/harmony/components/**',
     ],
   },
   js.configs.recommended,

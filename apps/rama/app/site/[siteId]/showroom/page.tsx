@@ -5,10 +5,11 @@ import { readCapture, showroomOf } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { ShowroomView } from '../../../../components/showroom/ShowroomView';
 import { ActForm } from '../../../../components/workbench/ActForm';
+import { SiteShell } from '../../../../components/workbench/SiteShell';
 
 export const dynamic = 'force-dynamic';
 
-export default async function Showroom({
+async function ShowroomPage({
   params,
   searchParams,
 }: {
@@ -42,5 +43,19 @@ export default async function Showroom({
       initialScreen={one(q.screen)}
       initialFigure={one(q.figure)}
     />
+  );
+}
+
+/** Showroom, in the site's chrome: the trainer console beside it (Stage 7, Harmony). */
+export default async function Showroom(props: Parameters<typeof ShowroomPage>[0]) {
+  const { siteId } = await props.params;
+  const { member, site } = await pageSite(siteId);
+  const q = ((await (
+    props as { searchParams?: Promise<Record<string, string | string[] | undefined>> }
+  ).searchParams) ?? {}) as Record<string, string | string[] | undefined>;
+  return (
+    <SiteShell site={site} member={member} here="Showroom" q={q}>
+      {await ShowroomPage(props)}
+    </SiteShell>
   );
 }

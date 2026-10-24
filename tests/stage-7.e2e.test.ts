@@ -101,8 +101,8 @@ describe('stage 7 e2e', () => {
     await page.getByRole('link', { name: 'Who are you?' }).click();
     await page.getByRole('heading', { name: 'Who are you?' }).waitFor();
     await page.getByRole('button', { name: /Rachit Agarwal/ }).click();
-    await page.getByText('You are').waitFor();
-    expect(await page.locator('.whoami b').textContent()).toBe('Rachit Agarwal');
+    await page.locator('.whoami').waitFor();
+    expect(await page.locator('.whoami .eg-account__name').textContent()).toBe('Rachit Agarwal');
 
     // Settings: the GitHub token, tested on saving, shown only masked; then the account.
     await page.getByRole('link', { name: 'Settings' }).click();
@@ -112,7 +112,7 @@ describe('stage 7 e2e', () => {
     await expect(page.getByRole('status').textContent()).resolves.toBe(
       'The GitHub token is saved. GitHub knows this token as e2e-bot.',
     );
-    await expect(key.locator('.light.green').count()).resolves.toBe(1);
+    await expect(key.locator('.light.positive').count()).resolves.toBe(1);
     await expect(key.locator('.key-head small').textContent()).resolves.toBe('••••0001');
     expect(await page.content()).not.toContain(TOKEN);
     await page.getByPlaceholder('Account or organisation').fill('e2e-org');
@@ -122,7 +122,7 @@ describe('stage 7 e2e', () => {
     );
 
     // A new product: its page, and its repository with the work in it.
-    await page.getByRole('link', { name: '◀ Home' }).click();
+    await page.goto(`${server.browserUrl}/`);
     await page.getByLabel('Name').fill('Tiffin');
     await page
       .getByLabel('The idea, in one line')
@@ -150,15 +150,15 @@ describe('stage 7 e2e', () => {
     await page
       .locator('[data-status="passed"], [data-status="failed"]')
       .waitFor({ timeout: 300_000 });
-    const verdict = await page.locator('.verdict').getAttribute('data-status');
+    const verdict = await page.locator('[data-status]').getAttribute('data-status');
     const steps = await page.locator('.steps li').allTextContents();
     expect(verdict, steps.join('\n')).toBe('passed');
     expect(steps).toHaveLength(7);
     await page.getByRole('link', { name: 'Look at the sample product it built' }).click();
     await page.locator('.console [data-tally]').waitFor();
-    await expect(page.locator('.console [data-tally]').textContent()).resolves.toBe(
-      '1 Verified 2 Confirmed 0 Unverified',
-    );
+    await expect(
+      page.locator('.console [data-tally] [data-state]').allTextContents(),
+    ).resolves.toEqual(['1 Verified', '2 Confirmed', '0 Unverified']);
 
     // The token is in no log and in no file in the clear.
     expect(server.output()).not.toContain(TOKEN);

@@ -1,13 +1,14 @@
-// The trainer console (Stage 7): a left-column panel on a site. The acts of a session as buttons, greyed
-// when not possible with the reason; the work buttons with their last outcome; the agenda; the key
-// lights; the site in the three words. Server-rendered: every button is a form, so it works without a
-// script and nothing is typed but names.
+// The trainer console (Stage 7), in Harmony's Sidebar (design/harmony/README.md): the site in the three
+// words, the acts of a session as buttons (greyed with the reason when not possible; one primary, the
+// act possible now), the work buttons with their last outcome, the agenda and the key lights as chips.
+// Server-rendered: every button is a form, so it works without a script and nothing is typed but names.
 import Link from 'next/link';
 import type { Decision } from '@rama/shared';
 import type { SecretView } from '@rama/db';
 import { unsaidSentence, type Job, type SiteStates } from '@rama/workbench';
 import { ACTS, type Act } from '../../app/api/site/[siteId]/act/handler';
 import { JobSteps } from './JobSteps';
+import { Chip, StateChip } from '../harmony/ui';
 
 export interface ConsoleProps {
   siteId: string;
@@ -19,6 +20,8 @@ export interface ConsoleProps {
   keys: SecretView[] | null;
   jobs: { kind: string; job: Job; status: string }[];
   captured: boolean;
+  /** Whether the site has an audit on record. */
+  audited: boolean;
 }
 
 const KEY_LABEL = {
@@ -27,13 +30,28 @@ const KEY_LABEL = {
   GITHUB_TOKEN: 'GitHub',
 } as const;
 
-function ActButton({ siteId, act, why }: { siteId: string; act: Act; why?: string | null }) {
+function ActButton({
+  siteId,
+  act,
+  why,
+  primary,
+}: {
+  siteId: string;
+  act: Act;
+  why?: string | null;
+  primary?: boolean;
+}) {
   const def = ACTS[act];
   const off = why ?? (def.enabledBy ? `Comes with ${def.enabledBy}.` : null);
   return (
     <form action={`/api/site/${siteId}/act`} method="post" className="act">
       <input type="hidden" name="act" value={act} />
-      <button type="submit" disabled={Boolean(off)} title={off ?? undefined}>
+      <button
+        type="submit"
+        disabled={Boolean(off)}
+        title={off ?? undefined}
+        className={`eg-btn eg-btn--block eg-btn--sm${primary && !off ? ' eg-btn--primary' : ''}`}
+      >
         {def.label}
       </button>
       {off ? <small className="why">{off}</small> : null}
@@ -41,32 +59,49 @@ function ActButton({ siteId, act, why }: { siteId: string; act: Act; why?: strin
   );
 }
 
+/** The act possible now, shown as the one primary: photograph, walk through, audit, then hand over. */
+function nowAct(p: ConsoleProps): Act {
+  if (!p.captured) return 'photograph';
+  if (p.states.screens.some((s) => s.audience === 'customer' && !s.state.confirmed))
+    return 'start-walkthrough';
+  if (!p.audited) return 'call-audit';
+  return 'hand-over';
+}
+
 export function TrainerConsole(p: ConsoleProps) {
   const open = p.cards.filter((c) => c.status === 'open' || c.status === 'not-built');
   const unsigned = p.states.screens.filter((s) => s.audience === 'customer' && !s.state.confirmed);
   const openai = p.keys?.find((k) => k.name === 'OPENAI_API_KEY');
   const noAuditor = !openai?.set ? 'Needs the OpenAI key in Settings.' : null;
+  const now = nowAct(p);
   return (
-    <aside className="console" aria-label="Trainer console">
-      <h2>{p.name}</h2>
-      <p className="three-words" data-tally>
-        <span className="state verified">{p.states.tally.Verified} Verified</span>{' '}
-        <span className="state confirmed">{p.states.tally.Confirmed} Confirmed</span>{' '}
-        <span className="state unverified">{p.states.tally.Unverified} Unverified</span>
-      </p>
+    <div className="console eg-stack" aria-label="Trainer console">
+      <div>
+        <div className="eg-overline">Trainer console</div>
+        <h2 className="eg-card__title">{p.name}</h2>
+      </div>
+      <div className="rama-states" data-tally>
+        <StateChip state="Verified" count={p.states.tally.Verified} />
+        <StateChip state="Confirmed" count={p.states.tally.Confirmed} />
+        <StateChip state="Unverified" count={p.states.tally.Unverified} />
+      </div>
       {p.states.counts.map((c) => (
-        <p key={c.audience} className="note">
+        <p key={c.audience} className="eg-muted" style={{ margin: 0 }}>
           {c.sentence}.
         </p>
       ))}
-      {p.states.unsaid ? <p className="note">{unsaidSentence(p.states.unsaid)}.</p> : null}
+      {p.states.unsaid ? (
+        <p className="eg-muted" style={{ margin: 0 }}>
+          {unsaidSentence(p.states.unsaid)}.
+        </p>
+      ) : null}
       {p.states.figures ? (
-        <p className="note">
+        <p className="eg-muted" style={{ margin: 0 }}>
           {p.states.figures.traced} of {p.states.figures.shown} figures on the screens traced.
         </p>
       ) : null}
 
-      <h3>The session</h3>
+      <div className="eg-overline">The session</div>
       <ActButton siteId={p.siteId} act="start-session" />
       <ActButton siteId={p.siteId} act="close-ideation" />
       <ActButton siteId={p.siteId} act="start-build" />
@@ -75,11 +110,17 @@ export function TrainerConsole(p: ConsoleProps) {
         siteId={p.siteId}
         act="start-walkthrough"
         why={p.captured ? null : 'Photograph the screens first.'}
+        primary={now === 'start-walkthrough'}
       />
-      <ActButton siteId={p.siteId} act="call-audit" why={noAuditor} />
-      <ActButton siteId={p.siteId} act="hand-over" />
+      <ActButton
+        siteId={p.siteId}
+        act="call-audit"
+        why={noAuditor}
+        primary={now === 'call-audit'}
+      />
+      <ActButton siteId={p.siteId} act="hand-over" primary={now === 'hand-over'} />
 
-      <h3>Work</h3>
+      <div className="eg-overline">Work</div>
       <ActButton
         siteId={p.siteId}
         act="refresh"
@@ -87,37 +128,43 @@ export function TrainerConsole(p: ConsoleProps) {
           p.siteId === 'self' ? 'House of Rama redraws its own picture with every change.' : null
         }
       />
-      <ActButton siteId={p.siteId} act="photograph" />
+      <ActButton siteId={p.siteId} act="photograph" primary={now === 'photograph'} />
       <ActButton siteId={p.siteId} act="tests" />
       {p.jobs.map(({ kind, job, status }) => (
         <div key={kind} className={`job ${status}`} data-job={kind}>
           {status === 'running' ? <meta httpEquiv="refresh" content="4" /> : null}
           <JobSteps job={job} />
           {status === 'interrupted' ? (
-            <small>Interrupted when the app restarted; press the button again.</small>
+            <small className="eg-muted">
+              Interrupted when the app restarted; press the button again.
+            </small>
           ) : null}
         </div>
       ))}
 
       {p.kind === 'product' ? (
         <>
-          <h3>Repository</h3>
+          <div className="eg-overline">Repository</div>
           {p.remote ? (
-            <p>
+            <p style={{ margin: 0 }}>
               <a href={p.remote}>{p.remote.replace('https://github.com/', '')}</a>
             </p>
           ) : (
-            <form action={`/api/site/${p.siteId}/repository`} method="post">
-              <button type="submit">Create repository</button>{' '}
-              <small>Under the GitHub account in Settings.</small>
+            <form action={`/api/site/${p.siteId}/repository`} method="post" className="act">
+              <button type="submit" className="eg-btn eg-btn--block eg-btn--sm">
+                Create repository
+              </button>
+              <small className="why">Under the GitHub account in Settings.</small>
             </form>
           )}
         </>
       ) : null}
 
-      <h3>Agenda</h3>
+      <div className="eg-overline">Agenda</div>
       {open.length === 0 && unsigned.length === 0 ? (
-        <p className="note">Nothing open.</p>
+        <p className="eg-muted" style={{ margin: 0 }}>
+          Nothing open.
+        </p>
       ) : (
         <ul className="agenda">
           {open.map((c) => (
@@ -134,25 +181,35 @@ export function TrainerConsole(p: ConsoleProps) {
         </ul>
       )}
 
-      <h3>Keys</h3>
+      <div className="eg-overline">Keys</div>
       {p.keys ? (
-        <ul className="lights">
+        <div className="rama-states">
           {p.keys.map((k) => {
-            const tone = !k.set ? 'red' : k.check ? (k.check.ok ? 'green' : 'red') : 'grey';
+            const ok = k.set && k.check?.ok;
+            const tone =
+              !k.set || (k.check && !k.check.ok) ? 'negative' : ok ? 'positive' : 'muted';
+            const word = !k.set
+              ? 'missing'
+              : k.check
+                ? k.check.ok
+                  ? 'works'
+                  : 'refused'
+                : 'not checked';
             return (
-              <li key={k.name}>
-                <span className={`light ${tone}`} aria-hidden /> {KEY_LABEL[k.name]}:{' '}
-                {!k.set ? 'not entered' : k.check ? k.check.sentence : 'entered, not checked yet'}
-              </li>
+              <Chip key={k.name} tone={tone} title={k.check?.sentence}>
+                {KEY_LABEL[k.name]}: {word}
+              </Chip>
             );
           })}
-        </ul>
+        </div>
       ) : (
-        <p className="note">The key lights cannot be read right now.</p>
+        <p className="eg-muted" style={{ margin: 0 }}>
+          The key lights are the trainer’s.
+        </p>
       )}
-      <p>
+      <p style={{ margin: 0 }}>
         <Link href="/settings">Settings</Link>
       </p>
-    </aside>
+    </div>
   );
 }

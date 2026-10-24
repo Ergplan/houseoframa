@@ -1,22 +1,21 @@
-/* The pixel construction site is the only retro thing on the page. Everything around it (controls,
-   inspector) is a dark product UI: Plex Sans for reading, Plex Mono for paths and numbers.
-   Ported from the weekend prototype's stylesheet (reference/weekend-prototype/house-of-rama.html). */
+/* House of Rama's own rules, on top of ergOS Harmony (rule 17): every colour, face, space and radius
+   here is a Harmony token (apps/rama/app/harmony-tokens.css, generated from design/harmony/tokens.json).
+   The names below are the app's older ones, kept as aliases of the tokens so every screen follows them.
+   The Brick canvas keeps its own pixel colours, drawn only inside the canvas (canvas/palette.ts). */
 :root {
-  --bg: #0c0b13;
-  --panel: #14121d;
-  --panel2: #1b1826;
-  --fg: #ece8dc;
-  --dim: #9a958a;
-  --amber: #ffb429;
-  --cyan: #4fe3d8;
-  --red: #ff5a6a;
-  --green: #5ad45a;
-  --violet: #c98cff;
-  --line: #2a2740;
+  --bg: var(--canvas);
+  --panel: var(--surface);
+  --panel2: var(--surface-2);
+  --fg: var(--ink);
+  --dim: var(--ink-muted);
+  --amber: var(--warning);
+  --cyan: var(--accent);
+  --red: var(--negative);
+  --green: var(--positive);
+  --violet: var(--series-gov);
   --pixel: 'Press Start 2P', ui-monospace, monospace;
-  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
-  color-scheme: dark;
+  --sans: var(--font-sans);
+  --mono: var(--font-mono);
 }
 * {
   box-sizing: border-box;
@@ -43,11 +42,10 @@ a {
   border-bottom: 1px solid var(--line);
 }
 .hud h1 {
-  font-family: var(--pixel);
-  font-size: 13px;
+  font: 600 22px/1 var(--font-display);
+  letter-spacing: -0.02em;
   margin: 0;
-  color: var(--amber);
-  letter-spacing: 1px;
+  color: var(--ink);
 }
 .hud h1 a {
   color: inherit;
@@ -80,7 +78,7 @@ a {
 }
 .screen {
   position: relative;
-  background: #12101c;
+  background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: auto;
@@ -101,7 +99,7 @@ a {
   pointer-events: none;
   font-family: var(--mono);
   font-size: 12px;
-  background: rgba(12, 11, 19, 0.92);
+  background: color-mix(in srgb, var(--canvas) 92%, transparent);
   color: var(--fg);
   padding: 6px 9px;
   border: 1px solid var(--amber);
@@ -122,37 +120,38 @@ a {
   align-items: center;
   gap: 8px 10px;
 }
-button {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: var(--panel2);
-  color: var(--fg);
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  padding: 8px 12px;
+/* Buttons that are not yet Harmony components wear Harmony's small glass pill, in sentence case. */
+button:not(.eg-btn):not(.eg-icon-btn) {
+  font: 500 13px/1 var(--font-sans);
+  letter-spacing: 0.01em;
+  background: var(--glass);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  padding: 9px 14px;
   cursor: pointer;
+  box-shadow: var(--shadow-edge);
 }
-button:hover {
-  border-color: var(--amber);
-  color: var(--amber);
+button:not(.eg-btn):not(.eg-icon-btn):hover {
+  background: var(--glass-strong);
 }
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
-button.on,
-button.primary {
-  background: var(--amber);
-  color: #1a1200;
-  border-color: var(--amber);
+button.on:not(.eg-btn),
+button.primary:not(.eg-btn) {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: transparent;
 }
 button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+body:has(.rama-stage) {
+  padding: 0;
 }
 .clock {
   font-family: var(--mono);
@@ -176,7 +175,7 @@ button:disabled {
   height: 14px;
   padding: 0;
   border-radius: 50%;
-  border: 2px solid #3a3650;
+  border: 2px solid var(--line-strong);
   background: var(--panel2);
 }
 .track button.done {
@@ -185,7 +184,7 @@ button:disabled {
 }
 .track button.cur {
   border-color: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(79, 227, 216, 0.35);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .legend {
   display: flex;
@@ -280,19 +279,19 @@ button:disabled {
 }
 .pill.red {
   color: var(--red);
-  border-color: rgba(255, 90, 106, 0.6);
+  border-color: color-mix(in srgb, var(--negative) 60%, transparent);
 }
 .pill.green {
   color: var(--green);
-  border-color: rgba(90, 212, 90, 0.6);
+  border-color: color-mix(in srgb, var(--positive) 60%, transparent);
 }
 .pill.cyan {
   color: var(--cyan);
-  border-color: rgba(79, 227, 216, 0.6);
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
 }
 .pill.amber {
   color: var(--amber);
-  border-color: rgba(255, 180, 41, 0.6);
+  border-color: color-mix(in srgb, var(--warning) 60%, transparent);
 }
 .pill.dim {
   color: var(--dim);
@@ -435,13 +434,13 @@ button:disabled {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--green);
-  border: 1px solid rgba(90, 212, 90, 0.6);
+  border: 1px solid color-mix(in srgb, var(--positive) 60%, transparent);
   border-radius: 999px;
   padding: 3px 9px;
 }
 .shotbar .real.amb {
   color: var(--amber);
-  border-color: rgba(255, 180, 41, 0.6);
+  border-color: color-mix(in srgb, var(--warning) 60%, transparent);
 }
 .shotbar code {
   font-family: var(--mono);
@@ -454,7 +453,7 @@ button:disabled {
   margin-left: auto;
 }
 .shotview {
-  background: #1a1826;
+  background: var(--surface-2);
   border: 1px solid var(--line);
   border-top: 0;
   padding: 14px;
@@ -481,22 +480,22 @@ button:disabled {
   padding: 0;
   border: 2px solid var(--amber);
   border-radius: 6px;
-  background: rgba(255, 180, 41, 0.1);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
   cursor: pointer;
-  box-shadow: 0 0 0 3px rgba(255, 180, 41, 0.18);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--warning) 18%, transparent);
 }
 .hot:hover,
 .hot.on {
-  background: rgba(255, 180, 41, 0.3);
+  background: color-mix(in srgb, var(--warning) 30%, transparent);
 }
 .hot.untraced {
-  border: 2px dashed #8a8794;
-  background: rgba(138, 135, 148, 0.08);
+  border: 2px dashed var(--ink-muted);
+  background: color-mix(in srgb, var(--ink-muted) 8%, transparent);
   box-shadow: none;
 }
 .hot.untraced:hover,
 .hot.untraced.on {
-  background: rgba(138, 135, 148, 0.25);
+  background: color-mix(in srgb, var(--ink-muted) 25%, transparent);
 }
 .strip {
   display: flex;
@@ -576,10 +575,10 @@ button:disabled {
   border: 1px solid var(--line);
 }
 .trail .check.ok {
-  border-color: rgba(90, 212, 90, 0.6);
+  border-color: color-mix(in srgb, var(--positive) 60%, transparent);
 }
 .trail .check.bad {
-  border-color: rgba(255, 90, 106, 0.6);
+  border-color: color-mix(in srgb, var(--negative) 60%, transparent);
 }
 .trail ul {
   margin: 0;
@@ -622,7 +621,7 @@ button:disabled {
 }
 .shotbar .real.bad {
   color: var(--red);
-  border-color: rgba(255, 90, 106, 0.6);
+  border-color: color-mix(in srgb, var(--negative) 60%, transparent);
 }
 /* Site office and walkthrough (Stage 4) */
 .office {
@@ -651,7 +650,7 @@ button:disabled {
   border-left: 3px solid var(--line);
 }
 .office .msg.agent {
-  border-left-color: var(--cyan, #4fe3d8);
+  border-left-color: var(--accent);
 }
 .office .msg.draft {
   opacity: 0.8;
@@ -660,11 +659,11 @@ button:disabled {
 .office .dec {
   margin: 10px 0;
   padding: 10px 14px;
-  border: 1px solid rgba(90, 212, 90, 0.5);
+  border: 1px solid color-mix(in srgb, var(--positive) 50%, transparent);
   border-radius: 10px;
 }
 .office .dec.red {
-  border-color: rgba(255, 90, 106, 0.5);
+  border-color: color-mix(in srgb, var(--negative) 50%, transparent);
 }
 .office .dec .lnk {
   margin-right: 8px;
@@ -699,13 +698,13 @@ button:disabled {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #c98cff;
+  color: var(--series-gov);
   margin-top: 6px;
 }
 .asay {
   font-size: 14px;
   line-height: 1.5;
-  border-left: 2px solid #c98cff;
+  border-left: 2px solid var(--series-gov);
   padding-left: 10px;
 }
 .afind {
@@ -715,10 +714,10 @@ button:disabled {
   background: var(--panel);
 }
 .afind.defect {
-  border: 1px solid rgba(255, 90, 106, 0.45);
+  border: 1px solid color-mix(in srgb, var(--negative) 45%, transparent);
 }
 .afind.note {
-  border: 1px solid rgba(255, 180, 41, 0.45);
+  border: 1px solid color-mix(in srgb, var(--warning) 45%, transparent);
 }
 .afind .en {
   font-size: 13px;
@@ -773,193 +772,103 @@ button:disabled {
   margin: 8px 0;
 }
 
-/* Stage 7, the workbench. A placeholder palette until ergOS Harmony's tokens arrive (design/harmony/):
-   the names below are the ones the tokens will fill, swapped in one commit. */
-:root {
-  --h-green: #3ecf6e;
-  --h-red: #ff6b6b;
-  --h-grey: #8a8797;
-  --h-blue: #6aa8ff;
-  --h-radius: 10px;
+/* Stage 7, the workbench, in Harmony's classes; these rules only place things. */
+.rama-stage {
+  min-height: 100vh;
+}
+.rama-screen {
+  align-items: flex-start;
+}
+.rama-screen .eg-side {
+  position: sticky;
+  top: var(--space-6);
+}
+.rama-card {
+  padding: var(--space-6);
+}
+.rama-chip--positive {
+  color: var(--positive);
+  border-color: transparent;
+  background: var(--accent-soft);
+}
+.rama-chip--muted {
+  color: var(--ink-muted);
 }
 .workbench {
-  max-width: 920px;
+  max-width: 980px;
 }
-.workbench h2 {
-  font-size: 1.1rem;
-  margin: 1.6rem 0 0.5rem;
-}
-.workbench section {
-  border-top: 1px solid var(--line);
-  padding-top: 0.4rem;
-}
-.workbench input:not([type='hidden']) {
-  background: var(--panel2);
-  color: var(--fg);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 7px 9px;
-  font: inherit;
-  min-width: 0;
-}
-.workbench .row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-.workbench .row input {
-  flex: 1 1 240px;
-}
-.workbench .stack {
+.rama-form {
   display: grid;
-  gap: 8px;
+  gap: var(--space-3);
   max-width: 560px;
 }
-.workbench .stack label {
+.rama-form label {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
-.workbench button,
-.console button,
-.button {
-  background: var(--panel2);
-  color: var(--fg);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 7px 12px;
-  font: inherit;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
+.rama-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
 }
-.workbench button.primary,
-.console button.primary,
-.button.primary {
-  background: var(--h-blue);
-  border-color: var(--h-blue);
-  color: #0c0b13;
-  font-weight: 600;
-}
-.workbench button.big {
-  font-size: 1.1rem;
-  padding: 10px 22px;
-}
-.workbench button:disabled,
-.console button:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-.whoami {
-  margin-top: 1.4rem;
+.rama-row .eg-input {
+  flex: 1 1 260px;
 }
 .flag {
-  border-radius: var(--h-radius);
-  padding: 8px 12px;
-  margin: 10px 0;
-  border-left: 4px solid;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+  border: 1px solid var(--line);
+  background: var(--glass);
 }
 .flag.green {
-  border-color: var(--h-green);
-  background: rgba(62, 207, 110, 0.08);
+  border-color: transparent;
+  background: var(--accent-soft);
+  color: var(--ink);
 }
 .flag.grey {
-  border-color: var(--h-grey);
-  background: rgba(138, 135, 151, 0.12);
+  background: var(--surface-2);
+  color: var(--ink);
 }
 .picker {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 1rem;
+  gap: var(--space-4);
 }
 .picker .person {
+  height: auto;
   display: grid;
-  gap: 2px;
-  min-width: 180px;
-  padding: 16px 18px;
+  gap: var(--space-1);
+  min-width: 220px;
+  padding: var(--space-5) var(--space-6);
   text-align: left;
-  border-radius: var(--h-radius);
+  border-radius: var(--radius-md);
 }
 .picker .person small {
-  color: var(--dim);
+  color: var(--ink-muted);
 }
-.light {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 6px;
-  vertical-align: middle;
-}
-.light.green {
-  background: var(--h-green);
-}
-.light.red {
-  background: var(--h-red);
-}
-.light.grey {
-  background: var(--h-grey);
-}
-.light-words.red {
-  color: var(--h-red);
-}
-.light-words.green {
-  color: var(--h-green);
+.key + .key {
+  border-top: 1px solid var(--line);
 }
 .key {
-  padding: 10px 0 14px;
-  border-bottom: 1px dashed var(--line);
+  padding: var(--space-4) 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.key-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 .key-head small {
-  color: var(--dim);
-  margin-left: 6px;
-}
-.steps {
-  list-style: none;
-  padding: 0;
-  margin: 0.6rem 0;
-  display: grid;
-  gap: 8px;
-}
-.steps li {
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: var(--panel);
-  border-left: 4px solid var(--h-grey);
-}
-.steps li.pass {
-  border-color: var(--h-green);
-}
-.steps li.fail {
-  /* A step that did not work is a grey flag (rule 15): what happened and what is next, not an alarm. */
-  border-color: var(--h-grey);
-  background: rgba(138, 135, 151, 0.14);
-}
-.steps li small {
-  color: var(--dim);
-}
-.steps .mark {
-  font-weight: 700;
-}
-.steps .next {
-  color: var(--amber);
-}
-.verdict {
-  font-size: 1.15rem;
-  font-weight: 600;
-}
-.verdict.passed {
-  color: var(--h-green);
-}
-.verdict.failed,
-.verdict.interrupted {
-  color: var(--fg);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
 }
 .with-console {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: 264px minmax(0, 1fr);
+  gap: var(--space-6);
   align-items: start;
 }
 .site-col {
@@ -969,70 +878,51 @@ button:disabled {
   .with-console {
     grid-template-columns: minmax(0, 1fr);
   }
+  .rama-screen {
+    flex-direction: column;
+  }
+  .rama-screen .eg-side {
+    position: static;
+    width: 100%;
+  }
 }
 .console {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--h-radius);
-  padding: 12px 14px;
-  font-size: 14px;
-}
-.console h2 {
-  margin: 0 0 6px;
-  font-size: 1rem;
-}
-.console h3 {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  margin: 14px 0 6px;
+  gap: var(--space-3);
+  font-size: 13px;
+  line-height: 18px;
 }
 .console .act {
-  margin: 4px 0;
-}
-.console .act button {
-  width: 100%;
-  text-align: left;
+  margin: 0;
 }
 .console .why {
   display: block;
-  color: var(--dim);
+  color: var(--ink-muted);
   font-size: 12px;
+  padding: 2px 12px 0;
 }
 .console .agenda,
 .console .lights {
   padding-left: 1rem;
   margin: 0;
+  display: grid;
+  gap: var(--space-1);
 }
-.three-words .state {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 2px 9px;
-  margin: 2px 2px 2px 0;
-  font-weight: 600;
-  font-size: 13px;
-}
-.three-words .verified {
-  background: rgba(106, 168, 255, 0.18);
-  color: var(--h-blue);
-}
-.three-words .confirmed {
-  background: rgba(62, 207, 110, 0.18);
-  color: var(--h-green);
-}
-.three-words .unverified {
-  background: rgba(138, 135, 151, 0.2);
-  color: var(--fg);
+.console .rama-states {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
 }
 .scrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 .pill.dim,
 .dec.dim {
   opacity: 0.7;
+}
+.rama-verdict {
+  margin: 0;
 }

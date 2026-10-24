@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { pageSite, withDb } from '../../../../server/session';
 import { handoverState } from '../../../../server/handover';
 import { Action } from '../../../../components/floor/Action';
+import { SiteShell } from '../../../../components/workbench/SiteShell';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,7 +11,7 @@ export const dynamic = 'force-dynamic';
  * (the load-bearing bricks, confirmed by a named person) and the keys page (where the code lives, how
  * it is deployed, how to ask for a change through the same ceremony).
  */
-export default async function Handover({ params }: { params: Promise<{ siteId: string }> }) {
+async function HandoverView({ params }: { params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
   const { site } = await pageSite(siteId);
   const st = await withDb((db) => handoverState(db, site));
@@ -142,5 +143,19 @@ export default async function Handover({ params }: { params: Promise<{ siteId: s
         <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
       </p>
     </main>
+  );
+}
+
+/** Handover, in the site's chrome: the trainer console beside it (Stage 7, Harmony). */
+export default async function Handover(props: Parameters<typeof HandoverView>[0]) {
+  const { siteId } = await props.params;
+  const { member, site } = await pageSite(siteId);
+  const q = ((await (
+    props as { searchParams?: Promise<Record<string, string | string[] | undefined>> }
+  ).searchParams) ?? {}) as Record<string, string | string[] | undefined>;
+  return (
+    <SiteShell site={site} member={member} here="Handover" q={q}>
+      {await HandoverView(props)}
+    </SiteShell>
   );
 }

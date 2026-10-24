@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
+// ergOS Harmony (rule 17): the tokens, generated from design/harmony/tokens.json, then the component
+// bundle copied verbatim from the design system, then House of Rama's own rules on top.
+import './harmony-tokens.css';
+import '../../../design/harmony/components/bundle.css';
 import './globals.css';
+import { HarmonyRuntime } from '../components/harmony/HarmonyRuntime';
 
 export const metadata: Metadata = {
   title: 'House of Rama',
@@ -9,17 +14,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark">
       <head>
-        {/* Fonts are a nicety: every face has a system fallback, so the site renders offline. The rule
-            below is about the Pages router's per-page heads; this is the App Router's root layout. */}
+        {/* The pixel face is the Brick canvas's own, drawn only inside the canvas; Harmony's faces
+            (Urbanist, JetBrains Mono) come with its bundle. Every face has a system fallback. */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Suspense>
+          <HarmonyRuntime />
+        </Suspense>
+      </body>
     </html>
   );
 }

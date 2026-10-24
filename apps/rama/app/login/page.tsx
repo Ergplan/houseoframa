@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { authMode, readMembers } from '@rama/db';
+import { Wordmark } from '../../components/harmony/Shell';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,26 +19,41 @@ export default async function Login({
   if (authMode() === 'members') {
     const members = readMembers();
     return (
-      <main className="stub">
-        <h1>Who are you?</h1>
-        <p className="note">
-          Pick your name. It goes on every decision, confirmation and signature you make here.
-        </p>
-        {q.failed ? <p role="alert">That name is not on the list of people.</p> : null}
-        {members.length ? (
-          <form action="/api/auth/pick" method="post" className="picker">
-            {members.map((m) => (
-              <button key={m.name} type="submit" name="name" value={m.name} className="person">
-                <b>{m.name}</b> <small>{ROLE[m.role]}</small>
-              </button>
-            ))}
-          </form>
-        ) : (
-          <p role="alert">
-            Nobody is on the list of people yet. The builder adds names to the members list.
+      <div className="eg-stage rama-stage">
+        <main className="eg-stack" style={{ maxWidth: 760, margin: '0 auto', paddingTop: '8vh' }}>
+          <Wordmark />
+          <h1 className="eg-h1">
+            Who are <em>you</em>?
+          </h1>
+          <p className="eg-muted" style={{ margin: 0 }}>
+            Pick your name. It goes on every decision, confirmation and signature you make here.
           </p>
-        )}
-      </main>
+          {q.failed ? (
+            <p role="alert" className="flag grey">
+              That name is not on the list of people.
+            </p>
+          ) : null}
+          {members.length ? (
+            <form action="/api/auth/pick" method="post" className="picker">
+              {members.map((m) => (
+                <button
+                  key={m.name}
+                  type="submit"
+                  name="name"
+                  value={m.name}
+                  className="eg-btn person"
+                >
+                  <b>{m.name}</b> <small>{ROLE[m.role]}</small>
+                </button>
+              ))}
+            </form>
+          ) : (
+            <p role="alert" className="flag grey">
+              Nobody is on the list of people yet. The builder adds names to the members list.
+            </p>
+          )}
+        </main>
+      </div>
     );
   }
   return (

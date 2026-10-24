@@ -5,10 +5,11 @@ import { readSiteBlueprint } from '@rama/blueprint/site';
 import { listDecisions, listSessions, type SessionWithTurns } from '@rama/ceremony';
 import type { Decision } from '@rama/shared';
 import { DiscoveryView } from '../../../../components/ceremony/DiscoveryView';
+import { SiteShell } from '../../../../components/workbench/SiteShell';
 
 export const dynamic = 'force-dynamic';
 
-export default async function Discovery({ params }: { params: Promise<{ siteId: string }> }) {
+async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
   const { member, site } = await pageSite(siteId);
   let sessions: SessionWithTurns[];
@@ -46,5 +47,19 @@ export default async function Discovery({ params }: { params: Promise<{ siteId: 
       bricks={bp?.nodes.map((n) => n.path) ?? []}
       screens={bp?.screens.map((s) => s.id) ?? []}
     />
+  );
+}
+
+/** Site office, in the site's chrome: the trainer console beside it (Stage 7, Harmony). */
+export default async function Discovery(props: Parameters<typeof DiscoveryPage>[0]) {
+  const { siteId } = await props.params;
+  const { member, site } = await pageSite(siteId);
+  const q = ((await (
+    props as { searchParams?: Promise<Record<string, string | string[] | undefined>> }
+  ).searchParams) ?? {}) as Record<string, string | string[] | undefined>;
+  return (
+    <SiteShell site={site} member={member} here="Site office" q={q}>
+      {await DiscoveryPage(props)}
+    </SiteShell>
   );
 }

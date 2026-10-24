@@ -4,6 +4,7 @@ import { latestAudit, verifyReport } from '@rama/audit';
 import { createDb } from '@rama/db';
 import { ConfirmReport, DraftState } from '../../../../components/audit/ConfirmReport';
 import { ActForm } from '../../../../components/workbench/ActForm';
+import { SiteShell } from '../../../../components/workbench/SiteShell';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,7 +12,7 @@ const PILL = { pass: 'green', note: 'amber', defect: 'red' } as const;
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 /** The site's latest audit report, as signed: verified against the auditor's own model call on every view. */
-export default async function AuditReport({ params }: { params: Promise<{ siteId: string }> }) {
+async function AuditReportView({ params }: { params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
   const { member, site } = await pageSite(siteId);
   let stored: Awaited<ReturnType<typeof latestAudit>>;
@@ -192,5 +193,19 @@ export default async function AuditReport({ params }: { params: Promise<{ siteId
         <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
       </p>
     </main>
+  );
+}
+
+/** Audit, in the site's chrome: the trainer console beside it (Stage 7, Harmony). */
+export default async function AuditReport(props: Parameters<typeof AuditReportView>[0]) {
+  const { siteId } = await props.params;
+  const { member, site } = await pageSite(siteId);
+  const q = ((await (
+    props as { searchParams?: Promise<Record<string, string | string[] | undefined>> }
+  ).searchParams) ?? {}) as Record<string, string | string[] | undefined>;
+  return (
+    <SiteShell site={site} member={member} here="Audit" q={q}>
+      {await AuditReportView(props)}
+    </SiteShell>
   );
 }

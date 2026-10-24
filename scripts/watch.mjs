@@ -186,6 +186,13 @@ async function runChecks(changed) {
       command('node', ['scripts/gen-blueprint-doc.mjs', '--check']),
     ),
   );
+  // Rule 17: the app's Harmony tokens are generated from design/harmony/tokens.json.
+  checks.push(
+    await check(
+      'harmony tokens drift',
+      command('node', ['scripts/gen-harmony-css.mjs', '--check']),
+    ),
+  );
   // Rule 14: `rama extract .` must match the checked-in blueprint/self.json (`pnpm extract:self` regenerates it).
   checks.push(await check('blueprint self drift', command('pnpm', ['-s', 'check:self'])));
 

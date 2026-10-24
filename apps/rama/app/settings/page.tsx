@@ -1,6 +1,5 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   GITHUB_OWNER,
@@ -13,17 +12,30 @@ import {
 } from '@rama/db';
 import { KEY_HELP } from '@rama/model';
 import { Said } from '../../components/workbench/Said';
+import { Button, Card, Chip } from '../../components/harmony/ui';
+import { Shell } from '../../components/harmony/Shell';
 import { requireMember, withDb } from '../../server/session';
 
 export const dynamic = 'force-dynamic';
 
-/** The light beside a key, with its reason in words. */
-function light(v: SecretView): { tone: 'green' | 'red' | 'grey'; words: string } {
-  if (!v.set) return { tone: 'red', words: 'Not entered yet.' };
-  if (v.check) return { tone: v.check.ok ? 'green' : 'red', words: v.check.sentence };
+/** The light beside a key, as a chip with its word, and the reason in words. */
+function light(v: SecretView): {
+  tone: 'positive' | 'negative' | 'muted';
+  word: string;
+  words: string;
+} {
+  if (!v.set) return { tone: 'negative', word: 'Missing', words: 'Not entered yet.' };
+  if (v.check)
+    return v.check.ok
+      ? { tone: 'positive', word: 'Works', words: v.check.sentence }
+      : { tone: 'negative', word: 'Refused', words: v.check.sentence };
   if (v.source === 'environment')
-    return { tone: 'grey', words: 'Read from the server’s setup file. Press Test to check it.' };
-  return { tone: 'grey', words: 'Entered, not checked yet. Press Test.' };
+    return {
+      tone: 'muted',
+      word: 'Not checked',
+      words: 'Read from the server’s setup file. Press Test to check it.',
+    };
+  return { tone: 'muted', word: 'Not checked', words: 'Entered, not checked yet. Press Test.' };
 }
 
 /** Settings (Stage 7): keys with lights, the GitHub account, the people, the design system. */
@@ -40,111 +52,129 @@ export default async function Settings({
     owner: (await getSetting<{ owner: string }>(db, GITHUB_OWNER))?.owner ?? null,
   }));
   const fromEnv = keys.some((k) => k.source === 'environment');
-  const harmony = existsSync(path.join(homeDir(), 'design/harmony/tokens.json'));
+  const tokensFile = path.join(homeDir(), 'design/harmony/tokens.json');
+  const harmony = existsSync(tokensFile)
+    ? (JSON.parse(readFileSync(tokensFile, 'utf8')) as {
+        name: string;
+        meta: { repo: string; ref: string };
+      })
+    : null;
   const people = readMembers();
   return (
-    <main className="stub workbench">
-      <p>
-        <Link href="/">◀ Home</Link>
-      </p>
-      <h1>Settings</h1>
+    <Shell
+      here="settings"
+      member={member}
+      crumbs={[{ label: 'Home', href: '/' }, { label: 'Settings' }]}
+    >
+      <h1 className="eg-h1">Settings</h1>
       <Said q={q} />
 
-      <section id="keys">
-        <h2>Keys</h2>
-        <p className="note">
-          Each key is kept encrypted on this laptop and shown only by its last four characters.
-          {fromEnv
+      <Card
+        id="keys"
+        title="Keys"
+        sub={`Each key is kept encrypted on this laptop and shown only by its last four characters.${
+          fromEnv
             ? ' None is entered here yet, so the keys in the server’s setup file are used. Once you enter one here, only the keys entered here are used.'
-            : ''}
-        </p>
+            : ''
+        }`}
+      >
         {keys.map((k) => {
           const l = light(k);
           return (
             <div key={k.name} className="key" data-key={k.name}>
               <div className="key-head">
-                <span className={`light ${l.tone}`} aria-hidden />
-                <b>{KEY_HELP[k.name].label}</b>{' '}
-                {k.masked ? <small className="mono">{k.masked}</small> : null}
+                <b>{KEY_HELP[k.name].label}</b>
+                <Chip tone={l.tone} className={`light ${l.tone}`}>
+                  {l.word}
+                </Chip>
+                {k.masked ? <small>{k.masked}</small> : null}
               </div>
-              <p className="note">{KEY_HELP[k.name].sentence}</p>
-              <p className={`light-words ${l.tone}`}>{l.words}</p>
-              <form action="/api/settings/keys" method="post" className="row">
+              <p className="eg-muted" style={{ margin: 0 }}>
+                {KEY_HELP[k.name].sentence}
+              </p>
+              <p className={`light-words ${l.tone}`} style={{ margin: 0 }}>
+                {l.words}
+              </p>
+              <form action="/api/settings/keys" method="post" className="rama-row">
                 <input type="hidden" name="name" value={k.name} />
                 <input
+                  className="eg-input"
                   name="value"
                   type="password"
                   autoComplete="off"
                   placeholder={k.set ? 'Paste a new key to replace it' : 'Paste the key here'}
                   aria-label={`${KEY_HELP[k.name].label}`}
                 />
-                <button type="submit" name="action" value="save" className="primary">
+                <Button type="submit" name="action" value="save">
                   Save
-                </button>
-                <button type="submit" name="action" value="test" formNoValidate>
+                </Button>
+                <Button type="submit" name="action" value="test" variant="ghost" formNoValidate>
                   Test
-                </button>
+                </Button>
                 {k.source === 'settings' ? (
-                  <button type="submit" name="action" value="remove" formNoValidate>
+                  <Button type="submit" name="action" value="remove" variant="ghost" formNoValidate>
                     Remove
-                  </button>
+                  </Button>
                 ) : null}
               </form>
             </div>
           );
         })}
-      </section>
+      </Card>
 
-      <section id="github">
-        <h2>GitHub</h2>
-        <p className="note">
-          Every product built here gets its own repository on GitHub, created under this account or
-          organisation.
-        </p>
-        <p>
+      <Card
+        id="github"
+        title="GitHub"
+        sub="Every product built here gets its own repository on GitHub, created under this account or organisation."
+      >
+        <p style={{ marginTop: 0 }}>
           {owner ? (
             <>
               New products are created under <b>{owner}</b>.
             </>
           ) : (
-            <span className="light-words red">No account is set yet.</span>
+            <Chip tone="negative">No account is set yet</Chip>
           )}
         </p>
-        <form action="/api/settings/github" method="post" className="row">
-          <input name="owner" placeholder="Account or organisation" defaultValue={owner ?? ''} />
-          <button type="submit" className="primary">
-            Save
-          </button>
+        <form action="/api/settings/github" method="post" className="rama-row">
+          <input
+            className="eg-input"
+            name="owner"
+            placeholder="Account or organisation"
+            defaultValue={owner ?? ''}
+          />
+          <Button type="submit">Save</Button>
         </form>
-      </section>
+      </Card>
 
-      <section id="people">
-        <h2>People</h2>
-        <p className="note">
-          The people who can pick their name here. The builder adds a person to the members list.
-        </p>
-        <ul>
+      <Card
+        id="people"
+        title="People"
+        sub="The people who can pick their name here. The builder adds a person to the members list."
+      >
+        <ul className="eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {people.map((p) => (
-            <li key={p.name}>
-              {p.name} <small>{p.role === 'trainer' ? 'Trainer' : 'Customer'}</small>
+            <li key={p.name} className="rama-row">
+              {p.name} <Chip>{p.role === 'trainer' ? 'Trainer' : 'Customer'}</Chip>
             </li>
           ))}
         </ul>
-      </section>
+      </Card>
 
-      <section id="harmony">
-        <h2>Design system</h2>
-        <p>
-          ergOS Harmony:{' '}
+      <Card id="harmony" title="Design system">
+        <p style={{ margin: 0 }}>
           {harmony ? (
-            <b>in use</b>
+            <>
+              <b>{harmony.name}</b>, synced from {harmony.meta.repo} at{' '}
+              <span className="eg-mono">{harmony.meta.ref.replace(/^main@/, '')}</span>.
+            </>
           ) : (
             <>
-              <b>pending</b>. The screens use a placeholder palette until its colours arrive.
+              ergOS Harmony: <b>pending</b>. Its tokens have not arrived.
             </>
           )}
         </p>
-      </section>
-    </main>
+      </Card>
+    </Shell>
   );
 }

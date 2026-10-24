@@ -9,8 +9,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { readFileSync } from 'node:fs';
 import SitePage from './page';
 import Discovery from './discovery/page';
-import { TrainerConsole } from '../../../components/workbench/TrainerConsole';
+import { SiteShell } from '../../../components/workbench/SiteShell';
 import { SiteView } from '../../../components/site/SiteView';
+import { inner } from '../../../test/shell';
 
 // A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
 vi.mock('../../../server/session', async (orig) =>
@@ -29,7 +30,8 @@ describe('route /site/[siteId]', () => {
       if (!isValidElement(node))
         return Array.isArray(node) ? (node.map((n) => find(n, type)).find(Boolean) ?? null) : null;
       if (node.type === type) return node;
-      return find((node.props as { children?: unknown }).children, type);
+      const props = node.props as { children?: unknown };
+      return find(props.children, type);
     };
     const el = find(page, SiteView) as ReactElement<{
       blueprint: { repo: string; nodes: unknown[] };
@@ -37,7 +39,10 @@ describe('route /site/[siteId]', () => {
       screenStates: { tally: Record<string, number> };
     }>;
     expect(el).not.toBeNull();
-    expect(find(page, TrainerConsole)).not.toBeNull();
+    // The trainer console stands beside it, from the same records.
+    const shell = page as ReactElement<{ console: { siteId: string } }>;
+    expect(shell.type).toBe(SiteShell);
+    expect(shell.props.console.siteId).toBe('self');
     expect(Object.keys(el.props.screenStates.tally)).toEqual([
       'Verified',
       'Confirmed',
@@ -87,7 +92,7 @@ describe('route /site/[siteId]/discovery', () => {
   });
 
   it("shows the site's sessions and decision cards as recorded, and the member it records as", async () => {
-    const el = (await Discovery(params('self'))) as ReactElement<
+    const el = inner(await Discovery(params('self'))) as ReactElement<
       ComponentProps<typeof DiscoveryView>
     >;
     expect(el.type).toBe(DiscoveryView);
@@ -102,7 +107,7 @@ describe('route /site/[siteId]/discovery', () => {
     const url = process.env.DATABASE_URL;
     process.env.DATABASE_URL = 'postgres://rama:rama@127.0.0.1:1/none';
     try {
-      expect(renderToStaticMarkup(await Discovery(params('self')))).toContain(
+      expect(renderToStaticMarkup(inner(await Discovery(params('self'))))).toContain(
         'could not be reached',
       );
     } finally {

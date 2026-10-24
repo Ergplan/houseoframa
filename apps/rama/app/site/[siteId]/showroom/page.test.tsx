@@ -21,6 +21,7 @@ vi.mock('next/navigation', async (orig) => ({
   useRouter: () => ({ refresh: () => {} }),
 }));
 import { shotResponse } from '../../../api/site/[siteId]/shots/[name]/shot';
+import { inner } from '../../../../test/shell';
 
 // A signed-in member who owns every site (authorization is tested in app/authz.test.tsx).
 vi.mock('../../../../server/session', async (orig) =>
@@ -35,7 +36,7 @@ const params = (siteId: string, q: Record<string, string> = {}) => ({
   searchParams: Promise.resolve(q),
 });
 const render = async (siteId: string, q: Record<string, string> = {}) =>
-  renderToStaticMarkup(await Showroom(params(siteId, q)));
+  renderToStaticMarkup(inner(await Showroom(params(siteId, q))));
 
 beforeAll(() => {
   repo = fixtureRepo();
@@ -224,9 +225,11 @@ describe('signatures in the showroom and the walkthrough', () => {
 
   it('builds one step per signable screen, with a statement from its traced figures, for the member to sign', async () => {
     writeSignoffs([]);
-    const el = (await Walkthrough({
-      params: Promise.resolve({ siteId: 'shop' }),
-    })) as React.ReactElement<React.ComponentProps<typeof WalkthroughView>>;
+    const el = inner(
+      await Walkthrough({
+        params: Promise.resolve({ siteId: 'shop' }),
+      }),
+    ) as React.ReactElement<React.ComponentProps<typeof WalkthroughView>>;
     expect(el.type).toBe(WalkthroughView);
     expect(el.props.commit).toBe(head());
     expect(el.props.member).toBe('Asha Rao');
@@ -243,22 +246,26 @@ describe('signatures in the showroom and the walkthrough', () => {
   it('shows a signed screen as signed, and one signed at another commit as needing a new signature', async () => {
     writeSignoffs([signoff(head())]);
     let html = renderToStaticMarkup(
-      await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }),
+      inner(await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) })),
     );
     expect(html).toContain('data-state="signed"');
     expect(html).toContain('Withdraw my signature');
     writeSignoffs([signoff('abc1234')]);
-    html = renderToStaticMarkup(await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }));
+    html = renderToStaticMarkup(
+      inner(await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) })),
+    );
     expect(html).toContain('data-state="stale"');
   });
 
   it('signs as the signed-in member, and offers nothing to sign without a capture', async () => {
     const html = renderToStaticMarkup(
-      await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) }),
+      inner(await Walkthrough({ params: Promise.resolve({ siteId: 'shop' }) })),
     );
     expect(html).toContain('Confirm and sign as Asha Rao');
     expect(
-      renderToStaticMarkup(await Walkthrough({ params: Promise.resolve({ siteId: 'self' }) })),
+      renderToStaticMarkup(
+        inner(await Walkthrough({ params: Promise.resolve({ siteId: 'self' }) })),
+      ),
     ).toContain('none have been photographed');
     await expect(Walkthrough({ params: Promise.resolve({ siteId: 'nope' }) })).rejects.toThrow(
       /NEXT_HTTP_ERROR_FALLBACK;404/,

@@ -8,6 +8,14 @@ A person with no terminal opens the app, picks their name, enters keys in Settin
 
 ## What was built
 
+**Harmony first.** ergOS Harmony arrived during the stage (`design/harmony/`, synced from `Ergplan/designsystem` d00bc9a), and the stage prompt now applies it first.
+
+- `apps/rama/app/harmony-tokens.css` is generated from `tokens.json`, both themes, with a drift check in the watcher and CI. The bundle's CSS and runtime are loaded from their verbatim copies, with Urbanist and JetBrains Mono.
+- The chrome is Harmony's components: the Sidebar and TopBar on every screen, `eg-btn` with one primary per view, chips for the three states and the key lights, the folder card as each screen's one green object (Test drive on the home page, the verdict on Test drive's page), and the activity timeline for a job's steps.
+- On a site, the trainer console is the Sidebar, on the site's page and on its Showroom, office, walkthrough, audit and handover. Exactly one of its acts is primary: the one possible now.
+- The app's older colour names are aliases of the tokens, so every remaining view follows them. The Brick canvas keeps its own colours inside the canvas.
+- Settings shows the synced version.
+
 **People (rule 11).** `members.json` at the root, `[{name, role: trainer | customer}]`, is read at start (`packages/db/src/members.ts`). `/login` is "Who are you?": a button per person, which posts the name to `POST /api/auth/pick`. That opens a session for that person, the same sessions as before. A trainer opens every site, Settings and the campus; a customer opens their own sites. The Gaps 1 username-and-password form is kept behind `AUTH_MODE=password` for the floor edition; each mode answers 404 on the other's route. `RAMA_ACCOUNTS` is gone from `.env`. The seed and the command line give what they add to the first trainer (`ownerName`). The authorization tests now get their sessions through the picker's real handler and database, and check that what the picked person writes carries their name and person id.
 
 **Settings → Keys.** The Anthropic key, the OpenAI key and the GitHub token, in the `secrets` table: AES-256-GCM under the app's own key, `work/.secret-key`, generated on first use with mode 600 and never committed (`packages/db/src/secrets.ts`). Each key is shown only as `••••` and its last four characters, with one sentence on what it is for and where to get it. Its Test button makes one harmless call (list the models; GitHub: who am I) and answers with a green or red light and the reason in words (`packages/model/src/keys.ts`). Saving a key tests it at once. `packages/model`'s `call()` and the GitHub client read keys from here. The environment's keys are read only while the table holds no key at all, and the screen says so.

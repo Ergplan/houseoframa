@@ -1,12 +1,37 @@
 import Link from 'next/link';
-import { listSites } from '@rama/blueprint/site';
-import { seesEverything } from '@rama/db';
-import { isTestDriveSite, latestTestDrive } from '@rama/workbench';
+import { listSites, readSiteBlueprint, type SiteLocation } from '@rama/blueprint/site';
+import {
+  isTestDriveSite,
+  jobStatus,
+  latestJob,
+  latestTestDrive,
+  siteStates,
+} from '@rama/workbench';
 import { BuildStamp } from '../components/BuildStamp';
 import { Said } from '../components/workbench/Said';
+import { Button, ButtonLink, Card, Folder, StateChip } from '../components/harmony/ui';
+import { Shell } from '../components/harmony/Shell';
 import { currentMember, siteIdsOf, withDb } from '../server/session';
 
 export const dynamic = 'force-dynamic';
+
+/** A site in a list: its name, and its screens in the three words when it has a picture. */
+function SiteRow({ site }: { site: SiteLocation }) {
+  const bp = readSiteBlueprint(site);
+  const st = bp && site.kind === 'product' ? siteStates(site, bp) : null;
+  return (
+    <li className="rama-row" style={{ justifyContent: 'space-between' }}>
+      <Link href={`/site/${site.id}`}>{site.name}</Link>
+      {st && st.screens.length ? (
+        <span className="rama-row">
+          <StateChip state="Verified" count={st.tally.Verified} />
+          <StateChip state="Confirmed" count={st.tally.Confirmed} />
+          <StateChip state="Unverified" count={st.tally.Unverified} />
+        </span>
+      ) : null}
+    </li>
+  );
+}
 
 /**
  * The front door: who you are, Test drive, a new product, and the products and outside sites you may
@@ -27,104 +52,107 @@ export default async function Home({
     (s) => s.kind === 'product' && (!isTestDriveSite(s.id) || s.id === lastDrive),
   );
   const outside = sites.filter((s) => s.kind !== 'product');
+  const drive = member ? latestJob('testdrive', null) : null;
   return (
-    <main className="stub workbench">
-      <h1 style={{ fontSize: '2rem', fontWeight: 600, margin: 0 }}>
-        House of Rama · Built on trust
-      </h1>
-      <BuildStamp sha={process.env.GIT_SHA} />
+    <Shell here="home" member={member} crumbs={[{ label: 'Home' }]}>
+      <div>
+        <h1 className="eg-h1">House of Rama · Built on trust</h1>
+        <BuildStamp sha={process.env.GIT_SHA} />
+      </div>
       {!member ? (
-        <p style={{ marginTop: '2rem' }}>
-          <Link href="/login" className="button primary">
+        <Card>
+          <p style={{ marginTop: 0 }}>Pick your name to see your products.</p>
+          <ButtonLink href="/login" variant="primary">
             Who are you?
-          </Link>{' '}
-          Pick your name to see your products.
-        </p>
+          </ButtonLink>
+        </Card>
       ) : (
         <>
-          {/* A div, not a p: the form inside would end a p early and break hydration. */}
-          <div className="whoami">
-            You are <b>{member.name}</b>
-            {seesEverything(member) ? (
-              <>
-                {' '}
-                · <Link href="/settings">Settings</Link> · <Link href="/campus">Campus</Link>
-              </>
-            ) : null}{' '}
-            · <SignOut />
-          </div>
           <Said q={q} />
-
-          <section className="testdrive-call">
-            <h2>Test drive</h2>
-            <p className="note">
-              Runs the whole loop on the built-in sample product: idea, street, build, walkthrough,
-              audit. No voice, no camera; a few minutes. It says pass or fail in words.
-            </p>
-            <form action="/api/testdrive" method="post">
-              <button type="submit" className="primary big">
-                Test drive
-              </button>{' '}
-              <Link href="/testdrive">Last run</Link>
+          <Folder
+            title="Test drive"
+            sub="The whole loop on the built-in sample product: idea, street, build, walkthrough, audit. No voice, no camera; about a minute. It says pass or fail in words."
+            sheets={
+              drive
+                ? [
+                    {
+                      kicker: 'last run',
+                      label: drive.startedAt.slice(0, 10),
+                      value: jobStatus(drive),
+                    },
+                  ]
+                : []
+            }
+          >
+            <form action="/api/testdrive" method="post" className="rama-row">
+              <Button type="submit">Test drive</Button>
+              <Link href="/testdrive" style={{ color: 'inherit' }}>
+                Last run
+              </Link>
             </form>
-          </section>
+          </Folder>
 
-          <section>
-            <h2>New product</h2>
-            <form action="/api/products" method="post" className="stack">
-              <label>
-                Name <input name="name" required maxLength={80} placeholder="ergPLAN" />
-              </label>
-              <label>
-                The idea, in one line{' '}
+          <Card
+            title="New product"
+            sub="A name and the idea in one line; House of Rama sets up the rest."
+          >
+            <form action="/api/products" method="post" className="rama-form">
+              <label className="eg-field">
+                <span className="eg-field__label">Name</span>
                 <input
+                  className="eg-input"
+                  name="name"
+                  required
+                  maxLength={80}
+                  placeholder="ergPLAN"
+                />
+              </label>
+              <label className="eg-field">
+                <span className="eg-field__label">The idea, in one line</span>
+                <input
+                  className="eg-input"
                   name="idea"
                   required
                   maxLength={300}
                   placeholder="What it does and for whom"
                 />
               </label>
-              <button type="submit" className="primary">
-                Start the product
-              </button>
+              <div>
+                <Button type="submit" variant="primary">
+                  Start the product
+                </Button>
+              </div>
             </form>
-          </section>
+          </Card>
 
-          <h2>Your products</h2>
-          {products.length ? (
-            <ul className="sites">
-              {products.map((s) => (
-                <li key={s.id}>
-                  <Link href={`/site/${s.id}`}>{s.name}</Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="note">No product yet. Start one above.</p>
-          )}
-          <h2>Outside sites</h2>
-          <p className="note">Products built elsewhere that House of Rama only shows.</p>
-          {outside.length ? (
-            <ul className="sites">
-              {outside.map((s) => (
-                <li key={s.id}>
-                  <Link href={`/site/${s.id}`}>{s.name}</Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="note">None yet.</p>
-          )}
+          <Card title="Your products">
+            {products.length ? (
+              <ul className="sites eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {products.map((s) => (
+                  <SiteRow key={s.id} site={s} />
+                ))}
+              </ul>
+            ) : (
+              <p className="eg-muted" style={{ margin: 0 }}>
+                No product yet. Start one above.
+              </p>
+            )}
+          </Card>
+          <Card title="Outside sites" sub="Products built elsewhere that House of Rama only shows.">
+            {outside.length ? (
+              <ul className="sites eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {outside.map((s) => (
+                  <SiteRow key={s.id} site={s} />
+                ))}
+              </ul>
+            ) : (
+              <p className="eg-muted" style={{ margin: 0 }}>
+                None yet.
+              </p>
+            )}
+          </Card>
         </>
       )}
-    </main>
-  );
-}
-
-function SignOut() {
-  return (
-    <form action="/api/auth/logout" method="post" style={{ display: 'inline' }}>
-      <button type="submit">Not you? Switch</button>
-    </form>
+    </Shell>
   );
 }
