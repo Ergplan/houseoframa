@@ -125,7 +125,7 @@ describe('stage 7 e2e', () => {
       .getByLabel('The idea, in one line')
       .fill('Lunch boxes by subscription, for offices.');
     await page.getByRole('button', { name: 'Start the product' }).click();
-    await page.waitForURL(/\/site\/tiffin\?/);
+    await page.waitForURL(/\/site\/tiffin\?/, { timeout: 180_000 });
     await expect(page.locator('.flag').first().textContent()).resolves.toBe(
       'The repository e2e-org/tiffin is created and holds the work.',
     );
@@ -142,7 +142,8 @@ describe('stage 7 e2e', () => {
     // Test drive, from the home page, to a pass in words.
     await page.goto(`${server.browserUrl}/`);
     await page.getByRole('button', { name: 'Test drive' }).click();
-    await page.waitForURL(/\/testdrive$/);
+    // The dev server compiles a route the first time it is asked for it: slow under a busy watcher.
+    await page.waitForURL(/\/testdrive$/, { timeout: 180_000 });
     await page
       .locator('[data-status="passed"], [data-status="failed"]')
       .waitFor({ timeout: 300_000 });
