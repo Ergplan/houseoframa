@@ -1,6 +1,6 @@
 # House of Rama — Master Prompt
 
-Built on trust. This document drives the build of House of Rama from an empty monorepo to the floor edition that runs on the agent pods. It is committed once; after that the agent reads it from disk, one stage per session.
+Built on trust. This document drives the build of House of Rama. It is committed once; after that the agent reads it from disk, one stage per session. Revised 2026-10-24 after Stage 6 and Gaps 1: Stages 0–6 stand as built; Stages 7–11 build the Pod Edition (`docs/POD-EDITION.md`) on top, ending with the first real product, ergPLAN.
 
 ## 0. How to use this prompt
 
@@ -8,7 +8,7 @@ Built on trust. This document drives the build of House of Rama from an empty mo
 - The user's whole interface after Stage 0 is one line: `Run Stage N of docs/MASTER-PROMPT.md`. The agent reads this file, runs the stage, runs the independent reviewer, writes `docs/reports/stage-N.md`, and STOPS.
 - A stage report states: what was built; what was skipped and why; deviations from the prompt; reviewer findings and their fixes; open questions, numbered; real model cost for the stage.
 - The user answers open questions in one numbered message. Vague answers get vague architecture; the agent may ask once for a precise one.
-- Reference inputs: `reference/weekend-prototype/` (the artifact built on 17 Oct 2026: a working single-page House of Rama over the Procurement Studio repo; its extractor, trails, discovery and audit scripts), `reference/ekbill/` (the first target, a Next.js billing app for small Indian businesses), `reference/procurementstudio/` (the second target). All read-only.
+- Reference inputs: `reference/weekend-prototype/` (the artifact built on 17 Oct 2026), `reference/procurementstudio/` (golden fixture), `docs/POD-EDITION.md` (the product construct, 24 Oct 2026). EkBill is retired as a target after Stage 6; its reports stay. All reference input is read-only.
 
 ## 1. Operating rules
 
@@ -26,7 +26,111 @@ Built on trust. This document drives the build of House of Rama from an empty mo
 
 (See `CLAUDE.md` §4. Verbatim.)
 
-## 5. Plan
+## 5. Plan — the Pod Edition, Stages 7–11
+
+Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Showroom and trails, ceremony, audit, floor-edition plumbing, sealed signatures, deploy). From Stage 7 the build follows the Pod Edition construct. Sequenced by what becomes permanent earliest: the workbench that holds people and keys, then the face, then the scaffold that makes products traceable by construction, then the voice, then ergPLAN.
+
+| Stage | Name | What becomes permanent | Proven on |
+| --- | --- | --- | --- |
+| 7 | Workbench | `members.json`, Settings with keys and the GitHub account in the UI, product repositories, Test drive, the sample product, three states and the counting rule | self, sample product |
+| 8 | Lakefront | The isometric renderer: Street and Building levels, facades from capture, flags, Harmony; audit drones and replay on the lakefront | self, sample product |
+| 9 | House stack | The scaffold; figures traced by construction; the build loop with automatic extract, capture and re-execution after every lift | the sample product, rebuilt from the scaffold |
+| 10 | Ears | GPT Live voice, transcript, the track asked by voice, decision cards by spoken yes, scrap and restart, the board | a rehearsal on the sample product |
+| 11 | ergPLAN | The first real product, built entirely inside House of Rama | ergPLAN |
+
+Deferred (notes in `docs/POD-EDITION.md`): wallet, customer-owned GitHub at handover, the fixed board camera, pod lights and bookings in daily use.
+
+## 6. Stage prompts — Stages 7–11
+
+### Stage 7 — Workbench
+
+```
+Stage 7 makes House of Rama usable by people who are not coders, on a laptop, and amends the ceremony with the three states. After this stage nothing is typed in a terminal to use the product.
+
+People. `members.json` at the repo root: [{name, role: trainer|customer}], read at start. The app opens with "Who are you?"; the chosen name is the person on every decision, confirmation and signature. Replace the Gaps 1 username-and-password sign-in with this picker; keep sessions and every authorization test (they now assert the picked person). Keep the password code behind a setting `AUTH_MODE=password` for the floor edition; default `members`. RAMA_ACCOUNTS leaves .env.
+
+Settings → Keys: Anthropic key, OpenAI key, GitHub token; each with one sentence saying what it is for and where to get it, a Test button making one harmless call, and a green or red light with the reason in words. Stored in Postgres (`secrets`, encrypted at rest with the app's own key in work/.secret-key, generated on first run, never committed), masked, never logged, never written to .env. packages/model and the GitHub client read from here; .env keys are read only when the table is empty, and the UI says so.
+
+Settings → GitHub: the account or organisation products are created under. "Create repository" creates it, installs the gate workflow with the public key, records it on the site. Settings → Harmony: shows "pending" until design/harmony/tokens.json exists.
+
+Products. A product is a site House of Rama builds (as against an outside site it only renders). "New product" asks for a name and a one-line idea and creates the site, its repository and its first decision card.
+
+The sample product. `fixtures/sample-product/`: a tiny Next.js + Drizzle app on the house stack (~20 files, three screens: a list, a form, a total; five figures marked per HOUSE-STYLE; a screens file; two passing tests) with a git history of six or more commits produced by `scripts/make-sample.mjs`, so it is reproducible. It replaces EkBill everywhere EkBill was used in tests.
+
+Three states and one counting rule (Invariants 11). `stateOf(screen)` in packages/blueprint/metrics returns Verified | Confirmed | Unverified with evidence: Verified needs a test that renders or calls the screen's route or its figure functions and passed in the last run; Confirmed needs a sealed signature at or after the screen's last change. Remove the "a test imports this file" signal from every surface and the trust report. `counts(site, audience)`, audience from the screens file (customer | staff | admin); every surface says "N of M <audience> screens signed".
+
+Decision cards. A card becomes decided only by a recorded yes (a click now; spoken in Stage 10) with the person's name. "Scrap everything" starts a named draft and marks earlier cards withdrawn.
+
+Test drive. One button on the home screen: rebuilds the sample product into work/testdrive, extracts, captures, re-executes, runs a scripted walkthrough signing as "Test drive", runs the audit checks, and shows a plain pass/fail list with timings. No voice, no camera; model calls stubbed when no key is set. Under five minutes on a laptop.
+
+Trainer console. A left-column panel: the five-act buttons (Start session, Close ideation, Start build, Pause build, Start walkthrough, Call the audit, Hand over), greyed when not possible and saying which stage enables them; the agenda (cards, open items); the key lights; the site's state in the three words.
+
+Tests: secrets round-trip and masking; key Test buttons against stubs; the picker drives created_by on every write; repository creation against a stub and once for real behind @vendor; stateOf for all three states; counts per audience; a grep test that "imports" never appears as a confidence word; Test drive e2e green with no keys configured.
+
+Done when: a person with no terminal opens the app, picks their name, enters keys, creates a product with its repository, and runs Test drive to green; reviewer run; report. STOP.
+```
+
+### Stage 8 — Lakefront
+
+```
+Stage 8 gives House of Rama its face: the transparent isometric lakefront, in the customer's words, with code at the third zoom level. The audit's drones and the replay move onto it.
+
+packages/stage:
+- `street(blueprint, features)` lays out one building per feature. Features come from `.rama/features.json` in the product (written by the builder from the decision cards for products built here; drafted and unconfirmed for outside sites). Each building: a name in the customer's words, its screens, its bricks by floor, the tables it reads and writes. Buildings stand on the ground; tables are plots in the ground, lit when a building touches them; roads are the imports between features; the lake is the edge of the product and external services sit across the water as jetties. Deterministic.
+- `building(feature)` is the second level: floors (what it shows, decides, remembers, talks to), the real screenshot on the facade, each figure with its flag and a hotspot to its trail.
+- The third level is the existing Brick canvas, reached by "show me the code" or a click through the glass.
+- Transparency: bricks visible through the glass as they are laid; the flag per building as a colour and the word.
+- Replay: timeline and sky over the street; cranes park at the building being built; audit drones fly building by building and badges stay.
+- Canvas 2D isometric: a 2:1 tile grid, depth-sorted, with pick() for buildings, facades, plots and bricks.
+
+apps/rama: the home of a site is the Street; zoom by click or by the words open / inside / show me the code; a breadcrumb in plain words (Street › Take an order › the code). Labels and sentences from design/harmony/glossary.json; a test greps the rendered DOM at Street and Building level for the glossary's banned list. Harmony tokens applied when design/harmony/tokens.json exists.
+
+Tests: layout determinism; pick at all three levels; banned-word test; facades appear after capture; flags follow stateOf; e2e: open the sample product, read every building's name from the Street, open one, open its code, run the audit and watch the drones.
+
+Done when: the member can say what each building of the sample product does from the Street alone; reviewer run; report. STOP.
+```
+
+### Stage 9 — House stack
+
+```
+Stage 9 makes every product built here traceable by construction, so the honest rate is 100 percent or the build stops.
+
+templates/house-stack: a Next.js + TypeScript + Postgres + Drizzle scaffold with feature folders (one per building), the figure convention wired in (a <Figure id> component that marks and maps), rama/figures.ts, .rama/screens.json, .rama/features.json, the gate workflow with the public key, two example tests. A lint rule: any rendered number not inside a Figure fails the build naming the file and line (Invariant 10).
+
+The build loop (packages/workbench): "Start build" runs the builder (Claude Code, driven by House of Rama in the product's checkout) with the decision cards and the scaffold; after every commit House of Rama extracts, captures, re-executes and refreshes the lakefront by itself within a minute; a lift that fails the gate or the lint shows a grey flag with the lint's sentence and the builder's next action; Pause build stops after the current lift.
+
+Rebuild the sample product from the scaffold by this loop, with no human command, and retire its hand-written overlay. Test drive uses this path.
+
+Tests: the lint on an unmarked number; the scaffold builds and passes its gate; the loop from an empty repository to a fully traced lakefront; Test drive green.
+
+Done when: the sample product, built from the scaffold by the builder with no human command, shows 100 percent traced and every screen Verified; reviewer run; report. STOP.
+```
+
+### Stage 10 — Ears
+
+```
+Stage 10 puts the voice in the room, as a mouth and not a mind (Invariant 9).
+
+packages/ears: a GPT Live (OpenAI Realtime, WebRTC) session started from the console with the key from Settings; English only. Every utterance stored as a turn with its speaker (the voice, or the picked person; push-to-talk per person is acceptable). The hand-off: the builder produces plain-English lines (prompt narrate.v1) and the voice reads them; the voice's instructions confine its own generation to questions, acknowledgements and reading back; a test tries to make it state a product fact and asserts the fact came from a builder line. Commands: yes, no, scrap everything, show me <building>, open <screen>, show me the code, go back, what if <input> is <value>. The track by voice: "where does this number come from", "how is it worked out", "what goes into it", "where is it kept", "who built it", "who signed it" map to the trail's steps and are answered from it only; untraced is answered as untraced with the figure's name. Decision cards by spoken yes with the speaker's name; scrap and restart by voice; act 3 (the design explained aloud, building by building, with "what it will not do") before "Shall I build this?".
+
+packages/board (minimal): a laptop-webcam frame on demand ("read the board"), a reading by packages/model (prompt board.v1) into boxes, arrows and labels, shown as a draft map; nothing is decided from it.
+
+Tests: command grammar; the mouth-not-mind test; track questions from trail fixtures; spoken yes creates a decision with the right name; e2e rehearsal on the sample product with recorded audio.
+
+Done when: the member runs acts 1 to 3 of a rehearsal on the sample product by voice, the design is explained aloud, and the first signature is a spoken yes; reviewer run; report. STOP.
+```
+
+### Stage 11 — ergPLAN
+
+```
+Stage 11 is the first real product. House of Rama is used, not built; the report is the first customer story.
+
+Create the product ergPLAN in the workbench with its repository under the configured GitHub account. Run discovery with the member as the customer and a trainer from members.json: the idea, the buildings in the customer's words, the figures each will show, what it will not do, the spoken yes. Build from the scaffold through the loop; every lift on the lakefront; the member walks and signs every customer screen; the audit runs; the keys page is produced. Anything House of Rama cannot do during this stage is a KNOWN-GAPS entry with the sentence the customer heard, fixed in a small follow-up stage before another product starts.
+
+Done when: ergPLAN's first signed release exists in its own repository with 100 percent traced figures, every customer screen Confirmed, a signed audit, and the member's own name on the first signature; report. STOP.
+```
+
+## 5a. Plan, Stages 0–6 (built; history)
 
 Sequenced by what becomes permanent earliest: the Blueprint schema and the signature record first, interface polish last. Six stages, roughly six weeks, each ending at a hard STOP.
 
@@ -42,7 +146,7 @@ Sequenced by what becomes permanent earliest: the Blueprint schema and the signa
 
 Week 3 checkpoint (after Stage 3): EkBill rendered, traced, walked through and signed by the user. Week 6 checkpoint (after Stage 6): ten members through the prototype pod.
 
-## 6. Stage prompts
+## 6a. Stage prompts 0–6 (built; not re-run)
 
 ### Stage 0 — Foundation
 
@@ -228,12 +332,11 @@ interface Finding { id: string; auditId: string; brick: string; check: string; v
 
 | Stage | Checks before STOP |
 | --- | --- |
-| 0 | `pnpm dev` runs app + db + watcher; status.json ok; CI valid; vendor guard test passes; seed creates site "self" |
-| 1 | Three blueprints extracted; golden numbers match §7.1 exactly; byte-identical re-extract; self.json in CI with drift check; BLUEPRINT.md regenerates; reviewer: no new code defect |
-| 2 | /site/self and /site/ekbill render; every brick inspectable with English edges; confirm writes overlay; layout deterministic; reviewer |
-| 3 | ≥ 8 EkBill screens captured; 5 trails re-execute and match on-screen text; untraced state renders; HOUSE-STYLE.md exists; user walks EkBill end to end; reviewer |
-| 4 | Append-only enforced in DB and tested; gate fixtures pass/fail correctly; user has signed 5 screens by name; walkthrough narrates; reviewer |
-| 5 | EkBill audit report signed by auditor vendor; model-cannot-add-defects test; self audit zero defects; reviewer |
-| 6 | Every route authorized and tested; booking opens site; pod status API; campus numbers equal metrics; deployed on the pod box; two members complete the loop; reviewer |
+| 0–6, Gaps 1 | Done; see their reports |
+| 7 | No terminal needed: name picker, keys with lights, product + repository creation, Test drive green with no keys; secrets never in logs or .env; stateOf and counts from metrics; "imports" never shown as confidence; reviewer |
+| 8 | Street/Building/Brick over one Blueprint; banned-word test passes; facades and flags live; drones and replay on the lakefront; member names every building of the sample product from the Street; reviewer |
+| 9 | Scaffold lint refuses an unmarked number; sample product rebuilt from the scaffold by the builder with no human command, 100% traced, all Verified; Test drive uses this path; reviewer |
+| 10 | Mouth-not-mind test; track questions answered only from trails; spoken yes creates a named decision; rehearsal acts 1–3 by voice; reviewer |
+| 11 | ergPLAN first signed release: own repository, 100% traced, customer screens Confirmed, signed audit, member's name on signature one |
 
-Two honest numbers wherever a rate is reported: figures traced over figures shown, and screens signed over screens changed. An untraced figure correctly shown as untraced is never scored as a failure.
+Two honest numbers wherever a rate is reported: figures traced over figures shown, and screens signed over screens changed, each with its audience named. An untraced figure correctly shown as untraced is never scored as a failure.

@@ -1,6 +1,8 @@
 # House of Rama — rules for every session
 
-House of Rama makes agent-built software inspectable and signable by the people who pay for it. A repository is rendered as a building (files are bricks, layers are floors, builders are cranes). Every figure on every screen traces to its formula, its inputs, the commits that built it and the person who signed it off. Nothing merges unsigned. An auditor from a different model vendor flies the site and signs its own report.
+House of Rama makes agent-built software inspectable and signable by the people who pay for it. A product is rendered as a transparent isometric lakefront: one building per thing the product does, named in the customer's own words; screens are the glass facades; the database is the ground; code is the third zoom level. Every figure on every screen traces to its formula, its inputs, the table it lives in, the commits that built it and the person who signed it off. Nothing merges unsigned. An auditor from a different model vendor flies the site and signs its own report. A voice narrates and asks; it is a mouth, not a mind.
+
+**Version 1 is for us.** Aayuda uses it on a laptop to build its first product inside it, ergPLAN. It is not a retail product yet. The design construct is `docs/POD-EDITION.md`; it wins over older wording below where they differ. Stages 0–6 and Gaps 1 are built and stand; Stages 7–11 build the Pod Edition on top of them.
 
 Sections 1–4 below are copied verbatim from `docs/MASTER-PROMPT.md`. The stage plan, stage prompts and definition of done live only there. Read them from disk; never ask for them to be pasted.
 
@@ -16,10 +18,13 @@ Sections 1–4 below are copied verbatim from `docs/MASTER-PROMPT.md`. The stage
 8. Every external model call goes through `packages/model` with typed input and output, a versioned prompt loaded from `prompts/<name>.v<N>.md`, retries, and one row in `model_calls` per call.
 9. Keep the folder layout exactly. A new folder goes into `docs/ARCHITECTURE.md` before it holds code. No `utils/`, `misc/`, `temp/`, `old/`.
 10. Secrets by environment variable only, with `.env.example` committed and `.env` ignored. Never print a secret, never commit one.
-11. Security deferred until Stage 6: no auth, no multi-tenancy before then. Until Stage 6 every site belongs to the single local member. Do not add auth early; do not forget it in Stage 6.
+11. No passwords in version 1. Members are `members.json` in the repo (name, role: trainer | customer); a person picks their name to sign. The only environment variables are `DATABASE_URL` and the signing key the app generates. Every other secret (vendor keys, the GitHub token) is entered in the Settings screen and stored in Postgres, masked in the UI, with a green or red light and a plain sentence per key. The username-and-password sign-in from Gaps 1 is replaced in Stage 7; magic-link or password sign-in returns only with the floor edition, behind a setting.
 12. The quality that wins ties: **a true picture beats a complete one.** If a trace, description or verdict cannot be derived from the code, show it as untraced, unconfirmed or unknown. Never invent.
 13. Living documents (`docs/ARCHITECTURE.md`, `docs/DECISIONS.md`, `docs/KNOWN-GAPS.md`, `docs/BLUEPRINT.md`) are updated in the same commit as the code that changes them.
 14. House of Rama renders itself. From Stage 2 on, `rama extract .` must succeed on this repository and the result is checked into `blueprint/self.json` and regenerated in CI.
+15. Nobody types a command. Everything a trainer or customer does is a button or a sentence. The CLI exists for engineers and CI only; the app never shows a command to a person, and a failed step is shown as a grey flag with a plain sentence and the builder's next action.
+16. Testable by non-coders. A **Test drive** button runs the whole loop on the built-in sample product (idea → street → build → walkthrough → audit) with no voice and no camera, in minutes, and reports pass or fail in words. It stays green at every stage from Stage 7 on.
+17. Lucid UI. The design system is ergOS Harmony (`design/harmony/`; tokens pending from the member, placeholder palette until they arrive, swapped in one commit). Plain words from `design/harmony/glossary.json`; no developer vocabulary at Street or Building level; every number says what it counts.
 
 ### Independent review
 
@@ -37,6 +42,9 @@ These hold in every stage and override anything else in this document. If a stag
 6. **Determinism where it counts.** Extraction, trails, the gate and the campus numbers are plain code with no model call. Model calls draft descriptions and narration only, and every drafted text is marked `unconfirmed` until a named person confirms it.
 7. **One engine.** Totals shown in the campus, the inspector and the audit report come from one function per figure in `packages/blueprint/metrics`; other surfaces only display.
 8. **Provenance on every row.** Every table carries `site_id`, `created_at`, `created_by` (person or `rama:<component>@<version>`), and every write to `signoffs`, `audits`, `decisions` appends to `audit_log`.
+9. **The voice is a mouth, not a mind.** It takes inputs, asks, suggests and reads back; it writes nothing to the record. Every decision card, signature, description and figure enters through the builder from a spoken or clicked yes recorded with the person's name, or through the trainer's console. Every product fact the voice speaks is text the builder handed it; the voice never answers a product question from its own knowledge.
+10. **Traced by construction.** A figure the builder writes into a product is marked and mapped at the moment it is written; the gate refuses a screen with an untraced figure. Products built inside House of Rama therefore show 100 percent traced or do not proceed. Outside products keep their partial rate and say so.
+11. **Three states, no more.** A screen or building is Verified (a test exercises its behaviour and passes), Confirmed (a named person signed it in a walkthrough) or Unverified. "A test imports this file" is never shown as a state. Every count says what it counts, in the customer's unit.
 
 ## 3. Locked decisions
 
@@ -46,17 +54,19 @@ These hold in every stage and override anything else in this document. If a stag
 | Language | TypeScript throughout, Node 22 | One language per layer; the extractor must run where the target repo runs |
 | Web | Next.js (App Router) in `apps/rama` | The house stack of the targets it renders |
 | Database | Postgres 16 via Drizzle ORM, migrations in `packages/db/migrations` | Schema in code is what makes traces extractable |
-| Rendering | HTML Canvas for the building (no game engine), React for everything else | The weekend artifact proved it; nothing heavier is needed |
-| Target repos | Git only, cloned read-only into `work/<site>/repo`; House of Rama never pushes to a target | A map beside git, never a new repo system |
+| Rendering | HTML Canvas, isometric, transparent buildings on a lakefront; three zoom levels (Street, Building, Brick) over one Blueprint; React for everything else | The weekend artifact proved Canvas; the lakefront is the product's face |
+| Product repos | Products built inside House of Rama get their own GitHub repository, created by House of Rama under the GitHub account configured in Settings; the builder pushes to it. Outside repos are cloned read-only into `work/<site>/repo` and never pushed to | A map beside git, never a new repo system |
 | House stack of targets | Next.js + TypeScript + Postgres + Drizzle; a target off this stack gets partial traces and says so | Traces need schema and queries in code |
 | Builder | Claude (Claude Code) | — |
 | Auditor / reviewer | OpenAI, via `packages/model` | Must be a different vendor from the builder (Invariant 5); both target repos already carry an OpenAI key |
 | Screens | Playwright against the target's built app, captured to `work/<site>/shots` | Real UI, never mockups |
-| Voice | Browser SpeechSynthesis for narration until a member asks for more | Narration, not specification |
+| Voice | OpenAI GPT Live (Realtime, WebRTC) in `packages/ears`, English only at launch; a mouth, not a mind (Invariant 9) | Warmth and clarity in the room; rigour stays with the builder |
 | Deployment | Docker Compose (app + Postgres + watcher) on one box; Vercel later | The pod floor runs one box |
-| Access, Stages 1–5 | Single local member, no auth | Deferred by rule 11 |
-| Access, Stage 6 | Email magic link; a site belongs to a member; a booking opens a site | Pod floor booking tie-in |
-| First target | EkBill (`reference/ekbill`, read-only); second target Procurement Studio | Real, owned, already walked through |
+| Access, version 1 | `members.json`, no passwords; secrets in the Settings screen, stored in Postgres | We are not super coders; nothing hidden in env files (rule 11) |
+| Access, floor edition | Sign-in (password or link) behind a setting, bookings, wallet; deferred | Decided when the pod floor opens |
+| First product | ergPLAN, a new app built inside House of Rama from the house-stack scaffold, in its own repository | Everything the floor will do, done once by us |
+| Fixtures | Procurement Studio (golden numbers, §7.1) and the built-in sample product for Test drive; EkBill is retired as a target | Deterministic tests, no private clones |
+| Design system | ergOS Harmony (`design/harmony/`); placeholder palette until its tokens arrive | One look across House of Rama and the products it builds |
 
 Not reopened unless analysis of an existing codebase shows something materially better, recorded in `docs/DECISIONS.md`.
 
@@ -76,6 +86,12 @@ house-of-rama/
     model/                   # the one module for model calls; prompts/ loaded by version
     db/                      # Drizzle schema, migrations, seed
     shared/                  # types shared across packages (Blueprint, Trail, Signoff)
+    stage/                   # the isometric lakefront renderer: Street and Building levels (Brick level stays in apps/rama/canvas)
+    ears/                    # GPT Live voice session, transcript, the hand-off of builder text to the voice, recognised commands
+    board/                   # whiteboard frames (laptop webcam now; fixed camera later), board readings, product map, drafts
+    workbench/               # settings (keys, GitHub account, members), Test drive, product repos, the trainer console
+  templates/house-stack/     # the scaffold every product built here starts from: figures by construction, screens file, gate in CI
+  design/harmony/            # ergOS Harmony tokens and the UI glossary (plain words for every label)
   prompts/                   # versioned prompt files: <name>.v<N>.md
   blueprint/                 # generated: self.json (this repo) — never hand-edited
   reference/                 # read-only inputs: weekend prototype, extractor, EkBill clone

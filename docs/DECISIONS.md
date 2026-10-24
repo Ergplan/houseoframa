@@ -171,3 +171,14 @@ One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are
 ## 2026-10-20 — Repository moved to GitHub
 
 - Repository is now github.com/Ergplan/houseoframa (was gitlab.com/venture6/house-of-rama for one day). CI is GitHub Actions (`.github/workflows/check.yml`). The build VM signs in with `gh`.
+
+## 2026-10-24 — Version 1 is the Pod Edition; Stages 7–11 added on top of 0–6
+- Product construct adopted: `docs/POD-EDITION.md` (the member's "House of Rama · Pod Edition" document). Stages 0–6 and Gaps 1 stand as built; the tag `trail-edition` marks the end of that plan.
+- Voice: OpenAI GPT Live, a mouth not a mind (Invariant 9). English only at launch.
+- Three states (Verified / Confirmed / Unverified) and one counting rule (Invariant 11). The "a test imports this file" signal is removed.
+- Traced by construction for products built here (Invariant 10); the house-stack scaffold enforces it with a lint.
+- No passwords in version 1: `members.json` picker; the Gaps 1 username-and-password sign-in moves behind `AUTH_MODE=password` for the floor edition. Secrets in the Settings screen, stored in Postgres; .env keeps only `DATABASE_URL` and the signing key (rule 11). Test drive button (rule 16). Nobody types a command (rule 15).
+- EkBill retired as a target. Fixtures: Procurement Studio (golden) and the built-in sample product.
+- First product: ergPLAN, in its own repository created by House of Rama under the GitHub account set in Settings.
+- Rendering: transparent isometric lakefront, three zoom levels. Design system ergOS Harmony; tokens pending from the member, placeholder palette until then.
+- Deferred: wallet, customer-owned GitHub at handover, fixed board camera (laptop webcam for now).
