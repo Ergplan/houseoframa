@@ -21,20 +21,15 @@ Copy `.env.example` and fill in at least:
 
 ```
 POSTGRES_PASSWORD=<a long random string>
-RAMA_MEMBER_NAME=<the first member's name>
 RAMA_BASE_URL=https://<the box's address>
-RAMA_ACCOUNTS='[{"username":"rachit","password":"<8+ chars>","name":"Rachit Agarwal","role":"manager"},{"username":"member2","password":"<8+ chars>","name":"Second Member"}]'
 RAMA_POD_TOKEN=<a long random string, also given to the pod controller>
-RAMA_SIGNING_KEY=<written by `pnpm rama-ceremony signing-key`; seals every signature>
 BUILDER_VENDOR=anthropic
 AUDITOR_VENDOR=openai
-ANTHROPIC_API_KEY=...
-OPENAI_API_KEY=...
 OPENAI_MODEL=gpt-6.1-sol
 GIT_SHA=<git rev-parse --short HEAD>
 ```
 
-`DATABASE_URL` is set by the compose file. Members sign in at `/login` with a username and password from `RAMA_ACCOUNTS`; to add or change an account, edit `.env` and restart the app.
+`DATABASE_URL` is set by the compose file. Since Stage 7, people pick their names from `members.json` (no passwords), and the vendor keys and the GitHub token are entered in the app's Settings screen, so `.env` holds no key. The app generates its own encryption and signing keys in the work volume on first use (`work/.secret-key`, `work/.signing-key`); back the volume up with the database. The picker is not security: on a box anyone can reach, either keep it behind a network you trust or switch on the floor edition's sign-in, with `AUTH_MODE=password` and `RAMA_ACCOUNTS='[{"username":"…","password":"<8+ chars>","name":"…","role":"manager"}]'` in `.env`, then restart the app.
 
 ## 3. Start
 
@@ -58,7 +53,7 @@ docker compose -f deploy/compose.box.yml exec app pnpm rama-pod add 1 "Prototype
 docker compose -f deploy/compose.box.yml exec app pnpm rama site add <gitUrl> --id <id>
 ```
 
-A site belongs to the member named in `RAMA_MEMBER_NAME` when added from the command line. The pod controller polls `GET /api/pod/<n>/status` with `Authorization: Bearer $RAMA_POD_TOKEN`.
+A site added from the command line belongs to the first trainer in `members.json` (or `RAMA_MEMBER_NAME`, when set). In the app, a product is started from the home page, and an outside site is refreshed, photographed and audited with buttons; adding an outside site is still done from the command line (KNOWN-GAPS). The pod controller polls `GET /api/pod/<n>/status` with `Authorization: Bearer $RAMA_POD_TOKEN`.
 
 ## 5. Backups and restore
 

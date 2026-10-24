@@ -1,6 +1,6 @@
 # Stage 7 — Workbench
 
-Built 2026-10-24, from tag `stage-7-start`. Draft until the reviewer's findings are in.
+Built 2026-10-24, from tag `stage-7-start`.
 
 ## Where this stage stands
 
@@ -77,11 +77,32 @@ No voice and no camera. With no keys set it needs no network either: the sample'
 
 ## Reviewer findings
 
-Pending.
+Six runs of the independent reviewer (OpenAI `gpt-6.1-sol`, fresh context; transcripts in `stage-7.review.md`). Each code defect was fixed and the reviewer rerun, until run 6 reported none.
+
+| Run | Code defects found                                                                                                                                                                                                                               | Fix                                                                                                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | A page import or a bare path string counted as evidence for Verified (Invariant 11). Test drive deleted earlier runs' checkouts, signature journals included (Invariant 3). The sample's `orders` table had no provenance columns (Invariant 8). | A render needs the page used, a visit needs a visiting call. Earlier runs are kept, and the home page lists the latest. `site_id`, `created_at` and `created_by` added.              |
+| 2   | Evidence was read from raw source, comments and strings included.                                                                                                                                                                                | `codeOf` reads a test as code only.                                                                                                                                                  |
+| 3   | A call in a helper nobody calls, or in a skipped test, still counted.                                                                                                                                                                            | Verified needs the run's own record of what executed: V8 coverage per test file's worker (`TestRun.executed`). Route visits are no longer counted, because the run cannot show them. |
+| 4   | Any executed function of a page's module counted as a render. Audiences came from the last capture, and defaulted to customer.                                                                                                                   | A render needs the page's own component to have run. Audiences come from the screens file as it is now; an unnamed screen counts as "not said".                                      |
+| 5   | Figure functions from a capture older than the current commit could make a screen Verified.                                                                                                                                                      | Figure evidence counts only from a capture at the current commit.                                                                                                                    |
+| 6   | None.                                                                                                                                                                                                                                            | —                                                                                                                                                                                    |
+
+Report claims the reviewer corrected:
+
+- the vendor audit is not in CI;
+- "no network" holds only without keys;
+- a failed step is a grey flag (the colour is now grey, as rule 15 says).
+
+Findings that a diff cannot settle, listed every run as not-a-defect:
+
+- (c) The append-only and audit triggers sit outside the diff. They are unchanged since Stage 4, and `packages/db/src/db.test.ts` checks them.
+- (d) The generators and drift checks are unchanged. The watcher and CI regenerate `blueprint/self.json` and `docs/BLUEPRINT.md` and fail on any difference; both were green at every commit.
+- (e) Removing `RAMA_ACCOUNTS` from `.env` cannot be shown, because `.env` is not in the diff. Run times are what the tests measured (Test drive takes about 50 s a run in `testdrive.test.ts`; the e2e takes about 2 min).
 
 ## Real model cost
 
-Pending: the reviewer's runs.
+Six reviewer calls: 902,532 input and 11,222 output tokens on `gpt-6.1-sol`, **₹182** in all (`pnpm cost 7`). Test drive made no model call: its audit used the stand-in, since no key is set in the tests. No @vendor test was run.
 
 ## Open questions
 

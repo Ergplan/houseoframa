@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+  "commit": "eb7b3fbd60785794312e213d0a305def7387c85d",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8328,6 +8328,51 @@
       "sha": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "short": "c652c7a",
       "subject": "Fix Stage 7 reviewer run 4: a render needs the page's own component to run; audiences from the screens file"
+    },
+    {
+      "at": "2026-10-24T18:03:18Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 107,
+          "del": 32,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-7.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-7.review.md"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.test.ts"
+        },
+        {
+          "add": 9,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.ts"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/states.ts"
+        }
+      ],
+      "sha": "eb7b3fbd60785794312e213d0a305def7387c85d",
+      "short": "eb7b3fb",
+      "subject": "Fix Stage 7 reviewer run 5: figure evidence only from a capture at the current commit"
     }
   ],
   "edges": [
@@ -17802,7 +17847,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T17:52:44Z",
+  "extractedAt": "2026-10-24T18:03:18Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -20481,7 +20526,7 @@
     },
     {
       "binary": false,
-      "bytes": 5230,
+      "bytes": 5613,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -20490,7 +20535,7 @@
       "lastCommit": "3dc33330803780267f89a827034d42deefc4c55b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 97,
+      "lines": 92,
       "path": "docs/DEPLOY.md",
       "test": false
     },
@@ -20511,7 +20556,7 @@
     },
     {
       "binary": false,
-      "bytes": 12443,
+      "bytes": 12696,
       "changes": 31,
       "env": [],
       "envDynamic": false,
@@ -20520,7 +20565,7 @@
       "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 43,
+      "lines": 44,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -20835,31 +20880,31 @@
     },
     {
       "binary": false,
-      "bytes": 12499,
-      "changes": 4,
+      "bytes": 17124,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
-      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "lastCommit": "eb7b3fbd60785794312e213d0a305def7387c85d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 91,
+      "lines": 112,
       "path": "docs/reports/stage-7.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 66961,
-      "changes": 4,
+      "bytes": 80840,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
-      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "lastCommit": "eb7b3fbd60785794312e213d0a305def7387c85d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 94,
+      "lines": 110,
       "path": "docs/reports/stage-7.review.md",
       "test": false
     },
@@ -22215,12 +22260,12 @@
     {
       "binary": false,
       "bytes": 10167,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "lastCommit": "eb7b3fbd60785794312e213d0a305def7387c85d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 217,
@@ -22230,7 +22275,7 @@
     {
       "binary": false,
       "bytes": 11951,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -22251,7 +22296,7 @@
         "testReach"
       ],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "lastCommit": "eb7b3fbd60785794312e213d0a305def7387c85d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 277,
@@ -24880,7 +24925,7 @@
     {
       "binary": false,
       "bytes": 4167,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -24890,7 +24935,7 @@
         "unsaidSentence"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "lastCommit": "eb7b3fbd60785794312e213d0a305def7387c85d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 119,
