@@ -25,6 +25,7 @@ RAMA_MEMBER_NAME=<the first member's name>
 RAMA_BASE_URL=https://<the box's address>
 RAMA_ACCOUNTS='[{"username":"rachit","password":"<8+ chars>","name":"Rachit Agarwal","role":"manager"},{"username":"member2","password":"<8+ chars>","name":"Second Member"}]'
 RAMA_POD_TOKEN=<a long random string, also given to the pod controller>
+RAMA_SIGNING_KEY=<written by `pnpm rama-ceremony signing-key`; seals every signature>
 BUILDER_VENDOR=anthropic
 AUDITOR_VENDOR=openai
 ANTHROPIC_API_KEY=...

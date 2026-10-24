@@ -79,6 +79,16 @@ describe('installGate', () => {
       expect(text).toContain('ref: stage-4-start');
       expect(text).not.toContain('RAMA_REF');
       expect(() => gateWorkflow('main; rm -rf /')).toThrow(/not a git ref/);
+      expect(text).toContain("PUBLIC_KEY: ''");
+      const keyed = readFileSync(
+        installGate(dir, 'stage-4-start', 'MCowBQYDK2VwAyEAabc+/='),
+        'utf8',
+      );
+      expect(keyed).toContain("PUBLIC_KEY: 'MCowBQYDK2VwAyEAabc+/='");
+      expect(keyed).toContain(
+        'if [ -n "$PUBLIC_KEY" ]; then set -- "$@" --public-key "$PUBLIC_KEY"; fi',
+      );
+      expect(() => gateWorkflow('main', "x'; curl evil")).toThrow(/not a base64 public key/);
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }

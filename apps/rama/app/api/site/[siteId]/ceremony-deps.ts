@@ -14,6 +14,7 @@ import {
   sign,
   startSession,
 } from '@rama/ceremony';
+import { sealerFrom } from '@rama/ceremony/seal';
 import type { CeremonyDeps } from './ceremony';
 
 async function withDb<T>(fn: (db: ReturnType<typeof createDb>['db']) => Promise<T>): Promise<T> {
@@ -44,7 +45,8 @@ export const ceremonyDeps = (auth: { member: Member; site: SiteLocation }): Cere
   memberName: auth.member.name,
   personId: async () => auth.member.id,
   signoffs: (siteId) => withDb((db) => listSignoffs(db, siteId)),
-  sign: (site, input) => withDb((db) => sign(db, site, input)),
+  // Every signature the app writes is sealed with House of Rama's key when one is configured.
+  sign: (site, input) => withDb((db) => sign(db, site, { ...input, sealer: sealerFrom() })),
   decide: (site, input) => withDb((db) => decide(db, site, input)),
   startSession: (siteId, input) => withDb((db) => startSession(db, siteId, input)),
   addTurn: (siteId, sessionId, input) => withDb((db) => addTurn(db, siteId, sessionId, input)),

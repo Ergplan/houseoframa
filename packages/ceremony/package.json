@@ -9,7 +9,8 @@
     "./gate": "./src/gate.ts",
     "./records": "./src/records.ts",
     "./walkthrough": "./src/walkthrough.ts",
-    "./structure": "./src/structure.ts"
+    "./structure": "./src/structure.ts",
+    "./seal": "./src/seal.ts"
   },
   "bin": {
     "rama-ceremony": "./bin/rama-ceremony.mjs"

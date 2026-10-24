@@ -3,10 +3,11 @@
 The people (Stage 4): discovery sessions and decision cards, named signatures, the merge gate and the walkthrough. Plain code throughout, except Rama's drafted questions (Invariant 6).
 
 ```
-rama gate <repoPath> --base <commit> [--test-report <vitest-or-jest.json>]   exit 0 pass, 1 fail, 2 usage
+rama gate <repoPath> --base <commit> [--test-report <json>] [--public-key <base64>]   exit 0 pass, 1 fail, 2 usage
 rama-ceremony import-session <site> <discovery.js>       the weekend's session, flagged reconstructed
 rama-ceremony import-decisions <site> [--from docs/DECISIONS.md]   a decisions log as reconstructed cards
-rama-ceremony install-gate <site> [--ref <houseoframa ref>]        writes .github/workflows/rama-gate.yml
+rama-ceremony install-gate <site> [--ref <houseoframa ref>]        writes .github/workflows/rama-gate.yml (with the public key)
+rama-ceremony signing-key                                          prints the public key; writes a private key to .env if none
 ```
 
 - `records.ts`: the `.rama/decisions.jsonl` and `.rama/signoffs.jsonl` formats (strict zod), `appendRecord()`, `syncMirror()` (appends committed rows the file lacks; never removes a line), `signaturesInForce()` and `checkChain()`: a signature supersedes one of the same target that nothing has superseded yet; a withdrawal (`withdrawn: true`) must supersede something.
@@ -16,3 +17,4 @@ rama-ceremony install-gate <site> [--ref <houseoframa ref>]        writes .githu
 - `imports.ts` and `importer.ts`: the reconstructed records, read from their source files only. `importRecord()` reconciles a corrected re-import append-only (`planReimport()`).
 - `discovery.ts`: `draftQuestion()`, prompt `discovery.v1` through `packages/model` (builder role). Its output is stored as a draft turn, never as a decision.
 - `ci/rama-gate.yml`: the workflow a target includes. It runs on `pull_request_target` with a read-only token, no secrets, and House of Rama at a pinned ref.
+- `seal.ts`: seals on signatures. `sealerFrom()` (from `RAMA_SIGNING_KEY`) signs a record's canonical JSON with Ed25519, and `verifySeal()` checks it against the public key. `sign()` seals before inserting, and the gate counts only sealed lines when given `--public-key`.

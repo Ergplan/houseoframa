@@ -2,13 +2,14 @@
 // rama-ceremony import-session <site> <reference/weekend-prototype/discovery.js>
 // rama-ceremony import-decisions <site> [--from docs/DECISIONS.md]
 // rama-ceremony install-gate <site> [--ref <houseoframa ref>]
-import { existsSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { locateSite, readSiteBlueprint } from '@rama/blueprint/site';
 import { createDb } from '@rama/db';
 import { formatGate, runGate } from './gate.ts';
 import { installGate } from './install.ts';
+import { generateSigningKey, sealerFrom } from './seal.ts';
 import { parseDecisionsLog, parseWeekendSession, type ImportedSession } from './imports.ts';
 import { importRecord } from './importer.ts';
 
@@ -16,10 +17,11 @@ const envFile = fileURLToPath(new URL('../../../.env', import.meta.url));
 if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 const USAGE = `usage:
-  rama gate <repoPath> --base <commit> [--test-report <file>]
+  rama gate <repoPath> --base <commit> [--test-report <file>] [--public-key <base64>]
   rama-ceremony import-session <site> <discovery.js>
   rama-ceremony import-decisions <site> [--from docs/DECISIONS.md]
-  rama-ceremony install-gate <site> [--ref <houseoframa ref>]`;
+  rama-ceremony install-gate <site> [--ref <houseoframa ref>]
+  rama-ceremony signing-key   (prints the public key; writes a new private key to .env if none)`;
 
 const flag = (argv: string[], name: string) => {
   const i = argv.indexOf(name);
@@ -46,7 +48,10 @@ async function main(argv: string[]): Promise<number> {
   if (command === 'gate') {
     const base = flag(argv, '--base');
     if (!a || !base) throw new Error(USAGE);
-    const r = runGate(path.resolve(a), base, { testReport: flag(argv, '--test-report') });
+    const r = runGate(path.resolve(a), base, {
+      testReport: flag(argv, '--test-report'),
+      publicKey: flag(argv, '--public-key'),
+    });
     console.log(formatGate(r));
     return r.ok ? 0 : 1;
   }
@@ -78,9 +83,27 @@ async function main(argv: string[]): Promise<number> {
       (await import('node:child_process'))
         .execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' })
         .trim();
+    const sealer = sealerFrom();
     console.error(
-      `wrote ${installGate(site.repoDir, ref)} (House of Rama at ${ref}); commit it in the target, and make "rama gate" a required check`,
+      `wrote ${installGate(site.repoDir, ref, sealer?.publicKey ?? '')} (House of Rama at ${ref}; ${sealer ? "seals checked against this server's key" : 'no RAMA_SIGNING_KEY: seals not checked'}); commit it in the target, and make "rama gate" a required check`,
     );
+    return 0;
+  }
+  if (command === 'signing-key') {
+    // Writes a new Ed25519 key to .env when none is set (never printed), and prints the public key.
+    let sealer = sealerFrom();
+    if (!sealer) {
+      const key = generateSigningKey();
+      appendFileSync(
+        envFile,
+        `\n# House of Rama's signing key for signature seals (secret; generated ${new Date().toISOString().slice(0, 10)}).\nRAMA_SIGNING_KEY=${key.privateKey}\n`,
+      );
+      sealer = sealerFrom({ RAMA_SIGNING_KEY: key.privateKey });
+      console.error(
+        `wrote a new RAMA_SIGNING_KEY to ${envFile}; restart the app to seal new signatures`,
+      );
+    }
+    console.log(sealer!.publicKey);
     return 0;
   }
   throw new Error(USAGE);

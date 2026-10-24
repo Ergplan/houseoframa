@@ -374,3 +374,33 @@ describe('the mirror under concurrency and failure', () => {
     }
   });
 });
+
+describe('sealed signatures', () => {
+  it('seals the record before the insert: the row and the mirrored line carry the same verifiable seal', async () => {
+    const { generateSigningKey, sealerFrom, verifySeal } = await import('../src/seal.ts');
+    const key = generateSigningKey();
+    const dir = mkdtempSync(path.join(tmpdir(), 'rama-seal-'));
+    try {
+      const s = await sign(
+        conn.db,
+        { id: 'self', repoDir: dir },
+        {
+          person: 'Asha Rao',
+          personId: memberId,
+          target: { kind: 'screen', id: '/sealed', commit: 'abc1234' },
+          statement: 'Sealed.',
+          at: new Date('2026-10-24T09:00:00.123Z'),
+          sealer: sealerFrom({ RAMA_SIGNING_KEY: key.privateKey }),
+        },
+      );
+      expect(verifySeal(s, key.publicKey)).toBe(true);
+      const line = readSignoffs(dir).find((x) => x.id === s.id)!;
+      expect(line).toEqual(s);
+      expect(verifySeal(line, key.publicKey)).toBe(true);
+      const [row] = await conn.sql`select seal from signoffs where id = ${s.id}`;
+      expect(row!.seal).toBe(s.seal);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+});

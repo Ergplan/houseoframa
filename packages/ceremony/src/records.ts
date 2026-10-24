@@ -43,6 +43,7 @@ export const SignoffRecord = z
     at: iso,
     supersedes: z.string().min(1).optional(),
     withdrawn: z.boolean().optional(),
+    seal: z.string().min(1).optional(),
   })
   .strict();
 

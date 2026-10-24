@@ -161,6 +161,8 @@ export const signoffs = pgTable(
     supersedes: uuid('supersedes').references((): AnyPgColumn => signoffs.id),
     /** True when this row withdraws the signature it supersedes. */
     withdrawn: boolean('withdrawn').notNull().default(false),
+    /** House of Rama's Ed25519 signature over the record (Signoff.seal); null when no key was configured. */
+    seal: text('seal'),
     ...provenance,
   },
   (t) => [

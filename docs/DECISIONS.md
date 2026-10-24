@@ -2,6 +2,12 @@
 
 One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are recorded here on the day they were taken.
 
+## 2026-10-24 — Sealed signatures (gaps 1)
+
+- **A signature line in git proves itself.** House of Rama signs every signature record it writes with an Ed25519 key held by the server (`RAMA_SIGNING_KEY` in `.env`, a secret). The seal covers the record's canonical JSON. It sits in both the database row (`signoffs.seal`) and the mirrored line, so the two stay identical. `pnpm rama-ceremony signing-key` writes a key to `.env` without printing it, and prints the public key.
+- **The gate counts only sealed lines when given the public key.** The key comes from `rama gate --public-key`, which the workflow on the base branch passes (`install-gate` writes it in), never from the target. A line typed in by hand, an edited line, or a forged withdrawal counts for nothing, and the gate lists it. Without a key, every line counts and the gate says so.
+- **Ed25519, from Node's own crypto.** No new dependency, short keys and signatures, and verification needs only the public key, which can sit in a workflow file in the clear.
+
 ## 2026-10-24 — Sign-in by username and password (the user's decision)
 
 - **No email logins: two username-and-password accounts, for now** (the user, 2026-10-24: "no email logins, only two simple username and passwords hardcoded in the system for now"). This replaces the locked decision "Access, Stage 6: email magic link" (CLAUDE.md §3).

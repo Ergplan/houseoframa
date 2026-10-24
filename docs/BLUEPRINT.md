@@ -175,6 +175,7 @@ Source: `packages/shared/src/ceremony.ts`
 | `at` | `string` | yes | When it was signed, ISO 8601. |
 | `supersedes` | `string` | no | The Signoff this one reverses or replaces, when any. |
 | `withdrawn` | `boolean` | no | True when this Signoff withdraws the one it supersedes (the target is then unsigned), false or absent when it signs. |
+| `seal` | `string` | no | House of Rama's Ed25519 signature over the rest of the record (its canonical JSON), base64. The gate counts a line only when this verifies against the public key it is given, so a line typed into the file by hand counts for nothing. |
 
 ## Finding
 

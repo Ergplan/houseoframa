@@ -44,4 +44,10 @@ export interface Signoff {
   supersedes?: string;
   /** True when this Signoff withdraws the one it supersedes (the target is then unsigned), false or absent when it signs. */
   withdrawn?: boolean;
+  /**
+   * House of Rama's Ed25519 signature over the rest of the record (its canonical JSON), base64. The gate
+   * counts a line only when this verifies against the public key it is given, so a line typed into the
+   * file by hand counts for nothing.
+   */
+  seal?: string;
 }

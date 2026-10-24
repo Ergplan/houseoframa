@@ -1,0 +1,1 @@
+ALTER TABLE "signoffs" ADD COLUMN "seal" text;

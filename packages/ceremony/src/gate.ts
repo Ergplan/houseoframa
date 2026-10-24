@@ -10,6 +10,7 @@ import type { Blueprint, Signoff } from '@rama/shared';
 import { extract } from '@rama/blueprint';
 import { isCode } from '@rama/blueprint/metrics';
 import { parseLines, SIGNOFFS_FILE, SignoffRecord, signaturesInForce } from './records.ts';
+import { verifySeal } from './seal.ts';
 
 export interface GateScreen {
   id: string;
@@ -35,6 +36,10 @@ export interface GateResult {
   screens: GateScreen[];
   /** Problems that fail the gate whatever the screens say (a rewritten signature file, a bad base). */
   problems: string[];
+  /** Signature lines that counted for nothing because their seal did not verify (with --public-key). */
+  unsealed: { id: string; person: string; target: string }[];
+  /** True when signatures were checked against House of Rama's public key. */
+  sealsChecked: boolean;
 }
 
 export interface GateInput {
@@ -48,13 +53,24 @@ export interface GateInput {
   /** Test files (repository paths) that passed; null when no test report was given. */
   passingTests: Set<string> | null;
   problems?: string[];
+  /**
+   * House of Rama's public key (base64 SPKI DER), given by the workflow on the base branch, never read from
+   * the target. With it, a signature counts only when its seal verifies; without it, every line counts.
+   */
+  publicKey?: string | null;
 }
 
 /** The gate's rule over its inputs: deterministic and free of I/O, so it is tested on crafted fixtures. */
 export function evaluateGate(input: GateInput): GateResult {
   const { bp } = input;
   const order = new Map(bp.commits.map((c, i) => [c.sha, i]));
-  const inForce = signaturesInForce(input.signoffs);
+  const unsealed = input.publicKey
+    ? input.signoffs.filter((s) => !verifySeal(s, input.publicKey!))
+    : [];
+  const counted = input.publicKey
+    ? input.signoffs.filter((s) => !unsealed.includes(s))
+    : input.signoffs;
+  const inForce = signaturesInForce(counted);
   const testsOf = new Map<string, string[]>();
   for (const e of bp.edges) {
     const from = bp.nodes.find((n) => n.path === e.from);
@@ -130,6 +146,12 @@ export function evaluateGate(input: GateInput): GateResult {
     head: bp.commit,
     screens,
     problems,
+    unsealed: unsealed.map((s) => ({
+      id: s.id,
+      person: s.person,
+      target: `${s.target.kind}:${s.target.id}`,
+    })),
+    sealsChecked: Boolean(input.publicKey),
   };
 }
 
@@ -192,7 +214,7 @@ export function changesSince(repoDir: string, base: string): { sha: string; path
 export function runGate(
   repoDir: string,
   base: string,
-  opts: { testReport?: string } = {},
+  opts: { testReport?: string; publicKey?: string } = {},
 ): GateResult {
   const problems: string[] = [];
   const baseSha = git(repoDir, [
@@ -250,6 +272,7 @@ export function runGate(
     signoffs,
     passingTests: passing,
     problems,
+    publicKey: opts.publicKey ?? null,
   });
 }
 
@@ -259,6 +282,14 @@ export function formatGate(r: GateResult): string {
     `rama gate: ${r.ok ? 'PASS' : 'FAIL'} (${r.base.slice(0, 7)}..${r.head.slice(0, 7)})`,
   ];
   for (const p of r.problems) lines.push(`  ✗ ${p}`);
+  if (!r.sealsChecked)
+    lines.push(
+      "  ! signatures not checked against House of Rama's key (no --public-key): any line counts",
+    );
+  for (const u of r.unsealed)
+    lines.push(
+      `  ! ignored: the signature ${u.id.slice(0, 8)} by ${u.person} on ${u.target} carries no valid seal`,
+    );
   if (!r.screens.length) lines.push('  no screen changed since the base');
   for (const s of r.screens) {
     lines.push(`  ${s.ok ? '✓' : '✗'} ${s.route}${s.removed ? ' (removed)' : ''}: ${s.reason}`);

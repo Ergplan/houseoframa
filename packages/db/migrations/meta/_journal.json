@@ -57,6 +57,13 @@
       "when": 1792816695340,
       "tag": "0007_password_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792817362506,
+      "tag": "0008_signoff_seal",
+      "breakpoints": true
     }
   ]
 }

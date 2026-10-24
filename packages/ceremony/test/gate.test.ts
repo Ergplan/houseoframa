@@ -244,6 +244,36 @@ describe('rama gate', () => {
     }
   });
 
+  it("with House of Rama's public key, counts only sealed signatures: a hand-typed line or a forged withdrawal counts for nothing", async () => {
+    const { generateSigningKey, sealerFrom } = await import('../src/seal.ts');
+    const key = generateSigningKey();
+    const sealer = sealerFrom({ RAMA_SIGNING_KEY: key.privateKey })!;
+    const real = sign({ id: 's1' });
+    const sealed = { ...real, seal: sealer.seal(real) };
+    const typed = sign({ id: 's2', target: { kind: 'screen', id: '/', commit: change } });
+    const forgedWithdrawal = sign({
+      id: 's3',
+      supersedes: 's1',
+      withdrawn: true,
+      at: '2026-10-22T12:00:00Z',
+    });
+    withSignoffs([line(sealed), line(typed), line(forgedWithdrawal)], () => {
+      const r = runGate(repo.dir, base, { publicKey: key.publicKey });
+      expect(r.sealsChecked).toBe(true);
+      expect(r.unsealed.map((u) => u.id)).toEqual(['s2', 's3']);
+      expect(r.screens.find((s) => s.route === '/bills')).toMatchObject({ ok: true });
+      expect(r.screens.find((s) => s.route === '/')).toMatchObject({ ok: false });
+      expect(formatGate(r)).toContain(
+        '! ignored: the signature s2 by Asha Rao on screen:/ carries no valid seal',
+      );
+      // Without the key every line counts, and the gate says so.
+      const loose = runGate(repo.dir, base);
+      expect(loose.screens.find((s) => s.route === '/')).toMatchObject({ ok: true });
+      expect(loose.screens.find((s) => s.route === '/bills')).toMatchObject({ ok: false });
+      expect(formatGate(loose)).toContain('signatures not checked against House of Rama');
+    });
+  });
+
   it('passes when no screen changed, and refuses a base that is not a commit', () => {
     expect(runGate(repo.dir, change)).toMatchObject({ ok: true, screens: [] });
     expect(() => runGate(repo.dir, 'nope')).toThrow(/not a commit/);

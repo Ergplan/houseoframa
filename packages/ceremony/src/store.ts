@@ -11,7 +11,9 @@
 import { asc, eq, sql } from 'drizzle-orm';
 import type { Decision, Signoff } from '@rama/shared';
 import { decisions, discoverySessions, discoveryTurns, signoffs, type Db } from '@rama/db';
+import { randomUUID } from 'node:crypto';
 import { checkChain, DECISIONS_FILE, SIGNOFFS_FILE, syncMirror } from './records.ts';
+import type { Sealer } from './seal.ts';
 
 const lockSite = (tx: Db, siteId: string) =>
   tx.execute(sql`select pg_advisory_xact_lock(hashtext('rama-ceremony'), hashtext(${siteId}))`);
@@ -72,6 +74,7 @@ const toSignoff = (r: typeof signoffs.$inferSelect): Signoff => ({
   at: r.at.toISOString(),
   ...(r.supersedes ? { supersedes: r.supersedes } : {}),
   ...(r.withdrawn ? { withdrawn: true } : {}),
+  ...(r.seal ? { seal: r.seal } : {}),
 });
 
 const toDecision = (r: typeof decisions.$inferSelect): Decision => ({
@@ -124,14 +127,18 @@ export interface SignInput {
   supersedes?: string;
   withdrawn?: boolean;
   at: Date;
+  /** Seals the record with House of Rama's key (seal.ts); without one the record carries no seal. */
+  sealer?: Sealer | null;
 }
 
 /** A named signature: one append-only row (audited by trigger) and one line in `.rama/signoffs.jsonl`. */
 export async function sign(db: Db, site: SiteRef, input: SignInput): Promise<Signoff> {
   const record = await underSiteLock(db, site.id, async (one) => {
     const existing = await listSignoffs(one, site.id);
-    checkChain(existing, {
-      id: 'pending',
+    // The record is complete before the insert (its id made here), so its seal covers exactly what the
+    // row and the mirrored line hold.
+    const draft: Signoff = {
+      id: randomUUID(),
       siteId: site.id,
       person: input.person,
       target: input.target,
@@ -139,10 +146,14 @@ export async function sign(db: Db, site: SiteRef, input: SignInput): Promise<Sig
       at: input.at.toISOString(),
       ...(input.supersedes ? { supersedes: input.supersedes } : {}),
       ...(input.withdrawn ? { withdrawn: true } : {}),
-    });
+    };
+    checkChain(existing, draft);
+    const seal = input.sealer ? input.sealer.seal(draft) : null;
     const [row] = await one
       .insert(signoffs)
       .values({
+        id: draft.id,
+        seal,
         siteId: site.id,
         person: input.person,
         personId: input.personId,

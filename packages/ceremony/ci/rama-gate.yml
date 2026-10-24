@@ -92,6 +92,10 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
           REPORT: ${{ runner.temp }}/report/rama-tests.json
+          # House of Rama's public key: a signature counts only when its seal verifies against it. Written
+          # here by `rama-ceremony install-gate`; this copy of the file is the base branch's.
+          PUBLIC_KEY: 'RAMA_PUBLIC_KEY'
         run: |
           if [ -f "$REPORT" ]; then set -- --test-report "$REPORT"; fi
+          if [ -n "$PUBLIC_KEY" ]; then set -- "$@" --public-key "$PUBLIC_KEY"; fi
           pnpm --dir rama rama gate "$GITHUB_WORKSPACE/target" --base "$BASE" "$@"
