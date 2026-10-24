@@ -84,6 +84,8 @@ export function siteStates(
   const publicKey = appSealer(env).publicKey;
   const input = {
     bp,
+    // Figures photographed at an older commit may miss one added since: they are not evidence now.
+    figuresKnown: capture?.commit === bp.commit,
     run: readTestRun(site.id, env),
     reach: testReach(bp, read),
     figures,

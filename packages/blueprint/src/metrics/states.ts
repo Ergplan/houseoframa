@@ -160,6 +160,11 @@ export interface StateInput {
   reach: Record<string, TestReach>;
   /** The screen's figures, by the function behind each. */
   figures: Record<string, FigureFn[]>;
+  /**
+   * False when the figures are not known at the Blueprint's commit (the screens were photographed before
+   * the last change): then no figure-function evidence counts, since a new figure would go unchecked.
+   */
+  figuresKnown?: boolean;
   /** Signatures in force by `screen:<id>`. */
   signatures: Map<string, Signoff>;
   /** Whether a signature carries House of Rama's seal (verifySeal against the app's public key). */
@@ -191,7 +196,8 @@ export function stateOf(screen: Screen, input: StateInput): StateOf {
   const atOrAfter = (sha: string) => order.has(sha) && (order.get(sha)! >= (order.get(changed) ?? -1));
   const why: string[] = [];
 
-  const fns = input.figures[screen.id] ?? [];
+  const known = input.figuresKnown !== false;
+  const fns = known ? (input.figures[screen.id] ?? []) : [];
   const passing = new Set(run?.passing ?? []);
   const ran = (t: string) => new Set(run?.executed?.[t] ?? []);
   const exercising = Object.entries(input.reach)
@@ -208,6 +214,8 @@ export function stateOf(screen: Screen, input: StateInput): StateOf {
   const fresh = run !== null && atOrAfter(run.commit);
   const verified = tests.length > 0 && fresh;
   if (verified) why.push(`Verified: ${tests.length === 1 ? 'a test checks it and passes' : `${tests.length} tests check it and pass`}.`);
+  else if (!known)
+    why.push('Its figures are not known at this commit: photograph the screens again, then run the tests.');
   else if (!run) why.push('No test run is on record.');
   else if (!run.executed) why.push('The last test run did not record what ran, so no test counts.');
   else if (tests.length && !fresh) why.push('Its tests passed before its last change; they have not run since.');

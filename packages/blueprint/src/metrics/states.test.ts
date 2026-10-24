@@ -136,6 +136,14 @@ describe('stateOf', () => {
     expect(stateOf(screen('/total'), input({ run: stale })).why[0]).toMatch(/have not run since/);
   });
 
+  it('figures photographed before the last change are not evidence: a new one would go unchecked', () => {
+    const s = stateOf(screen('/total'), input({ figuresKnown: false }));
+    expect(s.state).toBe('Unverified');
+    expect(s.why).toEqual([
+      'Its figures are not known at this commit: photograph the screens again, then run the tests.',
+    ]);
+  });
+
   it('a test that only imports a file is not evidence', () => {
     // A test importing the screen's module without calling its figure functions verifies nothing.
     const reach = { 'lib/money.test.ts': { calls: [], renders: [] } };

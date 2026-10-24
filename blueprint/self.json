@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+  "commit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8253,6 +8253,81 @@
       "sha": "4857039c6556e89203b42c6a6a00f00b29057b7d",
       "short": "4857039",
       "subject": "Fix Stage 7 reviewer run 3: Verified needs the run's record of what executed"
+    },
+    {
+      "at": "2026-10-24T17:52:44Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 5,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.tsx"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/workbench/TrainerConsole.tsx"
+        },
+        {
+          "add": 153,
+          "del": 39,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/stage-7.md"
+        },
+        {
+          "add": 18,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-7.review.md"
+        },
+        {
+          "add": 8,
+          "del": 5,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.test.ts"
+        },
+        {
+          "add": 18,
+          "del": 3,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.ts"
+        },
+        {
+          "add": 30,
+          "del": 8,
+          "kind": "M",
+          "path": "packages/workbench/src/states.ts"
+        },
+        {
+          "add": 53,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/workbench/test/states.test.ts"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "tests/stage-7.e2e.test.ts"
+        }
+      ],
+      "sha": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "short": "c652c7a",
+      "subject": "Fix Stage 7 reviewer run 4: a render needs the page's own component to run; audiences from the screens file"
     }
   ],
   "edges": [
@@ -17727,7 +17802,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T17:38:06Z",
+  "extractedAt": "2026-10-24T17:52:44Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -19175,7 +19250,7 @@
     {
       "binary": false,
       "bytes": 4480,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -19183,7 +19258,7 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 124,
@@ -19938,7 +20013,7 @@
     {
       "binary": false,
       "bytes": 5832,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -19946,7 +20021,7 @@
         "TrainerConsole"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 158,
@@ -20437,12 +20512,12 @@
     {
       "binary": false,
       "bytes": 12443,
-      "changes": 30,
+      "changes": 31,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 43,
@@ -20760,13 +20835,13 @@
     },
     {
       "binary": false,
-      "bytes": 12312,
-      "changes": 3,
+      "bytes": 12499,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
-      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 91,
@@ -20775,16 +20850,16 @@
     },
     {
       "binary": false,
-      "bytes": 54033,
-      "changes": 3,
+      "bytes": 66961,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "897ffdd9906e3c39c296c4fcc8e49715fdcfea3b",
-      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 77,
+      "lines": 94,
       "path": "docs/reports/stage-7.review.md",
       "test": false
     },
@@ -22139,23 +22214,23 @@
     },
     {
       "binary": false,
-      "bytes": 9803,
-      "changes": 4,
+      "bytes": 10167,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 209,
+      "lines": 217,
       "path": "packages/blueprint/src/metrics/states.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 11515,
-      "changes": 4,
+      "bytes": 11951,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -22176,10 +22251,10 @@
         "testReach"
       ],
       "firstCommit": "319f0723830f719a9643aa5b2544ef559863b952",
-      "lastCommit": "4857039c6556e89203b42c6a6a00f00b29057b7d",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 269,
+      "lines": 277,
       "path": "packages/blueprint/src/metrics/states.ts",
       "test": false
     },
@@ -24804,8 +24879,8 @@
     },
     {
       "binary": false,
-      "bytes": 4018,
-      "changes": 1,
+      "bytes": 4167,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -24815,10 +24890,10 @@
         "unsaidSentence"
       ],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 117,
+      "lines": 119,
       "path": "packages/workbench/src/states.ts",
       "test": false
     },
@@ -24905,12 +24980,12 @@
     {
       "binary": false,
       "bytes": 2571,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 53,
@@ -25789,12 +25864,12 @@
     {
       "binary": false,
       "bytes": 7833,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "a194f6e5980a3f1849487429433ce8879e41220c",
-      "lastCommit": "7810d442bb5cd60fd4d93fce865dbc2c7524957b",
+      "lastCommit": "c652c7a561885ac2bb0631c0b99a40c4cc172bbc",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 176,
