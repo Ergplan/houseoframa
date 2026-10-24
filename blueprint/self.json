@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
+  "commit": "001bd89e971288a6446de746433933575d8c413b",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -6526,6 +6526,57 @@
       "sha": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
       "short": "2a73cc7",
       "subject": "Sealed signatures: the gate counts only lines House of Rama signed"
+    },
+    {
+      "at": "2026-10-24T05:03:20Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 254,
+          "del": 66,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 17,
+          "del": 6,
+          "kind": "M",
+          "path": "deploy/backup.sh"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "deploy/compose.box.yml"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DEPLOY.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 79,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/backup.e2e.test.ts"
+        }
+      ],
+      "sha": "001bd89e971288a6446de746433933575d8c413b",
+      "short": "001bd89",
+      "subject": "Backups copied off the box: BACKUP_COPY_COMMAND runs with each night's dump"
     }
   ],
   "edges": [
@@ -13972,7 +14023,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T04:59:50Z",
+  "extractedAt": "2026-10-24T05:03:20Z",
   "extractorVersion": "0.1.0",
   "layers": [
     {
@@ -16072,12 +16123,12 @@
     {
       "binary": false,
       "bytes": 1453,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 31,
@@ -16087,12 +16138,12 @@
     {
       "binary": false,
       "bytes": 1997,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
+      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 66,
@@ -16121,12 +16172,12 @@
     {
       "binary": false,
       "bytes": 38296,
-      "changes": 21,
+      "changes": 22,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
+      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 159,
@@ -16178,12 +16229,12 @@
     {
       "binary": false,
       "bytes": 4301,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "63460599a3378a72a8ef9ff1ab2a4be74ba65b94",
-      "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
+      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 89,
@@ -16208,12 +16259,12 @@
     {
       "binary": false,
       "bytes": 8654,
-      "changes": 24,
+      "changes": 25,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "2a73cc7764e0d61b0a0577d963969bda91ad1216",
+      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 34,
@@ -16260,6 +16311,21 @@
         "confirmed": false,
         "text": "Explains that each stage ends with a written report and lists what every report must contain."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4014,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 46,
+      "path": "docs/reports/gaps-1.md",
       "test": false
     },
     {
@@ -20333,14 +20399,14 @@
     {
       "binary": false,
       "bytes": 2827,
-      "changes": 0,
+      "changes": 1,
       "env": [
         "PATH"
       ],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "001bd89e971288a6446de746433933575d8c413b",
+      "lastCommit": "001bd89e971288a6446de746433933575d8c413b",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 79,
