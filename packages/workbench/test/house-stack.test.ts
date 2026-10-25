@@ -323,6 +323,18 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/later.tsx'));
     }
+    // Only the product's own configuration at its root is not read: a component in a file merely named
+    // so is.
+    writeFileSync(
+      path.join(site.repoDir, 'features/welcome/count.config.ts'),
+      "import { createElement } from 'react';\nexport const Count = () => createElement('p', null, '123');\n",
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([['features/welcome/count.config.ts', 2]]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'features/welcome/count.config.ts'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),

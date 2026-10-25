@@ -470,7 +470,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     if (
       !/\.tsx?$/.test(file) ||
       /\.test\.tsx?$/.test(file) ||
-      /(^|\/)[^/]*\.config\.ts$/.test(file) ||
+      /^(vitest|next|drizzle|playwright)\.config\.ts$/.test(file) ||
       TRUSTED_FILES.includes(file) ||
       file === 'rama/lint.ts'
     )
