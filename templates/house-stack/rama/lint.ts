@@ -442,21 +442,33 @@ export function lintFigures(dir: string): LintFinding[] {
           if (why) unmarked(sf, a.node, why);
         }
       }
-      // A component (a function named with a capital) shows what it gives back, element or not.
+      // A component shows what it gives back, element or not: a function named with a capital, or the
+      // file's default export (a page), named or not.
+      const isFn = (x: ts.Node | undefined): x is ts.ArrowFunction | ts.FunctionExpression =>
+        Boolean(x && (ts.isArrowFunction(x) || ts.isFunctionExpression(x)));
+      const defaulted = (n: ts.Node) =>
+        ts.canHaveModifiers(n) &&
+        (ts.getModifiers(n) ?? []).some((m) => m.kind === ts.SyntaxKind.DefaultKeyword);
+      let exported: ts.Expression | undefined;
+      if (ts.isExportAssignment(node) && !node.isExportEquals) {
+        exported = node.expression;
+        while (exported && ts.isParenthesizedExpression(exported)) exported = exported.expression;
+      }
       const component =
-        (ts.isFunctionDeclaration(node) && node.name && /^[A-Z]/.test(node.name.text)) ||
+        (ts.isFunctionDeclaration(node) &&
+          ((node.name && /^[A-Z]/.test(node.name.text)) || defaulted(node))) ||
         (ts.isVariableDeclaration(node) &&
           ts.isIdentifier(node.name) &&
           /^[A-Z]/.test(node.name.text) &&
-          node.initializer &&
-          (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer)));
+          isFn(node.initializer)) ||
+        isFn(exported);
       const body = ts.isFunctionDeclaration(node)
         ? node.body
-        : ts.isVariableDeclaration(node) &&
-            node.initializer &&
-            (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer))
+        : ts.isVariableDeclaration(node) && isFn(node.initializer)
           ? node.initializer.body
-          : undefined;
+          : isFn(exported)
+            ? exported.body
+            : undefined;
       if (component && body)
         for (const given of returnsOf(body)) {
           const why = shows(given);

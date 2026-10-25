@@ -35,7 +35,7 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
   - a value whose type is unknown;
   - text a name stands for that holds digits (`const label = '123'`), followed into templates, `+`, an element of a list or record written in the code, a built-in text method (`concat`, `join`…), any prop but `key` handed to one of the product's own components, written or spread in (`<Label text="123" />`), and what one of the product's own functions gives back (`label()` returning `'123'`) unless its JSDoc says `@words`;
   - text whose possible values are all known, one with digits;
-  - what one of the product's components gives back, element or not (`return 123`);
+  - what one of the product's components gives back, element or not (`return 123`), the file's default export (a page) included, named or not;
   - a number in the attributes a person reads.
 
   It also fails a Figure whose function or show is not the one `rama/figures.ts` names, and any entry it cannot read as written. These are the forms it knows; a number written in a form it does not know passes it. House of Rama runs its own copy after every lift, so the product's copy cannot change what is checked. A number that arrives as text only at run time (an order's item read from data), or in a form the lint does not know, is caught by the second line instead: the photograph after every lift finds an amount, a percentage or a count on the screen, untraced, and the lift is refused.

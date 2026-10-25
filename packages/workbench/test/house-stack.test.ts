@@ -203,12 +203,15 @@ describe('the house stack', () => {
         '}',
         'export const Count = () => 123;',
         "export function Name() { return 'Room 8'; }",
+        'export default () => 123;',
         '',
       ].join('\n'),
     );
     try {
       const found = await lintProduct(site.repoDir, env);
-      expect(found.map((f) => f.line)).toEqual([9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 28, 29]);
+      expect(found.map((f) => f.line)).toEqual([
+        9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 28, 29, 30,
+      ]);
       expect(found.every((f) => f.file === 'app/made.tsx')).toBe(true);
     } finally {
       rmSync(path.join(site.repoDir, 'app/made.tsx'));
