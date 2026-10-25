@@ -85,12 +85,29 @@ The Building level has its picture, StatTiles for its traced figures, the figure
 
 ## Reviewer findings
 
-Pending: the independent reviewer runs on this draft (`stage-8.review.md`).
+Two runs of the independent reviewer (OpenAI `gpt-6.1-sol`, fresh context; transcripts in `stage-8.review.md`). Run 1 found two code defects; both were fixed and the reviewer rerun, and run 2 reported none.
+
+| Run | Code defects found                                                                                                                                                                                                                                        | Fix                                                                                                                                                                                                                                                                             |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | A building with one screen tested and another only signed was flagged Verified, though Verified means a passing test exercises it (Invariant 11). The auditor's narration on the Street was shown without its drafted-and-unconfirmed mark (Invariant 6). | A building's word now holds of every screen: Verified only when a test checks them all, Confirmed only when all are signed, otherwise Unverified with how each is checked. The Street's audit log carries the report's drafted mark (`DraftState`), and the e2e test checks it. |
+| 2   | None.                                                                                                                                                                                                                                                     | —                                                                                                                                                                                                                                                                               |
+
+Findings that a diff cannot settle, listed by both runs as cannot-tell or not-a-defect:
+
+- (a) Invariants enforced by code outside the diff: the gate, the signature store, the auditor's vendor guard, the trace and provenance rules. None of it changed in this stage.
+- (d) The generators and drift checks are unchanged. The watcher and CI regenerate `blueprint/self.json` and `docs/BLUEPRINT.md` and fail on any difference. One CI run failed on drift (`730e29f`): `self.json` had been regenerated while a new file was still untracked. It is fixed by regenerating after staging, and every later commit passes.
+- (e) Execution claims (watcher and CI runs, the model call and its cost) cannot be shown by a diff; the cost below is from `pnpm cost 8`, which reads `model_calls`.
 
 ## Real model cost
 
-So far, one model call: the audit of the Test drive I ran in the dev app (OpenAI `gpt-6.1-sol`, ₹2). The key set on this machine made it the real auditor rather than the stand-in. The tests make no model call.
+Three model calls, ₹46 in all (`pnpm cost 8`):
+
+- the two reviewer runs: 213,755 input and 3,848 output tokens, ₹44;
+- the audit of the Test drive I ran in the dev app: ₹2. The OpenAI key set on this machine made it the real auditor rather than the stand-in.
+
+The tests make no model call: their audits use the stand-in.
 
 ## Open questions
 
-1. House of Rama's own building names (`.rama/features.json`) are my drafts as the builder. They want a person's words: confirm or rename them on each building with "Confirm the name".
+1. House of Rama's own building names (`.rama/features.json`) are drafts I wrote as the builder. They want a person's words: open each building and confirm or rename it with "Confirm the name".
+2. Stage 7's questions stand: the real GitHub check, who else goes in `members.json`, and the box at http://34.131.209.81:3389. The box still runs the Gaps 1 build; it has not been redeployed with Stage 7 or Stage 8.
