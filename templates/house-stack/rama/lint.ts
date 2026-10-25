@@ -498,10 +498,13 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
         type Prop = { node: ts.Node; name: string; given: ts.Expression | undefined };
         const opened = (at: ts.Node, e: ts.Expression, steps = 0): Prop[] => {
           let o: ts.Expression | undefined = e;
-          while (o && (ts.isParenthesizedExpression(o) || ts.isAsExpression(o))) o = o.expression;
-          if (o && ts.isIdentifier(o)) {
-            const d = target(o)?.valueDeclaration;
-            o = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
+          // Through brackets, `as` and names, however many (`const props = inner`).
+          for (let hops = 0; o && hops < FOLLOW_LIMIT; hops++) {
+            if (ts.isParenthesizedExpression(o) || ts.isAsExpression(o)) o = o.expression;
+            else if (ts.isIdentifier(o)) {
+              const d: ts.Declaration | undefined = target(o)?.valueDeclaration;
+              o = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
+            } else break;
           }
           if (!o || !ts.isObjectLiteralExpression(o) || steps >= FOLLOW_LIMIT) return [];
           return o.properties.flatMap((p): Prop[] =>
