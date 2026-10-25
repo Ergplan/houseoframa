@@ -59,9 +59,10 @@ describe('the house stack', () => {
       screens: { verified: 1, of: 1 },
     });
     expect(complete(c)).toBe(true);
-    // Checked within a minute on a quiet machine (30 to 43 s a lift on the real build); the bound
-    // leaves room for the full test suite running beside it.
-    expect(c.ms).toBeLessThan(90_000);
+    // Checked within a minute on a quiet machine (30 to 43 s a lift on the real build). This bound only
+    // catches a check that has grown far slower: with the watcher's full suite running beside it on
+    // the same machine, one check took 92 s.
+    expect(c.ms).toBeLessThan(150_000);
   });
 
   it('lint: refuses every number shown outside a Figure, naming the file and the line', async () => {
@@ -241,6 +242,17 @@ describe('the house stack', () => {
       expect(found.map((f) => [f.file, f.line])).toEqual([['features/welcome/count.ts', 4]]);
     } finally {
       rmSync(path.join(site.repoDir, 'features/welcome/count.ts'));
+    }
+    // A component kept beside House of Rama's files is read like any other.
+    writeFileSync(
+      path.join(site.repoDir, 'rama/Count.tsx'),
+      'export function Count() {\n  return <p>123</p>;\n}\n',
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([['rama/Count.tsx', 2]]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'rama/Count.tsx'));
     }
     // A page whose default export is a name for a lower-case function, in either form.
     for (const end of ['export default page;', 'export { page as default };']) {

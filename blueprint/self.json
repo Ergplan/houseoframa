@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b9979089cd7f7db6757c96771ff45574583b618c",
+  "commit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -11075,6 +11075,63 @@
       "sha": "b9979089cd7f7db6757c96771ff45574583b618c",
       "short": "b997908",
       "subject": "Stage 9: reviewer run 13 — a default export given by name is followed to its function"
+    },
+    {
+      "at": "2026-10-25T19:36:16Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 69,
+          "del": 23,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/src/scaffold.ts"
+        },
+        {
+          "add": 28,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 25,
+          "del": 5,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        }
+      ],
+      "sha": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
+      "short": "96dd993",
+      "subject": "Stage 9: reviewer run 14 — the files that show a figure are trusted, and a lift may not change them"
     }
   ],
   "edges": [
@@ -23456,7 +23513,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-25T19:20:31Z",
+  "extractedAt": "2026-10-25T19:36:16Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -27206,13 +27263,13 @@
     },
     {
       "binary": false,
-      "bytes": 54912,
-      "changes": 62,
+      "bytes": 55004,
+      "changes": 63,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "b9979089cd7f7db6757c96771ff45574583b618c",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -27256,12 +27313,12 @@
     {
       "binary": false,
       "bytes": 18355,
-      "changes": 36,
+      "changes": 37,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 62,
@@ -27639,13 +27696,13 @@
     },
     {
       "binary": false,
-      "bytes": 14356,
-      "changes": 14,
+      "bytes": 14370,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "b9979089cd7f7db6757c96771ff45574583b618c",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 143,
@@ -27654,16 +27711,16 @@
     },
     {
       "binary": false,
-      "bytes": 179021,
-      "changes": 13,
+      "bytes": 191121,
+      "changes": 14,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "b9979089cd7f7db6757c96771ff45574583b618c",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 244,
+      "lines": 261,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -33205,7 +33262,7 @@
     {
       "binary": false,
       "bytes": 4012,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "HOME",
         "PATH"
@@ -33221,7 +33278,7 @@
         "scaffoldDir"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 110,
@@ -33369,16 +33426,16 @@
     },
     {
       "binary": false,
-      "bytes": 13805,
-      "changes": 14,
+      "bytes": 14341,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "b9979089cd7f7db6757c96771ff45574583b618c",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 328,
+      "lines": 340,
       "packages": [
         "vitest"
       ],
@@ -34480,8 +34537,8 @@
     },
     {
       "binary": false,
-      "bytes": 26045,
-      "changes": 14,
+      "bytes": 26108,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -34490,10 +34547,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "b9979089cd7f7db6757c96771ff45574583b618c",
+      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 604,
+      "lines": 605,
       "packages": [
         "typescript"
       ],

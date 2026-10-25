@@ -414,13 +414,14 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
   for (const sf of own) {
     const file = rel(sf);
     // Every file a screen may be made of: elements in .tsx, components made with createElement in .ts
-    // too. Tests, configuration and House of Rama's own rama/ are not screens.
+    // too. Tests and configuration are not screens; the files that show a figure are trusted (above),
+    // and this lint is not a screen.
     if (
       !/\.tsx?$/.test(file) ||
       /\.test\.tsx?$/.test(file) ||
       /(^|\/)[^/]*\.config\.ts$/.test(file) ||
-      file.startsWith('rama/') ||
-      file === FIGURE_COMPONENT
+      TRUSTED_FILES.includes(file) ||
+      file === 'rama/lint.ts'
     )
       continue;
     const visit = (node: ts.Node) => {
