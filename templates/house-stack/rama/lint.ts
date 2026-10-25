@@ -494,23 +494,29 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
           tagDecl && !rel(tagDecl.getSourceFile()).includes('node_modules/'),
         );
         // Props spread in (`{...{ text: '123' }}`, or a name for such an object) count as written.
-        const spread = open.attributes.properties.flatMap((a) => {
-          if (!ts.isJsxSpreadAttribute(a)) return [];
-          let o: ts.Expression | undefined = a.expression;
-          const named = ts.isIdentifier(o);
-          if (ts.isIdentifier(o)) {
+        // Spread props, opened all the way down (`{...{ ...{ children: '123' } }}`, names followed).
+        type Prop = { node: ts.Node; name: string; given: ts.Expression | undefined };
+        const opened = (at: ts.Node, e: ts.Expression, steps = 0): Prop[] => {
+          let o: ts.Expression | undefined = e;
+          while (o && (ts.isParenthesizedExpression(o) || ts.isAsExpression(o))) o = o.expression;
+          if (o && ts.isIdentifier(o)) {
             const d = target(o)?.valueDeclaration;
             o = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
           }
-          return o && ts.isObjectLiteralExpression(o)
-            ? o.properties.flatMap((p) =>
-                ts.isPropertyAssignment(p) &&
-                (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))
-                  ? [{ node: (named ? a : p) as ts.Node, name: p.name.text, given: p.initializer }]
+          if (!o || !ts.isObjectLiteralExpression(o) || steps >= FOLLOW_LIMIT) return [];
+          return o.properties.flatMap((p): Prop[] =>
+            ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))
+              ? [{ node: at, name: p.name.text, given: p.initializer }]
+              : ts.isShorthandPropertyAssignment(p)
+                ? [{ node: at, name: p.name.text, given: p.name }]
+                : ts.isSpreadAssignment(p)
+                  ? opened(at, p.expression, steps + 1)
                   : [],
-              )
-            : [];
-        });
+          );
+        };
+        const spread = open.attributes.properties.flatMap((a) =>
+          ts.isJsxSpreadAttribute(a) ? opened(a, a.expression) : [],
+        );
         const written = open.attributes.properties.flatMap((a) =>
           ts.isJsxAttribute(a) && a.initializer
             ? [

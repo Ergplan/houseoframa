@@ -356,6 +356,17 @@ describe('the house stack', () => {
         rmSync(path.join(site.repoDir, 'app/far.tsx'));
       }
     }
+    // Spread props are opened all the way down.
+    writeFileSync(
+      path.join(site.repoDir, 'app/spread.tsx'),
+      "const inner = { children: 'Table 14' };\nexport const S = () => <p {...{ ...{ ...inner } }} />;\n",
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([['app/spread.tsx', 2]]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/spread.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),
