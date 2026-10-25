@@ -495,7 +495,13 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
         );
         // Props spread in (`{...{ text: '123' }}`, or a name for such an object) count as written.
         // Spread props, opened all the way down (`{...{ ...{ children: '123' } }}`, names followed).
-        type Prop = { node: ts.Node; name: string; given: ts.Expression | undefined };
+        type Prop = {
+          node: ts.Node;
+          name: string;
+          given: ts.Expression | undefined;
+          /** A spread the lint could not follow to where it is written: refused, not trusted. */
+          lost?: true;
+        };
         const opened = (at: ts.Node, e: ts.Expression, steps = 0): Prop[] => {
           let o: ts.Expression | undefined = e;
           // Through brackets, `as` and names, however many (`const props = inner`).
@@ -506,7 +512,10 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
               o = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
             } else break;
           }
-          if (!o || !ts.isObjectLiteralExpression(o) || steps >= FOLLOW_LIMIT) return [];
+          if (steps >= FOLLOW_LIMIT || (o && ts.isIdentifier(o)))
+            return [{ node: at, name: '', given: undefined, lost: true }];
+          // A component's own props spread on (`{...props}`) are judged where the component is given them.
+          if (!o || !ts.isObjectLiteralExpression(o)) return [];
           return o.properties.flatMap((p): Prop[] =>
             ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))
               ? [{ node: at, name: p.name.text, given: p.initializer }]
@@ -536,6 +545,14 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
             : [],
         );
         for (const a of [...written, ...spread]) {
+          if ('lost' in a && a.lost) {
+            unmarked(
+              sf,
+              a.node,
+              `a spread the lint cannot follow to where it is written, so it may hold a number`,
+            );
+            continue;
+          }
           if (!a.given) continue;
           const name = a.name;
           // Text handed to one of the product's own components may be shown by it, where the lint sees

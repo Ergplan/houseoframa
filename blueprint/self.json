@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "781a4e6bad9cbc60e9987ce6cf4146f206342d63",
+  "commit": "fe905ee2705b335522416462b87d008f4c6e971a",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -11537,6 +11537,45 @@
       "sha": "781a4e6bad9cbc60e9987ce6cf4146f206342d63",
       "short": "781a4e6",
       "subject": "Stage 9: reviewer run 23 — spread props are opened all the way down"
+    },
+    {
+      "at": "2026-10-25T23:25:46Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 64,
+          "del": 19,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 5,
+          "del": 2,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 7,
+          "del": 4,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        }
+      ],
+      "sha": "fe905ee2705b335522416462b87d008f4c6e971a",
+      "short": "fe905ee",
+      "subject": "Stage 9: reviewer run 24 — a spread is followed through names that stand for names"
     }
   ],
   "edges": [
@@ -23918,7 +23957,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-25T22:59:15Z",
+  "extractedAt": "2026-10-25T23:25:46Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -27668,13 +27707,13 @@
     },
     {
       "binary": false,
-      "bytes": 55860,
-      "changes": 72,
+      "bytes": 55931,
+      "changes": 73,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "781a4e6bad9cbc60e9987ce6cf4146f206342d63",
+      "lastCommit": "fe905ee2705b335522416462b87d008f4c6e971a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -28101,7 +28140,7 @@
     },
     {
       "binary": false,
-      "bytes": 14737,
+      "bytes": 14791,
       "changes": 24,
       "env": [],
       "envDynamic": false,
@@ -28116,16 +28155,16 @@
     },
     {
       "binary": false,
-      "bytes": 305297,
-      "changes": 23,
+      "bytes": 318730,
+      "changes": 24,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "781a4e6bad9cbc60e9987ce6cf4146f206342d63",
+      "lastCommit": "fe905ee2705b335522416462b87d008f4c6e971a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 410,
+      "lines": 427,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -33831,16 +33870,16 @@
     },
     {
       "binary": false,
-      "bytes": 19004,
-      "changes": 24,
+      "bytes": 19666,
+      "changes": 25,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "781a4e6bad9cbc60e9987ce6cf4146f206342d63",
+      "lastCommit": "fe905ee2705b335522416462b87d008f4c6e971a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 467,
+      "lines": 485,
       "packages": [
         "vitest"
       ],
@@ -34942,8 +34981,8 @@
     },
     {
       "binary": false,
-      "bytes": 29701,
-      "changes": 24,
+      "bytes": 30332,
+      "changes": 25,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -34952,10 +34991,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "781a4e6bad9cbc60e9987ce6cf4146f206342d63",
+      "lastCommit": "fe905ee2705b335522416462b87d008f4c6e971a",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 671,
+      "lines": 688,
       "packages": [
         "typescript"
       ],

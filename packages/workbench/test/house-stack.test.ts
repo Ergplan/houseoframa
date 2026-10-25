@@ -370,6 +370,24 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/spread.tsx'));
     }
+    // A spread too far to follow is refused, not dropped.
+    writeFileSync(
+      path.join(site.repoDir, 'app/farspread.tsx'),
+      [
+        "const p0 = { children: 'Table 15' };",
+        ...Array.from({ length: 25 }, (_, i) => `const p${i + 1} = p${i};`),
+        'export const F = () => <p {...p25} />;',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => f.sentence)).toEqual([
+        expect.stringMatching(/^app\/farspread\.tsx, line 27: A spread the lint cannot follow/),
+      ]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/farspread.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),
