@@ -217,23 +217,40 @@ export function lintFigures(dir: string): LintFinding[] {
   const isNumber = (e: ts.Expression) => numberLike(checker.getTypeAtLocation(e));
 
   /** Whether the expression, shown as a child of an element, shows a number; and why. */
-  function shows(e: ts.Expression): string | null {
+  function shows(e: ts.Expression, depth = 0): string | null {
     while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e))
       e = e.expression;
     if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
     if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
       return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
-    if (ts.isConditionalExpression(e)) return shows(e.whenTrue) ?? shows(e.whenFalse);
+    if (ts.isConditionalExpression(e)) return shows(e.whenTrue, depth) ?? shows(e.whenFalse, depth);
     if (ts.isBinaryExpression(e)) {
       const op = e.operatorToken.kind;
-      if (op === ts.SyntaxKind.AmpersandAmpersandToken) return shows(e.right);
+      if (op === ts.SyntaxKind.AmpersandAmpersandToken) return shows(e.right, depth);
       if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
-        return shows(e.left) ?? shows(e.right);
+        return shows(e.left, depth) ?? shows(e.right, depth);
     }
     const type = checker.getTypeAtLocation(e);
     if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown))
       return `“${e.getText().slice(0, 40)}”, whose kind is not known, so it may be a number`;
     if (numberLike(type)) return `the number “${e.getText().slice(0, 40)}”`;
+    // Text whose every possible value is known, and one of them holds a number.
+    const texts = type.isUnion() ? type.types : [type];
+    const numbered = texts.find((t) => t.isStringLiteral() && DIGIT.test(t.value));
+    if (numbered?.isStringLiteral())
+      return `“${e.getText().slice(0, 40)}”, which may be “${numbered.value.slice(0, 40)}”`;
+    // A name for a value written in the product's own code: what it was given is what is shown.
+    if ((ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) && depth < 5) {
+      const decl = target(ts.isPropertyAccessExpression(e) ? e.name : e)?.valueDeclaration;
+      const given =
+        decl && (ts.isVariableDeclaration(decl) || ts.isPropertyAssignment(decl))
+          ? decl.initializer
+          : undefined;
+      if (given && !rel(given.getSourceFile()).includes('node_modules/')) {
+        const why = shows(given, depth + 1);
+        if (why) return `“${e.getText().slice(0, 40)}”, which holds ${why}`;
+      }
+    }
     if (ts.isTemplateExpression(e)) {
       const span = e.templateSpans.find((s) => isNumber(s.expression));
       if (span) return `the number “${span.expression.getText().slice(0, 40)}” written into text`;

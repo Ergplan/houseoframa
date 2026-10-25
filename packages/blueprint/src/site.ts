@@ -51,6 +51,8 @@ export const SiteRecord = z.object({
   houseStack: z.string().regex(/^[0-9a-f]{40}$/).optional(),
   /** The builder that builds the product (Stage 9 seats), as it was when the build last started. */
   builder: z.string().optional(),
+  /** Every builder that has built a lift of the product: none of their companies may audit it. */
+  builtBy: z.array(z.string()).optional(),
 });
 export type SiteRecord = z.infer<typeof SiteRecord>;
 
@@ -217,7 +219,9 @@ export function siteRecord(id: string, env: NodeJS.ProcessEnv = process.env): Si
 /** Changes a site's record (a product's remote, once its repository exists). */
 export function updateSiteRecord(
   id: string,
-  patch: Partial<Pick<SiteRecord, 'remote' | 'name' | 'idea' | 'houseStack' | 'builder'>>,
+  patch: Partial<
+    Pick<SiteRecord, 'remote' | 'name' | 'idea' | 'houseStack' | 'builder' | 'builtBy'>
+  >,
   env: NodeJS.ProcessEnv = process.env,
 ): SiteRecord {
   const dir = path.join(workDir(env), id);

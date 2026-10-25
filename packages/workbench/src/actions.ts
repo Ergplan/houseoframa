@@ -9,7 +9,7 @@ import { BUILDER_VENDOR, seatProblems, vendorEntry, type CallResult } from '@ram
 import { capture, captureDir, readCapture } from '@rama/trace';
 import { StepError } from './jobs.ts';
 import { linkHouseModules } from './modules.ts';
-import { builderLabel, seatsOf } from './seats.ts';
+import { builderLabel, builtByProblems, seatsOf } from './seats.ts';
 import { runSiteTests } from './tests.ts';
 
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -150,7 +150,11 @@ export async function callAudit(
   const env = opts.env ?? process.env;
   const { seats } = await seatsOf(db, site.id, env);
   const auditor = seats.auditor ? vendorEntry(seats.auditor.vendor) : undefined;
-  const problems = seatProblems(seats);
+  // The seats as they are now, and the builders that actually built it: neither's company audits.
+  const problems = [
+    ...seatProblems(seats),
+    ...builtByProblems(site.id, seats.auditor?.vendor, env),
+  ];
   if (problems.length && !opts.standIn)
     throw new StepError(problems.join(' '), 'Choose the brains again in Settings → Brains.');
   const key = auditor?.key

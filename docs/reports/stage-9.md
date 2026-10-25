@@ -26,16 +26,18 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
 
   House of Rama reads the file as written (`packages/trace` `readConvention`) and never runs it. The function's file and line come from the parser.
 
-- **`rama/lint.ts`, the figures lint (Invariant 10).** It runs before every build (`prebuild`) and in the product's CI. It fails on any number a screen shows outside a Figure, naming the file and the line:
+- **`rama/lint.ts`, the figures lint (Invariant 10).** It runs before every build (`prebuild`) and in the product's CI. It fails on every number it can see in the code being shown outside a Figure, naming the file and the line:
   - digits in text;
   - a number-typed value;
   - a template;
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
+  - text a name stands for that holds digits (`const label = '123'`);
+  - text whose possible values are all known, one with digits;
   - a number in the attributes a person reads.
 
-  It also fails a Figure whose function or show is not the one `rama/figures.ts` names, and any entry it cannot read as written. House of Rama runs its own copy after every lift, so the product's copy cannot change what is checked.
+  It also fails a Figure whose function or show is not the one `rama/figures.ts` names, and any entry it cannot read as written. House of Rama runs its own copy after every lift, so the product's copy cannot change what is checked. A number that arrives as text only at run time (an order's item read from data) cannot be seen in the code. The photograph after every lift finds an amount, a percentage or a count on the screen, untraced, and the lift is refused.
 
 - `.rama/screens.json`, `.rama/features.json`, a build workflow, and the merge gate's workflow, pinned and keyed with House of Rama's public key when the scaffold is laid down.
 - A welcome building with one traced figure and two example tests: a figure function's unit test, and a screen rendered with its figure checked.
@@ -43,7 +45,7 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
 **The build loop** (`packages/workbench` `build.ts`), started from the console's Start build:
 
 - The builder gets the decided cards in force and the house stack, and makes one lift at a time. Each lift is one Claude Code run in the product's folder, through `packages/model` `runAgent()` with `prompts/build.v2.md`. Each run records one `model_calls` row with its cost, and the next run continues the same conversation.
-- The builder has its own home, PATH and the builder seat's key, and nothing else of House of Rama's. It may edit, run the product's checks and commit. It may not reach the web, push or install.
+- The builder has its own home, PATH and the builder seat's key, and nothing else of House of Rama's. Claude Code's own permission lists let it edit, run the product's checks and commit, and refuse its web tools, `git push`, `npm install`, `curl` and `wget`. These are permission lists, not a sandbox. The product's own scripts that the builder runs, its tests and its build, run as this computer's user and can reach its files and the network (KNOWN-GAPS).
 - After every lift House of Rama, by itself (`checkLift`), and in 30 to 43 seconds a lift on the real build:
   - redraws the picture;
   - puts the product's packages in place;
@@ -83,6 +85,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
   - In the form: choosing a builder takes its company off the auditor list.
   - In both routes: refused with the rule's sentence.
   - In every model call: `resolveSeat` refuses before any prompt is read or vendor called, so a stored setting cannot slip past.
+  - And against who actually built it: a product records every builder that built a lift (`builtBy`). Its brains answer and the audit both refuse an auditor from any of those companies, even after the seats change.
 - `packages/model/vendors.json` is the registry. Each vendor has a base URL, a protocol, the seats it may hold, whether it is local, and its builders.
   - Anthropic and OpenAI keep their native adapters.
   - **One OpenAI-compatible adapter** (base URL + key + model) covers Gemini, Grok, Kimi, Ollama (local, no key) and any compatible provider.
@@ -96,7 +99,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
 
 ## Tests
 
-- The lint on unmarked numbers: every kind, each named by file and line; the product's own `npm run lint:figures` refuses too. Also a Figure worked out by another function, and an entry not written as plain text (`packages/workbench/test/house-stack.test.ts`).
+- The lint on unmarked numbers: every kind, each named by file and line, text held under a name included; the product's own `npm run lint:figures` refuses too. Also a Figure worked out by another function, and an entry not written as plain text (`packages/workbench/test/house-stack.test.ts`).
 - The scaffold builds and passes its gate: laid into an empty product, it passes every check after its first lift in under a minute, with its name and idea escaped into each file and the gate keyed (same file).
 - The loop from an empty repository to a fully traced lakefront: `tests/stage-9.e2e.test.ts`, in a real browser, with nothing typed but names:
   - brains chosen in Settings (the auditor list follows the builder);
@@ -109,6 +112,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
   - in the UI (`components/workbench/BrainsForm.test.tsx` and the e2e);
   - in both routes (Settings and discovery handler tests);
   - in the runner: refused before any prompt or vendor call, no row (`seats.test.ts`).
+- The seats in order (setup file, Settings, the product's answer as a card), and the company of a builder that built the product refused as its auditor after the seats change, both in the brains answer and in the audit (`packages/workbench/test/seats.test.ts`).
 - A stub builder reports itself unwired: each stub by name and company, and a build with one stops at once with that sentence and touches nothing (`packages/workbench/test/builders.test.ts`).
 - Test drive green, with no keys: the recording replays through the loop, and every step's sentence is checked (`packages/workbench/test/testdrive.test.ts`).
 - `runAgent`: the agent's environment holds the key only, retries ask only for the answer, and one row is written with the summed cost (`packages/model/src/agent.test.ts`).

@@ -259,7 +259,13 @@ export async function build(
     );
     return;
   }
-  updateSiteRecord(site.id, { builder: opts.driver.id }, env);
+  // The recorded builder replays another's lifts: the company is that builder's.
+  const by = opts.driver.id === 'recorded' ? 'claude-code' : opts.driver.id;
+  updateSiteRecord(
+    site.id,
+    { builder: by, builtBy: [...new Set([...(record.builtBy ?? []), by])] },
+    env,
+  );
   const product = { name: site.name, idea: record.idea ?? site.name };
   const cards = await withDb((db) => briefOf(db, site.id));
   if (!cards.length)

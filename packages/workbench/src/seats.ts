@@ -15,7 +15,7 @@ import {
   vendorEntry,
   type Seats,
 } from '@rama/model';
-import type { SiteLocation } from '@rama/blueprint/site';
+import { siteRecord, type SiteLocation } from '@rama/blueprint/site';
 import { builderFor } from './builders/index.ts';
 import type { BuilderDriver, BuilderId } from './builders/types.ts';
 import { BUILDER_IDS } from './builders/types.ts';
@@ -80,6 +80,26 @@ export function seatsFromForm(form: FormData): Partial<Seats> {
   return out;
 }
 
+/**
+ * The companies whose builders have built the product (the site records each builder that built a
+ * lift), and why an auditor from one of them may not check it, whatever the seats say now.
+ */
+export function builtByProblems(
+  siteId: string,
+  auditorVendor: string | undefined,
+  env: NodeJS.ProcessEnv = process.env,
+): string[] {
+  if (!auditorVendor) return [];
+  const built = (siteRecord(siteId, env)?.builtBy ?? []).filter(
+    (b) => BUILDER_VENDOR[b] === auditorVendor,
+  );
+  return built.length
+    ? [
+        `The auditor cannot be ${vendorEntry(auditorVendor)?.label ?? auditorVendor}: ${built.map(builderLabel).join(' and ')} built this product, and the checker is never the builder (Invariant 5).`,
+      ]
+    : [];
+}
+
 /** Problems with a choice, plus one the registry cannot know: a base URL must be a web address. */
 export function choiceProblems(seats: Partial<Seats>): string[] {
   const out = seatProblems(seats);
@@ -112,8 +132,12 @@ export async function chooseProductSeats(
   seats: Partial<Seats>,
   by: Member,
   at = new Date(),
+  env: NodeJS.ProcessEnv = process.env,
 ): Promise<string[]> {
-  const problems = choiceProblems(seats);
+  const problems = [
+    ...choiceProblems(seats),
+    ...builtByProblems(site.id, seats.auditor?.vendor, env),
+  ];
   if (problems.length) return problems;
   await putSetting(db, brainsSettingOf(site.id), seats, by.id);
   await decide(
