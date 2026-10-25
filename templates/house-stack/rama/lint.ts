@@ -427,7 +427,14 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     const visit = (node: ts.Node) => {
       if (ts.isJsxSelfClosingElement(node) || ts.isJsxElement(node)) {
         const open = ts.isJsxElement(node) ? node.openingElement : node;
-        if (tagOf(open) === 'Figure') {
+        // Only the house stack's own Figure is a figure: a component of another file that is merely named
+        // Figure is read like any other.
+        const figureDecl = target(open.tagName)?.declarations?.[0];
+        if (
+          tagOf(open) === 'Figure' &&
+          figureDecl &&
+          rel(figureDecl.getSourceFile()) === FIGURE_COMPONENT
+        ) {
           checkFigure(sf, open);
           return; // what a Figure holds is the Figure's
         }

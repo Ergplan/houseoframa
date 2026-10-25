@@ -243,6 +243,26 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'features/welcome/count.ts'));
     }
+    // A component merely named Figure is not the house stack's: what it holds is read.
+    writeFileSync(
+      path.join(site.repoDir, 'app/fake.tsx'),
+      [
+        "import type { ReactNode } from 'react';",
+        'function Figure(p: { id: string; children: ReactNode }) {',
+        '  return <div>{p.children}</div>;',
+        '}',
+        'export function Fake() {',
+        '  return <Figure id="building-count">123</Figure>;',
+        '}',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([['app/fake.tsx', 6]]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/fake.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),
