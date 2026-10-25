@@ -288,6 +288,34 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/mapped.tsx'));
     }
+    // A value given to a name, or a property, after it was declared.
+    writeFileSync(
+      path.join(site.repoDir, 'app/later.tsx'),
+      [
+        'export function Later() {',
+        "  let label: string = '';",
+        "  label = '123';",
+        "  const o = { code: '' };",
+        "  o.code = 'A9';",
+        '  return (',
+        '    <p>',
+        '      {label}',
+        '      {o.code}',
+        '    </p>',
+        '  );',
+        '}',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([
+        ['app/later.tsx', 8],
+        ['app/later.tsx', 9],
+      ]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/later.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),

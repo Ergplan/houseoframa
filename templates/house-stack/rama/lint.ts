@@ -235,6 +235,28 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
   };
   const isNumber = (e: ts.Expression) => numberLike(checker.getTypeAtLocation(e));
 
+  /** The values given to a name, or a property, after it was declared: `x = …`, `o.x = …`, `x += …`. */
+  const assigned = new Map<ts.Symbol, ts.Expression[]>();
+  function assignedTo(sym: ts.Symbol, sf: ts.SourceFile): ts.Expression[] {
+    const known = assigned.get(sym);
+    if (known) return known;
+    const out: ts.Expression[] = [];
+    const visit = (n: ts.Node) => {
+      if (
+        ts.isBinaryExpression(n) &&
+        n.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+        n.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+      ) {
+        const left = ts.isPropertyAccessExpression(n.left) ? n.left.name : n.left;
+        if (target(left) === sym) out.push(n.right);
+      }
+      ts.forEachChild(n, visit);
+    };
+    visit(sf);
+    assigned.set(sym, out);
+    return out;
+  }
+
   /** Whether the expression, shown as a child of an element, shows a number; and why. */
   function shows(e: ts.Expression, depth = 0): string | null {
     while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e))
@@ -305,8 +327,16 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
         decl && (ts.isVariableDeclaration(decl) || ts.isPropertyAssignment(decl))
           ? decl.initializer
           : undefined;
-      if (given && !rel(given.getSourceFile()).includes('node_modules/')) {
-        const why = shows(given, depth + 1);
+      const sym = target(ts.isPropertyAccessExpression(e) ? e.name : e);
+      // What it was given first, and every value given to it after (`label = '123'`).
+      const values = [
+        ...(given && !rel(given.getSourceFile()).includes('node_modules/') ? [given] : []),
+        ...(sym && decl && !rel(decl.getSourceFile()).includes('node_modules/')
+          ? assignedTo(sym, decl.getSourceFile())
+          : []),
+      ];
+      for (const v of values) {
+        const why = shows(v, depth + 1);
         if (why) return `“${e.getText().slice(0, 40)}”, which holds ${why}`;
       }
     }

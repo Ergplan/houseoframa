@@ -33,7 +33,7 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
-  - text a name stands for that holds digits (`const label = '123'`), followed into templates, `+`, an element of a list or record written in the code, a library's function or method (`concat`, `join`, `createElement`…, and what a `map` callback gives back), any prop but `key` handed to one of the product's own components, written or spread in (`<Label text="123" />`), and what one of the product's own functions gives back (`label()` returning `'123'`) unless its JSDoc says `@words`;
+  - text a name stands for that holds digits (`const label = '123'`, or given to it later in its file), followed into templates, `+`, an element of a list or record written in the code, a library's function or method (`concat`, `join`, `createElement`…, and what a `map` callback gives back), any prop but `key` handed to one of the product's own components, written or spread in (`<Label text="123" />`), and what one of the product's own functions gives back (`label()` returning `'123'`) unless its JSDoc says `@words`;
   - text whose possible values are all known, one with digits;
   - what one of the product's components gives back, element or not (`return 123`), the file's default export (a page) included, written in place or by name (`export default page`, `export { page as default }`);
   - a number in the attributes a person reads, `children` and `dangerouslySetInnerHTML` included (an HTML object followed to where it is written), and what an object written in place says to show when it is handed over (`createElement`'s props).
