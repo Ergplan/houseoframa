@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
+  "commit": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -10760,6 +10760,51 @@
       "sha": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
       "short": "dee16f5",
       "subject": "Stage 9: reviewer run 6 — props spread into a component are linted like written ones"
+    },
+    {
+      "at": "2026-10-25T17:21:42Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 65,
+          "del": 20,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 12,
+          "del": 27,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        }
+      ],
+      "sha": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
+      "short": "b607faa",
+      "subject": "Stage 9: reviewer run 7 — every prop handed to the product's own components is linted"
     }
   ],
   "edges": [
@@ -23141,7 +23186,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-25T16:59:22Z",
+  "extractedAt": "2026-10-25T17:21:42Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -26891,13 +26936,13 @@
     },
     {
       "binary": false,
-      "bytes": 54052,
-      "changes": 55,
+      "bytes": 54139,
+      "changes": 56,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
+      "lastCommit": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -27324,31 +27369,31 @@
     },
     {
       "binary": false,
-      "bytes": 13579,
-      "changes": 7,
+      "bytes": 13663,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
+      "lastCommit": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 142,
+      "lines": 143,
       "path": "docs/reports/stage-9.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 90259,
-      "changes": 6,
+      "bytes": 102079,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
+      "lastCommit": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 126,
+      "lines": 142,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -33054,16 +33099,16 @@
     },
     {
       "binary": false,
-      "bytes": 10392,
-      "changes": 7,
+      "bytes": 10498,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
+      "lastCommit": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 249,
+      "lines": 251,
       "packages": [
         "vitest"
       ],
@@ -34165,8 +34210,8 @@
     },
     {
       "binary": false,
-      "bytes": 20850,
-      "changes": 7,
+      "bytes": 21779,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -34174,10 +34219,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "dee16f578ac83e0fabaf6a5e5ea8626bbd8d0506",
+      "lastCommit": "b607faa83e97c2d00e2243661b4d9748d139dc5e",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 493,
+      "lines": 513,
       "packages": [
         "typescript"
       ],

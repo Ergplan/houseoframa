@@ -442,6 +442,26 @@ export function lintFigures(dir: string): LintFinding[] {
           if (why) unmarked(sf, a.node, why);
         }
       }
+      // A component (a function named with a capital) shows what it gives back, element or not.
+      const component =
+        (ts.isFunctionDeclaration(node) && node.name && /^[A-Z]/.test(node.name.text)) ||
+        (ts.isVariableDeclaration(node) &&
+          ts.isIdentifier(node.name) &&
+          /^[A-Z]/.test(node.name.text) &&
+          node.initializer &&
+          (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer)));
+      const body = ts.isFunctionDeclaration(node)
+        ? node.body
+        : ts.isVariableDeclaration(node) &&
+            node.initializer &&
+            (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer))
+          ? node.initializer.body
+          : undefined;
+      if (component && body)
+        for (const given of returnsOf(body)) {
+          const why = shows(given);
+          if (why) unmarked(sf, given, why);
+        }
       if (ts.isJsxText(node) && DIGIT.test(node.text)) {
         unmarked(sf, node, `the number in “${node.text.trim().slice(0, 40)}”`);
       }
