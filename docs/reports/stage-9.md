@@ -33,7 +33,7 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
-  - text a name stands for that holds digits (`const label = '123'`), followed into templates, `+`, an element of a list or record written in the code, a built-in text method (`concat`, `join`…), and what one of the product's own functions gives back (`label()` returning `'123'`) unless its JSDoc says `@words`;
+  - text a name stands for that holds digits (`const label = '123'`), followed into templates, `+`, an element of a list or record written in the code, a built-in text method (`concat`, `join`…), text handed to one of the product's components (`<Label text="123" />`), and what one of the product's own functions gives back (`label()` returning `'123'`) unless its JSDoc says `@words`;
   - text whose possible values are all known, one with digits;
   - a number in the attributes a person reads.
 

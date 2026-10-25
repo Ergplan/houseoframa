@@ -22,6 +22,23 @@ const SHOWS = new Set(['count', 'rupees', 'percent']);
 /** Attributes whose value a person reads on the screen. */
 const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label']);
 const SHOWN_VALUE_ON = new Set(['input', 'textarea']);
+/** Props of a component that carry wiring, addresses or style, never text a person reads. */
+const NOT_SHOWN_PROPS = new Set([
+  'key',
+  'id',
+  'className',
+  'style',
+  'href',
+  'src',
+  'name',
+  'type',
+  'htmlFor',
+  'role',
+  'method',
+  'action',
+  'target',
+  'rel',
+]);
 const NUMBER_TO_TEXT = new Set([
   'toFixed',
   'toString',
@@ -389,10 +406,23 @@ export function lintFigures(dir: string): LintFinding[] {
         for (const a of open.attributes.properties) {
           if (!ts.isJsxAttribute(a) || !a.initializer) continue;
           const name = a.name.getText();
+          // Text handed to one of the product's components may be shown by it, where the lint sees only
+          // "some text": it is judged where it is handed over. (A number handed over is judged where the
+          // component shows it.) Wiring, addresses and style are not shown.
+          const handed =
+            /^[A-Z]/.test(tag) &&
+            !NOT_SHOWN_PROPS.has(name) &&
+            !name.startsWith('data-') &&
+            !(
+              ts.isJsxExpression(a.initializer) &&
+              a.initializer.expression &&
+              isNumber(a.initializer.expression)
+            );
           const shown =
-            /^[a-z]/.test(tag) &&
-            (SHOWN_ATTRIBUTES.has(name) ||
-              ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag)));
+            handed ||
+            (/^[a-z]/.test(tag) &&
+              (SHOWN_ATTRIBUTES.has(name) ||
+                ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag))));
           if (!shown) continue;
           const why = ts.isStringLiteral(a.initializer)
             ? DIGIT.test(a.initializer.text)

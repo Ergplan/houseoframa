@@ -170,7 +170,7 @@ describe('the house stack', () => {
     }
   });
 
-  it('lint: follows text into templates, list and record elements, and built-in text methods', async () => {
+  it('lint: follows text into templates, list and record elements, built-in text methods and a component’s props', async () => {
     writeFileSync(
       path.join(site.repoDir, 'app/made.tsx'),
       [
@@ -188,15 +188,21 @@ describe('the house stack', () => {
         "      <p>{label.concat('!')}</p>",
         "      <p>{['a', '5'].join(' ')}</p>",
         "      <p>{'cups'.toUpperCase()}</p>",
+        '      <Label text="Table 3" />',
+        '      <Label text={label} />',
+        '      <Label text="Masala chai" href="/order/12" />',
         '    </div>',
         '  );',
+        '}',
+        'function Label(p: { text: string; href?: string }) {',
+        '  return <p>{p.text}</p>;',
         '}',
         '',
       ].join('\n'),
     );
     try {
       const found = await lintProduct(site.repoDir, env);
-      expect(found.map((f) => f.line)).toEqual([8, 9, 11, 12, 13]);
+      expect(found.map((f) => f.line)).toEqual([8, 9, 11, 12, 13, 15, 16]);
       expect(found.every((f) => f.file === 'app/made.tsx')).toBe(true);
     } finally {
       rmSync(path.join(site.repoDir, 'app/made.tsx'));
