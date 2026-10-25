@@ -31,6 +31,8 @@ const NUMBER_TO_TEXT = new Set([
   'toExponential',
 ]);
 const DIGIT = /\d/;
+/** How many steps a value is followed (a name to what it holds, a call to what it gives back). */
+const FOLLOW_LIMIT = 20;
 
 function program(dir: string): ts.Program {
   const configFile = path.join(dir, 'tsconfig.json');
@@ -261,12 +263,15 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
   function shows(e: ts.Expression, depth = 0): string | null {
     while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e))
       e = e.expression;
+    // A value followed this far without an end is not taken on trust.
+    if (depth >= FOLLOW_LIMIT)
+      return `“${e.getText().slice(0, 40)}”, which the lint cannot follow to where it is written, so it may be a number`;
     if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
     if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
       return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
     // An object written in place and handed over (to a function, a component, createElement): any text
     // in it may be what is shown. A number in it is judged where it is shown.
-    if (ts.isObjectLiteralExpression(e) && depth < 5) {
+    if (ts.isObjectLiteralExpression(e)) {
       for (const p of e.properties) {
         const value = ts.isPropertyAssignment(p)
           ? p.initializer
@@ -283,7 +288,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       }
     }
     // A list written in place (and joined, or shown as it is): any element may be shown.
-    if (ts.isArrayLiteralExpression(e) && depth < 5) {
+    if (ts.isArrayLiteralExpression(e)) {
       for (const el of e.elements) {
         const why = shows(el, depth + 1);
         if (why) return why;
@@ -308,7 +313,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     if (numbered?.isStringLiteral())
       return `“${e.getText().slice(0, 40)}”, which may be “${numbered.value.slice(0, 40)}”`;
     // One element of a list or record written in the code: any of its elements may be shown.
-    if (ts.isElementAccessExpression(e) && depth < 5) {
+    if (ts.isElementAccessExpression(e)) {
       const decl = target(e.expression)?.valueDeclaration;
       let held: ts.Expression | undefined =
         decl && ts.isVariableDeclaration(decl) ? decl.initializer : undefined;
@@ -327,7 +332,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       }
     }
     // A name for a value written in the product's own code: what it was given is what is shown.
-    if ((ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) && depth < 5) {
+    if (ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) {
       const decl = target(ts.isPropertyAccessExpression(e) ? e.name : e)?.valueDeclaration;
       const given =
         decl && (ts.isVariableDeclaration(decl) || ts.isPropertyAssignment(decl))
@@ -350,7 +355,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       const span = e.templateSpans.find((s) => isNumber(s.expression));
       if (span) return `the number “${span.expression.getText().slice(0, 40)}” written into text`;
       for (const part of e.templateSpans) {
-        const why = depth < 5 ? shows(part.expression, depth + 1) : null;
+        const why = shows(part.expression, depth + 1);
         if (why) return `${why}, written into text`;
       }
       if (DIGIT.test(e.head.text) || e.templateSpans.some((s) => DIGIT.test(s.literal.text)))
@@ -374,7 +379,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       // A library's function or method (concat, join, createElement…) makes what it shows from what it
       // is called on and given.
       const builtIn = decl && rel(decl.getSourceFile()).includes('node_modules/');
-      if (builtIn && depth < 5) {
+      if (builtIn) {
         const parts = [
           ...(ts.isPropertyAccessExpression(callee) ? [callee.expression] : []),
           ...e.arguments,
@@ -404,13 +409,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
               (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))
             ? decl.initializer
             : null);
-      if (
-        fn &&
-        fn.body &&
-        !words &&
-        depth < 5 &&
-        !rel(fn.getSourceFile()).includes('node_modules/')
-      ) {
+      if (fn && fn.body && !words && !rel(fn.getSourceFile()).includes('node_modules/')) {
         // What it is given may be what it gives back (`label('123')` returning its argument).
         for (const part of e.arguments) {
           const why = shows(part, depth + 1);

@@ -335,6 +335,27 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'features/welcome/count.config.ts'));
     }
+    // A value is followed through as many names as it takes, and one too far to follow is refused.
+    const chain = (n: number) =>
+      [
+        "const v0: string = '123';",
+        ...Array.from({ length: n }, (_, i) => `const v${i + 1}: string = v${i};`),
+        `export const Far = () => <p>{v${n}}</p>;`,
+        '',
+      ].join('\n');
+    for (const [n, says] of [
+      [8, /“v8”, which holds “v7”/],
+      [30, /cannot follow to where it is written/],
+    ] as const) {
+      writeFileSync(path.join(site.repoDir, 'app/far.tsx'), chain(n));
+      try {
+        const found = await lintProduct(site.repoDir, env);
+        expect(found).toHaveLength(1);
+        expect(found[0]!.sentence).toMatch(says);
+      } finally {
+        rmSync(path.join(site.repoDir, 'app/far.tsx'));
+      }
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),
