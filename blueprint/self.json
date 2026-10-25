@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+  "commit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -10556,6 +10556,75 @@
       "sha": "2e1693773b18a5f3effaa61776234a6b2a07f586",
       "short": "2e16937",
       "subject": "Stage 9: reviewer run 2 — the auditor's own call refuses a builder's company; joined text is linted"
+    },
+    {
+      "at": "2026-10-25T16:03:14Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 121,
+          "del": 38,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 18,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 21,
+          "del": 11,
+          "kind": "M",
+          "path": "packages/audit/src/report.ts"
+        },
+        {
+          "add": 25,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/audit/test/report.test.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/actions.ts"
+        },
+        {
+          "add": 10,
+          "del": 3,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 35,
+          "del": 0,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        },
+        {
+          "add": 28,
+          "del": 3,
+          "kind": "M",
+          "path": "tests/stage-9.e2e.test.ts"
+        }
+      ],
+      "sha": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
+      "short": "fac8107",
+      "subject": "Stage 9: reviewer run 3 — the audit runner refuses the given builder's company; the lint follows calls"
     }
   ],
   "edges": [
@@ -22937,7 +23006,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-25T15:15:26Z",
+  "extractedAt": "2026-10-25T16:03:14Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -26687,13 +26756,13 @@
     },
     {
       "binary": false,
-      "bytes": 53685,
-      "changes": 51,
+      "bytes": 53839,
+      "changes": 52,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -27120,13 +27189,13 @@
     },
     {
       "binary": false,
-      "bytes": 13247,
-      "changes": 3,
+      "bytes": 13466,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 142,
@@ -27135,16 +27204,16 @@
     },
     {
       "binary": false,
-      "bytes": 39994,
-      "changes": 2,
+      "bytes": 52684,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 61,
+      "lines": 78,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -27569,7 +27638,7 @@
     {
       "binary": false,
       "bytes": 11677,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -27588,7 +27657,7 @@
         "verifyReport"
       ],
       "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 357,
@@ -27687,14 +27756,14 @@
     {
       "binary": false,
       "bytes": 11958,
-      "changes": 4,
+      "changes": 5,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
-      "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 343,
@@ -32343,7 +32412,7 @@
     {
       "binary": false,
       "bytes": 7890,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -32354,7 +32423,7 @@
         "standInAuditor"
       ],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 199,
@@ -32850,16 +32919,16 @@
     },
     {
       "binary": false,
-      "bytes": 8772,
-      "changes": 3,
+      "bytes": 9895,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 206,
+      "lines": 239,
       "packages": [
         "vitest"
       ],
@@ -33961,8 +34030,8 @@
     },
     {
       "binary": false,
-      "bytes": 17218,
-      "changes": 3,
+      "bytes": 19038,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -33970,10 +34039,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 417,
+      "lines": 455,
       "packages": [
         "typescript"
       ],
@@ -34408,12 +34477,12 @@
     {
       "binary": false,
       "bytes": 8482,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 191,

@@ -223,6 +223,13 @@ export function lintFigures(dir: string): LintFinding[] {
     if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
     if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
       return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
+    // A list written in place (and joined, or shown as it is): any element may be shown.
+    if (ts.isArrayLiteralExpression(e) && depth < 5) {
+      for (const el of e.elements) {
+        const why = shows(el, depth + 1);
+        if (why) return why;
+      }
+    }
     if (ts.isConditionalExpression(e)) return shows(e.whenTrue, depth) ?? shows(e.whenFalse, depth);
     if (ts.isBinaryExpression(e)) {
       const op = e.operatorToken.kind;
@@ -241,6 +248,25 @@ export function lintFigures(dir: string): LintFinding[] {
     const numbered = texts.find((t) => t.isStringLiteral() && DIGIT.test(t.value));
     if (numbered?.isStringLiteral())
       return `“${e.getText().slice(0, 40)}”, which may be “${numbered.value.slice(0, 40)}”`;
+    // One element of a list or record written in the code: any of its elements may be shown.
+    if (ts.isElementAccessExpression(e) && depth < 5) {
+      const decl = target(e.expression)?.valueDeclaration;
+      let held: ts.Expression | undefined =
+        decl && ts.isVariableDeclaration(decl) ? decl.initializer : undefined;
+      while (held && (ts.isAsExpression(held) || ts.isSatisfiesExpression(held)))
+        held = held.expression;
+      const elements = held
+        ? ts.isArrayLiteralExpression(held)
+          ? [...held.elements]
+          : ts.isObjectLiteralExpression(held)
+            ? held.properties.flatMap((p) => (ts.isPropertyAssignment(p) ? [p.initializer] : []))
+            : []
+        : [];
+      for (const el of elements) {
+        const why = shows(el, depth + 1);
+        if (why) return `“${e.getText().slice(0, 40)}”, which may be ${why}`;
+      }
+    }
     // A name for a value written in the product's own code: what it was given is what is shown.
     if ((ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) && depth < 5) {
       const decl = target(ts.isPropertyAccessExpression(e) ? e.name : e)?.valueDeclaration;
@@ -256,6 +282,10 @@ export function lintFigures(dir: string): LintFinding[] {
     if (ts.isTemplateExpression(e)) {
       const span = e.templateSpans.find((s) => isNumber(s.expression));
       if (span) return `the number “${span.expression.getText().slice(0, 40)}” written into text`;
+      for (const part of e.templateSpans) {
+        const why = depth < 5 ? shows(part.expression, depth + 1) : null;
+        if (why) return `${why}, written into text`;
+      }
       if (DIGIT.test(e.head.text) || e.templateSpans.some((s) => DIGIT.test(s.literal.text)))
         return `the number in “${e.getText().slice(0, 40)}”`;
       return null;
@@ -274,6 +304,14 @@ export function lintFigures(dir: string): LintFinding[] {
       const numeric = e.arguments.find((a) => isNumber(a));
       if (numeric && !words)
         return `“${e.getText().slice(0, 40)}”, text made from the number “${numeric.getText().slice(0, 30)}”`;
+      // A built-in method that makes text (concat, join, toUpperCase…): what it is called on and given.
+      const builtIn = decl && rel(decl.getSourceFile()).includes('node_modules/');
+      if (builtIn && ts.isPropertyAccessExpression(callee) && depth < 5) {
+        for (const part of [callee.expression, ...e.arguments]) {
+          const why = shows(part, depth + 1);
+          if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
+        }
+      }
       // A function of the product's own: what it gives back is what is shown.
       const fn =
         decl &&

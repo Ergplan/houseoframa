@@ -170,6 +170,39 @@ describe('the house stack', () => {
     }
   });
 
+  it('lint: follows text into templates, list and record elements, and built-in text methods', async () => {
+    writeFileSync(
+      path.join(site.repoDir, 'app/made.tsx'),
+      [
+        "const label: string = '123';",
+        "const ROOMS = ['Room 1', 'Room 2'];",
+        "const WORDS = ['one cup', 'two cups'];",
+        "const NAMES = { a: 'Table 4' };",
+        'export function Made({ i }: { i: number }) {',
+        '  return (',
+        '    <div>',
+        '      <p>{`${label}`}</p>',
+        '      <p>{ROOMS[i]}</p>',
+        '      <p>{WORDS[i]}</p>',
+        '      <p>{NAMES.a}</p>',
+        "      <p>{label.concat('!')}</p>",
+        "      <p>{['a', '5'].join(' ')}</p>",
+        "      <p>{'cups'.toUpperCase()}</p>",
+        '    </div>',
+        '  );',
+        '}',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => f.line)).toEqual([8, 9, 11, 12, 13]);
+      expect(found.every((f) => f.file === 'app/made.tsx')).toBe(true);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/made.tsx'));
+    }
+  });
+
   it('lint: refuses a Figure worked out by another function than its own, and a figure list it cannot read', async () => {
     const figures = path.join(site.repoDir, 'rama/figures.ts');
     const before = readFileSync(figures, 'utf8');

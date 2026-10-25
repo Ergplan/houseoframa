@@ -33,11 +33,11 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
-  - text a name stands for that holds digits (`const label = '123'`), text joined with `+` from parts that do, and what one of the product's own functions gives back (`label()` returning `'123'`), unless its JSDoc says `@words`;
+  - text a name stands for that holds digits (`const label = '123'`), followed into templates, `+`, an element of a list or record written in the code, a built-in text method (`concat`, `join`…), and what one of the product's own functions gives back (`label()` returning `'123'`) unless its JSDoc says `@words`;
   - text whose possible values are all known, one with digits;
   - a number in the attributes a person reads.
 
-  It also fails a Figure whose function or show is not the one `rama/figures.ts` names, and any entry it cannot read as written. House of Rama runs its own copy after every lift, so the product's copy cannot change what is checked. A number that arrives as text only at run time (an order's item read from data) cannot be seen in the code. The photograph after every lift finds an amount, a percentage or a count on the screen, untraced, and the lift is refused.
+  It also fails a Figure whose function or show is not the one `rama/figures.ts` names, and any entry it cannot read as written. These are the forms it knows; a number written in a form it does not know passes it. House of Rama runs its own copy after every lift, so the product's copy cannot change what is checked. A number that arrives as text only at run time (an order's item read from data), or in a form the lint does not know, is caught by the second line instead: the photograph after every lift finds an amount, a percentage or a count on the screen, untraced, and the lift is refused.
 
 - `.rama/screens.json`, `.rama/features.json`, a build workflow, and the merge gate's workflow, pinned and keyed with House of Rama's public key when the scaffold is laid down.
 - A welcome building with one traced figure and two example tests: a figure function's unit test, and a screen rendered with its figure checked.
