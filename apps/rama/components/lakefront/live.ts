@@ -35,6 +35,8 @@ export function useImages(): { image: (src: string) => HTMLImageElement | null; 
   const cache = useRef(new Map<string, HTMLImageElement>());
   const [version, setVersion] = useState(0);
   const image = (src: string) => {
+    // Rendered on the server first: there are no pictures there, only on the page.
+    if (typeof Image === 'undefined') return null;
     let img = cache.current.get(src);
     if (!img) {
       img = new Image();

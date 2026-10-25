@@ -68,6 +68,12 @@ export function BuildingView(p: BuildingProps) {
   const figures = sc.facades.flatMap((f) => f.figures.map((g) => ({ ...g, screen: f.title })));
   const open = picked ? (figures.find((g) => g.key === picked) ?? null) : null;
   const trail = open && open.traced ? (p.trails[open.key] ?? null) : null;
+  // The headline figures: each traced figure once (its first appearance), as Harmony's StatTile.
+  const tiles = [
+    ...new Map(figures.filter((g) => g.traced && p.trails[g.key]).map((g) => [g.id, g])).values(),
+  ]
+    .slice(0, 6)
+    .map((g) => ({ g, t: p.trails[g.key]! }));
 
   const onPointer = (e: React.MouseEvent<HTMLCanvasElement>, click: boolean) => {
     const at = toPicture(e.currentTarget.getBoundingClientRect(), sc, e.clientX, e.clientY);
@@ -136,6 +142,26 @@ export function BuildingView(p: BuildingProps) {
           here={{ level: 'building', building: p.building.id }}
           buildings={p.all}
         />
+        {tiles.length ? (
+          <div className="lake-stats" aria-label="Its traced figures">
+            {tiles.map(({ g, t }) => (
+              <button
+                key={g.key}
+                type="button"
+                className={`eg-stat${tiles.length === 1 ? ' eg-stat--hero' : ''}`}
+                onClick={() => setPicked(g.key)}
+                data-stat={g.key}
+              >
+                <span className="eg-stat__top">
+                  <span className="eg-stat__label">{t.title}</span>
+                </span>
+                <span className="eg-stat__date">{g.screen}</span>
+                <span className="eg-stat__value">{g.text ?? g.id}</span>
+                <span className="eg-stat__foot">{t.what}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
       </div>
 
       <aside className="lake-side">

@@ -119,5 +119,8 @@ describe('drawStreet', () => {
       replay: { timeline: streetTimeline(bp, s), k: 0, p: 0 },
     });
     expect(rec.texts).not.toContain('Take an order');
+    // Nor the table's plot before the file that defines it, nor a jetty before a building that uses it.
+    expect(rec.texts).not.toContain('orders');
+    expect(rec.texts).not.toContain('OpenAI');
   });
 });

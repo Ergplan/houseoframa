@@ -102,7 +102,13 @@ function backdrop(ctx: CanvasRenderingContext2D, w: number, h: number, pal: Pale
  * The sky during the replay, at the lift's own hour: the sun crosses from six in the morning to seven in
  * the evening; at night the moon, and the picture dims.
  */
-export function sky(ctx: CanvasRenderingContext2D, width: number, hour: number, pal: Palette) {
+export function sky(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  hour: number,
+  pal: Palette,
+) {
   const c = pal.color;
   const day = hour >= 6 && hour < 19;
   const t = day ? (hour - 6) / 13 : ((hour + 5) % 24) / 11;
@@ -111,7 +117,7 @@ export function sky(ctx: CanvasRenderingContext2D, width: number, hour: number, 
   if (!day) {
     ctx.globalAlpha = 0.35;
     ctx.fillStyle = c.canvas;
-    ctx.fillRect(0, 0, width, 200);
+    ctx.fillRect(0, 0, width, height);
     ctx.globalAlpha = 1;
   }
   ctx.fillStyle = day ? c['series-grid'] : c['ink-muted'];
@@ -245,7 +251,7 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
   const c = pal.color;
   const a = at(s);
   backdrop(ctx, s.width, s.height, pal);
-  if (frame.hour !== undefined && frame.hour !== null) sky(ctx, s.width, frame.hour, pal);
+  if (frame.hour !== undefined && frame.hour !== null) sky(ctx, s.width, s.height, frame.hour, pal);
 
   // The ground, with its grid.
   const g = s.ground;
@@ -298,7 +304,16 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
   const focus = frame.hover ?? frame.selected;
   const focusB = s.buildings.find((b) => b.id === focus) ?? null;
   // Plots: the tables, lit when a building touches them, outlined when the building in focus does.
+  // During the replay a plot appears with the file that defines it, a road and a jetty with the
+  // buildings at both ends.
+  const r = frame.replay;
+  const stands = (id: string) => {
+    const b = s.buildings.find((x) => x.id === id);
+    return !b || standingHeight(b, frame) > 0;
+  };
   for (const p of s.plots) {
+    if (r && r.timeline.laidIn.has(p.file) && laid(r.timeline, p.file, r.k, r.p) === 'none')
+      continue;
     const touched = p.readBy.length + p.writtenBy.length > 0;
     const mine = focusB && (p.readBy.includes(focusB.id) || p.writtenBy.includes(focusB.id));
     fillPoly(
@@ -316,7 +331,9 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
     ctx.fillText(p.table, mid.x, mid.y);
   }
   // Roads: one building using another.
-  for (const r of s.roads) {
+  for (const road of s.roads) {
+    if (!stands(road.from) || !stands(road.to)) continue;
+    const r = road;
     const on = focus && (r.from === focus || r.to === focus);
     ctx.strokeStyle = on ? c.ink : c['line-strong'];
     ctx.lineWidth = Math.min(4, 1 + Math.log2(r.uses));
@@ -332,6 +349,7 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
   }
   // Jetties: the outside services across the water.
   for (const j of s.jetties) {
+    if (!j.users.some(stands)) continue;
     const { pier, landing } = jettyShapes(s, j);
     const on = focusB && j.users.includes(focusB.id);
     fillPoly(ctx, pier, c['surface-2'], c['series-grid'], on ? 2.5 : 1.5);
@@ -417,7 +435,8 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
     const f = frame.flags[b.id];
     if (f) flag(ctx, f, faces.top[3]!.x + 6, peak - 26, pal);
     const v = frame.audit?.badges[b.id];
-    if (v) badge(ctx, v, faces.top[1]!.x - 8, peak - 40, pal);
+    // The badge sits by the roof's right corner, clear of the name and the flag above.
+    if (v) badge(ctx, v, faces.top[1]!.x + 26, faces.top[1]!.y - 4, pal);
     if (craneB === b.id) crane(ctx, faces.right[0]!, peak - 80, true, pal);
   }
 

@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "404df41b269c65f2cb448516a3677bbde62ce436",
+  "commit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8853,6 +8853,501 @@
       "sha": "404df41b269c65f2cb448516a3677bbde62ce436",
       "short": "404df41",
       "subject": "Stage 7 e2e: read the Test drive verdict by its class"
+    },
+    {
+      "at": "2026-10-25T04:43:31Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 85,
+          "del": 0,
+          "kind": "A",
+          "path": ".rama/features.json"
+        },
+        {
+          "add": 105,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/site/[siteId]/features/handler.test.ts"
+        },
+        {
+          "add": 76,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/site/[siteId]/features/handler.ts"
+        },
+        {
+          "add": 35,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/api/site/[siteId]/features/route.ts"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/authz.test.tsx"
+        },
+        {
+          "add": 113,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/globals.css"
+        },
+        {
+          "add": 81,
+          "del": 23,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.test.tsx"
+        },
+        {
+          "add": 91,
+          "del": 4,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.tsx"
+        },
+        {
+          "add": 10,
+          "del": 120,
+          "kind": "M",
+          "path": "apps/rama/canvas/audit.ts"
+        },
+        {
+          "add": 338,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/BuildingView.tsx"
+        },
+        {
+          "add": 551,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/StreetView.tsx"
+        },
+        {
+          "add": 51,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/Words.tsx"
+        },
+        {
+          "add": 60,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/live.ts"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/places.ts"
+        },
+        {
+          "add": 7,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/workbench/SiteShell.tsx"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/components/workbench/TrainerConsole.tsx"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/next.config.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/package.json"
+        },
+        {
+          "add": 18,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/test/banned.test.ts"
+        },
+        {
+          "add": 36,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/test/banned.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/test/blueprint.ts"
+        },
+        {
+          "add": 1567,
+          "del": 156,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 51,
+          "del": 42,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 18,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/BLUEPRINT.md"
+        },
+        {
+          "add": 11,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 22,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-product/.rama/features.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "package.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/blueprint/package.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/diff.test.ts"
+        },
+        {
+          "add": 55,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/blueprint/src/extract.test.ts"
+        },
+        {
+          "add": 65,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/blueprint/src/extract.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/metrics.test.ts"
+        },
+        {
+          "add": 50,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.test.ts"
+        },
+        {
+          "add": 35,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/blueprint/src/metrics/states.ts"
+        },
+        {
+          "add": 3,
+          "del": 3,
+          "kind": "M",
+          "path": "packages/blueprint/src/parse.test.ts"
+        },
+        {
+          "add": 106,
+          "del": 2,
+          "kind": "M",
+          "path": "packages/blueprint/src/parse.ts"
+        },
+        {
+          "add": 22,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/shared/src/blueprint.ts"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/shared/src/doc.test.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/shared/src/index.ts"
+        },
+        {
+          "add": 20,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/package.json"
+        },
+        {
+          "add": 202,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/building.ts"
+        },
+        {
+          "add": 123,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/draw.test.ts"
+        },
+        {
+          "add": 575,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/draw.ts"
+        },
+        {
+          "add": 62,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/drones.test.ts"
+        },
+        {
+          "add": 198,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/drones.ts"
+        },
+        {
+          "add": 135,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/features.test.ts"
+        },
+        {
+          "add": 262,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/features.ts"
+        },
+        {
+          "add": 59,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/geometry.ts"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/index.ts"
+        },
+        {
+          "add": 79,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/iso.ts"
+        },
+        {
+          "add": 62,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/palette.ts"
+        },
+        {
+          "add": 145,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/pick.test.ts"
+        },
+        {
+          "add": 85,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/pick.ts"
+        },
+        {
+          "add": 26,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/read.ts"
+        },
+        {
+          "add": 51,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/replay.test.ts"
+        },
+        {
+          "add": 133,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/replay.ts"
+        },
+        {
+          "add": 48,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/services.ts"
+        },
+        {
+          "add": 97,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/street.test.ts"
+        },
+        {
+          "add": 327,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/street.ts"
+        },
+        {
+          "add": 65,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/words.test.ts"
+        },
+        {
+          "add": 76,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/words.ts"
+        },
+        {
+          "add": 38,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/test/audit.ts"
+        },
+        {
+          "add": 130,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/test/blueprint.ts"
+        },
+        {
+          "add": 52,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/test/recorder.ts"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/tsconfig.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/package.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/index.ts"
+        },
+        {
+          "add": 146,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/workbench/src/lakefront.ts"
+        },
+        {
+          "add": 5,
+          "del": 5,
+          "kind": "M",
+          "path": "packages/workbench/src/products.ts"
+        },
+        {
+          "add": 131,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/workbench/test/lakefront.test.ts"
+        },
+        {
+          "add": 5,
+          "del": 5,
+          "kind": "M",
+          "path": "packages/workbench/test/products.test.ts"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "M",
+          "path": "pnpm-lock.yaml"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "scripts/make-sample.mjs"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "scripts/watch.mjs"
+        },
+        {
+          "add": 3,
+          "del": 2,
+          "kind": "M",
+          "path": "tests/stage-2.e2e.test.ts"
+        },
+        {
+          "add": 7,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/stage-4.sample.e2e.test.ts"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/stage-5.e2e.test.ts"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/stage-7.e2e.test.ts"
+        },
+        {
+          "add": 163,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/stage-8.e2e.test.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "vitest.config.ts"
+        }
+      ],
+      "sha": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "short": "97de6aa",
+      "subject": "Stage 8: the lakefront — Street and Building levels over one Blueprint"
     }
   ],
   "edges": [
@@ -10052,6 +10547,174 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.test.ts",
+      "symbols": [
+        "FeaturesDeps",
+        "handleNameBuilding"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a made-up sample blueprint for tests"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.test.ts",
+      "symbols": [
+        "fixtureBlueprint"
+      ],
+      "to": "apps/rama/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.test.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.test.ts",
+      "symbols": [
+        "FeaturesFile"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "symbols": [
+        "back"
+      ],
+      "to": "apps/rama/server/http.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "symbols": [
+        "FeaturesFile",
+        "nameFeature"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "handleNameBuilding"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "baseUrlOf"
+      ],
+      "to": "apps/rama/server/http.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "jobDb"
+      ],
+      "to": "apps/rama/server/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the audit log table"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "auditLog"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "symbols": [
+        "FEATURES_FILE",
+        "readFeatures",
+        "writeFeatures"
+      ],
+      "to": "packages/stage/src/read.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/site/[siteId]/handover/route.ts",
       "symbols": [
         "handleHandoverAction"
@@ -10444,6 +11107,14 @@
         "*"
       ],
       "to": "apps/rama/app/api/site/[siteId]/discovery/turns/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/features/route.ts",
       "typeOnly": false
     },
     {
@@ -11197,6 +11868,22 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "BuildingView"
+      ],
+      "to": "apps/rama/components/lakefront/BuildingView.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "StreetView"
+      ],
+      "to": "apps/rama/components/lakefront/StreetView.tsx",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the screen for one site and its blueprint"
@@ -11214,6 +11901,15 @@
         "SiteShell"
       ],
       "to": "apps/rama/components/workbench/SiteShell.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
+        "bannedIn",
+        "visibleText"
+      ],
+      "to": "apps/rama/test/banned.ts",
       "typeOnly": false
     },
     {
@@ -11252,6 +11948,30 @@
         "seed"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "BuildingView"
+      ],
+      "to": "apps/rama/components/lakefront/BuildingView.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "StreetView"
+      ],
+      "to": "apps/rama/components/lakefront/StreetView.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
       "typeOnly": false
     },
     {
@@ -11311,6 +12031,14 @@
         "signaturesInForce"
       ],
       "to": "packages/ceremony/src/records.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "building"
+      ],
+      "to": "packages/stage/src/index.ts",
       "typeOnly": false
     },
     {
@@ -11626,6 +12354,16 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/canvas/audit.test.ts",
+      "symbols": [
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "to": "apps/rama/canvas/audit.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of a brick's box, with path, layer, colour and untested flag"
@@ -11644,6 +12382,19 @@
       ],
       "to": "packages/audit/src/view.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/canvas/audit.ts",
+      "symbols": [
+        "AuditRun",
+        "Drone",
+        "LogEntry",
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
     },
     {
       "english": {
@@ -12137,6 +12888,14 @@
     {
       "from": "apps/rama/components/inspector/Inspector.tsx",
       "symbols": [
+        "LogEntry"
+      ],
+      "to": "apps/rama/canvas/audit.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
         "DraftState"
       ],
       "to": "apps/rama/components/audit/ConfirmReport.tsx",
@@ -12263,6 +13022,192 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "Folder",
+        "StateChip"
+      ],
+      "to": "apps/rama/components/harmony/ui.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "flagSentence"
+      ],
+      "to": "apps/rama/components/lakefront/StreetView.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "Words"
+      ],
+      "to": "apps/rama/components/lakefront/Words.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "useImages",
+        "usePalette"
+      ],
+      "to": "apps/rama/components/lakefront/live.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "Verdict"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "BuildingState"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "BuildingScene",
+        "StreetBuilding",
+        "drawBuilding",
+        "pickBuilding",
+        "toPicture"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "PlainTrail"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "StateChip"
+      ],
+      "to": "apps/rama/components/harmony/ui.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "Words"
+      ],
+      "to": "apps/rama/components/lakefront/Words.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "useImages",
+        "usePalette",
+        "useReducedMotion"
+      ],
+      "to": "apps/rama/components/lakefront/live.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "AuditView"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "BuildingState"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "AuditRun",
+        "History",
+        "LogEntry",
+        "Street",
+        "StreetBuilding",
+        "buildingFaces",
+        "buildingVerdicts",
+        "drawStreet",
+        "finishAudit",
+        "hourOf",
+        "liftChip",
+        "pickStreet",
+        "startAudit",
+        "stepAudit",
+        "streetAuditScript",
+        "streetTimeline",
+        "toPicture"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/Words.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/Words.tsx",
+      "symbols": [
+        "Place",
+        "understand"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/live.ts",
+      "symbols": [
+        "Palette",
+        "paletteFrom"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/places.ts",
+      "symbols": [
+        "Place"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "apps/rama/components/showroom/ShowroomView.tsx",
       "symbols": [
         "TrailPanel",
@@ -12295,6 +13240,18 @@
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "symbols": [
+        "AuditRun",
+        "LogEntry",
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "to": "apps/rama/canvas/audit.ts",
+      "typeOnly": false
     },
     {
       "english": {
@@ -12996,6 +13953,16 @@
         "sites"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/test/banned.test.ts",
+      "symbols": [
+        "BANNED",
+        "bannedIn",
+        "visibleText"
+      ],
+      "to": "apps/rama/test/banned.ts",
       "typeOnly": false
     },
     {
@@ -16378,6 +17345,236 @@
       "typeOnly": true
     },
     {
+      "from": "packages/stage/src/building.ts",
+      "symbols": [
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/building.ts",
+      "symbols": [
+        "Pt",
+        "TILE_H",
+        "TILE_W",
+        "boxFaces",
+        "project"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/building.ts",
+      "symbols": [
+        "FLOOR_LABEL",
+        "FLOOR_ORDER",
+        "StreetBuilding",
+        "StreetFloor",
+        "floorOf"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "design/harmony/tokens.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "building"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "Flag",
+        "drawBuilding",
+        "drawStreet"
+      ],
+      "to": "packages/stage/src/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "STAGE_TOKENS",
+        "paletteFromTokens"
+      ],
+      "to": "packages/stage/src/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "streetTimeline"
+      ],
+      "to": "packages/stage/src/replay.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.test.ts",
+      "symbols": [
+        "recorder"
+      ],
+      "to": "packages/stage/test/recorder.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "Verdict"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "ScreenState"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "BuildingScene",
+        "buildingAt"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "brickOnFace",
+        "buildingFaces",
+        "facadeShape",
+        "jettyShapes",
+        "plotPolygon",
+        "subFace"
+      ],
+      "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "Pt",
+        "faceTransform"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "Palette"
+      ],
+      "to": "packages/stage/src/palette.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "StreetTimeline",
+        "craneAt",
+        "laid"
+      ],
+      "to": "packages/stage/src/replay.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
+        "Street",
+        "StreetBuilding",
+        "at"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/drones.test.ts",
+      "symbols": [
+        "buildingVerdicts",
+        "finishAudit",
+        "startAudit",
+        "stepAudit",
+        "streetAuditScript"
+      ],
+      "to": "packages/stage/src/drones.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/drones.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/drones.test.ts",
+      "symbols": [
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/drones.test.ts",
+      "symbols": [
+        "stallAudit"
+      ],
+      "to": "packages/stage/test/audit.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/drones.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/stage/src/drones.ts",
       "symbols": [
         "AuditStep",
@@ -16387,6 +17584,465 @@
       ],
       "to": "packages/audit/src/view.ts",
       "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/drones.ts",
+      "symbols": [
+        "Street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/features.test.ts",
+      "symbols": [
+        "buildingOf",
+        "draftFeatures",
+        "nameFeature",
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/features.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/features.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/geometry.ts",
+      "symbols": [
+        "BuildingScene"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/geometry.ts",
+      "symbols": [
+        "Pt",
+        "boxFaces"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/geometry.ts",
+      "symbols": [
+        "Jetty",
+        "Plot",
+        "Street",
+        "StreetBrick",
+        "StreetBuilding",
+        "at"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/drones.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/pick.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/replay.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/services.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/words.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "FacadeInput",
+        "building"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "brickOnFace",
+        "buildingFaces",
+        "facadeShape",
+        "jettyShapes",
+        "plotPolygon"
+      ],
+      "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "Pt"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "pickBuilding",
+        "pickStreet",
+        "toPicture"
+      ],
+      "to": "packages/stage/src/pick.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "streetTimeline"
+      ],
+      "to": "packages/stage/src/replay.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.ts",
+      "symbols": [
+        "BuildingScene"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/pick.ts",
+      "symbols": [
+        "standingHeight"
+      ],
+      "to": "packages/stage/src/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.ts",
+      "symbols": [
+        "brickOnFace",
+        "buildingFaces",
+        "facadeShape",
+        "jettyShapes",
+        "plotPolygon"
+      ],
+      "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.ts",
+      "symbols": [
+        "Pt",
+        "inPolygon"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.ts",
+      "symbols": [
+        "StreetTimeline",
+        "laid"
+      ],
+      "to": "packages/stage/src/replay.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pick.ts",
+      "symbols": [
+        "Street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/read.ts",
+      "symbols": [
+        "FeaturesFile",
+        "parseFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/replay.test.ts",
+      "symbols": [
+        "standingHeight"
+      ],
+      "to": "packages/stage/src/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/replay.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/replay.test.ts",
+      "symbols": [
+        "craneAt",
+        "hourOf",
+        "laid",
+        "liftChip",
+        "streetTimeline"
+      ],
+      "to": "packages/stage/src/replay.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/replay.test.ts",
+      "symbols": [
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/replay.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/replay.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/replay.ts",
+      "symbols": [
+        "Street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/services.ts",
+      "symbols": [
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/street.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/street.test.ts",
+      "symbols": [
+        "floorOf",
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/street.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/street.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/street.ts",
+      "symbols": [
+        "BuildingKind",
+        "Features"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/street.ts",
+      "symbols": [
+        "Pt",
+        "project"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/street.ts",
+      "symbols": [
+        "servicesOf"
+      ],
+      "to": "packages/stage/src/services.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/words.test.ts",
+      "symbols": [
+        "findBuilding",
+        "understand"
+      ],
+      "to": "packages/stage/src/words.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/test/audit.ts",
+      "symbols": [
+        "AuditView"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/test/blueprint.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode",
+        "Commit"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
     },
     {
       "from": "packages/trace/bin/rama-trace.mjs",
@@ -16880,6 +18536,14 @@
       "symbols": [
         "*"
       ],
+      "to": "packages/workbench/src/lakefront.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
       "to": "packages/workbench/src/modules.ts",
       "typeOnly": false
     },
@@ -16921,6 +18585,76 @@
         "workDir"
       ],
       "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "BuildingState",
+        "buildingState"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "Blueprint",
+        "Signoff",
+        "Trail"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "FacadeInput",
+        "Features",
+        "Street",
+        "resolveFeatures",
+        "street"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "readFeatures"
+      ],
+      "to": "packages/stage/src/read.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "appearanceKeys",
+        "readCapture",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/lakefront.ts",
+      "symbols": [
+        "SiteStates",
+        "siteStates"
+      ],
+      "to": "packages/workbench/src/states.ts",
       "typeOnly": false
     },
     {
@@ -17178,6 +18912,52 @@
         "viewer"
       ],
       "to": "packages/workbench/src/github.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/lakefront.test.ts",
+      "symbols": [
+        "buildingState"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options; a way to add a site from a local folder or remote source; regenerating and saving a site's blueprint file"
+      },
+      "from": "packages/workbench/test/lakefront.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "addSite",
+        "writeSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/lakefront.test.ts",
+      "symbols": [
+        "homeDir"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/lakefront.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/lakefront.test.ts",
+      "symbols": [
+        "siteLakefront"
+      ],
+      "to": "packages/workbench/src/lakefront.ts",
       "typeOnly": false
     },
     {
@@ -17963,6 +19743,75 @@
       ],
       "to": "tests/session.ts",
       "typeOnly": false
+    },
+    {
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "bannedIn"
+      ],
+      "to": "apps/rama/test/banned.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "Street",
+        "buildingFaces"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "callAudit",
+        "runSiteTests",
+        "siteLakefront"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "sampleSite"
+      ],
+      "to": "tests/sample.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "signIn",
+        "throwawayDb"
+      ],
+      "to": "tests/session.ts",
+      "typeOnly": false
     }
   ],
   "external": [
@@ -18460,6 +20309,30 @@
     },
     {
       "dev": false,
+      "manifest": "packages/stage/package.json",
+      "name": "@rama/audit",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/stage/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/stage/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/stage/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
+      "dev": false,
       "manifest": "packages/trace/package.json",
       "name": "@rama/blueprint",
       "version": "workspace:*"
@@ -18561,7 +20434,7 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T19:28:30Z",
+  "extractedAt": "2026-10-25T04:43:31Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -18721,6 +20594,21 @@
         "confirmed": false,
         "text": "Code formatting style: single quotes, lines up to 100 characters, trailing commas everywhere."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3006,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 85,
+      "path": ".rama/features.json",
       "test": false
     },
     {
@@ -19650,6 +21538,70 @@
     },
     {
       "binary": false,
+      "bytes": 3449,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "hosts": [
+        "rama.test"
+      ],
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 105,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/features/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2454,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "FeaturesDeps",
+        "handleNameBuilding"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 76,
+      "path": "apps/rama/app/api/site/[siteId]/features/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1403,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 35,
+      "path": "apps/rama/app/api/site/[siteId]/features/route.ts",
+      "tables": [
+        {
+          "name": "audit_log",
+          "reads": false,
+          "writes": true
+        }
+      ],
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 685,
       "changes": 1,
       "env": [],
@@ -19797,7 +21749,7 @@
     {
       "binary": false,
       "bytes": 15277,
-      "changes": 7,
+      "changes": 8,
       "env": [
         "DATABASE_URL",
         "RAMA_POD_TOKEN",
@@ -19809,7 +21761,7 @@
       "hosts": [
         "rama.test"
       ],
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 393,
@@ -19884,16 +21836,16 @@
     },
     {
       "binary": false,
-      "bytes": 20061,
-      "changes": 10,
+      "bytes": 20788,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1041,
+      "lines": 1067,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -20119,7 +22071,7 @@
     },
     {
       "binary": false,
-      "bytes": 7766,
+      "bytes": 7760,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -20140,7 +22092,7 @@
     },
     {
       "binary": false,
-      "bytes": 2266,
+      "bytes": 2264,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -20165,7 +22117,7 @@
     },
     {
       "binary": false,
-      "bytes": 6157,
+      "bytes": 6155,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -20187,14 +22139,14 @@
     {
       "binary": false,
       "bytes": 7568,
-      "changes": 6,
+      "changes": 7,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 179,
@@ -20210,7 +22162,7 @@
     {
       "binary": false,
       "bytes": 5783,
-      "changes": 8,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -20218,13 +22170,10 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 165,
-      "packages": [
-        "@rama/stage"
-      ],
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -20255,7 +22204,7 @@
     },
     {
       "binary": false,
-      "bytes": 2296,
+      "bytes": 2294,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -20298,7 +22247,7 @@
     },
     {
       "binary": false,
-      "bytes": 2237,
+      "bytes": 2235,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -20355,6 +22304,28 @@
       ],
       "path": "apps/rama/canvas/audit.test.ts",
       "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 275,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AuditRun",
+        "Drone",
+        "LogEntry",
+        "finishAudit",
+        "startAudit",
+        "stepAudit"
+      ],
+      "firstCommit": "785810db02044e37dd058164c3d9b576f404f196",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 10,
+      "path": "apps/rama/canvas/audit.ts",
+      "test": false
     },
     {
       "binary": false,
@@ -20701,7 +22672,7 @@
     },
     {
       "binary": false,
-      "bytes": 12443,
+      "bytes": 12382,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -20712,7 +22683,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 373,
+      "lines": 371,
       "packages": [
         "next",
         "react"
@@ -20722,7 +22693,7 @@
     },
     {
       "binary": false,
-      "bytes": 9369,
+      "bytes": 9308,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -20733,7 +22704,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 248,
+      "lines": 246,
       "packages": [
         "next",
         "react"
@@ -20968,7 +22939,113 @@
     },
     {
       "binary": false,
-      "bytes": 6215,
+      "bytes": 13934,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildingProps",
+        "BuildingView"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 364,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/BuildingView.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 19540,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "StreetProps",
+        "StreetView",
+        "flagSentence"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 551,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/StreetView.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1470,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Words"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 51,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/Words.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2377,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "livePalette",
+        "useImages",
+        "usePalette",
+        "useReducedMotion"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 62,
+      "packages": [
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/live.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 767,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "placeHref"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 17,
+      "path": "apps/rama/components/lakefront/places.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 6154,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -20979,7 +23056,7 @@
       "lastCommit": "49dad8d1d8b3f7e075d0c85817ea2b622272404e",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 151,
+      "lines": 149,
       "packages": [
         "next",
         "react"
@@ -21007,7 +23084,7 @@
     },
     {
       "binary": false,
-      "bytes": 16654,
+      "bytes": 16559,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -21018,7 +23095,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 464,
+      "lines": 461,
       "packages": [
         "next",
         "react"
@@ -21102,7 +23179,7 @@
     {
       "binary": false,
       "bytes": 3668,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -21111,7 +23188,7 @@
         "consoleProps"
       ],
       "firstCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 101,
@@ -21121,7 +23198,7 @@
     {
       "binary": false,
       "bytes": 7534,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -21132,7 +23209,7 @@
       "hosts": [
         "github.com"
       ],
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 215,
@@ -21145,7 +23222,7 @@
     {
       "binary": false,
       "bytes": 933,
-      "changes": 4,
+      "changes": 5,
       "env": [
         "NEXT_DIST_DIR"
       ],
@@ -21154,7 +23231,7 @@
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 25,
@@ -21168,12 +23245,12 @@
     {
       "binary": false,
       "bytes": 903,
-      "changes": 8,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 34,
@@ -21509,8 +23586,45 @@
     },
     {
       "binary": false,
-      "bytes": 3707,
+      "bytes": 766,
       "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 18,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/test/banned.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1464,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BANNED",
+        "bannedIn",
+        "visibleText"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 36,
+      "path": "apps/rama/test/banned.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3707,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -21519,7 +23633,7 @@
         "node"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 127,
@@ -21916,12 +24030,12 @@
     {
       "binary": false,
       "bytes": 54396,
-      "changes": 25,
+      "changes": 26,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 193,
@@ -21935,12 +24049,12 @@
     {
       "binary": false,
       "bytes": 12358,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 213,
@@ -21954,12 +24068,12 @@
     {
       "binary": false,
       "bytes": 46685,
-      "changes": 45,
+      "changes": 46,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 208,
@@ -22003,12 +24117,12 @@
     {
       "binary": false,
       "bytes": 14699,
-      "changes": 33,
+      "changes": 34,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 51,
@@ -22399,6 +24513,21 @@
     },
     {
       "binary": false,
+      "bytes": 623,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 22,
+      "path": "fixtures/sample-product/.rama/features.json",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 494,
       "changes": 1,
       "env": [],
@@ -22722,12 +24851,12 @@
     {
       "binary": false,
       "bytes": 1944,
-      "changes": 15,
+      "changes": 16,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 59,
@@ -23263,12 +25392,12 @@
     {
       "binary": false,
       "bytes": 698,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "0680d5d0b1f2abd9966f4b64f9c8e11c77ec64ee",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 31,
@@ -23303,12 +25432,12 @@
     {
       "binary": false,
       "bytes": 1690,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 47,
@@ -23424,7 +25553,7 @@
     {
       "binary": false,
       "bytes": 15983,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
@@ -23432,7 +25561,7 @@
       "hosts": [
         "example.com"
       ],
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 336,
@@ -23449,7 +25578,7 @@
     {
       "binary": false,
       "bytes": 11710,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -23461,7 +25590,7 @@
         "packageName"
       ],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 281,
@@ -23800,12 +25929,12 @@
     {
       "binary": false,
       "bytes": 13787,
-      "changes": 10,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 256,
@@ -23821,16 +25950,16 @@
     },
     {
       "binary": false,
-      "bytes": 11611,
-      "changes": 6,
+      "bytes": 11774,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "14620e7862dccb29d495f5ec9f67c607c4c9a1cb",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 266,
+      "lines": 270,
       "packages": [
         "vitest"
       ],
@@ -23839,8 +25968,8 @@
     },
     {
       "binary": false,
-      "bytes": 13637,
-      "changes": 6,
+      "bytes": 13765,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -23863,22 +25992,22 @@
         "testReach"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "14620e7862dccb29d495f5ec9f67c607c4c9a1cb",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 312,
+      "lines": 317,
       "path": "packages/blueprint/src/metrics/states.ts",
       "test": false
     },
     {
       "binary": false,
       "bytes": 3957,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 78,
@@ -23895,7 +26024,7 @@
     {
       "binary": false,
       "bytes": 12680,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -23907,7 +26036,7 @@
         "parseSource"
       ],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 308,
@@ -26121,7 +28250,7 @@
     {
       "binary": false,
       "bytes": 6494,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -26135,7 +28264,7 @@
         "Table"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 154,
@@ -26171,12 +28300,12 @@
     {
       "binary": false,
       "bytes": 1484,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 42,
@@ -26193,7 +28322,7 @@
     {
       "binary": false,
       "bytes": 270,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -26211,7 +28340,7 @@
         "Trail"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 13,
@@ -26264,8 +28393,108 @@
     },
     {
       "binary": false,
+      "bytes": 549,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 20,
+      "path": "packages/stage/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 6177,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "B_BRICK_H",
+        "B_GAP",
+        "B_MIN_FLOOR",
+        "B_PAD",
+        "BuildingScene",
+        "FacadeInput",
+        "FacadePanel",
+        "MIN_FACADE",
+        "building",
+        "buildingAt"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 202,
+      "path": "packages/stage/src/building.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4728,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 126,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/draw.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 20234,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildingFrame",
+        "Flag",
+        "StreetFrame",
+        "drawBuilding",
+        "drawStreet",
+        "sky",
+        "standingHeight"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 594,
+      "path": "packages/stage/src/draw.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2321,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 62,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/drones.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 6694,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -26279,12 +28508,430 @@
         "stepAudit",
         "streetAuditScript"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 198,
       "path": "packages/stage/src/drones.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4719,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 135,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/features.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 9555,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildingKind",
+        "Feature",
+        "FeatureSpec",
+        "Features",
+        "FeaturesFile",
+        "MAX_DOES",
+        "MAX_NAME",
+        "buildingOf",
+        "draftFeatures",
+        "nameFeature",
+        "onStreet",
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 262,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/stage/src/features.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2259,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "brickOnFace",
+        "buildingFaces",
+        "facadeShape",
+        "jettyShapes",
+        "plotPolygon",
+        "subFace"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 59,
+      "path": "packages/stage/src/geometry.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 529,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 14,
+      "path": "packages/stage/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2973,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Pt",
+        "TILE_H",
+        "TILE_W",
+        "boxFaces",
+        "depth",
+        "faceTransform",
+        "inPolygon",
+        "project",
+        "toFace"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 79,
+      "path": "packages/stage/src/iso.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1891,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Palette",
+        "STAGE_TOKENS",
+        "StageToken",
+        "paletteFrom",
+        "paletteFromTokens"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 62,
+      "path": "packages/stage/src/palette.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4850,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 145,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/pick.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3297,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildingPick",
+        "StreetPick",
+        "pickBuilding",
+        "pickStreet",
+        "toPicture"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 85,
+      "path": "packages/stage/src/pick.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1159,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "FEATURES_FILE",
+        "readFeatures",
+        "writeFeatures"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 26,
+      "path": "packages/stage/src/read.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2043,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 51,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/replay.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 5060,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "History",
+        "LaidState",
+        "StreetEvent",
+        "StreetLift",
+        "StreetTimeline",
+        "craneAt",
+        "hourOf",
+        "laid",
+        "liftChip",
+        "offsetMinutes",
+        "streetTimeline"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 133,
+      "path": "packages/stage/src/replay.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1692,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "servicesOf"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 48,
+      "path": "packages/stage/src/services.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3764,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 97,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/street.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 11190,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BRICK_GAP",
+        "BRICK_H",
+        "FLOOR_LABEL",
+        "FLOOR_ORDER",
+        "FLOOR_PAD",
+        "FloorKind",
+        "Jetty",
+        "MIN_FLOOR",
+        "MIN_HEIGHT",
+        "Plot",
+        "Road",
+        "SLOT",
+        "Street",
+        "StreetBrick",
+        "StreetBuilding",
+        "StreetFloor",
+        "StreetOptions",
+        "at",
+        "floorOf",
+        "floorsFor",
+        "perRow",
+        "sideFor",
+        "street"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 327,
+      "path": "packages/stage/src/street.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2684,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 65,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/words.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3329,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Place",
+        "Understood",
+        "findBuilding",
+        "understand"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 76,
+      "path": "packages/stage/src/words.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1008,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "stallAudit"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 38,
+      "path": "packages/stage/test/audit.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4341,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 130,
+      "path": "packages/stage/test/blueprint.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1605,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Recording",
+        "recorder"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 52,
+      "path": "packages/stage/test/recorder.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 125,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 5,
+      "path": "packages/stage/tsconfig.json",
       "test": false
     },
     {
@@ -26715,12 +29362,12 @@
     {
       "binary": false,
       "bytes": 735,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 28,
@@ -26785,14 +29432,14 @@
     {
       "binary": false,
       "bytes": 268,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
         "*"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 9,
@@ -26827,6 +29474,28 @@
     },
     {
       "binary": false,
+      "bytes": 5820,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "PlainTrail",
+        "SiteLakefront",
+        "buildingTrails",
+        "plainTrail",
+        "shotUrl",
+        "siteLakefront"
+      ],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 146,
+      "path": "packages/workbench/src/lakefront.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 3080,
       "changes": 1,
       "env": [],
@@ -26845,7 +29514,7 @@
     {
       "binary": false,
       "bytes": 7334,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "RAMA_GITHUB_API"
       ],
@@ -26862,7 +29531,7 @@
         "productId"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 201,
@@ -26971,8 +29640,26 @@
     },
     {
       "binary": false,
-      "bytes": 8691,
+      "bytes": 4840,
       "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 131,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/lakefront.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 8691,
+      "changes": 2,
       "env": [
         "DATABASE_URL"
       ],
@@ -26983,7 +29670,7 @@
         "api.github.test",
         "github.com"
       ],
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 205,
@@ -27077,12 +29764,12 @@
     {
       "binary": false,
       "bytes": 107689,
-      "changes": 14,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 3407,
@@ -27612,7 +30299,7 @@
     {
       "binary": false,
       "bytes": 3370,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -27621,7 +30308,7 @@
         "makeSample"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 90,
@@ -27672,12 +30359,12 @@
     {
       "binary": false,
       "bytes": 8993,
-      "changes": 11,
+      "changes": 12,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 265,
@@ -27841,7 +30528,7 @@
     {
       "binary": false,
       "bytes": 8627,
-      "changes": 3,
+      "changes": 4,
       "env": [
         "DATABASE_URL",
         "RAMA_E2E_LOG"
@@ -27849,7 +30536,7 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 197,
@@ -27901,14 +30588,14 @@
     {
       "binary": false,
       "bytes": 6247,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 154,
@@ -27930,14 +30617,14 @@
     {
       "binary": false,
       "bytes": 8975,
-      "changes": 3,
+      "changes": 4,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 232,
@@ -28039,8 +30726,8 @@
     },
     {
       "binary": false,
-      "bytes": 8018,
-      "changes": 6,
+      "bytes": 8204,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
@@ -28048,15 +30735,34 @@
       "hosts": [
         "github.com"
       ],
-      "lastCommit": "404df41b269c65f2cb448516a3677bbde62ce436",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 178,
+      "lines": 180,
       "packages": [
         "playwright",
         "vitest"
       ],
       "path": "tests/stage-7.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7837,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 163,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
+      "path": "tests/stage-8.e2e.test.ts",
       "test": true
     },
     {
@@ -28081,7 +30787,7 @@
     {
       "binary": false,
       "bytes": 1706,
-      "changes": 8,
+      "changes": 9,
       "env": [
         "RAMA_VENDOR_TESTS"
       ],
@@ -28090,7 +30796,7 @@
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 44,
@@ -28175,6 +30881,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -28188,6 +30908,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -28509,6 +31230,7 @@
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/page.tsx",
+        "apps/rama/canvas/audit.ts",
         "apps/rama/canvas/draw.ts",
         "apps/rama/canvas/frame.ts",
         "apps/rama/canvas/layout.ts",
@@ -28521,6 +31243,11 @@
         "apps/rama/components/harmony/ui.tsx",
         "apps/rama/components/inspector/Inspector.tsx",
         "apps/rama/components/inspector/words.ts",
+        "apps/rama/components/lakefront/BuildingView.tsx",
+        "apps/rama/components/lakefront/StreetView.tsx",
+        "apps/rama/components/lakefront/Words.tsx",
+        "apps/rama/components/lakefront/live.ts",
+        "apps/rama/components/lakefront/places.ts",
         "apps/rama/components/site/SiteView.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
         "apps/rama/components/workbench/Said.tsx",
@@ -28584,6 +31311,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -28597,6 +31338,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -28682,6 +31424,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -28695,6 +31451,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -28779,6 +31536,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -28792,6 +31563,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -28878,6 +31650,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -28891,6 +31677,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -28977,6 +31764,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -28990,6 +31791,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -29116,6 +31918,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -29129,6 +31945,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -29207,6 +32024,20 @@
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
         "packages/model/src/vendors.ts",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
@@ -29220,6 +32051,7 @@
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
         "packages/workbench/src/states.ts",
@@ -29575,55 +32407,6 @@
     }
   ],
   "tags": [],
-  "unresolved": [
-    {
-      "from": "apps/rama/app/authz.test.tsx",
-      "spec": "./api/site/[siteId]/features/route"
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
-      "spec": "../../../components/lakefront/BuildingView"
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
-      "spec": "../../../components/lakefront/StreetView"
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
-      "spec": "../../../test/banned"
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.tsx",
-      "spec": "../../../components/lakefront/BuildingView"
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.tsx",
-      "spec": "../../../components/lakefront/StreetView"
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.tsx",
-      "spec": "../../../components/lakefront/places"
-    },
-    {
-      "from": "apps/rama/canvas/audit.test.ts",
-      "spec": "./audit"
-    },
-    {
-      "from": "apps/rama/components/inspector/Inspector.tsx",
-      "spec": "../../canvas/audit"
-    },
-    {
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "spec": "../../canvas/audit"
-    },
-    {
-      "from": "packages/stage/src/drones.ts",
-      "spec": "./street.ts"
-    },
-    {
-      "from": "packages/workbench/src/index.ts",
-      "spec": "./lakefront.ts"
-    }
-  ],
+  "unresolved": [],
   "worktree": true
 }

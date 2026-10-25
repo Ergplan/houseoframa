@@ -253,6 +253,10 @@ describe('buildingState', () => {
     });
   });
 
+  it('names only the kinds of check there are', () => {
+    expect(buildingState([st(true, null)]).why).toBe('All 1 screen checked: 1 by a passing test.');
+  });
+
   it('is Unverified while one screen is not checked, and says how many', () => {
     expect(buildingState([st(true, null), st(false, null)])).toMatchObject({
       state: 'Unverified',

@@ -305,7 +305,12 @@ export function buildingState(screens: StateOf[]): BuildingState {
       state: 'Verified',
       by: [],
       tally,
-      why: `All ${of} checked: ${tally.Verified} by a passing test, ${tally.Confirmed} signed by name.`,
+      why: `All ${of} checked: ${[
+        tally.Verified ? `${tally.Verified} by a passing test` : null,
+        tally.Confirmed ? `${tally.Confirmed} signed by name` : null,
+      ]
+        .filter(Boolean)
+        .join(', ')}.`,
     };
   const open = n - screens.filter((s) => s.verified || s.confirmed).length;
   return { state: 'Unverified', by: [], tally, why: `${open} of ${of} not checked yet.` };

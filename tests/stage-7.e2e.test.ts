@@ -151,7 +151,9 @@ describe('stage 7 e2e', () => {
     await page
       // The verdict by its class: the Next dev tools' badge carries a data-status of its own.
       .locator('.rama-verdict[data-status="passed"], .rama-verdict[data-status="failed"]')
-      .waitFor({ timeout: 300_000 });
+      // Up to ten minutes: alone it takes under two, but the full suite runs other products' builds
+      // (Stage 8's sample, photographed and audited) beside it on the same machine.
+      .waitFor({ timeout: 600_000 });
     const verdict = await page.locator('.rama-verdict').getAttribute('data-status');
     const steps = await page.locator('.steps li').allTextContents();
     expect(verdict, steps.join('\n')).toBe('passed');
@@ -174,5 +176,5 @@ describe('stage 7 e2e', () => {
       );
     for (const f of files(work)) expect(readFileSync(f).includes(TOKEN), f).toBe(false);
     expect(errors).toEqual([]);
-  }, 600_000);
+  }, 900_000);
 });

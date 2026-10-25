@@ -72,17 +72,15 @@ export function WalkthroughView({
   return (
     <>
       <header className="hud">
-        <h1>
-          <Link href="/">HOUSE OF RAMA</Link>
-        </h1>
-        <span className="tag">Walkthrough · {name}</span>
+        <h1>Walkthrough</h1>
+        <span className="tag">{name}</span>
         <span className="site">screens captured at {commit.slice(0, 7)}</span>
       </header>
       <p className="lede">
         <b>
           {signed} of {steps.length}
         </b>{' '}
-        screens signed at this commit. <Link href={`/site/${siteId}`}>◀ Back to the site</Link> ·{' '}
+        screens signed at this commit. <Link href={`/site/${siteId}`}>Back to the Street</Link> ·{' '}
         <Link href={`/site/${siteId}/showroom`}>Showroom</Link>
       </p>
       {!step ? (

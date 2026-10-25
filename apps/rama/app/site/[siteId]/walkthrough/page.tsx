@@ -21,7 +21,7 @@ async function WalkthroughPage({ params }: { params: Promise<{ siteId: string }>
         <h1>Walkthrough · {site.name}</h1>
         <p>A walkthrough signs real screens, and none have been photographed for this site yet.</p>
         <ActForm siteId={site.id} act="photograph" label="Photograph the screens" />
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </main>
     );
   }

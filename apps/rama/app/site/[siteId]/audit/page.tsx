@@ -30,7 +30,7 @@ async function AuditReportView({ params }: { params: Promise<{ siteId: string }>
       <main className="stub">
         <h1>Audit · {site.name}</h1>
         <p>The audit reads from Postgres, which could not be reached ({(err as Error).message}).</p>
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </main>
     );
   }
@@ -43,7 +43,7 @@ async function AuditReportView({ params }: { params: Promise<{ siteId: string }>
           builder.
         </p>
         <ActForm siteId={site.id} act="call-audit" label="Call the audit" />
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </main>
     );
   }
@@ -190,7 +190,7 @@ async function AuditReportView({ params }: { params: Promise<{ siteId: string }>
         ))}
       </section>
       <p>
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </p>
     </main>
   );

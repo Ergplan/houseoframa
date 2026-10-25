@@ -30,7 +30,7 @@ async function ShowroomPage({
           than a mock-up.
         </p>
         <ActForm siteId={site.id} act="photograph" label="Photograph the screens" />
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </main>
     );
   }

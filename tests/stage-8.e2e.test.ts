@@ -91,7 +91,7 @@ describe('stage 8 e2e', () => {
     await page.locator('.whoami').waitFor();
 
     // The Street: every building by name and what it does, in the owner's words.
-    await page.goto(`${server.browserUrl}/site/chai`);
+    expect((await page.goto(`${server.browserUrl}/site/chai`))!.status()).toBe(200);
     await page.locator('[data-level="street"] canvas[data-ready="true"]').waitFor();
     const names = await page.locator('.lake-list [data-building] .lake-name').allTextContents();
     expect(names).toEqual([

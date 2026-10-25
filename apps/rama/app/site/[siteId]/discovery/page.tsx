@@ -32,7 +32,7 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
           The site office reads its sessions from Postgres, which could not be reached (
           {(err as Error).message}). Nothing is shown rather than a guess.
         </p>
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </main>
     );
   }

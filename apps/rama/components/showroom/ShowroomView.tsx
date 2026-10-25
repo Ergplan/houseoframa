@@ -43,10 +43,8 @@ export function ShowroomView({
   return (
     <>
       <header className="hud">
-        <h1>
-          <Link href="/">HOUSE OF RAMA</Link>
-        </h1>
-        <span className="tag">Showroom · {name}</span>
+        <h1>Showroom</h1>
+        <span className="tag">{name}</span>
         <span className="site">
           captured {showroom.capturedAt.slice(0, 16).replace('T', ' ')} UTC at{' '}
           {showroom.commit.slice(0, 7)}
@@ -57,7 +55,7 @@ export function ShowroomView({
           {showroom.counts.traced} of {showroom.counts.shown}
         </b>{' '}
         figures on these screens are traced to the code that computes them; the rest are outlined
-        grey as untraced. <Link href={`/site/${siteId}`}>◀ Back to the site</Link>
+        grey as untraced. <Link href={`/site/${siteId}`}>Back to the Street</Link>
       </p>
       {screen ? (
         <div className="cab">

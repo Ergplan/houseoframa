@@ -4,7 +4,6 @@
 // Interaction ported from the weekend prototype (reference/weekend-prototype/house-of-rama.html,
 // "loop", "deck" and "picking").
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Blueprint } from '@rama/shared';
 import { draw } from '../../canvas/draw';
@@ -280,10 +279,8 @@ export function SiteView({
   return (
     <>
       <header className="hud">
-        <h1>
-          <Link href="/">HOUSE OF RAMA</Link>
-        </h1>
-        <span className="tag">Built on trust · {name}</span>
+        <h1>The code</h1>
+        <span className="tag">{name}</span>
         <span className="site">
           {blueprint.repo} @ {blueprint.commit.slice(0, 7) || 'no commit'}
           {blueprint.worktree ? ' + working tree' : ''}

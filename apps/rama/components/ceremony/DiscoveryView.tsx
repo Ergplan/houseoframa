@@ -86,10 +86,8 @@ export function DiscoveryView({
   return (
     <>
       <header className="hud">
-        <h1>
-          <Link href="/">HOUSE OF RAMA</Link>
-        </h1>
-        <span className="tag">Site office · {name}</span>
+        <h1>Site office</h1>
+        <span className="tag">{name}</span>
       </header>
       <p className="lede">
         <b>{decisions.filter((d) => d.status === 'decided').length}</b> decisions recorded,{' '}
@@ -98,7 +96,7 @@ export function DiscoveryView({
         {decisions.some((d) => d.status === 'withdrawn')
           ? `, ${decisions.filter((d) => d.status === 'withdrawn').length} withdrawn`
           : ''}
-        . <Link href={`/site/${siteId}`}>◀ Back to the site</Link>
+        . <Link href={`/site/${siteId}`}>Back to the Street</Link>
       </p>
       <div className="office">
         {member && decisions.some((d) => d.status !== 'withdrawn') && (

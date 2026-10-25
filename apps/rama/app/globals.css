@@ -42,8 +42,9 @@ a {
   border-bottom: 1px solid var(--line);
 }
 .hud h1 {
-  font: 600 22px/1 var(--font-display);
-  letter-spacing: -0.02em;
+  /* Harmony's title style: the view's name (the site's name is in the breadcrumb and beside it). */
+  font: 600 24px/1.2 var(--font-display);
+  letter-spacing: -0.01em;
   margin: 0;
   color: var(--ink);
 }
@@ -1038,4 +1039,29 @@ body:has(.rama-stage) {
   .lake-live {
     animation: none;
   }
+}
+.lake-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-3);
+}
+.lake-stats button.eg-stat {
+  /* A tile that opens its trail: Harmony's StatTile, not the generic pill the other buttons wear. */
+  display: grid;
+  gap: 4px;
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  line-height: normal;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+.lake-stats .eg-stat__value {
+  font-variant-numeric: tabular-nums;
+}
+.lakefront a.eg-btn {
+  text-decoration: none;
 }

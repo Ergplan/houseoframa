@@ -140,7 +140,7 @@ async function HandoverView({ params }: { params: Promise<{ siteId: string }> })
         </section>
       )}
       <p>
-        <Link href={`/site/${site.id}`}>◀ Back to the site</Link>
+        <Link href={`/site/${site.id}`}>Back to the Street</Link>
       </p>
     </main>
   );
