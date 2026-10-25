@@ -242,6 +242,26 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'features/welcome/count.ts'));
     }
+    // A page whose default export is a name for a lower-case function, in either form.
+    for (const end of ['export default page;', 'export { page as default };']) {
+      writeFileSync(
+        path.join(site.repoDir, 'app/page2.ts'),
+        [
+          "import { createElement } from 'react';",
+          'function page() {',
+          "  return createElement('p', null, '123');",
+          '}',
+          end,
+          '',
+        ].join('\n'),
+      );
+      try {
+        const found = await lintProduct(site.repoDir, env);
+        expect(found.map((f) => [f.file, f.line])).toEqual([['app/page2.ts', 3]]);
+      } finally {
+        rmSync(path.join(site.repoDir, 'app/page2.ts'));
+      }
+    }
   });
 
   it('lint: refuses a Figure worked out by another function than its own, and a figure list it cannot read', async () => {

@@ -491,10 +491,27 @@ export function lintFigures(dir: string): LintFinding[] {
         ts.canHaveModifiers(n) &&
         (ts.getModifiers(n) ?? []).some((m) => m.kind === ts.SyntaxKind.DefaultKeyword);
       let exported: ts.Expression | undefined;
+      let exportedBody: ts.ConciseBody | undefined;
+      // The default export by name (`export default page`, `export { page as default }`): its function.
+      const byName = (id: ts.Identifier | ts.ModuleExportName) => {
+        const d = target(id)?.valueDeclaration;
+        if (d && ts.isFunctionDeclaration(d)) return d.body;
+        if (d && ts.isVariableDeclaration(d) && isFn(d.initializer)) return d.initializer.body;
+        return undefined;
+      };
       if (ts.isExportAssignment(node) && !node.isExportEquals) {
         exported = node.expression;
         while (exported && ts.isParenthesizedExpression(exported)) exported = exported.expression;
+        if (exported && ts.isIdentifier(exported)) exportedBody = byName(exported);
       }
+      if (
+        ts.isExportDeclaration(node) &&
+        !node.moduleSpecifier &&
+        node.exportClause &&
+        ts.isNamedExports(node.exportClause)
+      )
+        for (const el of node.exportClause.elements)
+          if (el.name.text === 'default') exportedBody = byName(el.propertyName ?? el.name);
       const component =
         (ts.isFunctionDeclaration(node) &&
           ((node.name && /^[A-Z]/.test(node.name.text)) || defaulted(node))) ||
@@ -502,14 +519,15 @@ export function lintFigures(dir: string): LintFinding[] {
           ts.isIdentifier(node.name) &&
           /^[A-Z]/.test(node.name.text) &&
           isFn(node.initializer)) ||
-        isFn(exported);
+        isFn(exported) ||
+        Boolean(exportedBody);
       const body = ts.isFunctionDeclaration(node)
         ? node.body
         : ts.isVariableDeclaration(node) && isFn(node.initializer)
           ? node.initializer.body
           : isFn(exported)
             ? exported.body
-            : undefined;
+            : exportedBody;
       if (component && body)
         for (const given of returnsOf(body)) {
           const why = shows(given);
