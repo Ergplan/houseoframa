@@ -2,11 +2,11 @@
 // fails the build, naming the file and the line; so does a <Figure> whose function is not the one
 // rama/figures.ts names for it, and an entry of rama/figures.ts House of Rama could not read as written.
 //
-//   node rama/lint.ts [product folder] [--json]
+//   node rama/lint.ts [product folder] [--json] [--trusted <the house stack's folder>]
 //
 // It runs before every build (`prebuild`) and in CI, and House of Rama runs its own copy of this file
 // after every lift, so editing the product's copy changes nothing House of Rama sees.
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
 
@@ -49,11 +49,29 @@ interface Entry {
   show: string | null;
 }
 
-export function lintFigures(dir: string): LintFinding[] {
+/** The files that show a figure: the house stack's own, which a lift may not change. */
+export const TRUSTED_FILES = [FIGURE_COMPONENT, 'rama/define.ts'];
+
+/**
+ * `trusted`: the house stack's own folder (House of Rama passes it when it runs its copy). The files
+ * that show a figure must be the same as there: the lint does not read them, it trusts them.
+ */
+export function lintFigures(dir: string, trusted?: string): LintFinding[] {
   const root = path.resolve(dir);
   const findings: LintFinding[] = [];
   if (!existsSync(path.join(root, 'tsconfig.json')))
     return [{ file: 'tsconfig.json', line: 1, sentence: 'The product has no tsconfig.json.' }];
+  if (trusted)
+    for (const f of TRUSTED_FILES) {
+      const mine = path.join(root, f);
+      const theirs = path.join(path.resolve(trusted), f);
+      if (!existsSync(mine) || readFileSync(mine, 'utf8') !== readFileSync(theirs, 'utf8'))
+        findings.push({
+          file: f,
+          line: 1,
+          sentence: `${f}, line 1: is the house stack's own and must stay as it is: it shows every figure, so the lint trusts it rather than reads it.`,
+        });
+    }
   const prog = program(root);
   const checker = prog.getTypeChecker();
   const rel = (sf: ts.SourceFile) => path.relative(root, sf.fileName).split(path.sep).join('/');
@@ -571,8 +589,10 @@ const self =
   process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename);
 if (self) {
   const args = process.argv.slice(2);
-  const dir = args.find((a) => !a.startsWith('--')) ?? process.cwd();
-  const found = lintFigures(dir);
+  const dir =
+    args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--trusted') ?? process.cwd();
+  const trustedAt = args.indexOf('--trusted');
+  const found = lintFigures(dir, trustedAt >= 0 ? args[trustedAt + 1] : undefined);
   if (args.includes('--json')) process.stdout.write(JSON.stringify(found) + '\n');
   else if (found.length) {
     for (const f of found) console.error(f.sentence);

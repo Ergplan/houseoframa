@@ -76,7 +76,7 @@ export function lintProduct(
   return new Promise((resolve) => {
     const child = spawn(
       process.execPath,
-      [path.join(scaffoldDir(env), LINT_FILE), repoDir, '--json'],
+      [path.join(scaffoldDir(env), LINT_FILE), repoDir, '--json', '--trusted', scaffoldDir(env)],
       {
         env: {
           PATH: process.env.PATH ?? '',

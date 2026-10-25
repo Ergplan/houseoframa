@@ -264,6 +264,34 @@ describe('the house stack', () => {
     }
   });
 
+  it('lint: House of Rama refuses a lift that changes the files that show a figure', async () => {
+    const figure = path.join(site.repoDir, 'components/Figure.tsx');
+    const define = path.join(site.repoDir, 'rama/define.ts');
+    const before = [readFileSync(figure, 'utf8'), readFileSync(define, 'utf8')] as const;
+    writeFileSync(
+      figure,
+      before[0].replace('{SHOW[props.show](value)}', '{SHOW[props.show](value)} <span>123</span>'),
+    );
+    writeFileSync(
+      define,
+      before[1].replace(
+        "count: (n: number) => n.toLocaleString('en-IN'),",
+        'count: (n: number) => `${n + 1}`,',
+      ),
+    );
+    try {
+      const found = (await lintProduct(site.repoDir, env)).map((f) => f.sentence);
+      expect(found).toEqual([
+        "components/Figure.tsx, line 1: is the house stack's own and must stay as it is: it shows every figure, so the lint trusts it rather than reads it.",
+        "rama/define.ts, line 1: is the house stack's own and must stay as it is: it shows every figure, so the lint trusts it rather than reads it.",
+      ]);
+    } finally {
+      writeFileSync(figure, before[0]);
+      writeFileSync(define, before[1]);
+    }
+    expect(await lintProduct(site.repoDir, env)).toEqual([]);
+  });
+
   it('lint: refuses a Figure worked out by another function than its own, and a figure list it cannot read', async () => {
     const figures = path.join(site.repoDir, 'rama/figures.ts');
     const before = readFileSync(figures, 'utf8');
