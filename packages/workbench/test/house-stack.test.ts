@@ -178,6 +178,7 @@ describe('the house stack', () => {
         "const ROOMS = ['Room 1', 'Room 2'];",
         "const WORDS = ['one cup', 'two cups'];",
         "const NAMES = { a: 'Table 4' };",
+        "const TABLE = { text: 'Table 6' };",
         'export function Made({ i }: { i: number }) {',
         '  return (',
         '    <div>',
@@ -191,6 +192,8 @@ describe('the house stack', () => {
         '      <Label text="Table 3" />',
         '      <Label text={label} />',
         '      <Label text="Masala chai" href="/order/12" />',
+        "      <Label {...{ text: 'Table 5' }} />",
+        '      <Label {...TABLE} />',
         '    </div>',
         '  );',
         '}',
@@ -202,7 +205,7 @@ describe('the house stack', () => {
     );
     try {
       const found = await lintProduct(site.repoDir, env);
-      expect(found.map((f) => f.line)).toEqual([8, 9, 11, 12, 13, 15, 16]);
+      expect(found.map((f) => f.line)).toEqual([9, 10, 12, 13, 14, 16, 17, 19, 20]);
       expect(found.every((f) => f.file === 'app/made.tsx')).toBe(true);
     } finally {
       rmSync(path.join(site.repoDir, 'app/made.tsx'));

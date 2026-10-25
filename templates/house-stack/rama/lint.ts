@@ -403,9 +403,42 @@ export function lintFigures(dir: string): LintFinding[] {
           return; // what a Figure holds is the Figure's
         }
         const tag = tagOf(open);
-        for (const a of open.attributes.properties) {
-          if (!ts.isJsxAttribute(a) || !a.initializer) continue;
-          const name = a.name.getText();
+        // Props spread in (`{...{ text: '123' }}`, or a name for such an object) count as written.
+        const spread = open.attributes.properties.flatMap((a) => {
+          if (!ts.isJsxSpreadAttribute(a)) return [];
+          let o: ts.Expression | undefined = a.expression;
+          const named = ts.isIdentifier(o);
+          if (ts.isIdentifier(o)) {
+            const d = target(o)?.valueDeclaration;
+            o = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
+          }
+          return o && ts.isObjectLiteralExpression(o)
+            ? o.properties.flatMap((p) =>
+                ts.isPropertyAssignment(p) &&
+                (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))
+                  ? [{ node: (named ? a : p) as ts.Node, name: p.name.text, given: p.initializer }]
+                  : [],
+              )
+            : [];
+        });
+        const written = open.attributes.properties.flatMap((a) =>
+          ts.isJsxAttribute(a) && a.initializer
+            ? [
+                {
+                  node: a as ts.Node,
+                  name: a.name.getText(),
+                  given: ts.isStringLiteral(a.initializer)
+                    ? (a.initializer as ts.Expression)
+                    : ts.isJsxExpression(a.initializer)
+                      ? a.initializer.expression
+                      : undefined,
+                },
+              ]
+            : [],
+        );
+        for (const a of [...written, ...spread]) {
+          if (!a.given) continue;
+          const name = a.name;
           // Text handed to one of the product's components may be shown by it, where the lint sees only
           // "some text": it is judged where it is handed over. (A number handed over is judged where the
           // component shows it.) Wiring, addresses and style are not shown.
@@ -413,25 +446,15 @@ export function lintFigures(dir: string): LintFinding[] {
             /^[A-Z]/.test(tag) &&
             !NOT_SHOWN_PROPS.has(name) &&
             !name.startsWith('data-') &&
-            !(
-              ts.isJsxExpression(a.initializer) &&
-              a.initializer.expression &&
-              isNumber(a.initializer.expression)
-            );
+            !(!ts.isStringLiteral(a.given) && isNumber(a.given));
           const shown =
             handed ||
             (/^[a-z]/.test(tag) &&
               (SHOWN_ATTRIBUTES.has(name) ||
                 ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag))));
           if (!shown) continue;
-          const why = ts.isStringLiteral(a.initializer)
-            ? DIGIT.test(a.initializer.text)
-              ? `the number in “${a.initializer.text.slice(0, 40)}”`
-              : null
-            : ts.isJsxExpression(a.initializer) && a.initializer.expression
-              ? shows(a.initializer.expression)
-              : null;
-          if (why) unmarked(sf, a, why);
+          const why = shows(a.given);
+          if (why) unmarked(sf, a.node, why);
         }
       }
       if (ts.isJsxText(node) && DIGIT.test(node.text)) {
