@@ -297,10 +297,12 @@ describe('the house stack', () => {
         "  label = '123';",
         "  const o = { code: '' };",
         "  o.code = 'A9';",
+        '  const pass = (x: string): string => x;',
         '  return (',
         '    <p>',
         '      {label}',
         '      {o.code}',
+        "      {pass('Table 12')}",
         '    </p>',
         '  );',
         '}',
@@ -310,8 +312,9 @@ describe('the house stack', () => {
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => [f.file, f.line])).toEqual([
-        ['app/later.tsx', 8],
         ['app/later.tsx', 9],
+        ['app/later.tsx', 10],
+        ['app/later.tsx', 11],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/later.tsx'));

@@ -405,6 +405,11 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
         depth < 5 &&
         !rel(fn.getSourceFile()).includes('node_modules/')
       ) {
+        // What it is given may be what it gives back (`label('123')` returning its argument).
+        for (const part of e.arguments) {
+          const why = shows(part, depth + 1);
+          if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
+        }
         for (const given of returnsOf(fn.body)) {
           const why = shows(given, depth + 1);
           if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
