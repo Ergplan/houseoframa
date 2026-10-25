@@ -181,6 +181,9 @@ export async function callAudit(
     bp,
     formulaFiles,
     run: {},
+    builtByVendors: [
+      ...new Set((siteRecord(site.id, env)?.builtBy ?? []).flatMap((b) => BUILDER_VENDOR[b] ?? [])),
+    ],
     builder:
       builtBy && builderVendor
         ? {

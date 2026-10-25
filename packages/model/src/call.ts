@@ -57,6 +57,11 @@ export interface CallRequest<I, O> {
   /** Person id or `rama:<component>@<version>` that asked for the call. */
   createdBy: string;
   maxTokens?: number;
+  /**
+   * Vendors that may not answer this call, whatever the seats say: the companies whose builders built
+   * the product an audit checks (Invariant 5). Refused before any prompt is read or vendor called.
+   */
+  notVendors?: string[];
 }
 
 export interface CallResult<O> {
@@ -196,10 +201,17 @@ export async function call<I, O>(
   overrides: Partial<CallDeps> = {},
 ): Promise<CallResult<O>> {
   const deps = { ...defaultDeps(), ...overrides };
+  // Seats are read from the database the given environment names, so a call made with its own
+  // environment (a test) never picks up seats chosen in this laptop's Settings.
+  if (!overrides.seats) deps.seats = (siteId) => storedSeats(siteId, deps.env);
 
   // Refuse before anything else: no prompt read, no vendor call, no row.
   const seat = await resolveSeat(req.role, req.siteId, deps);
   const vendor = seat.vendor;
+  if (req.notVendors?.includes(vendor))
+    throw new VendorGuardError(
+      `${vendorEntry(vendor)?.label ?? vendor} may not answer this call: its builder built what is being checked, and the checker is never the builder (Invariant 5)`,
+    );
   const prompt = await loadPrompt(req.name, req.version, deps.promptsDir);
   const model = seat.model;
   if (!model)

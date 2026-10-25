@@ -208,4 +208,22 @@ describe('askAuditor', () => {
     );
     expect(fetch).not.toHaveBeenCalled();
   });
+
+  it('is refused before any vendor call when the auditor’s company built the product, whatever the seats say', async () => {
+    const fetch = vi.fn();
+    const record = vi.fn();
+    // The seats stand (Anthropic builds, OpenAI checks), but OpenAI's builder built this product.
+    const call = ((req: Parameters<typeof realCall>[0]) =>
+      realCall(req, {
+        env: { BUILDER_VENDOR: 'anthropic', AUDITOR_VENDOR: 'openai', OPENAI_MODEL: 'm' },
+        secret: async () => 'k',
+        fetch: fetch as never,
+        record: record as never,
+      })) as typeof realCall;
+    await expect(
+      askAuditor(input, all, bp, { siteId: 'self', call, notVendors: ['openai'] }),
+    ).rejects.toThrow(/OpenAI may not answer this call: its builder built what is being checked/);
+    expect(fetch).not.toHaveBeenCalled();
+    expect(record).not.toHaveBeenCalled();
+  });
 });

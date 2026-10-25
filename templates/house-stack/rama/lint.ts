@@ -229,6 +229,8 @@ export function lintFigures(dir: string): LintFinding[] {
       if (op === ts.SyntaxKind.AmpersandAmpersandToken) return shows(e.right, depth);
       if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
         return shows(e.left, depth) ?? shows(e.right, depth);
+      // Text joined from parts: a part that holds a number is shown.
+      if (op === ts.SyntaxKind.PlusToken) return shows(e.left, depth) ?? shows(e.right, depth);
     }
     const type = checker.getTypeAtLocation(e);
     if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown))

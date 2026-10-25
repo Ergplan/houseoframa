@@ -112,6 +112,11 @@ export interface RunAuditOptions {
   now?: () => Date;
   /** The product's builder and its vendor, as the product records them; unknown when not given. */
   builder?: { label: string; vendor: string } | null;
+  /**
+   * The vendors (registry ids) of every builder that built the product: none of them may audit it, and
+   * the auditor call refuses one before it is asked (Invariant 5).
+   */
+  builtByVendors?: string[];
 }
 
 /** "Built by Claude Code (Anthropic). Audited by OpenAI, gpt-6.1-sol: a different vendor from the builder." */
@@ -152,6 +157,7 @@ export async function runAudit(
   const auditor = await askAuditor(input, all, opts.bp, {
     siteId: opts.siteId,
     ...(opts.call ? { call: opts.call } : {}),
+    ...(opts.builtByVendors?.length ? { notVendors: opts.builtByVendors } : {}),
   });
   const body = reportBody(
     opts.bp,

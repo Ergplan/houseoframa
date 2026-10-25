@@ -26,14 +26,14 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
 
   House of Rama reads the file as written (`packages/trace` `readConvention`) and never runs it. The function's file and line come from the parser.
 
-- **`rama/lint.ts`, the figures lint (Invariant 10).** It runs before every build (`prebuild`) and in the product's CI. It fails on every number it can see in the code being shown outside a Figure, naming the file and the line:
+- **`rama/lint.ts`, the figures lint (Invariant 10).** It runs before every build (`prebuild`) and in the product's CI. It fails, naming the file and the line, on a number shown outside a Figure in any of the forms it knows:
   - digits in text;
   - a number-typed value;
   - a template;
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
-  - text a name stands for that holds digits (`const label = '123'`);
+  - text a name stands for that holds digits (`const label = '123'`), and text joined with `+` from parts that do;
   - text whose possible values are all known, one with digits;
   - a number in the attributes a person reads.
 
@@ -85,7 +85,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
   - In the form: choosing a builder takes its company off the auditor list.
   - In both routes: refused with the rule's sentence.
   - In every model call: `resolveSeat` refuses before any prompt is read or vendor called, so a stored setting cannot slip past.
-  - And against who actually built it: a product records every builder that built a lift (`builtBy`). Its brains answer and the audit both refuse an auditor from any of those companies, even after the seats change.
+  - And against who actually built it: a product records every builder that built a lift (`builtBy`). Its brains answer refuses an auditor from any of those companies, even after the seats change. The audit refuses one too, in its own call: `runAudit` names those companies, and the model call refuses before any prompt is read (`notVendors`).
 - `packages/model/vendors.json` is the registry. Each vendor has a base URL, a protocol, the seats it may hold, whether it is local, and its builders.
   - Anthropic and OpenAI keep their native adapters.
   - **One OpenAI-compatible adapter** (base URL + key + model) covers Gemini, Grok, Kimi, Ollama (local, no key) and any compatible provider.
@@ -111,7 +111,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
 - The builder-is-not-auditor rule:
   - in the UI (`components/workbench/BrainsForm.test.tsx` and the e2e);
   - in both routes (Settings and discovery handler tests);
-  - in the runner: refused before any prompt or vendor call, no row (`seats.test.ts`).
+  - in the runner: refused before any prompt or vendor call, no row (`seats.test.ts`); and the auditor's call refuses a company whose builder built the product, whatever the seats say (`packages/audit/test/auditor.test.ts`).
 - The seats in order (setup file, Settings, the product's answer as a card), and the company of a builder that built the product refused as its auditor after the seats change, both in the brains answer and in the audit (`packages/workbench/test/seats.test.ts`).
 - A stub builder reports itself unwired: each stub by name and company, and a build with one stops at once with that sentence and touches nothing (`packages/workbench/test/builders.test.ts`).
 - Test drive green, with no keys: the recording replays through the loop, and every step's sentence is checked (`packages/workbench/test/testdrive.test.ts`).

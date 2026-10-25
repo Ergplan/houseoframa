@@ -249,7 +249,7 @@ export async function askAuditor(
   input: AuditorInput,
   all: NumberedFinding[],
   bp: Blueprint,
-  opts: { siteId: string; call?: typeof modelCall },
+  opts: { siteId: string; call?: typeof modelCall; notVendors?: string[] },
 ): Promise<AuditorRun> {
   const call = opts.call ?? modelCall;
   const res = await call({
@@ -261,6 +261,7 @@ export async function askAuditor(
     siteId: opts.siteId,
     createdBy: AUDIT_COMPONENT,
     maxTokens: 32_000,
+    ...(opts.notVendors?.length ? { notVendors: opts.notVendors } : {}),
   });
   return {
     reply: res.output,
