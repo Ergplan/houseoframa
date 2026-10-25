@@ -347,6 +347,16 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
           const why = shows(part, depth + 1);
           if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
         }
+        // A list made by map or flatMap holds what the callback gives back.
+        if (ts.isPropertyAccessExpression(callee) && ['map', 'flatMap'].includes(callee.name.text))
+          for (const fn of e.arguments.filter(
+            (a): a is ts.ArrowFunction | ts.FunctionExpression =>
+              ts.isArrowFunction(a) || ts.isFunctionExpression(a),
+          ))
+            for (const given of returnsOf(fn.body)) {
+              const why = shows(given, depth + 1);
+              if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
+            }
       }
       // A function of the product's own: what it gives back is what is shown.
       const fn =

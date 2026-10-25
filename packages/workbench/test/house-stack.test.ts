@@ -263,6 +263,31 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/fake.tsx'));
     }
+    // What a map callback gives back is shown; what a sort or filter callback gives back is not.
+    writeFileSync(
+      path.join(site.repoDir, 'app/mapped.tsx'),
+      [
+        'export function Mapped({ xs }: { xs: { n: number; name: string }[] }) {',
+        '  return (',
+        '    <ul>',
+        "      {['x'].map(() => '123')}",
+        '      {xs.map((x) => x.n)}',
+        '      {[...xs].sort((a, b) => a.n - b.n).filter((x) => x.n > 1).map((x) => <li key={x.name}>{x.name}</li>)}',
+        '    </ul>',
+        '  );',
+        '}',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([
+        ['app/mapped.tsx', 4],
+        ['app/mapped.tsx', 5],
+      ]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/mapped.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),
