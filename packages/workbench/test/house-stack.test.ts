@@ -127,6 +127,9 @@ describe('the house stack', () => {
       path.join(site.repoDir, 'app/named.tsx'),
       [
         "const label: string = '123';",
+        "function tableName(): string { return 'Table 9'; }",
+        '/** @words */',
+        "const inWords = (n: number): string => (n === 1 ? 'one' : 'Table 2');",
         "type Table = 'Table 1' | 'Table 2';",
         'export function Named({ t }: { t: Table }) {',
         "  const o = { code: 'A7', name: 'Masala chai' };",
@@ -139,6 +142,8 @@ describe('the house stack', () => {
         '      <p>{o.name}</p>',
         "      <p>{'1' + '23'}</p>",
         '      <p>{joined}</p>',
+        '      <p>{tableName()}</p>',
+        '      <p>{inWords(1)}</p>',
         '    </div>',
         '  );',
         '}',
@@ -148,16 +153,18 @@ describe('the house stack', () => {
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => [f.file, f.line])).toEqual([
-        ['app/named.tsx', 8],
-        ['app/named.tsx', 9],
-        ['app/named.tsx', 10],
+        ['app/named.tsx', 11],
         ['app/named.tsx', 12],
+        ['app/named.tsx', 13],
+        ['app/named.tsx', 15],
+        ['app/named.tsx', 17],
       ]);
       expect(found[0]!.sentence).toMatch(
         /“label”, which holds the number in “123” is shown without a Figure/,
       );
       expect(found[1]!.sentence).toMatch(/“t”, which may be “Table 1”/);
       expect(found[3]!.sentence).toMatch(/The number in “1” is shown without a Figure/);
+      expect(found[4]!.sentence).toMatch(/“tableName\(\)”, which gives the number in “Table 9”/);
     } finally {
       rmSync(path.join(site.repoDir, 'app/named.tsx'));
     }

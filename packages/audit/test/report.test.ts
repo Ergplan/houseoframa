@@ -304,6 +304,31 @@ describe('runAudit', () => {
     expect((await conn.sql`select count(*)::int as n from audits`)[0]!.n).toBe(before);
   });
 
+  it('names the builder and the auditor on its first line, and asks the call to refuse the builder’s company', async () => {
+    let asked: { notVendors?: string[] } | null = null;
+    const answering = auditor(answer());
+    const watching = (async (req: { notVendors?: string[] }) => {
+      asked = req;
+      return (answering as unknown as (r: unknown) => Promise<unknown>)(req);
+    }) as never;
+    const { body } = await runAudit(conn.db, {
+      siteId: 'self',
+      name: 'Shop',
+      repoDir: repo.dir,
+      bp,
+      formulaFiles: [],
+      run: false,
+      call: watching,
+      builder: { label: 'Claude Code', vendor: 'Anthropic', vendorId: 'anthropic' },
+      builtByVendors: ['gemini'],
+    });
+    // The recorded builder's company is refused even when the caller lists only another one.
+    expect(asked!.notVendors!.sort()).toEqual(['anthropic', 'gemini']);
+    expect(body.byLine).toBe(
+      'Built by Claude Code (Anthropic). Audited by OpenAI, gpt-test. A different vendor from the builder.',
+    );
+  });
+
   it('checks the same commit to the same findings every time', () => {
     const ctx = {
       repoDir: repo.dir,

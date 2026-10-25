@@ -274,6 +274,28 @@ export function lintFigures(dir: string): LintFinding[] {
       const numeric = e.arguments.find((a) => isNumber(a));
       if (numeric && !words)
         return `“${e.getText().slice(0, 40)}”, text made from the number “${numeric.getText().slice(0, 30)}”`;
+      // A function of the product's own: what it gives back is what is shown.
+      const fn =
+        decl &&
+        (ts.isFunctionDeclaration(decl) || ts.isMethodDeclaration(decl)
+          ? decl
+          : ts.isVariableDeclaration(decl) &&
+              decl.initializer &&
+              (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))
+            ? decl.initializer
+            : null);
+      if (
+        fn &&
+        fn.body &&
+        !words &&
+        depth < 5 &&
+        !rel(fn.getSourceFile()).includes('node_modules/')
+      ) {
+        for (const given of returnsOf(fn.body)) {
+          const why = shows(given, depth + 1);
+          if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
+        }
+      }
     }
     return null;
   }
@@ -360,6 +382,19 @@ export function lintFigures(dir: string): LintFinding[] {
     visit(sf);
   }
   return findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
+}
+
+/** What a function body gives back: its return statements' values, not those of functions inside it. */
+function returnsOf(body: ts.ConciseBody): ts.Expression[] {
+  if (!ts.isBlock(body)) return [body];
+  const out: ts.Expression[] = [];
+  const visit = (n: ts.Node) => {
+    if (ts.isReturnStatement(n) && n.expression) out.push(n.expression);
+    if (ts.isFunctionLike(n)) return;
+    ts.forEachChild(n, visit);
+  };
+  ts.forEachChild(body, visit);
+  return out;
 }
 
 const line = (sf: ts.SourceFile, node: ts.Node) =>

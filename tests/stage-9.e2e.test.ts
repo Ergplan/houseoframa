@@ -119,10 +119,35 @@ describe('stage 9 e2e', () => {
     }
 
     // Start build, from the trainer console; the lifts show there as each is checked.
-    await page.goto(`${server.browserUrl}/site/${siteId}`);
-    await page.locator('.console').getByRole('button', { name: 'Start build' }).click();
-    await page.waitForURL(/said=Start\+build/);
+    // The build shows in the console, which refreshes itself while it runs. Under a full test suite
+    // the dev server reloads the page when other servers write beside it, and a press can be lost in
+    // a reload: press again until the build shows (a press while it runs returns the same build).
     const job = page.locator('.console [data-job="build"]');
+    for (let tries = 0; ; tries++) {
+      await page.goto(`${server.browserUrl}/site/${siteId}`);
+      if (!(await job.count())) {
+        await page.locator('.console').getByRole('button', { name: 'Start build' }).click();
+        await page.waitForLoadState('load');
+      }
+      if (
+        await job.waitFor({ timeout: 30_000 }).then(
+          () => true,
+          () => false,
+        )
+      )
+        break;
+      if (tries === 5) {
+        // What the server and the console said, for the failure's record.
+        console.error(server.output().slice(-6000));
+        console.error(
+          await page
+            .locator('.console')
+            .innerText()
+            .catch(() => 'no console'),
+        );
+        throw new Error('Start build was pressed six times and no build showed in the console.');
+      }
+    }
     await job.locator('[data-step="Built"]').waitFor({ timeout: 900_000 });
     const steps = await job
       .locator('[data-step]')

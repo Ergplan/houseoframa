@@ -33,7 +33,7 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
-  - text a name stands for that holds digits (`const label = '123'`), and text joined with `+` from parts that do;
+  - text a name stands for that holds digits (`const label = '123'`), text joined with `+` from parts that do, and what one of the product's own functions gives back (`label()` returning `'123'`), unless its JSDoc says `@words`;
   - text whose possible values are all known, one with digits;
   - a number in the attributes a person reads.
 
@@ -85,7 +85,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
   - In the form: choosing a builder takes its company off the auditor list.
   - In both routes: refused with the rule's sentence.
   - In every model call: `resolveSeat` refuses before any prompt is read or vendor called, so a stored setting cannot slip past.
-  - And against who actually built it: a product records every builder that built a lift (`builtBy`). Its brains answer refuses an auditor from any of those companies, even after the seats change. The audit refuses one too, in its own call: `runAudit` names those companies, and the model call refuses before any prompt is read (`notVendors`).
+  - And against who actually built it: a product records every builder that built a lift (`builtBy`). Its brains answer refuses an auditor from any of those companies, even after the seats change. The audit refuses one too, in its own call. `runAudit` names the company of the builder it is given and of every builder recorded for the product, and the model call refuses them before any prompt is read (`notVendors`).
 - `packages/model/vendors.json` is the registry. Each vendor has a base URL, a protocol, the seats it may hold, whether it is local, and its builders.
   - Anthropic and OpenAI keep their native adapters.
   - **One OpenAI-compatible adapter** (base URL + key + model) covers Gemini, Grok, Kimi, Ollama (local, no key) and any compatible provider.

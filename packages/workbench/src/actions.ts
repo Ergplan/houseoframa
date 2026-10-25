@@ -189,6 +189,7 @@ export async function callAudit(
         ? {
             label: builderLabel(builtBy),
             vendor: vendorEntry(builderVendor)?.label ?? builderVendor,
+            vendorId: builderVendor,
           }
         : null,
     ...(ready ? {} : { call: standInAuditor(db) as never }),

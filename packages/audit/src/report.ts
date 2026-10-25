@@ -18,6 +18,7 @@ import {
   type AuditorInput,
   type AuditorReply,
 } from './auditor.ts';
+import { vendorEntry } from '@rama/model';
 import { auditChecks } from './checks/index.ts';
 import type { RunOptions } from './checks/run.ts';
 import type { CheckRun, Verdict } from './findings.ts';
@@ -110,8 +111,11 @@ export interface RunAuditOptions {
   run?: RunOptions | false;
   call?: Parameters<typeof askAuditor>[3]['call'];
   now?: () => Date;
-  /** The product's builder and its vendor, as the product records them; unknown when not given. */
-  builder?: { label: string; vendor: string } | null;
+  /**
+   * The product's builder as the product records it: its name, its vendor's name and the vendor's
+   * registry id. That vendor may not audit (Invariant 5).
+   */
+  builder?: { label: string; vendor: string; vendorId: string } | null;
   /**
    * The vendors (registry ids) of every builder that built the product: none of them may audit it, and
    * the auditor call refuses one before it is asked (Invariant 5).
@@ -121,19 +125,19 @@ export interface RunAuditOptions {
 
 /** "Built by Claude Code (Anthropic). Audited by OpenAI, gpt-6.1-sol: a different vendor from the builder." */
 export function byLine(
-  builder: { label: string; vendor: string } | null | undefined,
+  builder: { label: string; vendor: string; vendorId?: string } | null | undefined,
   auditor: { vendor: string; model: string },
 ): string {
   const built = builder
     ? `Built by ${builder.label} (${builder.vendor}).`
     : 'Built by a builder this product does not record.';
-  const other =
-    builder && builder.vendor.toLowerCase() === auditor.vendor.toLowerCase()
-      ? ' The same vendor as the builder: this audit is not independent.'
-      : builder
-        ? ' A different vendor from the builder.'
-        : '';
-  return `${built} Audited by ${auditor.vendor}, ${auditor.model}.${other}`;
+  const same = builder && (builder.vendorId ?? builder.vendor.toLowerCase()) === auditor.vendor;
+  const other = same
+    ? ' The same vendor as the builder: this audit is not independent.'
+    : builder
+      ? ' A different vendor from the builder.'
+      : '';
+  return `${built} Audited by ${vendorEntry(auditor.vendor)?.label ?? auditor.vendor}, ${auditor.model}.${other}`;
 }
 
 export async function runAudit(
@@ -157,7 +161,13 @@ export async function runAudit(
   const auditor = await askAuditor(input, all, opts.bp, {
     siteId: opts.siteId,
     ...(opts.call ? { call: opts.call } : {}),
-    ...(opts.builtByVendors?.length ? { notVendors: opts.builtByVendors } : {}),
+    // Every company that built it, the recorded builder's among them: none of them may answer.
+    notVendors: [
+      ...new Set([
+        ...(opts.builtByVendors ?? []),
+        ...(opts.builder ? [opts.builder.vendorId] : []),
+      ]),
+    ],
   });
   const body = reportBody(
     opts.bp,
