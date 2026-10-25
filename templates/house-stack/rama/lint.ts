@@ -224,6 +224,18 @@ export function lintFigures(dir: string): LintFinding[] {
     if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
     if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
       return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
+    // An object written in place and handed over (createElement's props, an element's raw HTML): what
+    // it says to show is judged.
+    if (ts.isObjectLiteralExpression(e) && depth < 5) {
+      for (const p of e.properties) {
+        if (!ts.isPropertyAssignment(p)) continue;
+        const key = p.name.getText().replace(/^['"]|['"]$/g, '');
+        if (!['children', '__html', 'dangerouslySetInnerHTML', ...SHOWN_ATTRIBUTES].includes(key))
+          continue;
+        const why = shows(p.initializer, depth + 1);
+        if (why) return why;
+      }
+    }
     // A list written in place (and joined, or shown as it is): any element may be shown.
     if (ts.isArrayLiteralExpression(e) && depth < 5) {
       for (const el of e.elements) {
@@ -444,12 +456,19 @@ export function lintFigures(dir: string): LintFinding[] {
             ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag));
           if (!shown) continue;
           // HTML set directly is shown as it is written.
+          let html: ts.Expression | undefined = a.given;
+          if (name === 'dangerouslySetInnerHTML' && ts.isIdentifier(html)) {
+            const d = target(html)?.valueDeclaration;
+            html = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
+          }
           const given =
-            name === 'dangerouslySetInnerHTML' && ts.isObjectLiteralExpression(a.given)
-              ? a.given.properties.find(
-                  (p): p is ts.PropertyAssignment =>
-                    ts.isPropertyAssignment(p) && p.name.getText() === '__html',
-                )?.initializer
+            name === 'dangerouslySetInnerHTML'
+              ? html && ts.isObjectLiteralExpression(html)
+                ? html.properties.find(
+                    (p): p is ts.PropertyAssignment =>
+                      ts.isPropertyAssignment(p) && p.name.getText() === '__html',
+                  )?.initializer
+                : undefined
               : a.given;
           const why = given ? shows(given) : null;
           if (why) unmarked(sf, a.node, why);
