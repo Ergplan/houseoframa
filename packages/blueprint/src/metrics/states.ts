@@ -287,10 +287,11 @@ export interface BuildingState {
 }
 
 /**
- * A building's flag, from its screens' states: Confirmed when a named person signed every one of its
- * screens; Verified when every screen is Verified or Confirmed (each is checked, by a test or by a
- * person); otherwise Unverified. A building with no screen of its own (the work its screens share, or
- * the work behind them) is Unverified: the three states are earned by screens.
+ * A building's flag, from its screens' states. The word must hold of the whole building: Confirmed when a
+ * named person signed every one of its screens; Verified when a passing test exercises every one of them
+ * (a signed screen counts only if it is tested too); otherwise Unverified, saying how many are checked
+ * and how. A building with no screen of its own (the work its screens share, or the work behind them)
+ * is Unverified: the three states are earned by screens.
  */
 export function buildingState(screens: StateOf[]): BuildingState {
   const tally = stateTally(screens);
@@ -298,20 +299,17 @@ export function buildingState(screens: StateOf[]): BuildingState {
   const of = `${n} screen${n === 1 ? '' : 's'}`;
   const by = [...new Set(screens.flatMap((s) => (s.confirmed && s.signature ? [s.signature.person] : [])))].sort();
   if (n === 0) return { state: 'Unverified', by: [], tally, why: 'It has no screen of its own, so nobody can sign it or check it on a screen.' };
-  if (screens.every((s) => s.confirmed))
-    return { state: 'Confirmed', by, tally, why: `All ${of} signed by name.` };
-  if (screens.every((s) => s.verified || s.confirmed))
-    return {
-      state: 'Verified',
-      by: [],
-      tally,
-      why: `All ${of} checked: ${[
-        tally.Verified ? `${tally.Verified} by a passing test` : null,
-        tally.Confirmed ? `${tally.Confirmed} signed by name` : null,
-      ]
-        .filter(Boolean)
-        .join(', ')}.`,
-    };
-  const open = n - screens.filter((s) => s.verified || s.confirmed).length;
-  return { state: 'Unverified', by: [], tally, why: `${open} of ${of} not checked yet.` };
+  if (screens.every((s) => s.confirmed)) return { state: 'Confirmed', by, tally, why: `All ${of} signed by name.` };
+  if (screens.every((s) => s.verified)) return { state: 'Verified', by: [], tally, why: `All ${of} checked by a passing test.` };
+  const tested = screens.filter((s) => s.verified).length;
+  const signed = screens.filter((s) => s.confirmed).length;
+  const parts = [tested ? `${tested} checked by a passing test` : null, signed ? `${signed} signed by name` : null].filter(Boolean);
+  return {
+    state: 'Unverified',
+    by: [],
+    tally,
+    why: parts.length
+      ? `Of ${of}, ${parts.join(' and ')}: not one check for all of them yet.`
+      : `None of its ${of} checked yet.`,
+  };
 }

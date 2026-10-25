@@ -157,6 +157,8 @@ describe('stage 8 e2e', () => {
     await page.locator('canvas[data-drones="done"]').waitFor();
     expect(await page.locator('.lake-list [data-badge]').count()).toBe(5);
     expect(await page.locator('.lake-log').innerText()).toContain('Verdict');
+    // The auditor's narration is its drafted words, marked unconfirmed until a person confirms it.
+    expect(await page.locator('[data-narration] [data-draft="unconfirmed"]').count()).toBe(1);
     expect(bannedIn(await readable(page))).toEqual([]);
     expect(errors).toEqual([]);
   }, 600_000);

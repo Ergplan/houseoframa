@@ -28,20 +28,20 @@ Nothing is executed and no database is opened. `docs/BLUEPRINT.md` and `blueprin
 - `pickStreet` (facade, brick through the glass, building, jetty, plot) and `pickBuilding` (figure, facade, brick), using the same shapes the drawing uses (`geometry.ts`).
 - `understand(text, here, buildings)`: the words open (and a building's name), inside, show me the code, go back and street. A phrase it does not know gets a sentence back, never a guess. The voice of Stage 10 will take the same words.
 
-**Flags (Invariant 11).** A building's flag is metrics `buildingState` over its screens' `stateOf`, the one function every surface reads:
+**Flags (Invariant 11).** A building's flag is metrics `buildingState` over its screens' `stateOf`, the one function every surface reads. The word holds of the whole building:
 
 - Confirmed, with the names, when every screen is signed;
-- Verified when every screen is Verified or Confirmed;
-- otherwise Unverified.
+- Verified when a passing test exercises every screen;
+- otherwise Unverified, with how many screens are checked and how.
 
-Always the word and the colour, and a sentence that says what it counts ("All 1 screen checked: 1 by a passing test"). "Shared by several" and "Behind the screens" have no screen of their own and stay Unverified, and say why.
+Always the word and the colour, and a sentence that says what it counts ("All 1 screen checked by a passing test"). "Shared by several" and "Behind the screens" have no screen of their own and stay Unverified, and say why.
 
 **The app.** `/site/[siteId]` is the Street. `?b=<building>` opens a building, and `?at=code` (or a decision card's `?brick=`) is the code: the Brick canvas of Stage 2, unchanged. The breadcrumb names the level: "Home › Chai Stall › Street › Take an order › the code". The Street level has:
 
 - the canvas, with hover sentences;
 - one click to choose a building, which becomes the folder (the one green object), and a second click or "Open" to go in;
 - Play the building, over Harmony's ProgressTrack with the live chip;
-- Fly the audit, with Skip to the end and Put the drones away, and a log of what the auditor is doing;
+- Fly the audit, with Skip to the end and Put the drones away, and a log of what the auditor is doing (its narration marked drafted until a person confirms the report);
 - the words box;
 - a card for the chosen building: what it does, its flag sentence, its screens, what it reads and writes, whom it talks to, the audit's word;
 - the list of every building with its sentence, flag and badge;

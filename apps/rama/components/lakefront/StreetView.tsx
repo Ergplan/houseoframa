@@ -29,6 +29,7 @@ import {
   type StreetBuilding,
 } from '@rama/stage';
 import { StateChip } from '../harmony/ui';
+import { DraftState } from '../audit/ConfirmReport';
 import { usePalette, useImages, useReducedMotion } from './live';
 import { placeHref } from './places';
 import { Words } from './Words';
@@ -374,6 +375,15 @@ export function StreetView(p: StreetProps) {
             data-audit={mode}
           >
             <div className="eg-overline">The audit</div>
+            {p.audit && p.audit.narration.length ? (
+              <p className="eg-muted" data-narration>
+                What the auditor says (in quotation marks) is its own words, not the checks’:{' '}
+                <DraftState
+                  confirmations={p.audit.confirmations}
+                  by={`${p.audit.report.vendor} ${p.audit.report.model}`}
+                />
+              </p>
+            ) : null}
             <ol>
               {log.map((l, i) => (
                 <li key={i} className={l.kind}>

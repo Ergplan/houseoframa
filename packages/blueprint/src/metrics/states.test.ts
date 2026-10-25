@@ -245,23 +245,24 @@ describe('buildingState', () => {
     });
   });
 
-  it('is Verified when every screen is checked, by a test or by a person', () => {
-    expect(buildingState([st(true, null), st(false, 'Asha')])).toMatchObject({
+  it('is Verified only when a passing test checks every screen, signed or not', () => {
+    expect(buildingState([st(true, null), st(true, 'Asha')])).toMatchObject({
       state: 'Verified',
-      by: [],
-      why: 'All 2 screens checked: 1 by a passing test, 1 signed by name.',
+      why: 'All 2 screens checked by a passing test.',
+    });
+    // One tested, one only signed: neither word holds of the whole building.
+    expect(buildingState([st(true, null), st(false, 'Asha')])).toMatchObject({
+      state: 'Unverified',
+      why: 'Of 2 screens, 1 checked by a passing test and 1 signed by name: not one check for all of them yet.',
     });
   });
 
-  it('names only the kinds of check there are', () => {
-    expect(buildingState([st(true, null)]).why).toBe('All 1 screen checked: 1 by a passing test.');
-  });
-
-  it('is Unverified while one screen is not checked, and says how many', () => {
+  it('is Unverified while a screen is not checked, and says how many are', () => {
     expect(buildingState([st(true, null), st(false, null)])).toMatchObject({
       state: 'Unverified',
-      why: '1 of 2 screens not checked yet.',
+      why: 'Of 2 screens, 1 checked by a passing test: not one check for all of them yet.',
     });
+    expect(buildingState([st(false, null)]).why).toBe('None of its 1 screen checked yet.');
   });
 
   it('is Unverified with no screen of its own, and says why', () => {
