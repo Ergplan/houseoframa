@@ -170,10 +170,11 @@ describe('the house stack', () => {
     }
   });
 
-  it('lint: follows text into templates, list and record elements, built-in text methods and a component’s props', async () => {
+  it('lint: follows text into templates, list and record elements, library calls, a component’s props and returns, and children', async () => {
     writeFileSync(
       path.join(site.repoDir, 'app/made.tsx'),
       [
+        "import { createElement } from 'react';",
         "const label: string = '123';",
         "const ROOMS = ['Room 1', 'Room 2'];",
         "const WORDS = ['one cup', 'two cups'];",
@@ -204,13 +205,16 @@ describe('the house stack', () => {
         'export const Count = () => 123;',
         "export function Name() { return 'Room 8'; }",
         'export default () => 123;',
+        "export const Made2 = () => createElement('p', null, 'Table 7');",
+        'export const Made3 = () => <p children="Table 8" />;',
+        "export const Made4 = () => <p dangerouslySetInnerHTML={{ __html: 'Table 9' }} />;",
         '',
       ].join('\n'),
     );
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => f.line)).toEqual([
-        9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 28, 29, 30,
+        10, 11, 13, 14, 15, 17, 18, 19, 20, 21, 22, 29, 30, 31, 32, 33, 34,
       ]);
       expect(found.every((f) => f.file === 'app/made.tsx')).toBe(true);
     } finally {

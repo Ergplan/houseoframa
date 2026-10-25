@@ -20,7 +20,7 @@ const REGISTRY = 'rama/figures.ts';
 const FIGURE_COMPONENT = 'components/Figure.tsx';
 const SHOWS = new Set(['count', 'rupees', 'percent']);
 /** Attributes whose value a person reads on the screen. */
-const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label']);
+const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label', 'children']);
 const SHOWN_VALUE_ON = new Set(['input', 'textarea']);
 
 const NUMBER_TO_TEXT = new Set([
@@ -305,10 +305,15 @@ export function lintFigures(dir: string): LintFinding[] {
       const numeric = e.arguments.find((a) => isNumber(a));
       if (numeric && !words)
         return `“${e.getText().slice(0, 40)}”, text made from the number “${numeric.getText().slice(0, 30)}”`;
-      // A built-in method that makes text (concat, join, toUpperCase…): what it is called on and given.
+      // A library's function or method (concat, join, createElement…) makes what it shows from what it
+      // is called on and given.
       const builtIn = decl && rel(decl.getSourceFile()).includes('node_modules/');
-      if (builtIn && ts.isPropertyAccessExpression(callee) && depth < 5) {
-        for (const part of [callee.expression, ...e.arguments]) {
+      if (builtIn && depth < 5) {
+        const parts = [
+          ...(ts.isPropertyAccessExpression(callee) ? [callee.expression] : []),
+          ...e.arguments,
+        ];
+        for (const part of parts) {
           const why = shows(part, depth + 1);
           if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
         }
@@ -435,10 +440,18 @@ export function lintFigures(dir: string): LintFinding[] {
             ownComponent && name !== 'key' && !(!ts.isStringLiteral(a.given) && isNumber(a.given));
           const shown =
             handed ||
-            (!ownComponent && SHOWN_ATTRIBUTES.has(name)) ||
+            (!ownComponent && (SHOWN_ATTRIBUTES.has(name) || name === 'dangerouslySetInnerHTML')) ||
             ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag));
           if (!shown) continue;
-          const why = shows(a.given);
+          // HTML set directly is shown as it is written.
+          const given =
+            name === 'dangerouslySetInnerHTML' && ts.isObjectLiteralExpression(a.given)
+              ? a.given.properties.find(
+                  (p): p is ts.PropertyAssignment =>
+                    ts.isPropertyAssignment(p) && p.name.getText() === '__html',
+                )?.initializer
+              : a.given;
+          const why = given ? shows(given) : null;
           if (why) unmarked(sf, a.node, why);
         }
       }
