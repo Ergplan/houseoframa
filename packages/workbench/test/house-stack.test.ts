@@ -225,6 +225,25 @@ describe('the house stack', () => {
     }
   });
 
+  it('lint: reads a component made with createElement in a .ts file, and leaves figure functions alone', async () => {
+    writeFileSync(
+      path.join(site.repoDir, 'features/welcome/count.ts'),
+      [
+        "import { createElement } from 'react';",
+        '/** A count, worked out: a figure function, not a component. */',
+        'export const total = (xs: number[]) => xs.length + 2;',
+        "export const Count = () => createElement('p', null, '123');",
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([['features/welcome/count.ts', 4]]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'features/welcome/count.ts'));
+    }
+  });
+
   it('lint: refuses a Figure worked out by another function than its own, and a figure list it cannot read', async () => {
     const figures = path.join(site.repoDir, 'rama/figures.ts');
     const before = readFileSync(figures, 'utf8');

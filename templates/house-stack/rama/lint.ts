@@ -395,7 +395,16 @@ export function lintFigures(dir: string): LintFinding[] {
 
   for (const sf of own) {
     const file = rel(sf);
-    if (!file.endsWith('.tsx') || /\.test\.tsx$/.test(file) || file === FIGURE_COMPONENT) continue;
+    // Every file a screen may be made of: elements in .tsx, components made with createElement in .ts
+    // too. Tests, configuration and House of Rama's own rama/ are not screens.
+    if (
+      !/\.tsx?$/.test(file) ||
+      /\.test\.tsx?$/.test(file) ||
+      /(^|\/)[^/]*\.config\.ts$/.test(file) ||
+      file.startsWith('rama/') ||
+      file === FIGURE_COMPONENT
+    )
+      continue;
     const visit = (node: ts.Node) => {
       if (ts.isJsxSelfClosingElement(node) || ts.isJsxElement(node)) {
         const open = ts.isJsxElement(node) ? node.openingElement : node;
