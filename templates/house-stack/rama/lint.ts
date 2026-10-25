@@ -22,23 +22,7 @@ const SHOWS = new Set(['count', 'rupees', 'percent']);
 /** Attributes whose value a person reads on the screen. */
 const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label']);
 const SHOWN_VALUE_ON = new Set(['input', 'textarea']);
-/** Props of a component that carry wiring, addresses or style, never text a person reads. */
-const NOT_SHOWN_PROPS = new Set([
-  'key',
-  'id',
-  'className',
-  'style',
-  'href',
-  'src',
-  'name',
-  'type',
-  'htmlFor',
-  'role',
-  'method',
-  'action',
-  'target',
-  'rel',
-]);
+
 const NUMBER_TO_TEXT = new Set([
   'toFixed',
   'toString',
@@ -403,6 +387,10 @@ export function lintFigures(dir: string): LintFinding[] {
           return; // what a Figure holds is the Figure's
         }
         const tag = tagOf(open);
+        const tagDecl = /^[A-Z]/.test(tag) ? target(open.tagName)?.declarations?.[0] : undefined;
+        const ownComponent = Boolean(
+          tagDecl && !rel(tagDecl.getSourceFile()).includes('node_modules/'),
+        );
         // Props spread in (`{...{ text: '123' }}`, or a name for such an object) count as written.
         const spread = open.attributes.properties.flatMap((a) => {
           if (!ts.isJsxSpreadAttribute(a)) return [];
@@ -439,19 +427,16 @@ export function lintFigures(dir: string): LintFinding[] {
         for (const a of [...written, ...spread]) {
           if (!a.given) continue;
           const name = a.name;
-          // Text handed to one of the product's components may be shown by it, where the lint sees only
-          // "some text": it is judged where it is handed over. (A number handed over is judged where the
-          // component shows it.) Wiring, addresses and style are not shown.
+          // Text handed to one of the product's own components may be shown by it, where the lint sees
+          // only "some text": every prop but `key` is judged where it is handed over (a number handed
+          // over is judged where the component shows it). A library's component (a link, an image) is
+          // judged only by the attributes a person reads.
           const handed =
-            /^[A-Z]/.test(tag) &&
-            !NOT_SHOWN_PROPS.has(name) &&
-            !name.startsWith('data-') &&
-            !(!ts.isStringLiteral(a.given) && isNumber(a.given));
+            ownComponent && name !== 'key' && !(!ts.isStringLiteral(a.given) && isNumber(a.given));
           const shown =
             handed ||
-            (/^[a-z]/.test(tag) &&
-              (SHOWN_ATTRIBUTES.has(name) ||
-                ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag))));
+            (!ownComponent && SHOWN_ATTRIBUTES.has(name)) ||
+            ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag));
           if (!shown) continue;
           const why = shows(a.given);
           if (why) unmarked(sf, a.node, why);
