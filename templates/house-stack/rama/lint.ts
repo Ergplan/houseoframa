@@ -264,15 +264,21 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
     if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
       return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
-    // An object written in place and handed over (createElement's props, an element's raw HTML): what
-    // it says to show is judged.
+    // An object written in place and handed over (to a function, a component, createElement): any text
+    // in it may be what is shown. A number in it is judged where it is shown.
     if (ts.isObjectLiteralExpression(e) && depth < 5) {
       for (const p of e.properties) {
-        if (!ts.isPropertyAssignment(p)) continue;
-        const key = p.name.getText().replace(/^['"]|['"]$/g, '');
-        if (!['children', '__html', 'dangerouslySetInnerHTML', ...SHOWN_ATTRIBUTES].includes(key))
+        const value = ts.isPropertyAssignment(p)
+          ? p.initializer
+          : ts.isShorthandPropertyAssignment(p)
+            ? p.name
+            : ts.isSpreadAssignment(p)
+              ? p.expression
+              : undefined;
+        if (!value || ts.isArrowFunction(value) || ts.isFunctionExpression(value)) continue;
+        if (!ts.isObjectLiteralExpression(value) && !ts.isStringLiteral(value) && isNumber(value))
           continue;
-        const why = shows(p.initializer, depth + 1);
+        const why = shows(value, depth + 1);
         if (why) return why;
       }
     }
