@@ -57,10 +57,11 @@ These hold in every stage and override anything else in this document. If a stag
 | Rendering | HTML Canvas, isometric, transparent buildings on a lakefront; three zoom levels (Street, Building, Brick) over one Blueprint; React for everything else | The weekend artifact proved Canvas; the lakefront is the product's face |
 | Product repos | Products built inside House of Rama get their own GitHub repository, created by House of Rama under the GitHub account configured in Settings; the builder pushes to it. Outside repos are cloned read-only into `work/<site>/repo` and never pushed to | A map beside git, never a new repo system |
 | House stack of targets | Next.js + TypeScript + Postgres + Drizzle; a target off this stack gets partial traces and says so | Traces need schema and queries in code |
-| Builder | Claude (Claude Code) | — |
-| Auditor / reviewer | OpenAI, via `packages/model` | Must be a different vendor from the builder (Invariant 5); both target repos already carry an OpenAI key |
+| Seats | Four per product: builder, auditor (also reviewer), drafter, voice. Vendor and model per seat chosen in Settings → Brains and asked in discovery; builder ≠ auditor always | The customer chooses the brains; the rule keeps the audit independent |
+| Builder | Claude Code is the wired builder; Codex, Gemini CLI and Antigravity are documented stubs until a customer needs one | An agent driver is engineering, not a dropdown |
+| Auditor / drafter vendors | Anthropic and OpenAI native adapters plus one OpenAI-compatible adapter (Gemini, Grok, Kimi, Ollama, any compatible provider; Ollama local with no key) in `packages/model` | One protocol covers the market and a customer's own model |
 | Screens | Playwright against the target's built app, captured to `work/<site>/shots` | Real UI, never mockups |
-| Voice | OpenAI GPT Live (Realtime, WebRTC) in `packages/ears`, English only at launch; a mouth, not a mind (Invariant 9) | Warmth and clarity in the room; rigour stays with the builder |
+| Voice | OpenAI GPT Live (Realtime, WebRTC) in `packages/ears` is the wired voice; a second realtime vendor is an adapter. English only at launch; a mouth, not a mind (Invariant 9) | Warmth and clarity in the room; rigour stays with the builder |
 | Deployment | Docker Compose (app + Postgres + watcher) on one box; Vercel later | The pod floor runs one box |
 | Access, version 1 | `members.json`, no passwords; secrets in the Settings screen, stored in Postgres | We are not super coders; nothing hidden in env files (rule 11) |
 | Access, floor edition | Sign-in (password or link) behind a setting, bookings, wallet; deferred | Decided when the pod floor opens |

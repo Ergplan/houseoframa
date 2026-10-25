@@ -34,7 +34,7 @@ Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Show
 | --- | --- | --- | --- |
 | 7 | Workbench | `members.json`, Settings with keys and the GitHub account in the UI, product repositories, Test drive, the sample product, three states and the counting rule | self, sample product |
 | 8 | Lakefront | The isometric renderer: Street and Building levels, facades from capture, flags, Harmony; audit drones and replay on the lakefront | self, sample product |
-| 9 | House stack | The scaffold; figures traced by construction; the build loop with automatic extract, capture and re-execution after every lift | the sample product, rebuilt from the scaffold |
+| 9 | House stack | The scaffold; figures traced by construction; the build loop with automatic extract, capture and re-execution after every lift; the four seats (builder, auditor, drafter, voice) with the customer's choice of vendor | the sample product, rebuilt from the scaffold |
 | 10 | Ears | GPT Live voice, transcript, the track asked by voice, decision cards by spoken yes, scrap and restart, the board | a rehearsal on the sample product |
 | 11 | ergPLAN | The first real product, built entirely inside House of Rama | ergPLAN |
 
@@ -101,9 +101,14 @@ templates/house-stack: a Next.js + TypeScript + Postgres + Drizzle scaffold with
 
 The build loop (packages/workbench): "Start build" runs the builder (Claude Code, driven by House of Rama in the product's checkout) with the decision cards and the scaffold; after every commit House of Rama extracts, captures, re-executes and refreshes the lakefront by itself within a minute; a lift that fails the gate or the lint shows a grey flag with the lint's sentence and the builder's next action; Pause build stops after the current lift.
 
+Seats and vendors (customer's choice). A product has four seats: builder, auditor (also the independent reviewer), drafter (descriptions, narration text) and voice. Each seat names a vendor and a model, chosen in Settings → Brains and asked for in discovery ("Which brains will build, check and speak?"); the answer is a decision card like any other. Rules: the builder and the auditor must be different vendors (Invariant 5, enforced in the UI: choosing a builder removes that vendor from the auditor list); every seat's key comes from Settings (rule 11), and Ollama needs a base URL and no key.
+- packages/model gains one OpenAI-compatible adapter (base URL + key + model) that covers Gemini, Grok, Kimi, Ollama and any other provider that speaks that protocol, beside the native anthropic and openai adapters; a vendor registry `vendors.json` lists each vendor's base URL, protocol, which seats it may hold, and whether it is local. Every model_calls row records vendor and seat.
+- Builder adapters are agent drivers in packages/workbench/builders: `claude-code` (built now) and a documented interface for `codex`, `gemini-cli` and `antigravity`, each shipped as a stub that explains in the UI that this builder is not wired yet. Products record their builder; the audit report names the builder and the auditor vendor on its first line.
+- Test drive runs with whatever brains are configured and stubs when none are.
+
 Rebuild the sample product from the scaffold by this loop, with no human command, and retire its hand-written overlay. Test drive uses this path.
 
-Tests: the lint on an unmarked number; the scaffold builds and passes its gate; the loop from an empty repository to a fully traced lakefront; Test drive green.
+Tests: the lint on an unmarked number; the scaffold builds and passes its gate; the loop from an empty repository to a fully traced lakefront; the OpenAI-compatible adapter against a stub server and against Ollama when present; the builder-is-not-auditor rule in the UI and in the runner; a stub builder reports itself unwired; Test drive green.
 
 Done when: the sample product, built from the scaffold by the builder with no human command, shows 100 percent traced and every screen Verified; reviewer run; report. STOP.
 ```
@@ -113,7 +118,7 @@ Done when: the sample product, built from the scaffold by the builder with no hu
 ```
 Stage 10 puts the voice in the room, as a mouth and not a mind (Invariant 9).
 
-packages/ears: a GPT Live (OpenAI Realtime, WebRTC) session started from the console with the key from Settings; English only. Every utterance stored as a turn with its speaker (the voice, or the picked person; push-to-talk per person is acceptable). The hand-off: the builder produces plain-English lines (prompt narrate.v1) and the voice reads them; the voice's instructions confine its own generation to questions, acknowledgements and reading back; a test tries to make it state a product fact and asserts the fact came from a builder line. Commands: yes, no, scrap everything, show me <building>, open <screen>, show me the code, go back, what if <input> is <value>. The track by voice: "where does this number come from", "how is it worked out", "what goes into it", "where is it kept", "who built it", "who signed it" map to the trail's steps and are answered from it only; untraced is answered as untraced with the figure's name. Decision cards by spoken yes with the speaker's name; scrap and restart by voice; act 3 (the design explained aloud, building by building, with "what it will not do") before "Shall I build this?".
+packages/ears: a GPT Live (OpenAI Realtime, WebRTC) session started from the console with the key from Settings; English only. Every utterance stored as a turn with its speaker (the voice, or the picked person; push-to-talk per person is acceptable). The hand-off: the builder produces plain-English lines (prompt narrate.v1) and the voice reads them; the voice's instructions confine its own generation to questions, acknowledgements and reading back; a test tries to make it state a product fact and asserts the fact came from a builder line. Commands: yes, no, scrap everything, show me <building>, open <screen>, show me the code, go back, what if <input> is <value>. The track by voice: "where does this number come from", "how is it worked out", "what goes into it", "where is it kept", "who built it", "who signed it" map to the trail's steps and are answered from it only; untraced is answered as untraced with the figure's name. Discovery's first cards include the brains: the voice asks which vendor builds, checks and speaks, and reads the rule aloud (the checker is never the builder). Decision cards by spoken yes with the speaker's name; scrap and restart by voice; act 3 (the design explained aloud, building by building, with "what it will not do") before "Shall I build this?".
 
 packages/board (minimal): a laptop-webcam frame on demand ("read the board"), a reading by packages/model (prompt board.v1) into boxes, arrows and labels, shown as a draft map; nothing is decided from it.
 
@@ -337,7 +342,7 @@ interface Finding { id: string; auditId: string; brick: string; check: string; v
 | 0–6, Gaps 1 | Done; see their reports |
 | 7 | No terminal needed: name picker, keys with lights, product + repository creation, Test drive green with no keys; secrets never in logs or .env; stateOf and counts from metrics; "imports" never shown as confidence; reviewer |
 | 8 | Street/Building/Brick over one Blueprint; banned-word test passes; facades and flags live; drones and replay on the lakefront; member names every building of the sample product from the Street; reviewer |
-| 9 | Scaffold lint refuses an unmarked number; sample product rebuilt from the scaffold by the builder with no human command, 100% traced, all Verified; Test drive uses this path; reviewer |
+| 9 | Scaffold lint refuses an unmarked number; sample product rebuilt from the scaffold by the builder with no human command, 100% traced, all Verified; Test drive uses this path; four seats chosen in Settings and asked in discovery, builder ≠ auditor enforced, OpenAI-compatible adapter covers Gemini/Grok/Kimi/Ollama; reviewer |
 | 10 | Mouth-not-mind test; track questions answered only from trails; spoken yes creates a named decision; rehearsal acts 1–3 by voice; reviewer |
 | 11 | ergPLAN first signed release: own repository, 100% traced, customer screens Confirmed, signed audit, member's name on signature one |
 
