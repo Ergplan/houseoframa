@@ -21,9 +21,9 @@ describe('parseSource: imports', () => {
   });
   it('treats re-exports as imports of the re-exported names', () => {
     expect(imports(`export { a as b } from './x'; export * from './y'; export type { T } from './t';`)).toEqual([
-      { spec: './x', symbols: ['a'], typeOnly: false },
-      { spec: './y', symbols: ['*'], typeOnly: false },
-      { spec: './t', symbols: ['T'], typeOnly: true },
+      { spec: './x', symbols: ['a'], typeOnly: false, reexport: true },
+      { spec: './y', symbols: ['*'], typeOnly: false, reexport: true },
+      { spec: './t', symbols: ['T'], typeOnly: true, reexport: true },
     ]);
   });
   it('finds dynamic import() and require()', () => {

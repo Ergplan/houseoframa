@@ -110,7 +110,8 @@ describe('stage 2 e2e', () => {
     const page = await pageAs(browser, server, token, { viewport: { width: 1500, height: 1000 } });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
-    await page.goto(`${server.browserUrl}/site/self`);
+    // The Brick level of Stage 2 is the code, the third level of the lakefront (Stage 8).
+    await page.goto(`${server.browserUrl}/site/self?at=code`);
     await expect(page.locator('.mon h2').textContent()).resolves.toBe('Trust report');
     await clickBrick(page, self, brick);
 
@@ -140,7 +141,7 @@ describe('stage 2 e2e', () => {
       readFileSync(path.join(work, 'fixture/blueprint.json'), 'utf8'),
     ) as Blueprint;
     const page = await pageAs(browser, server, token, { viewport: { width: 1500, height: 1000 } });
-    await page.goto(`${server.browserUrl}/site/fixture`);
+    await page.goto(`${server.browserUrl}/site/fixture?at=code`);
     await clickBrick(page, bp, 'lib/calc.ts');
     const row = page.locator(
       'section[aria-label="Depends on"] [data-edge="lib/calc.ts>lib/data.ts"]',

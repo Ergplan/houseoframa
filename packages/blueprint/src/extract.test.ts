@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { fixtureRepo, type FixtureRepo } from '../test/fixture-repo.ts';
 import { canonicalJson } from './json.ts';
-import { countLines, extract, isBinary } from './extract.ts';
+import { countLines, extract, isBinary, packageName } from './extract.ts';
 import { mergeGlossary } from './glossary.ts';
 
 let repo: FixtureRepo;
@@ -268,6 +268,60 @@ describe('extract --worktree (a repository carrying its own Blueprint)', () => {
     expect(bp).toMatchObject({ worktree: true, commit: head, branches: [], tags: [] });
     expect(bp.nodes.map((n) => n.path)).toEqual(['a.ts', 'b.ts']);
     w.git('checkout', '--', 'a.ts');
+  });
+});
+
+describe('extract: the ground and the outside', () => {
+  let g: FixtureRepo;
+  beforeAll(() => {
+    g = fixtureRepo();
+    g.write({
+      'db/schema.ts':
+        "import { integer, pgTable, text } from 'drizzle-orm/pg-core';\nexport const orders = pgTable('orders', { id: integer('id'), item: text('item') });\nexport const people = pgTable('people', { name: text('name') });\n",
+      'db/read.ts':
+        "import { orders, people } from './schema';\nimport type { Db } from './types';\nexport const list = (db: Db) => db.select().from(orders);\nexport type P = typeof people.$inferSelect;\n",
+      'db/write.ts':
+        "import * as s from './schema';\nimport OpenAI from 'openai';\nimport { readFileSync } from 'node:fs';\nexport const add = (db: any) => db.insert(s.orders).values({});\nexport const ai = new OpenAI(); void readFileSync;\n",
+      'db/types.ts': 'export type Db = any;\n',
+      'db/index.ts': "export * from './schema';\n",
+      'app/count.ts': "import { people } from '../db';\nexport const n = (db: any) => db.select().from(people);\n",
+      'app/call.ts':
+        "export const a = fetch('https://api.example.com/v1/x');\nexport const b = `https://pay.example.in/${a}`;\nexport const c = 'see http://localhost:3000';\n",
+      'lib/kinds.ts': "import type Stripe from 'stripe';\nexport type K = Stripe;\n",
+    });
+    g.commit('the ground');
+  });
+  afterAll(() => g?.cleanup());
+
+  it('finds the tables defined in code, and which files read or write them', () => {
+    const bp = extract(g.dir);
+    expect(bp.tables).toEqual([
+      { name: 'orders', file: 'db/schema.ts', line: 2, symbol: 'orders', columns: ['id', 'item'] },
+      { name: 'people', file: 'db/schema.ts', line: 3, symbol: 'people', columns: ['name'] },
+    ]);
+    const node = (p: string) => bp.nodes.find((n) => n.path === p)!;
+    // people is used in a type only: not a use.
+    expect(node('db/read.ts').tables).toEqual([{ name: 'orders', reads: true, writes: false }]);
+    expect(node('db/write.ts').tables).toEqual([{ name: 'orders', reads: false, writes: true }]);
+    expect(node('db/schema.ts').tables).toBeUndefined();
+    // Through a file that re-exports the schema.
+    expect(node('app/count.ts').tables).toEqual([{ name: 'people', reads: true, writes: false }]);
+  });
+
+  it('names the outside packages each file imports at run time, not types and not Node', () => {
+    const bp = extract(g.dir);
+    const node = (p: string) => bp.nodes.find((n) => n.path === p)!;
+    expect(node('db/write.ts').packages).toEqual(['openai']);
+    expect(node('db/write.ts').hosts).toBeUndefined();
+    expect(node('app/call.ts').hosts).toEqual(['api.example.com', 'pay.example.in']);
+    expect(node('db/schema.ts').packages).toEqual(['drizzle-orm']);
+    expect(node('lib/kinds.ts').packages).toBeUndefined();
+    expect([packageName('next/link'), packageName('@a/b/c'), packageName('fs'), packageName('node:fs')]).toEqual([
+      'next',
+      '@a/b',
+      null,
+      null,
+    ]);
   });
 });
 

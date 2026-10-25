@@ -41,6 +41,7 @@
     "@rama/db": "workspace:^",
     "@rama/model": "workspace:*",
     "@rama/shared": "workspace:^",
+    "@rama/stage": "workspace:*",
     "@rama/trace": "workspace:*",
     "@rama/workbench": "workspace:*",
     "@types/node": "22.20.5",

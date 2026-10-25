@@ -1,0 +1,85 @@
+{
+  "features": [
+    {
+      "id": "pick-who-you-are",
+      "name": "Pick who you are",
+      "does": "Lets a person choose their name from the members, so everything they do is in their name.",
+      "screens": ["apps/rama/app:/login"]
+    },
+    {
+      "id": "start-a-product",
+      "name": "Start a product",
+      "does": "Lists the products and starts a new one from a name and an idea.",
+      "screens": ["apps/rama/app:/"]
+    },
+    {
+      "id": "keep-the-keys",
+      "name": "Keep the keys",
+      "does": "Holds the keys to the outside services and the GitHub account, each with a light that says whether it works.",
+      "screens": ["apps/rama/app:/settings"]
+    },
+    {
+      "id": "test-drive",
+      "name": "Take a test drive",
+      "does": "Runs the whole loop on the sample product and says in words whether it passed.",
+      "screens": ["apps/rama/app:/testdrive"]
+    },
+    {
+      "id": "show-the-lakefront",
+      "name": "Show a product as a lakefront",
+      "does": "Draws a product as buildings by a lake, one for each thing it does, with its code a level inside.",
+      "screens": ["apps/rama/app:/site/[siteId]"]
+    },
+    {
+      "id": "agree-what-to-build",
+      "name": "Agree what to build",
+      "does": "Writes down each decision as a card that is decided only by a named yes.",
+      "screens": ["apps/rama/app:/site/[siteId]/discovery"]
+    },
+    {
+      "id": "show-the-real-screens",
+      "name": "Show the real screens",
+      "does": "Shows the product’s own screens, each figure with where it comes from.",
+      "screens": ["apps/rama/app:/site/[siteId]/showroom"]
+    },
+    {
+      "id": "walk-and-sign",
+      "name": "Walk through and sign",
+      "does": "Walks through each screen with the customer, who signs it in their own name.",
+      "screens": ["apps/rama/app:/site/[siteId]/walkthrough"]
+    },
+    {
+      "id": "audit-a-product",
+      "name": "Get a second opinion",
+      "does": "Has an auditor from another vendor check every part and sign its own report.",
+      "screens": ["apps/rama/app:/site/[siteId]/audit"]
+    },
+    {
+      "id": "hand-over",
+      "name": "Hand over the keys",
+      "does": "Hands the finished product to its owner, with what they need to keep improving it.",
+      "screens": ["apps/rama/app:/site/[siteId]/handover"]
+    },
+    {
+      "id": "run-the-floor",
+      "name": "Run the pod floor",
+      "does": "Books pods, shows each pod’s work and counts the products in use.",
+      "screens": [
+        "apps/rama/app:/book",
+        "apps/rama/app:/campus",
+        "apps/rama/app:/pod/[n]",
+        "apps/rama/app:/site/[siteId]/triptych"
+      ]
+    },
+    {
+      "id": "the-sample-stall",
+      "name": "The sample chai stall",
+      "does": "A small product that Test drive builds and checks from start to finish.",
+      "screens": [
+        "fixtures/sample-product/app:/",
+        "fixtures/sample-product/app:/new",
+        "fixtures/sample-product/app:/total"
+      ]
+    }
+  ]
+}

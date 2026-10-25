@@ -65,12 +65,15 @@ export async function SiteShell({
   here,
   q = {},
   console: given,
+  levels,
   children,
 }: {
   site: SiteLocation;
   member: Member;
   /** The view within the site, for the breadcrumb (none on the site's own page). */
   here?: string;
+  /** The lakefront's levels after the site's name (Street › Take an order › the code), last one current. */
+  levels?: { label: string; href?: string }[];
   q?: Record<string, string | string[] | undefined>;
   /** Console props already computed by the page, to avoid reading them twice. */
   console?: ConsoleProps | null;
@@ -83,8 +86,11 @@ export async function SiteShell({
       member={member}
       crumbs={[
         { label: 'Home', href: '/' },
-        here ? { label: site.name, href: `/site/${site.id}` } : { label: site.name },
+        here || levels?.length
+          ? { label: site.name, href: `/site/${site.id}` }
+          : { label: site.name },
         ...(here ? [{ label: here }] : []),
+        ...(levels ?? []),
       ]}
       {...(cp ? { side: <TrainerConsole {...cp} /> } : {})}
     >

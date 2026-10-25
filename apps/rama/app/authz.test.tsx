@@ -157,6 +157,10 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     'POST repository',
     async () => (await import('./api/site/[siteId]/repository/route')).POST as Handler,
   ],
+  [
+    'POST features',
+    async () => (await import('./api/site/[siteId]/features/route')).POST as Handler,
+  ],
 ];
 
 describe('every site route: 401 without a session, 404 for another member’s site, through for the owner', () => {

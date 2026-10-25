@@ -169,15 +169,15 @@ export async function createProductRepository(
   const site = locateSite(siteId, deps.env);
   const record = siteRecord(siteId, deps.env);
   if (!site || !record || record.kind !== 'product')
-    return { ok: false, sentence: 'Only a product built here gets a repository.' };
-  if (record.remote) return { ok: true, sentence: `The repository is ${record.remote}.` };
+    return { ok: false, sentence: 'Only a product built here gets a place on GitHub.' };
+  if (record.remote) return { ok: true, sentence: `It is on GitHub at ${record.remote}.` };
   const token = await readSecret(db, 'GITHUB_TOKEN', deps.env);
   const owner = (await getSetting<{ owner: string }>(db, GITHUB_OWNER))?.owner;
   if (!token || !owner)
     return {
       ok: false,
       sentence: 'The product is kept on this laptop: no GitHub account is set yet.',
-      next: `Enter the GitHub token and account in Settings, then press "Create repository" on ${site.name}.`,
+      next: `Enter the GitHub token and account in Settings, then press "Create it on GitHub" on ${site.name}.`,
     };
   try {
     const repo = await createRepository(
@@ -189,13 +189,13 @@ export async function createProductRepository(
     );
     pushTo(site.repoDir, repo.cloneUrl, token);
     updateSiteRecord(siteId, { remote: repo.htmlUrl }, deps.env);
-    return { ok: true, sentence: `The repository ${repo.fullName} is created and holds the work.` };
+    return { ok: true, sentence: `${repo.fullName} is created on GitHub and holds the work.` };
   } catch (err) {
     if (!(err instanceof GitHubError)) throw err;
     return {
       ok: false,
       sentence: err.message,
-      next: `Fix this in Settings, then press "Create repository" on ${site.name}.`,
+      next: `Fix this in Settings, then press "Create it on GitHub" on ${site.name}.`,
     };
   }
 }

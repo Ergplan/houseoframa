@@ -5,6 +5,7 @@ export type {
   Commit,
   Screen,
   FigureRef,
+  Table,
   Blueprint,
 } from './blueprint.ts';
 export type { Trail } from './trail.ts';

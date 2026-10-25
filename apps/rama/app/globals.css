@@ -926,3 +926,116 @@ body:has(.rama-stage) {
 .rama-verdict {
   margin: 0;
 }
+
+/* Stage 8, the lakefront: Street and Building levels. Tokens only; these rules place things. */
+.lakefront {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--space-6);
+  align-items: start;
+}
+@media (max-width: 1100px) {
+  .lakefront {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.lake-main,
+.lake-side {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.lake-screen {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: auto;
+  max-height: 76vh;
+}
+.lake-screen canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.lake-tip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 20;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 13px;
+  max-width: 320px;
+}
+.lake-deck {
+  gap: var(--space-3);
+}
+.lake-track {
+  flex: 1 1 220px;
+  min-width: 180px;
+}
+.lake-live {
+  font-variant-numeric: tabular-nums;
+}
+.lake-words .lake-said {
+  flex-basis: 100%;
+  margin: 0;
+}
+.lake-list,
+.lake-facts,
+.lake-figures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.lake-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.lake-list li.on .lake-name {
+  color: var(--accent);
+}
+.lake-name {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.lake-name:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.lake-does {
+  flex-basis: 100%;
+  color: var(--ink-muted);
+}
+.lake-log ol {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: var(--space-1);
+  max-height: 260px;
+  overflow: auto;
+}
+.lake-trail ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.lake-trail p,
+.lake-chosen p {
+  margin: var(--space-2) 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lake-live {
+    animation: none;
+  }
+}

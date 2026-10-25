@@ -1,6 +1,6 @@
 // Products (Stage 7) against a throwaway database, a temporary work dir and a stubbed GitHub whose
 // "repository" is a local bare repository: New product makes the site, its first commit, its open first
-// card and the gate with House of Rama's public key; Create repository creates it under the account in
+// card and the gate with House of Rama's public key; Create it on GitHub creates it under the account in
 // Settings and sends the work there, keeping the token out of every file.
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { execFileSync } from 'node:child_process';
@@ -155,14 +155,14 @@ describe('New product', () => {
     );
   });
 
-  it('Create repository: under the organisation in Settings, the work pushed, the token in no file', async () => {
+  it('Create it on GitHub: under the organisation in Settings, the work pushed, the token in no file', async () => {
     await setSecret(conn.db, 'GITHUB_TOKEN', TOKEN, asha.id, path.join(work, '.secret-key'));
     await putSetting(conn.db, GITHUB_OWNER, { owner: 'aayuda' }, asha.id);
     const fetch = stubGitHub();
     const flag = await createProductRepository(conn.db, 'chai-stall', deps(fetch));
     expect(flag).toEqual({
       ok: true,
-      sentence: 'The repository aayuda/chai-stall is created and holds the work.',
+      sentence: 'aayuda/chai-stall is created on GitHub and holds the work.',
     });
     const bare = path.join(work, 'github', 'aayuda', 'chai-stall.git');
     const site = path.join(work, 'chai-stall', 'repo');
@@ -172,7 +172,7 @@ describe('New product', () => {
     );
     // Asked again, it says where the repository is and creates nothing.
     const again = await createProductRepository(conn.db, 'chai-stall', deps(stubGitHub()));
-    expect(again.sentence).toBe('The repository is https://github.com/aayuda/chai-stall.');
+    expect(again.sentence).toBe('It is on GitHub at https://github.com/aayuda/chai-stall.');
     // The token is in no file of the work dir: not the checkout's config, not site.json.
     const files = (dir: string): string[] =>
       readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
@@ -199,7 +199,7 @@ describe('New product', () => {
     expect(taken.at(-1)).toMatchObject({
       ok: false,
       sentence: expect.stringMatching(/already exists there/),
-      next: expect.stringMatching(/Create repository/),
+      next: expect.stringMatching(/Create it on GitHub/),
     });
   });
 });

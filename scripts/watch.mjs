@@ -37,6 +37,7 @@ const PROJECTS = [
   { name: '@rama/model', dirs: ['packages/model/', 'prompts/'] },
   { name: '@rama/blueprint', dirs: ['packages/blueprint/'] },
   { name: '@rama/trace', dirs: ['packages/trace/'] },
+  { name: '@rama/stage', dirs: ['packages/stage/', 'design/harmony/tokens.json'] },
   { name: '@rama/ceremony', dirs: ['packages/ceremony/'] },
   { name: '@rama/audit', dirs: ['packages/audit/'] },
   {
@@ -55,6 +56,7 @@ const TS_PACKAGES = [
   'packages/ceremony',
   'packages/audit',
   'packages/workbench',
+  'packages/stage',
   'apps/rama',
   'scripts',
 ];

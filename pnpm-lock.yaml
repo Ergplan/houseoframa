@@ -32,6 +32,9 @@ importers:
       '@rama/shared':
         specifier: workspace:^
         version: link:packages/shared
+      '@rama/stage':
+        specifier: workspace:*
+        version: link:packages/stage
       '@rama/trace':
         specifier: workspace:*
         version: link:packages/trace
@@ -92,6 +95,9 @@ importers:
       '@rama/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@rama/stage':
+        specifier: workspace:*
+        version: link:../../packages/stage
       '@rama/trace':
         specifier: workspace:*
         version: link:../../packages/trace
@@ -250,6 +256,21 @@ importers:
 
   packages/shared: {}
 
+  packages/stage:
+    dependencies:
+      '@rama/audit':
+        specifier: workspace:*
+        version: link:../audit
+      '@rama/blueprint':
+        specifier: workspace:*
+        version: link:../blueprint
+      '@rama/shared':
+        specifier: workspace:*
+        version: link:../shared
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+
   packages/trace:
     dependencies:
       '@rama/blueprint':
@@ -291,6 +312,9 @@ importers:
       '@rama/shared':
         specifier: workspace:*
         version: link:../shared
+      '@rama/stage':
+        specifier: workspace:*
+        version: link:../stage
       '@rama/trace':
         specifier: workspace:*
         version: link:../trace

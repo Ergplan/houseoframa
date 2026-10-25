@@ -131,7 +131,7 @@ describe('stage 7 e2e', () => {
     await page.getByRole('button', { name: 'Start the product' }).click();
     await page.waitForURL(/\/site\/tiffin\?/, { timeout: 180_000 });
     await expect(page.locator('.flag').first().textContent()).resolves.toBe(
-      'The repository e2e-org/tiffin is created and holds the work.',
+      'e2e-org/tiffin is created on GitHub and holds the work.',
     );
     await expect(
       page.locator('.console').getByRole('link', { name: 'e2e-org/tiffin' }).count(),

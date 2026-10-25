@@ -35,6 +35,9 @@ Source: `packages/shared/src/blueprint.ts`
 | `firstCommit` | `string` | yes | SHA of the oldest commit in the extracted history that touched the file; empty when none did (a pending file). |
 | `lastCommit` | `string` | yes | SHA of the most recent commit in the extracted history that touched the file; empty when none did. |
 | `changes` | `number` | yes | Number of commits that changed the file. |
+| `packages` | `string[]` | no | Outside packages the file imports at run time, by package name; absent when it imports none. |
+| `hosts` | `string[]` | no | Hosts of the web addresses written in the file's strings; absent when none. |
+| `tables` | `{ name: string; reads: boolean; writes: boolean }[]` | no | Tables the file uses through a runtime import of the file that defines them (writes: passed to insert, update or delete); absent when none. |
 | `purpose` | `{ text: string; confirmed: boolean; by?: string; at?: string }` | no | What the brick is for, in English: from the `.rama/` overlay when confirmed, otherwise an unconfirmed draft. |
 
 ## ImportEdge
@@ -65,6 +68,20 @@ Source: `packages/shared/src/blueprint.ts`
 | `author` | `string` | yes | Author name. |
 | `subject` | `string` | yes | First line of the commit message. |
 | `changes` | `{ path: string; kind: 'A' \| 'M' \| 'D' \| 'R'; add: number \| null; del: number \| null; from?: string; }[]` | yes | Per-file changes: kind (Added, Modified, Deleted, Renamed), line counts (null for binary files), and the old path of a rename. |
+
+## Table
+
+A database table the target defines in code (Drizzle `pgTable`, `sqliteTable` or `mysqlTable`).
+
+Source: `packages/shared/src/blueprint.ts`
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `name` | `string` | yes | The table's name in the database. |
+| `file` | `string` | yes | The brick that defines it. |
+| `line` | `number` | yes | Line of the definition. |
+| `symbol` | `string` | yes | The exported name that holds it. |
+| `columns` | `string[]` | yes | The columns as the definition names them, in source order. |
 
 ## Screen
 
@@ -117,6 +134,7 @@ Source: `packages/shared/src/blueprint.ts`
 | `branches` | `string[]` | yes | Branch names (local and remote, deduplicated); empty in a worktree extraction, where refs depend on the machine. |
 | `tags` | `string[]` | yes | Tag names; empty in a worktree extraction. |
 | `screens` | `Screen[]` | yes | Screens discovered from the app's routes. |
+| `tables` | `Table[]` | yes | Tables defined in code, by file then name. |
 
 ## Trail
 

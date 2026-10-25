@@ -14,6 +14,7 @@ const base: Blueprint = {
   ],
   edges: [],
   unresolved: [],
+  tables: [],
   external: [],
   commits: [],
   branches: [],

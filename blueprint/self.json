@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
+  "commit": "404df41b269c65f2cb448516a3677bbde62ce436",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -8832,6 +8832,27 @@
       "sha": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
       "short": "ab38ce7",
       "subject": "Watcher ignores short-lived _tmp files; the Stage 7 e2e waits out first compiles on clicks"
+    },
+    {
+      "at": "2026-10-24T19:28:30Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 35,
+          "del": 8,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 3,
+          "del": 2,
+          "kind": "M",
+          "path": "tests/stage-7.e2e.test.ts"
+        }
+      ],
+      "sha": "404df41b269c65f2cb448516a3677bbde62ce436",
+      "short": "404df41",
+      "subject": "Stage 7 e2e: read the Test drive verdict by its class"
     }
   ],
   "edges": [
@@ -11303,6 +11324,8 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.tsx",
       "symbols": [
+        "buildingTrails",
+        "siteLakefront",
         "unsaidSentence"
       ],
       "to": "packages/workbench/src/index.ts",
@@ -11603,16 +11626,6 @@
       "typeOnly": false
     },
     {
-      "from": "apps/rama/canvas/audit.test.ts",
-      "symbols": [
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "to": "apps/rama/canvas/audit.ts",
-      "typeOnly": false
-    },
-    {
       "english": {
         "confirmed": false,
         "text": "the shape of a brick's box, with path, layer, colour and untested flag"
@@ -11628,27 +11641,6 @@
       "from": "apps/rama/canvas/audit.test.ts",
       "symbols": [
         "AuditStep"
-      ],
-      "to": "packages/audit/src/view.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of a brick's box, with path, layer, colour and untested flag"
-      },
-      "from": "apps/rama/canvas/audit.ts",
-      "symbols": [
-        "BrickBox"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "apps/rama/canvas/audit.ts",
-      "symbols": [
-        "AuditStep",
-        "Verdict"
       ],
       "to": "packages/audit/src/view.ts",
       "typeOnly": true
@@ -12145,14 +12137,6 @@
     {
       "from": "apps/rama/components/inspector/Inspector.tsx",
       "symbols": [
-        "LogEntry"
-      ],
-      "to": "apps/rama/canvas/audit.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "apps/rama/components/inspector/Inspector.tsx",
-      "symbols": [
         "DraftState"
       ],
       "to": "apps/rama/components/audit/ConfirmReport.tsx",
@@ -12311,18 +12295,6 @@
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
-    },
-    {
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "AuditRun",
-        "LogEntry",
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "to": "apps/rama/canvas/audit.ts",
-      "typeOnly": false
     },
     {
       "english": {
@@ -14228,7 +14200,8 @@
       "symbols": [
         "countLines",
         "extract",
-        "isBinary"
+        "isBinary",
+        "packageName"
       ],
       "to": "packages/blueprint/src/extract.ts",
       "typeOnly": false
@@ -14385,7 +14358,8 @@
       "symbols": [
         "Blueprint",
         "BrickNode",
-        "ImportEdge"
+        "ImportEdge",
+        "Table"
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
@@ -14688,7 +14662,9 @@
       "from": "packages/blueprint/src/metrics/states.test.ts",
       "symbols": [
         "StateInput",
+        "StateOf",
         "TestRun",
+        "buildingState",
         "counts",
         "lastChangeOf",
         "stateOf",
@@ -16358,7 +16334,8 @@
         "FigureRef",
         "ImportEdge",
         "Layer",
-        "Screen"
+        "Screen",
+        "Table"
       ],
       "to": "packages/shared/src/blueprint.ts",
       "typeOnly": true
@@ -16399,6 +16376,17 @@
       ],
       "to": "packages/shared/src/ceremony.ts",
       "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/drones.ts",
+      "symbols": [
+        "AuditStep",
+        "AuditView",
+        "SCAN_BUDGET",
+        "Verdict"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": false
     },
     {
       "from": "packages/trace/bin/rama-trace.mjs",
@@ -18017,6 +18005,12 @@
     {
       "dev": false,
       "manifest": "apps/rama/package.json",
+      "name": "@rama/stage",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
       "name": "@rama/trace",
       "version": "workspace:*"
     },
@@ -18169,6 +18163,12 @@
       "manifest": "package.json",
       "name": "@rama/shared",
       "version": "workspace:^"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "@rama/stage",
+      "version": "workspace:*"
     },
     {
       "dev": true,
@@ -18533,6 +18533,12 @@
     {
       "dev": false,
       "manifest": "packages/workbench/package.json",
+      "name": "@rama/stage",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/workbench/package.json",
       "name": "@rama/trace",
       "version": "workspace:*"
     },
@@ -18555,8 +18561,8 @@
       "version": "4.6.5"
     }
   ],
-  "extractedAt": "2026-10-24T19:06:49Z",
-  "extractorVersion": "0.1.0",
+  "extractedAt": "2026-10-24T19:28:30Z",
+  "extractorVersion": "0.2.0",
   "layers": [
     {
       "id": "reference",
@@ -18865,10 +18871,16 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "hosts": [
+        "rama.example"
+      ],
       "lastCommit": "3f023428b1e663247c42fe342d527bc9db1f7934",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 126,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/auth/handlers.test.ts",
       "test": true
     },
@@ -18958,6 +18970,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 101,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/bookings/handler.test.ts",
       "test": true
     },
@@ -18976,6 +18991,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 42,
+      "packages": [
+        "zod"
+      ],
       "path": "apps/rama/app/api/bookings/handler.ts",
       "test": false
     },
@@ -19011,6 +19029,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 21,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/health/route.test.ts",
       "purpose": {
         "confirmed": false,
@@ -19086,10 +19107,16 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "hosts": [
+        "rama.test"
+      ],
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 75,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/products/handlers.test.ts",
       "test": true
     },
@@ -19175,10 +19202,16 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "hosts": [
+        "rama.test"
+      ],
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 86,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/settings/handlers.test.ts",
       "test": true
     },
@@ -19227,10 +19260,16 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "hosts": [
+        "rama.test"
+      ],
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 69,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/act/handler.test.ts",
       "test": true
     },
@@ -19284,6 +19323,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 55,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.test.ts",
       "test": true
     },
@@ -19303,6 +19345,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 56,
+      "packages": [
+        "zod"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/audit/confirm/handler.ts",
       "test": false
     },
@@ -19339,7 +19384,22 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 69,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "tables": [
+        {
+          "name": "discovery_sessions",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "discovery_turns",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": false
     },
     {
@@ -19354,6 +19414,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 324,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/ceremony.test.ts",
       "test": true
     },
@@ -19380,6 +19443,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 321,
+      "packages": [
+        "zod"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/ceremony.ts",
       "test": false
     },
@@ -19413,6 +19479,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 161,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/confirm/handler.test.ts",
       "test": true
     },
@@ -19432,6 +19501,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 116,
+      "packages": [
+        "zod"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/confirm/handler.ts",
       "purpose": {
         "confirmed": false,
@@ -19459,6 +19531,13 @@
         "confirmed": false,
         "text": "The web entry point for confirmations: connects the confirm logic to the database, the member's name and the site files, and writes each confirmation to the audit log."
       },
+      "tables": [
+        {
+          "name": "audit_log",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -19584,6 +19663,9 @@
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 16,
+      "packages": [
+        "zod"
+      ],
       "path": "apps/rama/app/api/site/[siteId]/handover/handlers.ts",
       "test": false
     },
@@ -19714,7 +19796,7 @@
     },
     {
       "binary": false,
-      "bytes": 15161,
+      "bytes": 15277,
       "changes": 7,
       "env": [
         "DATABASE_URL",
@@ -19724,11 +19806,38 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "472c5485f6685e94b42dcf9c3edbcd1bc7588d3f",
+      "hosts": [
+        "rama.test"
+      ],
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 389,
+      "lines": 393,
+      "packages": [
+        "drizzle-orm",
+        "postgres",
+        "react",
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/app/authz.test.tsx",
+      "tables": [
+        {
+          "name": "decisions",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "people",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -19746,6 +19855,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 35,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/book/page.tsx",
       "test": false
     },
@@ -19764,12 +19876,15 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 91,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/campus/page.tsx",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 18059,
+      "bytes": 20061,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -19778,7 +19893,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 928,
+      "lines": 1041,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -19830,10 +19945,16 @@
         "metadata"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "hosts": [
+        "fonts.googleapis.com"
+      ],
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 35,
+      "packages": [
+        "react"
+      ],
       "path": "apps/rama/app/layout.tsx",
       "purpose": {
         "confirmed": false,
@@ -19856,6 +19977,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 80,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/login/page.tsx",
       "test": false
     },
@@ -19873,6 +19997,10 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 43,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/app/page.test.tsx",
       "purpose": {
         "confirmed": false,
@@ -19897,6 +20025,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 158,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -19919,6 +20050,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 42,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/pod/[n]/page.tsx",
       "test": false
     },
@@ -19937,6 +20071,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 180,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/settings/page.tsx",
       "test": false
     },
@@ -19955,7 +20092,29 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 174,
+      "packages": [
+        "postgres",
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/app/site/[siteId]/audit/page.test.tsx",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "findings",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -19973,6 +20132,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 211,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/site/[siteId]/audit/page.tsx",
       "test": false
     },
@@ -19991,6 +20153,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 65,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -20013,12 +20178,15 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 161,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/site/[siteId]/handover/page.tsx",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 4919,
+      "bytes": 7568,
       "changes": 6,
       "env": [
         "DATABASE_URL"
@@ -20029,13 +20197,19 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 121,
+      "lines": 179,
+      "packages": [
+        "postgres",
+        "react",
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/app/site/[siteId]/page.test.tsx",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 2729,
+      "bytes": 5783,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -20047,7 +20221,10 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 78,
+      "lines": 165,
+      "packages": [
+        "@rama/stage"
+      ],
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -20069,6 +20246,10 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 274,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/app/site/[siteId]/showroom/page.test.tsx",
       "test": true
     },
@@ -20087,6 +20268,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 61,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/site/[siteId]/showroom/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -20127,6 +20311,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 53,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/site/[siteId]/walkthrough/page.tsx",
       "test": false
     },
@@ -20145,6 +20332,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 88,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/app/testdrive/page.tsx",
       "test": false
     },
@@ -20160,30 +20350,11 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 63,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/canvas/audit.test.ts",
       "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 3691,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "AuditRun",
-        "Drone",
-        "LogEntry",
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "firstCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 120,
-      "path": "apps/rama/canvas/audit.ts",
-      "test": false
     },
     {
       "binary": false,
@@ -20197,6 +20368,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 127,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/canvas/draw.test.ts",
       "purpose": {
         "confirmed": false,
@@ -20238,6 +20412,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 135,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/canvas/frame.test.ts",
       "purpose": {
         "confirmed": false,
@@ -20287,6 +20464,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 120,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/canvas/layout.test.ts",
       "purpose": {
         "confirmed": false,
@@ -20369,6 +20549,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 46,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/canvas/pick.test.ts",
       "purpose": {
         "confirmed": false,
@@ -20411,6 +20594,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 83,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/canvas/timeline.test.ts",
       "purpose": {
         "confirmed": false,
@@ -20487,6 +20673,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 71,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/audit/ConfirmReport.tsx",
       "test": false
     },
@@ -20502,6 +20692,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 91,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/components/ceremony/DiscoveryView.test.tsx",
       "test": true
     },
@@ -20519,6 +20713,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 373,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/ceremony/DiscoveryView.tsx",
       "test": false
     },
@@ -20536,6 +20734,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 248,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/ceremony/WalkthroughView.tsx",
       "test": false
     },
@@ -20553,6 +20755,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 51,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/floor/Action.tsx",
       "test": false
     },
@@ -20570,6 +20776,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 81,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/floor/BookForm.tsx",
       "test": false
     },
@@ -20587,6 +20797,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 57,
+      "packages": [
+        "react"
+      ],
       "path": "apps/rama/components/floor/TriptychView.tsx",
       "test": false
     },
@@ -20604,6 +20817,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 18,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/harmony/HarmonyRuntime.tsx",
       "test": false
     },
@@ -20624,6 +20841,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 132,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/components/harmony/Shell.tsx",
       "test": false
     },
@@ -20646,6 +20866,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 159,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/components/harmony/ui.tsx",
       "test": false
     },
@@ -20661,6 +20884,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 287,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/components/inspector/Inspector.test.tsx",
       "test": true
     },
@@ -20682,6 +20909,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 815,
+      "packages": [
+        "react"
+      ],
       "path": "apps/rama/components/inspector/Inspector.tsx",
       "purpose": {
         "confirmed": false,
@@ -20701,6 +20931,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 76,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/components/inspector/words.test.ts",
       "purpose": {
         "confirmed": false,
@@ -20747,6 +20980,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 151,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/showroom/ShowroomView.tsx",
       "test": false
     },
@@ -20782,6 +21019,10 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 464,
+      "packages": [
+        "next",
+        "react"
+      ],
       "path": "apps/rama/components/site/SiteView.tsx",
       "purpose": {
         "confirmed": false,
@@ -20801,6 +21042,9 @@
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 80,
+      "packages": [
+        "vitest"
+      ],
       "path": "apps/rama/components/wording.test.ts",
       "test": true
     },
@@ -20857,7 +21101,7 @@
     },
     {
       "binary": false,
-      "bytes": 3433,
+      "bytes": 3668,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20870,13 +21114,13 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 95,
+      "lines": 101,
       "path": "apps/rama/components/workbench/SiteShell.tsx",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 7533,
+      "bytes": 7534,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -20885,16 +21129,22 @@
         "TrainerConsole"
       ],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
+      "hosts": [
+        "github.com"
+      ],
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 215,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/components/workbench/TrainerConsole.tsx",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 914,
+      "bytes": 933,
       "changes": 4,
       "env": [
         "NEXT_DIST_DIR"
@@ -20907,7 +21157,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 24,
+      "lines": 25,
       "path": "apps/rama/next.config.ts",
       "purpose": {
         "confirmed": false,
@@ -20917,7 +21167,7 @@
     },
     {
       "binary": false,
-      "bytes": 869,
+      "bytes": 903,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -20926,7 +21176,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 33,
+      "lines": 34,
       "path": "apps/rama/package.json",
       "purpose": {
         "confirmed": false,
@@ -20985,7 +21235,32 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 40,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "apps/rama/server/campus.ts",
+      "tables": [
+        {
+          "name": "checkins",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "handovers",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "people",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": false
     },
     {
@@ -21003,7 +21278,33 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 181,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "apps/rama/server/floor.test.ts",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "pods",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -21026,7 +21327,27 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 164,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "apps/rama/server/floor.ts",
+      "tables": [
+        {
+          "name": "bookings",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "pods",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": false
     },
     {
@@ -21044,7 +21365,34 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 198,
+      "packages": [
+        "postgres",
+        "react-dom",
+        "vitest"
+      ],
       "path": "apps/rama/server/handover.test.ts",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "pods",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -21064,7 +21412,27 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 120,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "apps/rama/server/handover.ts",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "checkins",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "handovers",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -21125,12 +21493,23 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 78,
+      "packages": [
+        "drizzle-orm",
+        "next"
+      ],
       "path": "apps/rama/server/session.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3691,
+      "bytes": 3707,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21143,7 +21522,7 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 126,
+      "lines": 127,
       "path": "apps/rama/test/blueprint.ts",
       "purpose": {
         "confirmed": false,
@@ -21166,6 +21545,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 26,
+      "packages": [
+        "next"
+      ],
       "path": "apps/rama/test/session-mock.ts",
       "test": false
     },
@@ -21442,6 +21824,9 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "842ab2fc0ecab131135dbe2f5426739364a90cee",
+      "hosts": [
+        "www.w3.org"
+      ],
       "lastCommit": "842ab2fc0ecab131135dbe2f5426739364a90cee",
       "layer": "interface",
       "layerRule": "default: components/**",
@@ -21530,7 +21915,7 @@
     },
     {
       "binary": false,
-      "bytes": 48216,
+      "bytes": 54396,
       "changes": 25,
       "env": [],
       "envDynamic": false,
@@ -21539,7 +21924,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 184,
+      "lines": 193,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -21549,7 +21934,7 @@
     },
     {
       "binary": false,
-      "bytes": 11280,
+      "bytes": 12358,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -21558,7 +21943,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 195,
+      "lines": 213,
       "path": "docs/BLUEPRINT.md",
       "purpose": {
         "confirmed": false,
@@ -21568,7 +21953,7 @@
     },
     {
       "binary": false,
-      "bytes": 44215,
+      "bytes": 46685,
       "changes": 45,
       "env": [],
       "envDynamic": false,
@@ -21577,7 +21962,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 197,
+      "lines": 208,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -21617,7 +22002,7 @@
     },
     {
       "binary": false,
-      "bytes": 13297,
+      "bytes": 14699,
       "changes": 33,
       "env": [],
       "envDynamic": false,
@@ -21626,7 +22011,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 45,
+      "lines": 51,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -21983,6 +22368,13 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 36,
+      "packages": [
+        "@eslint/js",
+        "@next/eslint-plugin-next",
+        "eslint",
+        "globals",
+        "typescript-eslint"
+      ],
       "path": "eslint.config.mjs",
       "purpose": {
         "confirmed": false,
@@ -22167,6 +22559,9 @@
       "layer": "data",
       "layerRule": "default: schema and migrations",
       "lines": 14,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "fixtures/sample-product/db/schema.ts",
       "test": false
     },
@@ -22182,6 +22577,9 @@
       "layer": "logic",
       "layerRule": "default: lib/**",
       "lines": 17,
+      "packages": [
+        "vitest"
+      ],
       "path": "fixtures/sample-product/lib/money.test.ts",
       "test": true
     },
@@ -22219,6 +22617,9 @@
       "layer": "logic",
       "layerRule": "default: lib/**",
       "lines": 7,
+      "packages": [
+        "vitest"
+      ],
       "path": "fixtures/sample-product/lib/orders.test.ts",
       "test": true
     },
@@ -22320,7 +22721,7 @@
     },
     {
       "binary": false,
-      "bytes": 1910,
+      "bytes": 1944,
       "changes": 15,
       "env": [],
       "envDynamic": false,
@@ -22329,7 +22730,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 58,
+      "lines": 59,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -22368,6 +22769,9 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
+      "packages": [
+        "tsx"
+      ],
       "path": "packages/audit/bin/rama-audit.mjs",
       "test": false
     },
@@ -22411,6 +22815,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 273,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/audit/src/auditor.ts",
       "test": false
     },
@@ -22494,6 +22901,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 379,
+      "packages": [
+        "typescript"
+      ],
       "path": "packages/audit/src/checks/static.ts",
       "test": false
     },
@@ -22618,7 +23028,32 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 319,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/audit/src/report.ts",
+      "tables": [
+        {
+          "name": "audit_confirmations",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "audits",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "findings",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": false
     },
     {
@@ -22639,6 +23074,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 50,
+      "packages": [
+        "typescript"
+      ],
       "path": "packages/audit/src/source.ts",
       "test": false
     },
@@ -22676,6 +23114,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 211,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/audit/test/auditor.test.ts",
       "test": true
     },
@@ -22693,7 +23134,18 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 318,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/audit/test/report.test.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -22710,6 +23162,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 210,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/audit/test/run.test.ts",
       "test": true
     },
@@ -22725,6 +23180,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 181,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/audit/test/static.test.ts",
       "test": true
     },
@@ -22740,6 +23198,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 126,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/audit/test/view.test.ts",
       "test": true
     },
@@ -22789,6 +23250,9 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
+      "packages": [
+        "tsx"
+      ],
       "path": "packages/blueprint/bin/rama.mjs",
       "purpose": {
         "confirmed": false,
@@ -22838,7 +23302,7 @@
     },
     {
       "binary": false,
-      "bytes": 1676,
+      "bytes": 1690,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -22847,7 +23311,10 @@
       "lastCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 46,
+      "lines": 47,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/diff.test.ts",
       "purpose": {
         "confirmed": false,
@@ -22890,6 +23357,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 134,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/draft.test.ts",
       "purpose": {
         "confirmed": false,
@@ -22919,6 +23389,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 208,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/blueprint/src/draft.ts",
       "purpose": {
         "confirmed": false,
@@ -22938,6 +23411,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 27,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/draft.vendor.test.ts",
       "purpose": {
         "confirmed": false,
@@ -22947,16 +23423,22 @@
     },
     {
       "binary": false,
-      "bytes": 12966,
+      "bytes": 15983,
       "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
+      "hosts": [
+        "example.com"
+      ],
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 282,
+      "lines": 336,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/extract.test.ts",
       "purpose": {
         "confirmed": false,
@@ -22966,7 +23448,7 @@
     },
     {
       "binary": false,
-      "bytes": 8395,
+      "bytes": 11710,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -22975,13 +23457,17 @@
         "ExtractOptions",
         "countLines",
         "extract",
-        "isBinary"
+        "isBinary",
+        "packageName"
       ],
       "firstCommit": "b11347f1c308645c753b7187bace67e9254677db",
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 217,
+      "lines": 281,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/blueprint/src/extract.ts",
       "purpose": {
         "confirmed": false,
@@ -23058,6 +23544,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 19,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/glob.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23104,6 +23593,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 41,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/blueprint/src/glossary.ts",
       "purpose": {
         "confirmed": false,
@@ -23123,6 +23615,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 64,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/golden.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23200,6 +23695,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 86,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/layers.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23301,7 +23799,7 @@
     },
     {
       "binary": false,
-      "bytes": 13773,
+      "bytes": 13787,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -23310,7 +23808,10 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 255,
+      "lines": 256,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/metrics/metrics.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23320,7 +23821,7 @@
     },
     {
       "binary": false,
-      "bytes": 10167,
+      "bytes": 11611,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -23329,18 +23830,22 @@
       "lastCommit": "14620e7862dccb29d495f5ec9f67c607c4c9a1cb",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 217,
+      "lines": 266,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/metrics/states.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 11951,
+      "bytes": 13637,
       "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
         "Audience",
+        "BuildingState",
         "Counts",
         "FigureFn",
         "STATES",
@@ -23349,6 +23854,7 @@
         "StateOf",
         "TestReach",
         "TestRun",
+        "buildingState",
         "codeOf",
         "counts",
         "lastChangeOf",
@@ -23360,13 +23866,13 @@
       "lastCommit": "14620e7862dccb29d495f5ec9f67c607c4c9a1cb",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 277,
+      "lines": 312,
       "path": "packages/blueprint/src/metrics/states.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3909,
+      "bytes": 3957,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -23376,6 +23882,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 78,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/parse.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23385,7 +23894,7 @@
     },
     {
       "binary": false,
-      "bytes": 8324,
+      "bytes": 12680,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -23393,6 +23902,7 @@
         "CODE_EXTENSIONS",
         "ImportRef",
         "SourceFacts",
+        "TableDef",
         "isCode",
         "parseSource"
       ],
@@ -23400,7 +23910,10 @@
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 204,
+      "lines": 308,
+      "packages": [
+        "typescript"
+      ],
       "path": "packages/blueprint/src/parse.ts",
       "purpose": {
         "confirmed": false,
@@ -23418,15 +23931,29 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "hosts": [
+        "github.com"
+      ],
       "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 44,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/blueprint/src/register.test.ts",
       "purpose": {
         "confirmed": false,
         "text": "Test that registering a site in a throwaway database adds it once for the local member, and refuses when the member name is missing or unknown."
       },
+      "tables": [
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": true
     },
     {
@@ -23446,11 +23973,26 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 27,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/blueprint/src/register.ts",
       "purpose": {
         "confirmed": false,
         "text": "Records a cloned site in the database under the local member, leaving an existing record alone and refusing if that member does not exist."
       },
+      "tables": [
+        {
+          "name": "people",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -23465,6 +24007,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 67,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/resolve.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23488,6 +24033,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 194,
+      "packages": [
+        "typescript"
+      ],
       "path": "packages/blueprint/src/resolve.ts",
       "purpose": {
         "confirmed": false,
@@ -23526,10 +24074,16 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
+      "hosts": [
+        "example.com"
+      ],
       "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 194,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/blueprint/src/site.test.ts",
       "purpose": {
         "confirmed": false,
@@ -23578,6 +24132,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 363,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/blueprint/src/site.ts",
       "purpose": {
         "confirmed": false,
@@ -23657,6 +24214,9 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
+      "packages": [
+        "tsx"
+      ],
       "path": "packages/ceremony/bin/rama-ceremony.mjs",
       "test": false
     },
@@ -23720,6 +24280,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 35,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/ceremony/src/discovery.ts",
       "test": false
     },
@@ -23763,7 +24326,17 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 87,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/ceremony/src/importer.ts",
+      "tables": [
+        {
+          "name": "discovery_sessions",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": false
     },
     {
@@ -23785,6 +24358,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 234,
+      "packages": [
+        "typescript"
+      ],
       "path": "packages/ceremony/src/imports.ts",
       "test": false
     },
@@ -23893,6 +24469,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 159,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/ceremony/src/records.ts",
       "test": false
     },
@@ -23946,7 +24525,32 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 303,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/ceremony/src/store.ts",
+      "tables": [
+        {
+          "name": "decisions",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "discovery_sessions",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "discovery_turns",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "signoffs",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -23968,6 +24572,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 57,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/ceremony/src/structure.ts",
       "test": false
     },
@@ -24001,6 +24608,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 44,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/discovery.test.ts",
       "test": true
     },
@@ -24016,6 +24626,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 29,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/discovery.vendor.test.ts",
       "test": true
     },
@@ -24033,6 +24646,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 331,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/gate.test.ts",
       "test": true
     },
@@ -24048,6 +24664,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 183,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/imports.test.ts",
       "test": true
     },
@@ -24063,6 +24682,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 62,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/seal.test.ts",
       "test": true
     },
@@ -24080,6 +24702,10 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 414,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/ceremony/test/store.test.ts",
       "test": true
     },
@@ -24095,6 +24721,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 49,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/structure.test.ts",
       "test": true
     },
@@ -24128,6 +24757,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 136,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/walkthrough.test.ts",
       "test": true
     },
@@ -24143,6 +24775,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 96,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/ceremony/test/workflow.test.ts",
       "test": true
     },
@@ -24196,6 +24831,9 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 8,
+      "packages": [
+        "drizzle-kit"
+      ],
       "path": "packages/db/drizzle.config.ts",
       "purpose": {
         "confirmed": false,
@@ -24563,6 +25201,10 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 106,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/db/src/auth.test.ts",
       "test": true
     },
@@ -24590,7 +25232,23 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 140,
+      "packages": [
+        "drizzle-orm",
+        "zod"
+      ],
       "path": "packages/db/src/auth.ts",
+      "tables": [
+        {
+          "name": "people",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "sessions",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -24610,6 +25268,13 @@
         "confirmed": false,
         "text": "Command-line entry point that runs the database migrations or the seed, reading settings from the environment and the root settings file."
       },
+      "tables": [
+        {
+          "name": "pods",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -24629,6 +25294,10 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 13,
+      "packages": [
+        "drizzle-orm",
+        "postgres"
+      ],
       "path": "packages/db/src/client.ts",
       "purpose": {
         "confirmed": false,
@@ -24650,11 +25319,72 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 296,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/db/src/db.test.ts",
       "purpose": {
         "confirmed": false,
         "text": "Tests that build a throwaway database, apply the migration and seed, and check the standard columns and the append-only tables."
       },
+      "tables": [
+        {
+          "name": "audit_confirmations",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "audit_log",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "audits",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "decisions",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "discovery_sessions",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "discovery_turns",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "findings",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "people",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "signoffs",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": true
     },
     {
@@ -24697,6 +25427,9 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 49,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/db/src/members.test.ts",
       "test": true
     },
@@ -24721,6 +25454,9 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 74,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/db/src/members.ts",
       "test": false
     },
@@ -24739,6 +25475,9 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 16,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/db/src/migrate.ts",
       "purpose": {
         "confirmed": false,
@@ -24779,6 +25518,9 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 374,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/db/src/schema.ts",
       "purpose": {
         "confirmed": false,
@@ -24800,7 +25542,18 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 127,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/db/src/secrets.test.ts",
+      "tables": [
+        {
+          "name": "secrets",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": true
     },
     {
@@ -24830,7 +25583,17 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 178,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/db/src/secrets.ts",
+      "tables": [
+        {
+          "name": "secrets",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -24849,11 +25612,26 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 43,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/db/src/seed.ts",
       "purpose": {
         "confirmed": false,
         "text": "Sets up the starting data: the one local member and the \"self\" site for this repository, safe to run repeatedly, and refusing without a member name."
       },
+      "tables": [
+        {
+          "name": "people",
+          "reads": true,
+          "writes": true
+        },
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -24872,7 +25650,17 @@
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
       "lines": 22,
+      "packages": [
+        "drizzle-orm"
+      ],
       "path": "packages/db/src/settings.ts",
+      "tables": [
+        {
+          "name": "settings",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -24948,6 +25736,10 @@
         "openaiComplete"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "hosts": [
+        "api.anthropic.com",
+        "api.openai.com"
+      ],
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
@@ -24967,10 +25759,18 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
+      "hosts": [
+        "api.anthropic.com",
+        "api.openai.com"
+      ],
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 231,
+      "packages": [
+        "vitest",
+        "zod"
+      ],
       "path": "packages/model/src/call.test.ts",
       "purpose": {
         "confirmed": false,
@@ -25006,6 +25806,13 @@
         "confirmed": false,
         "text": "The single entry point for talking to a model vendor: checks vendors, loads the prompt, retries up to three times, records the call, returns checked output."
       },
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -25020,6 +25827,10 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 31,
+      "packages": [
+        "vitest",
+        "zod"
+      ],
       "path": "packages/model/src/call.vendor.test.ts",
       "purpose": {
         "confirmed": false,
@@ -25084,10 +25895,16 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "hosts": [
+        "api.github.com"
+      ],
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 56,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/model/src/keys.test.ts",
       "test": true
     },
@@ -25103,6 +25920,11 @@
         "checkKey"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "hosts": [
+        "api.anthropic.com",
+        "api.github.com",
+        "api.openai.com"
+      ],
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
@@ -25122,6 +25944,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 27,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/model/src/prices.test.ts",
       "test": true
     },
@@ -25295,7 +26120,7 @@
     },
     {
       "binary": false,
-      "bytes": 5540,
+      "bytes": 6494,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -25306,13 +26131,14 @@
         "FigureRef",
         "ImportEdge",
         "Layer",
-        "Screen"
+        "Screen",
+        "Table"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 132,
+      "lines": 154,
       "path": "packages/shared/src/blueprint.ts",
       "purpose": {
         "confirmed": false,
@@ -25344,7 +26170,7 @@
     },
     {
       "binary": false,
-      "bytes": 1448,
+      "bytes": 1484,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -25353,7 +26179,10 @@
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 41,
+      "lines": 42,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/shared/src/doc.test.ts",
       "purpose": {
         "confirmed": false,
@@ -25363,7 +26192,7 @@
     },
     {
       "binary": false,
-      "bytes": 261,
+      "bytes": 270,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -25378,13 +26207,14 @@
         "Layer",
         "Screen",
         "Signoff",
+        "Table",
         "Trail"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 12,
+      "lines": 13,
       "path": "packages/shared/src/index.ts",
       "purpose": {
         "confirmed": false,
@@ -25434,6 +26264,31 @@
     },
     {
       "binary": false,
+      "bytes": 6694,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AuditRun",
+        "Drone",
+        "LogEntry",
+        "ScanBox",
+        "buildingVerdicts",
+        "finishAudit",
+        "startAudit",
+        "stepAudit",
+        "streetAuditScript"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 198,
+      "path": "packages/stage/src/drones.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 2110,
       "changes": 4,
       "env": [],
@@ -25463,6 +26318,9 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 6,
+      "packages": [
+        "tsx"
+      ],
       "path": "packages/trace/bin/rama-trace.mjs",
       "test": false
     },
@@ -25508,6 +26366,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 444,
+      "packages": [
+        "playwright"
+      ],
       "path": "packages/trace/src/capture.ts",
       "test": false
     },
@@ -25540,6 +26401,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 44,
+      "packages": [
+        "typescript"
+      ],
       "path": "packages/trace/src/code.ts",
       "test": false
     },
@@ -25568,6 +26432,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 137,
+      "packages": [
+        "zod"
+      ],
       "path": "packages/trace/src/config.ts",
       "test": false
     },
@@ -25693,6 +26560,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 76,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/trace/src/sandbox.test.ts",
       "test": true
     },
@@ -25751,6 +26621,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 242,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/trace/src/trail.test.ts",
       "test": true
     },
@@ -25786,6 +26659,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 334,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/trace/test/capture.test.ts",
       "test": true
     },
@@ -25838,7 +26714,7 @@
     },
     {
       "binary": false,
-      "bytes": 701,
+      "bytes": 735,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -25847,7 +26723,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 27,
+      "lines": 28,
       "path": "packages/workbench/package.json",
       "test": false
     },
@@ -25870,6 +26746,13 @@
       "layerRule": "overlay: packages/*",
       "lines": 171,
       "path": "packages/workbench/src/actions.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -25889,6 +26772,9 @@
         "viewer"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "hosts": [
+        "api.github.com"
+      ],
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
@@ -25898,7 +26784,7 @@
     },
     {
       "binary": false,
-      "bytes": 236,
+      "bytes": 268,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -25909,7 +26795,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 8,
+      "lines": 9,
       "path": "packages/workbench/src/index.ts",
       "test": false
     },
@@ -25958,7 +26844,7 @@
     },
     {
       "binary": false,
-      "bytes": 7329,
+      "bytes": 7334,
       "changes": 2,
       "env": [
         "RAMA_GITHUB_API"
@@ -25981,6 +26867,13 @@
       "layerRule": "overlay: packages/*",
       "lines": 201,
       "path": "packages/workbench/src/products.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -26023,6 +26916,13 @@
       "layerRule": "overlay: packages/*",
       "lines": 188,
       "path": "packages/workbench/src/testdrive.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -26063,12 +26963,15 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 56,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/workbench/test/github.vendor.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 8689,
+      "bytes": 8691,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -26076,11 +26979,27 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "hosts": [
+        "api.github.test",
+        "github.com"
+      ],
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 205,
+      "packages": [
+        "drizzle-orm",
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/workbench/test/products.test.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": true
     },
     {
@@ -26095,6 +27014,9 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 53,
+      "packages": [
+        "vitest"
+      ],
       "path": "packages/workbench/test/states.test.ts",
       "test": true
     },
@@ -26112,7 +27034,29 @@
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 129,
+      "packages": [
+        "drizzle-orm",
+        "postgres",
+        "vitest"
+      ],
       "path": "packages/workbench/test/testdrive.test.ts",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "decisions",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "signoffs",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": true
     },
     {
@@ -26132,7 +27076,7 @@
     },
     {
       "binary": false,
-      "bytes": 107067,
+      "bytes": 107689,
       "changes": 14,
       "env": [],
       "envDynamic": false,
@@ -26141,7 +27085,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3383,
+      "lines": 3407,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -26637,6 +27581,9 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 121,
+      "packages": [
+        "typescript"
+      ],
       "path": "scripts/gen-blueprint-doc.mjs",
       "purpose": {
         "confirmed": false,
@@ -26664,7 +27611,7 @@
     },
     {
       "binary": false,
-      "bytes": 3246,
+      "bytes": 3370,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -26677,7 +27624,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 86,
+      "lines": 90,
       "path": "scripts/make-sample.mjs",
       "test": false
     },
@@ -26693,6 +27640,9 @@
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 106,
+      "packages": [
+        "zod"
+      ],
       "path": "scripts/review.ts",
       "purpose": {
         "confirmed": false,
@@ -26721,7 +27671,7 @@
     },
     {
       "binary": false,
-      "bytes": 8889,
+      "bytes": 8993,
       "changes": 11,
       "env": [],
       "envDynamic": false,
@@ -26730,7 +27680,7 @@
       "lastCommit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 263,
+      "lines": 265,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -26771,6 +27721,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 79,
+      "packages": [
+        "vitest"
+      ],
       "path": "tests/backup.e2e.test.ts",
       "test": true
     },
@@ -26828,7 +27781,17 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 75,
+      "packages": [
+        "postgres"
+      ],
       "path": "tests/session.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -26843,6 +27806,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 31,
+      "packages": [
+        "vitest"
+      ],
       "path": "tests/stage-0.e2e.test.ts",
       "purpose": {
         "confirmed": false,
@@ -26862,6 +27828,9 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 58,
+      "packages": [
+        "vitest"
+      ],
       "path": "tests/stage-1.e2e.test.ts",
       "purpose": {
         "confirmed": false,
@@ -26871,7 +27840,7 @@
     },
     {
       "binary": false,
-      "bytes": 8520,
+      "bytes": 8627,
       "changes": 3,
       "env": [
         "DATABASE_URL",
@@ -26883,7 +27852,12 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 196,
+      "lines": 197,
+      "packages": [
+        "playwright",
+        "postgres",
+        "vitest"
+      ],
       "path": "tests/stage-2.e2e.test.ts",
       "test": true
     },
@@ -26899,6 +27873,10 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 94,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
       "path": "tests/stage-3.e2e.test.ts",
       "test": true
     },
@@ -26914,12 +27892,15 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 75,
+      "packages": [
+        "vitest"
+      ],
       "path": "tests/stage-4.e2e.test.ts",
       "test": true
     },
     {
       "binary": false,
-      "bytes": 5976,
+      "bytes": 6247,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -26930,13 +27911,25 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 148,
+      "lines": 154,
+      "packages": [
+        "playwright",
+        "postgres",
+        "vitest"
+      ],
       "path": "tests/stage-4.sample.e2e.test.ts",
+      "tables": [
+        {
+          "name": "signoffs",
+          "reads": true,
+          "writes": false
+        }
+      ],
       "test": true
     },
     {
       "binary": false,
-      "bytes": 8876,
+      "bytes": 8975,
       "changes": 3,
       "env": [
         "DATABASE_URL"
@@ -26947,8 +27940,35 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 231,
+      "lines": 232,
+      "packages": [
+        "playwright",
+        "postgres",
+        "vitest"
+      ],
       "path": "tests/stage-5.e2e.test.ts",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "findings",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -26967,7 +27987,18 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 91,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
       "path": "tests/stage-5.sample.vendor.e2e.test.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -26982,21 +28013,49 @@
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 165,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
       "path": "tests/stage-6.e2e.test.ts",
+      "tables": [
+        {
+          "name": "audits",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "model_calls",
+          "reads": false,
+          "writes": true
+        },
+        {
+          "name": "pods",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
       "binary": false,
-      "bytes": 8023,
-      "changes": 5,
+      "bytes": 8018,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
-      "lastCommit": "ab38ce7ed03b10d2e9ebd1fe8007fa96960e774d",
+      "hosts": [
+        "github.com"
+      ],
+      "lastCommit": "404df41b269c65f2cb448516a3677bbde62ce436",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 178,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
       "path": "tests/stage-7.e2e.test.ts",
       "test": true
     },
@@ -27021,7 +28080,7 @@
     },
     {
       "binary": false,
-      "bytes": 1636,
+      "bytes": 1706,
       "changes": 8,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -27034,7 +28093,10 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 43,
+      "lines": 44,
+      "packages": [
+        "vitest"
+      ],
       "path": "vitest.config.ts",
       "purpose": {
         "confirmed": false,
@@ -27447,7 +28509,6 @@
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/page.tsx",
-        "apps/rama/canvas/audit.ts",
         "apps/rama/canvas/draw.ts",
         "apps/rama/canvas/frame.ts",
         "apps/rama/canvas/layout.ts",
@@ -28212,7 +29273,357 @@
       "route": "/total"
     }
   ],
+  "tables": [
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "item",
+        "cups",
+        "pricePaise",
+        "at",
+        "createdAt",
+        "createdBy"
+      ],
+      "file": "fixtures/sample-product/db/schema.ts",
+      "line": 5,
+      "name": "orders",
+      "symbol": "orders"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "auditId",
+        "person",
+        "personId",
+        "statement",
+        "at"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 224,
+      "name": "audit_confirmations",
+      "symbol": "auditConfirmations"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "tableName",
+        "rowId",
+        "action",
+        "payload"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 72,
+      "name": "audit_log",
+      "symbol": "auditLog"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "commit",
+        "vendor",
+        "model",
+        "callId",
+        "inputsHash",
+        "at",
+        "report"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 179,
+      "name": "audits",
+      "symbol": "audits"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "pod",
+        "personId",
+        "shift",
+        "startsAt",
+        "endsAt"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 266,
+      "name": "bookings",
+      "symbol": "bookings"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "personId",
+        "inUse",
+        "note",
+        "at"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 285,
+      "name": "checkins",
+      "symbol": "checkins"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "sessionId",
+        "title",
+        "statement",
+        "bricks",
+        "screenId",
+        "status",
+        "by",
+        "at",
+        "reconstructed",
+        "supersedes"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 118,
+      "name": "decisions",
+      "symbol": "decisions"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "title",
+        "reconstructed",
+        "source"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 85,
+      "name": "discovery_sessions",
+      "symbol": "discoverySessions"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "sessionId",
+        "seq",
+        "speaker",
+        "text",
+        "draft",
+        "at"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 99,
+      "name": "discovery_turns",
+      "symbol": "discoveryTurns"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "auditId",
+        "brick",
+        "check",
+        "verdict",
+        "text",
+        "file",
+        "line",
+        "checkVerdict",
+        "auditorNote"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 200,
+      "name": "findings",
+      "symbol": "findings"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "auditId",
+        "commit",
+        "personId",
+        "person",
+        "structure",
+        "at"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 303,
+      "name": "handovers",
+      "symbol": "handovers"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "prompt",
+        "promptVersion",
+        "promptHash",
+        "role",
+        "vendor",
+        "model",
+        "input",
+        "output",
+        "status",
+        "error",
+        "attempts",
+        "inputTokens",
+        "outputTokens",
+        "ms"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 49,
+      "name": "model_calls",
+      "symbol": "modelCalls"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "name",
+        "email",
+        "role"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 26,
+      "name": "people",
+      "symbol": "people"
+    },
+    {
+      "columns": [
+        "pod",
+        "siteId",
+        "name"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 255,
+      "name": "pods",
+      "symbol": "pods"
+    },
+    {
+      "columns": [
+        "name",
+        "siteId",
+        "ciphertext",
+        "hint",
+        "checkedAt",
+        "checkOk",
+        "checkSentence",
+        "updatedAt",
+        "updatedBy"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 328,
+      "name": "secrets",
+      "symbol": "secrets"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "personId",
+        "tokenHash",
+        "expiresAt",
+        "revokedAt"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 242,
+      "name": "sessions",
+      "symbol": "sessions"
+    },
+    {
+      "columns": [
+        "key",
+        "siteId",
+        "value",
+        "updatedAt",
+        "updatedBy"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 342,
+      "name": "settings",
+      "symbol": "settings"
+    },
+    {
+      "columns": [
+        "id",
+        "siteId",
+        "person",
+        "personId",
+        "targetKind",
+        "targetId",
+        "targetCommit",
+        "statement",
+        "at",
+        "supersedes",
+        "withdrawn",
+        "seal"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 145,
+      "name": "signoffs",
+      "symbol": "signoffs"
+    },
+    {
+      "columns": [
+        "siteId",
+        "name",
+        "repo",
+        "memberId"
+      ],
+      "file": "packages/db/src/schema.ts",
+      "line": 38,
+      "name": "sites",
+      "symbol": "sites"
+    }
+  ],
   "tags": [],
-  "unresolved": [],
+  "unresolved": [
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "spec": "./api/site/[siteId]/features/route"
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "spec": "../../../components/lakefront/BuildingView"
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "spec": "../../../components/lakefront/StreetView"
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "spec": "../../../test/banned"
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "spec": "../../../components/lakefront/BuildingView"
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "spec": "../../../components/lakefront/StreetView"
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "spec": "../../../components/lakefront/places"
+    },
+    {
+      "from": "apps/rama/canvas/audit.test.ts",
+      "spec": "./audit"
+    },
+    {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "spec": "../../canvas/audit"
+    },
+    {
+      "from": "apps/rama/components/site/SiteView.tsx",
+      "spec": "../../canvas/audit"
+    },
+    {
+      "from": "packages/stage/src/drones.ts",
+      "spec": "./street.ts"
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "spec": "./lakefront.ts"
+    }
+  ],
   "worktree": true
 }

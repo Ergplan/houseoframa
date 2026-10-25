@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Builds the sample product (fixtures/sample-product, the Chai Stall) as a git repository with a fixed
-// history of six commits: the same files, authors, dates and messages every time, so the same commit
+// history of seven commits: the same files, authors, dates and messages every time, so the same commit
 // SHAs and the same Blueprint come out of every run. Test drive (rule 16) and the tests start from it.
 //
 //   node scripts/make-sample.mjs <target dir>     (the target must not exist yet)
@@ -42,6 +42,10 @@ export const SAMPLE_HISTORY = [
   {
     subject: 'Trace every figure to its function, and say how to photograph the screens',
     files: ['rama/figures.ts', '.rama/screens.json'],
+  },
+  {
+    subject: 'Name the three things the stall does, in the owner’s words',
+    files: ['.rama/features.json'],
   },
 ];
 

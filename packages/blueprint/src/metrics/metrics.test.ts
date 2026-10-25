@@ -48,6 +48,7 @@ const bp: Blueprint = {
     edge('app/globals.css', 'lib/b.ts', []),
   ],
   unresolved: [],
+  tables: [],
   external: [],
   commits: [
     commit('c1aaaaaa', 'Asha', [{ path: 'lib/a.ts', kind: 'A', add: 100, del: 0 }]),

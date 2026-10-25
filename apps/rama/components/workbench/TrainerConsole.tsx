@@ -144,7 +144,7 @@ export function TrainerConsole(p: ConsoleProps) {
 
       {p.kind === 'product' ? (
         <>
-          <div className="eg-overline">Repository</div>
+          <div className="eg-overline">On GitHub</div>
           {p.remote ? (
             <p style={{ margin: 0 }}>
               <a href={p.remote}>{p.remote.replace('https://github.com/', '')}</a>
@@ -152,7 +152,7 @@ export function TrainerConsole(p: ConsoleProps) {
           ) : (
             <form action={`/api/site/${p.siteId}/repository`} method="post" className="act">
               <button type="submit" className="eg-btn eg-btn--block eg-btn--sm">
-                Create repository
+                Create it on GitHub
               </button>
               <small className="why">Under the GitHub account in Settings.</small>
             </form>

@@ -2,7 +2,8 @@
 // no network (Invariant 6). The same commit always yields byte-identical canonical JSON.
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import type { Blueprint, BrickNode, ImportEdge } from '@rama/shared';
+import { builtinModules } from 'node:module';
+import type { Blueprint, BrickNode, ImportEdge, Table } from '@rama/shared';
 import pkg from '../package.json' with { type: 'json' };
 import {
   committerDate,
@@ -92,6 +93,53 @@ function purposeOf(entry: Glossary[string] | undefined): Pick<BrickNode, 'purpos
   };
 }
 
+/** The package a bare import specifier names (`next/link` → `next`, `@a/b/c` → `@a/b`); null for Node's own modules. */
+export function packageName(spec: string): string | null {
+  if (spec.startsWith('node:') || spec.startsWith('.') || spec.startsWith('/')) return null;
+  const parts = spec.split('/');
+  const name = spec.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0]!;
+  if (!name || builtinModules.includes(name)) return null;
+  return name;
+}
+
+/**
+ * The tables each file uses: through a runtime import of the file that defines them, or of a file that
+ * re-exports them (`export * from './schema'`), by the names the file imports (`*` imports by the members
+ * it reads off the namespace). The defining file itself is not counted as a use.
+ */
+function tableUse(
+  edges: ImportEdge[],
+  facts: Map<string, ReturnType<typeof parseSource>>,
+  tables: Table[],
+  reexports: Map<string, { to: string; symbols: string[] }[]>,
+): Map<string, { name: string; reads: boolean; writes: boolean }[]> {
+  // The tables a file offers its importers, by exported name: its own and those it passes through.
+  const offered = (file: string, seen: Set<string>): Map<string, Table> => {
+    const m = new Map(tables.filter((t) => t.file === file).map((t) => [t.symbol, t]));
+    if (seen.has(file)) return m;
+    seen.add(file);
+    for (const r of reexports.get(file) ?? []) {
+      for (const [sym, t] of offered(r.to, seen)) if (r.symbols.includes('*') || r.symbols.includes(sym)) m.set(sym, t);
+    }
+    return m;
+  };
+  const out = new Map<string, Map<string, { name: string; reads: boolean; writes: boolean }>>();
+  for (const e of edges) {
+    if (e.typeOnly) continue;
+    const uses = facts.get(e.from)?.uses ?? {};
+    for (const [sym, t] of offered(e.to, new Set())) {
+      if (!e.symbols.includes(sym) && !e.symbols.includes('*')) continue;
+      const u = uses[sym];
+      if (!u) continue;
+      const m = out.get(e.from) ?? new Map();
+      const prev = m.get(t.name) ?? { name: t.name, reads: false, writes: false };
+      m.set(t.name, { name: t.name, reads: prev.reads || u.reads, writes: prev.writes || u.writes });
+      out.set(e.from, m);
+    }
+  }
+  return new Map([...out].map(([p, m]) => [p, [...m.values()].sort((a, b) => byString(a.name, b.name))]));
+}
+
 export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint {
   const root = topLevel(path.resolve(repoPath));
   const exclude = opts.exclude ?? [];
@@ -128,6 +176,8 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
   const edgeMap = new Map<string, ImportEdge>();
   const unresolved = new Map<string, { from: string; spec: string }>();
   const facts = new Map<string, ReturnType<typeof parseSource>>();
+  const packagesOf = new Map<string, Set<string>>();
+  const reexports = new Map<string, { to: string; symbols: string[] }[]>();
   for (const p of paths) {
     const source = texts.get(p);
     if (source === undefined || !isCode(p)) continue;
@@ -136,7 +186,12 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
     for (const imp of f.imports) {
       const r = resolver.resolve(p, imp.spec);
       if (r.kind === 'unresolved') unresolved.set(`${p}\0${imp.spec}`, { from: p, spec: imp.spec });
+      if (r.kind === 'external' && !imp.typeOnly) {
+        const name = packageName(imp.spec);
+        if (name) packagesOf.set(p, (packagesOf.get(p) ?? new Set()).add(name));
+      }
       if (r.kind !== 'internal' || r.path === p) continue;
+      if (imp.reexport && !imp.typeOnly) reexports.set(p, [...(reexports.get(p) ?? []), { to: r.path, symbols: imp.symbols }]);
       const key = `${p}\0${r.path}`;
       const prev = edgeMap.get(key);
       if (!prev) edgeMap.set(key, { from: p, to: r.path, symbols: [...imp.symbols], typeOnly: imp.typeOnly });
@@ -152,6 +207,11 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
       .sort((a, b) => byString(a.from, b.from) || byString(a.to, b.to)),
     glossary,
   );
+
+  const tables: Table[] = [...facts.entries()]
+    .flatMap(([file, f]) => f.tables.map((t) => ({ name: t.name, file, line: t.line, symbol: t.symbol, columns: t.columns })))
+    .sort((a, b) => byString(a.file, b.file) || byString(a.name, b.name));
+  const tablesOf = tableUse(edges, facts, tables, reexports);
 
   const commits = readHistory(root, sha);
   const touched = new Map<string, string[]>();
@@ -177,6 +237,9 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
       firstCommit: history[0] ?? '',
       lastCommit: history.at(-1) ?? '',
       changes: history.length,
+      ...(packagesOf.has(p) ? { packages: [...packagesOf.get(p)!].sort(byString) } : {}),
+      ...(f?.hosts.length ? { hosts: f.hosts } : {}),
+      ...(tablesOf.has(p) ? { tables: tablesOf.get(p)! } : {}),
       ...purposeOf(purposes[p]),
     };
   });
@@ -213,5 +276,6 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
     branches: opts.worktree || !sha ? [] : readBranches(root, sha),
     tags: opts.worktree || !sha ? [] : readTags(root, sha),
     screens: findScreens(paths, edges, read),
+    tables,
   };
 }

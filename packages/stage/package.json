@@ -1,0 +1,20 @@
+{
+  "name": "@rama/stage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The isometric lakefront: the Street and Building levels over one Blueprint, its replay, the audit's drones, pick() and the words that move between levels.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./read": "./src/read.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@rama/audit": "workspace:*",
+    "@rama/blueprint": "workspace:*",
+    "@rama/shared": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

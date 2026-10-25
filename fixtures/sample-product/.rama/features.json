@@ -1,0 +1,22 @@
+{
+  "features": [
+    {
+      "id": "see-todays-orders",
+      "name": "See today’s orders",
+      "does": "Lists every order the stall has taken today, what each one costs, and how many there are.",
+      "screens": ["/"]
+    },
+    {
+      "id": "take-an-order",
+      "name": "Take an order",
+      "does": "Writes down a new order and shows what it will cost before it is saved.",
+      "screens": ["/new"]
+    },
+    {
+      "id": "count-the-takings",
+      "name": "Count the day’s takings",
+      "does": "Adds up everything the stall took today and the GST owed on it.",
+      "screens": ["/total"]
+    }
+  ]
+}

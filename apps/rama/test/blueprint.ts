@@ -100,6 +100,7 @@ export function fixtureBlueprint(): Blueprint {
       edge('lib/fmt.ts', 'lib/data.ts', ['Row'], { typeOnly: true }),
     ],
     unresolved: [],
+    tables: [],
     external: [],
     commits: [
       commit('c1aaaaaa', '2026-09-28T11:07:13+00:00', 'Joulewise', 'First lift', [

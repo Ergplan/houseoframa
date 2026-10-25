@@ -275,3 +275,38 @@ export function stateTally(states: StateOf[]): Record<ScreenState, number> {
   for (const s of states) t[s.state]++;
   return t;
 }
+
+export interface BuildingState {
+  state: ScreenState;
+  /** Who signed, when the building is Confirmed: every person who signed one of its screens. */
+  by: string[];
+  /** Its screens in the three words. */
+  tally: Record<ScreenState, number>;
+  /** Why, in one plain sentence that says what it counts. */
+  why: string;
+}
+
+/**
+ * A building's flag, from its screens' states: Confirmed when a named person signed every one of its
+ * screens; Verified when every screen is Verified or Confirmed (each is checked, by a test or by a
+ * person); otherwise Unverified. A building with no screen of its own (the work its screens share, or
+ * the work behind them) is Unverified: the three states are earned by screens.
+ */
+export function buildingState(screens: StateOf[]): BuildingState {
+  const tally = stateTally(screens);
+  const n = screens.length;
+  const of = `${n} screen${n === 1 ? '' : 's'}`;
+  const by = [...new Set(screens.flatMap((s) => (s.confirmed && s.signature ? [s.signature.person] : [])))].sort();
+  if (n === 0) return { state: 'Unverified', by: [], tally, why: 'It has no screen of its own, so nobody can sign it or check it on a screen.' };
+  if (screens.every((s) => s.confirmed))
+    return { state: 'Confirmed', by, tally, why: `All ${of} signed by name.` };
+  if (screens.every((s) => s.verified || s.confirmed))
+    return {
+      state: 'Verified',
+      by: [],
+      tally,
+      why: `All ${of} checked: ${tally.Verified} by a passing test, ${tally.Confirmed} signed by name.`,
+    };
+  const open = n - screens.filter((s) => s.verified || s.confirmed).length;
+  return { state: 'Unverified', by: [], tally, why: `${open} of ${of} not checked yet.` };
+}

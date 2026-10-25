@@ -8,7 +8,17 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Blueprint, Signoff } from '@rama/shared';
 import { extract } from '../extract.ts';
-import { counts, lastChangeOf, stateOf, stateTally, testReach, type StateInput, type TestRun } from './states.ts';
+import {
+  buildingState,
+  counts,
+  lastChangeOf,
+  stateOf,
+  stateTally,
+  testReach,
+  type StateInput,
+  type StateOf,
+  type TestRun,
+} from './states.ts';
 
 const MAKE = fileURLToPath(new URL('../../../../scripts/make-sample.mjs', import.meta.url));
 let dir: string;
@@ -213,5 +223,44 @@ describe('counts', () => {
     expect(counts(states, 'staff').sentence).toBe('0 of 1 staff screen signed');
     expect(counts(states, 'admin').sentence).toBe('0 of 0 admin screens signed');
     expect(stateTally(states.map((s) => s.state))).toEqual({ Verified: 2, Confirmed: 1, Unverified: 0 });
+  });
+});
+
+describe('buildingState', () => {
+  const sig = (person: string) => ({ person }) as Signoff;
+  const st = (verified: boolean, confirmed: string | null): StateOf => ({
+    state: confirmed ? 'Confirmed' : verified ? 'Verified' : 'Unverified',
+    verified,
+    confirmed: Boolean(confirmed),
+    tests: [],
+    signature: confirmed ? sig(confirmed) : null,
+    why: [],
+  });
+
+  it('is Confirmed only when every screen is signed, and names who signed', () => {
+    expect(buildingState([st(false, 'Asha'), st(true, 'Ravi')])).toMatchObject({
+      state: 'Confirmed',
+      by: ['Asha', 'Ravi'],
+      why: 'All 2 screens signed by name.',
+    });
+  });
+
+  it('is Verified when every screen is checked, by a test or by a person', () => {
+    expect(buildingState([st(true, null), st(false, 'Asha')])).toMatchObject({
+      state: 'Verified',
+      by: [],
+      why: 'All 2 screens checked: 1 by a passing test, 1 signed by name.',
+    });
+  });
+
+  it('is Unverified while one screen is not checked, and says how many', () => {
+    expect(buildingState([st(true, null), st(false, null)])).toMatchObject({
+      state: 'Unverified',
+      why: '1 of 2 screens not checked yet.',
+    });
+  });
+
+  it('is Unverified with no screen of its own, and says why', () => {
+    expect(buildingState([])).toMatchObject({ state: 'Unverified', tally: { Verified: 0, Confirmed: 0, Unverified: 0 } });
   });
 });

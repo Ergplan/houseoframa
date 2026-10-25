@@ -6,3 +6,4 @@ export * from './modules.ts';
 export * from './states.ts';
 export * from './testdrive.ts';
 export * from './tests.ts';
+export * from './lakefront.ts';

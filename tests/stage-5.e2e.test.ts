@@ -191,7 +191,8 @@ describe('stage 5 e2e', () => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     try {
-      await page.goto(`${server.browserUrl}/site/shop`);
+      // The drones over the bricks fly at the code level (Stage 8 puts the Street first).
+      await page.goto(`${server.browserUrl}/site/shop?at=code`);
       await page.locator('canvas[data-ready="true"]').waitFor({ timeout: 60_000 });
       const button = page.getByRole('button', { name: 'Audit', exact: true });
       await expect.poll(() => button.isEnabled(), { timeout: 30_000 }).toBe(true);

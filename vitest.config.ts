@@ -29,6 +29,7 @@ export default defineConfig({
         120_000,
       ),
       project('@rama/audit', 'packages/audit', ['src/**/*.test.ts', 'test/**/*.test.ts'], 600_000),
+      project('@rama/stage', 'packages/stage', ['src/**/*.test.ts']),
       project('@rama/trace', 'packages/trace', ['src/**/*.test.ts', 'test/**/*.test.ts'], 120_000),
       project(
         '@rama/workbench',

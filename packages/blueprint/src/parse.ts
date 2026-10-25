@@ -10,6 +10,19 @@ export interface ImportRef {
   /** Imported names; `default`; `*` for namespace, re-export-all, dynamic import or require. Empty for side-effect imports. */
   symbols: string[];
   typeOnly: boolean;
+  /** True for `export … from`: the names pass through this file to its importers. */
+  reexport?: true;
+}
+
+/** A table the file defines with Drizzle (`pgTable('orders', { … })`, or the sqlite and mysql forms). */
+export interface TableDef {
+  /** The table's name in the database. */
+  name: string;
+  /** The exported binding that holds it. */
+  symbol: string;
+  line: number;
+  /** The keys of the columns object, in source order. */
+  columns: string[];
 }
 
 export interface SourceFacts {
@@ -17,6 +30,27 @@ export interface SourceFacts {
   exports: string[];
   env: string[];
   envDynamic: boolean;
+  tables: TableDef[];
+  /**
+   * How the file uses names it imports, keyed by the imported name (a namespace import's members by
+   * their property name): `writes` when passed to `.insert()`, `.update()` or `.delete()`, `reads` for
+   * any other use as a value. Uses in types only are not uses.
+   */
+  uses: Record<string, { reads: boolean; writes: boolean }>;
+  /** Hosts of the web addresses written in the file's strings (`https://api.openai.com/…` → `api.openai.com`). */
+  hosts: string[];
+}
+
+const TABLE_FNS = new Set(['pgTable', 'sqliteTable', 'mysqlTable']);
+const WRITE_FNS = new Set(['insert', 'update', 'delete']);
+
+/** True when the node sits inside a type (an annotation, `typeof x`, a type argument). */
+function inType(node: ts.Node): boolean {
+  for (let n: ts.Node | undefined = node.parent; n; n = n.parent) {
+    if (ts.isTypeNode(n)) return true;
+    if (ts.isStatement(n) || ts.isSourceFile(n)) return false;
+  }
+  return false;
 }
 
 function scriptKind(path: string): ts.ScriptKind {
@@ -103,6 +137,17 @@ export function parseSource(path: string, source: string): SourceFacts {
   const env = new Set<string>();
   let envDynamic = false;
   const consts = constStrings(sf);
+  const tables: TableDef[] = [];
+  // Local names of runtime imports: a named import's local name → its imported name; namespaces apart.
+  const named = new Map<string, string>();
+  const namespaces = new Set<string>();
+  const uses: SourceFacts['uses'] = {};
+  const hosts = new Set<string>();
+  const use = (name: string, write: boolean) => {
+    const u = (uses[name] ??= { reads: false, writes: false });
+    if (write) u.writes = true;
+    else u.reads = true;
+  };
 
   for (const stmt of sf.statements) {
     if (ts.isImportDeclaration(stmt) && ts.isStringLiteral(stmt.moduleSpecifier)) {
@@ -113,8 +158,12 @@ export function parseSource(path: string, source: string): SourceFacts {
         if (clause.name) symbols.push('default');
         const nb = clause.namedBindings;
         if (nb && ts.isNamespaceImport(nb)) symbols.push('*');
+        if (nb && ts.isNamespaceImport(nb) && !clause.isTypeOnly) namespaces.add(nb.name.text);
         if (nb && ts.isNamedImports(nb)) {
-          for (const el of nb.elements) symbols.push((el.propertyName ?? el.name).text);
+          for (const el of nb.elements) {
+            symbols.push((el.propertyName ?? el.name).text);
+            if (!clause.isTypeOnly && !el.isTypeOnly) named.set(el.name.text, (el.propertyName ?? el.name).text);
+          }
           if (!clause.isTypeOnly && !clause.name && nb.elements.length > 0) {
             allType = nb.elements.every((el) => el.isTypeOnly);
           }
@@ -140,7 +189,7 @@ export function parseSource(path: string, source: string): SourceFacts {
           allType = stmt.exportClause.elements.every((el) => el.isTypeOnly);
         }
       }
-      if (spec) imports.push({ spec, symbols, typeOnly: allType });
+      if (spec) imports.push({ spec, symbols, typeOnly: allType, reexport: true });
     } else if (ts.isExportAssignment(stmt)) {
       exports.add('default');
     } else if (hasModifier(stmt, ts.SyntaxKind.ExportKeyword)) {
@@ -166,7 +215,59 @@ export function parseSource(path: string, source: string): SourceFacts {
     }
   }
 
+  const writeArg = (node: ts.Node) =>
+    ts.isCallExpression(node.parent) &&
+    node.parent.arguments[0] === node &&
+    ts.isPropertyAccessExpression(node.parent.expression) &&
+    WRITE_FNS.has(node.parent.expression.name.text);
+
   const visit = (node: ts.Node) => {
+    // export const orders = pgTable('orders', { … })
+    if (
+      ts.isVariableDeclaration(node) &&
+      ts.isIdentifier(node.name) &&
+      node.initializer &&
+      ts.isCallExpression(node.initializer) &&
+      ts.isIdentifier(node.initializer.expression) &&
+      TABLE_FNS.has(node.initializer.expression.text) &&
+      node.initializer.arguments[0] &&
+      ts.isStringLiteralLike(node.initializer.arguments[0]) &&
+      ts.isVariableStatement(node.parent.parent) &&
+      hasModifier(node.parent.parent, ts.SyntaxKind.ExportKeyword)
+    ) {
+      const cols = node.initializer.arguments[1];
+      tables.push({
+        name: node.initializer.arguments[0].text,
+        symbol: node.name.text,
+        line: sf.getLineAndCharacterOfPosition(node.getStart(sf)).line + 1,
+        columns:
+          cols && ts.isObjectLiteralExpression(cols)
+            ? cols.properties.flatMap((p) => (p.name && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name)) ? [p.name.text] : []))
+            : [],
+      });
+    }
+    // Uses of imported names as values: `db.insert(orders)` writes, `from(orders)` reads.
+    if (ts.isIdentifier(node) && named.has(node.text) && !inType(node)) {
+      const p = node.parent;
+      const isName =
+        (ts.isPropertyAccessExpression(p) && p.name === node) ||
+        ts.isImportSpecifier(p) ||
+        ts.isPropertyAssignment(p) && p.name === node ||
+        ts.isExportSpecifier(p);
+      if (!isName) use(named.get(node.text)!, writeArg(node));
+    }
+    if (
+      ts.isPropertyAccessExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      namespaces.has(node.expression.text) &&
+      !inType(node)
+    ) {
+      use(node.name.text, writeArg(node));
+    }
+    if (ts.isStringLiteralLike(node) || ts.isTemplateHead(node)) {
+      const m = /^https?:\/\/([a-z0-9.-]+\.[a-z]{2,})(?=[/:?#]|$)/i.exec(node.text);
+      if (m) hosts.add(m[1]!.toLowerCase());
+    }
     // Dynamic import('x') and require('x').
     if (ts.isCallExpression(node) && node.arguments.length === 1 && ts.isStringLiteralLike(node.arguments[0]!)) {
       const arg = (node.arguments[0] as ts.StringLiteralLike).text;
@@ -200,5 +301,8 @@ export function parseSource(path: string, source: string): SourceFacts {
     exports: [...exports].sort(byString),
     env: [...env].sort(byString),
     envDynamic,
+    tables,
+    uses,
+    hosts: [...hosts].sort(byString),
   };
 }

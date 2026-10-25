@@ -29,6 +29,12 @@ export interface BrickNode {
   lastCommit: string;
   /** Number of commits that changed the file. */
   changes: number;
+  /** Outside packages the file imports at run time, by package name; absent when it imports none. */
+  packages?: string[];
+  /** Hosts of the web addresses written in the file's strings; absent when none. */
+  hosts?: string[];
+  /** Tables the file uses through a runtime import of the file that defines them (writes: passed to insert, update or delete); absent when none. */
+  tables?: { name: string; reads: boolean; writes: boolean }[];
   /** What the brick is for, in English: from the `.rama/` overlay when confirmed, otherwise an unconfirmed draft. */
   purpose?: { text: string; confirmed: boolean; by?: string; at?: string };
 }
@@ -67,6 +73,20 @@ export interface Commit {
     del: number | null;
     from?: string;
   }[];
+}
+
+/** A database table the target defines in code (Drizzle `pgTable`, `sqliteTable` or `mysqlTable`). */
+export interface Table {
+  /** The table's name in the database. */
+  name: string;
+  /** The brick that defines it. */
+  file: string;
+  /** Line of the definition. */
+  line: number;
+  /** The exported name that holds it. */
+  symbol: string;
+  /** The columns as the definition names them, in source order. */
+  columns: string[];
 }
 
 /** A screen of the target's app: a route and the bricks that render it. */
@@ -129,4 +149,6 @@ export interface Blueprint {
   tags: string[];
   /** Screens discovered from the app's routes. */
   screens: Screen[];
+  /** Tables defined in code, by file then name. */
+  tables: Table[];
 }

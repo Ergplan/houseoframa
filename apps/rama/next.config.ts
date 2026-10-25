@@ -14,6 +14,7 @@ const config: NextConfig = {
     '@rama/db',
     '@rama/model',
     '@rama/shared',
+    '@rama/stage',
     '@rama/trace',
     '@rama/workbench',
   ],
