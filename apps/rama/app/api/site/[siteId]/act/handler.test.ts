@@ -8,6 +8,8 @@ const tara: Member = { id: 't1', name: 'Tara', email: null, role: 'trainer' };
 const deps = (over: Partial<ActDeps> = {}): ActDeps => ({
   startJob: vi.fn(),
   startSession: vi.fn(async () => {}),
+  startBuild: vi.fn(),
+  pauseBuild: vi.fn(),
   baseUrl: 'http://rama.test',
   now: () => new Date('2026-10-24T10:00:00Z'),
   ...over,
@@ -55,11 +57,27 @@ describe('POST /api/site/[siteId]/act (the trainer console)', () => {
     );
   });
 
+  it('starts the build on a product as the person, pauses it, and refuses to build a site only drawn', async () => {
+    const d = deps();
+    expect(where(await handleAct(site, tara, act('start-build'), d))).toEqual({
+      page: '/site/chai',
+      said: 'Start build: the builder is at work. Each lift shows here as it is checked.',
+      error: null,
+    });
+    expect(d.startBuild).toHaveBeenCalledWith(site, tara);
+    expect(where(await handleAct(site, tara, act('pause-build'), d)).said).toBe(
+      'Pause build: the build stops after the lift in hand.',
+    );
+    expect(d.pauseBuild).toHaveBeenCalledWith(site);
+    const outside = { ...site, kind: 'outside' } as SiteLocation;
+    expect(where(await handleAct(outside, tara, act('start-build'), d)).error).toBe(
+      'Only a product made here is built here; this site is only drawn.',
+    );
+    expect(d.startBuild).toHaveBeenCalledTimes(1);
+  });
+
   it('says which stage enables an act it cannot do yet, and refuses an unknown one', async () => {
     const d = deps();
-    expect(where(await handleAct(site, tara, act('start-build'), d)).error).toBe(
-      'Start build comes with Stage 9 (the house stack).',
-    );
     expect(where(await handleAct(site, tara, act('close-ideation'), d)).error).toMatch(/Stage 10/);
     expect(where(await handleAct(site, tara, act('rm -rf'), d)).error).toBe(
       'There is no such button.',

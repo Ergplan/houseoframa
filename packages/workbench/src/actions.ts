@@ -5,10 +5,11 @@ import { execFileSync } from 'node:child_process';
 import { runAudit } from '@rama/audit';
 import { siteRecord, writeSiteBlueprint, type SiteLocation } from '@rama/blueprint/site';
 import { modelCalls, readSecret, type Db } from '@rama/db';
-import type { CallResult } from '@rama/model';
+import { BUILDER_VENDOR, seatProblems, vendorEntry, type CallResult } from '@rama/model';
 import { capture, captureDir, readCapture } from '@rama/trace';
 import { StepError } from './jobs.ts';
 import { linkHouseModules } from './modules.ts';
+import { builderLabel, seatsOf } from './seats.ts';
 import { runSiteTests } from './tests.ts';
 
 const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -138,8 +139,8 @@ export function standInAuditor(db: Db) {
 }
 
 /**
- * Calls the audit: the checks, then the auditor (a different company from the builder). Without the
- * OpenAI key it is refused, unless `standIn` (Test drive) lets the stand-in pass the checks on.
+ * Calls the audit: the checks, then the auditor seat (a different company from the builder). Without
+ * the auditor's key it is refused, unless `standIn` (Test drive) lets the stand-in pass the checks on.
  */
 export async function callAudit(
   db: Db,
@@ -147,16 +148,28 @@ export async function callAudit(
   opts: { standIn?: boolean; env?: NodeJS.ProcessEnv } = {},
 ): Promise<string> {
   const env = opts.env ?? process.env;
-  const key = await readSecret(db, 'OPENAI_API_KEY', env);
-  if (!key && !opts.standIn)
+  const { seats } = await seatsOf(db, site.id, env);
+  const auditor = seats.auditor ? vendorEntry(seats.auditor.vendor) : undefined;
+  const problems = seatProblems(seats);
+  if (problems.length && !opts.standIn)
+    throw new StepError(problems.join(' '), 'Choose the brains again in Settings → Brains.');
+  const key = auditor?.key
+    ? await readSecret(db, auditor.key, env)
+    : auditor
+      ? 'none needed'
+      : undefined;
+  const ready = Boolean(key) && problems.length === 0;
+  if (!ready && !opts.standIn)
     throw new StepError(
-      'The audit needs the OpenAI key: the auditor must be a different company from the builder.',
-      'Enter the OpenAI key in Settings, then call the audit again.',
+      `The audit needs the ${auditor?.label ?? 'auditor'} key: the auditor must be a different company from the builder.`,
+      `Enter the ${auditor?.label ?? 'auditor'} key in Settings, then call the audit again.`,
     );
   const bp = writeSiteBlueprint(site);
   const formulaFiles = [
     ...new Set(Object.values(readCapture(site.id, env)?.mappings ?? {}).map((m) => m.file)),
   ].sort();
+  const builtBy = siteRecord(site.id, env)?.builder;
+  const builderVendor = builtBy ? BUILDER_VENDOR[builtBy] : undefined;
   const { report, body } = await runAudit(db, {
     siteId: site.id,
     name: site.name,
@@ -164,8 +177,15 @@ export async function callAudit(
     bp,
     formulaFiles,
     run: {},
-    ...(key ? {} : { call: standInAuditor(db) as never }),
+    builder:
+      builtBy && builderVendor
+        ? {
+            label: builderLabel(builtBy),
+            vendor: vendorEntry(builderVendor)?.label ?? builderVendor,
+          }
+        : null,
+    ...(ready ? {} : { call: standInAuditor(db) as never }),
   });
-  const by = key ? `signed by ${report.vendor}` : 'passed on by a stand-in (no auditor key)';
+  const by = ready ? `signed by ${report.vendor}` : 'passed on by a stand-in (no auditor key)';
   return `${plural(body.counts.defects, 'defect')}, ${plural(body.counts.notes, 'note')}, ${plural(body.counts.passes, 'clean file')}; ${by}.`;
 }

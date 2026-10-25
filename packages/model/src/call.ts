@@ -1,11 +1,26 @@
 // call(): the only way House of Rama talks to a model vendor (rule 8).
 // Order: vendor guard → prompt → model and key → up to 3 attempts → one model_calls row → typed output.
 import type { z } from 'zod';
-import { createDb, modelCalls, secretFor, type SecretName } from '@rama/db';
+import { createDb, getSetting, modelCalls, secretFor, type SecretName } from '@rama/db';
 import pkg from '../package.json' with { type: 'json' };
-import { ADAPTERS, VendorHttpError, type Completion, type Fetch } from './adapters.ts';
+import {
+  ADAPTERS,
+  compatibleComplete,
+  VendorHttpError,
+  type Completion,
+  type CompletionRequest,
+  type Fetch,
+} from './adapters.ts';
 import { loadPrompt, PROMPTS_DIR } from './prompts.ts';
-import { resolveVendors, type Role, type Vendor } from './vendors.ts';
+import {
+  BRAINS_SETTING,
+  brainsSettingOf,
+  seatProblems,
+  vendorEntry,
+  type Seat,
+  type Seats,
+} from './seats.ts';
+import { resolveVendors, VendorGuardError } from './vendors.ts';
 
 export const MODEL_COMPONENT = `rama:model@${pkg.version}`;
 export const MAX_ATTEMPTS = 3; // the first try and two retries
@@ -32,8 +47,11 @@ export interface CallRequest<I, O> {
   /** Typed output. With format "json" (default) the reply is parsed as JSON first; with "text" the raw reply is validated. */
   output: z.ZodType<O>;
   format?: 'json' | 'text';
-  /** Which configured vendor answers: BUILDER_VENDOR or AUDITOR_VENDOR. */
-  role: Role;
+  /**
+   * The seat that answers: its vendor and model come from the product's seats (Settings → Brains), or,
+   * while nobody has chosen, BUILDER_VENDOR (builder and drafter) or AUDITOR_VENDOR (auditor).
+   */
+  role: Seat;
   /** The site the call is made for (model_calls.site_id). */
   siteId: string;
   /** Person id or `rama:<component>@<version>` that asked for the call. */
@@ -44,7 +62,7 @@ export interface CallRequest<I, O> {
 export interface CallResult<O> {
   output: O;
   callId: string;
-  vendor: Vendor;
+  vendor: string;
   model: string;
   attempts: number;
   /** Summed over every attempt that got a reply. */
@@ -63,6 +81,29 @@ export interface CallDeps {
   /** Writes one model_calls row and returns its id. */
   record: (row: ModelCallRow) => Promise<string>;
   sleep: (ms: number) => Promise<void>;
+  /** The seats chosen for the site, or by default; null while nobody has chosen any. */
+  seats: (siteId: string) => Promise<Partial<Seats> | null>;
+}
+
+/**
+ * The seats in Settings → Brains for the site, else the default ones, read from the database the
+ * environment names; null when there is none, or nobody has chosen.
+ */
+export async function storedSeats(
+  siteId: string,
+  env: Record<string, string | undefined>,
+): Promise<Partial<Seats> | null> {
+  if (!env.DATABASE_URL) return null;
+  const { db, close } = createDb(env.DATABASE_URL);
+  try {
+    return (
+      (await getSetting<Partial<Seats>>(db, brainsSettingOf(siteId))) ??
+      (await getSetting<Partial<Seats>>(db, BRAINS_SETTING)) ??
+      null
+    );
+  } finally {
+    await close();
+  }
 }
 
 async function recordToDb(row: ModelCallRow): Promise<string> {
@@ -83,7 +124,50 @@ const defaultDeps = (): CallDeps => ({
   promptsDir: PROMPTS_DIR,
   record: recordToDb,
   sleep: (ms) => new Promise((r) => setTimeout(r, ms)),
+  seats: (siteId) => storedSeats(siteId, process.env),
 });
+
+/** The vendor, model, key name and adapter that answer for a seat; refuses seats that cannot stand. */
+export async function resolveSeat(
+  seat: Seat,
+  siteId: string,
+  deps: Pick<CallDeps, 'env' | 'seats'>,
+): Promise<{
+  vendor: string;
+  model: string | undefined;
+  modelVar: string | null;
+  keyName: SecretName | null;
+  complete: (req: CompletionRequest, key: string, f: Fetch) => Promise<Completion>;
+}> {
+  const chosen = await deps.seats(siteId);
+  if (!chosen) {
+    if (seat === 'voice')
+      throw new VendorGuardError('the voice seat is not chosen in Settings → Brains');
+    const vendor = resolveVendors(deps.env)[seat === 'drafter' ? 'builder' : seat];
+    const a = ADAPTERS[vendor];
+    return {
+      vendor,
+      model: deps.env[a.modelVar] || a.defaultModel,
+      modelVar: a.modelVar,
+      keyName: a.keyVar,
+      complete: a.complete,
+    };
+  }
+  const problems = seatProblems(chosen);
+  if (problems.length) throw new VendorGuardError(problems.join(' '));
+  const c = chosen[seat]!;
+  const v = vendorEntry(c.vendor)!;
+  return {
+    vendor: v.id,
+    model: c.model,
+    modelVar: null,
+    keyName: v.key,
+    complete:
+      v.protocol === 'openai-compatible'
+        ? compatibleComplete(v.id, c.baseUrl ?? v.baseUrl)
+        : ADAPTERS[v.protocol].complete,
+  };
+}
 
 function parseOutput<O>(text: string, schema: z.ZodType<O>, format: 'json' | 'text'): O {
   let value: unknown = text;
@@ -114,15 +198,18 @@ export async function call<I, O>(
   const deps = { ...defaultDeps(), ...overrides };
 
   // Refuse before anything else: no prompt read, no vendor call, no row.
-  const vendor = resolveVendors(deps.env)[req.role];
+  const seat = await resolveSeat(req.role, req.siteId, deps);
+  const vendor = seat.vendor;
   const prompt = await loadPrompt(req.name, req.version, deps.promptsDir);
-  const adapter = ADAPTERS[vendor];
-  const model = deps.env[adapter.modelVar] || adapter.defaultModel;
-  if (!model) throw new ModelConfigError(`${adapter.modelVar} is not set`);
-  const apiKey = await deps.secret(adapter.keyVar);
-  if (!apiKey)
+  const model = seat.model;
+  if (!model)
     throw new ModelConfigError(
-      `${adapter.keyVar} is not set: enter the ${vendor === 'openai' ? 'OpenAI' : 'Anthropic'} key in Settings`,
+      seat.modelVar ? `${seat.modelVar} is not set` : `the ${req.role} seat names no model`,
+    );
+  const apiKey = seat.keyName ? await deps.secret(seat.keyName) : '';
+  if (seat.keyName && !apiKey)
+    throw new ModelConfigError(
+      `${seat.keyName} is not set: enter the ${vendorEntry(vendor)?.label ?? vendor} key in Settings`,
     );
 
   const format = req.format ?? 'json';
@@ -140,9 +227,9 @@ export async function call<I, O>(
   while (attempts < MAX_ATTEMPTS) {
     attempts++;
     try {
-      completion = await adapter.complete(
+      completion = await seat.complete(
         { model, system: prompt.text, user, maxTokens },
-        apiKey,
+        apiKey ?? '',
         deps.fetch,
       );
       if (completion.inputTokens !== null)

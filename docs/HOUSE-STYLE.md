@@ -2,6 +2,44 @@
 
 How a target on the house stack (Next.js, TypeScript, Postgres, Drizzle) makes the figures on its screens traceable, so House of Rama can show, for every number a person reads, the formula behind it, its inputs, where they live, the commits that built it and who signed it off. A figure that does not follow this is shown **untraced**; there is no third state (Invariant 2).
 
+## 0. On the house stack (Stage 9): traced by construction
+
+A product built in House of Rama starts from `templates/house-stack`, where this convention is wired in and checked before every build:
+
+```tsx
+// rama/figures.ts: every figure, its function brought in from its building, in the customer's words
+import { dayTotal } from '../features/count-the-takings/takings';
+import { defineFigures } from './define';
+
+export const figures = defineFigures({
+  'day-total': {
+    fn: dayTotal,
+    title: 'Today’s takings',
+    what: 'Everything the stall took today.',
+    english: 'Every order’s amount, added up.',
+    inputs: [
+      {
+        label: 'Today’s orders',
+        source: 'dayTotal(orders)',
+        data: 'orders.cups, orders.price_paise',
+      },
+    ],
+    show: 'rupees',
+    files: ['data/orders.json'],
+  },
+});
+
+// app/total/page.tsx: the screen shows the figure only through <Figure>, which calls the function
+<Figure id="day-total" fn={dayTotal} args={[orders]} show="rupees" />;
+```
+
+- `<Figure>` works the value out with `fn(...args)` and shows that: what a person reads is the function's own answer. It writes the three attributes of §1 itself.
+- House of Rama reads `rama/figures.ts` as written, without running it: the function's file and line come from the file it is brought in from. Write every field as plain text, and keep each figure's function in a `.ts` file of its building.
+- `node rama/lint.ts` (run before every build, and by House of Rama after every lift) fails on any number shown outside a Figure, naming the file and the line, and on a Figure whose function or show is not the one `rama/figures.ts` names. A helper that turns a small count into words carries `@words` in its JSDoc.
+- `show` is `count`, `rupees` (amounts kept in paise) or `percent`.
+
+The sections below are the convention underneath, for a target written outside House of Rama.
+
 ## 1. Mark the figure on the screen
 
 A traceable figure is one DOM element:

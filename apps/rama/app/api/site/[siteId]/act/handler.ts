@@ -1,6 +1,6 @@
 // The trainer console's buttons (Stage 7), as one form route: each act either starts a job on the site
-// (refresh, photograph, tests, audit), starts a discovery session, or takes the person to the page where
-// the act happens. Acts a later stage enables are refused with the sentence the console shows.
+// (refresh, photograph, tests, audit, the build), starts a discovery session, or takes the person to the
+// page where the act happens. Acts a later stage enables are refused with the sentence the console shows.
 import type { Member } from '@rama/db';
 import type { SiteLocation } from '@rama/blueprint/site';
 import { back } from '../../../../../server/http';
@@ -8,8 +8,8 @@ import { back } from '../../../../../server/http';
 export const ACTS = {
   'start-session': { label: 'Start session', enabledBy: null },
   'close-ideation': { label: 'Close ideation', enabledBy: 'Stage 10 (the voice and the board)' },
-  'start-build': { label: 'Start build', enabledBy: 'Stage 9 (the house stack)' },
-  'pause-build': { label: 'Pause build', enabledBy: 'Stage 9 (the house stack)' },
+  'start-build': { label: 'Start build', enabledBy: null },
+  'pause-build': { label: 'Pause build', enabledBy: null },
   'start-walkthrough': { label: 'Start walkthrough', enabledBy: null },
   'call-audit': { label: 'Call the audit', enabledBy: null },
   'hand-over': { label: 'Hand over', enabledBy: null },
@@ -27,6 +27,10 @@ export interface ActDeps {
     who: Member,
   ) => void;
   startSession: (site: SiteLocation, title: string, who: Member) => Promise<void>;
+  /** Starts the build loop on a product (Stage 9). */
+  startBuild: (site: SiteLocation, who: Member) => void;
+  /** Asks the running build to stop after the lift in hand. */
+  pauseBuild: (site: SiteLocation) => void;
   baseUrl: string;
   now: () => Date;
 }
@@ -52,6 +56,23 @@ export async function handleAct(
       return back(deps.baseUrl, `${page}/walkthrough`);
     case 'hand-over':
       return back(deps.baseUrl, `${page}/handover`);
+    case 'start-build':
+      if (site.kind !== 'product')
+        return back(deps.baseUrl, page, {
+          ok: false,
+          sentence: 'Only a product made here is built here; this site is only drawn.',
+        });
+      deps.startBuild(site, who);
+      return back(deps.baseUrl, page, {
+        ok: true,
+        sentence: 'Start build: the builder is at work. Each lift shows here as it is checked.',
+      });
+    case 'pause-build':
+      deps.pauseBuild(site);
+      return back(deps.baseUrl, page, {
+        ok: true,
+        sentence: 'Pause build: the build stops after the lift in hand.',
+      });
     case 'start-session': {
       await deps.startSession(site, `Session of ${deps.now().toISOString().slice(0, 10)}`, who);
       return back(deps.baseUrl, `${page}/discovery`);

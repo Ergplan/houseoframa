@@ -42,7 +42,7 @@ export async function consoleProps(
     cards: currentDecisions(await listDecisions(db, site.id)),
     keys: seesEverything(member) ? await listSecrets(db) : null,
   })).catch(() => ({ cards: [], keys: null }));
-  const jobs = (['refresh', 'photograph', 'tests', 'audit'] as const)
+  const jobs = (['build', 'refresh', 'photograph', 'tests', 'audit'] as const)
     .map((kind) => ({ kind, job: latestJob(kind, site.id) }))
     .filter((j): j is { kind: typeof j.kind; job: NonNullable<typeof j.job> } => j.job !== null)
     .map((j) => ({ ...j, status: jobStatus(j.job) }));

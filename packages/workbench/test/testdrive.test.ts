@@ -1,6 +1,7 @@
-// Test drive (rule 16) end to end against a throwaway database and work dir, with no keys: the sample is
-// built afresh, drawn, built and photographed, tested, walked and signed, and audited by the stand-in;
-// each step passes with a plain sentence, and the screens land in the three states the script expects.
+// Test drive (rule 16) end to end against a throwaway database and work dir, with no keys: the sample's
+// cards are decided, the recording of a real build replays through the build loop lift by lift (each
+// lift checked: lint, tests, photographs, figures, gate), the Street is named as the cards say, every
+// figure is traced and every screen Verified; then it is walked and signed and audited by the stand-in.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomBytes } from 'node:crypto';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
@@ -58,22 +59,51 @@ describe('Test drive', () => {
     expect(end.ok, JSON.stringify(steps, null, 2)).toBe(true);
     expect(end.steps.map((s) => s.name)).toEqual([
       'Idea',
+      'Builder',
+      'Lift 0: the house stack',
+      'Lift 1',
+      'Lift 2',
+      'Lift 3',
+      'Lift 4',
+      'Built',
       'Street',
-      'Build',
+      'Traced',
       'Tests',
       'Walkthrough',
       'Three states',
       'Audit',
     ]);
-    expect(Date.now() - t).toBeLessThan(5 * 60_000);
+    expect(Date.now() - t).toBeLessThan(8 * 60_000);
     expect(jobStatus(end)).toBe('passed');
     expect(readJob(end.id, env)).toEqual(end);
     expect(latestJob('testdrive', null, env)!.id).toBe(end.id);
-    expect(end.steps.find((s) => s.name === 'Build')!.sentence).toBe(
-      '3 screens photographed; 8 of 8 figures traced; 8 of 8 re-computed by the product’s own code.',
+    const said = (name: string) => end.steps.find((s) => s.name === name)!;
+    // No key: the recording of a real build replays, through the same loop and the same checks.
+    expect(said('Builder').sentence).toBe(
+      'Claude Code (recorded) builds the stall: no Anthropic key is set.',
     );
-    expect(end.steps.find((s) => s.name === 'Tests')!.sentence).toBe('2 of 2 test files passed.');
-    expect(end.steps.find((s) => s.name === 'Three states')!.sentence).toBe(
+    // The real builder's first lift was refused by the gate; the grey flag says why and what is next,
+    // and the next lift is the fix.
+    expect(said('Lift 1')).toMatchObject({
+      ok: false,
+      next: 'The builder fixes this in the next lift.',
+    });
+    expect(said('Lift 1').sentence).toMatch(
+      /The merge gate refuses the screen \/: it changed and no passing check stands behind db\/orders\.ts\.$/,
+    );
+    for (const n of [0, 2, 3, 4])
+      expect(end.steps.find((s) => s.name.startsWith(`Lift ${n}`))!.ok).toBe(true);
+    expect(said('Built').sentence).toBe(
+      'Built in 4 lifts: 8 of 8 figures traced, 3 of 3 screens Verified.',
+    );
+    expect(said('Street').sentence).toBe(
+      'The Street has 3 buildings, named as the cards name them: “See today’s orders”, “Take an order”, “Count the day’s takings”.',
+    );
+    expect(said('Traced').sentence).toBe(
+      '8 of 8 figures traced and worked out again the same; all 3 screens Verified before anyone signs.',
+    );
+    expect(said('Tests').sentence).toBe('7 of 7 test files passed.');
+    expect(said('Three states').sentence).toBe(
       '2 Confirmed, 1 Verified, 0 Unverified; 2 of 2 customer screens signed; 0 of 1 staff screen signed.',
     );
     expect(end.steps.find((s) => s.name === 'Audit')!.sentence).toMatch(
@@ -83,10 +113,9 @@ describe('Test drive', () => {
     // The records: a decided first card by name, sealed signatures by "Test drive", a stand-in audit.
     await withDb(async (db) => {
       const cards = await db.select().from(decisions).where(eq(decisions.siteId, 'testdrive-1'));
-      expect(cards.map((c) => [c.status, c.by])).toEqual([
-        ['open', 'Test drive'],
-        ['decided', 'Test drive'],
-      ]);
+      // Every card of the brief opened, then decided by the recorded yes, by name.
+      expect(cards).toHaveLength(14);
+      expect(cards.filter((c) => c.status === 'decided' && c.by === 'Test drive')).toHaveLength(7);
       const sigs = await db.select().from(signoffs).where(eq(signoffs.siteId, 'testdrive-1'));
       expect(sigs.map((s) => [s.person, s.targetId, Boolean(s.seal)]).sort()).toEqual([
         ['Test drive', '/', true],
@@ -117,13 +146,14 @@ describe('the test run records what ran', () => {
     const run = JSON.parse(
       readFileSync(path.join(work, 'testdrive-1', 'tests.json'), 'utf8'),
     ) as import('@rama/blueprint/metrics').TestRun;
-    expect(run.executed).toEqual({
-      'lib/money.test.ts': [
-        'lib/money.ts#dayGst',
-        'lib/money.ts#dayTotal',
-        'lib/money.ts#orderAmount',
-      ],
-      'lib/orders.test.ts': ['db/orders.ts#todaysOrders', 'lib/money.ts#orderCount'],
-    });
+    expect(run.executed!['features/count-the-days-takings/takings.test.ts']).toEqual([
+      'features/count-the-days-takings/takings.ts#gstOnTakings',
+      'features/count-the-days-takings/takings.ts#todaysTakings',
+    ]);
+    // A screen's own test ran its page's component, and the figures through their Figure.
+    expect(run.executed!['app/total/page.test.tsx']).toEqual(
+      expect.arrayContaining(['app/total/page.tsx#TodaysTotal', 'components/Figure.tsx#Figure']),
+    );
+    expect(Object.keys(run.executed!)).toHaveLength(7);
   });
 });

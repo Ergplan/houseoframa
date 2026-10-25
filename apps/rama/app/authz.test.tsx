@@ -161,6 +161,7 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     'POST features',
     async () => (await import('./api/site/[siteId]/features/route')).POST as Handler,
   ],
+  ['POST brains', async () => (await import('./api/site/[siteId]/brains/route')).POST as Handler],
 ];
 
 describe('every site route: 401 without a session, 404 for another member’s site, through for the owner', () => {
@@ -218,6 +219,9 @@ describe('every site route: 401 without a session, 404 for another member’s si
     expect((await keys.POST(post('asha'))).status).toBe(403);
     const gh = await import('./api/settings/github/route');
     expect((await gh.POST(post('ravi'))).status).toBe(403);
+    const brains = await import('./api/settings/brains/route');
+    expect((await brains.POST(post(null))).status).toBe(401);
+    expect((await brains.POST(post('asha'))).status).toBe(403);
   });
 
   it('/settings is a trainer’s: to /login without a session, not found for a customer', async () => {

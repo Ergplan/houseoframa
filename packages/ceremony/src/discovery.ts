@@ -1,5 +1,5 @@
 // Rama's next question in a discovery session, drafted through packages/model (prompt discovery.v1,
-// builder vendor). It is stored as a draft turn: a suggestion the member may ask or ignore, never a
+// the drafter seat). It is stored as a draft turn: a suggestion the member may ask or ignore, never a
 // decision (Invariant 6). Decision cards are written only when a person confirms them.
 import { z } from 'zod';
 import { call as modelCall } from '@rama/model';
@@ -26,7 +26,7 @@ export async function draftQuestion(
       })),
     },
     output: Question,
-    role: 'builder',
+    role: 'drafter',
     siteId: opts.siteId,
     createdBy: DISCOVERY_COMPONENT,
     maxTokens: 2000,

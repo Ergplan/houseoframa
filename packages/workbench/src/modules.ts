@@ -11,6 +11,7 @@ const FROM: Record<string, string> = {
   react: 'apps/rama',
   'react-dom': 'apps/rama',
   '@types/react': 'apps/rama',
+  '@types/react-dom': 'apps/rama',
   'drizzle-orm': 'packages/db',
   typescript: '.',
   vitest: '.',

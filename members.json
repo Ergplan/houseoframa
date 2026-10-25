@@ -1,4 +1,4 @@
 [
-  { "name": "Rachit Agarwal", "role": "trainer" },
+  { "name": "Rachit Agarwal", "role": "trainer", "email": "rachit@joulewise.com" },
   { "name": "Test drive", "role": "customer" }
 ]

@@ -47,6 +47,10 @@ export const SiteRecord = z.object({
   idea: z.string().optional(),
   /** A product's repository on GitHub (https, no credentials), once it is created. */
   remote: z.string().optional(),
+  /** The commit that laid the house stack down (Stage 9): the merge gate's base while the builder builds. */
+  houseStack: z.string().regex(/^[0-9a-f]{40}$/).optional(),
+  /** The builder that builds the product (Stage 9 seats), as it was when the build last started. */
+  builder: z.string().optional(),
 });
 export type SiteRecord = z.infer<typeof SiteRecord>;
 
@@ -213,7 +217,7 @@ export function siteRecord(id: string, env: NodeJS.ProcessEnv = process.env): Si
 /** Changes a site's record (a product's remote, once its repository exists). */
 export function updateSiteRecord(
   id: string,
-  patch: Partial<Pick<SiteRecord, 'remote' | 'name' | 'idea'>>,
+  patch: Partial<Pick<SiteRecord, 'remote' | 'name' | 'idea' | 'houseStack' | 'builder'>>,
   env: NodeJS.ProcessEnv = process.env,
 ): SiteRecord {
   const dir = path.join(workDir(env), id);

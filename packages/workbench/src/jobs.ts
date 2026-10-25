@@ -7,7 +7,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import path from 'node:path';
 import { workDir } from '@rama/blueprint/site';
 
-export type JobKind = 'refresh' | 'photograph' | 'tests' | 'audit' | 'testdrive';
+export type JobKind = 'refresh' | 'photograph' | 'tests' | 'audit' | 'testdrive' | 'build';
 
 export interface JobStep {
   name: string;
@@ -149,8 +149,16 @@ export function startJob(
     try {
       await work(step, job);
       job.ok = true;
-    } catch {
+    } catch (err) {
       job.ok = false;
+      // A failure between steps still says what happened.
+      if (job.steps.at(-1)?.ok !== false)
+        job.steps.push({
+          name: 'Stopped',
+          ok: false,
+          ms: 0,
+          sentence: (err as Error)?.message || 'The work stopped without saying why.',
+        });
     } finally {
       job.finishedAt = now().toISOString();
       write(job, env);

@@ -157,7 +157,7 @@ describe('stage 7 e2e', () => {
     const verdict = await page.locator('.rama-verdict').getAttribute('data-status');
     const steps = await page.locator('.steps li').allTextContents();
     expect(verdict, steps.join('\n')).toBe('passed');
-    expect(steps).toHaveLength(7);
+    expect(steps).toHaveLength(14);
     await page.getByRole('link', { name: 'Look at the sample product it built' }).click();
     await page.locator('.console [data-tally]').waitFor();
     await expect(

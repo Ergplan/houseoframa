@@ -1,0 +1,21 @@
+# Every push: the figures lint (no number on a screen without its Figure), the tests and the build.
+# The merge gate (rama-gate.yml) is the other workflow: nothing merges unsigned.
+name: build
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run lint:figures
+      - run: npm test
+      - run: npm run build

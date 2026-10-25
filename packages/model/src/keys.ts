@@ -24,6 +24,21 @@ const WHAT: Record<
     url: 'https://api.openai.com/v1/models',
     headers: (k) => ({ authorization: `Bearer ${k}` }),
   },
+  GEMINI_API_KEY: {
+    who: 'Google Gemini',
+    url: 'https://generativelanguage.googleapis.com/v1beta/openai/models',
+    headers: (k) => ({ authorization: `Bearer ${k}` }),
+  },
+  XAI_API_KEY: {
+    who: 'xAI',
+    url: 'https://api.x.ai/v1/models',
+    headers: (k) => ({ authorization: `Bearer ${k}` }),
+  },
+  MOONSHOT_API_KEY: {
+    who: 'Moonshot',
+    url: 'https://api.moonshot.ai/v1/models',
+    headers: (k) => ({ authorization: `Bearer ${k}` }),
+  },
   GITHUB_TOKEN: {
     who: 'GitHub',
     url: 'https://api.github.com/user',
@@ -40,12 +55,26 @@ export const KEY_HELP: Record<SecretName, { label: string; sentence: string }> =
   ANTHROPIC_API_KEY: {
     label: 'Anthropic key',
     sentence:
-      'Lets the builder draft descriptions and questions. Get one at console.anthropic.com, under API keys.',
+      'For any seat Anthropic holds: Claude Code building, or drafting and checking. Get one at console.anthropic.com, under API keys.',
   },
   OPENAI_API_KEY: {
     label: 'OpenAI key',
     sentence:
-      'Lets the auditor, a different company from the builder, check the work. Get one at platform.openai.com, under API keys.',
+      'For any seat OpenAI holds: the auditor, a different company from the builder, and the voice. Get one at platform.openai.com, under API keys.',
+  },
+  GEMINI_API_KEY: {
+    label: 'Gemini key',
+    sentence:
+      'For a seat Google Gemini holds, such as the auditor or the drafter. Get one at aistudio.google.com, under API keys.',
+  },
+  XAI_API_KEY: {
+    label: 'Grok key',
+    sentence: 'For a seat xAI’s Grok holds, such as the auditor. Get one at console.x.ai.',
+  },
+  MOONSHOT_API_KEY: {
+    label: 'Kimi key',
+    sentence:
+      'For a seat Moonshot’s Kimi holds, such as the auditor. Get one at platform.moonshot.ai.',
   },
   GITHUB_TOKEN: {
     label: 'GitHub token',

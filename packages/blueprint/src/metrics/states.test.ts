@@ -1,12 +1,12 @@
-// The three states and the counting rule (Invariant 11), on the sample product's real history: its
-// tests call the figure functions of the orders and total screens, none calls the new-order preview.
+// The three states and the counting rule (Invariant 11), on a hand-written stall's history (the sample
+// product as it was before Stage 9 rebuilt it): its tests call the figure functions of the orders and
+// total screens, none calls the new-order preview.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import type { Blueprint, Signoff } from '@rama/shared';
+import { makeHandStall } from '../../test/hand-stall.ts';
 import { extract } from '../extract.ts';
 import {
   buildingState,
@@ -20,7 +20,6 @@ import {
   type TestRun,
 } from './states.ts';
 
-const MAKE = fileURLToPath(new URL('../../../../scripts/make-sample.mjs', import.meta.url));
 let dir: string;
 let repo: string;
 let bp: Blueprint;
@@ -28,7 +27,7 @@ let bp: Blueprint;
 beforeAll(() => {
   dir = mkdtempSync(path.join(tmpdir(), 'rama-states-'));
   repo = path.join(dir, 'sample');
-  execFileSync('node', [MAKE, repo]);
+  makeHandStall(repo);
   bp = extract(repo);
 });
 afterAll(() => rmSync(dir, { recursive: true, force: true }));

@@ -31,7 +31,7 @@ describe('draftQuestion', () => {
     expect(req).toMatchObject({
       name: 'discovery',
       version: 1,
-      role: 'builder',
+      role: 'drafter',
       siteId: 's',
       createdBy: DISCOVERY_COMPONENT,
     });

@@ -1,5 +1,5 @@
 // The people of version 1 (CLAUDE.md rule 11): `members.json` at the repository root, a list of
-// {name, role: trainer | customer}, read at start. Nobody types a password; a person picks their name,
+// {name, role: trainer | customer, email?}, read at start. Nobody types a password; a person picks their name,
 // and that name is the person on every decision, confirmation and signature. The username-and-password
 // sign-in of Gaps 1 is kept for the floor edition behind AUTH_MODE=password.
 import { existsSync, readFileSync } from 'node:fs';
@@ -12,6 +12,8 @@ export const MemberEntry = z
   .object({
     name: z.string().trim().min(1).max(120),
     role: z.enum(['trainer', 'customer']),
+    /** Where the person is reached; written as the author of the work House of Rama records for them. */
+    email: z.string().trim().email().max(200).optional(),
   })
   .strict();
 export type MemberEntry = z.infer<typeof MemberEntry>;

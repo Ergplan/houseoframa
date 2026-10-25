@@ -72,13 +72,19 @@
       ]
     },
     {
-      "id": "the-sample-stall",
-      "name": "The sample chai stall",
-      "does": "A small product that Test drive builds and checks from start to finish.",
+      "id": "the-house-stack",
+      "name": "The house stack",
+      "does": "The starting point every product is built from: an example screen with its figure, and the check that every number on a screen is traced.",
+      "screens": ["templates/house-stack/app:/"]
+    },
+    {
+      "id": "the-test-stall",
+      "name": "The stall the rules are tested on",
+      "does": "A small hand-written chai stall the counting rules are checked against; nobody works in it.",
       "screens": [
-        "fixtures/sample-product/app:/",
-        "fixtures/sample-product/app:/new",
-        "fixtures/sample-product/app:/total"
+        "packages/blueprint/test/fixtures/hand-stall/app:/",
+        "packages/blueprint/test/fixtures/hand-stall/app:/new",
+        "packages/blueprint/test/fixtures/hand-stall/app:/total"
       ]
     }
   ]

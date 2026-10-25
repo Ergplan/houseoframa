@@ -28,6 +28,9 @@ const KEY_LABEL = {
   ANTHROPIC_API_KEY: 'Anthropic',
   OPENAI_API_KEY: 'OpenAI',
   GITHUB_TOKEN: 'GitHub',
+  GEMINI_API_KEY: 'Gemini',
+  XAI_API_KEY: 'Grok',
+  MOONSHOT_API_KEY: 'Kimi',
 } as const;
 
 function ActButton({
@@ -59,8 +62,9 @@ function ActButton({
   );
 }
 
-/** The act possible now, shown as the one primary: photograph, walk through, audit, then hand over. */
+/** The act possible now, shown as the one primary: build, photograph, walk through, audit, hand over. */
 function nowAct(p: ConsoleProps): Act {
+  if (p.kind === 'product' && p.states.screens.length === 0) return 'start-build';
   if (!p.captured) return 'photograph';
   if (p.states.screens.some((s) => s.audience === 'customer' && !s.state.confirmed))
     return 'start-walkthrough';
@@ -74,6 +78,7 @@ export function TrainerConsole(p: ConsoleProps) {
   const openai = p.keys?.find((k) => k.name === 'OPENAI_API_KEY');
   const noAuditor = !openai?.set ? 'Needs the OpenAI key in Settings.' : null;
   const now = nowAct(p);
+  const building = p.jobs.some((j) => j.kind === 'build' && j.status === 'running');
   return (
     <div className="console eg-stack" aria-label="Trainer console">
       <div>
@@ -104,8 +109,23 @@ export function TrainerConsole(p: ConsoleProps) {
       <div className="eg-overline">The session</div>
       <ActButton siteId={p.siteId} act="start-session" />
       <ActButton siteId={p.siteId} act="close-ideation" />
-      <ActButton siteId={p.siteId} act="start-build" />
-      <ActButton siteId={p.siteId} act="pause-build" />
+      <ActButton
+        siteId={p.siteId}
+        act="start-build"
+        why={
+          p.kind !== 'product'
+            ? 'Only a product made here is built here.'
+            : building
+              ? 'The builder is at work.'
+              : null
+        }
+        primary={now === 'start-build'}
+      />
+      <ActButton
+        siteId={p.siteId}
+        act="pause-build"
+        why={building ? null : 'No build is running.'}
+      />
       <ActButton
         siteId={p.siteId}
         act="start-walkthrough"

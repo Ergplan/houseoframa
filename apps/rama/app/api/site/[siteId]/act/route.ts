@@ -1,5 +1,14 @@
 import { startSession } from '@rama/ceremony';
-import { callAudit, photograph, refreshSite, runTests, startJob } from '@rama/workbench';
+import {
+  callAudit,
+  pauseBuild,
+  photograph,
+  productBuilder,
+  refreshSite,
+  runTests,
+  startBuild,
+  startJob,
+} from '@rama/workbench';
 import { authSite } from '../../../../../server/authorize';
 import { authDeps } from '../../../../../server/auth-deps';
 import { baseUrlOf } from '../../../../../server/http';
@@ -34,6 +43,11 @@ export async function POST(req: Request, ctx: { params: Promise<{ siteId: string
       }),
     startSession: async (site, title, who) =>
       void (await jobDb((db) => startSession(db, site.id, { title, createdBy: who.id }))),
+    startBuild: (site, who) =>
+      void productBuilder(jobDb, site).then((driver) =>
+        startBuild(jobDb, site, { driver, person: who.name, createdBy: who.id }),
+      ),
+    pauseBuild: (site) => pauseBuild(site.id),
     baseUrl: baseUrlOf(req),
     now: () => new Date(),
   });

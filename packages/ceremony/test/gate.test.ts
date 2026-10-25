@@ -226,6 +226,34 @@ describe('rama gate', () => {
     }
   });
 
+  it('asks no test of a deleted file, only of the code left that changed to let it go', () => {
+    repo.git('rm', '-q', 'lib/bills.ts');
+    repo.write({
+      'app/bills/page.tsx': 'export default function Bills() { return 0; }\n',
+      'app/bills/page.test.tsx': "import Bills from './page';\nBills();\n",
+    });
+    repo.commit('drop the bills list, with a check of the page');
+    try {
+      const r = runGate(repo.dir, change, {
+        publicKey: TEST_KEY.publicKey,
+        testReport: report(['app/bills/page.test.tsx']),
+      });
+      expect(r.screens.find((s) => s.route === '/bills')).toMatchObject({
+        changed: ['app/bills/page.tsx', 'lib/bills.ts'],
+        ok: true,
+        tests: ['app/bills/page.test.tsx'],
+        uncovered: [],
+      });
+      const bare = runGate(repo.dir, change, {
+        publicKey: TEST_KEY.publicKey,
+        testReport: report([]),
+      }).screens.find((s) => s.route === '/bills');
+      expect(bare).toMatchObject({ ok: false, uncovered: ['app/bills/page.tsx'] });
+    } finally {
+      repo.git('reset', '-q', '--hard', change);
+    }
+  });
+
   it('sees an edit that arrives only through a merge, and judges it at the merge commit', () => {
     const main = repo.git('rev-parse', '--abbrev-ref', 'HEAD').trim();
     repo.git('checkout', '-q', '-b', 'side');

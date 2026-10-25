@@ -10,7 +10,9 @@ import {
   seesEverything,
   type SecretView,
 } from '@rama/db';
-import { KEY_HELP } from '@rama/model';
+import { KEY_HELP, VENDOR_REGISTRY } from '@rama/model';
+import { BUILDER_OPTIONS, seatsOf, seatsSentence } from '@rama/workbench';
+import { BrainsForm } from '../../components/workbench/BrainsForm';
 import { Said } from '../../components/workbench/Said';
 import { Button, Card, Chip } from '../../components/harmony/ui';
 import { Shell } from '../../components/harmony/Shell';
@@ -47,9 +49,10 @@ export default async function Settings({
   const member = await requireMember();
   if (!seesEverything(member)) notFound();
   const q = (await searchParams) ?? {};
-  const { keys, owner } = await withDb(async (db) => ({
+  const { keys, owner, brains } = await withDb(async (db) => ({
     keys: await listSecrets(db),
     owner: (await getSetting<{ owner: string }>(db, GITHUB_OWNER))?.owner ?? null,
+    brains: await seatsOf(db, null),
   }));
   const fromEnv = keys.some((k) => k.source === 'environment');
   const tokensFile = path.join(homeDir(), 'design/harmony/tokens.json');
@@ -120,6 +123,20 @@ export default async function Settings({
             </div>
           );
         })}
+      </Card>
+
+      <Card
+        id="brains"
+        title="Brains"
+        sub={`Who builds, checks, drafts and speaks for every new product; a product can choose its own in discovery. Now: ${seatsSentence(brains.seats)}${brains.from === 'setup file' ? ', from the server’s setup file until you save a choice here' : ''}.`}
+      >
+        <BrainsForm
+          action="/api/settings/brains"
+          seats={brains.seats}
+          vendors={VENDOR_REGISTRY}
+          builders={BUILDER_OPTIONS}
+          submit="Save the brains"
+        />
       </Card>
 
       <Card

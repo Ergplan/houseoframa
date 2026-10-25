@@ -6,6 +6,9 @@ import { listDecisions, listSessions, type SessionWithTurns } from '@rama/ceremo
 import type { Decision } from '@rama/shared';
 import { DiscoveryView } from '../../../../components/ceremony/DiscoveryView';
 import { SiteShell } from '../../../../components/workbench/SiteShell';
+import { BrainsForm } from '../../../../components/workbench/BrainsForm';
+import { VENDOR_REGISTRY } from '@rama/model';
+import { BUILDER_OPTIONS, seatsOf, seatsSentence } from '@rama/workbench';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,12 +17,14 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
   const { member, site } = await pageSite(siteId);
   let sessions: SessionWithTurns[];
   let decisions: Decision[];
+  let brains: Awaited<ReturnType<typeof seatsOf>>;
   try {
     const conn = createDb();
     try {
-      [sessions, decisions] = await Promise.all([
+      [sessions, decisions, brains] = await Promise.all([
         listSessions(conn.db, site.id),
         listDecisions(conn.db, site.id),
+        seatsOf(conn.db, site.id),
       ]);
     } finally {
       await conn.close();
@@ -37,7 +42,7 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
     );
   }
   const bp = readSiteBlueprint(site);
-  return (
+  const view = (
     <DiscoveryView
       siteId={site.id}
       name={site.name}
@@ -47,6 +52,42 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
       bricks={bp?.nodes.map((n) => n.path) ?? []}
       screens={bp?.screens.map((s) => s.id) ?? []}
     />
+  );
+  if (site.kind !== 'product') return view;
+  // A product's first question: its brains (Stage 9). The answer is a card like any other.
+  return (
+    <>
+      <section className="eg-card brains-ask" data-brains-ask={brains.from}>
+        <h2 className="eg-card__title">Which brains will build, check and speak?</h2>
+        <p className="eg-muted">
+          {brains.from === 'product'
+            ? `Chosen for ${site.name}: ${seatsSentence(brains.seats)}.`
+            : `Not chosen for ${site.name} yet; until it is, ${seatsSentence(brains.seats)} (${brains.from === 'settings' ? 'from Settings' : 'from the server’s setup file'}).`}{' '}
+          The answer is a card like any other, decided by the person who gives it.
+        </p>
+        {brains.from === 'product' ? (
+          <details>
+            <summary>Change the brains</summary>
+            <BrainsForm
+              action={`/api/site/${site.id}/brains`}
+              seats={brains.seats}
+              vendors={VENDOR_REGISTRY}
+              builders={BUILDER_OPTIONS}
+              submit="Yes, these brains"
+            />
+          </details>
+        ) : (
+          <BrainsForm
+            action={`/api/site/${site.id}/brains`}
+            seats={brains.seats}
+            vendors={VENDOR_REGISTRY}
+            builders={BUILDER_OPTIONS}
+            submit="Yes, these brains"
+          />
+        )}
+      </section>
+      {view}
+    </>
   );
 }
 

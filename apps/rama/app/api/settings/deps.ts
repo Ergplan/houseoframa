@@ -8,6 +8,7 @@ import {
   setSecret,
 } from '@rama/db';
 import { checkKey } from '@rama/model';
+import { chooseDefaultSeats } from '@rama/workbench';
 import { authManager } from '../../../server/authorize';
 import { authDeps } from '../../../server/auth-deps';
 import { baseUrlOf } from '../../../server/http';
@@ -29,5 +30,6 @@ export const settingsDeps = (req: Request): SettingsDeps => ({
       return r;
     }),
   setOwner: (owner, by) => withDb((db) => putSetting(db, GITHUB_OWNER, { owner }, by)),
+  setBrains: (seats, by) => withDb((db) => chooseDefaultSeats(db, seats, by)),
   baseUrl: baseUrlOf(req),
 });

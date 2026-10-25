@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Member } from '@rama/db';
-import { handleGitHub, handleKey, type SettingsDeps } from './handlers';
+import { choiceProblems } from '@rama/workbench';
+import { handleBrains, handleGitHub, handleKey, type SettingsDeps } from './handlers';
 
 const tara: Member = { id: 't1', name: 'Tara', email: null, role: 'trainer' };
 const deps = (over: Partial<SettingsDeps> = {}): SettingsDeps => ({
@@ -9,6 +10,8 @@ const deps = (over: Partial<SettingsDeps> = {}): SettingsDeps => ({
   removeSecret: vi.fn(async () => {}),
   testKey: vi.fn(async () => ({ ok: true, sentence: 'OpenAI accepted this key.' })),
   setOwner: vi.fn(async () => {}),
+  // The real rule, with nothing stored.
+  setBrains: vi.fn(async (seats) => choiceProblems(seats)),
   baseUrl: 'http://rama.test',
   ...over,
 });
@@ -82,5 +85,49 @@ describe('POST /api/settings/github', () => {
     expect(said(await handleGitHub(form({ owner: 'not an/account' }), d)).error).toMatch(
       /not a GitHub account name/,
     );
+  });
+});
+
+describe('POST /api/settings/brains', () => {
+  const seats = (auditor: string) =>
+    form({
+      'builder.vendor': 'anthropic',
+      'builder.builder': 'claude-code',
+      'builder.model': 'claude-sonnet-5-5',
+      'auditor.vendor': auditor,
+      'auditor.model': auditor === 'ollama' ? 'llama4' : 'gpt-6.1-sol',
+      'auditor.baseUrl': auditor === 'ollama' ? 'http://localhost:11434/v1' : '',
+      'drafter.vendor': 'anthropic',
+      'drafter.model': 'claude-sonnet-5-5',
+      'voice.vendor': 'openai',
+      'voice.model': 'gpt-realtime',
+    });
+
+  it('saves four seats as the trainer, with an auditor of another company, Ollama included', async () => {
+    const d = deps();
+    expect(said(await handleBrains(seats('openai'), d)).said).toBe(
+      'The brains are saved: every new product starts with them.',
+    );
+    expect(d.setBrains).toHaveBeenCalledWith(
+      expect.objectContaining({
+        builder: { vendor: 'anthropic', model: 'claude-sonnet-5-5', builder: 'claude-code' },
+        auditor: { vendor: 'openai', model: 'gpt-6.1-sol' },
+      }),
+      tara,
+    );
+    expect(said(await handleBrains(seats('ollama'), d)).error).toBeNull();
+  });
+
+  it('refuses an auditor from the builder’s own company, and says why (Invariant 5)', async () => {
+    const r = said(await handleBrains(seats('anthropic'), deps()));
+    expect(r.error).toBe(
+      'The auditor cannot be Anthropic, the builder’s own vendor: the checker is never the builder (Invariant 5).',
+    );
+  });
+
+  it('is a trainer’s', async () => {
+    const d = deps({ trainer: async () => new Response(null, { status: 403 }) });
+    expect((await handleBrains(seats('openai'), d)).status).toBe(403);
+    expect(d.setBrains).not.toHaveBeenCalled();
   });
 });

@@ -1,0 +1,20 @@
+{
+  "app": {
+    "install": "npm install --no-audit --no-fund",
+    "build": "npx next build --webpack",
+    "start": "npm start -- -p {port}",
+    "ready": "/"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 700
+  },
+  "screens": [
+    {
+      "name": "welcome",
+      "title": "Welcome",
+      "route": "/",
+      "audience": "customer"
+    }
+  ]
+}

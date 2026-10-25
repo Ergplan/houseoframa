@@ -20,6 +20,13 @@ describe('members.json', () => {
     expect(() => parseMembers('Asha')).toThrow(/not JSON/);
   });
 
+  it('keeps an email when a member gives one, and refuses one that is not an address', () => {
+    expect(parseMembers('[{"name":"Asha","role":"trainer","email":"asha@example.com"}]')).toEqual([
+      { name: 'Asha', role: 'trainer', email: 'asha@example.com' },
+    ]);
+    expect(() => parseMembers('[{"name":"Asha","role":"trainer","email":"asha"}]')).toThrow();
+  });
+
   it("is read from the checkout's root; the owner is RAMA_MEMBER_NAME, else the first trainer", () => {
     const home = mkdtempSync(path.join(tmpdir(), 'rama-members-'));
     try {

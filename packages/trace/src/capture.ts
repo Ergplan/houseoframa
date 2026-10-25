@@ -13,6 +13,7 @@ import path from 'node:path';
 import { chromium, type Page } from 'playwright';
 import type { Blueprint } from '@rama/shared';
 import { canonicalJson } from '@rama/blueprint';
+import { readConvention } from './convention.ts';
 import {
   CONVENTION_FILE,
   FigureMapping,
@@ -248,7 +249,13 @@ export async function capture(
 
   // The convention's own mapping, read from the target's code in the sandbox.
   const mappings: Capture['mappings'] = {};
-  if (existsSync(path.join(site.repoDir, CONVENTION_FILE))) {
+  // The house stack's form is read as written; the older form is run in the sandbox.
+  const house = readConvention(site.repoDir, CONVENTION_FILE);
+  if (house) {
+    for (const [id, m] of Object.entries(house.mappings))
+      mappings[id] = { ...m, origin: 'convention', code: '' };
+    for (const u of house.unread) log(`${CONVENTION_FILE}: figure "${u.id}" is untraced: ${u.why}`);
+  } else if (existsSync(path.join(site.repoDir, CONVENTION_FILE))) {
     const ans = await runInSandbox(site.repoDir, {
       kind: 'export',
       file: CONVENTION_FILE,

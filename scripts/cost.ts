@@ -1,6 +1,8 @@
 // Model cost of a stage, from model_calls, in tokens and rupees (packages/model/src/prices.ts).
 //   pnpm cost <stage>   → every call made since the stage-<N>-start tag's commit time
 //   pnpm cost --since <ISO time>
+// A builder run's cost is the one Claude Code reported for it (model_calls.output.costUsd); every other
+// call's is its tokens at the table's prices.
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { createDb } from '@rama/db';
@@ -28,10 +30,12 @@ const rows = await sql<
     attempts: number;
     input: number;
     output: number;
+    reported: number | null;
   }[]
 >`
   select prompt, site_id, model, status, count(*)::int as calls, sum(attempts)::int as attempts,
-         coalesce(sum(input_tokens), 0)::int as input, coalesce(sum(output_tokens), 0)::int as output
+         coalesce(sum(input_tokens), 0)::int as input, coalesce(sum(output_tokens), 0)::int as output,
+         sum((output->>'costUsd')::float) as reported
   from model_calls where created_at >= ${since}
   group by 1, 2, 3, 4 order by 3, 2, 1, 4`;
 await close();
@@ -46,7 +50,11 @@ console.log(
 );
 console.log('| --- | --- | --- | --- | --- | --- | --- | --- |');
 for (const r of rows) {
-  const c = costOf(r.model, r.input, r.output);
+  // A builder run reports its own cost (Claude Code's, cached input priced as such): that is the cost.
+  const c =
+    r.reported !== null
+      ? { usd: r.reported, inr: r.reported * USD_INR.rate }
+      : costOf(r.model, r.input, r.output);
   if (c) totalInr += c.inr;
   else unpriced = true;
   console.log(

@@ -1,0 +1,71 @@
+// The recorded builder: the lifts a real builder made, replayed (Test drive without a builder key, and
+// the tests). A recording is a folder holding `lifts.json`, which lists each lift's patch and the
+// builder's answer, and the patches themselves (`git format-patch` of the real build). Each lift applies
+// the next patch as the commit the builder made, with its author, message and time, and answers as the
+// builder answered. Nothing is made up: what the recording does not hold, it does not do.
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { z } from 'zod';
+import { LiftAnswer, type BuilderDriver } from './types.ts';
+
+export const Recording = z.object({
+  /** The real builder that made the lifts, and with which model. */
+  builder: z.string().min(1),
+  model: z.string().min(1),
+  /** When, and what it cost then. */
+  recordedAt: z.string().min(1),
+  costUsd: z.number().nullable(),
+  lifts: z.array(LiftAnswer.extend({ patch: z.string().regex(/^[\w.-]+\.patch$/) })).min(1),
+});
+export type Recording = z.infer<typeof Recording>;
+
+export const readRecording = (dir: string): Recording =>
+  Recording.parse(JSON.parse(readFileSync(path.join(dir, 'lifts.json'), 'utf8')));
+
+export function recorded(dir: string): BuilderDriver {
+  const rec = readRecording(dir);
+  let next = 0;
+  return {
+    id: 'recorded',
+    label: `${rec.builder} (recorded)`,
+    wired: true,
+    async lift(req) {
+      const lift = rec.lifts[next];
+      if (!lift)
+        return {
+          answer: { said: 'The recording holds no more lifts.', next: null, done: true },
+          session: null,
+          callId: null,
+          costUsd: null,
+        };
+      next++;
+      // The committer is the builder too, at the time it committed: the replayed lift is that commit.
+      execFileSync(
+        'git',
+        [
+          '-C',
+          req.repoDir,
+          'am',
+          '--quiet',
+          '--committer-date-is-author-date',
+          path.join(dir, lift.patch),
+        ],
+        {
+          stdio: 'pipe',
+          env: {
+            PATH: process.env.PATH ?? '',
+            HOME: process.env.HOME ?? '',
+            GIT_CONFIG_GLOBAL: '/dev/null',
+            GIT_CONFIG_NOSYSTEM: '1',
+            GIT_COMMITTER_NAME: `${rec.builder} (builder)`,
+            GIT_COMMITTER_EMAIL: 'builder@houseoframa.local',
+          } as unknown as NodeJS.ProcessEnv,
+        },
+      );
+      const { patch: _patch, ...answer } = lift;
+      void _patch;
+      return { answer, session: null, callId: null, costUsd: null };
+    },
+  };
+}

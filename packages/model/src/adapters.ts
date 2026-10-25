@@ -1,6 +1,5 @@
 // Vendor adapters over plain fetch. Each turns (system, user) into text plus token usage.
 import type { SecretName } from '@rama/db';
-import type { Vendor } from './vendors.ts';
 
 export interface Completion {
   text: string;
@@ -24,7 +23,7 @@ export type Fetch = typeof fetch;
 export class VendorHttpError extends Error {
   override name = 'VendorHttpError';
   constructor(
-    readonly vendor: Vendor,
+    readonly vendor: string,
     readonly status: number,
     body: string,
   ) {
@@ -36,7 +35,7 @@ export class VendorHttpError extends Error {
 }
 
 async function postJson(
-  vendor: Vendor,
+  vendor: string,
   f: Fetch,
   url: string,
   headers: Record<string, string>,
@@ -119,8 +118,42 @@ export async function openaiComplete(
   };
 }
 
+/**
+ * The one adapter for every provider that speaks OpenAI's chat completions (Gemini, Grok, Kimi, Ollama
+ * and others): a base URL, a key (none for a model on this computer) and a model.
+ */
+export const compatibleComplete =
+  (vendor: string, baseUrl: string) =>
+  async (req: CompletionRequest, apiKey: string, f: Fetch): Promise<Completion> => {
+    const json = (await postJson(
+      vendor,
+      f,
+      `${baseUrl.replace(/\/+$/, '')}/chat/completions`,
+      apiKey ? { authorization: `Bearer ${apiKey}` } : {},
+      {
+        model: req.model,
+        max_tokens: req.maxTokens,
+        messages: [
+          { role: 'system', content: req.system },
+          { role: 'user', content: req.user },
+        ],
+      },
+    )) as {
+      model?: string;
+      choices?: { message?: { content?: string | null }; finish_reason?: string }[];
+      usage?: { prompt_tokens?: number; completion_tokens?: number };
+    };
+    return {
+      text: json.choices?.[0]?.message?.content ?? '',
+      model: json.model ?? req.model,
+      inputTokens: json.usage?.prompt_tokens ?? null,
+      outputTokens: json.usage?.completion_tokens ?? null,
+      truncated: json.choices?.[0]?.finish_reason === 'length',
+    };
+  };
+
 export const ADAPTERS: Record<
-  Vendor,
+  'anthropic' | 'openai',
   {
     complete: typeof anthropicComplete;
     keyVar: SecretName;

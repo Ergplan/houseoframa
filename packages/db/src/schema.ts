@@ -54,7 +54,8 @@ export const modelCalls = pgTable('model_calls', {
   prompt: text('prompt').notNull(),
   promptVersion: integer('prompt_version').notNull(),
   promptHash: text('prompt_hash').notNull(),
-  role: text('role', { enum: ['builder', 'auditor'] }).notNull(),
+  // The seat that answered (Stage 9): builder, auditor, drafter or voice.
+  role: text('role', { enum: ['builder', 'auditor', 'drafter', 'voice'] }).notNull(),
   vendor: text('vendor').notNull(),
   model: text('model').notNull(),
   input: jsonb('input').notNull(),

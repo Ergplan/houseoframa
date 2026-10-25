@@ -42,7 +42,7 @@ const PROJECTS = [
   { name: '@rama/audit', dirs: ['packages/audit/'] },
   {
     name: '@rama/workbench',
-    dirs: ['packages/workbench/', 'fixtures/', 'scripts/make-sample.mjs'],
+    dirs: ['packages/workbench/', 'fixtures/', 'templates/', 'scripts/make-sample.mjs'],
   },
   { name: '@rama/app', dirs: ['apps/rama/'] },
   { name: 'e2e', dirs: ['tests/'] },

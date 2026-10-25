@@ -2,7 +2,8 @@
 // (enter, remove, Test) and the GitHub account. A trainer's screen: anyone else is refused. Every answer
 // is a 303 back to /settings with a plain sentence; a key's value is never echoed.
 import { isSecretName, type Member, type SecretName } from '@rama/db';
-import type { KeyCheck } from '@rama/model';
+import type { KeyCheck, Seats } from '@rama/model';
+import { seatsFromForm } from '@rama/workbench';
 import { back } from '../../../server/http';
 
 export interface SettingsDeps {
@@ -13,6 +14,8 @@ export interface SettingsDeps {
   /** Runs the key's Test and records its light; null when there is no key to test. */
   testKey: (name: SecretName) => Promise<KeyCheck | null>;
   setOwner: (owner: string, by: string) => Promise<void>;
+  /** Saves the default seats (Settings → Brains); returns why not when they cannot stand. */
+  setBrains: (seats: Partial<Seats>, by: Member) => Promise<string[]>;
   baseUrl: string;
 }
 
@@ -20,6 +23,9 @@ const LABEL: Record<SecretName, string> = {
   ANTHROPIC_API_KEY: 'The Anthropic key',
   OPENAI_API_KEY: 'The OpenAI key',
   GITHUB_TOKEN: 'The GitHub token',
+  GEMINI_API_KEY: 'The Gemini key',
+  XAI_API_KEY: 'The Grok key',
+  MOONSHOT_API_KEY: 'The Kimi key',
 };
 
 /** POST /api/settings/keys: `name` and `action` (save with `value`, remove, or test). */
@@ -71,4 +77,18 @@ export async function handleGitHub(form: FormData | null, deps: SettingsDeps): P
     ok: true,
     sentence: `New products will be created under ${owner} on GitHub.`,
   });
+}
+
+/** POST /api/settings/brains: the default seats, `<seat>.vendor` and `<seat>.model` (and `builder.builder`). */
+export async function handleBrains(form: FormData | null, deps: SettingsDeps): Promise<Response> {
+  const who = await deps.trainer();
+  if (who instanceof Response) return who;
+  const problems = await deps.setBrains(form ? seatsFromForm(form) : {}, who);
+  return back(
+    deps.baseUrl,
+    '/settings',
+    problems.length
+      ? { ok: false, sentence: problems.join(' ') }
+      : { ok: true, sentence: 'The brains are saved: every new product starts with them.' },
+  );
 }

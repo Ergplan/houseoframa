@@ -1,0 +1,71 @@
+{
+  "$comment": "The vendors a seat can name (Stage 9). protocol: anthropic and openai are the native adapters; openai-compatible is the one adapter for every provider that speaks OpenAI's chat completions (base URL + key + model). key: the Settings key it needs, null for one that needs none (Ollama, on this computer). builders: the agent drivers of packages/workbench/src/builders that run on this vendor's models. models: the models House of Rama has used on that vendor, offered first; a seat may name any model the vendor serves, typed in Settings → Brains.",
+  "vendors": [
+    {
+      "id": "anthropic",
+      "label": "Anthropic",
+      "protocol": "anthropic",
+      "baseUrl": "https://api.anthropic.com/v1",
+      "key": "ANTHROPIC_API_KEY",
+      "seats": ["builder", "auditor", "drafter"],
+      "local": false,
+      "models": ["claude-sonnet-5-5", "claude-opus-5-5", "claude-haiku-5-5"],
+      "builders": ["claude-code"]
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "protocol": "openai",
+      "baseUrl": "https://api.openai.com/v1",
+      "key": "OPENAI_API_KEY",
+      "seats": ["builder", "auditor", "drafter", "voice"],
+      "local": false,
+      "models": ["gpt-6.1-sol", "gpt-realtime"],
+      "builders": ["codex"]
+    },
+    {
+      "id": "gemini",
+      "label": "Google Gemini",
+      "protocol": "openai-compatible",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai",
+      "key": "GEMINI_API_KEY",
+      "seats": ["builder", "auditor", "drafter"],
+      "local": false,
+      "models": [],
+      "builders": ["gemini-cli", "antigravity"]
+    },
+    {
+      "id": "grok",
+      "label": "xAI Grok",
+      "protocol": "openai-compatible",
+      "baseUrl": "https://api.x.ai/v1",
+      "key": "XAI_API_KEY",
+      "seats": ["auditor", "drafter"],
+      "local": false,
+      "models": [],
+      "builders": []
+    },
+    {
+      "id": "kimi",
+      "label": "Moonshot Kimi",
+      "protocol": "openai-compatible",
+      "baseUrl": "https://api.moonshot.ai/v1",
+      "key": "MOONSHOT_API_KEY",
+      "seats": ["auditor", "drafter"],
+      "local": false,
+      "models": [],
+      "builders": []
+    },
+    {
+      "id": "ollama",
+      "label": "Ollama (on this computer)",
+      "protocol": "openai-compatible",
+      "baseUrl": "http://localhost:11434/v1",
+      "key": null,
+      "seats": ["auditor", "drafter"],
+      "local": true,
+      "models": [],
+      "builders": []
+    }
+  ]
+}

@@ -26,6 +26,7 @@ export {
   CONFIRM_STATEMENT,
   confirmReport,
   latestAudit,
+  byLine,
   reportBody,
   runAudit,
   signoffVerdicts,

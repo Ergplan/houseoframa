@@ -51,6 +51,8 @@ export interface AuditReportBody {
   verdictChanges: AuditorReply['verdictChanges'];
   signoffs: SignoffVerdict[];
   builders: string[];
+  /** The report's first line: who built the product and who audited it (Stage 9 seats). */
+  byLine?: string;
 }
 
 /** Sign-offs confirmed or rejected by the findings: plain code, not the auditor's opinion. */
@@ -108,6 +110,25 @@ export interface RunAuditOptions {
   run?: RunOptions | false;
   call?: Parameters<typeof askAuditor>[3]['call'];
   now?: () => Date;
+  /** The product's builder and its vendor, as the product records them; unknown when not given. */
+  builder?: { label: string; vendor: string } | null;
+}
+
+/** "Built by Claude Code (Anthropic). Audited by OpenAI, gpt-6.1-sol: a different vendor from the builder." */
+export function byLine(
+  builder: { label: string; vendor: string } | null | undefined,
+  auditor: { vendor: string; model: string },
+): string {
+  const built = builder
+    ? `Built by ${builder.label} (${builder.vendor}).`
+    : 'Built by a builder this product does not record.';
+  const other =
+    builder && builder.vendor.toLowerCase() === auditor.vendor.toLowerCase()
+      ? ' The same vendor as the builder: this audit is not independent.'
+      : builder
+        ? ' A different vendor from the builder.'
+        : '';
+  return `${built} Audited by ${auditor.vendor}, ${auditor.model}.${other}`;
 }
 
 export async function runAudit(
@@ -140,6 +161,7 @@ export async function runAudit(
     signoffs,
     input.builders,
   );
+  body.byLine = byLine(opts.builder, auditor);
   const at = (opts.now ?? (() => new Date()))();
   const auditId = await db.transaction(async (tx) => {
     const [row] = await tx

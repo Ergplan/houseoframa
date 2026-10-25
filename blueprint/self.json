@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
+  "commit": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -9543,6 +9543,60 @@
       "sha": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
       "short": "99a938c",
       "subject": "Stage 8: reviewer run 1 — a building's word holds for every screen; drafted narration marked"
+    },
+    {
+      "at": "2026-10-25T05:46:50Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 88,
+          "del": 16,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 20,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/reports/stage-8.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-8.review.md"
+        }
+      ],
+      "sha": "b3258b90bdc655f0ef8229e8e9b4d1562b8379c0",
+      "short": "b3258b9",
+      "subject": "Stage 8: report after reviewer run 2 (no code defects); self Blueprint regenerated after staging"
+    },
+    {
+      "at": "2026-10-25T17:18:06+05:30",
+      "author": "Claude Fable 5.1",
+      "changes": [
+        {
+          "add": 4,
+          "del": 3,
+          "kind": "M",
+          "path": "CLAUDE.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 9,
+          "del": 4,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        }
+      ],
+      "sha": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
+      "short": "0ec64f7",
+      "subject": "The customer chooses the brains: four seats per product, vendor per seat"
     }
   ],
   "edges": [
@@ -9905,6 +9959,22 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/settings/brains/route.ts",
+      "symbols": [
+        "settingsDeps"
+      ],
+      "to": "apps/rama/app/api/settings/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/settings/brains/route.ts",
+      "symbols": [
+        "handleBrains"
+      ],
+      "to": "apps/rama/app/api/settings/handlers.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/settings/deps.ts",
       "symbols": [
         "SettingsDeps"
@@ -9967,6 +10037,14 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/settings/deps.ts",
+      "symbols": [
+        "chooseDefaultSeats"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/settings/github/route.ts",
       "symbols": [
         "settingsDeps"
@@ -9986,6 +10064,7 @@
       "from": "apps/rama/app/api/settings/handlers.test.ts",
       "symbols": [
         "SettingsDeps",
+        "handleBrains",
         "handleGitHub",
         "handleKey"
       ],
@@ -9999,6 +10078,14 @@
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/settings/handlers.test.ts",
+      "symbols": [
+        "choiceProblems"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
     },
     {
       "from": "apps/rama/app/api/settings/handlers.ts",
@@ -10021,10 +10108,19 @@
     {
       "from": "apps/rama/app/api/settings/handlers.ts",
       "symbols": [
-        "KeyCheck"
+        "KeyCheck",
+        "Seats"
       ],
       "to": "packages/model/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/settings/handlers.ts",
+      "symbols": [
+        "seatsFromForm"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
     },
     {
       "from": "apps/rama/app/api/settings/keys/route.ts",
@@ -10152,9 +10248,12 @@
       "from": "apps/rama/app/api/site/[siteId]/act/route.ts",
       "symbols": [
         "callAudit",
+        "pauseBuild",
         "photograph",
+        "productBuilder",
         "refreshSite",
         "runTests",
+        "startBuild",
         "startJob"
       ],
       "to": "packages/workbench/src/index.ts",
@@ -10235,6 +10334,135 @@
         "createDb"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.test.ts",
+      "symbols": [
+        "BrainsDeps",
+        "handleProductBrains"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.test.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.test.ts",
+      "symbols": [
+        "choiceProblems"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "symbols": [
+        "back"
+      ],
+      "to": "apps/rama/server/http.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "symbols": [
+        "Seats"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "symbols": [
+        "seatsFromForm"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/route.ts",
+      "symbols": [
+        "handleProductBrains"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/route.ts",
+      "symbols": [
+        "baseUrlOf"
+      ],
+      "to": "apps/rama/server/http.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/route.ts",
+      "symbols": [
+        "jobDb"
+      ],
+      "to": "apps/rama/server/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/brains/route.ts",
+      "symbols": [
+        "chooseProductSeats"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": false
     },
     {
@@ -11213,6 +11441,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/settings/brains/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/settings/github/route.ts",
       "typeOnly": false
     },
@@ -11238,6 +11474,14 @@
         "*"
       ],
       "to": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/brains/route.ts",
       "typeOnly": false
     },
     {
@@ -11790,6 +12034,14 @@
     {
       "from": "apps/rama/app/settings/page.tsx",
       "symbols": [
+        "BrainsForm"
+      ],
+      "to": "apps/rama/components/workbench/BrainsForm.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/settings/page.tsx",
+      "symbols": [
         "Said"
       ],
       "to": "apps/rama/components/workbench/Said.tsx",
@@ -11821,9 +12073,20 @@
     {
       "from": "apps/rama/app/settings/page.tsx",
       "symbols": [
-        "KEY_HELP"
+        "KEY_HELP",
+        "VENDOR_REGISTRY"
       ],
       "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/settings/page.tsx",
+      "symbols": [
+        "BUILDER_OPTIONS",
+        "seatsOf",
+        "seatsSentence"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": false
     },
     {
@@ -11942,6 +12205,14 @@
     {
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
+        "BrainsForm"
+      ],
+      "to": "apps/rama/components/workbench/BrainsForm.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "symbols": [
         "SiteShell"
       ],
       "to": "apps/rama/components/workbench/SiteShell.tsx",
@@ -11992,10 +12263,28 @@
     {
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
+        "VENDOR_REGISTRY"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "symbols": [
         "Decision"
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "symbols": [
+        "BUILDER_OPTIONS",
+        "seatsOf",
+        "seatsSentence"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
     },
     {
       "from": "apps/rama/app/site/[siteId]/handover/page.tsx",
@@ -13552,6 +13841,40 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/workbench/BrainsForm.test.tsx",
+      "symbols": [
+        "BrainsForm"
+      ],
+      "to": "apps/rama/components/workbench/BrainsForm.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/BrainsForm.test.tsx",
+      "symbols": [
+        "VENDOR_REGISTRY"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/BrainsForm.test.tsx",
+      "symbols": [
+        "BUILDER_OPTIONS"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/BrainsForm.tsx",
+      "symbols": [
+        "SeatChoice",
+        "Seats",
+        "VendorEntry"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "apps/rama/components/workbench/JobSteps.tsx",
       "symbols": [
         "Chip"
@@ -14201,132 +14524,6 @@
       "typeOnly": true
     },
     {
-      "from": "fixtures/sample-product/app/new/page.tsx",
-      "symbols": [
-        "Figure"
-      ],
-      "to": "fixtures/sample-product/components/Figure.tsx",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/new/page.tsx",
-      "symbols": [
-        "rupees"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/new/page.tsx",
-      "symbols": [
-        "previewAmount"
-      ],
-      "to": "fixtures/sample-product/lib/preview.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/page.tsx",
-      "symbols": [
-        "Figure"
-      ],
-      "to": "fixtures/sample-product/components/Figure.tsx",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/page.tsx",
-      "symbols": [
-        "todaysOrders"
-      ],
-      "to": "fixtures/sample-product/db/orders.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/page.tsx",
-      "symbols": [
-        "orderAmount",
-        "orderCount",
-        "rupees"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/total/page.tsx",
-      "symbols": [
-        "Figure"
-      ],
-      "to": "fixtures/sample-product/components/Figure.tsx",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/total/page.tsx",
-      "symbols": [
-        "todaysOrders"
-      ],
-      "to": "fixtures/sample-product/db/orders.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/app/total/page.tsx",
-      "symbols": [
-        "dayGst",
-        "dayTotal",
-        "rupees"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/db/orders.ts",
-      "symbols": [
-        "default"
-      ],
-      "to": "fixtures/sample-product/data/orders.json",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/db/orders.ts",
-      "symbols": [
-        "Order"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "fixtures/sample-product/lib/money.test.ts",
-      "symbols": [
-        "dayGst",
-        "dayTotal",
-        "orderAmount"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/lib/orders.test.ts",
-      "symbols": [
-        "todaysOrders"
-      ],
-      "to": "fixtures/sample-product/db/orders.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/lib/orders.test.ts",
-      "symbols": [
-        "orderCount"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "fixtures/sample-product/lib/preview.ts",
-      "symbols": [
-        "orderAmount"
-      ],
-      "to": "fixtures/sample-product/lib/money.ts",
-      "typeOnly": false
-    },
-    {
       "from": "packages/audit/bin/rama-audit.mjs",
       "symbols": [
         "*"
@@ -14681,6 +14878,7 @@
         "CONFIRM_STATEMENT",
         "SignedReport",
         "StoredAudit",
+        "byLine",
         "confirmReport",
         "latestAudit",
         "reportBody",
@@ -15847,6 +16045,14 @@
     {
       "from": "packages/blueprint/src/metrics/states.test.ts",
       "symbols": [
+        "makeHandStall"
+      ],
+      "to": "packages/blueprint/test/hand-stall.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/src/metrics/states.test.ts",
+      "symbols": [
         "Blueprint",
         "Signoff"
       ],
@@ -16111,6 +16317,132 @@
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/new/page.tsx",
+      "symbols": [
+        "Figure"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/new/page.tsx",
+      "symbols": [
+        "rupees"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/new/page.tsx",
+      "symbols": [
+        "previewAmount"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/preview.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/page.tsx",
+      "symbols": [
+        "Figure"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/page.tsx",
+      "symbols": [
+        "todaysOrders"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/page.tsx",
+      "symbols": [
+        "orderAmount",
+        "orderCount",
+        "rupees"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/total/page.tsx",
+      "symbols": [
+        "Figure"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/total/page.tsx",
+      "symbols": [
+        "todaysOrders"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/app/total/page.tsx",
+      "symbols": [
+        "dayGst",
+        "dayTotal",
+        "rupees"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/data/orders.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+      "symbols": [
+        "Order"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/lib/money.test.ts",
+      "symbols": [
+        "dayGst",
+        "dayTotal",
+        "orderAmount"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/lib/orders.test.ts",
+      "symbols": [
+        "todaysOrders"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/lib/orders.test.ts",
+      "symbols": [
+        "orderCount"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/blueprint/test/fixtures/hand-stall/lib/preview.ts",
+      "symbols": [
+        "orderAmount"
+      ],
+      "to": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "typeOnly": false
     },
     {
       "from": "packages/ceremony/bin/rama-ceremony.mjs",
@@ -17219,16 +17551,69 @@
       "typeOnly": true
     },
     {
+      "from": "packages/model/src/agent.test.ts",
+      "symbols": [
+        "AGENT_TOOLS",
+        "AgentDeps",
+        "lastJson",
+        "runAgent"
+      ],
+      "to": "packages/model/src/agent.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
-        "text": "the allowed vendor names"
+        "text": "the shape of a row written to the model calls table"
       },
-      "from": "packages/model/src/adapters.ts",
+      "from": "packages/model/src/agent.test.ts",
       "symbols": [
-        "Vendor"
+        "ModelCallRow"
       ],
-      "to": "packages/model/src/vendors.ts",
+      "to": "packages/model/src/call.ts",
       "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
+      "from": "packages/model/src/agent.ts",
+      "symbols": [
+        "SecretName",
+        "createDb",
+        "modelCalls",
+        "secretFor"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the limit of three attempts per model call; the shape of a row written to the model calls table; the error for model output that failed to parse"
+      },
+      "from": "packages/model/src/agent.ts",
+      "symbols": [
+        "MAX_ATTEMPTS",
+        "ModelCallRow",
+        "OutputParseError"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the folder where the prompt files are kept; a loader that reads a named, versioned prompt"
+      },
+      "from": "packages/model/src/agent.ts",
+      "symbols": [
+        "PROMPTS_DIR",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/prompts.ts",
+      "typeOnly": false
     },
     {
       "english": {
@@ -17267,6 +17652,7 @@
       "symbols": [
         "SecretName",
         "createDb",
+        "getSetting",
         "modelCalls",
         "secretFor"
       ],
@@ -17294,8 +17680,10 @@
       "symbols": [
         "ADAPTERS",
         "Completion",
+        "CompletionRequest",
         "Fetch",
-        "VendorHttpError"
+        "VendorHttpError",
+        "compatibleComplete"
       ],
       "to": "packages/model/src/adapters.ts",
       "typeOnly": false
@@ -17314,14 +17702,26 @@
       "typeOnly": false
     },
     {
+      "from": "packages/model/src/call.ts",
+      "symbols": [
+        "BRAINS_SETTING",
+        "Seat",
+        "Seats",
+        "brainsSettingOf",
+        "seatProblems",
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/seats.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
-        "text": "the two roles a vendor can play, builder or auditor; the allowed vendor names; the vendor chosen for each role, refusing when builder and auditor match"
+        "text": "the error for a missing or unknown vendor setting; the vendor chosen for each role, refusing when builder and auditor match"
       },
       "from": "packages/model/src/call.ts",
       "symbols": [
-        "Role",
-        "Vendor",
+        "VendorGuardError",
         "resolveVendors"
       ],
       "to": "packages/model/src/vendors.ts",
@@ -17346,9 +17746,25 @@
       },
       "from": "packages/model/src/index.ts",
       "symbols": [
-        "VendorHttpError"
+        "VendorHttpError",
+        "compatibleComplete"
       ],
       "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "AGENT_TOOLS",
+        "AgentDeps",
+        "AgentRequest",
+        "AgentResult",
+        "Spawned",
+        "lastJson",
+        "runAgent",
+        "runProgram"
+      ],
+      "to": "packages/model/src/agent.ts",
       "typeOnly": false
     },
     {
@@ -17367,7 +17783,9 @@
         "ModelConfigError",
         "OutputParseError",
         "OutputTruncatedError",
-        "call"
+        "call",
+        "resolveSeat",
+        "storedSeats"
       ],
       "to": "packages/model/src/call.ts",
       "typeOnly": false
@@ -17408,6 +17826,28 @@
         "loadPrompt"
       ],
       "to": "packages/model/src/prompts.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "BRAINS_SETTING",
+        "BUILDER_VENDOR",
+        "Protocol",
+        "SEATS",
+        "SEAT_WORDS",
+        "Seat",
+        "SeatChoice",
+        "Seats",
+        "VENDOR_REGISTRY",
+        "VendorEntry",
+        "auditorChoices",
+        "brainsSettingOf",
+        "envSeats",
+        "seatProblems",
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/seats.ts",
       "typeOnly": false
     },
     {
@@ -17464,6 +17904,67 @@
         "formatInr"
       ],
       "to": "packages/model/src/prices.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/seats.test.ts",
+      "symbols": [
+        "compatibleComplete"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a row written to the model calls table; the function that makes a vendor model call from a prompt request"
+      },
+      "from": "packages/model/src/seats.test.ts",
+      "symbols": [
+        "ModelCallRow",
+        "call"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/seats.test.ts",
+      "symbols": [
+        "Seats",
+        "VENDOR_REGISTRY",
+        "auditorChoices",
+        "envSeats",
+        "seatProblems"
+      ],
+      "to": "packages/model/src/seats.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the error for a missing or unknown vendor setting"
+      },
+      "from": "packages/model/src/seats.test.ts",
+      "symbols": [
+        "VendorGuardError"
+      ],
+      "to": "packages/model/src/vendors.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/seats.ts",
+      "symbols": [
+        "SecretName"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/model/src/seats.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "packages/model/vendors.json",
       "typeOnly": false
     },
     {
@@ -18297,6 +18798,14 @@
     {
       "from": "packages/trace/src/capture.ts",
       "symbols": [
+        "readConvention"
+      ],
+      "to": "packages/trace/src/convention.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/capture.ts",
+      "symbols": [
         "traceSrcDir"
       ],
       "to": "packages/trace/src/here.ts",
@@ -18358,6 +18867,14 @@
       "typeOnly": false
     },
     {
+      "from": "packages/trace/src/convention.ts",
+      "symbols": [
+        "FigureMapping"
+      ],
+      "to": "packages/trace/src/config.ts",
+      "typeOnly": true
+    },
+    {
       "from": "packages/trace/src/index.ts",
       "symbols": [
         "CAPTURE_VERSION",
@@ -18387,6 +18904,16 @@
         "*"
       ],
       "to": "packages/trace/src/config.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/trace/src/index.ts",
+      "symbols": [
+        "ConventionReading",
+        "isHouseStackConvention",
+        "readConvention"
+      ],
+      "to": "packages/trace/src/convention.ts",
       "typeOnly": false
     },
     {
@@ -18671,10 +19198,13 @@
     {
       "from": "packages/workbench/src/actions.ts",
       "symbols": [
-        "CallResult"
+        "BUILDER_VENDOR",
+        "CallResult",
+        "seatProblems",
+        "vendorEntry"
       ],
       "to": "packages/model/src/index.ts",
-      "typeOnly": true
+      "typeOnly": false
     },
     {
       "from": "packages/workbench/src/actions.ts",
@@ -18705,9 +19235,229 @@
     {
       "from": "packages/workbench/src/actions.ts",
       "symbols": [
+        "builderLabel",
+        "seatsOf"
+      ],
+      "to": "packages/workbench/src/seats.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/actions.ts",
+      "symbols": [
         "runSiteTests"
       ],
       "to": "packages/workbench/src/tests.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options; regenerating and saving a site's blueprint file"
+      },
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "SiteLocation",
+        "siteRecord",
+        "updateSiteRecord",
+        "writeSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "appSealer",
+        "currentDecisions",
+        "listDecisions",
+        "runGate"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "Db",
+        "readSecret"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "readCapture",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "photograph"
+      ],
+      "to": "packages/workbench/src/actions.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "BuilderDriver",
+        "LiftInput"
+      ],
+      "to": "packages/workbench/src/builders/types.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "pushTo"
+      ],
+      "to": "packages/workbench/src/github.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "Job",
+        "StartedJob",
+        "Step",
+        "StepError",
+        "startJob"
+      ],
+      "to": "packages/workbench/src/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "linkHouseModules"
+      ],
+      "to": "packages/workbench/src/modules.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "commitAll",
+        "houseRef"
+      ],
+      "to": "packages/workbench/src/products.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "layDownScaffold",
+        "lintProduct",
+        "onHouseStack"
+      ],
+      "to": "packages/workbench/src/scaffold.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "siteStates"
+      ],
+      "to": "packages/workbench/src/states.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "runSiteTests"
+      ],
+      "to": "packages/workbench/src/tests.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/claude-code.ts",
+      "symbols": [
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/claude-code.ts",
+      "symbols": [
+        "AgentDeps",
+        "runAgent"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/claude-code.ts",
+      "symbols": [
+        "BuilderDriver",
+        "BuilderNotWired",
+        "LiftAnswer"
+      ],
+      "to": "packages/workbench/src/builders/types.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/index.ts",
+      "symbols": [
+        "BUILDER_GIT",
+        "BUILD_PROMPT",
+        "claudeCode",
+        "claudeCodeHere"
+      ],
+      "to": "packages/workbench/src/builders/claude-code.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/index.ts",
+      "symbols": [
+        "Recording",
+        "readRecording",
+        "recorded"
+      ],
+      "to": "packages/workbench/src/builders/recorded.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/index.ts",
+      "symbols": [
+        "antigravity",
+        "codex",
+        "geminiCli"
+      ],
+      "to": "packages/workbench/src/builders/stubs.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/index.ts",
+      "symbols": [
+        "*",
+        "BuilderDriver",
+        "BuilderId"
+      ],
+      "to": "packages/workbench/src/builders/types.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/recorded.ts",
+      "symbols": [
+        "BuilderDriver",
+        "LiftAnswer"
+      ],
+      "to": "packages/workbench/src/builders/types.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/stubs.ts",
+      "symbols": [
+        "BuilderDriver",
+        "BuilderId",
+        "BuilderNotWired"
+      ],
+      "to": "packages/workbench/src/builders/types.ts",
       "typeOnly": false
     },
     {
@@ -18716,6 +19466,22 @@
         "*"
       ],
       "to": "packages/workbench/src/actions.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/build.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/builders/index.ts",
       "typeOnly": false
     },
     {
@@ -18756,6 +19522,30 @@
         "*"
       ],
       "to": "packages/workbench/src/products.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/sample.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/scaffold.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/seats.ts",
       "typeOnly": false
     },
     {
@@ -18926,6 +19716,95 @@
       "typeOnly": false
     },
     {
+      "from": "packages/workbench/src/sample.ts",
+      "symbols": [
+        "homeDir"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/scaffold.ts",
+      "symbols": [
+        "installGate"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/scaffold.ts",
+      "symbols": [
+        "homeDir"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/src/seats.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/seats.ts",
+      "symbols": [
+        "decide"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/seats.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "getSetting",
+        "putSetting"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/seats.ts",
+      "symbols": [
+        "BRAINS_SETTING",
+        "BUILDER_VENDOR",
+        "SEATS",
+        "SEAT_WORDS",
+        "Seats",
+        "brainsSettingOf",
+        "envSeats",
+        "seatProblems",
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/seats.ts",
+      "symbols": [
+        "builderFor"
+      ],
+      "to": "packages/workbench/src/builders/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/seats.ts",
+      "symbols": [
+        "BUILDER_IDS",
+        "BuilderDriver",
+        "BuilderId"
+      ],
+      "to": "packages/workbench/src/builders/types.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/workbench/src/states.ts",
       "symbols": [
         "Audience",
@@ -19026,10 +19905,19 @@
       "symbols": [
         "Db",
         "ensurePerson",
-        "homeDir",
+        "readSecret",
         "sites"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/testdrive.ts",
+      "symbols": [
+        "seatProblems",
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/index.ts",
       "typeOnly": false
     },
     {
@@ -19045,10 +19933,28 @@
       "from": "packages/workbench/src/testdrive.ts",
       "symbols": [
         "callAudit",
-        "photograph",
         "runTests"
       ],
       "to": "packages/workbench/src/actions.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/testdrive.ts",
+      "symbols": [
+        "build"
+      ],
+      "to": "packages/workbench/src/build.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/testdrive.ts",
+      "symbols": [
+        "BuilderDriver",
+        "BuilderId",
+        "builderFor",
+        "claudeCodeHere"
+      ],
+      "to": "packages/workbench/src/builders/index.ts",
       "typeOnly": false
     },
     {
@@ -19059,6 +19965,25 @@
         "startJob"
       ],
       "to": "packages/workbench/src/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/testdrive.ts",
+      "symbols": [
+        "SAMPLE_CARDS",
+        "SAMPLE_IDEA",
+        "SAMPLE_NAME",
+        "sampleRecording"
+      ],
+      "to": "packages/workbench/src/sample.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/testdrive.ts",
+      "symbols": [
+        "seatsOf"
+      ],
+      "to": "packages/workbench/src/seats.ts",
       "typeOnly": false
     },
     {
@@ -19107,6 +20032,63 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/test/builders.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "createProductSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/builders.test.ts",
+      "symbols": [
+        "BUILDER_VENDOR"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/builders.test.ts",
+      "symbols": [
+        "build"
+      ],
+      "to": "packages/workbench/src/build.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/builders.test.ts",
+      "symbols": [
+        "BuilderNotWired",
+        "antigravity",
+        "builderFor",
+        "codex",
+        "geminiCli"
+      ],
+      "to": "packages/workbench/src/builders/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/builders.test.ts",
+      "symbols": [
+        "Step"
+      ],
+      "to": "packages/workbench/src/jobs.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/builders.test.ts",
+      "symbols": [
+        "BUILDER_OPTIONS"
+      ],
+      "to": "packages/workbench/src/seats.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/workbench/test/github.vendor.test.ts",
       "symbols": [
         "GITHUB_API",
@@ -19115,6 +20097,54 @@
         "viewer"
       ],
       "to": "packages/workbench/src/github.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/test/house-stack.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "createProductSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/house-stack.test.ts",
+      "symbols": [
+        "appSealer"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/house-stack.test.ts",
+      "symbols": [
+        "checkLift",
+        "complete"
+      ],
+      "to": "packages/workbench/src/build.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/house-stack.test.ts",
+      "symbols": [
+        "commitAll"
+      ],
+      "to": "packages/workbench/src/products.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/house-stack.test.ts",
+      "symbols": [
+        "layDownScaffold",
+        "lintProduct",
+        "onHouseStack"
+      ],
+      "to": "packages/workbench/src/scaffold.ts",
       "typeOnly": false
     },
     {
@@ -19303,6 +20333,32 @@
     {
       "english": {
         "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "scripts/record-build.ts",
+      "symbols": [
+        "locateSite",
+        "siteRecord"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
+      "from": "scripts/record-build.ts",
+      "symbols": [
+        "createDb",
+        "modelCalls"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
         "text": "making a model call for a given role"
       },
       "from": "scripts/review.ts",
@@ -19310,6 +20366,80 @@
         "call"
       ],
       "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/app/page.test.tsx",
+      "symbols": [
+        "default"
+      ],
+      "to": "templates/house-stack/app/page.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/app/page.tsx",
+      "symbols": [
+        "Figure"
+      ],
+      "to": "templates/house-stack/components/Figure.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/app/page.tsx",
+      "symbols": [
+        "buildingCount",
+        "planned"
+      ],
+      "to": "templates/house-stack/features/welcome/plan.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/components/Figure.tsx",
+      "symbols": [
+        "SHOW"
+      ],
+      "to": "templates/house-stack/rama/define.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/components/Figure.tsx",
+      "symbols": [
+        "figures"
+      ],
+      "to": "templates/house-stack/rama/figures.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "templates/house-stack/features/welcome/plan.test.ts",
+      "symbols": [
+        "buildingCount",
+        "planned"
+      ],
+      "to": "templates/house-stack/features/welcome/plan.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/features/welcome/plan.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "templates/house-stack/.rama/features.json",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/rama/figures.ts",
+      "symbols": [
+        "buildingCount"
+      ],
+      "to": "templates/house-stack/features/welcome/plan.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "templates/house-stack/rama/figures.ts",
+      "symbols": [
+        "defineFigures"
+      ],
+      "to": "templates/house-stack/rama/define.ts",
       "typeOnly": false
     },
     {
@@ -20015,6 +21145,77 @@
       ],
       "to": "tests/session.ts",
       "typeOnly": false
+    },
+    {
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "bannedIn"
+      ],
+      "to": "apps/rama/test/banned.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "decide"
+      ],
+      "to": "packages/ceremony/src/store.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "SAMPLE_CARDS",
+        "SAMPLE_IDEA",
+        "SAMPLE_NAME"
+      ],
+      "to": "packages/workbench/src/sample.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "throwawayDb"
+      ],
+      "to": "tests/session.ts",
+      "typeOnly": false
     }
   ],
   "external": [
@@ -20119,54 +21320,6 @@
       "manifest": "apps/rama/package.json",
       "name": "zod",
       "version": "4.6.5"
-    },
-    {
-      "dev": true,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "@types/node",
-      "version": "22.20.5"
-    },
-    {
-      "dev": true,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "@types/react",
-      "version": "19.3.0"
-    },
-    {
-      "dev": false,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "drizzle-orm",
-      "version": "0.45.3"
-    },
-    {
-      "dev": false,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "next",
-      "version": "16.3.8"
-    },
-    {
-      "dev": false,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "react",
-      "version": "19.3.0"
-    },
-    {
-      "dev": false,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "react-dom",
-      "version": "19.3.0"
-    },
-    {
-      "dev": true,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "typescript",
-      "version": "6.0.3"
-    },
-    {
-      "dev": true,
-      "manifest": "fixtures/sample-product/package.json",
-      "name": "vitest",
-      "version": "5.0.3"
     },
     {
       "dev": true,
@@ -20415,6 +21568,54 @@
       "version": "4.6.5"
     },
     {
+      "dev": true,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "@types/node",
+      "version": "22.20.5"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "@types/react",
+      "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "next",
+      "version": "16.3.8"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "react",
+      "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "react-dom",
+      "version": "19.3.0"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "name": "vitest",
+      "version": "5.0.3"
+    },
+    {
       "dev": false,
       "manifest": "packages/ceremony/package.json",
       "name": "@rama/blueprint",
@@ -20635,9 +21836,63 @@
       "manifest": "packages/workbench/package.json",
       "name": "zod",
       "version": "4.6.5"
+    },
+    {
+      "dev": true,
+      "manifest": "templates/house-stack/package.json",
+      "name": "@types/node",
+      "version": "22.20.5"
+    },
+    {
+      "dev": true,
+      "manifest": "templates/house-stack/package.json",
+      "name": "@types/react",
+      "version": "19.3.0"
+    },
+    {
+      "dev": true,
+      "manifest": "templates/house-stack/package.json",
+      "name": "@types/react-dom",
+      "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "templates/house-stack/package.json",
+      "name": "drizzle-orm",
+      "version": "0.45.3"
+    },
+    {
+      "dev": false,
+      "manifest": "templates/house-stack/package.json",
+      "name": "next",
+      "version": "16.3.8"
+    },
+    {
+      "dev": false,
+      "manifest": "templates/house-stack/package.json",
+      "name": "react",
+      "version": "19.3.0"
+    },
+    {
+      "dev": false,
+      "manifest": "templates/house-stack/package.json",
+      "name": "react-dom",
+      "version": "19.3.0"
+    },
+    {
+      "dev": true,
+      "manifest": "templates/house-stack/package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": true,
+      "manifest": "templates/house-stack/package.json",
+      "name": "vitest",
+      "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-25T05:40:18Z",
+  "extractedAt": "2026-10-25T17:18:06+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -20763,7 +22018,7 @@
     },
     {
       "binary": false,
-      "bytes": 768,
+      "bytes": 1046,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -20772,7 +22027,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 25,
+      "lines": 29,
       "path": ".prettierignore",
       "purpose": {
         "confirmed": false,
@@ -20801,7 +22056,7 @@
     },
     {
       "binary": false,
-      "bytes": 3006,
+      "bytes": 3377,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -20810,7 +22065,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 85,
+      "lines": 91,
       "path": ".rama/features.json",
       "test": false
     },
@@ -20865,16 +22120,16 @@
     },
     {
       "binary": false,
-      "bytes": 15087,
-      "changes": 3,
+      "bytes": 15646,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "842ab2fc0ecab131135dbe2f5426739364a90cee",
+      "lastCommit": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 107,
+      "lines": 108,
       "path": "CLAUDE.md",
       "purpose": {
         "confirmed": false,
@@ -21250,7 +22505,25 @@
     },
     {
       "binary": false,
-      "bytes": 1309,
+      "bytes": 253,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 8,
+      "path": "apps/rama/app/api/settings/brains/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1442,
       "changes": 2,
       "env": [
         "RAMA_GITHUB_API"
@@ -21263,7 +22536,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 33,
+      "lines": 35,
       "path": "apps/rama/app/api/settings/deps.ts",
       "test": false
     },
@@ -21287,7 +22560,7 @@
     },
     {
       "binary": false,
-      "bytes": 3649,
+      "bytes": 5569,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21299,7 +22572,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 86,
+      "lines": 133,
       "packages": [
         "vitest"
       ],
@@ -21308,12 +22581,13 @@
     },
     {
       "binary": false,
-      "bytes": 3134,
+      "bytes": 4053,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "SettingsDeps",
+        "handleBrains",
         "handleGitHub",
         "handleKey"
       ],
@@ -21321,7 +22595,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 74,
+      "lines": 94,
       "path": "apps/rama/app/api/settings/handlers.ts",
       "test": false
     },
@@ -21345,7 +22619,7 @@
     },
     {
       "binary": false,
-      "bytes": 2650,
+      "bytes": 3463,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21357,7 +22631,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 69,
+      "lines": 87,
       "packages": [
         "vitest"
       ],
@@ -21366,7 +22640,7 @@
     },
     {
       "binary": false,
-      "bytes": 2758,
+      "bytes": 3559,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21380,13 +22654,13 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 68,
+      "lines": 89,
       "path": "apps/rama/app/api/site/[siteId]/act/handler.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 1527,
+      "bytes": 1809,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -21398,7 +22672,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 40,
+      "lines": 54,
       "path": "apps/rama/app/api/site/[siteId]/act/route.ts",
       "test": false
     },
@@ -21458,6 +22732,63 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 35,
       "path": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2248,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "hosts": [
+        "rama.test"
+      ],
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 58,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/brains/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1336,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BrainsDeps",
+        "handleProductBrains"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 35,
+      "path": "apps/rama/app/api/site/[siteId]/brains/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 810,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 18,
+      "path": "apps/rama/app/api/site/[siteId]/brains/route.ts",
       "test": false
     },
     {
@@ -21951,7 +23282,7 @@
     },
     {
       "binary": false,
-      "bytes": 15277,
+      "bytes": 15566,
       "changes": 8,
       "env": [
         "DATABASE_URL",
@@ -21967,7 +23298,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 393,
+      "lines": 397,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -22213,7 +23544,7 @@
     },
     {
       "binary": false,
-      "bytes": 6249,
+      "bytes": 7001,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -22225,7 +23556,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 180,
+      "lines": 197,
       "packages": [
         "next"
       ],
@@ -22274,7 +23605,7 @@
     },
     {
       "binary": false,
-      "bytes": 7760,
+      "bytes": 7879,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -22286,7 +23617,7 @@
       "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 211,
+      "lines": 216,
       "packages": [
         "next"
       ],
@@ -22295,7 +23626,7 @@
     },
     {
       "binary": false,
-      "bytes": 2264,
+      "bytes": 3982,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -22307,7 +23638,7 @@
       "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 65,
+      "lines": 106,
       "packages": [
         "next"
       ],
@@ -23347,6 +24678,47 @@
     },
     {
       "binary": false,
+      "bytes": 2701,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 63,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
+      "path": "apps/rama/components/workbench/BrainsForm.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6206,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BrainsForm",
+        "BrainsFormProps",
+        "BuilderOption"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 163,
+      "packages": [
+        "react"
+      ],
+      "path": "apps/rama/components/workbench/BrainsForm.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1471,
       "changes": 2,
       "env": [],
@@ -23381,7 +24753,7 @@
     },
     {
       "binary": false,
-      "bytes": 3668,
+      "bytes": 3677,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -23400,7 +24772,7 @@
     },
     {
       "binary": false,
-      "bytes": 7534,
+      "bytes": 8119,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -23415,7 +24787,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 215,
+      "lines": 235,
       "packages": [
         "next"
       ],
@@ -24232,7 +25604,7 @@
     },
     {
       "binary": false,
-      "bytes": 54396,
+      "bytes": 61429,
       "changes": 26,
       "env": [],
       "envDynamic": false,
@@ -24241,7 +25613,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 193,
+      "lines": 204,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -24270,16 +25642,16 @@
     },
     {
       "binary": false,
-      "bytes": 47028,
-      "changes": 47,
+      "bytes": 53012,
+      "changes": 48,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
+      "lastCommit": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 208,
+      "lines": 228,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -24304,7 +25676,7 @@
     },
     {
       "binary": false,
-      "bytes": 8358,
+      "bytes": 10254,
       "changes": 17,
       "env": [],
       "envDynamic": false,
@@ -24313,13 +25685,13 @@
       "lastCommit": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 97,
+      "lines": 135,
       "path": "docs/HOUSE-STYLE.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 14699,
+      "bytes": 17490,
       "changes": 34,
       "env": [],
       "envDynamic": false,
@@ -24328,7 +25700,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 51,
+      "lines": 60,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -24338,16 +25710,16 @@
     },
     {
       "binary": false,
-      "bytes": 35566,
-      "changes": 3,
+      "bytes": 37564,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "842ab2fc0ecab131135dbe2f5426739364a90cee",
+      "lastCommit": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 344,
+      "lines": 349,
       "path": "docs/MASTER-PROMPT.md",
       "purpose": {
         "confirmed": false,
@@ -24674,12 +26046,12 @@
     {
       "binary": false,
       "bytes": 14331,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "730e29f0a37212322e527669256b1f82ea076c01",
-      "lastCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
+      "lastCommit": "b3258b90bdc655f0ef8229e8e9b4d1562b8379c0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 113,
@@ -24689,16 +26061,31 @@
     {
       "binary": false,
       "bytes": 22849,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
-      "lastCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
+      "lastCommit": "b3258b90bdc655f0ef8229e8e9b4d1562b8379c0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 34,
       "path": "docs/reports/stage-8.review.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 11591,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 138,
+      "path": "docs/reports/stage-9.md",
       "test": false
     },
     {
@@ -24731,344 +26118,97 @@
     },
     {
       "binary": false,
-      "bytes": 35,
-      "changes": 1,
+      "bytes": 41661,
+      "changes": 0,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "foundation",
-      "layerRule": "default: .gitignore",
-      "lines": 3,
-      "path": "fixtures/sample-product/.gitignore",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 623,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "firstCommit": "",
+      "lastCommit": "",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 22,
-      "path": "fixtures/sample-product/.rama/features.json",
+      "lines": 920,
+      "path": "fixtures/sample-build/0000-Start-from-the-house-stack.patch",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 494,
-      "changes": 1,
+      "bytes": 12230,
+      "changes": 0,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "firstCommit": "",
+      "lastCommit": "",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 14,
-      "path": "fixtures/sample-product/.rama/screens.json",
+      "lines": 324,
+      "path": "fixtures/sample-build/0001-See-today-s-orders-list-the-day-s-orders-with-their-.patch",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 449,
-      "changes": 2,
+      "bytes": 1082,
+      "changes": 0,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "0520900aa2b01ee131aa9ede91d273e0a359002b",
-      "layer": "shell",
-      "layerRule": "default: README",
-      "lines": 8,
-      "path": "fixtures/sample-product/README.md",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 510,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "default",
-        "metadata"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "shell",
-      "layerRule": "default: app/**",
-      "lines": 16,
-      "path": "fixtures/sample-product/app/layout.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 1105,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "default"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "shell",
-      "layerRule": "default: app/**",
-      "lines": 42,
-      "path": "fixtures/sample-product/app/new/page.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 1121,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "default"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "shell",
-      "layerRule": "default: app/**",
-      "lines": 36,
-      "path": "fixtures/sample-product/app/page.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 663,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "default"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "shell",
-      "layerRule": "default: app/**",
-      "lines": 26,
-      "path": "fixtures/sample-product/app/total/page.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 498,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "Figure"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "interface",
-      "layerRule": "default: components/**",
-      "lines": 15,
-      "path": "fixtures/sample-product/components/Figure.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 303,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "firstCommit": "",
+      "lastCommit": "",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 8,
-      "path": "fixtures/sample-product/data/orders.json",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 352,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "todaysOrders"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "0520900aa2b01ee131aa9ede91d273e0a359002b",
-      "layer": "shell",
-      "layerRule": "fallback: no rule matched",
-      "lines": 8,
-      "path": "fixtures/sample-product/db/orders.ts",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 720,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "orders"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "0520900aa2b01ee131aa9ede91d273e0a359002b",
-      "layer": "data",
-      "layerRule": "default: schema and migrations",
-      "lines": 14,
-      "packages": [
-        "drizzle-orm"
-      ],
-      "path": "fixtures/sample-product/db/schema.ts",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 569,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "logic",
-      "layerRule": "default: lib/**",
-      "lines": 17,
-      "packages": [
-        "vitest"
-      ],
-      "path": "fixtures/sample-product/lib/money.test.ts",
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 895,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "Order",
-        "dayGst",
-        "dayTotal",
-        "orderAmount",
-        "orderCount",
-        "rupees"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "logic",
-      "layerRule": "default: lib/**",
       "lines": 31,
-      "path": "fixtures/sample-product/lib/money.ts",
+      "path": "fixtures/sample-build/0002-Test-that-the-sample-day-is-read-from-the-orders-fil.patch",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 218,
-      "changes": 1,
+      "bytes": 6457,
+      "changes": 0,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "logic",
-      "layerRule": "default: lib/**",
-      "lines": 7,
-      "packages": [
-        "vitest"
-      ],
-      "path": "fixtures/sample-product/lib/orders.test.ts",
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 313,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "previewAmount"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "logic",
-      "layerRule": "default: lib/**",
-      "lines": 7,
-      "path": "fixtures/sample-product/lib/preview.ts",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 60,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "default"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "foundation",
-      "layerRule": "default: next.config",
-      "lines": 2,
-      "path": "fixtures/sample-product/next.config.mjs",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 597,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
-      "layer": "foundation",
-      "layerRule": "default: package manifest",
-      "lines": 25,
-      "path": "fixtures/sample-product/package.json",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 2278,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "figures"
-      ],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
+      "firstCommit": "",
+      "lastCommit": "",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 72,
-      "path": "fixtures/sample-product/rama/figures.ts",
+      "lines": 189,
+      "path": "fixtures/sample-build/0003-Take-an-order-the-New-order-screen-with-the-cost-sho.patch",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 641,
-      "changes": 1,
+      "bytes": 6701,
+      "changes": 0,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "foundation",
-      "layerRule": "default: tsconfig",
-      "lines": 36,
-      "path": "fixtures/sample-product/tsconfig.json",
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 185,
+      "path": "fixtures/sample-build/0004-Count-the-day-s-takings-the-Today-s-total-screen-wit.patch",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 102,
+      "bytes": 1916,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 32,
+      "path": "fixtures/sample-build/lifts.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 135,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -25083,7 +26223,7 @@
     },
     {
       "binary": false,
-      "bytes": 1944,
+      "bytes": 1995,
       "changes": 16,
       "env": [],
       "envDynamic": false,
@@ -25092,7 +26232,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 59,
+      "lines": 60,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -25313,7 +26453,7 @@
     },
     {
       "binary": false,
-      "bytes": 906,
+      "bytes": 916,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -25338,6 +26478,7 @@
         "auditChecks",
         "auditScript",
         "auditorInput",
+        "byLine",
         "confirmReport",
         "inputsHash",
         "latestAudit",
@@ -25361,13 +26502,13 @@
       "lastCommit": "1367af41bd1a19842e958d84251bd4af31e438ea",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 37,
+      "lines": 38,
       "path": "packages/audit/src/index.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 9976,
+      "bytes": 11011,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -25378,6 +26519,7 @@
         "SignedReport",
         "SignoffVerdict",
         "StoredAudit",
+        "byLine",
         "confirmReport",
         "latestAudit",
         "reportBody",
@@ -25389,7 +26531,7 @@
       "lastCommit": "1367af41bd1a19842e958d84251bd4af31e438ea",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 319,
+      "lines": 341,
       "packages": [
         "drizzle-orm"
       ],
@@ -26183,7 +27325,7 @@
     },
     {
       "binary": false,
-      "bytes": 12025,
+      "bytes": 11939,
       "changes": 9,
       "env": [],
       "envDynamic": false,
@@ -26192,7 +27334,7 @@
       "lastCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 271,
+      "lines": 270,
       "packages": [
         "vitest"
       ],
@@ -26455,7 +27597,7 @@
     },
     {
       "binary": false,
-      "bytes": 15920,
+      "bytes": 16253,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -26493,7 +27635,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 363,
+      "lines": 367,
       "packages": [
         "zod"
       ],
@@ -26524,6 +27666,360 @@
         "confirmed": false,
         "text": "Test helper that builds throwaway git repositories with fixed authors and dates so test histories are reproducible."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 35,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 3,
+      "path": "packages/blueprint/test/fixtures/hand-stall/.gitignore",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 623,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 22,
+      "path": "packages/blueprint/test/fixtures/hand-stall/.rama/features.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 494,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 14,
+      "path": "packages/blueprint/test/fixtures/hand-stall/.rama/screens.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 449,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 8,
+      "path": "packages/blueprint/test/fixtures/hand-stall/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 510,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "metadata"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 16,
+      "path": "packages/blueprint/test/fixtures/hand-stall/app/layout.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1105,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 42,
+      "path": "packages/blueprint/test/fixtures/hand-stall/app/new/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1121,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 36,
+      "path": "packages/blueprint/test/fixtures/hand-stall/app/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 663,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 26,
+      "path": "packages/blueprint/test/fixtures/hand-stall/app/total/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 498,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Figure"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 15,
+      "path": "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 303,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 8,
+      "path": "packages/blueprint/test/fixtures/hand-stall/data/orders.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 352,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "todaysOrders"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 8,
+      "path": "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 720,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "orders"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 14,
+      "packages": [
+        "drizzle-orm"
+      ],
+      "path": "packages/blueprint/test/fixtures/hand-stall/db/schema.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 569,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 17,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/blueprint/test/fixtures/hand-stall/lib/money.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 895,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Order",
+        "dayGst",
+        "dayTotal",
+        "orderAmount",
+        "orderCount",
+        "rupees"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 31,
+      "path": "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 218,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 7,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/blueprint/test/fixtures/hand-stall/lib/orders.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 313,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "previewAmount"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 7,
+      "path": "packages/blueprint/test/fixtures/hand-stall/lib/preview.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 60,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 2,
+      "path": "packages/blueprint/test/fixtures/hand-stall/next.config.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 597,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 25,
+      "path": "packages/blueprint/test/fixtures/hand-stall/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2278,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "figures"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 72,
+      "path": "packages/blueprint/test/fixtures/hand-stall/rama/figures.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 641,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 36,
+      "path": "packages/blueprint/test/fixtures/hand-stall/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2993,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "makeHandStall"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 80,
+      "path": "packages/blueprint/test/hand-stall.ts",
       "test": false
     },
     {
@@ -26629,7 +28125,7 @@
     },
     {
       "binary": false,
-      "bytes": 1301,
+      "bytes": 1303,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -26650,7 +28146,7 @@
     },
     {
       "binary": false,
-      "bytes": 11860,
+      "bytes": 12321,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -26668,7 +28164,7 @@
       "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 306,
+      "lines": 312,
       "path": "packages/ceremony/src/gate.ts",
       "test": false
     },
@@ -26996,7 +28492,7 @@
     },
     {
       "binary": false,
-      "bytes": 12777,
+      "bytes": 13879,
       "changes": 5,
       "env": [
         "RAMA_GATE"
@@ -27007,7 +28503,7 @@
       "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 331,
+      "lines": 359,
       "packages": [
         "vitest"
       ],
@@ -27779,7 +29275,7 @@
     },
     {
       "binary": false,
-      "bytes": 2108,
+      "bytes": 2481,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -27788,7 +29284,7 @@
       "lastCommit": "3f023428b1e663247c42fe342d527bc9db1f7934",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 49,
+      "lines": 56,
       "packages": [
         "vitest"
       ],
@@ -27797,7 +29293,7 @@
     },
     {
       "binary": false,
-      "bytes": 3018,
+      "bytes": 3190,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -27815,7 +29311,7 @@
       "lastCommit": "3f023428b1e663247c42fe342d527bc9db1f7934",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 74,
+      "lines": 76,
       "packages": [
         "zod"
       ],
@@ -27849,7 +29345,7 @@
     },
     {
       "binary": false,
-      "bytes": 13897,
+      "bytes": 13992,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -27879,7 +29375,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 374,
+      "lines": 375,
       "packages": [
         "drizzle-orm"
       ],
@@ -27920,7 +29416,7 @@
     },
     {
       "binary": false,
-      "bytes": 6545,
+      "bytes": 6747,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -27944,7 +29440,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 178,
+      "lines": 186,
       "packages": [
         "drizzle-orm"
       ],
@@ -28084,7 +29580,7 @@
     },
     {
       "binary": false,
-      "bytes": 3838,
+      "bytes": 5035,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -28095,6 +29591,7 @@
         "Fetch",
         "VendorHttpError",
         "anthropicComplete",
+        "compatibleComplete",
         "openaiComplete"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
@@ -28105,12 +29602,67 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 139,
+      "lines": 172,
       "path": "packages/model/src/adapters.ts",
       "purpose": {
         "confirmed": false,
         "text": "Connects to each model vendor over plain web requests, returning the reply text and token counts, and flagging errors worth retrying."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4986,
+      "changes": 0,
+      "env": [
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 134,
+      "packages": [
+        "vitest",
+        "zod"
+      ],
+      "path": "packages/model/src/agent.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 9855,
+      "changes": 0,
+      "env": [
+        "CLAUDE_BIN",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "AGENT_TOOLS",
+        "AgentDeps",
+        "AgentRequest",
+        "AgentResult",
+        "Spawned",
+        "lastJson",
+        "runAgent",
+        "runProgram"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 313,
+      "path": "packages/model/src/agent.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -28142,7 +29694,7 @@
     },
     {
       "binary": false,
-      "bytes": 6726,
+      "bytes": 9240,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -28156,13 +29708,15 @@
         "ModelConfigError",
         "OutputParseError",
         "OutputTruncatedError",
-        "call"
+        "call",
+        "resolveSeat",
+        "storedSeats"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 197,
+      "lines": 284,
       "path": "packages/model/src/call.ts",
       "purpose": {
         "confirmed": false,
@@ -28202,11 +29756,17 @@
     },
     {
       "binary": false,
-      "bytes": 627,
+      "bytes": 1162,
       "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "AGENT_TOOLS",
+        "AgentDeps",
+        "AgentRequest",
+        "AgentResult",
+        "BRAINS_SETTING",
+        "BUILDER_VENDOR",
         "CallDeps",
         "CallRequest",
         "CallResult",
@@ -28224,24 +29784,44 @@
         "PRICES_SET_ON",
         "PROMPTS_DIR",
         "Prompt",
+        "Protocol",
         "Role",
+        "SEATS",
+        "SEAT_WORDS",
+        "Seat",
+        "SeatChoice",
+        "Seats",
+        "Spawned",
         "USD_INR",
         "VENDORS",
+        "VENDOR_REGISTRY",
         "Vendor",
+        "VendorEntry",
         "VendorGuardError",
         "VendorHttpError",
+        "auditorChoices",
+        "brainsSettingOf",
         "call",
         "checkKey",
+        "compatibleComplete",
         "costOf",
+        "envSeats",
         "formatInr",
+        "lastJson",
         "loadPrompt",
-        "resolveVendors"
+        "resolveSeat",
+        "resolveVendors",
+        "runAgent",
+        "runProgram",
+        "seatProblems",
+        "storedSeats",
+        "vendorEntry"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 22,
+      "lines": 51,
       "path": "packages/model/src/index.ts",
       "purpose": {
         "confirmed": false,
@@ -28272,7 +29852,7 @@
     },
     {
       "binary": false,
-      "bytes": 3586,
+      "bytes": 4590,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -28285,12 +29865,15 @@
       "hosts": [
         "api.anthropic.com",
         "api.github.com",
-        "api.openai.com"
+        "api.moonshot.ai",
+        "api.openai.com",
+        "api.x.ai",
+        "generativelanguage.googleapis.com"
       ],
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 100,
+      "lines": 129,
       "path": "packages/model/src/keys.ts",
       "test": false
     },
@@ -28360,6 +29943,56 @@
     },
     {
       "binary": false,
+      "bytes": 8943,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 258,
+      "packages": [
+        "vitest",
+        "zod"
+      ],
+      "path": "packages/model/src/seats.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4944,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BRAINS_SETTING",
+        "BUILDER_VENDOR",
+        "Protocol",
+        "SEATS",
+        "SEAT_WORDS",
+        "Seat",
+        "SeatChoice",
+        "Seats",
+        "VENDOR_REGISTRY",
+        "VendorEntry",
+        "auditorChoices",
+        "brainsSettingOf",
+        "envSeats",
+        "seatProblems",
+        "vendorEntry"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 117,
+      "path": "packages/model/src/seats.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1225,
       "changes": 1,
       "env": [],
@@ -28419,6 +30052,21 @@
         "confirmed": false,
         "text": "TypeScript settings for the model package, building on the shared base settings and covering its source and test folders."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2467,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 71,
+      "path": "packages/model/vendors.json",
       "test": false
     },
     {
@@ -29221,7 +30869,7 @@
     },
     {
       "binary": false,
-      "bytes": 16322,
+      "bytes": 16765,
       "changes": 9,
       "env": [
         "HOME",
@@ -29245,7 +30893,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 444,
+      "lines": 451,
       "packages": [
         "playwright"
       ],
@@ -29320,6 +30968,28 @@
     },
     {
       "binary": false,
+      "bytes": 7610,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ConventionReading",
+        "isHouseStackConvention",
+        "readConvention"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 184,
+      "packages": [
+        "typescript"
+      ],
+      "path": "packages/trace/src/convention.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 839,
       "changes": 1,
       "env": [
@@ -29339,7 +31009,7 @@
     },
     {
       "binary": false,
-      "bytes": 607,
+      "bytes": 705,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -29350,6 +31020,7 @@
         "CapturedFigure",
         "CapturedMapping",
         "CapturedScreen",
+        "ConventionReading",
         "RunResult",
         "SandboxAnswer",
         "SandboxRequest",
@@ -29362,8 +31033,10 @@
         "capture",
         "captureDir",
         "codeAt",
+        "isHouseStackConvention",
         "normalise",
         "readCapture",
+        "readConvention",
         "reexecute",
         "routeMatcher",
         "runInSandbox",
@@ -29374,7 +31047,7 @@
       "lastCommit": "3d5528b43c86d5fe69938b95e4ac781b19e4023d",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 23,
+      "lines": 24,
       "path": "packages/trace/src/index.ts",
       "test": false
     },
@@ -29609,7 +31282,7 @@
     },
     {
       "binary": false,
-      "bytes": 6620,
+      "bytes": 7532,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -29624,7 +31297,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 171,
+      "lines": 191,
       "path": "packages/workbench/src/actions.ts",
       "tables": [
         {
@@ -29633,6 +31306,158 @@
           "writes": true
         }
       ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 16239,
+      "changes": 0,
+      "env": [
+        "HOME",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "BUILD_COMPONENT",
+        "BuildOptions",
+        "HOUSE_STACK_SUBJECT",
+        "LiftCheck",
+        "MAX_LIFTS",
+        "MAX_STUCK",
+        "briefOf",
+        "build",
+        "checkLift",
+        "checkedSentence",
+        "complete",
+        "ensurePackages",
+        "pauseBuild",
+        "startBuild"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 420,
+      "path": "packages/workbench/src/build.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2183,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BUILDER_GIT",
+        "BUILD_PROMPT",
+        "claudeCode",
+        "claudeCodeHere"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 62,
+      "path": "packages/workbench/src/builders/claude-code.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1232,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*",
+        "BUILDER_GIT",
+        "BUILD_PROMPT",
+        "Recording",
+        "antigravity",
+        "builderFor",
+        "claudeCode",
+        "claudeCodeHere",
+        "codex",
+        "geminiCli",
+        "readRecording",
+        "recorded"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 30,
+      "path": "packages/workbench/src/builders/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2618,
+      "changes": 0,
+      "env": [
+        "HOME",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "Recording",
+        "readRecording",
+        "recorded"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 71,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/workbench/src/builders/recorded.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1023,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "antigravity",
+        "codex",
+        "geminiCli"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 21,
+      "path": "packages/workbench/src/builders/stubs.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2254,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BUILDER_IDS",
+        "BuilderDriver",
+        "BuilderId",
+        "BuilderNotWired",
+        "LiftAnswer",
+        "LiftInput",
+        "LiftRequest",
+        "LiftResult"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 65,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/workbench/src/builders/types.ts",
       "test": false
     },
     {
@@ -29664,7 +31489,7 @@
     },
     {
       "binary": false,
-      "bytes": 268,
+      "bytes": 421,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -29675,13 +31500,13 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 9,
+      "lines": 14,
       "path": "packages/workbench/src/index.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 5503,
+      "bytes": 5809,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -29701,7 +31526,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 163,
+      "lines": 171,
       "path": "packages/workbench/src/jobs.ts",
       "test": false
     },
@@ -29729,7 +31554,7 @@
     },
     {
       "binary": false,
-      "bytes": 3080,
+      "bytes": 3115,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -29740,7 +31565,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 70,
+      "lines": 71,
       "path": "packages/workbench/src/modules.ts",
       "test": false
     },
@@ -29780,6 +31605,78 @@
     },
     {
       "binary": false,
+      "bytes": 3052,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "SAMPLE_CARDS",
+        "SAMPLE_IDEA",
+        "SAMPLE_NAME",
+        "sampleRecording"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 47,
+      "path": "packages/workbench/src/sample.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3981,
+      "changes": 0,
+      "env": [
+        "HOME",
+        "PATH"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "LINT_FILE",
+        "LintFinding",
+        "SCAFFOLD_DIR",
+        "layDownScaffold",
+        "lintProduct",
+        "onHouseStack",
+        "scaffoldDir"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 110,
+      "path": "packages/workbench/src/scaffold.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 6062,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BUILDER_OPTIONS",
+        "SeatsFrom",
+        "builderLabel",
+        "choiceProblems",
+        "chooseDefaultSeats",
+        "chooseProductSeats",
+        "productBuilder",
+        "seatsFromForm",
+        "seatsOf",
+        "seatsSentence"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 171,
+      "path": "packages/workbench/src/seats.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 4167,
       "changes": 3,
       "env": [],
@@ -29800,7 +31697,7 @@
     },
     {
       "binary": false,
-      "bytes": 7338,
+      "bytes": 10574,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -29810,13 +31707,14 @@
         "isTestDriveSite",
         "latestTestDrive",
         "startTestDrive",
-        "testDrive"
+        "testDrive",
+        "testDriveBuilder"
       ],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "lastCommit": "0520900aa2b01ee131aa9ede91d273e0a359002b",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 188,
+      "lines": 255,
       "path": "packages/workbench/src/testdrive.ts",
       "tables": [
         {
@@ -29852,6 +31750,24 @@
     },
     {
       "binary": false,
+      "bytes": 3439,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 88,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/builders.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 2484,
       "changes": 1,
       "env": [
@@ -29869,6 +31785,24 @@
         "vitest"
       ],
       "path": "packages/workbench/test/github.vendor.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6869,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 157,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/house-stack.test.ts",
       "test": true
     },
     {
@@ -29942,7 +31876,7 @@
     },
     {
       "binary": false,
-      "bytes": 5263,
+      "bytes": 6933,
       "changes": 3,
       "env": [
         "DATABASE_URL"
@@ -29953,7 +31887,7 @@
       "lastCommit": "baecb4be4bc0f737fed2788cbfa7ce23ede748d5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 129,
+      "lines": 159,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -30034,7 +31968,7 @@
     },
     {
       "binary": false,
-      "bytes": 200,
+      "bytes": 274,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -30064,6 +31998,36 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 30,
       "path": "prompts/audit.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4912,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 30,
+      "path": "prompts/build.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5008,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 30,
+      "path": "prompts/build.v2.md",
       "test": false
     },
     {
@@ -30450,7 +32414,7 @@
     },
     {
       "binary": false,
-      "bytes": 2148,
+      "bytes": 2580,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -30459,7 +32423,7 @@
       "lastCommit": "3dbc4f9fe2854d5031e1faf8dc3e3153584ddc73",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 58,
+      "lines": 66,
       "path": "scripts/cost.ts",
       "test": false
     },
@@ -30531,26 +32495,51 @@
     },
     {
       "binary": false,
-      "bytes": 3370,
+      "bytes": 2713,
       "changes": 2,
-      "env": [],
+      "env": [
+        "HOME",
+        "PATH"
+      ],
       "envDynamic": false,
       "exports": [
-        "SAMPLE_DIR",
-        "SAMPLE_HISTORY",
-        "makeSample"
+        "SAMPLE_BUILD",
+        "makeSample",
+        "sampleLifts"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 90,
+      "lines": 63,
       "path": "scripts/make-sample.mjs",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 4505,
+      "bytes": 3210,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 88,
+      "path": "scripts/record-build.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": false
+        }
+      ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4743,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -30559,7 +32548,7 @@
       "lastCommit": "603f878eb2070136a38ad04b3e63f2363b2c4005",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 106,
+      "lines": 108,
       "packages": [
         "zod"
       ],
@@ -30591,7 +32580,7 @@
     },
     {
       "binary": false,
-      "bytes": 8993,
+      "bytes": 9007,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -30606,6 +32595,335 @@
         "confirmed": false,
         "text": "The continuous checker: on every save it runs linting, formatting, type checks, tests and drift checks, and records the results in a status file."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 544,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 21,
+      "path": "templates/house-stack/.github/workflows/build.yml",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 35,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: .gitignore",
+      "lines": 3,
+      "path": "templates/house-stack/.gitignore",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 190,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 10,
+      "path": "templates/house-stack/.rama/features.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 356,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 20,
+      "path": "templates/house-stack/.rama/screens.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 821,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "default: README",
+      "lines": 15,
+      "path": "templates/house-stack/README.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 306,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "metadata"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "default: app/**",
+      "lines": 11,
+      "path": "templates/house-stack/app/layout.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 362,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "default: app/**",
+      "lines": 9,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
+      "path": "templates/house-stack/app/page.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 420,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "default: app/**",
+      "lines": 16,
+      "path": "templates/house-stack/app/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1101,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Figure"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "default: components/**",
+      "lines": 28,
+      "path": "templates/house-stack/components/Figure.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 571,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "provenance"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "default: schema and migrations",
+      "lines": 11,
+      "packages": [
+        "drizzle-orm"
+      ],
+      "path": "templates/house-stack/db/schema.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 219,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 7,
+      "packages": [
+        "vitest"
+      ],
+      "path": "templates/house-stack/features/welcome/plan.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 615,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Building",
+        "buildingCount",
+        "planned"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 20,
+      "path": "templates/house-stack/features/welcome/plan.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 60,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: next.config",
+      "lines": 2,
+      "path": "templates/house-stack/next.config.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 652,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 29,
+      "path": "templates/house-stack/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2268,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "FigureDef",
+        "FigureInput",
+        "SHOW",
+        "Show",
+        "defineFigures"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 48,
+      "path": "templates/house-stack/rama/define.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 783,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "figures"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 17,
+      "path": "templates/house-stack/rama/figures.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 14756,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "LintFinding",
+        "lintFigures"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 363,
+      "packages": [
+        "typescript"
+      ],
+      "path": "templates/house-stack/rama/lint.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 641,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 36,
+      "path": "templates/house-stack/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 423,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 14,
+      "packages": [
+        "vitest"
+      ],
+      "path": "templates/house-stack/vitest.config.ts",
       "test": false
     },
     {
@@ -30649,7 +32967,7 @@
     },
     {
       "binary": false,
-      "bytes": 3605,
+      "bytes": 3768,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -30661,7 +32979,7 @@
       "lastCommit": "463241481829daff249e4ae475c085ad1d628d0e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 102,
+      "lines": 109,
       "path": "tests/dev-server.ts",
       "test": false
     },
@@ -30820,7 +33138,7 @@
     },
     {
       "binary": false,
-      "bytes": 6247,
+      "bytes": 6287,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -30831,7 +33149,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 154,
+      "lines": 155,
       "packages": [
         "playwright",
         "postgres",
@@ -30959,7 +33277,7 @@
     },
     {
       "binary": false,
-      "bytes": 8204,
+      "bytes": 8205,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -30996,6 +33314,25 @@
         "vitest"
       ],
       "path": "tests/stage-8.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7538,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 166,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
+      "path": "tests/stage-9.e2e.test.ts",
       "test": true
     },
     {
@@ -31108,12 +33445,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -31131,6 +33471,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -31138,12 +33479,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -31214,12 +33564,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/trace/src/keys.ts",
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts"
@@ -31290,12 +33643,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/trace/src/keys.ts",
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts"
@@ -31390,12 +33746,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/trace/src/keys.ts",
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts"
@@ -31414,16 +33773,29 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/workbench/BrainsForm.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/server/session.ts",
         "design/harmony/components/bundle.css",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
         "packages/blueprint/package.json",
         "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
         "packages/blueprint/src/extract.ts",
         "packages/blueprint/src/files.ts",
         "packages/blueprint/src/git.ts",
         "packages/blueprint/src/glob.ts",
         "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
         "packages/blueprint/src/json.ts",
         "packages/blueprint/src/layers.ts",
         "packages/blueprint/src/metrics/index.ts",
@@ -31432,6 +33804,16 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/install.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/seal.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
         "packages/db/package.json",
         "packages/db/src/auth.ts",
         "packages/db/src/client.ts",
@@ -31444,12 +33826,58 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
-        "packages/model/src/vendors.ts"
+        "packages/model/src/seats.ts",
+        "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
+        "packages/trace/src/capture.ts",
+        "packages/trace/src/code.ts",
+        "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
+        "packages/trace/src/here.ts",
+        "packages/trace/src/index.ts",
+        "packages/trace/src/keys.ts",
+        "packages/trace/src/sandbox.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts",
+        "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/github.ts",
+        "packages/workbench/src/index.ts",
+        "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
+        "packages/workbench/src/modules.ts",
+        "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
+        "packages/workbench/src/states.ts",
+        "packages/workbench/src/testdrive.ts",
+        "packages/workbench/src/tests.ts"
       ],
       "file": "apps/rama/app/settings/page.tsx",
       "id": "apps/rama/app:/settings",
@@ -31538,12 +33966,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -31561,6 +33992,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -31568,12 +34000,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -31651,12 +34092,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -31674,6 +34118,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -31681,12 +34126,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -31707,6 +34161,7 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/workbench/BrainsForm.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
@@ -31763,12 +34218,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -31786,6 +34244,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -31793,12 +34252,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -31877,12 +34345,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -31900,6 +34371,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -31907,12 +34379,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -31991,12 +34472,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -32014,6 +34498,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -32021,12 +34506,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -32145,12 +34639,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -32168,6 +34665,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -32175,12 +34673,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -32251,12 +34758,15 @@
         "packages/db/src/settings.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
         "packages/model/src/call.ts",
         "packages/model/src/index.ts",
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/seats.ts",
         "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
         "packages/stage/src/building.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
@@ -32274,6 +34784,7 @@
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
         "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
         "packages/trace/src/here.ts",
         "packages/trace/src/index.ts",
         "packages/trace/src/keys.ts",
@@ -32281,12 +34792,21 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
         "packages/workbench/src/modules.ts",
         "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
@@ -32298,44 +34818,58 @@
     },
     {
       "bricks": [
-        "fixtures/sample-product/app/layout.tsx",
-        "fixtures/sample-product/app/page.tsx",
-        "fixtures/sample-product/components/Figure.tsx",
-        "fixtures/sample-product/data/orders.json",
-        "fixtures/sample-product/db/orders.ts",
-        "fixtures/sample-product/lib/money.ts"
+        "packages/blueprint/test/fixtures/hand-stall/app/layout.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/app/page.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/data/orders.json",
+        "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+        "packages/blueprint/test/fixtures/hand-stall/lib/money.ts"
       ],
-      "file": "fixtures/sample-product/app/page.tsx",
-      "id": "fixtures/sample-product/app:/",
+      "file": "packages/blueprint/test/fixtures/hand-stall/app/page.tsx",
+      "id": "packages/blueprint/test/fixtures/hand-stall/app:/",
       "name": "Home",
       "route": "/"
     },
     {
       "bricks": [
-        "fixtures/sample-product/app/layout.tsx",
-        "fixtures/sample-product/app/new/page.tsx",
-        "fixtures/sample-product/components/Figure.tsx",
-        "fixtures/sample-product/lib/money.ts",
-        "fixtures/sample-product/lib/preview.ts"
+        "packages/blueprint/test/fixtures/hand-stall/app/layout.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/app/new/page.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/lib/money.ts",
+        "packages/blueprint/test/fixtures/hand-stall/lib/preview.ts"
       ],
-      "file": "fixtures/sample-product/app/new/page.tsx",
-      "id": "fixtures/sample-product/app:/new",
+      "file": "packages/blueprint/test/fixtures/hand-stall/app/new/page.tsx",
+      "id": "packages/blueprint/test/fixtures/hand-stall/app:/new",
       "name": "New",
       "route": "/new"
     },
     {
       "bricks": [
-        "fixtures/sample-product/app/layout.tsx",
-        "fixtures/sample-product/app/total/page.tsx",
-        "fixtures/sample-product/components/Figure.tsx",
-        "fixtures/sample-product/data/orders.json",
-        "fixtures/sample-product/db/orders.ts",
-        "fixtures/sample-product/lib/money.ts"
+        "packages/blueprint/test/fixtures/hand-stall/app/layout.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/app/total/page.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/components/Figure.tsx",
+        "packages/blueprint/test/fixtures/hand-stall/data/orders.json",
+        "packages/blueprint/test/fixtures/hand-stall/db/orders.ts",
+        "packages/blueprint/test/fixtures/hand-stall/lib/money.ts"
       ],
-      "file": "fixtures/sample-product/app/total/page.tsx",
-      "id": "fixtures/sample-product/app:/total",
+      "file": "packages/blueprint/test/fixtures/hand-stall/app/total/page.tsx",
+      "id": "packages/blueprint/test/fixtures/hand-stall/app:/total",
       "name": "Total",
       "route": "/total"
+    },
+    {
+      "bricks": [
+        "templates/house-stack/.rama/features.json",
+        "templates/house-stack/app/layout.tsx",
+        "templates/house-stack/app/page.tsx",
+        "templates/house-stack/components/Figure.tsx",
+        "templates/house-stack/features/welcome/plan.ts",
+        "templates/house-stack/rama/define.ts"
+      ],
+      "file": "templates/house-stack/app/page.tsx",
+      "id": "templates/house-stack/app:/",
+      "name": "Home",
+      "route": "/"
     }
   ],
   "tables": [
@@ -32350,7 +34884,7 @@
         "createdAt",
         "createdBy"
       ],
-      "file": "fixtures/sample-product/db/schema.ts",
+      "file": "packages/blueprint/test/fixtures/hand-stall/db/schema.ts",
       "line": 5,
       "name": "orders",
       "symbol": "orders"
@@ -32366,7 +34900,7 @@
         "at"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 224,
+      "line": 225,
       "name": "audit_confirmations",
       "symbol": "auditConfirmations"
     },
@@ -32380,7 +34914,7 @@
         "payload"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 72,
+      "line": 73,
       "name": "audit_log",
       "symbol": "auditLog"
     },
@@ -32397,7 +34931,7 @@
         "report"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 179,
+      "line": 180,
       "name": "audits",
       "symbol": "audits"
     },
@@ -32412,7 +34946,7 @@
         "endsAt"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 266,
+      "line": 267,
       "name": "bookings",
       "symbol": "bookings"
     },
@@ -32426,7 +34960,7 @@
         "at"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 285,
+      "line": 286,
       "name": "checkins",
       "symbol": "checkins"
     },
@@ -32446,7 +34980,7 @@
         "supersedes"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 118,
+      "line": 119,
       "name": "decisions",
       "symbol": "decisions"
     },
@@ -32459,7 +34993,7 @@
         "source"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 85,
+      "line": 86,
       "name": "discovery_sessions",
       "symbol": "discoverySessions"
     },
@@ -32475,7 +35009,7 @@
         "at"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 99,
+      "line": 100,
       "name": "discovery_turns",
       "symbol": "discoveryTurns"
     },
@@ -32494,7 +35028,7 @@
         "auditorNote"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 200,
+      "line": 201,
       "name": "findings",
       "symbol": "findings"
     },
@@ -32510,7 +35044,7 @@
         "at"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 303,
+      "line": 304,
       "name": "handovers",
       "symbol": "handovers"
     },
@@ -32558,7 +35092,7 @@
         "name"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 255,
+      "line": 256,
       "name": "pods",
       "symbol": "pods"
     },
@@ -32575,7 +35109,7 @@
         "updatedBy"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 328,
+      "line": 329,
       "name": "secrets",
       "symbol": "secrets"
     },
@@ -32589,7 +35123,7 @@
         "revokedAt"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 242,
+      "line": 243,
       "name": "sessions",
       "symbol": "sessions"
     },
@@ -32602,7 +35136,7 @@
         "updatedBy"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 342,
+      "line": 343,
       "name": "settings",
       "symbol": "settings"
     },
@@ -32622,7 +35156,7 @@
         "seal"
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 145,
+      "line": 146,
       "name": "signoffs",
       "symbol": "signoffs"
     },

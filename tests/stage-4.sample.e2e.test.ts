@@ -114,13 +114,14 @@ describe('stage 4 on the sample product', () => {
       '-m',
       'signatures',
     ]);
-    // The base is the lift before the screens were built, found by its message, not by counting back.
+    // The base is the house stack's own lift, before the builder built the screens, found by its
+    // message, not by counting back.
     const base = execFileSync(
       'git',
-      ['-C', repoDir, 'log', '--format=%H', '--grep', '^Three screens', '-1'],
+      ['-C', repoDir, 'log', '--format=%H', '--grep', '^Start from the house stack$', '-1'],
       { encoding: 'utf8' },
     ).trim();
-    const r: GateResult = runGate(repoDir, `${base}~1`, { publicKey: KEY.publicKey });
+    const r: GateResult = runGate(repoDir, base, { publicKey: KEY.publicKey });
     const by = (route: string) => r.screens.find((s) => s.route === route)!;
     for (const s of SIGN)
       expect(by(s), s).toMatchObject({

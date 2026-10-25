@@ -37,7 +37,7 @@ describe('glossary drafting', () => {
     const drafted = await draftGlossary(bp, {}, read, { siteId: 'self', call: fake });
     expect(drafted).toEqual({ 'lib/calc.ts#total': { text: 'the total' } });
     expect(fake).toHaveBeenCalledWith(
-      expect.objectContaining({ name: 'glossary', version: 1, role: 'builder', siteId: 'self', createdBy: DRAFT_COMPONENT }),
+      expect.objectContaining({ name: 'glossary', version: 1, role: 'drafter', siteId: 'self', createdBy: DRAFT_COMPONENT }),
     );
   });
 
@@ -81,7 +81,7 @@ describe('purpose drafting', () => {
     });
     expect(fake).toHaveBeenCalledTimes(1);
     expect(fake).toHaveBeenCalledWith(
-      expect.objectContaining({ name: 'purpose', version: 1, role: 'builder', siteId: 'ekbill', createdBy: PURPOSE_COMPONENT }),
+      expect.objectContaining({ name: 'purpose', version: 1, role: 'drafter', siteId: 'ekbill', createdBy: PURPOSE_COMPONENT }),
     );
   });
 

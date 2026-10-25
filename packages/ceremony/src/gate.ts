@@ -25,6 +25,8 @@ export interface GateScreen {
   signature: Signoff | null;
   /** The passing tests behind its changed code bricks, when they cover every one. */
   tests: string[];
+  /** Changed code bricks with no passing test behind them (empty when it passes). */
+  uncovered: string[];
   ok: boolean;
   reason: string;
 }
@@ -105,7 +107,10 @@ export function evaluateGate(input: GateInput): GateResult {
       order.has(sig.target.commit) &&
       order.get(sig.target.commit)! >= order.get(changeCommit)!;
 
-    const code = changed.filter((p) => isCode(p));
+    // A file gone at HEAD runs nowhere, so no test can stand behind it; the code that is left, which
+    // had to change to let it go, must still be covered.
+    const present = new Set(bp.nodes.map((n) => n.path));
+    const code = changed.filter((p) => isCode(p) && (screen.removed || present.has(p)));
     const covering = code.map((p) =>
       (testsOf.get(p) ?? []).filter((t) => input.passingTests?.has(t)),
     );
@@ -134,6 +139,7 @@ export function evaluateGate(input: GateInput): GateResult {
       changeCommit,
       signature: signedAfter ? sig : null,
       tests: tested ? [...new Set(covering.flat())].sort() : [],
+      uncovered: signedAfter || tested ? [] : code.filter((_, i) => covering[i]!.length === 0),
       ok: Boolean(signedAfter) || tested,
       reason,
     });

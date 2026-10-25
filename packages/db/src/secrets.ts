@@ -1,5 +1,5 @@
-// The keys of version 1 (rule 11), entered in Settings rather than an env file: the Anthropic and OpenAI
-// keys and the GitHub token. Each is stored encrypted (AES-256-GCM) with the app's own key, a random
+// The keys of version 1 (rule 11), entered in Settings rather than an env file: each seat vendor's key
+// (Anthropic, OpenAI, Gemini, Grok, Kimi) and the GitHub token. Each is stored encrypted (AES-256-GCM) with the app's own key, a random
 // 32-byte key in work/.secret-key generated on first use and never committed. A value leaves this
 // module only through `secretFor`, to the code that sends it to its vendor; views get `SecretView`,
 // masked. While the table holds no key at all, the environment's keys are read instead, and the
@@ -12,7 +12,15 @@ import { createDb, type Db } from './client.ts';
 import { homeDir } from './members.ts';
 import { secrets } from './schema.ts';
 
-export const SECRET_NAMES = ['ANTHROPIC_API_KEY', 'OPENAI_API_KEY', 'GITHUB_TOKEN'] as const;
+export const SECRET_NAMES = [
+  'ANTHROPIC_API_KEY',
+  'OPENAI_API_KEY',
+  'GITHUB_TOKEN',
+  // The vendors a seat may name through the OpenAI-compatible adapter (Stage 9); Ollama needs none.
+  'GEMINI_API_KEY',
+  'XAI_API_KEY',
+  'MOONSHOT_API_KEY',
+] as const;
 export type SecretName = (typeof SECRET_NAMES)[number];
 export const isSecretName = (n: string): n is SecretName =>
   (SECRET_NAMES as readonly string[]).includes(n);

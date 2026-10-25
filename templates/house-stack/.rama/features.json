@@ -1,0 +1,10 @@
+{
+  "features": [
+    {
+      "id": "welcome",
+      "name": "Welcome",
+      "does": "Says what the product is for and how many buildings its plan has.",
+      "screens": ["/"]
+    }
+  ]
+}

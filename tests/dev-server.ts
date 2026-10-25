@@ -39,7 +39,14 @@ export async function startDevServer(
   let output = '';
   const server: ChildProcess = spawn('pnpm', ['exec', 'next', 'dev', '--port', String(port)], {
     cwd: appDir,
-    env: { ...process.env, ...env, NEXT_DIST_DIR: distDir, NEXT_TELEMETRY_DISABLED: '1' },
+    // Test drive replays the recorded build here: an end-to-end test never pays a builder.
+    env: {
+      ...process.env,
+      RAMA_TESTDRIVE_BUILDER: 'recorded',
+      ...env,
+      NEXT_DIST_DIR: distDir,
+      NEXT_TELEMETRY_DISABLED: '1',
+    },
     stdio: ['ignore', 'pipe', 'pipe'],
     detached: true,
   });

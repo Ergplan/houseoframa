@@ -57,6 +57,11 @@ async function AuditReportView({ params }: { params: Promise<{ siteId: string }>
         Audit report · {site.name} · <code>{stored.commit.slice(0, 7)}</code>
         {body.worktree ? ' + working tree' : ''}
       </h1>
+      {body.byLine ? (
+        <p className="byline" data-byline>
+          {body.byLine}
+        </p>
+      ) : null}
       <p className="big" data-defects={body.counts.defects}>
         {plural(body.counts.defects, 'defect')}, {plural(body.counts.notes, 'note')},{' '}
         {plural(body.counts.passes, 'clean brick')} of {body.counts.bricks}.
