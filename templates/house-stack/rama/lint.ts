@@ -617,21 +617,20 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
             (!ownComponent && (SHOWN_ATTRIBUTES.has(name) || name === 'dangerouslySetInnerHTML')) ||
             ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag));
           if (!shown) continue;
-          // HTML set directly is shown as it is written.
-          let html: ts.Expression | undefined = a.given;
-          if (name === 'dangerouslySetInnerHTML' && ts.isIdentifier(html)) {
-            const d = target(html)?.valueDeclaration;
-            html = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
+          // HTML set directly is shown as it is written: its object opened like a spread (names, choices,
+          // functions followed), and refused when it cannot be opened.
+          if (name === 'dangerouslySetInnerHTML') {
+            for (const h of opened(a.node, a.given)) {
+              const why = h.lost
+                ? 'raw HTML the lint cannot follow to where it is written, so it may hold a number'
+                : h.name === '__html' && h.given
+                  ? shows(h.given)
+                  : null;
+              if (why) unmarked(sf, a.node, why);
+            }
+            continue;
           }
-          const given =
-            name === 'dangerouslySetInnerHTML'
-              ? html && ts.isObjectLiteralExpression(html)
-                ? html.properties.find(
-                    (p): p is ts.PropertyAssignment =>
-                      ts.isPropertyAssignment(p) && p.name.getText() === '__html',
-                  )?.initializer
-                : undefined
-              : a.given;
+          const given = a.given;
           const why = given ? shows(given) : null;
           if (why) unmarked(sf, a.node, why);
         }

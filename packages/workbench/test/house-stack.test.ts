@@ -210,6 +210,8 @@ describe('the house stack', () => {
         'export const Made3 = () => <p children="Table 8" />;',
         "export const Made4 = () => <p dangerouslySetInnerHTML={{ __html: 'Table 9' }} />;",
         "const HTML = { __html: 'Table 10' };",
+        'const HTML2 = HTML;',
+        'export const Made7 = () => <p dangerouslySetInnerHTML={HTML2} />;',
         'export const Made5 = () => <p dangerouslySetInnerHTML={HTML} />;',
         "export const Made6 = () => createElement('p', { children: 'Table 11' });",
         '',
@@ -218,7 +220,7 @@ describe('the house stack', () => {
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => f.line)).toEqual([
-        10, 11, 13, 14, 15, 17, 18, 19, 20, 21, 22, 29, 30, 31, 32, 33, 34, 36, 37,
+        10, 11, 13, 14, 15, 17, 18, 19, 20, 21, 22, 29, 30, 31, 32, 33, 34, 37, 38, 39,
       ]);
       expect(found.every((f) => f.file === 'app/made.tsx')).toBe(true);
     } finally {
