@@ -447,6 +447,30 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/node.tsx'));
     }
+    // A call through a name for a function is followed; a call to a function handed in is refused.
+    writeFileSync(
+      path.join(site.repoDir, 'app/alias.tsx'),
+      [
+        "const label = (): string => 'Table 25';",
+        'const alias = label;',
+        'export const A = () => <p>{alias()}</p>;',
+        'export const B = (p: { say: () => string }) => <p>{p.say()}</p>;',
+        "const plain = (): string => 'Masala chai';",
+        'const plainer = plain;',
+        'export const C = () => <p>{plainer()}</p>;',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([
+        ['app/alias.tsx', 3],
+        ['app/alias.tsx', 4],
+      ]);
+      expect(found[1]!.sentence).toMatch(/a call the lint cannot follow to the function it runs/);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/alias.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),

@@ -402,16 +402,30 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
               if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
             }
       }
-      // A function of the product's own: what it gives back is what is shown.
-      const fn =
-        decl &&
-        (ts.isFunctionDeclaration(decl) || ts.isMethodDeclaration(decl)
-          ? decl
-          : ts.isVariableDeclaration(decl) &&
-              decl.initializer &&
-              (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))
-            ? decl.initializer
-            : null);
+      // A function of the product's own, through any names for it (`const alias = label`): what it gives
+      // back is what is shown.
+      let fnDecl: ts.Node | undefined = decl;
+      let fn: ts.FunctionLikeDeclaration | null = null;
+      for (let hops = 0; fnDecl && hops < FOLLOW_LIMIT; hops++) {
+        if (ts.isFunctionDeclaration(fnDecl) || ts.isMethodDeclaration(fnDecl)) {
+          fn = fnDecl;
+          break;
+        }
+        const init =
+          ts.isVariableDeclaration(fnDecl) && fnDecl.initializer
+            ? unwrap(fnDecl.initializer)
+            : undefined;
+        if (init && (ts.isArrowFunction(init) || ts.isFunctionExpression(init))) {
+          fn = init;
+          break;
+        }
+        fnDecl = init && ts.isIdentifier(init) ? target(init)?.valueDeclaration : undefined;
+      }
+      const own = Boolean(decl && !rel(decl.getSourceFile()).includes('node_modules/'));
+      // A call of the product's own that cannot be followed to a function (a function handed in, a
+      // name too far) gives text the lint cannot judge: it is not taken on trust.
+      if (own && !words && (!fn || !fn.body) && !numberLike(checker.getTypeAtLocation(e)))
+        return `“${e.getText().slice(0, 40)}”, a call the lint cannot follow to the function it runs, so it may give a number`;
       if (fn && fn.body && !words && !rel(fn.getSourceFile()).includes('node_modules/')) {
         // What it is given may be what it gives back (`label('123')` returning its argument).
         for (const part of e.arguments) {

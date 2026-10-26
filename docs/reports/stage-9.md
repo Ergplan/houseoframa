@@ -12,7 +12,7 @@ The sample product is now built by the builder, not written by hand. Test drive 
 - The Street named its three buildings as the cards name them.
 - "Test drive" then walked and signed the two customer screens, and the OpenAI auditor signed its report: 0 defects, 13 notes, 21 clean files.
 
-That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-build`. Test drive, `make-sample.mjs` and the tests replay it when no builder can run, through the same loop and the same checks. The hand-written sample (`fixtures/sample-product`) is retired.
+That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-build`. When no builder can run, Test drive replays its lifts through the same loop and the same checks; `make-sample.mjs` applies the same lifts to make the sample for the tests, without the checks. The hand-written sample (`fixtures/sample-product`) is retired.
 
 ## What was built
 
