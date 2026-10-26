@@ -362,7 +362,17 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
               ? returnsOf(decl.body)
               : [];
       // A map callback's parameter holds each element of the list mapped (`['123'].map((x) => x)`).
-      if (decl && ts.isParameter(decl) && ts.isIdentifier(e)) {
+      // A name destructured from the parameter (`({ label }) => …`) is that parameter's too.
+      let param: ts.Node | undefined = decl;
+      while (
+        param &&
+        (ts.isBindingElement(param) ||
+          ts.isObjectBindingPattern(param) ||
+          ts.isArrayBindingPattern(param))
+      )
+        param = param.parent;
+      if (param && ts.isParameter(param) && ts.isIdentifier(e)) {
+        const decl = param;
         const cb = decl.parent;
         const call = cb.parent;
         if (
@@ -441,8 +451,13 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
             }
             // A callback that gives back what it is handed (its parameter, inline or named) gives the
             // list's own elements: the list mapped is judged too.
+            // Every name the parameters bind, destructured ones included.
+            const bound = (n: ts.BindingName): ts.Identifier[] =>
+              ts.isIdentifier(n)
+                ? [n]
+                : n.elements.flatMap((el) => (ts.isBindingElement(el) ? bound(el.name) : []));
             const params = new Set(
-              fn.parameters.flatMap((p) => (ts.isIdentifier(p.name) ? [target(p.name)] : [])),
+              fn.parameters.flatMap((p) => bound(p.name).map((id) => target(id))),
             );
             const usesParam = (n: ts.Node): boolean =>
               (ts.isIdentifier(n) && params.has(target(n))) ||

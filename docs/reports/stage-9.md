@@ -33,7 +33,10 @@ That build cost $0.94 of building (₹89). It is recorded in `fixtures/sample-bu
   - `toFixed` and the like;
   - a helper that makes text from a number, unless it says `@words`;
   - a value whose type is unknown;
-  - text a name stands for that holds digits (`const label = '123'`, or given to it later in its file), followed into templates, `+`, an element of a list or record written in the code, a library's function or method (`concat`, `join`, `createElement`…, and what a `map` callback gives back, written in place or by name), any prop but `key` handed to one of the product's own components, written or spread in, spreads opened through names, choices, nested spreads and the product's own functions (what they return and what they are given), and a spread it cannot open refused (`<Label text="123" />`), and what one of the product's own functions is given or gives back (`label('123')`, `label()` returning `'123'`) unless its JSDoc says `@words`;
+  - text that holds digits, followed wherever it goes on the way to the screen:
+    - through a name (`const label = '123'`, or a value given to it later in its file), a getter, a field, an element of a list or record, `+` and templates;
+    - through a call: a library's function or method (`concat`, `join`, `createElement`), what a `map` callback gives back (written in place or by name, its parameters standing for the list mapped), and what one of the product's own functions is given or gives back (`label('123')`), unless its JSDoc says `@words`;
+    - through a component: any prop but `key` handed to one of the product's own components, written or spread in (`<Label text="123" />`). Spreads are opened through names, choices, nested spreads and the product's own functions; a spread it cannot open is refused;
   - text whose possible values are all known, one with digits;
   - what one of the product's components gives back, element or not (`return 123`), the file's default export (a page) included, written in place or by name (`export default page`, `export { page as default }`);
   - a number in the attributes a person reads, `children` and `dangerouslySetInnerHTML` included (its HTML object opened like a spread, and refused when it cannot be), and every text value in an object written in place and handed over (`createElement`'s props, a function's argument).
@@ -101,7 +104,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
 ## Tests
 
 - The lint on unmarked numbers: every kind, each named by file and line, text held under a name included; the product's own `npm run lint:figures` refuses too. Also a Figure worked out by another function, and an entry not written as plain text (`packages/workbench/test/house-stack.test.ts`).
-- The scaffold builds and passes its gate: laid into an empty product, it passes every check after its first lift in under a minute, with its name and idea escaped into each file and the gate keyed (same file).
+- The scaffold builds and passes its gate: laid into an empty product, it passes every check after its first lift, with its name and idea escaped into each file and the gate keyed (same file). The check's time is bounded there only loosely (150 s, to leave room for the full suite running beside it); the one-minute figure stands on the real build's 30 to 43 s a lift.
 - The loop from an empty repository to a fully traced lakefront: `tests/stage-9.e2e.test.ts`, in a real browser, with nothing typed but names:
   - brains chosen in Settings (the auditor list follows the builder);
   - a new product started from an empty repository;
