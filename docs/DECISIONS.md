@@ -227,3 +227,7 @@ One dated entry per decision. Newest first. Locked decisions (CLAUDE.md §3) are
 - **The audit report's first line** names the builder (as the product records it) and the auditor's vendor and model, and says whether they differ.
 - **Prompts**: `build.v1` was used by the first runs of the loop; `build.v2` adds that a deleted file needs no test. Never edited in place.
 - **Members**: `members.json` may give a member's email (the member's own: rachit@joulewise.com for Rachit Agarwal).
+
+## 2026-10-26 — The figures lint stops at the forms it knows
+
+The independent reviewer found one more way to hide a number from the figures lint in each of runs 5 to 42 (a spread, a getter, a destructured name, a `map` callback by name, a class component's `render()`…). The user stopped that loop: a static lint cannot be complete, and the real guard is the build-time check in `packages/workbench/src/build.ts` (`checkLift`), which refuses any figure the photograph captures that does not map to a marked Figure. The lint stays as at cb19d8a and is not widened further; a new reviewer finding on `templates/house-stack/rama/lint.ts` alone goes to KNOWN-GAPS, not to code.

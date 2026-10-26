@@ -135,12 +135,37 @@ Each names a vendor and a model, and the builder seat also names its builder.
 
 ## Reviewer findings
 
-(Filled in after the independent review.)
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 9`) ran 42 times; every run is in `docs/reports/stage-9.review.md`.
+
+Fixed in code:
+
+- **The audit and the actual builder** (runs 1–3). The audit checked the builder seat as now chosen, not the builders that built the product: after switching the seats from Claude Code to Codex, Anthropic could have audited a product Claude Code built. A product now records every builder (`builtBy`); the brains answer, `callAudit`, `runAudit` and the auditor's model call (`notVendors`) each refuse those companies.
+- **The figures lint** (runs 1–41), one form at a time: text held in a name, `+` joins, own functions' returns and parameters, templates, props of own components, spreads (by name, nested, computed, through functions, at the follow limit), `id` props, a component's direct returns, default exports in every spelling, `createElement`, `.ts` files, `dangerouslySetInnerHTML` by name, the real Figure only, files under `rama/`, config-named and test files, `map` callbacks (in place, by name, destructured), later assignments, the follow depth, `satisfies`, getters, element access, numeric props of mixed types, function aliases, destructured names, spreads inside lists. Each has a test in `packages/workbench/test/house-stack.test.ts`.
+- **Report claims** (runs 1–4, 13, 24–28, 31, 33–35): the lint's coverage, the builder's confinement (now KNOWN-GAPS: permission lists, not a sandbox), the audit's independence, and what `make-sample.mjs` replays, each restated to what the code does.
+
+Not resolved by code:
+
+- **The figures lint is not complete** (runs 5–42, the last a class component's `render()`). Not resolvable by code: the lint is a static guard, and TypeScript has more ways to carry text to a screen than a lint can list. The real guard is the build-time check (`packages/workbench/src/build.ts`, `checkLift`), which refuses any figure the photograph captures that does not map to a marked Figure. The lint stays as at cb19d8a, best-effort (KNOWN-GAPS, DECISIONS 2026-10-26).
+- **Items (b), (c), (d) answered cannot-tell** in every run. The diff does not carry the generators, the append-only triggers or CI's execution. They stand from earlier stages, and the watcher and CI run the drift checks on every commit.
+- **The live build and audit (e)** are history a diff cannot prove. The recording in `fixtures/sample-build` and the `model_calls` rows are the evidence.
 
 ## Real model cost
 
-(Filled in at the end.)
+`pnpm cost 9` (since the stage started; ₹94.92 per US$):
+
+| What                                                              | Model             | Calls | Cost       |
+| ----------------------------------------------------------------- | ----------------- | ----- | ---------- |
+| Build, testdrive-4 (the run the gate's deleted-file rule stopped) | claude-sonnet-5-5 | 4     | ₹137       |
+| Build, testdrive-5 (the recorded sample)                          | claude-sonnet-5-5 | 4     | ₹89        |
+| Audit, testdrive-5                                                | gpt-6.1-sol       | 1     | ₹2         |
+| Independent reviewer                                              | gpt-6.1-sol       | 42    | ₹1,212     |
+| **Total**                                                         |                   |       | **₹1,441** |
+
+The reviewer was 84% of the stage's cost (about ₹29 a run, for a diff of about 900,000 characters). A Test drive with a builder key builds for real at about ₹90.
 
 ## Open questions
 
-(Filled in at the end.)
+- **The box** at http://34.131.209.81:3389 still runs the build from before Stage 7. Redeploying Stage 9 there waits for your word.
+- **Test drive with a key costs about ₹90** a run, because it builds for real. Keep it so, or have Test drive always replay the recording and keep a separate "Build the sample for real" act?
+- **The self buildings**: this repository's `.rama/features.json` now names two more buildings, "The house stack" and "The test stall". Confirm the names, or give better ones.
+- **The GitHub check and members**: rachit@joulewise.com is recorded as Rachit Agarwal's email in `members.json`. Is that the only member to add for now?
