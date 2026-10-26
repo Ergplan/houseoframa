@@ -306,6 +306,7 @@ describe('the house stack', () => {
         '      {label}',
         '      {o.code}',
         "      {pass('Table 12')}",
+        "      {('Table 19' as string) satisfies string}",
         "      {passed({ text: 'Table 13', n: 2 })}",
         "      {passed({ text: 'Masala chai', n: 2 })}",
         '    </p>',
@@ -321,6 +322,7 @@ describe('the house stack', () => {
         ['app/later.tsx', 11],
         ['app/later.tsx', 12],
         ['app/later.tsx', 13],
+        ['app/later.tsx', 14],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/later.tsx'));

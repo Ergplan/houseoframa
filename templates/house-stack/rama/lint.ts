@@ -261,8 +261,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
 
   /** Whether the expression, shown as a child of an element, shows a number; and why. */
   function shows(e: ts.Expression, depth = 0): string | null {
-    while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e))
-      e = e.expression;
+    e = unwrap(e);
     // A value followed this far without an end is not taken on trust.
     if (depth >= FOLLOW_LIMIT)
       return `“${e.getText().slice(0, 40)}”, which the lint cannot follow to where it is written, so it may be a number`;
@@ -317,8 +316,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       const decl = target(e.expression)?.valueDeclaration;
       let held: ts.Expression | undefined =
         decl && ts.isVariableDeclaration(decl) ? decl.initializer : undefined;
-      while (held && (ts.isAsExpression(held) || ts.isSatisfiesExpression(held)))
-        held = held.expression;
+      if (held) held = unwrap(held);
       const elements = held
         ? ts.isArrayLiteralExpression(held)
           ? [...held.elements]
@@ -506,13 +504,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
           const lost: Prop[] = [{ node: at, name: '', given: undefined, lost: true }];
           if (steps >= FOLLOW_LIMIT) return lost;
           const next = (x: ts.Expression) => opened(at, x, steps + 1);
-          if (
-            ts.isParenthesizedExpression(e) ||
-            ts.isAsExpression(e) ||
-            ts.isSatisfiesExpression(e) ||
-            ts.isNonNullExpression(e)
-          )
-            return next(e.expression);
+          if (unwrap(e) !== e) return next(unwrap(e));
           if (ts.isIdentifier(e)) {
             const d: ts.Declaration | undefined = target(e)?.valueDeclaration;
             if (d && ts.isVariableDeclaration(d))
@@ -653,7 +645,7 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       };
       if (ts.isExportAssignment(node) && !node.isExportEquals) {
         exported = node.expression;
-        while (exported && ts.isParenthesizedExpression(exported)) exported = exported.expression;
+        if (exported) exported = unwrap(exported);
         if (exported && ts.isIdentifier(exported)) exportedBody = byName(exported);
       }
       if (
@@ -701,6 +693,19 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     visit(sf);
   }
   return findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
+}
+
+/** The value inside wrappers that do not change it: brackets, `as`, `satisfies`, `!`, `<T>`. */
+function unwrap(e: ts.Expression): ts.Expression {
+  while (
+    ts.isParenthesizedExpression(e) ||
+    ts.isAsExpression(e) ||
+    ts.isSatisfiesExpression(e) ||
+    ts.isNonNullExpression(e) ||
+    ts.isTypeAssertionExpression(e)
+  )
+    e = e.expression;
+  return e;
 }
 
 /** What a function body gives back: its return statements' values, not those of functions inside it. */
