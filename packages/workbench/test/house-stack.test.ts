@@ -301,12 +301,14 @@ describe('the house stack', () => {
         "  o.code = 'A9';",
         '  const pass = (x: string): string => x;',
         '  const passed = (p: { text: string; n: number }): string => p.text;',
+        "  const g = { get label(): string { return 'Table 23'; } };",
         '  return (',
         '    <p>',
         '      {label}',
         '      {o.code}',
         "      {pass('Table 12')}",
         "      {('Table 19' as string) satisfies string}",
+        '      {g.label}',
         "      {passed({ text: 'Table 13', n: 2 })}",
         "      {passed({ text: 'Masala chai', n: 2 })}",
         '    </p>',
@@ -318,11 +320,12 @@ describe('the house stack', () => {
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => [f.file, f.line])).toEqual([
-        ['app/later.tsx', 10],
         ['app/later.tsx', 11],
         ['app/later.tsx', 12],
         ['app/later.tsx', 13],
         ['app/later.tsx', 14],
+        ['app/later.tsx', 15],
+        ['app/later.tsx', 16],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/later.tsx'));

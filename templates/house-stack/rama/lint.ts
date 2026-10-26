@@ -339,14 +339,24 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     // A name for a value written in the product's own code: what it was given is what is shown.
     if (ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) {
       const decl = target(ts.isPropertyAccessExpression(e) ? e.name : e)?.valueDeclaration;
-      const given =
-        decl && (ts.isVariableDeclaration(decl) || ts.isPropertyAssignment(decl))
-          ? decl.initializer
-          : undefined;
+      // What it holds as written: a variable's or a field's first value, a shorthand's name, or what a
+      // getter gives back.
+      const givenAll: ts.Expression[] = !decl
+        ? []
+        : (ts.isVariableDeclaration(decl) ||
+              ts.isPropertyAssignment(decl) ||
+              ts.isPropertyDeclaration(decl)) &&
+            decl.initializer
+          ? [decl.initializer]
+          : ts.isShorthandPropertyAssignment(decl)
+            ? [decl.name]
+            : ts.isGetAccessorDeclaration(decl) && decl.body
+              ? returnsOf(decl.body)
+              : [];
       const sym = target(ts.isPropertyAccessExpression(e) ? e.name : e);
       // What it was given first, and every value given to it after (`label = '123'`).
       const values = [
-        ...(given && !rel(given.getSourceFile()).includes('node_modules/') ? [given] : []),
+        ...givenAll.filter((g) => !rel(g.getSourceFile()).includes('node_modules/')),
         ...(sym && decl && !rel(decl.getSourceFile()).includes('node_modules/')
           ? assignedTo(sym, decl.getSourceFile())
           : []),
