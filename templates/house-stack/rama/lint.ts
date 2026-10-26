@@ -259,6 +259,19 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     return out;
   }
 
+  /**
+   * What a destructured name may hold: its default (`{ label = '123' }`), and the whole value it is
+   * destructured from when that is a variable's (`const { label } = { label: '123' }`).
+   */
+  function destructuredFrom(el: ts.BindingElement): ts.Expression[] {
+    const out: ts.Expression[] = el.initializer ? [el.initializer] : [];
+    let up: ts.Node = el.parent;
+    while (ts.isObjectBindingPattern(up) || ts.isArrayBindingPattern(up) || ts.isBindingElement(up))
+      up = up.parent;
+    if (ts.isVariableDeclaration(up) && up.initializer) out.push(up.initializer);
+    return out;
+  }
+
   /** The function a callee or a callback stands for, through any names for it; null when not found. */
   function fnOf(x: ts.Node | undefined): ts.FunctionLikeDeclaration | null {
     let at: ts.Node | undefined =
@@ -360,7 +373,9 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
             ? [decl.name]
             : ts.isGetAccessorDeclaration(decl) && decl.body
               ? returnsOf(decl.body)
-              : [];
+              : ts.isBindingElement(decl)
+                ? destructuredFrom(decl)
+                : [];
       // A map callback's parameter holds each element of the list mapped (`['123'].map((x) => x)`).
       // A name destructured from the parameter (`({ label }) => …`) is that parameter's too.
       let param: ts.Node | undefined = decl;
