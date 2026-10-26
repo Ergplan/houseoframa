@@ -272,18 +272,25 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     // in it may be what is shown. A number in it is judged where it is shown.
     if (ts.isObjectLiteralExpression(e)) {
       for (const p of e.properties) {
-        const value = ts.isPropertyAssignment(p)
-          ? p.initializer
-          : ts.isShorthandPropertyAssignment(p)
-            ? p.name
-            : ts.isSpreadAssignment(p)
-              ? p.expression
-              : undefined;
-        if (!value || ts.isArrowFunction(value) || ts.isFunctionExpression(value)) continue;
-        if (!ts.isObjectLiteralExpression(value) && !ts.isStringLiteral(value) && isNumber(value))
-          continue;
-        const why = shows(value, depth + 1);
-        if (why) return why;
+        const values =
+          (ts.isGetAccessorDeclaration(p) || ts.isMethodDeclaration(p)) && p.body
+            ? returnsOf(p.body)
+            : [
+                ts.isPropertyAssignment(p)
+                  ? p.initializer
+                  : ts.isShorthandPropertyAssignment(p)
+                    ? p.name
+                    : ts.isSpreadAssignment(p)
+                      ? p.expression
+                      : undefined,
+              ];
+        for (const value of values) {
+          if (!value || ts.isArrowFunction(value) || ts.isFunctionExpression(value)) continue;
+          if (!ts.isObjectLiteralExpression(value) && !ts.isStringLiteral(value) && isNumber(value))
+            continue;
+          const why = shows(value, depth + 1);
+          if (why) return why;
+        }
       }
     }
     // A list written in place (and joined, or shown as it is): any element may be shown.
@@ -559,15 +566,17 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
               ? []
               : lost;
           }
-          return e.properties.flatMap((p): Prop[] =>
-            ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))
-              ? [{ node: at, name: p.name.text, given: p.initializer }]
-              : ts.isShorthandPropertyAssignment(p)
-                ? [{ node: at, name: p.name.text, given: p.name }]
-                : ts.isSpreadAssignment(p)
-                  ? next(p.expression)
-                  : [],
-          );
+          return e.properties.flatMap((p): Prop[] => {
+            if (ts.isShorthandPropertyAssignment(p))
+              return [{ node: at, name: p.name.text, given: p.name }];
+            if (ts.isSpreadAssignment(p)) return next(p.expression);
+            const name = propName(p.name);
+            if (ts.isPropertyAssignment(p)) return [{ node: at, name, given: p.initializer }];
+            // A getter or a method gives what it returns.
+            if ((ts.isGetAccessorDeclaration(p) || ts.isMethodDeclaration(p)) && p.body)
+              return returnsOf(p.body).map((given) => ({ node: at, name, given }));
+            return [];
+          });
         };
         const spread = open.attributes.properties.flatMap((a) =>
           ts.isJsxSpreadAttribute(a) ? opened(a, a.expression) : [],
@@ -693,6 +702,19 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     visit(sf);
   }
   return findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
+}
+
+/**
+ * A property's name as written: a computed one written as text is read, and any other computed name is
+ * taken as `children`, a name that is shown, so its value is judged rather than skipped.
+ */
+function propName(n: ts.PropertyName): string {
+  if (ts.isIdentifier(n) || ts.isStringLiteral(n) || ts.isNumericLiteral(n)) return n.text;
+  if (ts.isComputedPropertyName(n)) {
+    const x = unwrap(n.expression);
+    if (ts.isStringLiteral(x) || ts.isNoSubstitutionTemplateLiteral(x)) return x.text;
+  }
+  return 'children';
 }
 
 /** The value inside wrappers that do not change it: brackets, `as`, `satisfies`, `!`, `<T>`. */

@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b919f736ba53eb46fca0404a1499eea078b3301b",
+  "commit": "58367846dcd8e57a2de24eb16859b6138eb4f092",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -11762,6 +11762,45 @@
       "sha": "b919f736ba53eb46fca0404a1499eea078b3301b",
       "short": "b919f73",
       "subject": "Stage 9: reviewer run 28 — raw HTML is opened like a spread, and refused when it cannot be"
+    },
+    {
+      "at": "2026-10-26T01:10:49Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 64,
+          "del": 19,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 17,
+          "del": 12,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        }
+      ],
+      "sha": "58367846dcd8e57a2de24eb16859b6138eb4f092",
+      "short": "5836784",
+      "subject": "Stage 9: reviewer run 29 — every wrapper that does not change a value is seen through by the lint"
     }
   ],
   "edges": [
@@ -24143,7 +24182,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-26T00:54:50Z",
+  "extractedAt": "2026-10-26T01:10:49Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -27893,13 +27932,13 @@
     },
     {
       "binary": false,
-      "bytes": 56455,
-      "changes": 77,
+      "bytes": 56586,
+      "changes": 78,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "b919f736ba53eb46fca0404a1499eea078b3301b",
+      "lastCommit": "58367846dcd8e57a2de24eb16859b6138eb4f092",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -28341,16 +28380,16 @@
     },
     {
       "binary": false,
-      "bytes": 367461,
-      "changes": 28,
+      "bytes": 380360,
+      "changes": 29,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "b919f736ba53eb46fca0404a1499eea078b3301b",
+      "lastCommit": "58367846dcd8e57a2de24eb16859b6138eb4f092",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 495,
+      "lines": 512,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -34056,16 +34095,16 @@
     },
     {
       "binary": false,
-      "bytes": 20622,
-      "changes": 29,
+      "bytes": 20984,
+      "changes": 30,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "b919f736ba53eb46fca0404a1499eea078b3301b",
+      "lastCommit": "58367846dcd8e57a2de24eb16859b6138eb4f092",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 506,
+      "lines": 513,
       "packages": [
         "vitest"
       ],
@@ -35167,8 +35206,8 @@
     },
     {
       "binary": false,
-      "bytes": 32432,
-      "changes": 29,
+      "bytes": 33427,
+      "changes": 30,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35177,10 +35216,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "b919f736ba53eb46fca0404a1499eea078b3301b",
+      "lastCommit": "58367846dcd8e57a2de24eb16859b6138eb4f092",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 743,
+      "lines": 765,
       "packages": [
         "typescript"
       ],

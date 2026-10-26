@@ -376,6 +376,10 @@ describe('the house stack', () => {
         'const pass = (p: { children: string }) => p;',
         "export const Y = () => <p {...pass({ children: 'Table 18' })} />;",
         "export const Z = () => <p {...pass({ children: 'Masala chai' })} />;",
+        "export const C1 = () => <p {...{ ['children']: 'Table 20' }} />;",
+        "const key = 'title';",
+        "export const C2 = () => <p {...{ [key]: 'Table 21' }} />;",
+        "export const C3 = () => <p {...{ get children() { return 'Table 22'; } }} />;",
         '',
       ].join('\n'),
     );
@@ -387,6 +391,9 @@ describe('the house stack', () => {
         ['app/spread.tsx', 5],
         ['app/spread.tsx', 7],
         ['app/spread.tsx', 11],
+        ['app/spread.tsx', 13],
+        ['app/spread.tsx', 15],
+        ['app/spread.tsx', 16],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/spread.tsx'));
