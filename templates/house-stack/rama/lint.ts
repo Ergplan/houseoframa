@@ -549,11 +549,10 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
   for (const sf of own) {
     const file = rel(sf);
     // Every file a screen may be made of: elements in .tsx, components made with createElement in .ts
-    // too. Tests and configuration are not screens; the files that show a figure are trusted (above),
-    // and this lint is not a screen.
+    // too, tests included (a page may bring a component in from one). Configuration is not a screen;
+    // the files that show a figure are trusted (above), and this lint is not a screen.
     if (
       !/\.tsx?$/.test(file) ||
-      /\.test\.tsx?$/.test(file) ||
       /^(vitest|next|drizzle|playwright)\.config\.ts$/.test(file) ||
       TRUSTED_FILES.includes(file) ||
       file === 'rama/lint.ts'

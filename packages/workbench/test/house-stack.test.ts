@@ -493,6 +493,17 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/alias.tsx'));
     }
+    // A component kept in a test file is read like any other: a page may bring it in.
+    writeFileSync(
+      path.join(site.repoDir, 'features/welcome/shown.test.tsx'),
+      'export function Shown() {\n  return <p>123</p>;\n}\n',
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([['features/welcome/shown.test.tsx', 2]]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'features/welcome/shown.test.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),
