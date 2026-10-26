@@ -304,6 +304,7 @@ describe('the house stack', () => {
         "  const g = { get label(): string { return 'Table 23'; } };",
         "  const { label: named }: { label: string } = { label: 'Table 31' };",
         "  const [first = 'Table 32'] = [] as string[];",
+        "  const xs: string[] = ['Table 33'];",
         '  return (',
         '    <p>',
         '      {label}',
@@ -314,6 +315,7 @@ describe('the house stack', () => {
         "      {['Table 24'][0]}",
         '      {named}',
         '      {first}',
+        '      {[...xs]}',
         "      {passed({ text: 'Table 13', n: 2 })}",
         "      {passed({ text: 'Masala chai', n: 2 })}",
         '    </p>',
@@ -325,7 +327,6 @@ describe('the house stack', () => {
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => [f.file, f.line])).toEqual([
-        ['app/later.tsx', 13],
         ['app/later.tsx', 14],
         ['app/later.tsx', 15],
         ['app/later.tsx', 16],
@@ -334,6 +335,8 @@ describe('the house stack', () => {
         ['app/later.tsx', 19],
         ['app/later.tsx', 20],
         ['app/later.tsx', 21],
+        ['app/later.tsx', 22],
+        ['app/later.tsx', 23],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/later.tsx'));

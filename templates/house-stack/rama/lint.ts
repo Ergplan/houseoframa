@@ -326,6 +326,8 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
         }
       }
     }
+    // A spread inside a list (`[...xs]`) holds what it spreads.
+    if (ts.isSpreadElement(e)) return shows(e.expression, depth + 1);
     // A list written in place (and joined, or shown as it is): any element may be shown.
     if (ts.isArrayLiteralExpression(e)) {
       for (const el of e.elements) {

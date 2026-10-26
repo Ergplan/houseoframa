@@ -38,7 +38,14 @@ export default defineConfig({
         600_000,
       ),
       project('@rama/app', 'apps/rama', ['**/*.test.{ts,tsx}']),
-      project('e2e', 'tests', ['**/*.e2e.test.ts'], 120_000),
+      // One end-to-end file at a time: several of them build products (Test drive, the build loop),
+      // and run side by side those builds starve each other.
+      {
+        test: {
+          ...project('e2e', 'tests', ['**/*.e2e.test.ts'], 120_000).test,
+          fileParallelism: false,
+        },
+      },
     ],
   },
 });
