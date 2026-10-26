@@ -359,13 +359,26 @@ describe('the house stack', () => {
     // Spread props are opened all the way down.
     writeFileSync(
       path.join(site.repoDir, 'app/spread.tsx'),
-      "const inner = { children: 'Table 14' };\nconst props = inner;\nexport const S = () => <p {...{ ...{ ...inner } }} />;\nexport const T = () => <p {...props} />;\n",
+      [
+        "const inner = { children: 'Table 14' };",
+        'const props = inner;',
+        'export const S = () => <p {...{ ...{ ...inner } }} />;',
+        'export const T = () => <p {...props} />;',
+        "export const U = ({ on }: { on: boolean }) => <p {...(on ? { children: 'Table 16' } : {})} />;",
+        "const make = () => ({ children: 'Table 17' });",
+        'export const V = () => <p {...make()} />;',
+        "export const W = ({ on }: { on: boolean }) => <p {...(on && { title: 'x' })} />;",
+        'export const X = (p: { title: string }) => <p {...p} />;',
+        '',
+      ].join('\n'),
     );
     try {
       const found = await lintProduct(site.repoDir, env);
       expect(found.map((f) => [f.file, f.line])).toEqual([
         ['app/spread.tsx', 3],
         ['app/spread.tsx', 4],
+        ['app/spread.tsx', 5],
+        ['app/spread.tsx', 7],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/spread.tsx'));

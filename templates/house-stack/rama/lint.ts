@@ -503,26 +503,71 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
           lost?: true;
         };
         const opened = (at: ts.Node, e: ts.Expression, steps = 0): Prop[] => {
-          let o: ts.Expression | undefined = e;
-          // Through brackets, `as` and names, however many (`const props = inner`).
-          for (let hops = 0; o && hops < FOLLOW_LIMIT; hops++) {
-            if (ts.isParenthesizedExpression(o) || ts.isAsExpression(o)) o = o.expression;
-            else if (ts.isIdentifier(o)) {
-              const d: ts.Declaration | undefined = target(o)?.valueDeclaration;
-              o = d && ts.isVariableDeclaration(d) ? d.initializer : undefined;
-            } else break;
+          const lost: Prop[] = [{ node: at, name: '', given: undefined, lost: true }];
+          if (steps >= FOLLOW_LIMIT) return lost;
+          const next = (x: ts.Expression) => opened(at, x, steps + 1);
+          if (
+            ts.isParenthesizedExpression(e) ||
+            ts.isAsExpression(e) ||
+            ts.isSatisfiesExpression(e) ||
+            ts.isNonNullExpression(e)
+          )
+            return next(e.expression);
+          if (ts.isIdentifier(e)) {
+            const d: ts.Declaration | undefined = target(e)?.valueDeclaration;
+            if (d && ts.isVariableDeclaration(d))
+              return d.initializer
+                ? [
+                    ...next(d.initializer),
+                    ...assignedTo(target(e)!, d.getSourceFile()).flatMap(next),
+                  ]
+                : [];
+            // A component's own props spread on (`{...props}`) are judged where it is given them.
+            if (d && (ts.isParameter(d) || ts.isBindingElement(d))) return [];
+            return lost;
           }
-          if (steps >= FOLLOW_LIMIT || (o && ts.isIdentifier(o)))
-            return [{ node: at, name: '', given: undefined, lost: true }];
-          // A component's own props spread on (`{...props}`) are judged where the component is given them.
-          if (!o || !ts.isObjectLiteralExpression(o)) return [];
-          return o.properties.flatMap((p): Prop[] =>
+          // Either branch may be the one spread.
+          if (ts.isConditionalExpression(e)) return [...next(e.whenTrue), ...next(e.whenFalse)];
+          if (ts.isBinaryExpression(e)) {
+            const op = e.operatorToken.kind;
+            if (op === ts.SyntaxKind.AmpersandAmpersandToken) return next(e.right);
+            if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
+              return [...next(e.left), ...next(e.right)];
+            return lost;
+          }
+          // One of the product's own functions: what it gives back is spread.
+          if (ts.isCallExpression(e)) {
+            const callee = ts.isPropertyAccessExpression(e.expression)
+              ? e.expression.name
+              : e.expression;
+            const d = target(callee)?.valueDeclaration;
+            const fn =
+              d && ts.isFunctionDeclaration(d)
+                ? d
+                : d &&
+                    ts.isVariableDeclaration(d) &&
+                    d.initializer &&
+                    (ts.isArrowFunction(d.initializer) || ts.isFunctionExpression(d.initializer))
+                  ? d.initializer
+                  : undefined;
+            if (fn?.body && !rel(fn.getSourceFile()).includes('node_modules/'))
+              return returnsOf(fn.body).flatMap(next);
+            return lost;
+          }
+          if (!ts.isObjectLiteralExpression(e)) {
+            // Nothing (null, undefined, false) spreads nothing; anything else is not taken on trust.
+            const t = checker.getTypeAtLocation(e);
+            return t.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.BooleanLike)
+              ? []
+              : lost;
+          }
+          return e.properties.flatMap((p): Prop[] =>
             ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))
               ? [{ node: at, name: p.name.text, given: p.initializer }]
               : ts.isShorthandPropertyAssignment(p)
                 ? [{ node: at, name: p.name.text, given: p.name }]
                 : ts.isSpreadAssignment(p)
-                  ? opened(at, p.expression, steps + 1)
+                  ? next(p.expression)
                   : [],
           );
         };
