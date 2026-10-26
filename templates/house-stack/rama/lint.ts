@@ -551,7 +551,13 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
                   ? d.initializer
                   : undefined;
             if (fn?.body && !rel(fn.getSourceFile()).includes('node_modules/'))
-              return returnsOf(fn.body).flatMap(next);
+              return [
+                ...returnsOf(fn.body).flatMap(next),
+                // What it is given may be what it gives back (`make({ children: '123' })`).
+                ...e.arguments
+                  .filter((x) => ts.isStringLiteral(x) || !isNumber(x))
+                  .map((x): Prop => ({ node: at, name: 'children', given: x })),
+              ];
             return lost;
           }
           if (!ts.isObjectLiteralExpression(e)) {

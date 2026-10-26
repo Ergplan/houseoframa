@@ -369,6 +369,9 @@ describe('the house stack', () => {
         'export const V = () => <p {...make()} />;',
         "export const W = ({ on }: { on: boolean }) => <p {...(on && { title: 'x' })} />;",
         'export const X = (p: { title: string }) => <p {...p} />;',
+        'const pass = (p: { children: string }) => p;',
+        "export const Y = () => <p {...pass({ children: 'Table 18' })} />;",
+        "export const Z = () => <p {...pass({ children: 'Masala chai' })} />;",
         '',
       ].join('\n'),
     );
@@ -379,6 +382,7 @@ describe('the house stack', () => {
         ['app/spread.tsx', 4],
         ['app/spread.tsx', 5],
         ['app/spread.tsx', 7],
+        ['app/spread.tsx', 11],
       ]);
     } finally {
       rmSync(path.join(site.repoDir, 'app/spread.tsx'));
