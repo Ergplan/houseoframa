@@ -318,23 +318,11 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     const numbered = texts.find((t) => t.isStringLiteral() && DIGIT.test(t.value));
     if (numbered?.isStringLiteral())
       return `“${e.getText().slice(0, 40)}”, which may be “${numbered.value.slice(0, 40)}”`;
-    // One element of a list or record written in the code: any of its elements may be shown.
+    // One element of a list or record (written in place, or by a name, a call…): any of its elements may
+    // be the one shown, so it is judged by what it is read from.
     if (ts.isElementAccessExpression(e)) {
-      const decl = target(e.expression)?.valueDeclaration;
-      let held: ts.Expression | undefined =
-        decl && ts.isVariableDeclaration(decl) ? decl.initializer : undefined;
-      if (held) held = unwrap(held);
-      const elements = held
-        ? ts.isArrayLiteralExpression(held)
-          ? [...held.elements]
-          : ts.isObjectLiteralExpression(held)
-            ? held.properties.flatMap((p) => (ts.isPropertyAssignment(p) ? [p.initializer] : []))
-            : []
-        : [];
-      for (const el of elements) {
-        const why = shows(el, depth + 1);
-        if (why) return `“${e.getText().slice(0, 40)}”, which may be ${why}`;
-      }
+      const why = shows(e.expression, depth + 1);
+      if (why) return `“${e.getText().slice(0, 40)}”, which may be ${why}`;
     }
     // A name for a value written in the product's own code: what it was given is what is shown.
     if (ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) {
