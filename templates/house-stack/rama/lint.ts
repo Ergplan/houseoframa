@@ -259,6 +259,26 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     return out;
   }
 
+  /** The function a callee or a callback stands for, through any names for it; null when not found. */
+  function fnOf(x: ts.Node | undefined): ts.FunctionLikeDeclaration | null {
+    let at: ts.Node | undefined =
+      x && ts.isExpression(x as ts.Expression) ? unwrap(x as ts.Expression) : x;
+    for (let hops = 0; at && hops < FOLLOW_LIMIT; hops++) {
+      if (
+        ts.isFunctionDeclaration(at) ||
+        ts.isMethodDeclaration(at) ||
+        ts.isArrowFunction(at) ||
+        ts.isFunctionExpression(at)
+      )
+        return at;
+      if (ts.isIdentifier(at) || ts.isPropertyAccessExpression(at))
+        at = target(ts.isPropertyAccessExpression(at) ? at.name : at)?.valueDeclaration;
+      else if (ts.isVariableDeclaration(at) && at.initializer) at = unwrap(at.initializer);
+      else return null;
+    }
+    return null;
+  }
+
   /** Whether the expression, shown as a child of an element, shows a number; and why. */
   function shows(e: ts.Expression, depth = 0): string | null {
     e = unwrap(e);
@@ -383,44 +403,31 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
       // is called on and given.
       const builtIn = decl && rel(decl.getSourceFile()).includes('node_modules/');
       if (builtIn) {
-        const parts = [
-          ...(ts.isPropertyAccessExpression(callee) ? [callee.expression] : []),
-          ...e.arguments,
-        ];
+        // map and flatMap show what their callback gives back, not what they run over.
+        const mapping =
+          ts.isPropertyAccessExpression(callee) && ['map', 'flatMap'].includes(callee.name.text);
+        const parts = mapping
+          ? e.arguments.slice(1)
+          : [...(ts.isPropertyAccessExpression(callee) ? [callee.expression] : []), ...e.arguments];
         for (const part of parts) {
           const why = shows(part, depth + 1);
           if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
         }
-        // A list made by map or flatMap holds what the callback gives back.
-        if (ts.isPropertyAccessExpression(callee) && ['map', 'flatMap'].includes(callee.name.text))
-          for (const fn of e.arguments.filter(
-            (a): a is ts.ArrowFunction | ts.FunctionExpression =>
-              ts.isArrowFunction(a) || ts.isFunctionExpression(a),
-          ))
+        // A list made by map or flatMap holds what the callback gives back, inline or by name.
+        if (mapping)
+          for (const cb of e.arguments.slice(0, 1)) {
+            const fn = fnOf(cb);
+            if (!fn?.body)
+              return `“${e.getText().slice(0, 40)}”, made by a callback the lint cannot follow, so it may hold a number`;
             for (const given of returnsOf(fn.body)) {
               const why = shows(given, depth + 1);
               if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
             }
+          }
       }
       // A function of the product's own, through any names for it (`const alias = label`): what it gives
       // back is what is shown.
-      let fnDecl: ts.Node | undefined = decl;
-      let fn: ts.FunctionLikeDeclaration | null = null;
-      for (let hops = 0; fnDecl && hops < FOLLOW_LIMIT; hops++) {
-        if (ts.isFunctionDeclaration(fnDecl) || ts.isMethodDeclaration(fnDecl)) {
-          fn = fnDecl;
-          break;
-        }
-        const init =
-          ts.isVariableDeclaration(fnDecl) && fnDecl.initializer
-            ? unwrap(fnDecl.initializer)
-            : undefined;
-        if (init && (ts.isArrowFunction(init) || ts.isFunctionExpression(init))) {
-          fn = init;
-          break;
-        }
-        fnDecl = init && ts.isIdentifier(init) ? target(init)?.valueDeclaration : undefined;
-      }
+      const fn = fnOf(decl);
       const own = Boolean(decl && !rel(decl.getSourceFile()).includes('node_modules/'));
       // A call of the product's own that cannot be followed to a function (a function handed in, a
       // name too far) gives text the lint cannot judge: it is not taken on trust.
