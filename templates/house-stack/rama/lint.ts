@@ -439,6 +439,21 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
               const why = shows(given, depth + 1);
               if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
             }
+            // A callback that gives back what it is handed (its parameter, inline or named) gives the
+            // list's own elements: the list mapped is judged too.
+            const params = new Set(
+              fn.parameters.flatMap((p) => (ts.isIdentifier(p.name) ? [target(p.name)] : [])),
+            );
+            const usesParam = (n: ts.Node): boolean =>
+              (ts.isIdentifier(n) && params.has(target(n))) ||
+              ts.forEachChild(n, usesParam) === true;
+            if (
+              ts.isPropertyAccessExpression(callee) &&
+              returnsOf(fn.body).some((r) => usesParam(r))
+            ) {
+              const why = shows(callee.expression, depth + 1);
+              if (why) return `“${e.getText().slice(0, 40)}”, which gives back elements of ${why}`;
+            }
           }
       }
       // A function of the product's own, through any names for it (`const alias = label`): what it gives
@@ -746,7 +761,11 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
     };
     visit(sf);
   }
-  return findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
+  // One finding a line: two ways of seeing the same number there say the same thing.
+  const seen = new Set<string>();
+  return findings
+    .sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
+    .filter((f) => !seen.has(`${f.file}:${f.line}`) && Boolean(seen.add(`${f.file}:${f.line}`)));
 }
 
 /**

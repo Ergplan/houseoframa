@@ -463,6 +463,8 @@ describe('the house stack', () => {
         "export const F = () => <p>{['Table 26'].map((x) => x)}</p>;",
         "export const G = () => <ul>{['Table 27'].map((x) => <li key={x}>{x}</li>)}</ul>;",
         "export const H = () => <ul>{['Masala chai'].map((x) => <li key={x}>{x}</li>)}</ul>;",
+        'const identity = (x: string): string => x;',
+        "export const I = () => <p>{['Table 28'].map(identity)}</p>;",
         '',
       ].join('\n'),
     );
@@ -474,6 +476,7 @@ describe('the house stack', () => {
         ['app/alias.tsx', 8],
         ['app/alias.tsx', 10],
         ['app/alias.tsx', 11],
+        ['app/alias.tsx', 14],
       ]);
       expect(found[1]!.sentence).toMatch(/a call the lint cannot follow to the function it runs/);
     } finally {
