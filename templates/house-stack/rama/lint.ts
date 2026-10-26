@@ -361,6 +361,22 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
             : ts.isGetAccessorDeclaration(decl) && decl.body
               ? returnsOf(decl.body)
               : [];
+      // A map callback's parameter holds each element of the list mapped (`['123'].map((x) => x)`).
+      if (decl && ts.isParameter(decl) && ts.isIdentifier(e)) {
+        const cb = decl.parent;
+        const call = cb.parent;
+        if (
+          (ts.isArrowFunction(cb) || ts.isFunctionExpression(cb)) &&
+          cb.parameters[0] === decl &&
+          ts.isCallExpression(call) &&
+          call.arguments[0] === cb &&
+          ts.isPropertyAccessExpression(call.expression) &&
+          ['map', 'flatMap', 'forEach'].includes(call.expression.name.text)
+        ) {
+          const why = shows(call.expression.expression, depth + 1);
+          if (why) return `“${e.getText().slice(0, 40)}”, an element of a list that holds ${why}`;
+        }
+      }
       const sym = target(ts.isPropertyAccessExpression(e) ? e.name : e);
       // What it was given first, and every value given to it after (`label = '123'`).
       const values = [

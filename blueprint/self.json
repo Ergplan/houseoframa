@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "353a8f377b439881bfc0d3f6b87b66880119c91f",
+  "commit": "f405342e914b13ed821fad45eac945876fa71cf5",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -12008,6 +12008,51 @@
       "sha": "353a8f377b439881bfc0d3f6b87b66880119c91f",
       "short": "353a8f3",
       "subject": "Stage 9: reviewer run 34 — calls are followed through names for a function, or refused"
+    },
+    {
+      "at": "2026-10-26T03:20:35Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 65,
+          "del": 20,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 34,
+          "del": 27,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        }
+      ],
+      "sha": "f405342e914b13ed821fad45eac945876fa71cf5",
+      "short": "f405342",
+      "subject": "Stage 9: reviewer run 35 — a map callback is followed by name, or refused"
     }
   ],
   "edges": [
@@ -24389,7 +24434,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-26T02:50:34Z",
+  "extractedAt": "2026-10-26T03:20:35Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -28139,13 +28184,13 @@
     },
     {
       "binary": false,
-      "bytes": 57146,
-      "changes": 83,
+      "bytes": 57223,
+      "changes": 84,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "353a8f377b439881bfc0d3f6b87b66880119c91f",
+      "lastCommit": "f405342e914b13ed821fad45eac945876fa71cf5",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -28573,12 +28618,12 @@
     {
       "binary": false,
       "bytes": 15113,
-      "changes": 30,
+      "changes": 31,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "353a8f377b439881bfc0d3f6b87b66880119c91f",
+      "lastCommit": "f405342e914b13ed821fad45eac945876fa71cf5",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 143,
@@ -28587,16 +28632,16 @@
     },
     {
       "binary": false,
-      "bytes": 440804,
-      "changes": 34,
+      "bytes": 452697,
+      "changes": 35,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "353a8f377b439881bfc0d3f6b87b66880119c91f",
+      "lastCommit": "f405342e914b13ed821fad45eac945876fa71cf5",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 596,
+      "lines": 612,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -34302,16 +34347,16 @@
     },
     {
       "binary": false,
-      "bytes": 23200,
-      "changes": 35,
+      "bytes": 23520,
+      "changes": 36,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "353a8f377b439881bfc0d3f6b87b66880119c91f",
+      "lastCommit": "f405342e914b13ed821fad45eac945876fa71cf5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 571,
+      "lines": 576,
       "packages": [
         "vitest"
       ],
@@ -34417,7 +34462,7 @@
     },
     {
       "binary": false,
-      "bytes": 6933,
+      "bytes": 7035,
       "changes": 4,
       "env": [
         "DATABASE_URL"
@@ -34428,7 +34473,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 159,
+      "lines": 160,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -35413,8 +35458,8 @@
     },
     {
       "binary": false,
-      "bytes": 35286,
-      "changes": 35,
+      "bytes": 36050,
+      "changes": 36,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35423,10 +35468,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "353a8f377b439881bfc0d3f6b87b66880119c91f",
+      "lastCommit": "f405342e914b13ed821fad45eac945876fa71cf5",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 794,
+      "lines": 810,
       "packages": [
         "typescript"
       ],

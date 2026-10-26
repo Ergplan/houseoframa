@@ -73,7 +73,8 @@ describe('Test drive', () => {
       'Three states',
       'Audit',
     ]);
-    expect(Date.now() - t).toBeLessThan(8 * 60_000);
+    // Minutes, as rule 16 asks: about three alone; the bound leaves room for the watcher beside it.
+    expect(Date.now() - t).toBeLessThan(15 * 60_000);
     expect(jobStatus(end)).toBe('passed');
     expect(readJob(end.id, env)).toEqual(end);
     expect(latestJob('testdrive', null, env)!.id).toBe(end.id);
