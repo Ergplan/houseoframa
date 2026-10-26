@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "dd813799480358c91f22d3cc2ae56c39aefd92ac",
+  "commit": "c1ceeaa362623fc78b59f5e95435d73620704c2e",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -11879,6 +11879,45 @@
       "sha": "dd813799480358c91f22d3cc2ae56c39aefd92ac",
       "short": "dd81379",
       "subject": "Stage 9: reviewer run 31 — a name read is followed into getters, class fields and shorthands"
+    },
+    {
+      "at": "2026-10-26T02:11:15Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 56,
+          "del": 17,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/test/house-stack.test.ts"
+        },
+        {
+          "add": 4,
+          "del": 16,
+          "kind": "M",
+          "path": "templates/house-stack/rama/lint.ts"
+        }
+      ],
+      "sha": "c1ceeaa362623fc78b59f5e95435d73620704c2e",
+      "short": "c1ceeaa",
+      "subject": "Stage 9: reviewer run 32 — an element read is linted by whatever it is read from"
     }
   ],
   "edges": [
@@ -24260,7 +24299,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-26T01:47:36Z",
+  "extractedAt": "2026-10-26T02:11:15Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -28010,13 +28049,13 @@
     },
     {
       "binary": false,
-      "bytes": 56758,
-      "changes": 80,
+      "bytes": 56876,
+      "changes": 81,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "dd813799480358c91f22d3cc2ae56c39aefd92ac",
+      "lastCommit": "c1ceeaa362623fc78b59f5e95435d73620704c2e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 229,
@@ -28443,7 +28482,7 @@
     },
     {
       "binary": false,
-      "bytes": 14892,
+      "bytes": 15014,
       "changes": 28,
       "env": [],
       "envDynamic": false,
@@ -28458,16 +28497,16 @@
     },
     {
       "binary": false,
-      "bytes": 404354,
-      "changes": 31,
+      "bytes": 416619,
+      "changes": 32,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "dd813799480358c91f22d3cc2ae56c39aefd92ac",
+      "lastCommit": "c1ceeaa362623fc78b59f5e95435d73620704c2e",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 545,
+      "lines": 563,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },
@@ -34173,16 +34212,16 @@
     },
     {
       "binary": false,
-      "bytes": 21179,
-      "changes": 32,
+      "bytes": 22107,
+      "changes": 33,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "dd813799480358c91f22d3cc2ae56c39aefd92ac",
+      "lastCommit": "c1ceeaa362623fc78b59f5e95435d73620704c2e",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 518,
+      "lines": 544,
       "packages": [
         "vitest"
       ],
@@ -35284,8 +35323,8 @@
     },
     {
       "binary": false,
-      "bytes": 33399,
-      "changes": 32,
+      "bytes": 33981,
+      "changes": 33,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35294,10 +35333,10 @@
         "lintFigures"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "dd813799480358c91f22d3cc2ae56c39aefd92ac",
+      "lastCommit": "c1ceeaa362623fc78b59f5e95435d73620704c2e",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
-      "lines": 763,
+      "lines": 773,
       "packages": [
         "typescript"
       ],

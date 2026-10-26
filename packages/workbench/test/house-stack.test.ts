@@ -421,6 +421,32 @@ describe('the house stack', () => {
     } finally {
       rmSync(path.join(site.repoDir, 'app/farspread.tsx'));
     }
+    // A number handed into a prop of a wider kind than a number is judged where it is handed over; one
+    // handed into a plain-number prop is judged where the component shows it.
+    writeFileSync(
+      path.join(site.repoDir, 'app/node.tsx'),
+      [
+        "import type { ReactNode } from 'react';",
+        'function Shown(p: { value: ReactNode }) {',
+        '  return <p>{p.value}</p>;',
+        '}',
+        'function Counted(p: { n: number }) {',
+        '  return <p>{p.n}</p>;',
+        '}',
+        'export const A = () => <Shown value={123} />;',
+        'export const B = () => <Counted n={4} />;',
+        '',
+      ].join('\n'),
+    );
+    try {
+      const found = await lintProduct(site.repoDir, env);
+      expect(found.map((f) => [f.file, f.line])).toEqual([
+        ['app/node.tsx', 6],
+        ['app/node.tsx', 8],
+      ]);
+    } finally {
+      rmSync(path.join(site.repoDir, 'app/node.tsx'));
+    }
     // A component kept beside House of Rama's files is read like any other.
     writeFileSync(
       path.join(site.repoDir, 'rama/Count.tsx'),

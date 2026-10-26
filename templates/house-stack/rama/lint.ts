@@ -609,8 +609,18 @@ export function lintFigures(dir: string, trusted?: string): LintFinding[] {
           // only "some text": every prop but `key` is judged where it is handed over (a number handed
           // over is judged where the component shows it). A library's component (a link, an image) is
           // judged only by the attributes a person reads.
+          // A number handed over is left to where the component shows it only when the prop is a plain
+          // number there (then the lint sees a number); handed into a prop of any wider kind
+          // (`ReactNode`) it would be seen only as "an element", so it is judged here.
+          const expected = checker.getContextualType(a.given);
+          const plainNumber =
+            expected !== undefined &&
+            Boolean(expected.flags & (ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)) &&
+            !expected.isUnion();
           const handed =
-            ownComponent && name !== 'key' && !(!ts.isStringLiteral(a.given) && isNumber(a.given));
+            ownComponent &&
+            name !== 'key' &&
+            !(!ts.isStringLiteral(a.given) && isNumber(a.given) && plainNumber);
           const shown =
             handed ||
             (!ownComponent && (SHOWN_ATTRIBUTES.has(name) || name === 'dangerouslySetInnerHTML')) ||
