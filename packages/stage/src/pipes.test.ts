@@ -66,10 +66,17 @@ describe('the pipes of a figure', () => {
     const l = buildingPipes(sc, flow('[1,2,3,4]', '4'), (t) =>
       t === 'orders' ? 'db/orders.ts' : null,
     );
+    // A pipe for each step: the rows to the function, up as it is worked out, across as the formula
+    // is applied, down onto the figure.
     expect(l.pipes.map((p) => [p.step, p.dry])).toEqual([
       [0, false],
+      [1, false],
+      [2, false],
       [3, false],
     ]);
+    // Each pipe starts where the one before ends.
+    for (let i = 1; i < l.pipes.length; i++)
+      expect(l.pipes[i]!.points[0]).toEqual(l.pipes[i - 1]!.points.at(-1));
     // Every step has a place its value shows; the source is the table's own part of the building.
     expect(l.stops.every(Boolean)).toBe(true);
     expect(l.pipes[0]!.points[0]).toEqual(l.stops[0]);
@@ -80,6 +87,8 @@ describe('the pipes of a figure', () => {
     const l = buildingPipes(sc, flow(null, null), () => null);
     expect(l.pipes.map((p) => [p.step, p.dry, p.label])).toEqual([
       [0, true, 'Today’s orders: untraced'],
+      [1, true, 'worked out again: untraced'],
+      [2, false, null],
       [3, true, 'untraced: no water reaches the screen'],
     ]);
     // Kept nowhere in this building: the pipe comes up from the ground under it.
@@ -89,6 +98,7 @@ describe('the pipes of a figure', () => {
     drawPipes(ctx, l, paletteFromTokens(tokens, 'dark'), { step: 3, progress: 1 });
     expect(rec.texts).toEqual([
       'Today’s orders: untraced',
+      'worked out again: untraced',
       'untraced: no water reaches the screen',
     ]);
   });
@@ -100,8 +110,19 @@ describe('the pipes of a figure', () => {
       expect(JSON.stringify(buildingPipes(t, flow('[1]', '1'), () => 'db/orders.ts'))).toBe(
         JSON.stringify(a),
       );
-      expect(a.pipes).toHaveLength(2);
+      expect(a.pipes).toHaveLength(4);
     }
+  });
+});
+
+describe('a figure whose working-out stands in another building', () => {
+  it('still gets every pipe, from the ground under this building', () => {
+    const elsewhere = { ...flow('[1]', '1') };
+    elsewhere.steps = elsewhere.steps.map((st) =>
+      st.kind === 'function' ? { ...st, file: 'elsewhere.ts' } : st,
+    );
+    const l = buildingPipes(sc, elsewhere, () => null);
+    expect(l.pipes.map((p) => p.step)).toEqual([0, 1, 2, 3]);
   });
 });
 

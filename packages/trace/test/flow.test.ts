@@ -58,6 +58,36 @@ describe('the flow of a figure', () => {
     expect(flowOf(capture, 'todays-total/made-up')).toBeNull();
   });
 
+  it('ends a repeated figure’s flow on its own appearance, not the first one', () => {
+    const twice: Capture = {
+      ...capture,
+      screens: capture.screens.map((s) =>
+        s.name === 'todays-total'
+          ? {
+              ...s,
+              figures: [
+                ...s.figures,
+                { ...s.figures.find((f) => f.id === 'todays-takings')!, text: '₹999.00' },
+              ],
+            }
+          : s,
+      ),
+      runs: {
+        ...capture.runs,
+        'todays-total/todays-takings~2': {
+          ...capture.runs['todays-total/todays-takings']!,
+          text: '99900',
+        },
+      },
+    };
+    expect(flowOf(twice, 'todays-total/todays-takings')!.steps.at(-1)!.sentence).toBe(
+      '₹113.00 on the screen “Today’s total”.',
+    );
+    expect(flowOf(twice, 'todays-total/todays-takings~2')!.steps.at(-1)!.sentence).toBe(
+      '₹999.00 on the screen “Today’s total”.',
+    );
+  });
+
   it('keeps a value from the form as from the form, not a table', () => {
     const f = flowOf(capture, 'new-order/new-order-amount')!;
     expect(f.steps[0]).toMatchObject({ kind: 'source', table: null, file: null, value: '2' });

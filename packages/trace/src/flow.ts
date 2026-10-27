@@ -4,6 +4,7 @@
 // are the trail's re-execution and nothing else: a step with no value runs dry and says so, and a figure
 // with no re-execution flows only as far as it reaches. Plain code, no model.
 import type { Capture } from './capture.ts';
+import { appearanceKeys } from './keys.ts';
 
 export interface FlowStep {
   kind: 'source' | 'function' | 'formula' | 'screen';
@@ -67,7 +68,9 @@ export function flowOf(capture: Capture, key: string): Flow | null {
   const figureId = key.slice((screen?.name.length ?? 0) + 1).replace(/~\d+$/, '');
   const m = capture.mappings[figureId];
   if (!screen || !m) return null;
-  const shownFig = screen.figures.find((f) => f.id === figureId);
+  // The figure shown at this very appearance (the n-th of its id on the screen), as its run is keyed.
+  const keys = appearanceKeys(screen.name, screen.figures);
+  const shownFig = screen.figures[keys.indexOf(key)] ?? null;
   const run = capture.runs[key];
   const ran = run?.ok ? run : null;
   const title = m.title ?? figureId;

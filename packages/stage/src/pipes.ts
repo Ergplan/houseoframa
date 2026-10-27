@@ -72,40 +72,51 @@ export function buildingPipes(
           ? mid(facadeShape(sc, g.at.u0, g.at.u1, g.at.v0, g.at.v1))
           : mid(facadeShape(sc, p.u0, p.u1, 0.96, 1));
   const fnIndex = flow.steps.findIndex((s) => s.kind === 'function');
-  const fnStep = flow.steps[fnIndex]!;
-  const fnAt = brickAt(fnStep.file);
+  const formulaIndex = flow.steps.findIndex((s) => s.kind === 'formula');
+  const screenIndex = flow.steps.findIndex((s) => s.kind === 'screen');
+  // The part that works the figure out; when it stands in another building, the ground under this one.
+  const fnAt = brickAt(flow.steps[fnIndex]?.file ?? null) ?? ground;
   const pipes: Pipe[] = [];
   const stops: (Pt | null)[] = [];
+  const dry = (i: number) => flow.steps[i]?.value === null;
+  const label = (i: number, what: string) => (dry(i) ? `${what}: untraced` : null);
+  // Every step has its own pipe; a step with no value is a dry, broken one, labelled (reviewer run 5).
   flow.steps.forEach((s, i) => {
     if (s.kind !== 'source') return;
     const from = brickAt(s.file) ?? brickAt(s.table ? tableFile(s.table) : null) ?? ground;
     stops[i] = from;
-    if (!fnAt) return;
-    // Along the floor from where it is kept, then up or down the side to the part that works it out.
-    const corner = { x: fnAt.x, y: from.y };
-    pipes.push({
-      step: i,
-      points: from === ground ? [ground, { x: ground.x, y: fnAt.y }, fnAt] : [from, corner, fnAt],
-      dry: s.value === null,
-      label: s.value === null ? `${s.label}: untraced` : null,
-    });
+    const points =
+      from === ground
+        ? [ground, { x: ground.x, y: fnAt.y }, fnAt]
+        : [from, { x: fnAt.x, y: from.y }, fnAt];
+    pipes.push({ step: i, points, dry: dry(i), label: label(i, s.label) });
   });
+  const top = { x: fnAt.x, y: Math.min(fnAt.y, figure?.y ?? fnAt.y) - 18 };
+  const over = { x: figure?.x ?? fnAt.x, y: top.y };
   stops[fnIndex] = fnAt;
-  const formulaIndex = flow.steps.findIndex((s) => s.kind === 'formula');
-  stops[formulaIndex] = fnAt;
-  const screenIndex = flow.steps.findIndex((s) => s.kind === 'screen');
+  stops[formulaIndex] = top;
   stops[screenIndex] = figure;
-  if (fnAt && figure) {
-    // Up through the floors to the figure on the front.
-    const top = { x: fnAt.x, y: Math.min(fnAt.y, figure.y) - 18 };
+  // Up from the part that works it out (the function), across as the formula is applied, down onto the
+  // figure on the glass (the screen).
+  pipes.push({
+    step: fnIndex,
+    points: [fnAt, top],
+    dry: dry(fnIndex),
+    label: label(fnIndex, 'worked out again'),
+  });
+  pipes.push({
+    step: formulaIndex,
+    points: [top, over],
+    dry: dry(formulaIndex),
+    label: label(formulaIndex, 'the formula'),
+  });
+  if (figure)
     pipes.push({
       step: screenIndex,
-      points: [fnAt, top, { x: figure.x, y: top.y }, figure],
-      dry: flow.steps[screenIndex]!.value === null,
-      label:
-        flow.steps[screenIndex]!.value === null ? 'untraced: no water reaches the screen' : null,
+      points: [over, figure],
+      dry: dry(screenIndex),
+      label: dry(screenIndex) ? 'untraced: no water reaches the screen' : null,
     });
-  }
   return { pipes, stops };
 }
 

@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b418d321ac99a634212473be928855abebbc23a4",
+  "commit": "178ed60afce32e566c3a09235c1a172a268047a2",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -14840,6 +14840,45 @@
       "sha": "b418d321ac99a634212473be928855abebbc23a4",
       "short": "b418d32",
       "subject": "Stage 11: reviewer run 3 — Catch up frees the live typing; spoken \"closer\" goes into the chosen building"
+    },
+    {
+      "at": "2026-10-27T12:58:21Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 6,
+          "del": 3,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/CodePane.tsx"
+        },
+        {
+          "add": 65,
+          "del": 20,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        },
+        {
+          "add": 35,
+          "del": 5,
+          "kind": "M",
+          "path": "packages/workbench/src/explain.ts"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/test/explain.test.ts"
+        }
+      ],
+      "sha": "178ed60afce32e566c3a09235c1a172a268047a2",
+      "short": "178ed60",
+      "subject": "Stage 11: reviewer run 4 — the builder's pace across polls; each block asked once"
     }
   ],
   "edges": [
@@ -26470,6 +26509,14 @@
       "typeOnly": true
     },
     {
+      "from": "packages/trace/src/flow.ts",
+      "symbols": [
+        "appearanceKeys"
+      ],
+      "to": "packages/trace/src/keys.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/trace/src/index.ts",
       "symbols": [
         "CAPTURE_VERSION",
@@ -30157,7 +30204,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T12:37:21Z",
+  "extractedAt": "2026-10-27T12:58:21Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -33227,14 +33274,14 @@
     {
       "binary": false,
       "bytes": 11544,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CodePane"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
+      "lastCommit": "178ed60afce32e566c3a09235c1a172a268047a2",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 320,
@@ -34516,7 +34563,7 @@
     },
     {
       "binary": false,
-      "bytes": 70255,
+      "bytes": 70827,
       "changes": 100,
       "env": [],
       "envDynamic": false,
@@ -34525,7 +34572,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 265,
+      "lines": 266,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -34784,16 +34831,16 @@
     },
     {
       "binary": false,
-      "bytes": 39374,
-      "changes": 3,
+      "bytes": 48654,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
+      "lastCommit": "178ed60afce32e566c3a09235c1a172a268047a2",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 71,
+      "lines": 87,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -41449,7 +41496,7 @@
     },
     {
       "binary": false,
-      "bytes": 4518,
+      "bytes": 5426,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -41458,7 +41505,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 117,
+      "lines": 138,
       "packages": [
         "vitest"
       ],
@@ -41467,7 +41514,7 @@
     },
     {
       "binary": false,
-      "bytes": 7179,
+      "bytes": 7670,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -41484,7 +41531,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 196,
+      "lines": 207,
       "path": "packages/stage/src/pipes.ts",
       "test": false
     },
@@ -41951,7 +41998,7 @@
     },
     {
       "binary": false,
-      "bytes": 5264,
+      "bytes": 5467,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -41964,7 +42011,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 136,
+      "lines": 139,
       "path": "packages/trace/src/flow.ts",
       "test": false
     },
@@ -42235,7 +42282,7 @@
     },
     {
       "binary": false,
-      "bytes": 2927,
+      "bytes": 3878,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -42244,7 +42291,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 68,
+      "lines": 98,
       "packages": [
         "vitest"
       ],
@@ -42524,7 +42571,7 @@
     {
       "binary": false,
       "bytes": 11561,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -42542,7 +42589,7 @@
         "explanationsFor"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "178ed60afce32e566c3a09235c1a172a268047a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 329,
@@ -42908,14 +42955,14 @@
     {
       "binary": false,
       "bytes": 9903,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "178ed60afce32e566c3a09235c1a172a268047a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 250,
