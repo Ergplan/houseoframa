@@ -24,7 +24,17 @@ export function cameraHref(siteId: string, c: Camera): string {
   return s ? `${base}${base.includes('?') ? '&' : '?'}${s}` : base;
 }
 
-export function useCamera(siteId: string, start: Camera) {
+/**
+ * The camera of a view. `decorate` adds what the view knows to an action before it is taken (the Street
+ * adds its chosen building to a zoom with nothing pointed at), for the ring, the keys and the voice alike.
+ */
+export function useCamera(
+  siteId: string,
+  start: Camera,
+  decorate: (a: CameraAction) => CameraAction = (a) => a,
+) {
+  const decorated = useRef(decorate);
+  decorated.current = decorate;
   const router = useRouter();
   const [cam, setCam] = useState<Camera>(start);
   const [turning, setTurning] = useState(0);
@@ -33,7 +43,8 @@ export function useCamera(siteId: string, start: Camera) {
   const level = useRef<Level>(start.level);
 
   const act = useCallback(
-    (a: CameraAction) => {
+    (given: CameraAction) => {
+      const a = decorated.current(given);
       const next = camera(ref.current, a);
       if (next.level !== level.current || next.building !== ref.current.building) {
         // A hand-off: the next level is its own page.

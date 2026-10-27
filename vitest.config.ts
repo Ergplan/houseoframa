@@ -7,7 +7,15 @@ if (existsSync('.env')) process.loadEnvFile('.env');
 const vendorTests = process.env.RAMA_VENDOR_TESTS === '1';
 const exclude = vendorTests ? [] : ['**/*.vendor.test.ts', '**/*.vendor.e2e.test.ts'];
 const project = (name: string, root: string, include: string[], testTimeout = 10_000) => ({
-  test: { name, root, include, exclude: [...exclude, '**/node_modules/**'], testTimeout },
+  // Hooks drop and create whole databases: under the full suite's load that can take more than 10 s.
+  test: {
+    name,
+    root,
+    include,
+    exclude: [...exclude, '**/node_modules/**'],
+    testTimeout,
+    hookTimeout: 60_000,
+  },
 });
 
 export default defineConfig({

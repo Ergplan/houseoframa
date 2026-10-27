@@ -77,7 +77,17 @@ export function StreetView(p: StreetProps) {
   const pal = usePalette();
   const { image, version } = useImages();
   const reduced = useReducedMotion();
-  const { cam, act: camAct, turning } = useCamera(p.siteId, p.camera);
+  // Zooming with nothing pointed at goes onto the chosen building: by the ring, the keys or the voice.
+  const chosenRef = useRef<string | null>(p.selected);
+  const {
+    cam,
+    act: camAct,
+    turning,
+  } = useCamera(p.siteId, p.camera, (a) =>
+    a.type === 'zoom' && a.over === undefined
+      ? { ...a, over: chosenRef.current ? { building: chosenRef.current } : null }
+      : a,
+  );
   const camRef = useRef(cam);
   camRef.current = cam;
   // The Street from the camera's side: its world turned before it is drawn, so draw and pick agree.
@@ -88,6 +98,7 @@ export function StreetView(p: StreetProps) {
   const [prog, setProg] = useState(1);
   const [playing, setPlaying] = useState(false);
   const [selected, setSelected] = useState<string | null>(p.selected);
+  chosenRef.current = selected;
   const [hover, setHover] = useState<{
     id: string | null;
     text: string;
@@ -275,13 +286,7 @@ export function StreetView(p: StreetProps) {
     unview(toPicture(el.getBoundingClientRect(), s, x, y), camRef.current, s);
   const pickAt = (el: HTMLCanvasElement, x: number, y: number) =>
     pickStreet(s, under(el, x, y), k >= lifts && prog >= 1 ? null : { timeline, k, p: prog });
-  // Zooming with nothing pointed at goes onto the chosen building.
-  const act = (a: CameraAction) =>
-    camAct(
-      a.type === 'zoom' && a.over === undefined
-        ? { ...a, over: selected ? { building: selected } : null }
-        : a,
-    );
+  const act = camAct;
   // The wheel zooms where the pointer is; a native listener, so the page does not scroll under it.
   useEffect(() => {
     const el = canvas.current;

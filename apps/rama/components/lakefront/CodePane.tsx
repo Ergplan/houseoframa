@@ -156,6 +156,8 @@ export function CodePane({
 
   const catchUp = () => {
     queue.current = [];
+    // Nothing is playing now: the next live edit starts at once (reviewer run 3).
+    playing.current = null;
     setPlan(null);
     if (path) void load(path, at);
   };

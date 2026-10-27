@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+  "commit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -14762,6 +14762,39 @@
       "sha": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "short": "21fc9cd",
       "subject": "Stage 11: reviewer run 1 — flow steps by reference, every block explained, drafts by commit"
+    },
+    {
+      "at": "2026-10-27T11:52:13Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 13,
+          "del": 9,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/CodePane.tsx"
+        },
+        {
+          "add": 767,
+          "del": 212,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        }
+      ],
+      "sha": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
+      "short": "deaa5bc",
+      "subject": "Stage 11: reviewer run 2 — live typing waits its turn; the report on \"Not explained yet\""
     }
   ],
   "edges": [
@@ -30079,7 +30112,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T11:30:00Z",
+  "extractedAt": "2026-10-27T11:52:13Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -33148,18 +33181,18 @@
     },
     {
       "binary": false,
-      "bytes": 11144,
-      "changes": 3,
+      "bytes": 11255,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CodePane"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 315,
+      "lines": 317,
       "packages": [
         "next",
         "react"
@@ -33186,7 +33219,7 @@
     },
     {
       "binary": false,
-      "bytes": 25247,
+      "bytes": 25376,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -33199,7 +33232,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 678,
+      "lines": 683,
       "packages": [
         "next",
         "react"
@@ -33270,7 +33303,7 @@
     },
     {
       "binary": false,
-      "bytes": 2856,
+      "bytes": 3258,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33285,7 +33318,7 @@
       "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 74,
+      "lines": 85,
       "packages": [
         "next",
         "react"
@@ -34692,12 +34725,12 @@
     {
       "binary": false,
       "bytes": 9180,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 112,
@@ -34706,16 +34739,16 @@
     },
     {
       "binary": false,
-      "bytes": 20890,
-      "changes": 1,
+      "bytes": 30086,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 39,
+      "lines": 55,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -44702,7 +44735,7 @@
     },
     {
       "binary": false,
-      "bytes": 2156,
+      "bytes": 2306,
       "changes": 11,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -44715,7 +44748,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 53,
+      "lines": 61,
       "packages": [
         "vitest"
       ],
