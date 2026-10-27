@@ -28,7 +28,7 @@ Built on trust. This document drives the build of House of Rama. It is committed
 
 ## 5. Plan — the Pod Edition, Stages 7–12
 
-Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Showroom and trails, ceremony, audit, floor-edition plumbing, sealed signatures, deploy). From Stage 7 the build follows the Pod Edition construct. Sequenced by what becomes permanent earliest: the workbench that holds people and keys, then the face, then the scaffold that makes products traceable by construction, then the voice, then the glass that shows the code being written, then ergPLAN.
+Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Showroom and trails, ceremony, audit, floor-edition plumbing, sealed signatures, deploy). From Stage 7 the build follows the Pod Edition construct. Sequenced by what becomes permanent earliest: the workbench that holds people and keys, then the face, then the scaffold that makes products traceable by construction, then the voice, then the glass that shows the code being written and the data flowing, then ergPLAN.
 
 | Stage | Name | What becomes permanent | Proven on |
 | --- | --- | --- | --- |
@@ -36,7 +36,7 @@ Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Show
 | 8 | Lakefront | The isometric renderer: Street and Building levels, facades from capture, flags, Harmony; audit drones and replay on the lakefront | self, sample product |
 | 9 | House stack | The scaffold; figures traced by construction; the build loop with automatic extract, capture and re-execution after every lift; the four seats (builder, auditor, drafter, voice) with the customer's choice of vendor | the sample product, rebuilt from the scaffold |
 | 10 | Ears | GPT Live voice, transcript, the track asked by voice, decision cards by spoken yes, scrap and restart, the board | a rehearsal on the sample product |
-| 11 | Glass | The camera: turn and zoom the lakefront; live code written inside the glass as the builder works, with plain English beside every block, drafted and unconfirmed until confirmed; the same view in replay | the sample product, built and replayed |
+| 11 | Glass and flow | The journey layout (one tab per act, one lit action); the camera: turn and zoom; live code written inside the glass with plain English beside every block, unconfirmed until confirmed; the pipes: the trail drawn as plumbing with real data flowing through it in slow motion; the same views in replay. Two days | the sample product, built, used and replayed |
 | 12 | ergPLAN | The first real product, built entirely inside House of Rama | ergPLAN |
 
 Deferred (notes in `docs/POD-EDITION.md`): wallet, customer-owned GitHub at handover, the fixed board camera, pod lights and bookings in daily use.
@@ -128,10 +128,17 @@ Tests: command grammar; the mouth-not-mind test; track questions from trail fixt
 Done when: the member runs acts 1 to 3 of a rehearsal on the sample product by voice, the design is explained aloud, and the first signature is a spoken yes; reviewer run; report. STOP.
 ```
 
-### Stage 11 — Glass
+### Stage 11 — Glass and flow
 
 ```
-Stage 11 makes the glass worth looking through. Two things the trainer asked for after seeing the lakefront: the building must turn and zoom under the hand, and the code must be seen being written inside it, with plain English beside every block. Nothing here changes what is recorded; it changes what is seen.
+Stage 11 makes the glass worth looking through. After using Stage 10 the trainer asked for four things: the screen must read as the journey of a build, with one lit action at a time; the building must turn and zoom under the hand; the code must be seen being written inside it, with plain English beside every block; and the data must be seen flowing through the building like water, from the ground to the screen, in slow motion. Nothing here changes what is recorded; it changes what is seen. Two days; build in the order below and commit after each part.
+
+apps/rama — the journey (first, half a day):
+- The site is laid out as the journey of a build, left to right: five tabs — Idea, Build, Walk through, Audit, Hand over — matching the acts of the session. Each tab shows only its own actions and its own panels; the Work and GitHub actions sit under a small "Care" tab at the end. The trainer console's long list goes away.
+- One lit action per tab: exactly one button on the screen wears the Harmony green folder (the active primary), and it is the thing to do next in that act (Start session on Idea before a session; Start build on Build; Sign on Walk through; Call the audit on Audit; Hand over on Hand over). Everything else is quiet. Disabled actions say in one sentence why, as now.
+- The lakefront takes the full width between the tabs and the voice bar. The right-hand panels (Street, Buildings, the Ground, Across the water) become hover and click cards on the picture itself, and one folding side panel for the selected thing. Nothing on the screen is empty space with a dark gradient.
+- Buildings are not tabs: they live together on the Street. Opening one fills the stage; the breadcrumb and "next building" move between them.
+- The glossary test extends to the tab names and the primary action labels. A screenshot of each tab at 1920×1080 is kept under `docs/reports/stage-11/` for the report.
 
 packages/stage — the camera:
 - `camera` is one state object {level, orientation, scale, centre} and every draw takes it. Orientation is one of four (north, east, south, west): the isometric grid turns in quarter steps, animated over 300 ms, so lines stay crisp and the picture stays honest about depth. Free rotation is not offered. Turn by dragging sideways, by the on-screen ring, by the arrow keys, or by the words turn left / turn right / turn around (added to Stage 10's command grammar).
@@ -145,11 +152,18 @@ packages/stage and packages/workbench — code written inside the glass:
 - Replay: the same view scrubs commit by commit after the fact, for products built here and for outside sites. In replay the typing is reconstructed from the commit diff; the pane shows the explanations recorded at that commit, or "Not explained yet".
 - Cost: explanations run only when the drafter key is set; without it the pane shows "Not explained yet" everywhere and the build is unaffected. The stage report states the drafter cost of one sample-product build.
 
-apps/rama: the camera ring and zoom controls in Harmony, with plain words from the glossary; the English pane as a Harmony panel at the Brick level and, folded, at the Building level; the banned-word test extends to the pane.
+packages/stage and packages/trace — the flow (second day):
+- The trail of a figure is drawn as plumbing. A vertical pipe runs from the figure on the facade down through the floors of its building into the ground, to the plot of the table the figure reads; horizontal pipes run along the floors between the bricks the trail passes through, and across the roads to another building when the trail crosses a feature. Pipes are drawn only for steps the trail has; a step the trail cannot derive is a dry, broken pipe labelled untraced (Invariant 2). The pipes' geometry comes from `packages/trace` output and the Blueprint, deterministically; no model call.
+- Water: when a person asks "show me the flow" for a figure (click, the word, or the voice), the real values move through the pipes in slow motion, one step per second, pausable and steppable: the rows leaving the table (count and the first few, from the sandbox re-execution the trail already does), the intermediate value at each brick, the formula applied, the figure arriving on the facade. Each step has a plain sentence in the customer's words ("8 rows left orders · became ₹1,240 in takings.ts · GST added · ₹1,463 on the screen"), handed to the voice as builder text.
+- The water is never invented. Values come only from the trail's re-execution or from a recorded real use of the product (a captured request during Photograph the screens or Test drive). A step with no value runs dry and says so. A figure whose trail is partial shows water as far as it reaches and stops.
+- Replay: the flow of any figure can be shown at any commit the replay stands on, with the values of that commit's re-execution if recorded, else dry.
+- Performance: the flow of the sample product's largest figure animates at 60 fps on the laptop; pipes are cached per Blueprint and camera.
 
-Tests: camera reducer (turn, zoom, level hand-offs, URL round trip); frame determinism in four orientations; pick in four orientations; the block splitter on fixtures (every line belongs to exactly one block); the typing stream from a recorded lift (order, pace floor, deletions); explanation cache by hash; unconfirmed until confirmed, and the overlay write audited; the pane shows "Not explained yet" with no drafter key; banned words; e2e: replay the sample product's recorded build, turn the Street twice, zoom into Take an order down to the code, watch it typed, read every block's English, confirm one.
+apps/rama: the camera ring and zoom controls in Harmony, with plain words from the glossary; the English pane as a Harmony panel at the Brick level and, folded, at the Building level; "Show me the flow" on every figure's hotspot and in the voice bar; the banned-word test extends to the pane and the flow sentences.
 
-Done when: a person can turn and zoom the sample product with a mouse and with words, watch its code written inside the glass during Test drive, and read a plain-English line beside every block, each marked unconfirmed until someone signs it; reviewer run; report. STOP.
+Tests: tab layout (one primary per tab, actions in their act only, glossary on tabs); camera reducer (turn, zoom, level hand-offs, URL round trip); frame determinism in four orientations; pick in four orientations; the block splitter on fixtures (every line belongs to exactly one block); the typing stream from a recorded lift (order, pace floor, deletions); explanation cache by hash; unconfirmed until confirmed, and the overlay write audited; the pane shows "Not explained yet" with no drafter key; pipe geometry from trail fixtures (every trail step has a pipe, every untraced step a dry one); the flow sequence from a recorded re-execution (values in order, pause, step, dry step); banned words; e2e: open the sample product, walk the five tabs with one lit action on each, replay the recorded build, turn the Street twice, zoom into Take an order down to the code, watch it typed, read every block's English, confirm one, then ask for the flow of the day's takings and watch the real rows become the figure on the screen.
+
+Done when: the screen reads as the journey with one lit action; a person can turn and zoom the sample product with a mouse and with words, watch its code written inside the glass during Test drive, read a plain-English line beside every block (each unconfirmed until someone signs it), and watch the real data of a figure flow from the ground to the screen in slow motion, dry wherever it is untraced; reviewer run; report. STOP.
 ```
 
 ### Stage 12 — ergPLAN
@@ -369,7 +383,7 @@ interface Finding { id: string; auditId: string; brick: string; check: string; v
 | 8 | Street/Building/Brick over one Blueprint; banned-word test passes; facades and flags live; drones and replay on the lakefront; member names every building of the sample product from the Street; reviewer |
 | 9 | Scaffold lint refuses an unmarked number; sample product rebuilt from the scaffold by the builder with no human command, 100% traced, all Verified; Test drive uses this path; four seats chosen in Settings and asked in discovery, builder ≠ auditor enforced, OpenAI-compatible adapter covers Gemini/Grok/Kimi/Ollama; reviewer |
 | 10 | Mouth-not-mind test; track questions answered only from trails; spoken yes creates a named decision; rehearsal acts 1–3 by voice; reviewer |
-| 11 | Four orientations and continuous zoom, deterministic frames and pick in all four; code typed inside the glass during a real lift and in replay; one English line per block, drafted by the drafter and unconfirmed until confirmed; "Not explained yet" with no key; banned-word test covers the pane; reviewer |
+| 11 | Five tabs, one lit action each, no empty stage; four orientations and continuous zoom, deterministic frames and pick in all four; code typed inside the glass during a real lift and in replay; one English line per block, drafted by the drafter and unconfirmed until confirmed; "Not explained yet" with no key; pipes for every trail step and dry pipes for untraced; the flow animates only recorded or re-executed values; banned-word test covers the pane and the flow; reviewer |
 | 12 | ergPLAN first signed release: own repository, 100% traced, customer screens Confirmed, signed audit, member's name on signature one |
 
 Two honest numbers wherever a rate is reported: figures traced over figures shown, and screens signed over screens changed, each with its audience named. An untraced figure correctly shown as untraced is never scored as a failure.

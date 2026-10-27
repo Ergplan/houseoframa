@@ -2,7 +2,7 @@
 
 House of Rama makes agent-built software inspectable and signable by the people who pay for it. A product is rendered as a transparent isometric lakefront: one building per thing the product does, named in the customer's own words; screens are the glass facades; the database is the ground; code is the third zoom level. Every figure on every screen traces to its formula, its inputs, the table it lives in, the commits that built it and the person who signed it off. Nothing merges unsigned. An auditor from a different model vendor flies the site and signs its own report. A voice narrates and asks; it is a mouth, not a mind.
 
-**Version 1 is for us.** Aayuda uses it on a laptop to build its first product inside it, ergPLAN. It is not a retail product yet. The design construct is `docs/POD-EDITION.md`; it wins over older wording below where they differ. Stages 0–6 and Gaps 1 are built and stand; Stages 7–12 build the Pod Edition on top of them (Stage 11, Glass, added 27 Oct: turn and zoom, code written inside the glass with English beside every block).
+**Version 1 is for us.** Aayuda uses it on a laptop to build its first product inside it, ergPLAN. It is not a retail product yet. The design construct is `docs/POD-EDITION.md`; it wins over older wording below where they differ. Stages 0–6 and Gaps 1 are built and stand; Stages 7–12 build the Pod Edition on top of them (Stage 11, Glass and flow, added 27 Oct: the journey layout, turn and zoom, code written inside the glass with English beside every block, and the data flowing through pipes).
 
 Sections 1–4 below are copied verbatim from `docs/MASTER-PROMPT.md`. The stage plan, stage prompts and definition of done live only there. Read them from disk; never ask for them to be pasted.
 
