@@ -1,6 +1,8 @@
-// The trainer console (Stage 7), in Harmony's Sidebar (design/harmony/README.md): the site in the three
-// words, the acts of a session as buttons (greyed with the reason when not possible; one primary, the
-// act possible now), the work buttons with their last outcome, the agenda and the key lights as chips.
+// The trainer console (Stage 7), laid out as the journey of a build since Stage 11: across the top of a
+// site's pages, the five acts as tabs (Idea, Build, Walk through, Audit, Hand over) and a small Care
+// tab; under them only the current tab's actions, exactly one lit (the thing to do next in that act),
+// each greyed with its reason when it cannot be done. The site in the three words stays in view. Care
+// holds the work buttons with their last outcome, GitHub, the agenda and the key lights.
 // Server-rendered: every button is a form, so it works without a script and nothing is typed but names.
 import Link from 'next/link';
 import type { Decision } from '@rama/shared';
@@ -9,6 +11,7 @@ import { unsaidSentence, type Job, type SiteStates } from '@rama/workbench';
 import { ACTS, type Act } from '../../app/api/site/[siteId]/act/handler';
 import { JobSteps } from './JobSteps';
 import { Chip, StateChip } from '../harmony/ui';
+import { journeyTab, TABS, tabHref, type Tab } from './journey';
 
 export interface ConsoleProps {
   siteId: string;
@@ -22,6 +25,8 @@ export interface ConsoleProps {
   captured: boolean;
   /** Whether the site has an audit on record. */
   audited: boolean;
+  /** Discovery sessions held for the site. */
+  sessions: number;
 }
 
 const KEY_LABEL = {
@@ -53,7 +58,7 @@ function ActButton({
         type="submit"
         disabled={Boolean(off)}
         title={off ?? undefined}
-        className={`eg-btn eg-btn--block eg-btn--sm${primary && !off ? ' eg-btn--primary' : ''}`}
+        className={`eg-btn eg-btn--sm${primary && !off ? ' eg-btn--primary' : ''}`}
       >
         {def.label}
       </button>
@@ -62,95 +67,10 @@ function ActButton({
   );
 }
 
-/** The act possible now, shown as the one primary: build, photograph, walk through, audit, hand over. */
-function nowAct(p: ConsoleProps): Act {
-  if (p.kind === 'product' && p.states.screens.length === 0) return 'start-build';
-  if (!p.captured) return 'photograph';
-  if (p.states.screens.some((s) => s.audience === 'customer' && !s.state.confirmed))
-    return 'start-walkthrough';
-  if (!p.audited) return 'call-audit';
-  return 'hand-over';
-}
-
-export function TrainerConsole(p: ConsoleProps) {
-  const open = p.cards.filter((c) => c.status === 'open' || c.status === 'not-built');
-  const unsigned = p.states.screens.filter((s) => s.audience === 'customer' && !s.state.confirmed);
-  const openai = p.keys?.find((k) => k.name === 'OPENAI_API_KEY');
-  const noAuditor = !openai?.set ? 'Needs the OpenAI key in Settings.' : null;
-  const now = nowAct(p);
-  const building = p.jobs.some((j) => j.kind === 'build' && j.status === 'running');
+function Jobs({ jobs }: { jobs: ConsoleProps['jobs'] }) {
   return (
-    <div className="console eg-stack" aria-label="Trainer console">
-      <div>
-        <div className="eg-overline">Trainer console</div>
-        <h2 className="eg-card__title">{p.name}</h2>
-      </div>
-      <div className="rama-states" data-tally>
-        <StateChip state="Verified" count={p.states.tally.Verified} />
-        <StateChip state="Confirmed" count={p.states.tally.Confirmed} />
-        <StateChip state="Unverified" count={p.states.tally.Unverified} />
-      </div>
-      {p.states.counts.map((c) => (
-        <p key={c.audience} className="eg-muted" style={{ margin: 0 }}>
-          {c.sentence}.
-        </p>
-      ))}
-      {p.states.unsaid ? (
-        <p className="eg-muted" style={{ margin: 0 }}>
-          {unsaidSentence(p.states.unsaid)}.
-        </p>
-      ) : null}
-      {p.states.figures ? (
-        <p className="eg-muted" style={{ margin: 0 }}>
-          {p.states.figures.traced} of {p.states.figures.shown} figures on the screens traced.
-        </p>
-      ) : null}
-
-      <div className="eg-overline">The session</div>
-      <ActButton siteId={p.siteId} act="start-session" />
-      <ActButton siteId={p.siteId} act="close-ideation" />
-      <ActButton
-        siteId={p.siteId}
-        act="start-build"
-        why={
-          p.kind !== 'product'
-            ? 'Only a product made here is built here.'
-            : building
-              ? 'The builder is at work.'
-              : null
-        }
-        primary={now === 'start-build'}
-      />
-      <ActButton
-        siteId={p.siteId}
-        act="pause-build"
-        why={building ? null : 'No build is running.'}
-      />
-      <ActButton
-        siteId={p.siteId}
-        act="start-walkthrough"
-        why={p.captured ? null : 'Photograph the screens first.'}
-        primary={now === 'start-walkthrough'}
-      />
-      <ActButton
-        siteId={p.siteId}
-        act="call-audit"
-        why={noAuditor}
-        primary={now === 'call-audit'}
-      />
-      <ActButton siteId={p.siteId} act="hand-over" primary={now === 'hand-over'} />
-
-      <div className="eg-overline">Work</div>
-      <ActButton
-        siteId={p.siteId}
-        act="refresh"
-        why={
-          p.siteId === 'self' ? 'House of Rama redraws its own picture with every change.' : null
-        }
-      />
-      <ActButton siteId={p.siteId} act="photograph" primary={now === 'photograph'} />
-      <ActButton siteId={p.siteId} act="tests" />
-      {p.jobs.map(({ kind, job, status }) => (
+    <>
+      {jobs.map(({ kind, job, status }) => (
         <div key={kind} className={`job ${status}`} data-job={kind}>
           {status === 'running' ? <meta httpEquiv="refresh" content="4" /> : null}
           <JobSteps job={job} />
@@ -161,9 +81,91 @@ export function TrainerConsole(p: ConsoleProps) {
           ) : null}
         </div>
       ))}
+    </>
+  );
+}
 
+/** The journey across the top of every page of a site: the tabs, the current tab's actions, the states. */
+export function JourneyBar({ p, tab }: { p: ConsoleProps; tab: Tab }) {
+  const j = journeyTab(p, tab);
+  const inPage = j.actions.find((a) => a.inPage);
+  return (
+    <nav className="console journey" aria-label="The journey of the build" data-tab={tab}>
+      <ol className="journey__tabs" role="tablist">
+        {TABS.map((t) => (
+          <li key={t.id} className={t.id === 'care' ? 'journey__care' : undefined}>
+            <Link
+              role="tab"
+              aria-selected={t.id === tab}
+              className={`journey__tab${t.id === tab ? ' on' : ''}`}
+              href={tabHref(p.siteId, t.id)}
+            >
+              {t.label}
+            </Link>
+          </li>
+        ))}
+      </ol>
+      <div className="journey__bar">
+        <div className="journey__actions" data-actions={tab}>
+          {j.actions
+            .filter((a) => !a.inPage)
+            .map((a) => (
+              <ActButton
+                key={a.act}
+                siteId={p.siteId}
+                act={a.act as Act}
+                why={a.why}
+                primary={j.lit === a.act}
+              />
+            ))}
+          {inPage ? (
+            <span className="eg-muted journey__inpage">
+              {inPage.why ??
+                (inPage.act === 'sign'
+                  ? 'Sign each screen below, by name.'
+                  : 'Hand over below, once nothing stands in the way.')}
+            </span>
+          ) : null}
+        </div>
+        <div className="rama-states" data-tally>
+          <StateChip state="Verified" count={p.states.tally.Verified} />
+          <StateChip state="Confirmed" count={p.states.tally.Confirmed} />
+          <StateChip state="Unverified" count={p.states.tally.Unverified} />
+          {p.states.figures ? (
+            <span className="eg-muted">
+              {p.states.figures.traced} of {p.states.figures.shown} figures on the screens traced.
+            </span>
+          ) : null}
+        </div>
+      </div>
+      {tab === 'build' ? <Jobs jobs={p.jobs.filter((x) => x.kind === 'build')} /> : null}
+      {tab === 'audit' ? <Jobs jobs={p.jobs.filter((x) => x.kind === 'audit')} /> : null}
+    </nav>
+  );
+}
+
+/** Care: the work buttons and their last outcome, GitHub, the agenda, the counts and the key lights. */
+export function CarePanel({ p }: { p: ConsoleProps }) {
+  const open = p.cards.filter((c) => c.status === 'open' || c.status === 'not-built');
+  const unsigned = p.states.screens.filter((s) => s.audience === 'customer' && !s.state.confirmed);
+  return (
+    <div className="care eg-stack">
+      <section className="eg-glass rama-card">
+        <div className="eg-overline">Work</div>
+        <Jobs jobs={p.jobs.filter((x) => x.kind !== 'build' && x.kind !== 'audit')} />
+        {p.states.counts.map((c) => (
+          <p key={c.audience} className="eg-muted" style={{ margin: 0 }}>
+            {c.sentence}.
+          </p>
+        ))}
+        {p.states.unsaid ? (
+          <p className="eg-muted" style={{ margin: 0 }}>
+            {unsaidSentence(p.states.unsaid)}.
+          </p>
+        ) : null}
+      </section>
       {p.kind === 'product' ? (
-        <>
+        <section className="eg-glass rama-card">
           <div className="eg-overline">On GitHub</div>
           {p.remote ? (
             <p style={{ margin: 0 }}>
@@ -171,65 +173,67 @@ export function TrainerConsole(p: ConsoleProps) {
             </p>
           ) : (
             <form action={`/api/site/${p.siteId}/repository`} method="post" className="act">
-              <button type="submit" className="eg-btn eg-btn--block eg-btn--sm">
+              <button type="submit" className="eg-btn eg-btn--sm">
                 Create it on GitHub
               </button>
               <small className="why">Under the GitHub account in Settings.</small>
             </form>
           )}
-        </>
+        </section>
       ) : null}
-
-      <div className="eg-overline">Agenda</div>
-      {open.length === 0 && unsigned.length === 0 ? (
-        <p className="eg-muted" style={{ margin: 0 }}>
-          Nothing open.
+      <section className="eg-glass rama-card">
+        <div className="eg-overline">Agenda</div>
+        {open.length === 0 && unsigned.length === 0 ? (
+          <p className="eg-muted" style={{ margin: 0 }}>
+            Nothing open.
+          </p>
+        ) : (
+          <ul className="agenda">
+            {open.map((c) => (
+              <li key={c.id}>
+                Card: <Link href={`/site/${p.siteId}/discovery`}>{c.title}</Link> is{' '}
+                {c.status === 'open' ? 'open' : 'decided but not built'}.
+              </li>
+            ))}
+            {unsigned.map((s) => (
+              <li key={s.id}>
+                Screen {s.name} is not signed yet ({s.state.state}).
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      <section className="eg-glass rama-card">
+        <div className="eg-overline">Keys</div>
+        {p.keys ? (
+          <div className="rama-states">
+            {p.keys.map((k) => {
+              const ok = k.set && k.check?.ok;
+              const tone =
+                !k.set || (k.check && !k.check.ok) ? 'negative' : ok ? 'positive' : 'muted';
+              const word = !k.set
+                ? 'missing'
+                : k.check
+                  ? k.check.ok
+                    ? 'works'
+                    : 'refused'
+                  : 'not checked';
+              return (
+                <Chip key={k.name} tone={tone} title={k.check?.sentence}>
+                  {KEY_LABEL[k.name]}: {word}
+                </Chip>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="eg-muted" style={{ margin: 0 }}>
+            The key lights are the trainer’s.
+          </p>
+        )}
+        <p style={{ margin: 0 }}>
+          <Link href="/settings">Settings</Link>
         </p>
-      ) : (
-        <ul className="agenda">
-          {open.map((c) => (
-            <li key={c.id}>
-              Card: <Link href={`/site/${p.siteId}/discovery`}>{c.title}</Link> is{' '}
-              {c.status === 'open' ? 'open' : 'decided but not built'}.
-            </li>
-          ))}
-          {unsigned.map((s) => (
-            <li key={s.id}>
-              Screen {s.name} is not signed yet ({s.state.state}).
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="eg-overline">Keys</div>
-      {p.keys ? (
-        <div className="rama-states">
-          {p.keys.map((k) => {
-            const ok = k.set && k.check?.ok;
-            const tone =
-              !k.set || (k.check && !k.check.ok) ? 'negative' : ok ? 'positive' : 'muted';
-            const word = !k.set
-              ? 'missing'
-              : k.check
-                ? k.check.ok
-                  ? 'works'
-                  : 'refused'
-                : 'not checked';
-            return (
-              <Chip key={k.name} tone={tone} title={k.check?.sentence}>
-                {KEY_LABEL[k.name]}: {word}
-              </Chip>
-            );
-          })}
-        </div>
-      ) : (
-        <p className="eg-muted" style={{ margin: 0 }}>
-          The key lights are the trainer’s.
-        </p>
-      )}
-      <p style={{ margin: 0 }}>
-        <Link href="/settings">Settings</Link>
-      </p>
+      </section>
     </div>
   );
 }

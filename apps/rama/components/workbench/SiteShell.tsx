@@ -5,13 +5,14 @@ import type { ReactNode } from 'react';
 import { readSiteBlueprint, siteRecord, type SiteLocation } from '@rama/blueprint/site';
 import { latestAudit } from '@rama/audit';
 import { toAuditView, type AuditView } from '@rama/audit/view';
-import { currentDecisions, listDecisions } from '@rama/ceremony';
+import { currentDecisions, listDecisions, listSessions } from '@rama/ceremony';
 import { createDb, listSecrets, seesEverything, type Member } from '@rama/db';
 import { readCapture } from '@rama/trace/showroom';
 import { jobStatus, latestJob, siteStates, type SiteStates } from '@rama/workbench';
 import { withDb } from '../../server/session';
 import { Shell } from '../harmony/Shell';
-import { TrainerConsole, type ConsoleProps } from './TrainerConsole';
+import { CarePanel, JourneyBar, type ConsoleProps } from './TrainerConsole';
+import { tabOf } from './journey';
 import { Said } from './Said';
 
 /** The site's latest audit, or null when it has none or the database cannot be reached (the site still renders). */
@@ -41,7 +42,8 @@ export async function consoleProps(
   const db = await withDb(async (db) => ({
     cards: currentDecisions(await listDecisions(db, site.id)),
     keys: seesEverything(member) ? await listSecrets(db) : null,
-  })).catch(() => ({ cards: [], keys: null }));
+    sessions: (await listSessions(db, site.id)).length,
+  })).catch(() => ({ cards: [], keys: null, sessions: 0 }));
   const jobs = (['build', 'refresh', 'photograph', 'tests', 'audit'] as const)
     .map((kind) => ({ kind, job: latestJob(kind, site.id) }))
     .filter((j): j is { kind: typeof j.kind; job: NonNullable<typeof j.job> } => j.job !== null)
@@ -92,9 +94,10 @@ export async function SiteShell({
         ...(here ? [{ label: here }] : []),
         ...(levels ?? []),
       ]}
-      {...(cp ? { side: <TrainerConsole {...cp} /> } : {})}
     >
+      {cp ? <JourneyBar p={cp} tab={tabOf(here)} /> : null}
       <Said q={q} />
+      {here === 'Care' && cp ? <CarePanel p={cp} /> : null}
       {children}
     </Shell>
   );

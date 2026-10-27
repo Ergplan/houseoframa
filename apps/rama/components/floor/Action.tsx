@@ -20,7 +20,7 @@ export function Action({
   return (
     <span>
       <button
-        className={primary ? 'primary' : ''}
+        className={primary ? 'eg-btn eg-btn--primary' : 'eg-btn'}
         disabled={busy}
         onClick={async () => {
           setBusy(true);

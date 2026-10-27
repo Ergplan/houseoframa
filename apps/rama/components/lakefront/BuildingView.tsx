@@ -140,6 +140,20 @@ export function BuildingView(p: BuildingProps) {
           >
             Back to the Street
           </Link>
+          {p.all.length > 1 ? (
+            <Link
+              className="eg-btn eg-btn--sm"
+              data-next
+              href={placeHref(p.siteId, {
+                level: 'building',
+                building:
+                  p.all[(p.all.findIndex((b) => b.id === p.building.id) + 1) % p.all.length]!.id,
+              })}
+            >
+              Next building:{' '}
+              {p.all[(p.all.findIndex((b) => b.id === p.building.id) + 1) % p.all.length]!.name}
+            </Link>
+          ) : null}
           <Link className="eg-btn eg-btn--sm" href={codeHref()}>
             Show me the code
           </Link>
@@ -171,201 +185,206 @@ export function BuildingView(p: BuildingProps) {
         ) : null}
       </div>
 
-      <aside className="lake-side">
-        {trail && open ? (
-          <Folder title={trail.title} sub={trail.what}>
-            <div className="lake-trail eg-on-folder" data-trail={open.key}>
-              <p>
-                <b>How it is worked out.</b> {trail.english}
-              </p>
-              {trail.inputs.length ? (
-                <ul>
-                  {trail.inputs.map((x, i) => (
-                    <li key={i}>
-                      {x.label}: {x.value ?? 'not worked out again'}
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-              {trail.kept.length ? (
+      <details className="lake-side lake-fold" open key={open?.key ?? 'building'}>
+        <summary className="lake-fold__head">
+          {trail && open ? trail.title : p.building.name}
+        </summary>
+        <div className="lake-fold__body">
+          {trail && open ? (
+            <Folder title={trail.title} sub={trail.what}>
+              <div className="lake-trail eg-on-folder" data-trail={open.key}>
                 <p>
-                  <b>Where it is kept.</b> {trail.kept.join('; ')}.
+                  <b>How it is worked out.</b> {trail.english}
                 </p>
-              ) : null}
-              {trail.again ? (
+                {trail.inputs.length ? (
+                  <ul>
+                    {trail.inputs.map((x, i) => (
+                      <li key={i}>
+                        {x.label}: {x.value ?? 'not worked out again'}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {trail.kept.length ? (
+                  <p>
+                    <b>Where it is kept.</b> {trail.kept.join('; ')}.
+                  </p>
+                ) : null}
+                {trail.again ? (
+                  <p>
+                    <b>Worked out again.</b>{' '}
+                    {trail.again.matches === true
+                      ? `The product’s own code gives ${trail.again.computed}, as the screen shows.`
+                      : trail.again.matches === false
+                        ? `The screen shows ${trail.again.shown}; the product’s own code gives ${trail.again.computed}.`
+                        : 'It could not be worked out again.'}
+                  </p>
+                ) : (
+                  <p>It has not been worked out again.</p>
+                )}
+                {trail.built.length ? (
+                  <p>
+                    <b>Built.</b>{' '}
+                    {trail.built
+                      .map(
+                        (x) =>
+                          `${x.lift ? `Lift ${x.lift}` : 'A lift'} by ${x.by}, ${x.at.slice(0, 10)}: ${x.what}`,
+                      )
+                      .join('. ')}
+                    .
+                  </p>
+                ) : null}
                 <p>
-                  <b>Worked out again.</b>{' '}
-                  {trail.again.matches === true
-                    ? `The product’s own code gives ${trail.again.computed}, as the screen shows.`
-                    : trail.again.matches === false
-                      ? `The screen shows ${trail.again.shown}; the product’s own code gives ${trail.again.computed}.`
-                      : 'It could not be worked out again.'}
+                  <b>Signed.</b>{' '}
+                  {trail.signed
+                    ? `By ${trail.signed.person}, ${trail.signed.at.slice(0, 10)}.`
+                    : 'Nobody has signed this screen yet.'}
                 </p>
-              ) : (
-                <p>It has not been worked out again.</p>
-              )}
-              {trail.built.length ? (
-                <p>
-                  <b>Built.</b>{' '}
-                  {trail.built
-                    .map(
-                      (x) =>
-                        `${x.lift ? `Lift ${x.lift}` : 'A lift'} by ${x.by}, ${x.at.slice(0, 10)}: ${x.what}`,
-                    )
-                    .join('. ')}
-                  .
-                </p>
-              ) : null}
-              <p>
-                <b>Signed.</b>{' '}
-                {trail.signed
-                  ? `By ${trail.signed.person}, ${trail.signed.at.slice(0, 10)}.`
-                  : 'Nobody has signed this screen yet.'}
-              </p>
-              <div className="rama-row">
-                <Link className="eg-btn eg-btn--sm" href={codeHref(trail.file)}>
-                  Show me the code
-                </Link>
-                <button
-                  type="button"
-                  className="eg-btn eg-btn--ghost eg-btn--sm"
-                  onClick={() => setPicked(null)}
-                >
-                  Close the trail
-                </button>
+                <div className="rama-row">
+                  <Link className="eg-btn eg-btn--sm" href={codeHref(trail.file)}>
+                    Show me the code
+                  </Link>
+                  <button
+                    type="button"
+                    className="eg-btn eg-btn--ghost eg-btn--sm"
+                    onClick={() => setPicked(null)}
+                  >
+                    Close the trail
+                  </button>
+                </div>
               </div>
-            </div>
-          </Folder>
-        ) : open && !open.traced ? (
-          <section className="eg-glass rama-card" data-untraced={open.key}>
-            <div className="eg-overline">Untraced</div>
-            <p>
-              {open.text ?? 'This figure'} on {open.screen}: nobody can say yet where this number
-              comes from. It stays untraced until it is mapped to the code that works it out.
-            </p>
-            <button type="button" className="eg-btn eg-btn--sm" onClick={() => setPicked(null)}>
-              Close
-            </button>
-          </section>
-        ) : null}
-
-        <section className="eg-glass rama-card">
-          <div className="eg-overline">{p.building.name}</div>
-          <p>{p.building.does ?? 'Nobody has said what it does yet.'}</p>
-          <p>
-            <StateChip
-              state={p.flag.state}
-              by={p.flag.state === 'Confirmed' ? p.flag.by.join(', ') : null}
-            />
-          </p>
-          <p className="eg-muted">{flagSentence(p.flag)}</p>
-        </section>
-
-        {p.building.kind === 'feature' ? (
-          <section className="eg-glass rama-card" data-naming={p.building.id}>
-            <div className="eg-overline">Its name</div>
-            <p className="eg-muted">
-              {p.building.confirmed
-                ? `Named by ${p.building.confirmed.by}, ${p.building.confirmed.at.slice(0, 10)}.`
-                : p.building.source === 'draft'
-                  ? 'Drafted from its screen; nobody has named it yet.'
-                  : 'Written by the builder; nobody has confirmed it yet.'}
-            </p>
-            <form action={`/api/site/${p.siteId}/features`} method="post" className="rama-form">
-              <input type="hidden" name="building" value={p.building.id} />
-              <label>
-                Name, in your words
-                <input
-                  className="eg-input"
-                  name="name"
-                  defaultValue={p.building.name}
-                  maxLength={80}
-                  required
-                />
-              </label>
-              <label>
-                What it does, in one sentence
-                <input
-                  className="eg-input"
-                  name="does"
-                  defaultValue={p.building.does ?? ''}
-                  maxLength={240}
-                />
-              </label>
-              <button type="submit" className="eg-btn eg-btn--sm">
-                {p.building.confirmed ? 'Keep these words' : 'Confirm the name'}
-              </button>
-            </form>
-          </section>
-        ) : null}
-
-        <section className="eg-glass rama-card">
-          <div className="eg-overline">Its screens and figures</div>
-          {sc.facades.length === 0 ? (
-            <p className="eg-muted">It has no screen of its own.</p>
-          ) : null}
-          {sc.facades.map((f) => (
-            <div key={f.screen} className="lake-facade" data-screen={f.screen}>
+            </Folder>
+          ) : open && !open.traced ? (
+            <section className="eg-glass rama-card" data-untraced={open.key}>
+              <div className="eg-overline">Untraced</div>
               <p>
-                <b>{f.title}</b>
-                {f.shot ? '' : ': not photographed yet'}
+                {open.text ?? 'This figure'} on {open.screen}: nobody can say yet where this number
+                comes from. It stays untraced until it is mapped to the code that works it out.
               </p>
-              {f.figures.length ? (
-                <ul className="lake-figures">
-                  {f.figures.map((g) => (
-                    <li key={g.key}>
-                      <button
-                        type="button"
-                        className="lake-name"
-                        onClick={() => setPicked(g.key)}
-                        data-figure={g.key}
-                      >
-                        {g.text ?? g.id}
-                      </button>{' '}
-                      <span
-                        className={`eg-chip ${g.traced ? 'eg-chip--accent' : 'rama-chip--muted'}`}
-                      >
-                        {g.traced ? 'Traced' : 'Untraced'}
-                      </span>
-                      {g.at ? null : (
-                        <small className="eg-muted">
-                          {' '}
-                          lower on the screen than the front shows
-                        </small>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              ) : f.shot ? (
-                <p className="eg-muted">No figures on this screen.</p>
-              ) : null}
-            </div>
-          ))}
-        </section>
-
-        <section className="eg-glass rama-card">
-          <div className="eg-overline">Its floors</div>
-          <ul className="lake-facts">
-            {sc.floors.map((f) => (
-              <li key={f.kind} data-floor={f.kind}>
-                {f.label}: {f.bricks.length} part{f.bricks.length === 1 ? '' : 's'}
-              </li>
-            ))}
-          </ul>
-          {p.building.tables.length ? (
-            <p>
-              {p.building.tables
-                .map(
-                  (t) =>
-                    `${t.writes && t.reads ? 'Reads and writes' : t.writes ? 'Writes' : 'Reads'} ${t.name}`,
-                )
-                .join('. ')}
-              .
-            </p>
+              <button type="button" className="eg-btn eg-btn--sm" onClick={() => setPicked(null)}>
+                Close
+              </button>
+            </section>
           ) : null}
-          {p.building.services.length ? <p>Talks to {p.building.services.join(', ')}.</p> : null}
-        </section>
-      </aside>
+
+          <section className="eg-glass rama-card">
+            <div className="eg-overline">{p.building.name}</div>
+            <p>{p.building.does ?? 'Nobody has said what it does yet.'}</p>
+            <p>
+              <StateChip
+                state={p.flag.state}
+                by={p.flag.state === 'Confirmed' ? p.flag.by.join(', ') : null}
+              />
+            </p>
+            <p className="eg-muted">{flagSentence(p.flag)}</p>
+          </section>
+
+          {p.building.kind === 'feature' ? (
+            <section className="eg-glass rama-card" data-naming={p.building.id}>
+              <div className="eg-overline">Its name</div>
+              <p className="eg-muted">
+                {p.building.confirmed
+                  ? `Named by ${p.building.confirmed.by}, ${p.building.confirmed.at.slice(0, 10)}.`
+                  : p.building.source === 'draft'
+                    ? 'Drafted from its screen; nobody has named it yet.'
+                    : 'Written by the builder; nobody has confirmed it yet.'}
+              </p>
+              <form action={`/api/site/${p.siteId}/features`} method="post" className="rama-form">
+                <input type="hidden" name="building" value={p.building.id} />
+                <label>
+                  Name, in your words
+                  <input
+                    className="eg-input"
+                    name="name"
+                    defaultValue={p.building.name}
+                    maxLength={80}
+                    required
+                  />
+                </label>
+                <label>
+                  What it does, in one sentence
+                  <input
+                    className="eg-input"
+                    name="does"
+                    defaultValue={p.building.does ?? ''}
+                    maxLength={240}
+                  />
+                </label>
+                <button type="submit" className="eg-btn eg-btn--sm">
+                  {p.building.confirmed ? 'Keep these words' : 'Confirm the name'}
+                </button>
+              </form>
+            </section>
+          ) : null}
+
+          <section className="eg-glass rama-card">
+            <div className="eg-overline">Its screens and figures</div>
+            {sc.facades.length === 0 ? (
+              <p className="eg-muted">It has no screen of its own.</p>
+            ) : null}
+            {sc.facades.map((f) => (
+              <div key={f.screen} className="lake-facade" data-screen={f.screen}>
+                <p>
+                  <b>{f.title}</b>
+                  {f.shot ? '' : ': not photographed yet'}
+                </p>
+                {f.figures.length ? (
+                  <ul className="lake-figures">
+                    {f.figures.map((g) => (
+                      <li key={g.key}>
+                        <button
+                          type="button"
+                          className="lake-name"
+                          onClick={() => setPicked(g.key)}
+                          data-figure={g.key}
+                        >
+                          {g.text ?? g.id}
+                        </button>{' '}
+                        <span
+                          className={`eg-chip ${g.traced ? 'eg-chip--accent' : 'rama-chip--muted'}`}
+                        >
+                          {g.traced ? 'Traced' : 'Untraced'}
+                        </span>
+                        {g.at ? null : (
+                          <small className="eg-muted">
+                            {' '}
+                            lower on the screen than the front shows
+                          </small>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                ) : f.shot ? (
+                  <p className="eg-muted">No figures on this screen.</p>
+                ) : null}
+              </div>
+            ))}
+          </section>
+
+          <section className="eg-glass rama-card">
+            <div className="eg-overline">Its floors</div>
+            <ul className="lake-facts">
+              {sc.floors.map((f) => (
+                <li key={f.kind} data-floor={f.kind}>
+                  {f.label}: {f.bricks.length} part{f.bricks.length === 1 ? '' : 's'}
+                </li>
+              ))}
+            </ul>
+            {p.building.tables.length ? (
+              <p>
+                {p.building.tables
+                  .map(
+                    (t) =>
+                      `${t.writes && t.reads ? 'Reads and writes' : t.writes ? 'Writes' : 'Reads'} ${t.name}`,
+                  )
+                  .join('. ')}
+                .
+              </p>
+            ) : null}
+            {p.building.services.length ? <p>Talks to {p.building.services.join(', ')}.</p> : null}
+          </section>
+        </div>
+      </details>
     </div>
   );
 }

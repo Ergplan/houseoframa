@@ -930,14 +930,47 @@ body:has(.rama-stage) {
 
 /* Stage 8, the lakefront: Street and Building levels. Tokens only; these rules place things. */
 .lakefront {
+  /* Stage 11: the picture takes the full width; the panel folds over its right edge. */
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
   align-items: start;
 }
-@media (max-width: 1100px) {
-  .lakefront {
-    grid-template-columns: minmax(0, 1fr);
+.lake-fold {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  width: min(360px, 42%);
+  max-height: calc(76vh - 24px);
+  overflow: auto;
+  border-radius: var(--radius-lg);
+  background: var(--glass-strong);
+  -webkit-backdrop-filter: var(--blur-glass);
+  backdrop-filter: var(--blur-glass);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-float);
+}
+.lake-fold:not([open]) {
+  width: auto;
+}
+.lake-fold__head {
+  cursor: pointer;
+  padding: 10px 16px;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.lake-fold__body {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0 12px 12px;
+}
+@media (max-width: 900px) {
+  .lake-fold {
+    position: static;
+    width: auto;
+    max-height: none;
   }
 }
 .lake-main,
@@ -1110,4 +1143,70 @@ body:has(.rama-stage) {
 }
 .voice-error {
   color: var(--red);
+}
+
+/* The journey of a build (Stage 11): the acts as tabs across the top, the current act's actions under
+   them with one lit, and Care set apart at the end. */
+.journey {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 14px;
+}
+.journey__tabs {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.journey__care {
+  margin-left: 18px;
+}
+.journey__tab {
+  display: block;
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.journey__tab.on {
+  background: var(--glass-strong);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.journey__care .journey__tab {
+  font-size: 13px;
+}
+.journey__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 18px;
+}
+.journey__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px 12px;
+}
+.journey .act {
+  display: grid;
+  gap: 2px;
+}
+.journey .why {
+  max-width: 260px;
+}
+.care {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
 }

@@ -196,7 +196,11 @@ export function WalkthroughView({
             {member ? (
               <>
                 <p>
-                  <button disabled={busy || Boolean(step.signature)} onClick={() => post(false)}>
+                  <button
+                    className={step.signature ? 'eg-btn' : 'eg-btn eg-btn--primary'}
+                    disabled={busy || Boolean(step.signature)}
+                    onClick={() => post(false)}
+                  >
                     {step.signature ? 'Signed' : `Confirm and sign as ${member}`}
                   </button>{' '}
                   {step.signature && (

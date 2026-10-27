@@ -18,6 +18,8 @@ export interface BrainsFormProps {
   vendors: VendorEntry[];
   builders: BuilderOption[];
   submit: string;
+  /** False where another action is the screen's one lit action (a product's site office). */
+  primary?: boolean;
 }
 
 const SEAT_TEXT = {
@@ -155,7 +157,7 @@ export function BrainsForm(p: BrainsFormProps) {
       <p className="eg-muted" style={{ margin: 0 }}>
         The checker is never the builder: the auditor list leaves out the builder’s company.
       </p>
-      <button type="submit" className="eg-btn eg-btn--primary">
+      <button type="submit" className={p.primary === false ? 'eg-btn' : 'eg-btn eg-btn--primary'}>
         {p.submit}
       </button>
     </form>

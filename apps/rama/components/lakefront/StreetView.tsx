@@ -406,152 +406,165 @@ export function StreetView(p: StreetProps) {
         ) : null}
       </div>
 
-      <aside className="lake-side">
-        {chosen ? (
-          // The chosen building is the green object on the picture, so its card here is glass.
-          <section className="eg-glass rama-card lake-chosen" data-chosen={chosen.id}>
-            <div className="eg-card__head">
+      {/* One folding side panel over the picture's edge, for the selected thing (Stage 11): the chosen
+          building, else the Street; its buildings, ground and water folded inside. */}
+      <details
+        className="lake-side lake-fold"
+        open={chosen ? true : undefined}
+        key={chosen?.id ?? 'street'}
+      >
+        <summary className="lake-fold__head">{chosen ? chosen.name : 'The Street'}</summary>
+        <div className="lake-fold__body">
+          {chosen ? (
+            // The chosen building is the green object on the picture, so its card here is glass.
+            <section className="eg-glass rama-card lake-chosen" data-chosen={chosen.id}>
+              <div className="eg-card__head">
+                <div>
+                  <h2 className="eg-card__title">{chosen.name}</h2>
+                  <p className="eg-card__sub">
+                    {chosen.does ?? 'Nobody has said what it does yet.'}
+                  </p>
+                </div>
+              </div>
               <div>
-                <h2 className="eg-card__title">{chosen.name}</h2>
-                <p className="eg-card__sub">{chosen.does ?? 'Nobody has said what it does yet.'}</p>
-              </div>
-            </div>
-            <div>
-              <p>{flagSentence(p.flags[chosen.id]!)}</p>
-              {chosen.screens.length ? (
-                <p>
-                  {chosen.screens.length} screen{chosen.screens.length === 1 ? '' : 's'}
-                  {chosen.facades.some((f) => f.shot) ? '' : ', not photographed yet'}.
-                </p>
-              ) : null}
-              {keeps(chosen).map((t) => (
-                <p key={t}>{t}.</p>
-              ))}
-              {chosen.services.length ? <p>Talks to {chosen.services.join(', ')}.</p> : null}
-              {badges[chosen.id] ? (
-                <p>
-                  The audit: {badges[chosen.id] === 'pass' ? 'passed' : `a ${badges[chosen.id]}`}.
-                </p>
-              ) : null}
-              <div className="rama-row">
-                <Link
-                  className="eg-btn eg-btn--sm"
-                  href={placeHref(p.siteId, { level: 'building', building: chosen.id })}
-                >
-                  Open
-                </Link>
-                <Link
-                  className="eg-btn eg-btn--ghost eg-btn--sm"
-                  href={placeHref(p.siteId, { level: 'code', building: chosen.id })}
-                >
-                  Show me the code
-                </Link>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section className="eg-glass rama-card">
-            <div className="eg-overline">The Street</div>
-            {features.length ? (
-              <p>
-                {features.length} building{features.length === 1 ? '' : 's'}, one for each thing{' '}
-                {p.name} does. Choose one to see what it does; open it to see its screens.
-              </p>
-            ) : (
-              <p>Nothing is built yet: the buildings rise as the builder lays them.</p>
-            )}
-            {!p.named ? (
-              <p className="eg-muted">
-                {p.problem
-                  ? `The names could not be read (${p.problem}), so they are drafted from the screens.`
-                  : 'These names are drafted from the screens; nobody has named them yet.'}
-              </p>
-            ) : null}
-            {p.unknownScreens.length ? (
-              <p className="eg-muted">
-                Named but not found among the screens: {p.unknownScreens.join(', ')}.
-              </p>
-            ) : null}
-          </section>
-        )}
-
-        <section className="eg-glass rama-card">
-          <div className="eg-overline">Buildings</div>
-          <ol className="lake-list">
-            {s.buildings.map((b) => (
-              <li key={b.id} data-building={b.id} className={selected === b.id ? 'on' : ''}>
-                <button
-                  type="button"
-                  className="lake-name"
-                  onClick={() => setSelected(b.id)}
-                  aria-pressed={selected === b.id}
-                >
-                  {b.name}
-                </button>
-                <StateChip
-                  state={p.flags[b.id]!.state}
-                  by={p.flags[b.id]!.state === 'Confirmed' ? p.flags[b.id]!.by.join(', ') : null}
-                />
-                {badges[b.id] ? (
-                  <span
-                    className={`eg-chip eg-chip--${badges[b.id] === 'defect' ? 'negative' : badges[b.id] === 'note' ? 'warning' : 'accent'}`}
-                    data-badge={badges[b.id]}
-                  >
-                    {badges[b.id] === 'defect'
-                      ? 'Defect'
-                      : badges[b.id] === 'note'
-                        ? 'Note'
-                        : 'Passed'}
-                  </span>
+                <p>{flagSentence(p.flags[chosen.id]!)}</p>
+                {chosen.screens.length ? (
+                  <p>
+                    {chosen.screens.length} screen{chosen.screens.length === 1 ? '' : 's'}
+                    {chosen.facades.some((f) => f.shot) ? '' : ', not photographed yet'}.
+                  </p>
                 ) : null}
-                <small className="lake-does">{b.does ?? 'Nobody has said what it does yet.'}</small>
-              </li>
-            ))}
-          </ol>
-        </section>
+                {keeps(chosen).map((t) => (
+                  <p key={t}>{t}.</p>
+                ))}
+                {chosen.services.length ? <p>Talks to {chosen.services.join(', ')}.</p> : null}
+                {badges[chosen.id] ? (
+                  <p>
+                    The audit: {badges[chosen.id] === 'pass' ? 'passed' : `a ${badges[chosen.id]}`}.
+                  </p>
+                ) : null}
+                <div className="rama-row">
+                  <Link
+                    className="eg-btn eg-btn--sm"
+                    href={placeHref(p.siteId, { level: 'building', building: chosen.id })}
+                  >
+                    Open
+                  </Link>
+                  <Link
+                    className="eg-btn eg-btn--ghost eg-btn--sm"
+                    href={placeHref(p.siteId, { level: 'code', building: chosen.id })}
+                  >
+                    Show me the code
+                  </Link>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <section className="eg-glass rama-card">
+              <div className="eg-overline">The Street</div>
+              {features.length ? (
+                <p>
+                  {features.length} building{features.length === 1 ? '' : 's'}, one for each thing{' '}
+                  {p.name} does. Choose one to see what it does; open it to see its screens.
+                </p>
+              ) : (
+                <p>Nothing is built yet: the buildings rise as the builder lays them.</p>
+              )}
+              {!p.named ? (
+                <p className="eg-muted">
+                  {p.problem
+                    ? `The names could not be read (${p.problem}), so they are drafted from the screens.`
+                    : 'These names are drafted from the screens; nobody has named them yet.'}
+                </p>
+              ) : null}
+              {p.unknownScreens.length ? (
+                <p className="eg-muted">
+                  Named but not found among the screens: {p.unknownScreens.join(', ')}.
+                </p>
+              ) : null}
+            </section>
+          )}
 
-        <section className="eg-glass rama-card">
-          <div className="eg-overline">The ground</div>
-          {s.plots.length ? (
-            <ul className="lake-facts">
-              {s.plots.map((pl) => (
-                <li key={pl.table} data-plot={pl.table}>
-                  <b>{pl.table}</b>:{' '}
-                  {pl.readBy.length + pl.writtenBy.length
-                    ? [
-                        pl.writtenBy.length ? `written by ${names(s, pl.writtenBy)}` : null,
-                        pl.readBy.length ? `read by ${names(s, pl.readBy)}` : null,
-                      ]
-                        .filter(Boolean)
-                        .join('; ')
-                    : 'no building reads or writes it yet'}
-                  .
+          <section className="eg-glass rama-card">
+            <div className="eg-overline">Buildings</div>
+            <ol className="lake-list">
+              {s.buildings.map((b) => (
+                <li key={b.id} data-building={b.id} className={selected === b.id ? 'on' : ''}>
+                  <button
+                    type="button"
+                    className="lake-name"
+                    onClick={() => setSelected(b.id)}
+                    aria-pressed={selected === b.id}
+                  >
+                    {b.name}
+                  </button>
+                  <StateChip
+                    state={p.flags[b.id]!.state}
+                    by={p.flags[b.id]!.state === 'Confirmed' ? p.flags[b.id]!.by.join(', ') : null}
+                  />
+                  {badges[b.id] ? (
+                    <span
+                      className={`eg-chip eg-chip--${badges[b.id] === 'defect' ? 'negative' : badges[b.id] === 'note' ? 'warning' : 'accent'}`}
+                      data-badge={badges[b.id]}
+                    >
+                      {badges[b.id] === 'defect'
+                        ? 'Defect'
+                        : badges[b.id] === 'note'
+                          ? 'Note'
+                          : 'Passed'}
+                    </span>
+                  ) : null}
+                  <small className="lake-does">
+                    {b.does ?? 'Nobody has said what it does yet.'}
+                  </small>
                 </li>
               ))}
-            </ul>
-          ) : (
-            <p className="eg-muted">The product keeps no records of its own yet.</p>
-          )}
-          <div className="eg-overline">Across the water</div>
-          {s.jetties.length ? (
-            <ul className="lake-facts">
-              {s.jetties.map((j) => (
-                <li key={j.service} data-jetty={j.service}>
-                  <b>{j.service}</b>, talked to by {names(s, j.users)}.
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="eg-muted">It talks to no outside service.</p>
-          )}
-          {s.notDrawn ? (
-            <p className="eg-muted">
-              {s.notDrawn} file{s.notDrawn === 1 ? ' is' : 's are'} not drawn on the Street: tests,
-              documents and settings. They are in the code.
-            </p>
-          ) : null}
-        </section>
-      </aside>
+            </ol>
+          </section>
+
+          <section className="eg-glass rama-card">
+            <div className="eg-overline">The ground</div>
+            {s.plots.length ? (
+              <ul className="lake-facts">
+                {s.plots.map((pl) => (
+                  <li key={pl.table} data-plot={pl.table}>
+                    <b>{pl.table}</b>:{' '}
+                    {pl.readBy.length + pl.writtenBy.length
+                      ? [
+                          pl.writtenBy.length ? `written by ${names(s, pl.writtenBy)}` : null,
+                          pl.readBy.length ? `read by ${names(s, pl.readBy)}` : null,
+                        ]
+                          .filter(Boolean)
+                          .join('; ')
+                      : 'no building reads or writes it yet'}
+                    .
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="eg-muted">The product keeps no records of its own yet.</p>
+            )}
+            <div className="eg-overline">Across the water</div>
+            {s.jetties.length ? (
+              <ul className="lake-facts">
+                {s.jetties.map((j) => (
+                  <li key={j.service} data-jetty={j.service}>
+                    <b>{j.service}</b>, talked to by {names(s, j.users)}.
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="eg-muted">It talks to no outside service.</p>
+            )}
+            {s.notDrawn ? (
+              <p className="eg-muted">
+                {s.notDrawn} file{s.notDrawn === 1 ? ' is' : 's are'} not drawn on the Street:
+                tests, documents and settings. They are in the code.
+              </p>
+            ) : null}
+          </section>
+        </div>
+      </details>
     </div>
   );
 }

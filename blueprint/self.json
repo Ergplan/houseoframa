@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "9ea22f923851d7b9b498e5c094ba160c2524a2a1",
+  "commit": "609a7ab9d69596374d91cbddf2ead661516d4443",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -13148,6 +13148,27 @@
       "sha": "9ea22f923851d7b9b498e5c094ba160c2524a2a1",
       "short": "9ea22f9",
       "subject": "Stage 10: blueprint/self.json after the master prompt's Stage 11"
+    },
+    {
+      "at": "2026-10-27T04:39:13Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 50,
+          "del": 8,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 0,
+          "del": 3,
+          "kind": "M",
+          "path": "pnpm-lock.yaml"
+        }
+      ],
+      "sha": "609a7ab9d69596374d91cbddf2ead661516d4443",
+      "short": "609a7ab",
+      "subject": "Stage 10: pnpm-lock.yaml follows packages/model's dependencies"
     }
   ],
   "edges": [
@@ -16249,6 +16270,22 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/site/[siteId]/care/page.tsx",
+      "symbols": [
+        "SiteShell"
+      ],
+      "to": "apps/rama/components/workbench/SiteShell.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/care/page.tsx",
+      "symbols": [
+        "pageSite"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
         "DiscoveryView"
@@ -18004,10 +18041,19 @@
     {
       "from": "apps/rama/components/workbench/SiteShell.tsx",
       "symbols": [
+        "CarePanel",
         "ConsoleProps",
-        "TrainerConsole"
+        "JourneyBar"
       ],
       "to": "apps/rama/components/workbench/TrainerConsole.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/SiteShell.tsx",
+      "symbols": [
+        "tabOf"
+      ],
+      "to": "apps/rama/components/workbench/journey.ts",
       "typeOnly": false
     },
     {
@@ -18053,7 +18099,8 @@
       "from": "apps/rama/components/workbench/SiteShell.tsx",
       "symbols": [
         "currentDecisions",
-        "listDecisions"
+        "listDecisions",
+        "listSessions"
       ],
       "to": "packages/ceremony/src/index.ts",
       "typeOnly": false
@@ -18121,6 +18168,17 @@
     {
       "from": "apps/rama/components/workbench/TrainerConsole.tsx",
       "symbols": [
+        "TABS",
+        "Tab",
+        "journeyTab",
+        "tabHref"
+      ],
+      "to": "apps/rama/components/workbench/journey.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/TrainerConsole.tsx",
+      "symbols": [
         "SecretView"
       ],
       "to": "packages/db/src/index.ts",
@@ -18143,6 +18201,60 @@
       ],
       "to": "packages/workbench/src/index.ts",
       "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/journey.test.tsx",
+      "symbols": [
+        "ACTS"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/act/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/journey.test.tsx",
+      "symbols": [
+        "ConsoleProps",
+        "JourneyBar"
+      ],
+      "to": "apps/rama/components/workbench/TrainerConsole.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/journey.test.tsx",
+      "symbols": [
+        "TABS",
+        "Tab",
+        "journeyTab",
+        "tabHref",
+        "tabOf"
+      ],
+      "to": "apps/rama/components/workbench/journey.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/journey.test.tsx",
+      "symbols": [
+        "bannedIn",
+        "visibleText"
+      ],
+      "to": "apps/rama/test/banned.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/journey.ts",
+      "symbols": [
+        "Act"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/act/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/workbench/journey.ts",
+      "symbols": [
+        "ConsoleProps"
+      ],
+      "to": "apps/rama/components/workbench/TrainerConsole.tsx",
+      "typeOnly": true
     },
     {
       "from": "apps/rama/server/auth-deps.ts",
@@ -27179,7 +27291,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T04:21:42Z",
+  "extractedAt": "2026-10-27T04:39:13Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -28904,7 +29016,7 @@
     },
     {
       "binary": false,
-      "bytes": 21607,
+      "bytes": 23660,
       "changes": 13,
       "env": [],
       "envDynamic": false,
@@ -28913,7 +29025,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1113,
+      "lines": 1212,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -29160,7 +29272,25 @@
     },
     {
       "binary": false,
-      "bytes": 3982,
+      "bytes": 886,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 21,
+      "path": "apps/rama/app/site/[siteId]/care/page.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4040,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -29172,7 +29302,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 106,
+      "lines": 108,
       "packages": [
         "next"
       ],
@@ -29784,7 +29914,7 @@
     },
     {
       "binary": false,
-      "bytes": 9308,
+      "bytes": 9452,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -29795,7 +29925,7 @@
       "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 246,
+      "lines": 250,
       "packages": [
         "next",
         "react"
@@ -29805,7 +29935,7 @@
     },
     {
       "binary": false,
-      "bytes": 18245,
+      "bytes": 18174,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -29817,7 +29947,7 @@
       "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 514,
+      "lines": 510,
       "packages": [
         "next",
         "react"
@@ -29827,7 +29957,7 @@
     },
     {
       "binary": false,
-      "bytes": 1310,
+      "bytes": 1331,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -30052,7 +30182,7 @@
     },
     {
       "binary": false,
-      "bytes": 14287,
+      "bytes": 15416,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -30064,7 +30194,7 @@
       "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 371,
+      "lines": 390,
       "packages": [
         "next",
         "react"
@@ -30074,7 +30204,7 @@
     },
     {
       "binary": false,
-      "bytes": 20019,
+      "bytes": 20832,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -30087,7 +30217,7 @@
       "lastCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 561,
+      "lines": 574,
       "packages": [
         "next",
         "react"
@@ -30276,7 +30406,7 @@
     },
     {
       "binary": false,
-      "bytes": 6206,
+      "bytes": 6356,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -30289,7 +30419,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 163,
+      "lines": 165,
       "packages": [
         "react"
       ],
@@ -30332,7 +30462,7 @@
     },
     {
       "binary": false,
-      "bytes": 3677,
+      "bytes": 3862,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -30345,19 +30475,20 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 101,
+      "lines": 104,
       "path": "apps/rama/components/workbench/SiteShell.tsx",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 8119,
+      "bytes": 8598,
       "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "CarePanel",
         "ConsoleProps",
-        "TrainerConsole"
+        "JourneyBar"
       ],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "hosts": [
@@ -30366,11 +30497,53 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 235,
+      "lines": 239,
       "packages": [
         "next"
       ],
       "path": "apps/rama/components/workbench/TrainerConsole.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4926,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 125,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
+      "path": "apps/rama/components/workbench/journey.test.tsx",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4934,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "JourneyTab",
+        "TABS",
+        "Tab",
+        "TabAction",
+        "journeyTab",
+        "tabHref",
+        "tabOf"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 146,
+      "path": "apps/rama/components/workbench/journey.ts",
       "test": false
     },
     {
@@ -31203,7 +31376,7 @@
     },
     {
       "binary": false,
-      "bytes": 70553,
+      "bytes": 71568,
       "changes": 29,
       "env": [],
       "envDynamic": false,
@@ -31212,7 +31385,7 @@
       "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 227,
+      "lines": 229,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -31241,7 +31414,7 @@
     },
     {
       "binary": false,
-      "bytes": 63544,
+      "bytes": 64480,
       "changes": 95,
       "env": [],
       "envDynamic": false,
@@ -31250,7 +31423,7 @@
       "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 248,
+      "lines": 253,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -38277,12 +38450,12 @@
     {
       "binary": false,
       "bytes": 108926,
-      "changes": 16,
+      "changes": 17,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "609a7ab9d69596374d91cbddf2ead661516d4443",
       "layer": "foundation",
       "layerRule": "default: package manifest",
       "lines": 3456,
@@ -39761,7 +39934,7 @@
     },
     {
       "binary": false,
-      "bytes": 8227,
+      "bytes": 8521,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -39773,7 +39946,7 @@
       "lastCommit": "450dc53510072cde2a01d0ea46b1069f04223a5f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 180,
+      "lines": 185,
       "packages": [
         "playwright",
         "vitest"
@@ -40410,6 +40583,7 @@
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
@@ -40554,6 +40728,7 @@
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
@@ -40686,6 +40861,149 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/care/page.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
+        "apps/rama/components/harmony/HarmonyRuntime.tsx",
+        "apps/rama/components/harmony/Shell.tsx",
+        "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/Said.tsx",
+        "apps/rama/components/workbench/SiteShell.tsx",
+        "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
+        "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
+        "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
+        "design/harmony/components/bundle.css",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/metrics/states.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/install.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/seal.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
+        "packages/db/package.json",
+        "packages/db/src/auth.ts",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/secrets.ts",
+        "packages/db/src/seed.ts",
+        "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/keys.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
+        "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
+        "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
+        "packages/trace/src/capture.ts",
+        "packages/trace/src/code.ts",
+        "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
+        "packages/trace/src/here.ts",
+        "packages/trace/src/index.ts",
+        "packages/trace/src/keys.ts",
+        "packages/trace/src/sandbox.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts",
+        "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/github.ts",
+        "packages/workbench/src/index.ts",
+        "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
+        "packages/workbench/src/modules.ts",
+        "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
+        "packages/workbench/src/states.ts",
+        "packages/workbench/src/testdrive.ts",
+        "packages/workbench/src/tests.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/care/page.tsx",
+      "id": "apps/rama/app:/site/[siteId]/care",
+      "name": "Site › [siteId] › Care",
+      "route": "/site/[siteId]/care"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/globals.css",
+        "apps/rama/app/harmony-tokens.css",
+        "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/discovery/page.tsx",
         "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/components/ceremony/DiscoveryView.tsx",
@@ -40698,6 +41016,7 @@
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
@@ -40841,6 +41160,7 @@
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/handover.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
@@ -40988,6 +41308,7 @@
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
@@ -41267,6 +41588,7 @@
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",

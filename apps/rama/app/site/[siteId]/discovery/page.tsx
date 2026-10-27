@@ -74,6 +74,7 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
               vendors={VENDOR_REGISTRY}
               builders={BUILDER_OPTIONS}
               submit="Yes, these brains"
+              primary={false}
             />
           </details>
         ) : (
@@ -83,6 +84,7 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
             vendors={VENDOR_REGISTRY}
             builders={BUILDER_OPTIONS}
             submit="Yes, these brains"
+            primary={false}
           />
         )}
       </section>

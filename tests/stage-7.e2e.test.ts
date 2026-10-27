@@ -133,9 +133,14 @@ describe('stage 7 e2e', () => {
     await expect(page.locator('.flag').first().textContent()).resolves.toBe(
       'e2e-org/tiffin is created on GitHub and holds the work.',
     );
+    // GitHub is under Care, the small tab at the end of the journey (Stage 11).
+    await page.getByRole('tab', { name: 'Care' }).click();
+    await page.waitForURL(/\/site\/tiffin\/care/);
     await expect(
-      page.locator('.console').getByRole('link', { name: 'e2e-org/tiffin' }).count(),
+      page.locator('.care').getByRole('link', { name: 'e2e-org/tiffin' }).count(),
     ).resolves.toBe(1);
+    await page.getByRole('tab', { name: 'Build' }).click();
+    await page.waitForURL(/\/site\/tiffin$/);
     const bare = path.join(work, 'github', 'e2e-org', 'tiffin.git');
     expect(
       execFileSync('git', ['-C', bare, 'log', '--format=%an|%s', 'main'], {

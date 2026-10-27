@@ -376,11 +376,7 @@ export function VoiceRoom({
             </label>
           ))}
         </div>
-        <button
-          className="eg-btn eg-btn--primary"
-          disabled={!chosen.length}
-          onClick={() => void begin()}
-        >
+        <button className="eg-btn" disabled={!chosen.length} onClick={() => void begin()}>
           Start the session with the voice
         </button>
         {error ? <p className="eg-muted voice-error">{error}</p> : null}
@@ -406,7 +402,7 @@ export function VoiceRoom({
         </div>
       </div>
       {!connected ? (
-        <button className="eg-btn eg-btn--primary" onClick={() => void connect()}>
+        <button className="eg-btn" onClick={() => void connect()}>
           Rejoin the voice
         </button>
       ) : (
