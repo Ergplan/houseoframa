@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "9e181842fccef1c65ca5cfaec225e932d1263b65",
+  "commit": "9ea22f923851d7b9b498e5c094ba160c2524a2a1",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -13106,6 +13106,48 @@
       "sha": "9e181842fccef1c65ca5cfaec225e932d1263b65",
       "short": "9e18184",
       "subject": "Master prompt: Stage 11 becomes Glass and flow — journey tabs with one lit action, pipes with real data flowing in slow motion; two days"
+    },
+    {
+      "at": "2026-10-27T04:04:16Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 61,
+          "del": 16,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 37,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/reports/stage-10.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-10.review.md"
+        }
+      ],
+      "sha": "3d43c5e45624f58b6b9663769d74d26179115338",
+      "short": "3d43c5e",
+      "subject": "Stage 10: the report — reviewer findings, real model cost, open questions"
+    },
+    {
+      "at": "2026-10-27T04:21:42Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 51,
+          "del": 9,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        }
+      ],
+      "sha": "9ea22f923851d7b9b498e5c094ba160c2524a2a1",
+      "short": "9ea22f9",
+      "subject": "Stage 10: blueprint/self.json after the master prompt's Stage 11"
     }
   ],
   "edges": [
@@ -27137,7 +27179,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T09:29:01+05:30",
+  "extractedAt": "2026-10-27T04:21:42Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -31423,12 +31465,12 @@
     {
       "binary": false,
       "bytes": 15028,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
-      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
+      "lastCommit": "3d43c5e45624f58b6b9663769d74d26179115338",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 142,
@@ -31438,12 +31480,12 @@
     {
       "binary": false,
       "bytes": 28918,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
-      "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
+      "lastCommit": "3d43c5e45624f58b6b9663769d74d26179115338",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 51,
@@ -38234,7 +38276,7 @@
     },
     {
       "binary": false,
-      "bytes": 109011,
+      "bytes": 108926,
       "changes": 16,
       "env": [],
       "envDynamic": false,
@@ -38243,7 +38285,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3459,
+      "lines": 3456,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
