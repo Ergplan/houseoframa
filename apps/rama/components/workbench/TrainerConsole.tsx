@@ -67,13 +67,24 @@ function ActButton({
   );
 }
 
-function Jobs({ jobs }: { jobs: ConsoleProps['jobs'] }) {
+/**
+ * The jobs' steps. In the journey bar a finished job folds to its last sentence, so the picture stays
+ * under the tabs (Stage 11); a running one stays open, as it is the thing to watch.
+ */
+function Jobs({ jobs, fold }: { jobs: ConsoleProps['jobs']; fold?: boolean }) {
   return (
     <>
       {jobs.map(({ kind, job, status }) => (
         <div key={kind} className={`job ${status}`} data-job={kind}>
           {status === 'running' ? <meta httpEquiv="refresh" content="4" /> : null}
-          <JobSteps job={job} />
+          {fold && status !== 'running' ? (
+            <details className="job__fold">
+              <summary>{job.steps.at(-1)?.sentence ?? 'Nothing has run yet.'}</summary>
+              <JobSteps job={job} />
+            </details>
+          ) : (
+            <JobSteps job={job} />
+          )}
           {status === 'interrupted' ? (
             <small className="eg-muted">
               Interrupted when the app restarted; press the button again.
@@ -138,8 +149,8 @@ export function JourneyBar({ p, tab }: { p: ConsoleProps; tab: Tab }) {
           ) : null}
         </div>
       </div>
-      {tab === 'build' ? <Jobs jobs={p.jobs.filter((x) => x.kind === 'build')} /> : null}
-      {tab === 'audit' ? <Jobs jobs={p.jobs.filter((x) => x.kind === 'audit')} /> : null}
+      {tab === 'build' ? <Jobs fold jobs={p.jobs.filter((x) => x.kind === 'build')} /> : null}
+      {tab === 'audit' ? <Jobs fold jobs={p.jobs.filter((x) => x.kind === 'audit')} /> : null}
     </nav>
   );
 }

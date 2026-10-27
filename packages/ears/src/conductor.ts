@@ -123,6 +123,8 @@ export interface Reply {
   board?: boolean;
   /** Stage 11: a move of the camera, as the ring makes it. */
   camera?: CameraMove;
+  /** Stage 11: the flow to show: a figure's name, or null for the one in front. */
+  flow?: string | null;
   /** A card decided by this turn's yes. */
   decided?: Decision;
   state: RoomState;
@@ -393,6 +395,31 @@ export async function hear(
         [{ kind: 'ack', text: 'Back.' }],
         { ...state, place, history: state.history.slice(0, -1) },
         { go: place },
+      );
+    }
+    case 'flow': {
+      const f = cmd.figure ? matchName(cmd.figure, deps.figures(), (x) => x.name) : null;
+      if (cmd.figure && !f)
+        return said(
+          [
+            {
+              kind: 'refusal',
+              text: `There is no figure called ${q(cmd.figure)} on this product.`,
+            },
+          ],
+          state,
+        );
+      return said(
+        [
+          {
+            kind: 'ack',
+            text: f
+              ? `Here is the flow of ${q(f.name)}, from the ground to the screen.`
+              : 'Here is the flow, from the ground to the screen.',
+          },
+        ],
+        f ? { ...state, focus: f.key } : state,
+        { flow: f ? f.name : null },
       );
     }
     case 'camera': {

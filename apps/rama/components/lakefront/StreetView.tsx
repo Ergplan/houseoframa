@@ -130,7 +130,8 @@ export function StreetView(p: StreetProps) {
     let raf = 0;
     let last = performance.now();
     const tick = (now: number) => {
-      const dt = Math.min(0.05, (now - last) / 1000);
+      // Wall-clock pace even when frames are slow (a busy laptop): a frame may carry up to a quarter second.
+      const dt = Math.min(0.25, (now - last) / 1000);
       last = now;
       const st = live.current;
       if (st.playing) {
@@ -341,7 +342,11 @@ export function StreetView(p: StreetProps) {
   void version;
 
   return (
-    <div className="lakefront" data-level="street">
+    <div
+      className="lakefront"
+      data-level="street"
+      data-flowing={playing || mode === 'flying' ? 'true' : 'false'}
+    >
       <div className="lake-main">
         <CameraRing cam={cam} act={act} />
         <div className="lake-screen eg-glass">

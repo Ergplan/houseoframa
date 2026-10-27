@@ -162,7 +162,7 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     async () => (await import('./api/site/[siteId]/features/route')).POST as Handler,
   ],
   ['POST brains', async () => (await import('./api/site/[siteId]/brains/route')).POST as Handler],
-  ...(['start', 'heard', 'said', 'agree', 'session', 'end'] as const).map(
+  ...(['start', 'heard', 'said', 'agree', 'session', 'end', 'tell'] as const).map(
     (r) =>
       [
         `POST voice/${r}`,

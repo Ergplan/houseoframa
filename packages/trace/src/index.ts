@@ -22,3 +22,4 @@ export { runInSandbox, type SandboxAnswer, type SandboxRequest } from './sandbox
 export * from './config.ts';
 export { appearanceKey, appearanceKeys } from './keys.ts';
 export { readConvention, isHouseStackConvention, type ConventionReading } from './convention.ts';
+export { flowOf, type Flow, type FlowStep } from './flow.ts';

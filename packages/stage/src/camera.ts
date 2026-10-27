@@ -225,16 +225,20 @@ export function orientStreet(s: Street, o: Orientation): Street {
   let t = s;
   for (let i = 0; i < ORIENTATIONS.indexOf(o); i++) t = turnStreetOnce(t);
   if (t === s) return s;
-  const tallest = Math.max(0, ...t.buildings.map((b) => b.height));
   const { w, d } = t.extent;
   const corners = [
-    project(0, 0, tallest + SKY),
-    project(w, 0, tallest + SKY),
-    project(0, d, tallest + SKY),
+    project(0, 0, SKY / 3),
+    project(w, 0, SKY / 3),
+    project(0, d, SKY / 3),
     project(w, d),
     project(w, 0),
     project(0, d),
     project(0, 0),
+    ...t.buildings.flatMap((b) => [
+      project(b.gx, b.gy, b.height + 70),
+      project(b.gx + b.side, b.gy, b.height + 70),
+      project(b.gx, b.gy + b.side, b.height + 70),
+    ]),
   ];
   const minX = Math.min(...corners.map((c) => c.x));
   const maxX = Math.max(...corners.map((c) => c.x));

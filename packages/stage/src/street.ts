@@ -31,6 +31,8 @@ const BANK = 3;
 const PLOT_W = 3;
 const PLOT_D = 2;
 /** Room above the tallest roof for the name, the flag and the cranes. */
+/** Room above a roof for the building's name and its flag. */
+const ROOF_ROOM = 70;
 const SKY = 150;
 const MARGIN = 40;
 
@@ -285,14 +287,19 @@ export function street(bp: Blueprint, features: Features, opts: StreetOptions = 
     };
   });
 
-  // The picture's bounds: every corner of the ground, the lake and the far bank, and the tallest roof.
-  const tallest = Math.max(0, ...buildings.map((b) => b.height));
+  // The picture's bounds: every corner of the ground, the lake and the far bank, and each building's
+  // roof with room for its name and flag above it, so no sky is kept where nothing stands (Stage 11).
   const corners = [
-    project(0, 0, tallest + SKY),
-    project(bank.gx1, 0, SKY),
+    project(0, 0, SKY / 3),
+    project(bank.gx1, 0, SKY / 3),
     project(bank.gx1, gy1),
     project(0, gy1),
     project(0, 0),
+    ...buildings.flatMap((b) => [
+      project(b.gx, b.gy, b.height + ROOF_ROOM),
+      project(b.gx + b.side, b.gy, b.height + ROOF_ROOM),
+      project(b.gx, b.gy + b.side, b.height + ROOF_ROOM),
+    ]),
   ];
   const minX = Math.min(...corners.map((c) => c.x));
   const maxX = Math.max(...corners.map((c) => c.x));

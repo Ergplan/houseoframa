@@ -9,7 +9,10 @@ import { useRouter } from 'next/navigation';
 import type { Verdict } from '@rama/audit/view';
 import type { BuildingState } from '@rama/blueprint/metrics';
 import {
+  buildingPipes,
   drawBuilding,
+  drawPipes,
+  flowAt,
   orientScene,
   pickBuilding,
   toPicture,
@@ -29,6 +32,8 @@ import { Words } from './Words';
 import { CameraRing } from './CameraRing';
 import { useCamera } from './useCamera';
 import { BuildingEnglish } from './BuildingEnglish';
+import { FlowPanel } from './FlowPanel';
+import type { Flow } from '@rama/trace';
 
 export interface BuildingProps {
   siteId: string;
@@ -42,6 +47,10 @@ export interface BuildingProps {
   all: { id: string; name: string }[];
   /** The camera the page opened with (from the address). */
   camera: Camera;
+  /** Stage 11: each traced figure's flow, by appearance key, from the re-execution of this commit. */
+  flows: Record<string, Flow>;
+  /** The file each table is defined in, so water leaves from the table's own part of the building. */
+  tableFiles: Record<string, string>;
 }
 
 export function BuildingView(p: BuildingProps) {
@@ -66,6 +75,81 @@ export function BuildingView(p: BuildingProps) {
     y: number;
   } | null>(null);
   const [ready, setReady] = useState(false);
+  // The flow of one figure (Stage 11): its pipes, and the water a step a second, pausable and steppable.
+  const [flowKey, setFlowKey] = useState<string | null>(null);
+  const [flowMs, setFlowMs] = useState(0);
+  const [flowing, setFlowing] = useState(false);
+  const flow = flowKey ? (p.flows[flowKey] ?? null) : null;
+  const pipes = useMemo(
+    () => (flow ? buildingPipes(sc, flow, (t) => p.tableFiles[t] ?? null) : null),
+    [flow, sc, p.tableFiles],
+  );
+  const water = flow ? flowAt(flow.steps.length, flowMs) : null;
+  // The water is drawn on its own canvas over the building, every frame, outside React: the building
+  // is drawn once, and the page itself only changes when the water reaches the next step (60 fps).
+  const waterCanvas = useRef<HTMLCanvasElement>(null);
+  const clock = useRef(0);
+  const paintWater = (ms: number) => {
+    const ctx = waterCanvas.current?.getContext('2d');
+    if (!ctx || !pal) return;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, sc.width, sc.height);
+    if (!pipes || !flow) return;
+    const v = viewTransform(cam, sc);
+    ctx.setTransform(v.scale, 0, 0, v.scale, v.dx, v.dy);
+    drawPipes(ctx, pipes, pal, flowAt(flow.steps.length, ms));
+  };
+  useEffect(() => {
+    paintWater(clock.current);
+    if (!flowing || !flow) return;
+    let raf = 0;
+    const from = performance.now() - clock.current;
+    const tick = (now: number) => {
+      const ms = now - from;
+      clock.current = ms;
+      paintWater(ms);
+      // The panel and the voice follow the step, not the frame.
+      const step = Math.floor(ms / 1000);
+      setFlowMs((was) => (Math.floor(was / 1000) === step ? was : ms));
+      if (ms < flow.steps.length * 1000) raf = requestAnimationFrame(tick);
+      else {
+        setFlowMs(ms);
+        setFlowing(false);
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  });
+  // Each step's sentence is handed to the voice as builder text, once, as the water reaches it.
+  const told = useRef(-1);
+  useEffect(() => {
+    if (!flow || !water || water.step === told.current) return;
+    told.current = water.step;
+    window.dispatchEvent(
+      new CustomEvent('rama:tell', { detail: flow.steps[water.step]!.sentence }),
+    );
+  }, [flow, water]);
+  const showFlow = (key: string) => {
+    told.current = -1;
+    clock.current = 0;
+    setFlowKey(key);
+    setFlowMs(0);
+    setFlowing(true);
+  };
+  // "Show me the flow" said to the voice: the figure named, or the one open.
+  useEffect(() => {
+    const on = (e: Event) => {
+      const name = (e as CustomEvent<string | null>).detail;
+      const key = name
+        ? Object.keys(p.flows).find((k) => p.flows[k]!.title.toLowerCase() === name.toLowerCase())
+        : picked && p.flows[picked]
+          ? picked
+          : Object.keys(p.flows)[0];
+      if (key) showFlow(key);
+    };
+    window.addEventListener('rama:flow', on);
+    return () => window.removeEventListener('rama:flow', on);
+  });
   // While the builder works a lift, the file it is writing glows in the building and grows (Stage 11).
   const [writing, setWriting] = useState<{ path: string; lines: number } | null>(null);
   useEffect(() => {
@@ -178,7 +262,12 @@ export function BuildingView(p: BuildingProps) {
   };
 
   return (
-    <div className="lakefront" data-level="building" data-building={p.building.id}>
+    <div
+      className="lakefront"
+      data-level="building"
+      data-building={p.building.id}
+      data-flowing={flowing ? 'true' : 'false'}
+    >
       <div className="lake-main">
         <CameraRing cam={cam} act={act} />
         <div className="lake-screen eg-glass">
@@ -219,6 +308,13 @@ export function BuildingView(p: BuildingProps) {
             onMouseMove={(e) => onPointer(e, false)}
             onMouseLeave={() => setHover(null)}
             onClick={(e) => onPointer(e, true)}
+          />
+          <canvas
+            className="lake-water"
+            ref={waterCanvas}
+            width={sc.width}
+            height={sc.height}
+            aria-hidden
           />
           {hover ? (
             <div className="lake-tip" style={{ left: hover.x + 14, top: hover.y - 30 }}>
@@ -284,8 +380,44 @@ export function BuildingView(p: BuildingProps) {
         </summary>
         <div className="lake-fold__body">
           <BuildingEnglish siteId={p.siteId} building={p.building.id} bricks={p.building.bricks} />
+          {flow && water ? (
+            <FlowPanel
+              flow={flow}
+              step={water.step}
+              playing={flowing}
+              done={water.done}
+              onPlay={() => {
+                if (water.done) {
+                  clock.current = 0;
+                  setFlowMs(0);
+                }
+                setFlowing(true);
+              }}
+              onPause={() => setFlowing(false)}
+              onStep={(by) => {
+                setFlowing(false);
+                clock.current =
+                  Math.max(0, Math.min(flow.steps.length - 1, water.step + by)) * 1000 + 999;
+                setFlowMs(clock.current);
+              }}
+              onClose={() => {
+                setFlowing(false);
+                setFlowKey(null);
+              }}
+            />
+          ) : null}
           {trail && open ? (
             <Folder title={trail.title} sub={trail.what}>
+              {p.flows[open.key] ? (
+                <button
+                  type="button"
+                  className="eg-btn eg-btn--sm"
+                  data-show-flow={open.key}
+                  onClick={() => showFlow(open.key)}
+                >
+                  Show me the flow
+                </button>
+              ) : null}
               <div className="lake-trail eg-on-folder" data-trail={open.key}>
                 <p>
                   <b>How it is worked out.</b> {trail.english}

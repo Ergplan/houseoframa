@@ -19,6 +19,8 @@ export type Command =
   | { kind: 'back' }
   | { kind: 'what-if'; input: string; value: string }
   | { kind: 'board' }
+  /** Stage 11: a figure's data flowing through the building; figure is null for the one in front. */
+  | { kind: 'flow'; figure: string | null }
   /** Stage 11: the camera, by voice. */
   | { kind: 'camera'; move: CameraMove }
   /** A track question; figure is null for "this number", the one in front of the person. */
@@ -112,6 +114,8 @@ export function parseCommand(said: string): Command {
   if (CODE.test(t)) return { kind: 'code' };
   if (BACK.test(t)) return { kind: 'back' };
   if (BOARD.test(t)) return { kind: 'board' };
+  const flow = /^(?:show me|let me see|play) the flow(?: of (.+))?$/.exec(t);
+  if (flow) return { kind: 'flow', figure: flow[1] ? figureOf(flow[1]) : null };
   for (const [re, move] of CAMERA) if (re.test(t)) return { kind: 'camera', move };
   for (const { step, re } of TRACK) {
     const m = re.exec(t);

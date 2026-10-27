@@ -1,0 +1,218 @@
+{
+  "capturedAt": "2026-10-25T12:27:31.782Z",
+  "commit": "823d2e7e714a22a95d65bf95a46ecd7d41d9e862",
+  "mappings": {
+    "gst-on-takings": {
+      "code": "export function gstOnTakings(takings: number): number {\n  return Math.round((takings * 5) / 100);\n}",
+      "english": "Five percent of the day’s takings, rounded to the paisa.",
+      "file": "features/count-the-days-takings/takings.ts",
+      "files": ["data/orders.json"],
+      "fn": "gstOnTakings",
+      "inputs": [
+        {
+          "data": "data/orders.json",
+          "label": "Today’s takings (paise)",
+          "source": "gstOnTakings(takings)"
+        }
+      ],
+      "line": 16,
+      "origin": "convention",
+      "show": "rupees",
+      "title": "GST on today’s takings",
+      "what": "The GST owed on what the stall took today."
+    },
+    "new-order-amount": {
+      "code": "export function newOrderAmount(cups: number): number {\n  return Math.floor(cups) * PRICE_OF_CUP;\n}",
+      "english": "Whole cups times the price of a cup, at 1,500 paise a cup.",
+      "file": "features/take-an-order/order.ts",
+      "files": [],
+      "fn": "newOrderAmount",
+      "inputs": [
+        {
+          "data": "the form (not saved yet)",
+          "label": "Cups chosen when the page opens",
+          "source": "newOrderAmount(cups)"
+        }
+      ],
+      "line": 7,
+      "origin": "convention",
+      "show": "rupees",
+      "title": "New order amount",
+      "what": "What the new order will cost before it is saved."
+    },
+    "todays-takings": {
+      "code": "export function todaysTakings(orders: PricedOrder[]): number {\n  return orders.reduce((sum, order) => sum + order.cups * order.priceOfCup, 0);\n}",
+      "english": "Every order’s amount, added up.",
+      "file": "features/count-the-days-takings/takings.ts",
+      "files": ["data/orders.json"],
+      "fn": "todaysTakings",
+      "inputs": [
+        {
+          "data": "data/orders.json",
+          "label": "Today’s orders",
+          "source": "todaysTakings(orders)"
+        }
+      ],
+      "line": 11,
+      "origin": "convention",
+      "show": "rupees",
+      "title": "Today’s takings",
+      "what": "Everything the stall took today."
+    }
+  },
+  "runs": {
+    "new-order/new-order-amount": {
+      "inputs": [
+        {
+          "label": "Cups chosen when the page opens",
+          "value": "2"
+        }
+      ],
+      "ok": true,
+      "text": "3000",
+      "value": 3000
+    },
+    "todays-total/gst-on-takings": {
+      "inputs": [
+        {
+          "label": "Today’s takings (paise)",
+          "value": "11300"
+        }
+      ],
+      "ok": true,
+      "text": "565",
+      "value": 565
+    },
+    "todays-total/todays-takings": {
+      "inputs": [
+        {
+          "label": "Today’s orders",
+          "value": "[{\"id\":1,\"item\":\"Masala chai\",\"cups\":2,\"priceOfCup\":1500,\"takenAt\":\"2026-10-25T08:10:00+05:30\"},{\"id\":2,\"item\":\"Ginger chai\",\"cups\":1,\"priceOfCup\":1800,\"takenAt\":\"2026-10-25T09:05:00+05:30\"},{\"id\":3,\"item\":\"Masala chai\",\"cups\":3,\"priceOfCup\":1500,\"takenAt\":\"2026-10-25T11:30:00+05:30\"},{\"id\":4,\"item\":\"Lemon tea\",\"cups\":1,\"priceOfCup\":2000,\"takenAt\":\"2026-10-25T15:45:00+05:30\"}]"
+        }
+      ],
+      "ok": true,
+      "text": "11300",
+      "value": 11300
+    }
+  },
+  "screens": [
+    {
+      "audience": "customer",
+      "blueprintScreen": "/new",
+      "bricks": [
+        "app/layout.tsx",
+        "app/new/page.tsx",
+        "components/Figure.tsx",
+        "features/take-an-order/order.ts",
+        "rama/define.ts"
+      ],
+      "figures": [
+        {
+          "args": [2],
+          "box": {
+            "h": 20,
+            "w": 51,
+            "x": 154,
+            "y": 161
+          },
+          "id": "new-order-amount",
+          "origin": "attribute",
+          "text": "₹30.00",
+          "value": "3000"
+        }
+      ],
+      "height": 700,
+      "name": "new-order",
+      "role": null,
+      "route": "/new",
+      "shot": "new-order.png",
+      "title": "New order",
+      "width": 390
+    },
+    {
+      "audience": "staff",
+      "blueprintScreen": "/total",
+      "bricks": [
+        "app/layout.tsx",
+        "app/total/page.tsx",
+        "components/Figure.tsx",
+        "data/orders.json",
+        "db/orders.ts",
+        "features/count-the-days-takings/takings.ts",
+        "rama/define.ts"
+      ],
+      "figures": [
+        {
+          "args": [
+            [
+              {
+                "cups": 2,
+                "id": 1,
+                "item": "Masala chai",
+                "priceOfCup": 1500,
+                "takenAt": "2026-10-25T08:10:00+05:30"
+              },
+              {
+                "cups": 1,
+                "id": 2,
+                "item": "Ginger chai",
+                "priceOfCup": 1800,
+                "takenAt": "2026-10-25T09:05:00+05:30"
+              },
+              {
+                "cups": 3,
+                "id": 3,
+                "item": "Masala chai",
+                "priceOfCup": 1500,
+                "takenAt": "2026-10-25T11:30:00+05:30"
+              },
+              {
+                "cups": 1,
+                "id": 4,
+                "item": "Lemon tea",
+                "priceOfCup": 2000,
+                "takenAt": "2026-10-25T15:45:00+05:30"
+              }
+            ]
+          ],
+          "box": {
+            "h": 20,
+            "w": 61,
+            "x": 133,
+            "y": 87
+          },
+          "id": "todays-takings",
+          "origin": "attribute",
+          "text": "₹113.00",
+          "value": "11300"
+        },
+        {
+          "args": [11300],
+          "box": {
+            "h": 20,
+            "w": 42,
+            "x": 186,
+            "y": 124
+          },
+          "id": "gst-on-takings",
+          "origin": "attribute",
+          "text": "₹5.65",
+          "value": "565"
+        }
+      ],
+      "height": 700,
+      "name": "todays-total",
+      "role": null,
+      "route": "/total",
+      "shot": "todays-total.png",
+      "title": "Today’s total",
+      "width": 390
+    }
+  ],
+  "site": "testdrive-5",
+  "version": 1,
+  "viewport": {
+    "height": 700,
+    "width": 390
+  }
+}

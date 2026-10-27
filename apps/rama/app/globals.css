@@ -1305,3 +1305,46 @@ body:has(.rama-stage) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* The flow of a figure (Stage 11): its steps in words, the one playing lit, a dry one dimmed. */
+.flow-panel {
+  display: grid;
+  gap: 8px;
+}
+.flow-steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 19px;
+}
+.flow-steps li.on {
+  color: var(--harmony);
+  font-weight: 600;
+}
+.flow-steps li.dry {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+.lake-screen canvas.lake-water {
+  pointer-events: none;
+  z-index: 1;
+}
+/* The picture's frame keeps Harmony's glass colour but not its blur: what is behind it is only the
+   page, and a blur under a canvas that changes every frame (the water, the replay) is redrawn every
+   frame; without it the flow keeps 60 frames a second (Stage 11). */
+.lake-screen.eg-glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* And while water flows, the panel over the picture is solid for the same reason: its blur would be
+   redrawn with every frame of the water beneath it. */
+.lakefront[data-flowing='true'] .lake-fold,
+.lakefront[data-flowing='true'] .lake-fold * {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.lakefront[data-flowing='true'] .lake-fold {
+  background: var(--surface);
+}

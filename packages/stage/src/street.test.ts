@@ -20,7 +20,8 @@ describe('street', () => {
       ['shared', 2, 8, 2, 56],
       ['behind', 8, 8, 2, 56],
     ]);
-    expect([s.width, s.height, s.origin]).toEqual([1408, 960, { x: 536, y: 256 }]);
+    // Stage 11: bounded by the roofs that stand, not by sky kept over the empty back corner.
+    expect([s.width, s.height, s.origin]).toEqual([1408, 806, { x: 536, y: 102 }]);
   });
 
   it('lays buildings on a grid, a building per thing the product does, in the features file’s order', () => {

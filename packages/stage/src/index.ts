@@ -14,3 +14,4 @@ export * from './pick.ts';
 export * from './words.ts';
 export * from './camera.ts';
 export * from './typing.ts';
+export * from './pipes.ts';

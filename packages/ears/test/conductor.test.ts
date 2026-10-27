@@ -277,6 +277,19 @@ describe('commands that move the room, and the track', () => {
     ]);
   });
 
+  it('shows the flow of a figure named, or of the one in front', async () => {
+    const { deps } = memoryRoom();
+    let r = await hear(deps, s0, 'Asha Rao', 'Show me the flow of today’s takings');
+    expect(r).toMatchObject({
+      flow: 'Today’s takings',
+      lines: [{ text: 'Here is the flow of “Today’s takings”, from the ground to the screen.' }],
+    });
+    r = await hear(deps, s0, 'Asha Rao', 'Show me the flow');
+    expect(r.flow).toBeNull();
+    r = await hear(deps, s0, 'Asha Rao', 'Show me the flow of the weather');
+    expect(r.flow).toBeUndefined();
+  });
+
   it('moves the camera by voice, as the ring does', async () => {
     const { deps } = memoryRoom();
     const r = await hear(deps, s0, 'Asha Rao', 'Turn around');

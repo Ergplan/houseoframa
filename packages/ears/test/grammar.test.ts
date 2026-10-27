@@ -22,6 +22,8 @@ describe('the command grammar', () => {
     ['turn right please', { kind: 'camera', move: 'turn-right' }],
     ['Turn it around.', { kind: 'camera', move: 'turn-around' }],
     ['Closer.', { kind: 'camera', move: 'closer' }],
+    ['Show me the flow.', { kind: 'flow', figure: null }],
+    ['Show me the flow of today’s takings', { kind: 'flow', figure: "today's takings" }],
     ['Zoom out', { kind: 'camera', move: 'further' }],
     ['Show me Count the day’s takings.', { kind: 'show', building: "count the day's takings" }],
     ['Take me to the take an order building', { kind: 'show', building: 'take an order' }],

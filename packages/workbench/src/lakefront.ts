@@ -7,7 +7,7 @@ import { buildingState, type BuildingState } from '@rama/blueprint/metrics';
 import type { SiteLocation } from '@rama/blueprint/site';
 import { resolveFeatures, street, type FacadeInput, type Features, type Street } from '@rama/stage';
 import { readFeatures } from '@rama/stage/read';
-import { appearanceKeys, readCapture, showroomOf } from '@rama/trace';
+import { appearanceKeys, flowOf, readCapture, showroomOf, type Flow } from '@rama/trace';
 import { siteStates, type SiteStates } from './states.ts';
 
 export interface SiteLakefront {
@@ -142,5 +142,26 @@ export function buildingTrails(
   const room = showroomOf(capture, bp, signatures);
   return Object.fromEntries(
     keys.filter((k) => room.trails[k]).map((k) => [k, plainTrail(room.trails[k]!, bp)]),
+  );
+}
+
+/**
+ * The flow of each of a building's figures (Stage 11), by appearance key: the trail as the steps the
+ * real data takes, from the re-execution of the commit shown. A capture of another commit gives none:
+ * its values would not be this commit's.
+ */
+export function buildingFlows(
+  site: SiteLocation,
+  bp: Blueprint,
+  keys: string[],
+  env: NodeJS.ProcessEnv = process.env,
+): Record<string, Flow> {
+  const capture = readCapture(site.id, env);
+  if (!capture || capture.commit !== bp.commit) return {};
+  return Object.fromEntries(
+    keys.flatMap((k) => {
+      const f = flowOf(capture, k);
+      return f ? [[k, f]] : [];
+    }),
   );
 }

@@ -14,6 +14,7 @@ import {
   handleSaid,
   handleSession,
   handleStart,
+  handleTell,
   placeUrl,
   type VoiceDeps,
 } from './handler';
@@ -204,6 +205,20 @@ describe('the voice’s routes', () => {
       board: { draft: true },
     });
     expect(d.board).toHaveBeenCalledWith(site, tara, { mediaType: 'image/jpeg', base64: 'AAAA' });
+  });
+
+  it('POST voice/tell hands a step of a flow to the voice as a builder line, counted by the mouth check', async () => {
+    const { d, room } = deps();
+    expect(
+      await body(await handleTell(site, { text: '4 rows left data/orders.json.' }, d)),
+    ).toEqual({ ok: true, lines: [] });
+    await handleStart(site, tara, { people: ['Asha Rao'] }, d);
+    const r = await body(await handleTell(site, { text: '4 rows left data/orders.json.' }, d));
+    expect((r.lines as { text: string }[])[0]!.text).toBe('4 rows left data/orders.json.');
+    expect(room()!.given).toContain('4 rows left data/orders.json.');
+    expect(
+      await body(await handleSaid(site, tara, { text: 'Four rows left the orders file.' }, d)),
+    ).toMatchObject({ mouth: { ok: true } });
   });
 
   it('places become addresses: the Street, a building, the code, a screen', () => {

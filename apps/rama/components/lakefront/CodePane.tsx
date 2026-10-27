@@ -109,7 +109,10 @@ export function CodePane({
           edits: Edit[];
         };
         setLive(r.building);
-        if (r.edits.length) {
+        // Edits of a lift that has ended are history, read through the replay: only a running build
+        // is followed as it types.
+        if (!r.building) seen.current += r.edits.length;
+        else if (r.edits.length) {
           seen.current += r.edits.length;
           let prev = 0;
           for (const e of r.edits) {

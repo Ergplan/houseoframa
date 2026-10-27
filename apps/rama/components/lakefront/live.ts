@@ -1,7 +1,7 @@
 'use client';
 // The browser side of the lakefront: Harmony's tokens read from the page (so a theme change repaints in
 // the other theme), the facades' pictures loaded once each, and whether the person asked for less motion.
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { paletteFrom, type Palette } from '@rama/stage';
 
 export function livePalette(): Palette {
@@ -34,7 +34,9 @@ export function usePalette(): Palette | null {
 export function useImages(): { image: (src: string) => HTMLImageElement | null; version: number } {
   const cache = useRef(new Map<string, HTMLImageElement>());
   const [version, setVersion] = useState(0);
-  const image = (src: string) => {
+  // One function for the page's life: a draw effect that depends on it must not run again every render
+  // (a new function each render restarted the replay's clock on every frame).
+  const image = useCallback((src: string) => {
     // Rendered on the server first: there are no pictures there, only on the page.
     if (typeof Image === 'undefined') return null;
     let img = cache.current.get(src);
@@ -45,7 +47,7 @@ export function useImages(): { image: (src: string) => HTMLImageElement | null; 
       cache.current.set(src, img);
     }
     return img.complete && img.naturalWidth ? img : null;
-  };
+  }, []);
   return { image, version };
 }
 

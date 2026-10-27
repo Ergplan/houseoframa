@@ -148,7 +148,8 @@ describe('stage 9 e2e', () => {
         throw new Error('Start build was pressed six times and no build showed in the console.');
       }
     }
-    await job.locator('[data-step="Built"]').waitFor({ timeout: 900_000 });
+    // Attached, not visible: once the build ends its steps fold under their last sentence.
+    await job.locator('[data-step="Built"]').waitFor({ state: 'attached', timeout: 900_000 });
     const steps = await job
       .locator('[data-step]')
       .evaluateAll((els) =>
@@ -163,7 +164,7 @@ describe('stage 9 e2e', () => {
       ['Built', true],
     ]);
     // The grey flag says what was wrong and what the builder does next.
-    expect(await job.locator('[data-step="Lift 1"] .next').innerText()).toBe(
+    expect(await job.locator('[data-step="Lift 1"] .next').textContent()).toBe(
       'Next: The builder fixes this in the next lift.',
     );
 

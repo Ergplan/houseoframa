@@ -23,6 +23,7 @@ type Reply = {
   go?: string | null;
   board?: boolean;
   camera?: 'turn-left' | 'turn-right' | 'turn-around' | 'closer' | 'further' | null;
+  flow?: string | null;
   decided?: { title: string; by: string } | null;
 };
 type Said = { speaker: string; text: string; flag?: string; drafted?: 'builder' | 'drafter' };
@@ -250,6 +251,9 @@ export function VoiceRoom({
       if (r.act) setAct(r.act);
       queue.current = queue.current.then(async () => {
         if (r.go) router.push(r.go);
+        // "Show me the flow": the Building level plays it (components/lakefront/BuildingView.tsx).
+        if (r.flow !== undefined)
+          window.dispatchEvent(new CustomEvent('rama:flow', { detail: r.flow }));
         if (r.camera) {
           // The voice moves the same camera as the ring (components/lakefront/useCamera.ts).
           const detail =
@@ -352,6 +356,16 @@ export function VoiceRoom({
   }, [clips]);
 
   useEffect(() => () => live.current?.stop(), []);
+  // A step of a figure's flow, as the water reaches it, is builder text for the voice to read.
+  useEffect(() => {
+    if (!connected) return;
+    const on = (e: Event) => {
+      const text = (e as CustomEvent<string>).detail;
+      void post('voice/tell', { text }).then(speak);
+    };
+    window.addEventListener('rama:tell', on);
+    return () => window.removeEventListener('rama:tell', on);
+  }, [connected, post, speak]);
   // The transcript follows the conversation: the latest turn is always in view.
   useEffect(() => {
     transcript.current?.scrollTo({ top: transcript.current.scrollHeight });

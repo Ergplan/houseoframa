@@ -88,6 +88,7 @@ async function answer(
     go: reply.go ? placeUrl(site.id, reply.go) : null,
     board: Boolean(reply.board),
     camera: reply.camera ?? null,
+    flow: reply.flow === undefined ? undefined : reply.flow,
     decided: reply.decided ? { title: reply.decided.title, by: reply.decided.by } : null,
     ...extra,
   });
@@ -224,4 +225,21 @@ export async function handleBoard(site: SiteLocation, who: Member, raw: unknown,
   } catch (err) {
     return fail(502, `The board could not be read: ${(err as Error).message}`);
   }
+}
+
+/**
+ * POST voice/tell {text}: builder text for the voice to read that no one asked for by voice: a step of
+ * a figure's flow as the water reaches it (Stage 11). It is a builder line like any other, so the mouth
+ * check counts it.
+ */
+export async function handleTell(site: SiteLocation, raw: unknown, deps: VoiceDeps) {
+  const body = z.object({ text: z.string().trim().min(1).max(1200) }).safeParse(raw);
+  if (!body.success) return fail(400, 'expected {text}');
+  const state = openRoom(deps, site.id);
+  if (!state) return json({ ok: true, lines: [] });
+  const lines: Line[] = [{ kind: 'track', text: body.data.text }];
+  return answer(site, deps, {
+    lines,
+    state: { ...state, given: [...state.given, body.data.text] },
+  });
 }

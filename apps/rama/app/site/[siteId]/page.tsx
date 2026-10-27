@@ -4,7 +4,7 @@ import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { building as buildingScene } from '@rama/stage';
-import { buildingTrails, siteLakefront, unsaidSentence } from '@rama/workbench';
+import { buildingFlows, buildingTrails, siteLakefront, unsaidSentence } from '@rama/workbench';
 import { SiteView } from '../../../components/site/SiteView';
 import { Said } from '../../../components/workbench/Said';
 import { SiteShell, auditOf, consoleProps } from '../../../components/workbench/SiteShell';
@@ -132,6 +132,8 @@ export default async function SitePage({
           )}
           all={lf.street.buildings.map((b) => ({ id: b.id, name: b.name }))}
           camera={cameraFrom(q, 'building', chosen!.id)}
+          flows={buildingFlows(site, blueprint, keys)}
+          tableFiles={Object.fromEntries((blueprint.tables ?? []).map((t) => [t.name, t.file]))}
         />
       </SiteShell>
     );
