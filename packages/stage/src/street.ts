@@ -96,9 +96,19 @@ export interface Road {
   uses: number;
 }
 
+/** An area of the ground, in tiles. */
+export interface Area {
+  gx0: number;
+  gy0: number;
+  gx1: number;
+  gy1: number;
+}
+
 export interface Jetty {
   service: string;
-  gy: number;
+  /** The pier across the water, and the landing on the far bank. */
+  pier: Area;
+  landing: Area;
   /** Buildings that talk to it. */
   users: string[];
 }
@@ -108,9 +118,12 @@ export interface Street {
   plots: Plot[];
   roads: Road[];
   jetties: Jetty[];
-  ground: { gx0: number; gy0: number; gx1: number; gy1: number };
-  lake: { gx0: number; gx1: number };
-  bank: { gx0: number; gx1: number };
+  ground: Area;
+  /** The lake (the edge of the product) and the far bank, where the outside services stand. */
+  lake: Area;
+  bank: Area;
+  /** Everything drawn on the ground, from (0, 0): its width (gx) and depth (gy) in tiles. */
+  extent: { w: number; d: number };
   /** The picture's size, and the offset added to every projected point. */
   width: number;
   height: number;
@@ -260,13 +273,17 @@ export function street(bp: Blueprint, features: Features, opts: StreetOptions = 
 
   // Jetties: one per outside service, spread along the shore.
   const services = [...new Set(buildings.flatMap((b) => b.services))].sort();
-  const jetties: Jetty[] = services.map((service, i) => ({
-    service,
-    gy: ((i + 1) * gy1) / (services.length + 1),
-    users: buildings.filter((b) => b.services.includes(service)).map((b) => b.id),
-  }));
-  const lake = { gx0: gx1, gx1: gx1 + LAKE };
-  const bank = { gx0: lake.gx1, gx1: lake.gx1 + (services.length ? BANK : 0) };
+  const lake = { gx0: gx1, gy0: 0, gx1: gx1 + LAKE, gy1 };
+  const bank = { gx0: lake.gx1, gy0: 0, gx1: lake.gx1 + (services.length ? BANK : 0), gy1 };
+  const jetties: Jetty[] = services.map((service, i) => {
+    const gy = ((i + 1) * gy1) / (services.length + 1);
+    return {
+      service,
+      pier: { gx0: lake.gx0, gy0: gy - 0.35, gx1: lake.gx1, gy1: gy + 0.35 },
+      landing: { gx0: bank.gx0 + 0.3, gy0: gy - 0.8, gx1: bank.gx0 + 1.9, gy1: gy + 0.8 },
+      users: buildings.filter((b) => b.services.includes(service)).map((b) => b.id),
+    };
+  });
 
   // The picture's bounds: every corner of the ground, the lake and the far bank, and the tallest roof.
   const tallest = Math.max(0, ...buildings.map((b) => b.height));
@@ -289,6 +306,7 @@ export function street(bp: Blueprint, features: Features, opts: StreetOptions = 
     ground: { gx0: 0, gy0: 0, gx1, gy1 },
     lake,
     bank,
+    extent: { w: bank.gx1, d: gy1 },
     width: Math.ceil(maxX - minX + MARGIN * 2),
     height: Math.ceil(maxY - minY + MARGIN * 2),
     origin: { x: Math.round(MARGIN - minX), y: Math.round(MARGIN - minY) },

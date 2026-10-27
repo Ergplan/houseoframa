@@ -13,6 +13,11 @@ import {
   buildingFaces,
   buildingVerdicts,
   drawStreet,
+  orientStreet,
+  unview,
+  viewTransform,
+  type Camera,
+  type CameraAction,
   finishAudit,
   hourOf,
   liftChip,
@@ -33,6 +38,8 @@ import { DraftState } from '../audit/ConfirmReport';
 import { usePalette, useImages, useReducedMotion } from './live';
 import { placeHref } from './places';
 import { Words } from './Words';
+import { CameraRing } from './CameraRing';
+import { TURN_MS, useCamera } from './useCamera';
 
 const PER_SECOND = 0.35; // progress through one lift per second
 
@@ -48,6 +55,8 @@ export interface StreetProps {
   named: boolean;
   problem: string | null;
   unknownScreens: string[];
+  /** The camera the page opened with (from the address). */
+  camera: Camera;
 }
 
 /** What a building keeps and talks to, in words. */
@@ -68,7 +77,11 @@ export function StreetView(p: StreetProps) {
   const pal = usePalette();
   const { image, version } = useImages();
   const reduced = useReducedMotion();
-  const s = p.street;
+  const { cam, act: camAct, turning } = useCamera(p.siteId, p.camera);
+  const camRef = useRef(cam);
+  camRef.current = cam;
+  // The Street from the camera's side: its world turned before it is drawn, so draw and pick agree.
+  const s = useMemo(() => orientStreet(p.street, cam.orientation), [p.street, cam.orientation]);
   const timeline = useMemo(() => streetTimeline(p.history, s), [p.history, s]);
   const lifts = timeline.lifts.length;
   const [k, setK] = useState(lifts);
@@ -147,6 +160,11 @@ export function StreetView(p: StreetProps) {
       const shown = run.current;
       const ctx = canvas.current?.getContext('2d');
       if (ctx) {
+        const v = viewTransform(camRef.current, s);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.fillStyle = pal.color.canvas;
+        ctx.fillRect(0, 0, s.width, s.height);
+        ctx.setTransform(v.scale, 0, 0, v.scale, v.dx, v.dy);
         drawStreet(ctx, {
           street: s,
           palette: pal,
@@ -202,6 +220,7 @@ export function StreetView(p: StreetProps) {
     mode,
     selected,
     hover,
+    cam,
   ]);
 
   const open = (id: string) =>
@@ -228,9 +247,65 @@ export function StreetView(p: StreetProps) {
     setMode('done');
   };
 
+  // A turn fades from the last frame: it is copied onto the overlay, which then fades out.
+  const fade = useRef<HTMLCanvasElement>(null);
+  const lastOrientation = useRef(cam.orientation);
+  if (lastOrientation.current !== cam.orientation && fade.current && canvas.current) {
+    const f = fade.current;
+    f.width = canvas.current.width;
+    f.height = canvas.current.height;
+    f.getContext('2d')?.drawImage(canvas.current, 0, 0);
+    f.style.transition = 'none';
+    f.style.opacity = '1';
+    lastOrientation.current = cam.orientation;
+  }
+  useEffect(() => {
+    const f = fade.current;
+    if (!f || !turning) return;
+    const id = requestAnimationFrame(() => {
+      f.style.transition = `opacity ${reduced ? 0 : TURN_MS}ms ease`;
+      f.style.opacity = '0';
+    });
+    return () => cancelAnimationFrame(id);
+  }, [turning, reduced]);
+
+  /** The picture under a pointer, through the camera. */
+  const under = (el: HTMLCanvasElement, x: number, y: number) =>
+    unview(toPicture(el.getBoundingClientRect(), s, x, y), camRef.current, s);
+  const pickAt = (el: HTMLCanvasElement, x: number, y: number) =>
+    pickStreet(s, under(el, x, y), k >= lifts && prog >= 1 ? null : { timeline, k, p: prog });
+  // Zooming with nothing pointed at goes onto the chosen building.
+  const act = (a: CameraAction) =>
+    camAct(
+      a.type === 'zoom' && a.over === undefined
+        ? { ...a, over: selected ? { building: selected } : null }
+        : a,
+    );
+  // The wheel zooms where the pointer is; a native listener, so the page does not scroll under it.
+  useEffect(() => {
+    const el = canvas.current;
+    if (!el) return;
+    const wheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const r = el.getBoundingClientRect();
+      const hit = pickAt(el, e.clientX, e.clientY);
+      camAct({
+        type: 'zoom',
+        factor: e.deltaY < 0 ? 1.15 : 1 / 1.15,
+        at: { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height },
+        over: hit && 'building' in hit ? { building: hit.building } : null,
+      });
+    };
+    el.addEventListener('wheel', wheel, { passive: false });
+    return () => el.removeEventListener('wheel', wheel);
+  });
+  // A drag sideways turns the picture a quarter.
+  const drag = useRef<{ x: number; turned: boolean } | null>(null);
+
   const onPointer = (e: React.MouseEvent<HTMLCanvasElement>, click: boolean) => {
     const el = e.currentTarget;
-    const at = toPicture(el.getBoundingClientRect(), s, e.clientX, e.clientY);
+    if (click && drag.current?.turned) return;
+    const at = under(el, e.clientX, e.clientY);
     const hit = pickStreet(s, at, k >= lifts && prog >= 1 ? null : { timeline, k, p: prog });
     const b = hit && 'building' in hit ? s.buildings.find((x) => x.id === hit.building)! : null;
     if (!click) {
@@ -268,11 +343,41 @@ export function StreetView(p: StreetProps) {
   return (
     <div className="lakefront" data-level="street">
       <div className="lake-main">
+        <CameraRing cam={cam} act={act} />
         <div className="lake-screen eg-glass">
+          <canvas className="lake-fade" ref={fade} aria-hidden />
           <canvas
             ref={canvas}
             width={s.width}
             height={s.height}
+            tabIndex={0}
+            data-orientation={cam.orientation}
+            data-scale={cam.scale}
+            onKeyDown={(e) => {
+              const a: CameraAction | null =
+                e.key === 'ArrowLeft'
+                  ? { type: 'turn', by: 'left' }
+                  : e.key === 'ArrowRight'
+                    ? { type: 'turn', by: 'right' }
+                    : e.key === '+' || e.key === '='
+                      ? { type: 'zoom', factor: 1.25 }
+                      : e.key === '-'
+                        ? { type: 'zoom', factor: 0.8 }
+                        : null;
+              if (a) {
+                e.preventDefault();
+                act(a);
+              }
+            }}
+            onMouseDown={(e) => (drag.current = { x: e.clientX, turned: false })}
+            onMouseUp={(e) => {
+              const d = drag.current;
+              if (d && Math.abs(e.clientX - d.x) > 80) {
+                d.turned = true;
+                act({ type: 'turn', by: e.clientX > d.x ? 'left' : 'right' });
+              }
+              setTimeout(() => (drag.current = null), 0);
+            }}
             data-ready={ready && pal ? 'true' : 'false'}
             data-drones={mode}
             data-facades={loaded}
@@ -281,13 +386,7 @@ export function StreetView(p: StreetProps) {
             onMouseLeave={() => setHover(null)}
             onClick={(e) => onPointer(e, true)}
             onDoubleClick={(e) => {
-              const at = toPicture(
-                e.currentTarget.getBoundingClientRect(),
-                s,
-                e.clientX,
-                e.clientY,
-              );
-              const hit = pickStreet(s, at);
+              const hit = pickStreet(s, under(e.currentTarget, e.clientX, e.clientY));
               if (hit && 'building' in hit) open(hit.building);
             }}
           />

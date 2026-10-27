@@ -985,9 +985,17 @@ body:has(.rama-stage) {
   overflow: auto;
   max-height: 76vh;
 }
+.lake-screen {
+  display: grid;
+  place-items: center;
+}
+/* Stage 11: the whole picture fits in the view, centred; the camera zooms within it. */
 .lake-screen canvas {
   display: block;
-  width: 100%;
+  grid-area: 1 / 1;
+  max-width: 100%;
+  max-height: 72vh;
+  width: auto;
   height: auto;
 }
 .lake-tip {
@@ -1209,4 +1217,18 @@ body:has(.rama-stage) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 14px;
+}
+
+/* The camera (Stage 11): its ring above the picture, and the last frame fading out over a turn. */
+.camera-ring {
+  margin-bottom: 8px;
+}
+.lake-screen canvas.lake-fade {
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1;
+}
+.lake-screen canvas:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
 }

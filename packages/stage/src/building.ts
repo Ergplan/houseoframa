@@ -62,6 +62,10 @@ export interface BuildingScene {
   d: number;
   h: number;
   faces: { top: Pt[]; left: Pt[]; right: Pt[]; outline: Pt[] };
+  /** The face toward the camera that carries the screens (camera.ts orientScene); left from the north. */
+  facadeFace?: 'left' | 'right';
+  /** Room beside the building for the floor labels, in pixels. */
+  labels: number;
   floors: StreetFloor[];
   facades: FacadePanel[];
 }
@@ -188,6 +192,8 @@ export function building(
     d: DEPTH,
     h,
     faces: boxFaces(0, 0, w, DEPTH, h, atPt),
+    facadeFace: 'left',
+    labels: LABELS,
     floors,
     facades: facadePanels,
   };

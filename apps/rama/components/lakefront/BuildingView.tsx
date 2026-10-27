@@ -3,16 +3,21 @@
 // outlined (traced in accent, untraced dashed), its floors through the side: what it shows, decides,
 // remembers and who it talks to. Click a figure for its trail, in plain words (the trail is then the one
 // green object); click through the glass, or say "show me the code", for the code.
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Verdict } from '@rama/audit/view';
 import type { BuildingState } from '@rama/blueprint/metrics';
 import {
   drawBuilding,
+  orientScene,
   pickBuilding,
   toPicture,
+  unview,
+  viewTransform,
   type BuildingScene,
+  type Camera,
+  type CameraAction,
   type StreetBuilding,
 } from '@rama/stage';
 import type { PlainTrail } from '@rama/workbench';
@@ -21,6 +26,8 @@ import { usePalette, useImages } from './live';
 import { placeHref } from './places';
 import { flagSentence } from './StreetView';
 import { Words } from './Words';
+import { CameraRing } from './CameraRing';
+import { useCamera } from './useCamera';
 
 export interface BuildingProps {
   siteId: string;
@@ -32,13 +39,17 @@ export interface BuildingProps {
   /** The latest audit's verdict on each of its files. */
   verdicts: Record<string, Verdict>;
   all: { id: string; name: string }[];
+  /** The camera the page opened with (from the address). */
+  camera: Camera;
 }
 
 export function BuildingView(p: BuildingProps) {
   const router = useRouter();
   const pal = usePalette();
   const { image, version } = useImages();
-  const sc = p.scene;
+  const { cam, act } = useCamera(p.siteId, p.camera);
+  // The building from the camera's side: the screens on whichever face is toward it.
+  const sc = useMemo(() => orientScene(p.scene, cam.orientation), [p.scene, cam.orientation]);
   const [picked, setPicked] = useState<string | null>(p.initialFigure);
   // The figure picked is in the address, so the voice's "this number" means the one in front (Stage 10).
   useEffect(() => {
@@ -58,6 +69,11 @@ export function BuildingView(p: BuildingProps) {
   useEffect(() => {
     const ctx = canvas.current?.getContext('2d');
     if (!ctx || !pal) return;
+    const v = viewTransform(cam, sc);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = pal.color.canvas;
+    ctx.fillRect(0, 0, sc.width, sc.height);
+    ctx.setTransform(v.scale, 0, 0, v.scale, v.dx, v.dy);
     drawBuilding(ctx, {
       scene: sc,
       palette: pal,
@@ -68,7 +84,23 @@ export function BuildingView(p: BuildingProps) {
       verdicts: p.verdicts,
     });
     setReady(true);
-  }, [pal, sc, p.flag, image, version, picked, hover, p.verdicts]);
+  }, [pal, sc, p.flag, image, version, picked, hover, p.verdicts, cam]);
+  useEffect(() => {
+    const el = canvas.current;
+    if (!el) return;
+    const wheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const r = el.getBoundingClientRect();
+      act({
+        type: 'zoom',
+        factor: e.deltaY < 0 ? 1.15 : 1 / 1.15,
+        at: { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height },
+      });
+    };
+    el.addEventListener('wheel', wheel, { passive: false });
+    return () => el.removeEventListener('wheel', wheel);
+  }, [act]);
+  const drag = useRef<{ x: number; turned: boolean } | null>(null);
 
   const codeHref = (file?: string) =>
     `${placeHref(p.siteId, { level: 'code', building: p.building.id })}${file ? `&brick=${encodeURIComponent(file)}` : ''}`;
@@ -83,7 +115,12 @@ export function BuildingView(p: BuildingProps) {
     .map((g) => ({ g, t: p.trails[g.key]! }));
 
   const onPointer = (e: React.MouseEvent<HTMLCanvasElement>, click: boolean) => {
-    const at = toPicture(e.currentTarget.getBoundingClientRect(), sc, e.clientX, e.clientY);
+    if (click && drag.current?.turned) return;
+    const at = unview(
+      toPicture(e.currentTarget.getBoundingClientRect(), sc, e.clientX, e.clientY),
+      cam,
+      sc,
+    );
     const hit = pickBuilding(sc, at);
     if (!click) {
       const g = hit?.kind === 'figure' ? figures.find((x) => x.key === hit.key) : null;
@@ -116,11 +153,40 @@ export function BuildingView(p: BuildingProps) {
   return (
     <div className="lakefront" data-level="building" data-building={p.building.id}>
       <div className="lake-main">
+        <CameraRing cam={cam} act={act} />
         <div className="lake-screen eg-glass">
           <canvas
             ref={canvas}
             width={sc.width}
             height={sc.height}
+            tabIndex={0}
+            data-orientation={cam.orientation}
+            data-scale={cam.scale}
+            onKeyDown={(e) => {
+              const a: CameraAction | null =
+                e.key === 'ArrowLeft'
+                  ? { type: 'turn', by: 'left' }
+                  : e.key === 'ArrowRight'
+                    ? { type: 'turn', by: 'right' }
+                    : e.key === '+' || e.key === '='
+                      ? { type: 'zoom', factor: 1.25 }
+                      : e.key === '-'
+                        ? { type: 'zoom', factor: 0.8 }
+                        : null;
+              if (a) {
+                e.preventDefault();
+                act(a);
+              }
+            }}
+            onMouseDown={(e) => (drag.current = { x: e.clientX, turned: false })}
+            onMouseUp={(e) => {
+              const d = drag.current;
+              if (d && Math.abs(e.clientX - d.x) > 80) {
+                d.turned = true;
+                act({ type: 'turn', by: e.clientX > d.x ? 'left' : 'right' });
+              }
+              setTimeout(() => (drag.current = null), 0);
+            }}
             data-ready={ready ? 'true' : 'false'}
             aria-label={`${p.building.name}: its screens on the front, its floors through the side. Its figures are listed beside the picture.`}
             onMouseMove={(e) => onPointer(e, false)}

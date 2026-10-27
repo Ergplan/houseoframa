@@ -6,6 +6,9 @@
 export const TRACK_STEPS = ['from', 'how', 'inputs', 'kept', 'built', 'signed'] as const;
 export type TrackStep = (typeof TRACK_STEPS)[number];
 
+/** The camera's moves a person can say (Stage 11): the same as the ring's buttons. */
+export type CameraMove = 'turn-left' | 'turn-right' | 'turn-around' | 'closer' | 'further';
+
 export type Command =
   | { kind: 'yes' }
   | { kind: 'no' }
@@ -16,6 +19,8 @@ export type Command =
   | { kind: 'back' }
   | { kind: 'what-if'; input: string; value: string }
   | { kind: 'board' }
+  /** Stage 11: the camera, by voice. */
+  | { kind: 'camera'; move: CameraMove }
   /** A track question; figure is null for "this number", the one in front of the person. */
   | { kind: 'track'; step: TrackStep; figure: string | null }
   | { kind: 'talk'; text: string };
@@ -42,6 +47,13 @@ const SCRAP = /^scrap (?:everything|it all|all of it)(?: and start (?:again|over
 const CODE = /^show me the code$/;
 const BACK = /^(?:go back|back|take me back)$/;
 const BOARD = /^(?:read|look at|take|scan) the board$/;
+const CAMERA: [RegExp, CameraMove][] = [
+  [/^turn (?:it )?(?:to the )?left$/, 'turn-left'],
+  [/^turn (?:it )?(?:to the )?right$/, 'turn-right'],
+  [/^turn (?:it )?around$/, 'turn-around'],
+  [/^(?:closer|come closer|zoom in|go closer|nearer)$/, 'closer'],
+  [/^(?:further|farther|further away|zoom out|go further|back up)$/, 'further'],
+];
 const SHOW = /^(?:show me|go to|take me to|let's see|let me see)\s+(.+)$/;
 const OPEN = /^open\s+(.+)$/;
 const WHAT_IF =
@@ -100,6 +112,7 @@ export function parseCommand(said: string): Command {
   if (CODE.test(t)) return { kind: 'code' };
   if (BACK.test(t)) return { kind: 'back' };
   if (BOARD.test(t)) return { kind: 'board' };
+  for (const [re, move] of CAMERA) if (re.test(t)) return { kind: 'camera', move };
   for (const { step, re } of TRACK) {
     const m = re.exec(t);
     if (m) return { kind: 'track', step, figure: figureOf(m.slice(1).find(Boolean) ?? '') };

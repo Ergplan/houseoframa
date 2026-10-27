@@ -1,3 +1,4 @@
+import { cameraFrom } from '@rama/stage';
 import { pageSite } from '../../../server/session';
 import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
@@ -9,6 +10,7 @@ import { Said } from '../../../components/workbench/Said';
 import { SiteShell, auditOf, consoleProps } from '../../../components/workbench/SiteShell';
 import { StreetView } from '../../../components/lakefront/StreetView';
 import { BuildingView } from '../../../components/lakefront/BuildingView';
+import { CodeCamera } from '../../../components/lakefront/CameraRing';
 import { placeHref } from '../../../components/lakefront/places';
 
 export const dynamic = 'force-dynamic';
@@ -95,6 +97,7 @@ export default async function SitePage({
           named={lf.named}
           problem={lf.problem}
           unknownScreens={lf.features.unknownScreens}
+          camera={cameraFrom(q, 'street', null)}
         />
       </SiteShell>
     );
@@ -127,6 +130,7 @@ export default async function SitePage({
             chosen!.bricks.flatMap((p) => (audit?.verdicts[p] ? [[p, audit.verdicts[p]!]] : [])),
           )}
           all={lf.street.buildings.map((b) => ({ id: b.id, name: b.name }))}
+          camera={cameraFrom(q, 'building', chosen!.id)}
         />
       </SiteShell>
     );
@@ -141,6 +145,7 @@ export default async function SitePage({
   }));
   return (
     <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
+      <CodeCamera siteId={site.id} start={cameraFrom(q, 'code', chosen?.id ?? null)} />
       <div className="site-col">
         <SiteView
           siteId={site.id}

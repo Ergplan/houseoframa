@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "609a7ab9d69596374d91cbddf2ead661516d4443",
+  "commit": "859cd1e0a8796880727300bed8325900dbaf66fb",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -13169,6 +13169,117 @@
       "sha": "609a7ab9d69596374d91cbddf2ead661516d4443",
       "short": "609a7ab",
       "subject": "Stage 10: pnpm-lock.yaml follows packages/model's dependencies"
+    },
+    {
+      "at": "2026-10-27T04:59:10Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 103,
+          "del": 4,
+          "kind": "M",
+          "path": "apps/rama/app/globals.css"
+        },
+        {
+          "add": 21,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/app/site/[siteId]/care/page.tsx"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/discovery/page.tsx"
+        },
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/ceremony/WalkthroughView.tsx"
+        },
+        {
+          "add": 2,
+          "del": 6,
+          "kind": "M",
+          "path": "apps/rama/components/ears/VoiceRoom.tsx"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/floor/Action.tsx"
+        },
+        {
+          "add": 199,
+          "del": 180,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/BuildingView.tsx"
+        },
+        {
+          "add": 144,
+          "del": 131,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/StreetView.tsx"
+        },
+        {
+          "add": 3,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/workbench/BrainsForm.tsx"
+        },
+        {
+          "add": 7,
+          "del": 4,
+          "kind": "M",
+          "path": "apps/rama/components/workbench/SiteShell.tsx"
+        },
+        {
+          "add": 149,
+          "del": 145,
+          "kind": "M",
+          "path": "apps/rama/components/workbench/TrainerConsole.tsx"
+        },
+        {
+          "add": 125,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/workbench/journey.test.tsx"
+        },
+        {
+          "add": 146,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/workbench/journey.ts"
+        },
+        {
+          "add": 354,
+          "del": 32,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 6,
+          "del": 1,
+          "kind": "M",
+          "path": "tests/stage-7.e2e.test.ts"
+        }
+      ],
+      "sha": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "short": "859cd1e",
+      "subject": "Stage 11, part 1: the journey — five acts as tabs with one lit action each, Care at the end"
     }
   ],
   "edges": [
@@ -16576,6 +16687,14 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.tsx",
       "symbols": [
+        "CodeCamera"
+      ],
+      "to": "apps/rama/components/lakefront/CameraRing.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
         "StreetView"
       ],
       "to": "apps/rama/components/lakefront/StreetView.tsx",
@@ -16651,7 +16770,8 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.tsx",
       "symbols": [
-        "building"
+        "building",
+        "cameraFrom"
       ],
       "to": "packages/stage/src/index.ts",
       "typeOnly": false
@@ -17648,6 +17768,14 @@
     {
       "from": "apps/rama/components/lakefront/BuildingView.tsx",
       "symbols": [
+        "CameraRing"
+      ],
+      "to": "apps/rama/components/lakefront/CameraRing.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
         "flagSentence"
       ],
       "to": "apps/rama/components/lakefront/StreetView.tsx",
@@ -17681,6 +17809,14 @@
     {
       "from": "apps/rama/components/lakefront/BuildingView.tsx",
       "symbols": [
+        "useCamera"
+      ],
+      "to": "apps/rama/components/lakefront/useCamera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
         "Verdict"
       ],
       "to": "packages/audit/src/view.ts",
@@ -17698,10 +17834,15 @@
       "from": "apps/rama/components/lakefront/BuildingView.tsx",
       "symbols": [
         "BuildingScene",
+        "Camera",
+        "CameraAction",
         "StreetBuilding",
         "drawBuilding",
+        "orientScene",
         "pickBuilding",
-        "toPicture"
+        "toPicture",
+        "unview",
+        "viewTransform"
       ],
       "to": "packages/stage/src/index.ts",
       "typeOnly": false
@@ -17712,6 +17853,24 @@
         "PlainTrail"
       ],
       "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/CameraRing.tsx",
+      "symbols": [
+        "ORIENTATION_WORDS",
+        "useCamera"
+      ],
+      "to": "apps/rama/components/lakefront/useCamera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/CameraRing.tsx",
+      "symbols": [
+        "Camera",
+        "CameraAction"
+      ],
+      "to": "packages/stage/src/index.ts",
       "typeOnly": true
     },
     {
@@ -17728,6 +17887,14 @@
         "StateChip"
       ],
       "to": "apps/rama/components/harmony/ui.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
+        "CameraRing"
+      ],
+      "to": "apps/rama/components/lakefront/CameraRing.tsx",
       "typeOnly": false
     },
     {
@@ -17759,6 +17926,15 @@
     {
       "from": "apps/rama/components/lakefront/StreetView.tsx",
       "symbols": [
+        "TURN_MS",
+        "useCamera"
+      ],
+      "to": "apps/rama/components/lakefront/useCamera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/StreetView.tsx",
+      "symbols": [
         "AuditView"
       ],
       "to": "packages/audit/src/view.ts",
@@ -17776,6 +17952,8 @@
       "from": "apps/rama/components/lakefront/StreetView.tsx",
       "symbols": [
         "AuditRun",
+        "Camera",
+        "CameraAction",
         "History",
         "LogEntry",
         "Street",
@@ -17786,12 +17964,15 @@
         "finishAudit",
         "hourOf",
         "liftChip",
+        "orientStreet",
         "pickStreet",
         "startAudit",
         "stepAudit",
         "streetAuditScript",
         "streetTimeline",
-        "toPicture"
+        "toPicture",
+        "unview",
+        "viewTransform"
       ],
       "to": "packages/stage/src/index.ts",
       "typeOnly": false
@@ -17829,6 +18010,26 @@
       ],
       "to": "packages/stage/src/index.ts",
       "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/useCamera.ts",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/useCamera.ts",
+      "symbols": [
+        "Camera",
+        "CameraAction",
+        "Level",
+        "camera",
+        "cameraQuery"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
     },
     {
       "from": "apps/rama/components/showroom/ShowroomView.tsx",
@@ -21917,6 +22118,7 @@
     {
       "from": "packages/ears/src/conductor.ts",
       "symbols": [
+        "CameraMove",
         "TrackStep",
         "matchName",
         "parseCommand"
@@ -23217,6 +23419,148 @@
       "typeOnly": false
     },
     {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "design/harmony/tokens.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "FacadeInput",
+        "building"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "Camera",
+        "HAND_OFF",
+        "ORIENTATIONS",
+        "camera",
+        "cameraFrom",
+        "cameraQuery",
+        "orientScene",
+        "orientStreet",
+        "startCamera",
+        "unview",
+        "viewTransform"
+      ],
+      "to": "packages/stage/src/camera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "drawBuilding",
+        "drawStreet"
+      ],
+      "to": "packages/stage/src/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "brickOnFace",
+        "buildingFaces",
+        "facadeShape",
+        "floorFaceOf",
+        "plotPolygon"
+      ],
+      "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "Pt",
+        "inPolygon"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "paletteFromTokens"
+      ],
+      "to": "packages/stage/src/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "pickBuilding",
+        "pickStreet"
+      ],
+      "to": "packages/stage/src/pick.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.test.ts",
+      "symbols": [
+        "recorder"
+      ],
+      "to": "packages/stage/test/recorder.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.ts",
+      "symbols": [
+        "BuildingScene"
+      ],
+      "to": "packages/stage/src/building.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/camera.ts",
+      "symbols": [
+        "Pt",
+        "boxFaces",
+        "project"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/camera.ts",
+      "symbols": [
+        "Street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": true
+    },
+    {
       "from": "packages/stage/src/draw.test.ts",
       "symbols": [
         "default"
@@ -23321,9 +23665,11 @@
     {
       "from": "packages/stage/src/draw.ts",
       "symbols": [
+        "areaPolygon",
         "brickOnFace",
         "buildingFaces",
         "facadeShape",
+        "floorFaceOf",
         "jettyShapes",
         "plotPolygon",
         "subFace"
@@ -23482,6 +23828,7 @@
     {
       "from": "packages/stage/src/geometry.ts",
       "symbols": [
+        "Area",
         "Jetty",
         "Plot",
         "Street",
@@ -23498,6 +23845,14 @@
         "*"
       ],
       "to": "packages/stage/src/building.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/camera.ts",
       "typeOnly": false
     },
     {
@@ -23683,6 +24038,7 @@
         "brickOnFace",
         "buildingFaces",
         "facadeShape",
+        "floorFaceOf",
         "jettyShapes",
         "plotPolygon"
       ],
@@ -27291,7 +27647,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T04:39:13Z",
+  "extractedAt": "2026-10-27T04:59:10Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -27455,7 +27811,7 @@
     },
     {
       "binary": false,
-      "bytes": 3377,
+      "bytes": 3414,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -28810,7 +29166,7 @@
     },
     {
       "binary": false,
-      "bytes": 9235,
+      "bytes": 9269,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -28829,7 +29185,7 @@
       "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 226,
+      "lines": 227,
       "packages": [
         "zod"
       ],
@@ -29016,16 +29372,16 @@
     },
     {
       "binary": false,
-      "bytes": 23660,
-      "changes": 13,
+      "bytes": 24193,
+      "changes": 14,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1212,
+      "lines": 1234,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -29273,15 +29629,15 @@
     {
       "binary": false,
       "bytes": 886,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "default",
         "dynamic"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 21,
@@ -29291,7 +29647,7 @@
     {
       "binary": false,
       "bytes": 4040,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -29299,7 +29655,7 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 108,
@@ -29382,7 +29738,7 @@
     },
     {
       "binary": false,
-      "bytes": 5783,
+      "bytes": 6090,
       "changes": 9,
       "env": [],
       "envDynamic": false,
@@ -29394,7 +29750,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 165,
+      "lines": 170,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -29915,14 +30271,14 @@
     {
       "binary": false,
       "bytes": 9452,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
         "WalkthroughView"
       ],
       "firstCommit": "7fdd71b699dd352f1e9a34407af3df66b0df0554",
-      "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 250,
@@ -29935,8 +30291,8 @@
     },
     {
       "binary": false,
-      "bytes": 18174,
-      "changes": 3,
+      "bytes": 18682,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -29944,10 +30300,10 @@
         "VoiceRoom"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 510,
+      "lines": 519,
       "packages": [
         "next",
         "react"
@@ -29958,14 +30314,14 @@
     {
       "binary": false,
       "bytes": 1331,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "Action"
       ],
       "firstCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
-      "lastCommit": "739354a5a47522bc6b95e1098db48382242bedc9",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 51,
@@ -30182,8 +30538,8 @@
     },
     {
       "binary": false,
-      "bytes": 15416,
-      "changes": 3,
+      "bytes": 17924,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30191,10 +30547,10 @@
         "BuildingView"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 390,
+      "lines": 456,
       "packages": [
         "next",
         "react"
@@ -30204,8 +30560,26 @@
     },
     {
       "binary": false,
-      "bytes": 20832,
-      "changes": 2,
+      "bytes": 2374,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CameraRing",
+        "CodeCamera"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 79,
+      "path": "apps/rama/components/lakefront/CameraRing.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 25051,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30214,10 +30588,10 @@
         "flagSentence"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "99a938c1589ad88390705f3bdd2f34fe8d70763d",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 574,
+      "lines": 673,
       "packages": [
         "next",
         "react"
@@ -30284,6 +30658,31 @@
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 17,
       "path": "apps/rama/components/lakefront/places.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2856,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CAMERA_EVENT",
+        "ORIENTATION_WORDS",
+        "TURN_MS",
+        "cameraHref",
+        "useCamera"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 74,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/useCamera.ts",
       "test": false
     },
     {
@@ -30407,7 +30806,7 @@
     {
       "binary": false,
       "bytes": 6356,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30416,7 +30815,7 @@
         "BuilderOption"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 165,
@@ -30463,7 +30862,7 @@
     {
       "binary": false,
       "bytes": 3862,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30472,7 +30871,7 @@
         "consoleProps"
       ],
       "firstCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 104,
@@ -30482,7 +30881,7 @@
     {
       "binary": false,
       "bytes": 8598,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30494,7 +30893,7 @@
       "hosts": [
         "github.com"
       ],
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 239,
@@ -30507,12 +30906,12 @@
     {
       "binary": false,
       "bytes": 4926,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 125,
@@ -30526,7 +30925,7 @@
     {
       "binary": false,
       "bytes": 4934,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30538,8 +30937,8 @@
         "tabHref",
         "tabOf"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 146,
@@ -31376,16 +31775,16 @@
     },
     {
       "binary": false,
-      "bytes": 71568,
-      "changes": 29,
+      "bytes": 72250,
+      "changes": 30,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 229,
+      "lines": 230,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -31414,16 +31813,16 @@
     },
     {
       "binary": false,
-      "bytes": 64480,
-      "changes": 95,
+      "bytes": 65666,
+      "changes": 96,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 253,
+      "lines": 256,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -35558,7 +35957,7 @@
     },
     {
       "binary": false,
-      "bytes": 19374,
+      "bytes": 19829,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -35582,17 +35981,18 @@
       "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 540,
+      "lines": 552,
       "path": "packages/ears/src/conductor.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 5586,
+      "bytes": 6274,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "CameraMove",
         "Command",
         "TRACK_STEPS",
         "TrackStep",
@@ -35604,7 +36004,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 128,
+      "lines": 141,
       "path": "packages/ears/src/grammar.ts",
       "test": false
     },
@@ -35760,7 +36160,7 @@
     },
     {
       "binary": false,
-      "bytes": 12656,
+      "bytes": 12951,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -35769,7 +36169,7 @@
       "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 286,
+      "lines": 295,
       "packages": [
         "vitest"
       ],
@@ -35797,7 +36197,7 @@
     },
     {
       "binary": false,
-      "bytes": 3608,
+      "bytes": 3908,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -35806,7 +36206,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 78,
+      "lines": 83,
       "packages": [
         "vitest"
       ],
@@ -36779,7 +37179,7 @@
     },
     {
       "binary": false,
-      "bytes": 6177,
+      "bytes": 6446,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -36799,8 +37199,58 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 202,
+      "lines": 208,
       "path": "packages/stage/src/building.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 10254,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 266,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/camera.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 10509,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Camera",
+        "CameraAction",
+        "HAND_OFF",
+        "Level",
+        "MAX_SCALE",
+        "MIN_SCALE",
+        "ORIENTATIONS",
+        "Orientation",
+        "camera",
+        "cameraFrom",
+        "cameraQuery",
+        "orientScene",
+        "orientStreet",
+        "startCamera",
+        "unview",
+        "viewTransform"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 287,
+      "path": "packages/stage/src/camera.ts",
       "test": false
     },
     {
@@ -36823,7 +37273,7 @@
     },
     {
       "binary": false,
-      "bytes": 20234,
+      "bytes": 20458,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -36840,7 +37290,7 @@
       "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 594,
+      "lines": 591,
       "path": "packages/stage/src/draw.ts",
       "test": false
     },
@@ -36939,14 +37389,17 @@
     },
     {
       "binary": false,
-      "bytes": 2259,
+      "bytes": 3099,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "areaPolygon",
         "brickOnFace",
         "buildingFaces",
+        "facadeFaceOf",
         "facadeShape",
+        "floorFaceOf",
         "jettyShapes",
         "plotPolygon",
         "subFace"
@@ -36955,13 +37408,13 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 59,
+      "lines": 74,
       "path": "packages/stage/src/geometry.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 529,
+      "bytes": 558,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -36972,7 +37425,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 14,
+      "lines": 15,
       "path": "packages/stage/src/index.ts",
       "test": false
     },
@@ -37042,7 +37495,7 @@
     },
     {
       "binary": false,
-      "bytes": 3297,
+      "bytes": 3324,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -37057,7 +37510,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 85,
+      "lines": 92,
       "path": "packages/stage/src/pick.ts",
       "test": false
     },
@@ -37162,11 +37615,12 @@
     },
     {
       "binary": false,
-      "bytes": 11190,
+      "bytes": 11792,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "Area",
         "BRICK_GAP",
         "BRICK_H",
         "FLOOR_LABEL",
@@ -37195,7 +37649,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 327,
+      "lines": 345,
       "path": "packages/stage/src/street.ts",
       "test": false
     },
@@ -39935,7 +40389,7 @@
     {
       "binary": false,
       "bytes": 8521,
-      "changes": 10,
+      "changes": 11,
       "env": [],
       "envDynamic": false,
       "exports": [],
@@ -39943,7 +40397,7 @@
       "hosts": [
         "github.com"
       ],
-      "lastCommit": "450dc53510072cde2a01d0ea46b1069f04223a5f",
+      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 185,
@@ -40114,6 +40568,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -40503,6 +40958,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -40574,10 +41030,12 @@
         "apps/rama/components/inspector/Inspector.tsx",
         "apps/rama/components/inspector/words.ts",
         "apps/rama/components/lakefront/BuildingView.tsx",
+        "apps/rama/components/lakefront/CameraRing.tsx",
         "apps/rama/components/lakefront/StreetView.tsx",
         "apps/rama/components/lakefront/Words.tsx",
         "apps/rama/components/lakefront/live.ts",
         "apps/rama/components/lakefront/places.ts",
+        "apps/rama/components/lakefront/useCamera.ts",
         "apps/rama/components/site/SiteView.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
         "apps/rama/components/workbench/Said.tsx",
@@ -40662,6 +41120,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -40807,6 +41266,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -40950,6 +41410,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -41095,6 +41556,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -41241,6 +41703,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -41387,6 +41850,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -41522,6 +41986,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -41667,6 +42132,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
@@ -41788,6 +42254,7 @@
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
+        "packages/stage/src/camera.ts",
         "packages/stage/src/draw.ts",
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",

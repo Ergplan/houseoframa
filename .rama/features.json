@@ -28,7 +28,7 @@
       "id": "show-the-lakefront",
       "name": "Show a product as a lakefront",
       "does": "Draws a product as buildings by a lake, one for each thing it does, with its code a level inside.",
-      "screens": ["apps/rama/app:/site/[siteId]"]
+      "screens": ["apps/rama/app:/site/[siteId]", "apps/rama/app:/site/[siteId]/care"]
     },
     {
       "id": "agree-what-to-build",

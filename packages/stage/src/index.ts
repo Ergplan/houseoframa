@@ -12,3 +12,4 @@ export * from './palette.ts';
 export * from './draw.ts';
 export * from './pick.ts';
 export * from './words.ts';
+export * from './camera.ts';

@@ -87,6 +87,7 @@ async function answer(
     })),
     go: reply.go ? placeUrl(site.id, reply.go) : null,
     board: Boolean(reply.board),
+    camera: reply.camera ?? null,
     decided: reply.decided ? { title: reply.decided.title, by: reply.decided.by } : null,
     ...extra,
   });

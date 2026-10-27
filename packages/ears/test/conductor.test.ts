@@ -277,6 +277,15 @@ describe('commands that move the room, and the track', () => {
     ]);
   });
 
+  it('moves the camera by voice, as the ring does', async () => {
+    const { deps } = memoryRoom();
+    const r = await hear(deps, s0, 'Asha Rao', 'Turn around');
+    expect(r).toMatchObject({
+      camera: 'turn-around',
+      lines: [{ kind: 'ack', text: 'Turning around.' }],
+    });
+  });
+
   it('reads the board on request, as a draft', async () => {
     const { deps } = memoryRoom();
     const r = await hear(deps, s0, 'Tara', 'Read the board');

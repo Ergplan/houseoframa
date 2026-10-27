@@ -2,7 +2,14 @@
 // third level, the code, is the Brick canvas (apps/rama/canvas/pick.ts).
 import type { BuildingScene } from './building.ts';
 import { standingHeight } from './draw.ts';
-import { brickOnFace, buildingFaces, facadeShape, jettyShapes, plotPolygon } from './geometry.ts';
+import {
+  brickOnFace,
+  buildingFaces,
+  facadeShape,
+  floorFaceOf,
+  jettyShapes,
+  plotPolygon,
+} from './geometry.ts';
 import { inPolygon, type Pt } from './iso.ts';
 import { laid, type StreetTimeline } from './replay.ts';
 import type { Street } from './street.ts';
@@ -66,7 +73,7 @@ export function pickBuilding(sc: BuildingScene, p: Pt): BuildingPick {
   }
   for (const fl of sc.floors)
     for (const x of fl.bricks)
-      if (inPolygon(p, brickOnFace(sc.faces.right, sc.h, x)))
+      if (inPolygon(p, brickOnFace(floorFaceOf(sc), sc.h, x)))
         return { kind: 'brick', path: x.path };
   return null;
 }

@@ -22,6 +22,7 @@ type Reply = {
   lines?: Line[];
   go?: string | null;
   board?: boolean;
+  camera?: 'turn-left' | 'turn-right' | 'turn-around' | 'closer' | 'further' | null;
   decided?: { title: string; by: string } | null;
 };
 type Said = { speaker: string; text: string; flag?: string; drafted?: 'builder' | 'drafter' };
@@ -249,6 +250,14 @@ export function VoiceRoom({
       if (r.act) setAct(r.act);
       queue.current = queue.current.then(async () => {
         if (r.go) router.push(r.go);
+        if (r.camera) {
+          // The voice moves the same camera as the ring (components/lakefront/useCamera.ts).
+          const detail =
+            r.camera === 'closer' || r.camera === 'further'
+              ? { type: 'zoom', factor: r.camera === 'closer' ? 1.25 : 0.8 }
+              : { type: 'turn', by: r.camera.slice(5) };
+          window.dispatchEvent(new CustomEvent('rama:camera', { detail }));
+        }
         for (const line of r.lines ?? []) {
           if (line.go) router.push(line.go);
           setState('speaking');

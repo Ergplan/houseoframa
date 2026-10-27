@@ -7,7 +7,7 @@
 import type { Decision } from '@rama/shared';
 import { seatProblems, type Seats } from '@rama/model';
 import { brainsSpoken, parseBrains } from './brains.ts';
-import { matchName, parseCommand, type TrackStep } from './grammar.ts';
+import { matchName, parseCommand, type CameraMove, type TrackStep } from './grammar.ts';
 import { spokenNumber } from './numbers.ts';
 import { answerTrack, type FigureOnHand } from './track.ts';
 
@@ -121,6 +121,8 @@ export interface Reply {
   go?: Place;
   /** The board is to be read (a webcam frame). */
   board?: boolean;
+  /** Stage 11: a move of the camera, as the ring makes it. */
+  camera?: CameraMove;
   /** A card decided by this turn's yes. */
   decided?: Decision;
   state: RoomState;
@@ -392,6 +394,16 @@ export async function hear(
         { ...state, place, history: state.history.slice(0, -1) },
         { go: place },
       );
+    }
+    case 'camera': {
+      const words: Record<CameraMove, string> = {
+        'turn-left': 'Turning left.',
+        'turn-right': 'Turning right.',
+        'turn-around': 'Turning around.',
+        closer: 'Closer.',
+        further: 'Further.',
+      };
+      return said([{ kind: 'ack', text: words[cmd.move] }], state, { camera: cmd.move });
     }
     case 'board':
       return said(

@@ -9,9 +9,11 @@ import type { ScreenState } from '@rama/blueprint/metrics';
 import type { Verdict } from '@rama/audit/view';
 import { buildingAt, type BuildingScene } from './building.ts';
 import {
+  areaPolygon,
   brickOnFace,
   buildingFaces,
   facadeShape,
+  floorFaceOf,
   jettyShapes,
   plotPolygon,
   subFace,
@@ -272,34 +274,26 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
     ctx.stroke();
   }
   // The lake: the edge of the product, with a glass sheen; the far bank where the outside services stand.
-  const lake = [
-    a(s.lake.gx0, g.gy0),
-    a(s.lake.gx1, g.gy0),
-    a(s.lake.gx1, g.gy1),
-    a(s.lake.gx0, g.gy1),
-  ];
+  const lake = areaPolygon(s, s.lake);
   fillPoly(ctx, lake, c['surface-2'], c.line);
   fillPoly(ctx, lake, c.glass, null);
-  // Ripples along the water, short dashes that read as a surface, not as roads.
+  // Ripples along the water, short dashes that read as a surface, not as roads: along its length.
   ctx.strokeStyle = c['glass-strong'];
   ctx.lineWidth = 2;
   ctx.setLineDash([14, 22]);
-  for (let y = 0.75; y < g.gy1; y += 1.25) {
-    const p0 = a(s.lake.gx0 + 0.4, y);
-    const p1 = a(s.lake.gx1 - 0.4, y);
+  const L = s.lake;
+  const across = L.gx1 - L.gx0 < L.gy1 - L.gy0;
+  for (let t = 0.75; t < (across ? L.gx1 - L.gx0 : L.gy1 - L.gy0); t += 1.25) {
+    const p0 = across ? a(L.gx0 + t, L.gy0 + 0.4) : a(L.gx0 + 0.4, L.gy0 + t);
+    const p1 = across ? a(L.gx0 + t, L.gy1 - 0.4) : a(L.gx1 - 0.4, L.gy0 + t);
     ctx.beginPath();
     ctx.moveTo(p0.x, p0.y);
     ctx.lineTo(p1.x, p1.y);
     ctx.stroke();
   }
   ctx.setLineDash([]);
-  if (s.bank.gx1 > s.bank.gx0)
-    fillPoly(
-      ctx,
-      [a(s.bank.gx0, g.gy0), a(s.bank.gx1, g.gy0), a(s.bank.gx1, g.gy1), a(s.bank.gx0, g.gy1)],
-      c.surface,
-      c.line,
-    );
+  const B = s.bank;
+  if (B.gx1 > B.gx0 && B.gy1 > B.gy0) fillPoly(ctx, areaPolygon(s, B), c.surface, c.line);
 
   const focus = frame.hover ?? frame.selected;
   const focusB = s.buildings.find((b) => b.id === focus) ?? null;
@@ -496,9 +490,11 @@ export function drawBuilding(ctx: CanvasRenderingContext2D, frame: BuildingFrame
   fillPoly(ctx, f.left, c.glass, c.line);
   fillPoly(ctx, f.top, c['glass-strong'], c.line);
 
-  // The side face: floors and their bricks through the glass, each floor named at the right.
+  // The side face: floors and their bricks through the glass, each floor named on its outer side.
+  const side = floorFaceOf(sc);
+  const onLeft = sc.facadeFace === 'right';
   for (const fl of sc.floors) {
-    const band = subFace(f.right, 0, 1, 1 - fl.z1 / sc.h, 1 - fl.z0 / sc.h);
+    const band = subFace(side, 0, 1, 1 - fl.z1 / sc.h, 1 - fl.z0 / sc.h);
     ctx.strokeStyle = c.line;
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -509,26 +505,27 @@ export function drawBuilding(ctx: CanvasRenderingContext2D, frame: BuildingFrame
       const on = frame.hover === x.path;
       fillPoly(
         ctx,
-        brickOnFace(f.right, sc.h, x),
+        brickOnFace(side, sc.h, x),
         on ? c.ink : c['ink-muted'],
         on ? c.accent : null,
         1.5,
       );
       const v = frame.verdicts?.[x.path];
       if (v && v !== 'pass') {
-        const q = brickOnFace(f.right, sc.h, x)[2]!;
+        const q = brickOnFace(side, sc.h, x)[2]!;
         ctx.fillStyle = c[BADGE_TONE[v]];
         ctx.beginPath();
         ctx.arc(q.x, q.y, 3, 0, Math.PI * 2);
         ctx.fill();
       }
     }
-    const mid = { x: (band[1]!.x + band[2]!.x) / 2, y: (band[1]!.y + band[2]!.y) / 2 };
+    const [e0, e1] = onLeft ? [band[0]!, band[3]!] : [band[1]!, band[2]!];
+    const mid = { x: (e0.x + e1.x) / 2, y: (e0.y + e1.y) / 2 };
     ctx.font = `600 12px ${pal.sans}`;
     ctx.fillStyle = c['ink-muted'];
-    ctx.textAlign = 'left';
+    ctx.textAlign = onLeft ? 'right' : 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`${fl.label} · ${fl.bricks.length}`, mid.x + 14, mid.y);
+    ctx.fillText(`${fl.label} · ${fl.bricks.length}`, mid.x + (onLeft ? -14 : 14), mid.y);
   }
 
   // The front face: the real screens behind the glass, figures outlined where the screen shows them.
