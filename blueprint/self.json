@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+  "commit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -14207,6 +14207,561 @@
       "sha": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "short": "4bea3e9",
       "subject": "Stage 11, part 4: the flow — a figure's real data through pipes in the glass, step by step"
+    },
+    {
+      "at": "2026-10-27T11:30:00Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 8,
+          "del": 4,
+          "kind": "M",
+          "path": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts"
+        },
+        {
+          "add": 12,
+          "del": 7,
+          "kind": "M",
+          "path": "apps/rama/app/api/site/[siteId]/voice/handler.ts"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/components/ears/VoiceRoom.tsx"
+        },
+        {
+          "add": 25,
+          "del": 3,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/BuildingView.tsx"
+        },
+        {
+          "add": 6,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/CodePane.tsx"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/server/voice.ts"
+        },
+        {
+          "add": 872,
+          "del": 226,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 23,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-11.review.md"
+        },
+        {
+          "add": 6,
+          "del": 6,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations-cost.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/0d5717f811ed9af7eb234f1f8cc3a26580cddf2f7cdc5cadf87fcb084789367e.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/11156359fbad36742100836bcee80ffdaaaa4854ce7485140222361893b02c15.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/158b637f7694530c32d2f94f3cd30cc8c0fd1c6b480d52091d4ef92895cccd97.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/198a142a209dcfc73ae6d485a74f994b0ded98ab40ddd71fa4d5e4b7115ac170.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/1eddea1a2e9bc6c7887a2368cb6722a5c8ca2ebca32a0ea73acab33ca557fd70.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/212c6b9051aea493bbb8240392cb20d33f087a4bf249baa4afff6fa97f6ee5af.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/22a82a84eed9340d504e4af7bd71cf98a7fc742aa97d783dc7c8cfcf66f8da6c.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/27db96307175659b27991f5c41d55c556c14bafa73eab163588207b630cfea36.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/2c59f23fa90b3d26f758d560f5e91151fca6711f8a3db3d3e04ee5bbf982e20f.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/2c5a07212c5e6397a3d897c648a3f1e9184793e56fe0be118051c19b213aa06d.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/2cd68f7324e8acce40c41f7ed0400a76bbbf5907ff164b4832b331589973603b.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/326b63d810ea098145a1a5bd38581afa4799c08a51e0c2bfcbe9f62b20bedc18.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/3810a91abf799a4a4d3093ca38ce0998c9d8976eee1e70862561406feb082d76.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/3cc2fa6066c3bb90ba2e18d6c339fb7fb2cff3038e6949cc7c7bb6aa7af08555.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/3dc736c79c653402aebba3d6c355fee168a1041c6ce80337f1594a084de648d4.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/4457298e3c21f9e7c34f1deb4f5ce1b4f0ba0fcb62658b98c8d532d83133f45e.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/4befbc0025ddc92e0fd568fcf14be54e4605f2bbd5d07e27dccb77ecead6ff3b.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/4d887220f07af6f5c41725ffa5cfcc8bb4df601f40f6f1114c80ce7cea625b6f.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/5430d1b25bc6ec7746d30b1723e7974288602314b6346eaa32368e1a4bd7df29.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/54ba70a82332dc8334ad5b5221b5387be5b4878a95e6eaff782e475c2dee6781.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/589852b763c7c87eb07482f7a6a2e6bfd79493d95ec73d4e62cdd4206e5962e1.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/5bbd0dbe540b578166a9d53bd9e66a5ec7872ac34a544152ab23f3684382d453.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/60ee062b3847c3d862fa9f6b45f3ada2e71244ea354f4ab7991e7654db8b4b77.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/617753a3683b39f74296511e7bfac70be8e4a9bdc3482f91218247d8337a0297.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/64a166598d9ca6e280d9167d9c48ad4a9eea682d5ae6abb413cd367e1c3c03bb.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/65f74883f7c1846936d221715bce3128774f96f409307dd846870749299fabfe.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/67c1681d688202baf2774288d600df47edf75becf8a84b4244aee5c618c2a5f6.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/680138fce1af3a21fe7c278a0d928e7b9bb8d5733ba1329a57e8151d64a5514f.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/7017b3a7190838f7750813989e5c66694f5b61538ef56ad82bb0d5058cb05883.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/741eff2feb017c99c3c4caf40f8b4212767804f74ff7552d2247c9478f212da4.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/75041c508bb019e4b7f3fa881ea1fd26f7302ae80cb361261578a8a3b7cec272.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/76ed0780adde50e5d76f4911c486eef805b0a555cad25cecc9b573288244fa85.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/77bc9b0e40c08180c0f1e175e9f8e9342fca357414b302ea123d3bd11ea6d301.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/784090613c06215b203c9375560f47f9c16ae75db00097091a611faac20dbf44.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/79672a44774200334d9d88f0699e1d18c6bd6335e87cfcdf19398dbe58ec7101.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/81dede6b598c766814f956d0f544bc6a3bec465e75cd55b2ee85d5926bb7e135.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/82d9f5b3ac9de12f4c170d4397adc873c1e18cd82bb0d4e1bc3a65b9decfcafc.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/83c29bf450810ad9643e58c0d7506302c2b08856afdef2608bd27f64e0e0173f.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/846a725b2122a4f27ad43729af5101939812ba0392f35d6e9933a61a605ecb44.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/84bf27875e191cac8a37f948b0705d1e98a282695c0f2eb8afeb46d847ae33f1.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/851b94d1fe65fa99a747e1ca6e2583286624cdcda5936db162c3cb3c87ec9eaf.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/8bff61be4b6628efbb69226e6faea1bc1af87bc5e25bb771d42931a1f8b7227d.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/8d1efc98cb5deca3e7309a65b4e8efe89e30cc6a2561ba2987507a4cf01a73ab.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/944bb07c36210e32bf044787946faf28bd764fea7dfd3043a56e6c4e47615dba.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/9625b6ea092d4ae2f3f69ffd885ec309ae7a1ffaf134c8d3898ec9adb412f870.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/9981f53d1c044f28213461d4f5f7c9a5d3e15efb1105774e2ea6c9ffc025591a.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/a3d907551daa0d3c96828638741be4ea0bfecbb7fd37b7cd9e352fecfdccf190.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/a4d6a15a1115ce13ea4731728d7f803818e4c1c8e9455869ab9d0e64dd46221a.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/a589ea67fe32d1ffa403c354adc8501b2a04b79d3e2df39a7335c0e125122b92.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/a8080d71091bc6cca0fc3bcc32f2fe33faa0ec7b35cf8bd455fd175db0eb42d0.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/b21f43e0c846125a2bac7135dd292957ca2ece6e321f9f035da5db1194a27516.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/ba563b332a5e7c0ff3f1fd02e178b55ced4b117c1c569dd4ade3aa7c507e85e2.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/bbf0d950920be274d535994e2814d330c0287153b61764c0ccf4cd073db4cee8.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/be08b1f5cb4051156c58d75fa6decfed70a3f069f26384ca048d81a9e45b7134.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/bf34175809d42716bed2042c09d67f1b6ae1af8d8eafd9a0b44ad7bfa88c6e95.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/cbc00c4364272d55217293663a6aea5da379f00d1d823bab750cc58303ab8e13.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/ce99d47a5b8772aec119a93285d03b119d5d2b1d02750b05b14b434933913d03.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/d1983fcf7d3f7716ebdd7e84c3502cc6c68e6d534cbfd38a5d363ed5bfc6f997.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/d46363161456040c3055eee972a7af31668810bd3b4b225e9149366dec0dd331.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/d77bd5267b5400b8e00a17b16c6da3a2d2e35f1f96213bbc3800cbb35f4325dc.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/d85bf59ab4934554e24cf891c61a30bcfc4ebfbed160406f94041c4083900aa5.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/d96c85cdc69d9c8d2c7df230b41376395a7981519b0c36dce2cb47577333f0a7.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/df543df3e5732e730ddec37a0b5ca4c15329d1563297c60af254d59ea6e83864.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/e106d12f8530a9dda41e20ab68d130f93b6a084422313c3e9efe1a476495c50c.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/e964553a0c3339dbf88a240cfa056f172b8b7a5ed1a6bb6ace2c23ef0ec7590b.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/e9d9f513bdedd2aa743b81ffbd944514a1ea2e3c6b1b7f40648fcafa939e7a2e.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/f0870d87a847d9cde1ec5e78c6e7465542cac77495c1b635ea9e5f9f32f5cac8.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/f1495f68d0014167aa6b8f467c5118797272e4e218f474726397b65c2eb01dd3.json"
+        },
+        {
+          "add": 5,
+          "del": 3,
+          "kind": "M",
+          "path": "fixtures/sample-build/explanations/f3a89a595f0d01303a155d96e8519e9af55365760c36619599877a9e6754abd5.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/f9a0314ce77e952958c79ef8782e8f4b6459bfab04f691cbd99852844e67017b.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/feecdc3644930cf786b0d58a522905c004ef0a4b4f4b0e855d07a152fdabc79a.json"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "A",
+          "path": "fixtures/sample-build/explanations/ffa1e697bcda6770533ac70ef68bb9da097c9aea5d49d64103be790c611a74df.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/build.ts"
+        },
+        {
+          "add": 13,
+          "del": 4,
+          "kind": "M",
+          "path": "packages/workbench/src/builders/recorded.ts"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/src/code.ts"
+        },
+        {
+          "add": 38,
+          "del": 3,
+          "kind": "M",
+          "path": "packages/workbench/src/explain.ts"
+        },
+        {
+          "add": 3,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/src/tail.ts"
+        },
+        {
+          "add": 46,
+          "del": 9,
+          "kind": "M",
+          "path": "packages/workbench/test/explain.test.ts"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "scripts/record-explanations.ts"
+        },
+        {
+          "add": 1,
+          "del": 2,
+          "kind": "M",
+          "path": "tests/stage-11.e2e.test.ts"
+        }
+      ],
+      "sha": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "short": "21fc9cd",
+      "subject": "Stage 11: reviewer run 1 — flow steps by reference, every block explained, drafts by commit"
     }
   ],
   "edges": [
@@ -29524,7 +30079,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T09:58:07Z",
+  "extractedAt": "2026-10-27T11:30:00Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -31124,12 +31679,12 @@
     {
       "binary": false,
       "bytes": 9733,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 238,
@@ -31142,7 +31697,7 @@
     {
       "binary": false,
       "bytes": 10626,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -31158,7 +31713,7 @@
         "placeUrl"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 250,
@@ -32286,7 +32841,7 @@
     {
       "binary": false,
       "bytes": 19397,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -32294,7 +32849,7 @@
         "VoiceRoom"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 533,
@@ -32554,7 +33109,7 @@
     {
       "binary": false,
       "bytes": 24802,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -32562,7 +33117,7 @@
         "BuildingView"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 638,
@@ -32593,18 +33148,18 @@
     },
     {
       "binary": false,
-      "bytes": 10854,
-      "changes": 2,
+      "bytes": 11144,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CodePane"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 311,
+      "lines": 315,
       "packages": [
         "next",
         "react"
@@ -33383,7 +33938,7 @@
     {
       "binary": false,
       "bytes": 3612,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -33393,7 +33948,7 @@
         "voiceMode"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 95,
@@ -33884,12 +34439,12 @@
     {
       "binary": false,
       "bytes": 70255,
-      "changes": 99,
+      "changes": 100,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 265,
@@ -34136,13 +34691,13 @@
     },
     {
       "binary": false,
-      "bytes": 9037,
-      "changes": 1,
+      "bytes": 9180,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 112,
@@ -34151,16 +34706,16 @@
     },
     {
       "binary": false,
-      "bytes": 10894,
-      "changes": 0,
+      "bytes": 20890,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 23,
+      "lines": 39,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -34690,12 +35245,12 @@
     {
       "binary": false,
       "bytes": 199,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 10,
@@ -34705,12 +35260,12 @@
     {
       "binary": false,
       "bytes": 530,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34720,12 +35275,12 @@
     {
       "binary": false,
       "bytes": 501,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34735,12 +35290,12 @@
     {
       "binary": false,
       "bytes": 420,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34750,12 +35305,12 @@
     {
       "binary": false,
       "bytes": 433,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34765,12 +35320,12 @@
     {
       "binary": false,
       "bytes": 425,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34780,12 +35335,12 @@
     {
       "binary": false,
       "bytes": 471,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34795,12 +35350,12 @@
     {
       "binary": false,
       "bytes": 482,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34810,12 +35365,12 @@
     {
       "binary": false,
       "bytes": 371,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34825,12 +35380,12 @@
     {
       "binary": false,
       "bytes": 425,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34840,12 +35395,12 @@
     {
       "binary": false,
       "bytes": 475,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34855,12 +35410,12 @@
     {
       "binary": false,
       "bytes": 495,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34870,12 +35425,12 @@
     {
       "binary": false,
       "bytes": 392,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34885,12 +35440,12 @@
     {
       "binary": false,
       "bytes": 358,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34900,12 +35455,12 @@
     {
       "binary": false,
       "bytes": 409,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34915,12 +35470,12 @@
     {
       "binary": false,
       "bytes": 387,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34930,12 +35485,12 @@
     {
       "binary": false,
       "bytes": 442,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34945,12 +35500,12 @@
     {
       "binary": false,
       "bytes": 394,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34960,12 +35515,12 @@
     {
       "binary": false,
       "bytes": 399,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34975,12 +35530,12 @@
     {
       "binary": false,
       "bytes": 362,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -34990,12 +35545,12 @@
     {
       "binary": false,
       "bytes": 509,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35005,12 +35560,12 @@
     {
       "binary": false,
       "bytes": 416,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35020,12 +35575,12 @@
     {
       "binary": false,
       "bytes": 479,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35035,12 +35590,12 @@
     {
       "binary": false,
       "bytes": 369,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35050,12 +35605,12 @@
     {
       "binary": false,
       "bytes": 441,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35065,12 +35620,12 @@
     {
       "binary": false,
       "bytes": 426,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35080,12 +35635,12 @@
     {
       "binary": false,
       "bytes": 412,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35095,12 +35650,12 @@
     {
       "binary": false,
       "bytes": 393,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35110,12 +35665,12 @@
     {
       "binary": false,
       "bytes": 508,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35125,12 +35680,12 @@
     {
       "binary": false,
       "bytes": 409,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35140,12 +35695,12 @@
     {
       "binary": false,
       "bytes": 431,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35155,12 +35710,12 @@
     {
       "binary": false,
       "bytes": 408,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35170,12 +35725,12 @@
     {
       "binary": false,
       "bytes": 442,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35185,12 +35740,12 @@
     {
       "binary": false,
       "bytes": 461,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35200,12 +35755,12 @@
     {
       "binary": false,
       "bytes": 379,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35215,12 +35770,12 @@
     {
       "binary": false,
       "bytes": 483,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35230,12 +35785,12 @@
     {
       "binary": false,
       "bytes": 432,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35245,12 +35800,12 @@
     {
       "binary": false,
       "bytes": 529,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35260,12 +35815,12 @@
     {
       "binary": false,
       "bytes": 430,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35275,12 +35830,12 @@
     {
       "binary": false,
       "bytes": 382,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35290,12 +35845,12 @@
     {
       "binary": false,
       "bytes": 483,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35305,12 +35860,12 @@
     {
       "binary": false,
       "bytes": 425,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35320,12 +35875,12 @@
     {
       "binary": false,
       "bytes": 463,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35335,12 +35890,12 @@
     {
       "binary": false,
       "bytes": 498,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35350,12 +35905,12 @@
     {
       "binary": false,
       "bytes": 453,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35365,12 +35920,12 @@
     {
       "binary": false,
       "bytes": 405,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35380,12 +35935,12 @@
     {
       "binary": false,
       "bytes": 531,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35395,12 +35950,12 @@
     {
       "binary": false,
       "bytes": 456,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35410,12 +35965,12 @@
     {
       "binary": false,
       "bytes": 424,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35425,12 +35980,12 @@
     {
       "binary": false,
       "bytes": 480,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35440,12 +35995,12 @@
     {
       "binary": false,
       "bytes": 409,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35455,12 +36010,12 @@
     {
       "binary": false,
       "bytes": 530,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35470,12 +36025,12 @@
     {
       "binary": false,
       "bytes": 420,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35485,12 +36040,12 @@
     {
       "binary": false,
       "bytes": 400,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35500,12 +36055,12 @@
     {
       "binary": false,
       "bytes": 386,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35515,12 +36070,12 @@
     {
       "binary": false,
       "bytes": 443,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35530,12 +36085,12 @@
     {
       "binary": false,
       "bytes": 464,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35545,12 +36100,12 @@
     {
       "binary": false,
       "bytes": 395,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35560,12 +36115,12 @@
     {
       "binary": false,
       "bytes": 472,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35575,12 +36130,12 @@
     {
       "binary": false,
       "bytes": 392,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35590,12 +36145,12 @@
     {
       "binary": false,
       "bytes": 500,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35605,12 +36160,12 @@
     {
       "binary": false,
       "bytes": 487,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35620,12 +36175,12 @@
     {
       "binary": false,
       "bytes": 378,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35635,12 +36190,12 @@
     {
       "binary": false,
       "bytes": 368,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35650,12 +36205,12 @@
     {
       "binary": false,
       "bytes": 396,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35665,12 +36220,12 @@
     {
       "binary": false,
       "bytes": 422,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35680,12 +36235,12 @@
     {
       "binary": false,
       "bytes": 403,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35695,12 +36250,12 @@
     {
       "binary": false,
       "bytes": 474,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35710,12 +36265,12 @@
     {
       "binary": false,
       "bytes": 514,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35725,12 +36280,12 @@
     {
       "binary": false,
       "bytes": 509,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35740,12 +36295,12 @@
     {
       "binary": false,
       "bytes": 409,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35755,12 +36310,12 @@
     {
       "binary": false,
       "bytes": 443,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -35770,12 +36325,12 @@
     {
       "binary": false,
       "bytes": 413,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "fallback: no rule matched",
       "lines": 14,
@@ -41716,7 +42271,7 @@
     {
       "binary": false,
       "bytes": 18186,
-      "changes": 3,
+      "changes": 4,
       "env": [
         "HOME",
         "PATH"
@@ -41740,7 +42295,7 @@
         "startBuild"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 472,
@@ -41798,7 +42353,7 @@
     {
       "binary": false,
       "bytes": 3898,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "HOME",
         "PATH"
@@ -41810,7 +42365,7 @@
         "recorded"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 91,
@@ -41869,7 +42424,7 @@
     {
       "binary": false,
       "bytes": 4890,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -41881,7 +42436,7 @@
         "productFigures"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 129,
@@ -41891,7 +42446,7 @@
     {
       "binary": false,
       "bytes": 10294,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -41909,7 +42464,7 @@
         "explanationsFor"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 299,
@@ -42166,7 +42721,7 @@
     {
       "binary": false,
       "bytes": 3645,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -42176,7 +42731,7 @@
         "typingFile"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 102,
@@ -42275,14 +42830,14 @@
     {
       "binary": false,
       "bytes": 9627,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 245,
@@ -43229,7 +43784,7 @@
     {
       "binary": false,
       "bytes": 4770,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "OPENAI_MODEL",
         "RAMA_DRAFTER"
@@ -43237,7 +43792,7 @@
       "envDynamic": false,
       "exports": [],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 107,
@@ -43849,14 +44404,14 @@
     {
       "binary": false,
       "bytes": 11370,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "RAMA_SHOTS"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 255,

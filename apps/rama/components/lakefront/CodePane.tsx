@@ -71,10 +71,16 @@ export function CodePane({
     if (v?.change) start(typingPlan({ path, before: v.change.before, after: v.change.after }));
   };
 
+  // The plan playing, kept in a ref too: the live poll reads it, so a new edit waits its turn rather
+  // than interrupting the change being typed (reviewer run 2).
+  const playing = useRef<TypingPlan | null>(null);
   const start = (p: TypingPlan) => {
+    playing.current = p;
     started.current = performance.now();
     setClock(0);
     setPlan(p);
+    // The file shown is the file being typed.
+    setPath(p.path);
   };
 
   // The clock of the typing.
@@ -91,8 +97,9 @@ export function CodePane({
         const next = queue.current.shift();
         if (next) start(next.plan);
         else {
+          playing.current = null;
           setPlan(null);
-          if (path) void load(path, at);
+          void load(plan.path, at);
         }
       }
     };
@@ -100,7 +107,7 @@ export function CodePane({
     return () => cancelAnimationFrame(raf);
   }, [plan]);
 
-  // Live: the builder's edits of the lift in hand, a second at a time, the latest file followed.
+  // Live: the builder's edits of the lift in hand, a second at a time, each typed in its turn.
   useEffect(() => {
     let stop = false;
     const poll = async () => {
@@ -129,14 +136,11 @@ export function CodePane({
             if (!/\.tsx?$/.test(e.path)) continue;
             queue.current.push({ plan: p });
           }
-          const last = r.edits.filter((e) => /\.tsx?$/.test(e.path)).at(-1);
-          if (last) {
+          // Typed in turn: the next change starts only when none is playing.
+          if (queue.current.length && !playing.current) {
             setAt(null);
-            setPath(last.path);
-            if (!plan) {
-              const next = queue.current.shift();
-              if (next) start(next.plan);
-            }
+            const next = queue.current.shift()!;
+            start(next.plan);
           }
         }
       } catch {

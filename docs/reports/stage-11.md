@@ -46,7 +46,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
   - What the drafter is given: only the block, the names it uses and the figures it serves.
   - Unconfirmed until a named person confirms it in the pane. Confirmed sentences go to `.rama/explanations.json` with an `audit_log` row (`confirmExplanation`).
   - Developer words: a sentence holding one of the glossary's banned words is not kept.
-  - No drafter key: "Not explained yet" everywhere, and the build is unaffected.
+  - No drafter key: nothing new is drafted, and the build is unaffected. A block with no sentence yet says "Not explained yet"; sentences already drafted (the recorded build's, or an earlier lift's) and confirmed ones stay.
 - **Figures in the code.** Each figure a block works out or shows is a way to its trail, named in the customer's words.
 - **Replay.** It scrubs a file change by change, its English as recorded at that commit: a sentence drafted at a later commit is not shown at an earlier one, and the figure chips, read from today's figures file, are shown only for the file as it is now.
 - **The recorded build carries its English** (`fixtures/sample-build/explanations/`, `pnpm record-explanations`), so Test drive and the tests read it without a key.
