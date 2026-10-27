@@ -23,6 +23,9 @@ export function FlowPanel({
   onStep: (by: number) => void;
   onClose: () => void;
 }) {
+  // No water runs past the first step with nothing recorded: the steps after it are dry too.
+  const firstDry = flow.steps.findIndex((s) => s.value === null);
+  const dry = (i: number) => firstDry !== -1 && i >= firstDry;
   return (
     <section className="eg-glass rama-card flow-panel" data-flow={flow.key} data-step={step}>
       <div className="eg-overline">The flow of {flow.title}</div>
@@ -34,11 +37,7 @@ export function FlowPanel({
       ) : null}
       <ol className="flow-steps">
         {flow.steps.map((s, i) => (
-          <li
-            key={i}
-            className={`${i === step ? 'on' : ''}${s.value === null ? ' dry' : ''}`}
-            data-step={i}
-          >
+          <li key={i} className={`${i === step ? 'on' : ''}${dry(i) ? ' dry' : ''}`} data-step={i}>
             {s.sentence}
           </li>
         ))}

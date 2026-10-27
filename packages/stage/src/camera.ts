@@ -45,7 +45,7 @@ export type CameraAction =
       type: 'zoom';
       /** Multiplied into the scale: 1.25 is closer, 0.8 further. */
       factor: number;
-      /** The picture point under the pointer (fractions), kept still while zooming. */
+      /** Where the pointer is in the view (fractions of its width and height), kept still while zooming. */
       at?: { x: number; y: number };
       /** What is under that point: zooming close onto a building or a floor hands off to it. */
       over?: { building: string } | null;
@@ -107,15 +107,17 @@ export function camera(c: Camera, a: CameraAction): Camera {
           return { ...c, level: 'street', building: null, scale: 1, centre: { x: 0.5, y: 0.5 } };
       }
       const next = clamp(scale, MIN_SCALE, MAX_SCALE);
-      // Keep the point under the pointer where it is.
-      const at = a.at ?? c.centre;
-      const k = 1 - c.scale / next;
+      // Keep the point under the pointer where it is. The pointer is a fraction of the view; the
+      // picture point under it goes through the camera as it is now (reviewer run 7).
+      const at = a.at ?? { x: 0.5, y: 0.5 };
+      const px = c.centre.x + (at.x - 0.5) / c.scale;
+      const py = c.centre.y + (at.y - 0.5) / c.scale;
       return {
         ...c,
         scale: next,
         centre: {
-          x: clamp(c.centre.x + (at.x - c.centre.x) * k, 0, 1),
-          y: clamp(c.centre.y + (at.y - c.centre.y) * k, 0, 1),
+          x: clamp(px - (at.x - 0.5) / next, 0, 1),
+          y: clamp(py - (at.y - 0.5) / next, 0, 1),
         },
       };
     }

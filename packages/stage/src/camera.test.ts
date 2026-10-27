@@ -58,6 +58,14 @@ describe('the camera', () => {
     expect(unview({ x: 750, y: 300 }, c, size)).toEqual({ x: 750, y: 300 });
     // Further than the whole picture at the Street: held there.
     expect(camera(startCamera(), { type: 'zoom', factor: 0.1 }).scale).toBe(0.6);
+    // Already zoomed: the point under the pointer still stays under it (reviewer run 7).
+    const twice = camera(
+      { ...startCamera(), scale: 2 },
+      { type: 'zoom', factor: 2, at: { x: 0.75, y: 0.5 } },
+    );
+    expect(twice.centre.x).toBeCloseTo(0.5625);
+    const under = (c: typeof twice, vx: number) => c.centre.x + (vx - 0.5) / c.scale;
+    expect(under(twice, 0.75)).toBeCloseTo(under({ ...startCamera(), scale: 2 }, 0.75));
   });
 
   it('hands off between the levels: into a building, into its floors, and back out', () => {

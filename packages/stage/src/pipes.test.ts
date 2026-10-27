@@ -126,6 +126,24 @@ describe('a figure whose working-out stands in another building', () => {
   });
 });
 
+describe('water that runs out', () => {
+  it('never runs past the first dry step, even where a later step has words', () => {
+    const l = buildingPipes(sc, flow(null, null), () => null);
+    // The formula has its words, but no water reaches it: the source before it is dry.
+    expect(l.pipes.find((p) => p.step === 2)!.dry).toBe(false);
+    const strokes: string[] = [];
+    const { ctx } = recorder();
+    const real = ctx.stroke.bind(ctx);
+    (ctx as unknown as { stroke: () => void }).stroke = () => {
+      strokes.push(String(ctx.strokeStyle));
+      real();
+    };
+    const pal = paletteFromTokens(tokens, 'dark');
+    drawPipes(ctx, l, pal, { step: 3, progress: 1 });
+    expect(strokes).not.toContain(pal.color.harmony);
+  });
+});
+
 describe('the water', () => {
   it('moves one step a second, stops at the end, and can be held or stepped', () => {
     expect(flowAt(4, 0)).toEqual({ step: 0, progress: 0, done: false });

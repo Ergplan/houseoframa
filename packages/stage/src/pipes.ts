@@ -168,6 +168,7 @@ export function drawPipes(
     ctx.beginPath();
     pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
   };
+  const firstDry = Math.min(Infinity, ...layout.pipes.filter((p) => p.dry).map((p) => p.step));
   for (const p of layout.pipes) {
     // The pipe itself: a glass tube.
     ctx.lineCap = 'round';
@@ -192,6 +193,8 @@ export function drawPipes(
       continue;
     }
     if (!at) continue;
+    // The water stops at the first dry step: nothing runs past where the trail runs out (reviewer run 7).
+    if (p.step > firstDry) continue;
     const fill = p.step < at.step ? 1 : p.step === at.step ? at.progress : 0;
     if (fill <= 0) continue;
     const w = along(p.points, fill);

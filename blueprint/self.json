@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "e9a9df9769f16ece3809a69acdfc423857d41307",
+  "commit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -14930,6 +14930,45 @@
       "sha": "e9a9df9769f16ece3809a69acdfc423857d41307",
       "short": "e9a9df9",
       "subject": "Stage 11: reviewer run 5 — a pipe for every step of a flow; a repeated figure's own value"
+    },
+    {
+      "at": "2026-10-27T13:45:09Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.tsx"
+        },
+        {
+          "add": 71,
+          "del": 20,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        }
+      ],
+      "sha": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
+      "short": "8e3ee3a",
+      "subject": "Stage 11: reviewer run 6 — a fresh camera for the next building; the figure-naming claim as it is"
     }
   ],
   "edges": [
@@ -30255,7 +30294,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T13:24:24Z",
+  "extractedAt": "2026-10-27T13:45:09Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -32464,7 +32503,7 @@
     {
       "binary": false,
       "bytes": 6537,
-      "changes": 12,
+      "changes": 13,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -32472,7 +32511,7 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 176,
@@ -33345,7 +33384,7 @@
     },
     {
       "binary": false,
-      "bytes": 2248,
+      "bytes": 2414,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33356,7 +33395,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 78,
+      "lines": 77,
       "path": "apps/rama/components/lakefront/FlowPanel.tsx",
       "test": false
     },
@@ -34615,12 +34654,12 @@
     {
       "binary": false,
       "bytes": 70949,
-      "changes": 101,
+      "changes": 102,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "e9a9df9769f16ece3809a69acdfc423857d41307",
+      "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 266,
@@ -34868,12 +34907,12 @@
     {
       "binary": false,
       "bytes": 9310,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
+      "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 112,
@@ -34882,16 +34921,16 @@
     },
     {
       "binary": false,
-      "bytes": 58512,
-      "changes": 5,
+      "bytes": 68298,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "e9a9df9769f16ece3809a69acdfc423857d41307",
+      "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 103,
+      "lines": 119,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -41236,7 +41275,7 @@
     },
     {
       "binary": false,
-      "bytes": 10254,
+      "bytes": 10698,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -41245,7 +41284,7 @@
       "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 266,
+      "lines": 274,
       "packages": [
         "vitest"
       ],
@@ -41254,7 +41293,7 @@
     },
     {
       "binary": false,
-      "bytes": 10611,
+      "bytes": 10820,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -41280,7 +41319,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 291,
+      "lines": 293,
       "path": "packages/stage/src/camera.ts",
       "test": false
     },
@@ -41547,7 +41586,7 @@
     },
     {
       "binary": false,
-      "bytes": 5426,
+      "bytes": 6172,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -41556,7 +41595,7 @@
       "lastCommit": "e9a9df9769f16ece3809a69acdfc423857d41307",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 138,
+      "lines": 156,
       "packages": [
         "vitest"
       ],
@@ -41565,7 +41604,7 @@
     },
     {
       "binary": false,
-      "bytes": 7670,
+      "bytes": 7910,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -41582,7 +41621,7 @@
       "lastCommit": "e9a9df9769f16ece3809a69acdfc423857d41307",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 207,
+      "lines": 210,
       "path": "packages/stage/src/pipes.ts",
       "test": false
     },
