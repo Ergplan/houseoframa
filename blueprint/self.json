@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
+  "commit": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -12362,6 +12362,33 @@
       "sha": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "short": "612bfdb",
       "subject": "Stage 9: stop the reviewer loop — the figures lint is best-effort, the build-time check is the guard"
+    },
+    {
+      "at": "2026-10-27T00:04:22Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 52,
+          "del": 13,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 3,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        }
+      ],
+      "sha": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
+      "short": "f29d0d1",
+      "subject": "Stage 9: report — final reviewer run clean of code defects; the box runs Stage 9"
     }
   ],
   "edges": [
@@ -24743,7 +24770,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-26T23:46:34Z",
+  "extractedAt": "2026-10-27T00:04:22Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -28926,28 +28953,28 @@
     },
     {
       "binary": false,
-      "bytes": 19962,
-      "changes": 34,
+      "bytes": 20412,
+      "changes": 35,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
+      "lastCommit": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 171,
+      "lines": 173,
       "path": "docs/reports/stage-9.md",
       "test": false
     },
     {
       "binary": false,
       "bytes": 538062,
-      "changes": 42,
+      "changes": 43,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
+      "lastCommit": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 727,
@@ -34771,7 +34798,7 @@
     },
     {
       "binary": false,
-      "bytes": 7035,
+      "bytes": 7278,
       "changes": 5,
       "env": [
         "DATABASE_URL"
@@ -34782,7 +34809,7 @@
       "lastCommit": "7a758a6a5616541f0d61d1bb5b11957f655d4126",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 160,
+      "lines": 165,
       "packages": [
         "drizzle-orm",
         "postgres",

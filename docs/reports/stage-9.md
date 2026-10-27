@@ -123,6 +123,8 @@ Each names a vendor and a model, and the builder seat also names its builder.
 - The gate asks no test of a deleted file, only of the code left that changed (`packages/ceremony/test/gate.test.ts`).
 - The console's Start build and Pause build (`act/handler.test.ts`).
 
+**CI was red through most of the stage.** From e6c5b79 to f29d0d1, GitHub's check failed on one test: Test drive's own test took its auditor's model from the machine's setup file, which names one here and not in CI, so CI's Test drive gave another reason for replaying the recording. The watcher here stayed green. The test now sets the seats itself (`packages/workbench/test/testdrive.test.ts`), and CI is green again from the commit that says so.
+
 ## Deviations and readings of the prompt
 
 - **The builder is driven lift by lift.** One Claude Code run per lift, rather than one long run that House of Rama watches, so each lift is checked before the next is asked for and Pause build stops cleanly between lifts.

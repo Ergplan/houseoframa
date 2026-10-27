@@ -33,10 +33,15 @@ beforeAll(async () => {
   await admin.unsafe(`CREATE DATABASE ${dbName}`);
   await withDb((db) => runMigrations(db));
   work = mkdtempSync(path.join(tmpdir(), 'rama-testdrive-'));
-  // No keys anywhere: the audit's stand-in is used, and nothing reaches a vendor.
+  // No keys anywhere: the audit's stand-in is used, and nothing reaches a vendor. The seats are set
+  // here, not taken from the machine's setup file, so CI (which names no models) says the same.
   env = {
     ...process.env,
     RAMA_WORK_DIR: work,
+    RAMA_TESTDRIVE_BUILDER: '',
+    BUILDER_VENDOR: 'anthropic',
+    AUDITOR_VENDOR: 'openai',
+    OPENAI_MODEL: 'gpt-6.1-sol',
     OPENAI_API_KEY: '',
     ANTHROPIC_API_KEY: '',
     GITHUB_TOKEN: '',
