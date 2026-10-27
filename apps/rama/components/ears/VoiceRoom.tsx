@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type Line = { kind: string; text: string; event: unknown };
+type Line = { kind: string; text: string; event: unknown; go: string | null; drafted?: 'builder' };
 type Reply = {
   ok: boolean;
   sentence?: string;
@@ -18,7 +18,7 @@ type Reply = {
   board?: boolean;
   decided?: { title: string; by: string } | null;
 };
-type Said = { speaker: string; text: string; flag?: string };
+type Said = { speaker: string; text: string; flag?: string; drafted?: boolean };
 type Read = { said: string; usage: { inputTokens: number; outputTokens: number; ms: number } };
 export type VoiceModeView = { mode: 'live'; label: string } | { mode: 'stand-in'; why: string };
 
@@ -244,6 +244,7 @@ export function VoiceRoom({
       queue.current = queue.current.then(async () => {
         if (r.go) router.push(r.go);
         for (const line of r.lines ?? []) {
+          if (line.go) router.push(line.go);
           setState('speaking');
           setCaption(line.text);
           let said = line.text;
@@ -265,6 +266,7 @@ export function VoiceRoom({
             {
               speaker: 'Rama',
               text: said,
+              drafted: line.drafted === 'builder',
               ...(check.mouth && !check.mouth.ok
                 ? {
                     flag: `The voice said ${check.mouth.unsupported.join(', ')}, which no builder line gave it.`,
@@ -477,6 +479,12 @@ export function VoiceRoom({
           {talk.map((t, i) => (
             <li key={i} className={t.speaker === 'Rama' ? 'agent' : ''}>
               <b>{t.speaker}</b> {t.text}
+              {t.drafted ? (
+                <span className="pill dim">
+                  {' '}
+                  drafted by the builder, unconfirmed until a named yes
+                </span>
+              ) : null}
               {t.flag ? <span className="pill amber"> {t.flag}</span> : null}
             </li>
           ))}

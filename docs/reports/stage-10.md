@@ -27,7 +27,7 @@ What is left for the stage's "done when" is the member doing this himself, in hi
   - A yes decides only what the voice was given to ask: the card it read, the brains it read back, "Scrap everything?", "Shall I build this?". It is recorded by the speaker. A yes to nothing decides nothing.
   - Scrap everything asks first. On a yes it withdraws every card, keeping them, and starts a named draft.
   - Show me, open, the code and go back move the room. Track questions and "what if" are answered.
-  - `agree()` is act 3: refused while a card is open. Otherwise the narration, each building shown as it is read when the product has a Street, then "Shall I build this?".
+  - `agree()` is act 3: refused while a card is open. Otherwise the narration, each building shown as it is read when the product has a Street, then "Shall I build this?". The builder's narration is said to be its draft, none of it decided until a yes, and each such line is marked unconfirmed in the room; the "Yes, build it" card records that the yes confirmed the builder's draft.
 - `room.ts`: the conductor on the real records.
   - Turns go into the discovery session, and cards through `decide` (append-only, audited, mirrored).
   - The brains go through `chooseProductSeats`.

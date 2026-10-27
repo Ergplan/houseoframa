@@ -36,6 +36,11 @@ export interface Line {
   text: string;
   /** Where to look while it is read (act 3 shows each building as it is explained). */
   go?: Place;
+  /**
+   * Drafted by a model (the builder's narration) and unconfirmed: it stands only once a named person
+   * says yes to it (Invariant 6). Fixed lines, read-backs and the cards as decided are not drafts.
+   */
+  drafted?: 'builder';
 }
 
 /** The session's acts: 1 arrive, 2 ideate, 3 agree (the design explained aloud), 4 agreed. */
@@ -94,7 +99,14 @@ export interface RoomDeps {
   /** The drafter's next question, or null when none can be drafted (no key). */
   question: () => Promise<string | null>;
   /** The design explained aloud: one line per building and what it will not do. */
-  narrate: () => Promise<{ building: string | null; text: string }[]>;
+  /**
+   * The design explained aloud: one line per building and what it will not do. `by` says whether the
+   * builder drafted it, or the cards were read as decided (no builder, or a number no card holds).
+   */
+  narrate: () => Promise<{
+    lines: { building: string | null; text: string }[];
+    by: 'builder' | 'cards';
+  }>;
   buildings: () => Building[];
   /** Every figure of the product, with the building it belongs to. */
   figures: () => (FigureOnHand & { building: string })[];
@@ -488,17 +500,27 @@ export async function agree(deps: RoomDeps, state: RoomState): Promise<Reply> {
       ],
       state: { ...state, given: [...state.given] },
     };
-  const narration = await deps.narrate();
+  const { lines: narration, by } = await deps.narrate();
   const buildings = deps.buildings();
-  const lines: Line[] = narration.map((n) => {
-    const b = n.building ? matchName(n.building, buildings, (b) => b.name) : null;
-    return {
+  const drafted = by === 'builder';
+  const lines: Line[] = [
+    {
       kind: 'narration',
-      text: n.text,
-      ...(b ? { go: { level: 'building', building: b.id } } : {}),
-    };
-  });
-  const statement = narration.map((n) => n.text).join(' ');
+      text: drafted
+        ? 'Here is the design, as the builder has drafted it from your cards. None of it is decided until you say yes.'
+        : 'Here is the design: your cards, as you decided them.',
+    },
+    ...narration.map((n): Line => {
+      const b = n.building ? matchName(n.building, buildings, (b) => b.name) : null;
+      return {
+        kind: 'narration',
+        text: n.text,
+        ...(b ? { go: { level: 'building', building: b.id } } : {}),
+        ...(drafted ? { drafted: 'builder' as const } : {}),
+      };
+    }),
+  ];
+  const statement = `${drafted ? '(the builder’s draft, confirmed by this yes) ' : '(the cards as decided) '}${narration.map((n) => n.text).join(' ')}`;
   lines.push({
     kind: 'ask-build',
     text: 'That is the design. Shall I build this?',

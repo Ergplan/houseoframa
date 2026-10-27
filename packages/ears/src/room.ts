@@ -329,12 +329,11 @@ export function roomDeps(
     narrate: async () => {
       const all = await cards();
       const built = lake().buildings;
-      return (
-        await narrateDesign(site, all, built.length ? built : cardBuildings(all), {
-          createdBy: EARS_COMPONENT,
-          call: modelCall,
-        })
-      ).lines;
+      const n = await narrateDesign(site, all, built.length ? built : cardBuildings(all), {
+        createdBy: EARS_COMPONENT,
+        call: modelCall,
+      });
+      return { lines: n.lines, by: n.by };
     },
     buildings: () => lake().buildings,
     figures: () => lake().figures,

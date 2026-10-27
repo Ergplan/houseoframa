@@ -132,6 +132,7 @@ describe('the room on real records', () => {
     // Act 3 with no key for the builder: each decided card is read as it was decided.
     const r = await agree(deps, s);
     expect(r.lines.map((l) => l.text)).toEqual([
+      'Here is the design: your cards, as you decided them.',
       'The brains: Claude Code (Anthropic, claude-sonnet-5-5) builds; OpenAI (gpt-6.1-sol) checks; Anthropic (claude-sonnet-5-5) drafts; OpenAI (gpt-realtime) speaks. The checker is never the builder.',
       'Money is kept in paise: Every amount is kept in paise.',
       'That is the design. Shall I build this?',

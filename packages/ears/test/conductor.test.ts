@@ -66,17 +66,20 @@ function memoryRoom() {
       return problems;
     },
     question: async () => null,
-    narrate: async () => [
-      {
-        building: 'See today’s orders',
-        text: 'This building lists every order the stall has taken today.',
-      },
-      {
-        building: 'Count the day’s takings',
-        text: 'This building adds up the day’s takings and the GST on them.',
-      },
-      { building: null, text: 'What it will not do: it does not take a payment.' },
-    ],
+    narrate: async () => ({
+      by: 'builder' as const,
+      lines: [
+        {
+          building: 'See today’s orders',
+          text: 'This building lists every order the stall has taken today.',
+        },
+        {
+          building: 'Count the day’s takings',
+          text: 'This building adds up the day’s takings and the GST on them.',
+        },
+        { building: null, text: 'What it will not do: it does not take a payment.' },
+      ],
+    }),
     buildings: () => [
       { id: 'see', name: 'See today’s orders', screens: [{ id: 'home', title: 'Today’s orders' }] },
       {
@@ -157,20 +160,25 @@ describe('a rehearsal, act by act', () => {
 
     // Act 3: the design aloud, building by building, showing each, then "Shall I build this?".
     r = await agree(room.deps, s);
-    expect(r.lines.map((l) => [l.kind, l.go])).toEqual([
-      ['narration', { level: 'building', building: 'see' }],
-      ['narration', { level: 'building', building: 'count' }],
-      ['narration', undefined],
-      ['ask-build', { level: 'street' }],
+    // Drafted by the builder: said so first, and each drafted line marked unconfirmed (Invariant 6).
+    expect(r.lines.map((l) => [l.kind, l.go, l.drafted])).toEqual([
+      ['narration', undefined, undefined],
+      ['narration', { level: 'building', building: 'see' }, 'builder'],
+      ['narration', { level: 'building', building: 'count' }, 'builder'],
+      ['narration', undefined, 'builder'],
+      ['ask-build', { level: 'street' }, undefined],
     ]);
-    expect(r.lines[2]!.text).toMatch(/^What it will not do:/);
-    expect(r.lines[3]!.text).toBe('That is the design. Shall I build this?');
+    expect(r.lines[0]!.text).toBe(
+      'Here is the design, as the builder has drafted it from your cards. None of it is decided until you say yes.',
+    );
+    expect(r.lines[3]!.text).toMatch(/^What it will not do:/);
+    expect(r.lines[4]!.text).toBe('That is the design. Shall I build this?');
     s = r.state;
     expect(s.act).toBe(3);
     r = await say(room.deps, s, 'Asha Rao', 'Yes, build it.');
     expect(r.decided).toMatchObject({ title: 'Yes, build it', status: 'decided', by: 'Asha Rao' });
     expect(r.decided!.statement).toMatch(
-      /^Asha Rao said yes to the design as it was explained aloud: This building lists/,
+      /^Asha Rao said yes to the design as it was explained aloud: \(the builder’s draft, confirmed by this yes\) This building lists/,
     );
     expect(r.lines[0]!.text).toMatch(
       /^Signed: Asha Rao said yes, build it\. That is the first signature\./,

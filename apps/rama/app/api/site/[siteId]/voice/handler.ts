@@ -80,7 +80,11 @@ async function answer(
   return json({
     ok: true,
     act: reply.state.act,
-    lines: await deps.events(reply.lines),
+    // Each line's place as an address, so the room moves as the line is read.
+    lines: (await deps.events(reply.lines)).map(({ go, ...l }) => ({
+      ...l,
+      go: go ? placeUrl(site.id, go) : null,
+    })),
     go: reply.go ? placeUrl(site.id, reply.go) : null,
     board: Boolean(reply.board),
     decided: reply.decided ? { title: reply.decided.title, by: reply.decided.by } : null,
