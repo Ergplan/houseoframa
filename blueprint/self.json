@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "cb19d8ac279c136a772f3bfd57cb4fe99962c8c5",
+  "commit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -12323,6 +12323,45 @@
       "sha": "cb19d8ac279c136a772f3bfd57cb4fe99962c8c5",
       "short": "cb19d8a",
       "subject": "Stage 9: reviewer run 41 — a spread inside a list is linted by what it spreads"
+    },
+    {
+      "at": "2026-10-26T23:46:34Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 65,
+          "del": 20,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 28,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.review.md"
+        }
+      ],
+      "sha": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
+      "short": "612bfdb",
+      "subject": "Stage 9: stop the reviewer loop — the figures lint is best-effort, the build-time check is the guard"
     }
   ],
   "edges": [
@@ -24704,7 +24743,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-26T05:53:41Z",
+  "extractedAt": "2026-10-26T23:46:34Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -28455,12 +28494,12 @@
     {
       "binary": false,
       "bytes": 58316,
-      "changes": 90,
+      "changes": 91,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "cb19d8ac279c136a772f3bfd57cb4fe99962c8c5",
+      "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 233,
@@ -28504,12 +28543,12 @@
     {
       "binary": false,
       "bytes": 19072,
-      "changes": 37,
+      "changes": 38,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "96dd993374e763cc76c9ae13f6322d5f7d326a7d",
+      "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 63,
@@ -28887,13 +28926,13 @@
     },
     {
       "binary": false,
-      "bytes": 19393,
-      "changes": 33,
+      "bytes": 19962,
+      "changes": 34,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "1fedc992d15c40c38122420f0b384e846d4d40fa",
+      "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 171,
@@ -28902,16 +28941,16 @@
     },
     {
       "binary": false,
-      "bytes": 524908,
-      "changes": 41,
+      "bytes": 538062,
+      "changes": 42,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
-      "lastCommit": "cb19d8ac279c136a772f3bfd57cb4fe99962c8c5",
+      "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 710,
+      "lines": 727,
       "path": "docs/reports/stage-9.review.md",
       "test": false
     },

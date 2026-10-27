@@ -135,7 +135,7 @@ Each names a vendor and a model, and the builder seat also names its builder.
 
 ## Reviewer findings
 
-The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 9`) ran 42 times; every run is in `docs/reports/stage-9.review.md`.
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 9`) ran 43 times; every run is in `docs/reports/stage-9.review.md`. The last run (at 612bfdb, after the loop was stopped) found no code defect: every item was cannot-tell or not-a-defect, and it read the build-time check in `build.ts` as the guard behind the best-effort lint.
 
 Fixed in code:
 
@@ -159,13 +159,13 @@ Not resolved by code:
 | Build, testdrive-5 (the recorded sample)                          | claude-sonnet-5-5 | 4     | ₹89        |
 | Audit, testdrive-5                                                | gpt-6.1-sol       | 1     | ₹2         |
 | Independent reviewer                                              | gpt-6.1-sol       | 42    | ₹1,212     |
-| **Total**                                                         |                   |       | **₹1,441** |
+| **Total**                                                         |                   |       | **₹1,476** |
 
 The reviewer was 84% of the stage's cost (about ₹29 a run, for a diff of about 900,000 characters). A Test drive with a builder key builds for real at about ₹90.
 
 ## Open questions
 
-- **The box** at http://34.131.209.81:3389 still runs the build from before Stage 7. Redeploying Stage 9 there waits for your word.
+- **The box** at http://34.131.209.81:3389 now runs Stage 9 (612bfdb, redeployed 2026-10-26 at your request, after a backup of its database). It is open to anyone who has the address, and the name picker is not security: anyone there can act as any member. The box reads this machine's `.env`, which holds the Anthropic and OpenAI keys, so its Test drive's audit and the brains it is given spend on those keys. Keep it open, close the port when not in use, or switch on `AUTH_MODE=password`?
 - **Test drive with a key costs about ₹90** a run, because it builds for real. Keep it so, or have Test drive always replay the recording and keep a separate "Build the sample for real" act?
 - **The self buildings**: this repository's `.rama/features.json` now names two more buildings, "The house stack" and "The test stall". Confirm the names, or give better ones.
 - **The GitHub check and members**: rachit@joulewise.com is recorded as Rachit Agarwal's email in `members.json`. Is that the only member to add for now?
