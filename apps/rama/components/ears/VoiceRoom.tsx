@@ -360,8 +360,8 @@ export function VoiceRoom({
   useEffect(() => {
     if (!connected) return;
     const on = (e: Event) => {
-      const text = (e as CustomEvent<string>).detail;
-      void post('voice/tell', { text }).then(speak);
+      const { figure, step } = (e as CustomEvent<{ figure: string; step: number }>).detail;
+      void post('voice/tell', { figure, step }).then(speak);
     };
     window.addEventListener('rama:tell', on);
     return () => window.removeEventListener('rama:tell', on);

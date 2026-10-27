@@ -49,6 +49,8 @@ export interface VoiceDeps {
     image: { mediaType: 'image/jpeg' | 'image/png' | 'image/webp'; base64: string },
   ) => Promise<BoardDraft>;
   now: () => Date;
+  /** A step of a figure's flow, as House of Rama derived it (packages/trace flowOf); null when none. */
+  flowStep: (site: SiteLocation, figureKey: string, step: number) => string | null;
 }
 
 const json = (body: unknown, status = 200) => Response.json(body, { status });
@@ -233,13 +235,16 @@ export async function handleBoard(site: SiteLocation, who: Member, raw: unknown,
  * check counts it.
  */
 export async function handleTell(site: SiteLocation, raw: unknown, deps: VoiceDeps) {
-  const body = z.object({ text: z.string().trim().min(1).max(1200) }).safeParse(raw);
-  if (!body.success) return fail(400, 'expected {text}');
+  // The page names the step; the sentence comes from the flow House of Rama derived (reviewer run 1):
+  // text the page wrote would let anyone hand the voice a fact of their own as a builder line.
+  const body = z
+    .object({ figure: z.string().min(1).max(200), step: z.number().int().min(0).max(50) })
+    .safeParse(raw);
+  if (!body.success) return fail(400, 'expected {figure, step}');
   const state = openRoom(deps, site.id);
   if (!state) return json({ ok: true, lines: [] });
-  const lines: Line[] = [{ kind: 'track', text: body.data.text }];
-  return answer(site, deps, {
-    lines,
-    state: { ...state, given: [...state.given, body.data.text] },
-  });
+  const text = deps.flowStep(site, body.data.figure, body.data.step);
+  if (!text) return fail(404, 'There is no such step of that figure’s flow.');
+  const lines: Line[] = [{ kind: 'track', text }];
+  return answer(site, deps, { lines, state: { ...state, given: [...state.given, text] } });
 }

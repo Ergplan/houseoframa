@@ -1,0 +1,14 @@
+{
+  "hash": "81dede6b598c766814f956d0f544bc6a3bec465e75cd55b2ee85d5926bb7e135",
+  "path": "app/page.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes today’s orders, figure display and tools for describing cups and working with orders available to the page.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-31",
+  "at": "2026-10-27T10:03:28.180Z",
+  "commit": null,
+  "lift": 1
+}

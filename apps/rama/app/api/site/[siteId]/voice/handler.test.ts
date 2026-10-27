@@ -65,6 +65,8 @@ function deps() {
       draft: true as const,
     })),
     now: () => new Date('2026-10-27T10:00:00Z'),
+    flowStep: (_s, key, step) =>
+      key === 'todays-total/todays-takings' && step === 0 ? '4 rows left data/orders.json.' : null,
   };
   return { d, turns, room: () => room };
 }
@@ -209,11 +211,13 @@ describe('the voice’s routes', () => {
 
   it('POST voice/tell hands a step of a flow to the voice as a builder line, counted by the mouth check', async () => {
     const { d, room } = deps();
-    expect(
-      await body(await handleTell(site, { text: '4 rows left data/orders.json.' }, d)),
-    ).toEqual({ ok: true, lines: [] });
+    const step = { figure: 'todays-total/todays-takings', step: 0 };
+    expect(await body(await handleTell(site, step, d))).toEqual({ ok: true, lines: [] });
     await handleStart(site, tara, { people: ['Asha Rao'] }, d);
-    const r = await body(await handleTell(site, { text: '4 rows left data/orders.json.' }, d));
+    // Text of the page's own is not taken: only a step of a flow House of Rama derived.
+    expect((await handleTell(site, { text: 'GST is 18%.' }, d)).status).toBe(400);
+    expect((await handleTell(site, { ...step, step: 9 }, d)).status).toBe(404);
+    const r = await body(await handleTell(site, step, d));
     expect((r.lines as { text: string }[])[0]!.text).toBe('4 rows left data/orders.json.');
     expect(room()!.given).toContain('4 rows left data/orders.json.');
     expect(

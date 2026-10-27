@@ -3,10 +3,12 @@
   "path": "app/new/page.test.tsx",
   "kind": "test",
   "name": "shows the new order with two cups and what it will cost",
-  "sentence": "Checks that the New order page shows Masala chai, three cups, Take the order, and ₹30.00, with the order amount recorded as 3000.",
+  "sentence": "Checks that the New order screen shows Masala chai, three cups, Take the order and ₹30.00, with an amount value of 3000.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-33",
-  "at": "2026-10-27T06:10:37.135Z"
+  "callId": "row-50",
+  "at": "2026-10-27T10:04:13.187Z",
+  "commit": null,
+  "lift": 3
 }

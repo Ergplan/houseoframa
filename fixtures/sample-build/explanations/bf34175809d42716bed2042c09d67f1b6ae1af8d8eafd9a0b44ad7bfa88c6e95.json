@@ -3,10 +3,12 @@
   "path": "features/count-the-days-takings/takings.test.ts",
   "kind": "test",
   "name": "adds up every order’s amount",
-  "sentence": "Checks that the listed orders add up to 11300 in takings, and that no orders gives 0.",
+  "sentence": "Checks that the orders add up to 11300 and that no orders gives 0.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-43",
-  "at": "2026-10-27T06:10:59.199Z"
+  "callId": "row-66",
+  "at": "2026-10-27T10:04:53.701Z",
+  "commit": null,
+  "lift": 4
 }

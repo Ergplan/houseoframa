@@ -3,10 +3,12 @@
   "path": "rama/figures.ts",
   "kind": "value",
   "name": "figures",
-  "sentence": "Describes “Orders so far” as the number of orders taken today and “Order amount” as cups times the price of a cup. It lists the information each uses and specifies showing them as a count and in rupees, respectively.",
+  "sentence": "Keeps the details for “Orders so far” and “Order amount”: what each means, which order details it uses, and whether it is shown as a count or in rupees.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-31",
-  "at": "2026-10-27T06:10:33.069Z"
+  "callId": "row-46",
+  "at": "2026-10-27T10:04:03.855Z",
+  "commit": null,
+  "lift": 1
 }

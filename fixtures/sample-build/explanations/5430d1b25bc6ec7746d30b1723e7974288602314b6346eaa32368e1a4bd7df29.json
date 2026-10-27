@@ -3,10 +3,12 @@
   "path": "db/orders.ts",
   "kind": "function",
   "name": "todaysOrders",
-  "sentence": "Provides the sample list of orders without checking their dates.",
+  "sentence": "Returns the sample list of orders.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-23",
-  "at": "2026-10-27T06:10:16.540Z"
+  "callId": "row-35",
+  "at": "2026-10-27T10:03:38.296Z",
+  "commit": null,
+  "lift": 1
 }

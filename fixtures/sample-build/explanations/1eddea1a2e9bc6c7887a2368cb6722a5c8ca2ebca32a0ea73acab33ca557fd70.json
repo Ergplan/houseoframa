@@ -3,10 +3,12 @@
   "path": "features/count-the-days-takings/takings.ts",
   "kind": "type",
   "name": "PricedOrder",
-  "sentence": "Describes the order details needed to work out takings: the number of cups and the price of one cup, in paise.",
+  "sentence": "Keeps the number of cups in an order and the price of one cup, in paise.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-45",
-  "at": "2026-10-27T06:11:03.892Z"
+  "callId": "row-68",
+  "at": "2026-10-27T10:04:57.319Z",
+  "commit": null,
+  "lift": 4
 }

@@ -3,10 +3,12 @@
   "path": "app/new/page.tsx",
   "kind": "component",
   "name": "NewOrder",
-  "sentence": "Shows the New order page with Masala chai, Cups choices of 1, 2 and 3, and 2 selected by default. Shows New order amount in rupees for 2 cups and a Take the order button.",
+  "sentence": "Shows the New order page with Masala chai, a choice of 1, 2 or 3 cups, and a Take the order button. Starts with 2 cups selected and shows New order amount worked out for 2 cups in rupees.",
   "figure": "New order amount",
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-34",
-  "at": "2026-10-27T06:10:39.096Z"
+  "callId": "row-52",
+  "at": "2026-10-27T10:04:19.563Z",
+  "commit": null,
+  "lift": 3
 }

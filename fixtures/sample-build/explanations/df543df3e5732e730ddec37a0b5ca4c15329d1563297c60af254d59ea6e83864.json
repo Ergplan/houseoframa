@@ -1,0 +1,14 @@
+{
+  "hash": "df543df3e5732e730ddec37a0b5ca4c15329d1563297c60af254d59ea6e83864",
+  "path": "features/welcome/plan.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Reads the product’s plan from a file.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-15",
+  "at": "2026-10-27T10:02:50.023Z",
+  "commit": null,
+  "lift": 0
+}

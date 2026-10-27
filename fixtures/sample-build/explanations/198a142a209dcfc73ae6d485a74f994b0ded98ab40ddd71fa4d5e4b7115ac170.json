@@ -1,0 +1,14 @@
+{
+  "hash": "198a142a209dcfc73ae6d485a74f994b0ded98ab40ddd71fa4d5e4b7115ac170",
+  "path": "features/take-an-order/order.test.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings together tools for checking cup choice, the new order amount, and the price of a cup.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-53",
+  "at": "2026-10-27T10:04:22.385Z",
+  "commit": null,
+  "lift": 3
+}

@@ -35,6 +35,10 @@ export interface Drafted {
   model: string;
   callId: string;
   at: string;
+  /** The commit the block was drafted at (the lift's): replay shows it from there on, not before. */
+  commit: string | null;
+  /** In a recording: the lift it was drafted after (0 for the house stack's own lift). */
+  lift?: number;
 }
 
 export interface Confirmed {
@@ -96,9 +100,31 @@ export function explanationsFor(
 ): Explanation[] {
   const env = opts.env ?? process.env;
   const confirmed = new Map(confirmedIn(site.repoDir, opts.commit).map((c) => [c.hash, c]));
+  // At a commit, a draft stands only when it was drafted at that commit or before it (reviewer run 1).
+  const known = new Map<string, boolean>();
+  const stood = (d: Drafted) => {
+    if (!opts.commit) return true;
+    if (!d.commit) return false;
+    if (!known.has(d.commit)) {
+      let yes: boolean;
+      try {
+        execFileSync(
+          'git',
+          ['-C', site.repoDir, 'merge-base', '--is-ancestor', d.commit, opts.commit],
+          { stdio: 'ignore' },
+        );
+        yes = true;
+      } catch {
+        yes = false; // not an ancestor, or not a commit of this checkout
+      }
+      known.set(d.commit, yes);
+    }
+    return known.get(d.commit)!;
+  };
   return blocks.map((b) => {
     const c = confirmed.get(b.hash);
-    const d = drafted(site.id, b.hash, env);
+    const found = drafted(site.id, b.hash, env);
+    const d = found && stood(found) ? found : null;
     if (c)
       return {
         state: 'confirmed',
@@ -164,13 +190,20 @@ export async function explainFile(
   file: string,
   source: string,
   figuresOf: (b: Block) => BlockFigure[],
-  opts: { env?: NodeJS.ProcessEnv; call?: typeof call; createdBy?: string } = {},
+  opts: {
+    env?: NodeJS.ProcessEnv;
+    call?: typeof call;
+    createdBy?: string;
+    /** The commit the file stands at, which the drafts are made at. */
+    commit?: string | null;
+    lift?: number;
+  } = {},
 ): Promise<{ drafted: number; failed: string | null }> {
   const env = opts.env ?? process.env;
   const blocks = splitBlocks(file, source);
   let n = 0;
   for (const b of blocks) {
-    if (b.kind === 'imports' || drafted(site.id, b.hash, env)) continue;
+    if (drafted(site.id, b.hash, env)) continue;
     try {
       const figures = figuresOf(b);
       const res = await (opts.call ?? call)({
@@ -204,6 +237,8 @@ export async function explainFile(
         model: res.model,
         callId: res.callId,
         at: new Date().toISOString(),
+        commit: opts.commit ?? null,
+        ...(opts.lift !== undefined ? { lift: opts.lift } : {}),
       };
       mkdirSync(cacheDir(site.id, env), { recursive: true });
       writeFileSync(cacheFile(site.id, b.hash, env), `${JSON.stringify(d, null, 2)}\n`);

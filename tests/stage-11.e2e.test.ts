@@ -217,8 +217,7 @@ describe('stage 11 e2e', () => {
         ]),
       );
     expect(english.length).toBeGreaterThanOrEqual(3);
-    for (const [kind, state] of english)
-      expect([kind, state]).toEqual([kind, kind === 'imports' ? 'none' : 'unconfirmed']);
+    for (const [kind, state] of english) expect([kind, state]).toEqual([kind, 'unconfirmed']);
     expect(
       bannedIn(
         await pane

@@ -1,0 +1,14 @@
+{
+  "hash": "ce99d47a5b8772aec119a93285d03b119d5d2b1d02750b05b14b434933913d03",
+  "path": "db/schema.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes text and date-and-time field types available for the product’s tables.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-11",
+  "at": "2026-10-27T10:02:39.208Z",
+  "commit": null,
+  "lift": 0
+}

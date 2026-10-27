@@ -76,6 +76,9 @@ for (const sha of commits.slice(-lifts)) {
       env,
       call: (req) => call(req, overrides),
       createdBy: 'rama:record-explanations@0.1.0',
+      // The lift it follows (0: the house stack's own); the replaying builder sets the real commit.
+      lift: commits.slice(-lifts).indexOf(sha),
+      commit: null,
     });
     console.log(
       `${sha.slice(0, 7)} ${file}: ${r.drafted} drafted${r.failed ? ` (stopped: ${r.failed})` : ''}`,

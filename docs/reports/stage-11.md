@@ -9,7 +9,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 **The journey (apps/rama).**
 
 - **The tabs.** A site's pages wear the journey of a build across the top: Idea, Build, Walk through, Audit and Hand over, then a small Care tab. Each tab shows only its own actions (`components/workbench/journey.ts`, `JourneyBar`).
-- **One lit action per tab.** Exactly one action wears Harmony's green folder: the next thing to do in that act.
+- **One lit action per tab.** At most one action wears Harmony's green folder, the next thing to do in that act; exactly one whenever the act has a next thing to do. When it has none (every customer screen signed, nothing to hand over yet), the bar says why, and nothing is lit.
   - Idea: Start session, then Close ideation.
   - Build: Start build, or Pause build while the builder works.
   - Walk through: the page's own Confirm and sign.
@@ -48,7 +48,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
   - Developer words: a sentence holding one of the glossary's banned words is not kept.
   - No drafter key: "Not explained yet" everywhere, and the build is unaffected.
 - **Figures in the code.** Each figure a block works out or shows is a way to its trail, named in the customer's words.
-- **Replay.** It scrubs a file change by change, its English as recorded at that commit.
+- **Replay.** It scrubs a file change by change, its English as recorded at that commit: a sentence drafted at a later commit is not shown at an earlier one, and the figure chips, read from today's figures file, are shown only for the file as it is now.
 - **The recorded build carries its English** (`fixtures/sample-build/explanations/`, `pnpm record-explanations`), so Test drive and the tests read it without a key.
 
 **The flow (packages/trace, packages/stage).**

@@ -1,0 +1,14 @@
+{
+  "hash": "be08b1f5cb4051156c58d75fa6decfed70a3f069f26384ca048d81a9e45b7134",
+  "path": "app/new/page.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes Figure, cupChoice and newOrderAmount available to the page.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-51",
+  "at": "2026-10-27T10:04:17.162Z",
+  "commit": null,
+  "lift": 3
+}

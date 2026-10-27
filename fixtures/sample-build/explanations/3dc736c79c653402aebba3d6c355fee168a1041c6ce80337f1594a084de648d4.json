@@ -1,0 +1,14 @@
+{
+  "hash": "3dc736c79c653402aebba3d6c355fee168a1041c6ce80337f1594a084de648d4",
+  "path": "app/layout.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Provides a way to describe content that React can show on the screen.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-1",
+  "at": "2026-10-27T10:02:12.625Z",
+  "commit": null,
+  "lift": 0
+}

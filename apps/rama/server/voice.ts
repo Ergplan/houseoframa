@@ -5,6 +5,7 @@ import { agree, EARS_COMPONENT, hear, linesToSay, readRoom, roomDeps, writeRoom 
 import { readBoard } from '@rama/board';
 import { openVoice, recordVoiceLine, vendorEntry } from '@rama/model';
 import { seatsOf } from '@rama/workbench';
+import { flowOf, readCapture } from '@rama/trace';
 import type { VoiceDeps } from '../app/api/site/[siteId]/voice/handler';
 import { jobDb } from './jobs';
 
@@ -59,6 +60,10 @@ export function voiceDeps(): VoiceDeps {
     board: (site, who, image) =>
       readBoard({ siteId: site.id, product: site.name, image, by: who.name, createdBy: who.id }),
     now: () => new Date(),
+    flowStep: (site, key, step) => {
+      const capture = readCapture(site.id);
+      return (capture && flowOf(capture, key)?.steps[step]?.sentence) || null;
+    },
   };
 }
 

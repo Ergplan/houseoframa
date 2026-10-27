@@ -1,0 +1,14 @@
+{
+  "hash": "feecdc3644930cf786b0d58a522905c004ef0a4b4f4b0e855d07a152fdabc79a",
+  "path": "app/total/page.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes the figure display, today's orders, and calculations for today's takings and GST on takings available to the page.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-63",
+  "at": "2026-10-27T10:04:47.126Z",
+  "commit": null,
+  "lift": 4
+}

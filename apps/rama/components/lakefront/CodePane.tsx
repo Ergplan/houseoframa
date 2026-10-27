@@ -86,9 +86,14 @@ export function CodePane({
       setClock(ms);
       if (ms < plan.total) raf = requestAnimationFrame(tick);
       else {
-        // The next change in the queue, if the builder has made one.
+        // The next change in the queue, if the builder has made one; else the file as it stands, its
+        // blocks with their English again (reviewer run 1).
         const next = queue.current.shift();
         if (next) start(next.plan);
+        else {
+          setPlan(null);
+          if (path) void load(path, at);
+        }
       }
     };
     raf = requestAnimationFrame(tick);

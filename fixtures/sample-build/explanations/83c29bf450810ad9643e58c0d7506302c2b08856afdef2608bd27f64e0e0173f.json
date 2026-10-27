@@ -3,10 +3,12 @@
   "path": "rama/define.ts",
   "kind": "type",
   "name": "FigureInput",
-  "sentence": "Describes an input to a figure: its label, where its value enters the code, and where the value is kept.",
+  "sentence": "Describes one input to a figure: its label, where its value enters the calculation, and where it is kept.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-14",
-  "at": "2026-10-27T06:09:53.205Z"
+  "callId": "row-21",
+  "at": "2026-10-27T10:03:02.081Z",
+  "commit": null,
+  "lift": 0
 }

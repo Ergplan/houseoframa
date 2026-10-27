@@ -3,10 +3,12 @@
   "path": "rama/figures.ts",
   "kind": "value",
   "name": "figures",
-  "sentence": "Describes Orders so far, Order amount and New order amount, including what each means, the information it uses and how it is shown.",
+  "sentence": "Keeps the descriptions, input details and display formats for Orders so far, Order amount and New order amount, and links each to how it is worked out.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-40",
-  "at": "2026-10-27T06:10:52.042Z"
+  "callId": "row-60",
+  "at": "2026-10-27T10:04:37.395Z",
+  "commit": null,
+  "lift": 3
 }

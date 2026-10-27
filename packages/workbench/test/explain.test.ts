@@ -4,7 +4,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import postgres from 'postgres';
@@ -88,7 +88,9 @@ describe('the English pane', () => {
           sentence:
             input.name === 'newOrderAmount'
               ? 'Works out what a new order costs: the cups times the price of a cup.'
-              : 'Keeps the choice of one, two or three cups.',
+              : input.name === null
+                ? 'Brings in the ways a figure is written on the screen.'
+                : 'Keeps the choice of one, two or three cups.',
           figure: input.name === 'newOrderAmount' ? 'New order amount' : 'Something made up',
         },
         callId: `c${asked.length}`,
@@ -104,17 +106,18 @@ describe('the English pane', () => {
         ? [{ id: 'new-order-amount', title: 'New order amount', what: 'What a new order costs.' }]
         : [];
     expect(await explainFile(site, FILE, SOURCE, figures, { env, call: drafter })).toEqual({
-      drafted: 2,
+      drafted: 3,
       failed: null,
     });
-    // The import group is not explained; the two blocks are, each once.
+    // Every block is explained, the import group too (reviewer run 1), each once.
     expect(
       asked.map((a) => [a.name, a.version, a.role, (a.input as { name: string }).name]),
     ).toEqual([
+      ['explain', 1, 'drafter', null],
       ['explain', 1, 'drafter', 'newOrderAmount'],
       ['explain', 1, 'drafter', 'CUPS'],
     ]);
-    expect(asked[0]!.input).toEqual({
+    expect(asked[1]!.input).toEqual({
       file: FILE,
       kind: 'function',
       name: 'newOrderAmount',
@@ -129,10 +132,15 @@ describe('the English pane', () => {
       drafted: 0,
       failed: null,
     });
-    expect(asked).toHaveLength(2);
+    expect(asked).toHaveLength(3);
     const blocks = splitBlocks(FILE, SOURCE);
     expect(explanationsFor(site, blocks, { env })).toEqual([
-      { state: 'none' },
+      {
+        state: 'unconfirmed',
+        sentence: 'Brings in the ways a figure is written on the screen.',
+        figure: null,
+        drafter: 'openai (gpt-6.1-sol)',
+      },
       {
         state: 'unconfirmed',
         sentence: 'Works out what a new order costs: the cups times the price of a cup.',
@@ -147,6 +155,35 @@ describe('the English pane', () => {
         drafter: 'openai (gpt-6.1-sol)',
       },
     ]);
+  });
+
+  it('shows a draft at a commit only when it was drafted there or before (replay)', async () => {
+    const repo = site.repoDir;
+    const g = (...a: string[]) =>
+      execFileSync('git', ['-C', repo, ...a], { encoding: 'utf8' }).trim();
+    const commitWith = (text: string) => {
+      writeFileSync(path.join(repo, 'r.ts'), text);
+      g('add', 'r.ts');
+      g('-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-q', '-m', text.slice(0, 20));
+      return g('rev-parse', 'HEAD');
+    };
+    const src = 'export const LATE = 1;\n';
+    const early = commitWith('export const EARLY = 0;\n' + src);
+    const late = commitWith('export const EARLY = 0;\n' + src + '// later\n');
+    const one = (async () => ({
+      output: { sentence: 'Keeps a number.', figure: null },
+      callId: 'c',
+      vendor: 'openai',
+      model: 'm',
+      attempts: 1,
+      inputTokens: 1,
+      outputTokens: 1,
+    })) as unknown as typeof call;
+    await explainFile(site, 'r.ts', src, () => [], { env, call: one, commit: late });
+    const b = splitBlocks('r.ts', src);
+    expect(explanationsFor(site, b, { env, commit: late })[0]!.state).toBe('unconfirmed');
+    // Drafted after the earlier commit: at it, the same text was not explained yet.
+    expect(explanationsFor(site, b, { env, commit: early })).toEqual([{ state: 'none' }]);
   });
 
   it('keeps no sentence in developer words', async () => {
@@ -184,7 +221,7 @@ describe('the English pane', () => {
     );
     expect(overlay.explanations).toHaveLength(1);
     expect(explanationsFor(site, blocks, { env }).map((e) => e.state)).toEqual([
-      'none',
+      'unconfirmed',
       'confirmed',
       'unconfirmed',
     ]);
@@ -201,7 +238,7 @@ describe('the English pane', () => {
     await expect(confirmExplanation(db, site, blocks[1]!.hash, asha, { env })).rejects.toThrow(
       'already confirmed',
     );
-    await expect(confirmExplanation(db, site, blocks[0]!.hash, asha, { env })).rejects.toThrow(
+    await expect(confirmExplanation(db, site, 'b'.repeat(64), asha, { env })).rejects.toThrow(
       'no drafted sentence',
     );
   });

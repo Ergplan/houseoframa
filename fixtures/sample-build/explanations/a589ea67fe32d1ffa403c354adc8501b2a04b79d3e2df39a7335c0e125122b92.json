@@ -3,10 +3,12 @@
   "path": "rama/figures.ts",
   "kind": "value",
   "name": "figures",
-  "sentence": "Keeps the titles, explanations, sources and display formats for Orders so far, Order amount, New order amount, Today’s takings and GST on today’s takings.",
+  "sentence": "Keeps the titles, descriptions, inputs and display formats for Orders so far, Order amount, New order amount, Today’s takings and GST on today’s takings.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-48",
-  "at": "2026-10-27T06:11:09.810Z"
+  "callId": "row-72",
+  "at": "2026-10-27T10:05:06.416Z",
+  "commit": null,
+  "lift": 4
 }

@@ -3,10 +3,12 @@
   "path": "rama/figures.ts",
   "kind": "value",
   "name": "figures",
-  "sentence": "Sets up “Buildings planned” to show the number of buildings on the plan, using buildingCount and the plan in .rama/features.json.",
+  "sentence": "Sets up “Buildings planned” to show the number of buildings on the plan, using .rama/features.json.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-18",
-  "at": "2026-10-27T06:10:02.081Z"
+  "callId": "row-26",
+  "at": "2026-10-27T10:03:12.507Z",
+  "commit": null,
+  "lift": 0
 }

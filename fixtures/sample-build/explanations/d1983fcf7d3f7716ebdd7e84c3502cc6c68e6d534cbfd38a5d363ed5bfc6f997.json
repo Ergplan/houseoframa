@@ -1,0 +1,14 @@
+{
+  "hash": "d1983fcf7d3f7716ebdd7e84c3502cc6c68e6d534cbfd38a5d363ed5bfc6f997",
+  "path": "rama/figures.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings together the calculations for order amounts, orders so far and new order amounts, along with the tool for defining the figures the product shows.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-59",
+  "at": "2026-10-27T10:04:35.236Z",
+  "commit": null,
+  "lift": 3
+}

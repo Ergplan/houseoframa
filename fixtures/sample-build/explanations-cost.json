@@ -1,10 +1,10 @@
 {
-  "recordedAt": "2026-10-27T06:11:09.846Z",
+  "recordedAt": "2026-10-27T10:05:06.470Z",
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "calls": 48,
-  "inputTokens": 26924,
-  "outputTokens": 1999,
-  "usd": 0.073838,
-  "inr": 7.00870296
+  "calls": 72,
+  "inputTokens": 38879,
+  "outputTokens": 3048,
+  "usd": 0.108238,
+  "inr": 10.27395096
 }

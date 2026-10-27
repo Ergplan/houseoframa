@@ -1,0 +1,14 @@
+{
+  "hash": "65f74883f7c1846936d221715bce3128774f96f409307dd846870749299fabfe",
+  "path": "features/count-the-days-takings/takings.test.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in tools for checking gstOnTakings and todaysTakings.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-65",
+  "at": "2026-10-27T10:04:52.038Z",
+  "commit": null,
+  "lift": 4
+}

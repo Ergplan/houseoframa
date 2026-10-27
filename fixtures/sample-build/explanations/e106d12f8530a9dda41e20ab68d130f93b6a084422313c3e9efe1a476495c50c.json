@@ -1,0 +1,14 @@
+{
+  "hash": "e106d12f8530a9dda41e20ab68d130f93b6a084422313c3e9efe1a476495c50c",
+  "path": "app/new/page.test.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in tools for testing NewOrder and turning its screen into text.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-49",
+  "at": "2026-10-27T10:04:10.985Z",
+  "commit": null,
+  "lift": 3
+}

@@ -3,10 +3,12 @@
   "path": "db/orders.test.ts",
   "kind": "test",
   "name": "reads the sample day: four orders shaped like the orders table",
-  "sentence": "Checks that the sample day has 4 orders with the expected drink names, cup counts and prices per cup. Also checks that every order has a readable date and time.",
+  "sentence": "Checks that the sample day has 4 orders with the expected drink names, cup counts and prices per cup, and that every order has a readable date and time.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-32",
-  "at": "2026-10-27T06:10:35.311Z"
+  "callId": "row-48",
+  "at": "2026-10-27T10:04:08.346Z",
+  "commit": null,
+  "lift": 2
 }

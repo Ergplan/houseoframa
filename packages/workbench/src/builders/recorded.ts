@@ -5,7 +5,7 @@
 // builder answered. Nothing is made up: what the recording does not hold, it does not do. Its
 // `explanations/` are the drafter's sentences from the real build, kept by block hash.
 import { execFileSync } from 'node:child_process';
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { workDir } from '@rama/blueprint/site';
 import path from 'node:path';
 import { z } from 'zod';
@@ -66,13 +66,22 @@ export function recorded(dir: string): BuilderDriver {
         },
       );
       // The English the drafter wrote beside the real build's blocks, recorded with it (Stage 11): the
-      // pane shows it as drafted and unconfirmed, exactly as it was drafted then.
+      // pane shows it as drafted and unconfirmed. Each lift brings the sentences drafted after it,
+      // made at this lift's commit (the house stack's own lift's, at the first), so a replay shows
+      // them from there on.
       const said = path.join(dir, 'explanations');
       if (existsSync(said)) {
         const into = path.join(workDir(), req.siteId, 'explain');
         mkdirSync(into, { recursive: true });
-        for (const f of readdirSync(said))
-          if (f.endsWith('.json')) copyFileSync(path.join(said, f), path.join(into, f));
+        const rev = (ref: string) =>
+          execFileSync('git', ['-C', req.repoDir, 'rev-parse', ref], { encoding: 'utf8' }).trim();
+        for (const f of readdirSync(said).filter((x) => x.endsWith('.json'))) {
+          const d = JSON.parse(readFileSync(path.join(said, f), 'utf8')) as { lift?: number };
+          const at =
+            d.lift === next ? rev('HEAD') : d.lift === 0 && next === 1 ? rev('HEAD^') : null;
+          if (at)
+            writeFileSync(path.join(into, f), `${JSON.stringify({ ...d, commit: at }, null, 2)}\n`);
+        }
       }
       const { patch: _patch, ...answer } = lift;
       void _patch;

@@ -3,10 +3,12 @@
   "path": "features/take-an-order/order.ts",
   "kind": "function",
   "name": "newOrderAmount",
-  "sentence": "Works out the New order amount in paise by rounding the number of cups down to a whole number and multiplying it by the price of a cup.",
+  "sentence": "Works out the New order amount in paise by rounding the number of cups down to a whole number and multiplying by the price of a cup.",
   "figure": "New order amount",
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-38",
-  "at": "2026-10-27T06:10:47.534Z"
+  "callId": "row-57",
+  "at": "2026-10-27T10:04:31.085Z",
+  "commit": null,
+  "lift": 3
 }

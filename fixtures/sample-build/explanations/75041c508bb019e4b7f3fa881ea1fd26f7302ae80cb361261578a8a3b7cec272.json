@@ -1,0 +1,14 @@
+{
+  "hash": "75041c508bb019e4b7f3fa881ea1fd26f7302ae80cb361261578a8a3b7cec272",
+  "path": "app/total/page.test.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in TodaysTotal and tools to turn it into page text and check it in tests.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-61",
+  "at": "2026-10-27T10:04:40.146Z",
+  "commit": null,
+  "lift": 4
+}

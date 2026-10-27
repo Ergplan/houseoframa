@@ -1,0 +1,14 @@
+{
+  "hash": "4befbc0025ddc92e0fd568fcf14be54e4605f2bbd5d07e27dccb77ecead6ff3b",
+  "path": "app/page.test.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings together TodaysOrders and tools for checking the page’s output.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-29",
+  "at": "2026-10-27T10:03:19.834Z",
+  "commit": null,
+  "lift": 1
+}

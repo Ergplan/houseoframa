@@ -7,6 +7,8 @@
   "figure": "Order amount",
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-29",
-  "at": "2026-10-27T06:10:28.396Z"
+  "callId": "row-43",
+  "at": "2026-10-27T10:03:56.276Z",
+  "commit": null,
+  "lift": 1
 }

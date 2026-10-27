@@ -457,6 +457,7 @@ export async function explainLift(
       const r = await explainFile(site, file, source, (b) => figuresOfBlock(file, b, figures), {
         env,
         createdBy: BUILD_COMPONENT,
+        commit: to,
       });
       drafted += r.drafted;
       if (r.failed) {

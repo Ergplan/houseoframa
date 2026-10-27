@@ -1,0 +1,14 @@
+{
+  "hash": "60ee062b3847c3d862fa9f6b45f3ada2e71244ea354f4ab7991e7654db8b4b77",
+  "path": "vitest.config.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in the tool used to set up test settings.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-27",
+  "at": "2026-10-27T10:03:15.391Z",
+  "commit": null,
+  "lift": 0
+}

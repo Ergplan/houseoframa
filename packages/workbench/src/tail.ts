@@ -49,8 +49,10 @@ export function startTail(
   lift: number,
   opts: { env?: NodeJS.ProcessEnv; everyMs?: number } = {},
 ): { stop: () => EditEvent[] } {
+  // One file for the whole build, appended lift after lift, so the room's cursor (a count of edits
+  // read) stays good across lifts (reviewer run 1).
   const out = typingFile(siteId, opts.env);
-  writeFileSync(out, '');
+  if (!existsSync(out)) writeFileSync(out, '');
   const started = Date.now();
   const seen = new Map<string, { mtime: number; text: string | null }>();
   for (const f of files(repoDir)) seen.set(f, read(repoDir, f));

@@ -118,7 +118,8 @@ export function codeView(
       to: b.to,
       hash: b.hash,
       explanation: explanations[i]!,
-      figures: figuresOfBlock(file, b, figures).map((f) => {
+      // At a commit the figures file may have said otherwise: figures are shown for the file as it is now.
+      figures: (opts.commit ? [] : figuresOfBlock(file, b, figures)).map((f) => {
         const key = keyOf(f.id);
         return { ...f, href: key && opts.href ? opts.href(key) : null };
       }),

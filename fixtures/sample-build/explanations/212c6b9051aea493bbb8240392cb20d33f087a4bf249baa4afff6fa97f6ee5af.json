@@ -3,10 +3,12 @@
   "path": "rama/define.ts",
   "kind": "type",
   "name": "FigureDef",
-  "sentence": "Describes a figure’s title, what it tells the reader, how it is worked out, the information it uses, and how it is shown. It can also list additional files to include in the figure’s history.",
+  "sentence": "Describes what is kept for a figure: its calculation, title, meaning, plain-English explanation, inputs, display details and optional related files.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-16",
-  "at": "2026-10-27T06:09:57.565Z"
+  "callId": "row-23",
+  "at": "2026-10-27T10:03:06.318Z",
+  "commit": null,
+  "lift": 0
 }

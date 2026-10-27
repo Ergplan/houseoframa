@@ -1,0 +1,14 @@
+{
+  "hash": "f9a0314ce77e952958c79ef8782e8f4b6459bfab04f691cbd99852844e67017b",
+  "path": "db/orders.test.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in tools for writing checks and checking their results, along with todaysOrders.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-47",
+  "at": "2026-10-27T10:04:06.126Z",
+  "commit": null,
+  "lift": 2
+}

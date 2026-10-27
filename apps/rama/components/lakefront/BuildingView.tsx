@@ -30,7 +30,7 @@ import { placeHref } from './places';
 import { flagSentence } from './StreetView';
 import { Words } from './Words';
 import { CameraRing } from './CameraRing';
-import { useCamera } from './useCamera';
+import { TURN_MS, useCamera } from './useCamera';
 import { BuildingEnglish } from './BuildingEnglish';
 import { FlowPanel } from './FlowPanel';
 import type { Flow } from '@rama/trace';
@@ -57,7 +57,7 @@ export function BuildingView(p: BuildingProps) {
   const router = useRouter();
   const pal = usePalette();
   const { image, version } = useImages();
-  const { cam, act } = useCamera(p.siteId, p.camera);
+  const { cam, act, turning } = useCamera(p.siteId, p.camera);
   // The building from the camera's side: the screens on whichever face is toward it.
   const sc = useMemo(() => orientScene(p.scene, cam.orientation), [p.scene, cam.orientation]);
   const [picked, setPicked] = useState<string | null>(p.initialFigure);
@@ -126,7 +126,7 @@ export function BuildingView(p: BuildingProps) {
     if (!flow || !water || water.step === told.current) return;
     told.current = water.step;
     window.dispatchEvent(
-      new CustomEvent('rama:tell', { detail: flow.steps[water.step]!.sentence }),
+      new CustomEvent('rama:tell', { detail: { figure: flow.key, step: water.step } }),
     );
   }, [flow, water]);
   const showFlow = (key: string) => {
@@ -176,6 +176,27 @@ export function BuildingView(p: BuildingProps) {
     };
   }, [p.siteId, p.building.bricks]);
   const canvas = useRef<HTMLCanvasElement>(null);
+  // A turn fades from the last frame over 300 ms, as on the Street (reviewer run 1).
+  const fade = useRef<HTMLCanvasElement>(null);
+  const lastOrientation = useRef(cam.orientation);
+  if (lastOrientation.current !== cam.orientation && fade.current && canvas.current) {
+    const f = fade.current;
+    f.width = canvas.current.width;
+    f.height = canvas.current.height;
+    f.getContext('2d')?.drawImage(canvas.current, 0, 0);
+    f.style.transition = 'none';
+    f.style.opacity = '1';
+    lastOrientation.current = cam.orientation;
+  }
+  useEffect(() => {
+    const f = fade.current;
+    if (!f || !turning) return;
+    const id = requestAnimationFrame(() => {
+      f.style.transition = `opacity ${TURN_MS}ms ease`;
+      f.style.opacity = '0';
+    });
+    return () => cancelAnimationFrame(id);
+  }, [turning]);
   useEffect(() => {
     const ctx = canvas.current?.getContext('2d');
     if (!ctx || !pal) return;
@@ -309,6 +330,7 @@ export function BuildingView(p: BuildingProps) {
             onMouseLeave={() => setHover(null)}
             onClick={(e) => onPointer(e, true)}
           />
+          <canvas className="lake-fade" ref={fade} aria-hidden />
           <canvas
             className="lake-water"
             ref={waterCanvas}
