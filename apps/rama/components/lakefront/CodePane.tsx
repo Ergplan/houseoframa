@@ -74,6 +74,7 @@ export function CodePane({
   // The plan playing, kept in a ref too: the live poll reads it, so a new edit waits its turn rather
   // than interrupting the change being typed (reviewer run 2).
   const playing = useRef<TypingPlan | null>(null);
+  const last = useRef<{ lift: number; at: number }>({ lift: -1, at: 0 });
   const start = (p: TypingPlan) => {
     playing.current = p;
     started.current = performance.now();
@@ -126,13 +127,15 @@ export function CodePane({
         if (!r.building) seen.current += r.edits.length;
         else if (r.edits.length) {
           seen.current += r.edits.length;
-          let prev = 0;
           for (const e of r.edits) {
+            // The builder's pace: the time since its edit before, across polls, within one lift
+            // (reviewer run 4).
+            const since = e.lift === last.current.lift ? last.current.at : 0;
+            last.current = { lift: e.lift, at: e.at };
             const p = typingPlan(
               { path: e.path, before: e.before, after: e.after },
-              Math.max(0, e.at - prev),
+              Math.max(0, e.at - since),
             );
-            prev = e.at;
             if (!/\.tsx?$/.test(e.path)) continue;
             queue.current.push({ plan: p });
           }

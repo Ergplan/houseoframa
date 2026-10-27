@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
+  "commit": "b418d321ac99a634212473be928855abebbc23a4",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -14795,6 +14795,51 @@
       "sha": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
       "short": "deaa5bc",
       "subject": "Stage 11: reviewer run 2 — live typing waits its turn; the report on \"Not explained yet\""
+    },
+    {
+      "at": "2026-10-27T12:37:21Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/CodePane.tsx"
+        },
+        {
+          "add": 13,
+          "del": 8,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/StreetView.tsx"
+        },
+        {
+          "add": 13,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/useCamera.ts"
+        },
+        {
+          "add": 51,
+          "del": 18,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        },
+        {
+          "add": 9,
+          "del": 1,
+          "kind": "M",
+          "path": "vitest.config.ts"
+        }
+      ],
+      "sha": "b418d321ac99a634212473be928855abebbc23a4",
+      "short": "b418d32",
+      "subject": "Stage 11: reviewer run 3 — Catch up frees the live typing; spoken \"closer\" goes into the chosen building"
     }
   ],
   "edges": [
@@ -30112,7 +30157,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T11:52:13Z",
+  "extractedAt": "2026-10-27T12:37:21Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -33181,18 +33226,18 @@
     },
     {
       "binary": false,
-      "bytes": 11255,
-      "changes": 4,
+      "bytes": 11544,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CodePane"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
+      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 317,
+      "lines": 320,
       "packages": [
         "next",
         "react"
@@ -33220,7 +33265,7 @@
     {
       "binary": false,
       "bytes": 25376,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -33229,7 +33274,7 @@
         "flagSentence"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 683,
@@ -33304,7 +33349,7 @@
     {
       "binary": false,
       "bytes": 3258,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -33315,7 +33360,7 @@
         "useCamera"
       ],
       "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
-      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 85,
@@ -34739,16 +34784,16 @@
     },
     {
       "binary": false,
-      "bytes": 30086,
-      "changes": 2,
+      "bytes": 39374,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "deaa5bcbe8aa4ba62cc73299b4d3b8913c6f7e96",
+      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 55,
+      "lines": 71,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -42478,7 +42523,7 @@
     },
     {
       "binary": false,
-      "bytes": 10294,
+      "bytes": 11561,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -42500,7 +42545,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 299,
+      "lines": 329,
       "packages": [
         "zod"
       ],
@@ -42862,7 +42907,7 @@
     },
     {
       "binary": false,
-      "bytes": 9627,
+      "bytes": 9903,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -42873,7 +42918,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 245,
+      "lines": 250,
       "packages": [
         "postgres",
         "vitest"
@@ -44736,7 +44781,7 @@
     {
       "binary": false,
       "bytes": 2306,
-      "changes": 11,
+      "changes": 12,
       "env": [
         "RAMA_VENDOR_TESTS"
       ],
@@ -44745,7 +44790,7 @@
         "default"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 61,

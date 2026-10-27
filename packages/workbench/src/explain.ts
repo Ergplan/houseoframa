@@ -63,14 +63,30 @@ const cacheDir = (siteId: string, env: NodeJS.ProcessEnv) =>
 const cacheFile = (siteId: string, hash: string, env: NodeJS.ProcessEnv) =>
   path.join(cacheDir(siteId, env), `${hash}.json`);
 
+/** What the drafter said for a block, kept by hash: a sentence, or a refusal (developer words). */
+function kept(
+  siteId: string,
+  hash: string,
+  env: NodeJS.ProcessEnv,
+): (Drafted & { refused?: string }) | null {
+  const f = cacheFile(siteId, hash, env);
+  return existsSync(f)
+    ? (JSON.parse(readFileSync(f, 'utf8')) as Drafted & { refused?: string })
+    : null;
+}
+
+/** A block's drafted sentence, or null when it has none (not drafted, or the draft was refused). */
 export function drafted(
   siteId: string,
   hash: string,
   env: NodeJS.ProcessEnv = process.env,
 ): Drafted | null {
-  const f = cacheFile(siteId, hash, env);
-  return existsSync(f) ? (JSON.parse(readFileSync(f, 'utf8')) as Drafted) : null;
+  const d = kept(siteId, hash, env);
+  return d && !d.refused ? d : null;
 }
+
+/** Blocks being drafted now, by site and hash: two lifts never ask for the same block at once. */
+const inFlight = new Set<string>();
 
 /** The confirmed sentences in a product's overlay: as it is now, or as it stood at a commit. */
 export function confirmedIn(repoDir: string, commit?: string): Confirmed[] {
@@ -203,7 +219,10 @@ export async function explainFile(
   const blocks = splitBlocks(file, source);
   let n = 0;
   for (const b of blocks) {
-    if (drafted(site.id, b.hash, env)) continue;
+    // Asked once: a block with a sentence, a refused one, or one being drafted now is not asked again.
+    const key = `${site.id}:${b.hash}`;
+    if (kept(site.id, b.hash, env) || inFlight.has(key)) continue;
+    inFlight.add(key);
     try {
       const figures = figuresOf(b);
       const res = await (opts.call ?? call)({
@@ -223,8 +242,17 @@ export async function explainFile(
         createdBy: opts.createdBy ?? EXPLAIN_COMPONENT,
         maxTokens: 1500,
       });
-      // A sentence in developer words is not kept: the block stays "Not explained yet".
-      if (bannedWords(res.output.sentence, env).length) continue;
+      // A sentence in developer words is not shown: the block stays "Not explained yet", and the
+      // refusal is kept so the block is not asked again (reviewer run 4).
+      const banned = bannedWords(res.output.sentence, env);
+      if (banned.length) {
+        mkdirSync(cacheDir(site.id, env), { recursive: true });
+        writeFileSync(
+          cacheFile(site.id, b.hash, env),
+          `${JSON.stringify({ hash: b.hash, path: file, refused: `developer words: ${banned.join(', ')}`, callId: res.callId, at: new Date().toISOString(), commit: opts.commit ?? null }, null, 2)}\n`,
+        );
+        continue;
+      }
       const d: Drafted = {
         hash: b.hash,
         path: file,
@@ -246,6 +274,8 @@ export async function explainFile(
     } catch (err) {
       // No key, or the drafter failed: the block stays "Not explained yet"; the build goes on.
       return { drafted: n, failed: (err as Error).message };
+    } finally {
+      inFlight.delete(key);
     }
   }
   return { drafted: n, failed: null };

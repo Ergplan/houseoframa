@@ -202,6 +202,11 @@ describe('the English pane', () => {
       failed: null,
     });
     expect(explanationsFor(site, splitBlocks('x.ts', src), { env })).toEqual([{ state: 'none' }]);
+    // The refusal is kept: the block is not asked again.
+    let asked = 0;
+    const count = (async (...a: Parameters<typeof call>) => (asked++, dev(...a))) as typeof call;
+    await explainFile(site, 'x.ts', src, () => [], { env, call: count });
+    expect(asked).toBe(0);
   });
 
   it('is unconfirmed until a named person confirms it: then the overlay holds it and audit_log says so', async () => {
