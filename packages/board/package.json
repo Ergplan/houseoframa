@@ -1,0 +1,18 @@
+{
+  "name": "@rama/board",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The whiteboard, minimal: a webcam frame read into boxes, arrows and labels, kept as a draft map. Nothing is decided from it.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@rama/blueprint": "workspace:*",
+    "@rama/model": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

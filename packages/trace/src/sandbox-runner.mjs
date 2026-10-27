@@ -27,6 +27,10 @@ try {
     if (typeof mod.default !== 'function')
       throw new Error(`${req.file} has no default export to run`);
     answer = { ok: true, value: plain(await mod.default()) };
+  } else if (req.kind === 'show') {
+    const show = mod.SHOW?.[req.show];
+    if (typeof show !== 'function') throw new Error(`${req.file} has no SHOW.${req.show}`);
+    answer = { ok: true, value: plain(show(req.value)) };
   } else throw new Error(`unknown request kind ${req.kind}`);
 } catch (err) {
   answer = {

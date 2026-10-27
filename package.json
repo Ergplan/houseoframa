@@ -27,6 +27,7 @@
     "review": "tsx scripts/review.ts",
     "cost": "tsx scripts/cost.ts",
     "record-build": "tsx scripts/record-build.ts",
+    "record-rehearsal": "tsx scripts/record-rehearsal.ts",
     "rama-trace": "rama-trace",
     "rama-ceremony": "rama-ceremony",
     "rama-audit": "rama-audit",

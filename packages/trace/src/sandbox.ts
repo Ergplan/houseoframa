@@ -25,7 +25,9 @@ const TSX = pathToFileURL(
 export type SandboxRequest =
   | { kind: 'export'; file: string; name: string }
   | { kind: 'call'; file: string; fn: string; args: unknown[] }
-  | { kind: 'harness'; file: string };
+  | { kind: 'harness'; file: string }
+  /** A value written the way the product writes it on a screen: `SHOW[show](value)` of rama/define.ts. */
+  | { kind: 'show'; file: string; show: string; value: unknown };
 
 export type SandboxAnswer = { ok: true; value: unknown } | { ok: false; error: string };
 

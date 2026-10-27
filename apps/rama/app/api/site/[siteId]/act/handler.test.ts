@@ -76,9 +76,15 @@ describe('POST /api/site/[siteId]/act (the trainer console)', () => {
     expect(d.startBuild).toHaveBeenCalledTimes(1);
   });
 
-  it('says which stage enables an act it cannot do yet, and refuses an unknown one', async () => {
+  it('closes ideation by handing the room to the voice for act 3, and refuses an unknown act', async () => {
     const d = deps();
-    expect(where(await handleAct(site, tara, act('close-ideation'), d)).error).toMatch(/Stage 10/);
+    const r = await handleAct(site, tara, act('close-ideation'), d);
+    expect(new URL(r.headers.get('location')!).pathname).toBe('/site/chai/discovery');
+    expect(new URL(r.headers.get('location')!).searchParams.get('act')).toBe('agree');
+    const outside = { ...site, kind: 'outside' } as SiteLocation;
+    expect(where(await handleAct(outside, tara, act('close-ideation'), d)).error).toBe(
+      'Only a product made here has an ideation to close.',
+    );
     expect(where(await handleAct(site, tara, act('rm -rf'), d)).error).toBe(
       'There is no such button.',
     );

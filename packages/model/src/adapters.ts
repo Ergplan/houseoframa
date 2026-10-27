@@ -15,7 +15,26 @@ export interface CompletionRequest {
   system: string;
   user: string;
   maxTokens: number;
+  /** Pictures sent with the user turn (Stage 10: a frame of the board), base64. */
+  images?: Image[];
 }
+
+export interface Image {
+  mediaType: 'image/jpeg' | 'image/png' | 'image/webp';
+  base64: string;
+}
+
+/** The user turn in OpenAI's chat form: plain text, or text and pictures. */
+const openaiUser = (req: CompletionRequest) =>
+  req.images?.length
+    ? [
+        { type: 'text', text: req.user },
+        ...req.images.map((i) => ({
+          type: 'image_url',
+          image_url: { url: `data:${i.mediaType};base64,${i.base64}` },
+        })),
+      ]
+    : req.user;
 
 export type Fetch = typeof fetch;
 
@@ -65,7 +84,20 @@ export async function anthropicComplete(
       model: req.model,
       max_tokens: req.maxTokens,
       system: req.system,
-      messages: [{ role: 'user', content: req.user }],
+      messages: [
+        {
+          role: 'user',
+          content: req.images?.length
+            ? [
+                ...req.images.map((i) => ({
+                  type: 'image',
+                  source: { type: 'base64', media_type: i.mediaType, data: i.base64 },
+                })),
+                { type: 'text', text: req.user },
+              ]
+            : req.user,
+        },
+      ],
     },
   )) as {
     model: string;
@@ -100,7 +132,7 @@ export async function openaiComplete(
       max_completion_tokens: req.maxTokens,
       messages: [
         { role: 'system', content: req.system },
-        { role: 'user', content: req.user },
+        { role: 'user', content: openaiUser(req) },
       ],
     },
   )) as {
@@ -135,7 +167,7 @@ export const compatibleComplete =
         max_tokens: req.maxTokens,
         messages: [
           { role: 'system', content: req.system },
-          { role: 'user', content: req.user },
+          { role: 'user', content: openaiUser(req) },
         ],
       },
     )) as {

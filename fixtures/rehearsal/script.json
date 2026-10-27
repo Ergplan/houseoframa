@@ -1,0 +1,25 @@
+{
+  "$comment": "The recorded rehearsal (Stage 10): what the member says in acts 1 to 3 on the sample product, in order. `at` is when to say it: after the room opens, or after ideation is closed (act 3). `clip` is the recording of it (pnpm record-rehearsal), played into the live voice in place of the microphone; the recorded rehearsal in the watcher gives the same words to the stand-in voice.",
+  "speaker": "Rachit Agarwal",
+  "turns": [
+    {
+      "at": "act 2",
+      "text": "A chai stall that takes orders through the day, and shows the day's takings and the GST.",
+      "clip": "01-idea.wav"
+    },
+    {
+      "at": "act 2",
+      "text": "Claude Code builds, OpenAI checks, and OpenAI speaks.",
+      "clip": "02-brains.wav"
+    },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 2", "text": "Yes.", "clip": "03-yes.wav" },
+    { "at": "act 3", "text": "Yes, build it.", "clip": "04-build-it.wav" }
+  ]
+}

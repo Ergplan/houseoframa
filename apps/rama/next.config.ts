@@ -10,8 +10,10 @@ const config: NextConfig = {
   transpilePackages: [
     '@rama/audit',
     '@rama/blueprint',
+    '@rama/board',
     '@rama/ceremony',
     '@rama/db',
+    '@rama/ears',
     '@rama/model',
     '@rama/shared',
     '@rama/stage',

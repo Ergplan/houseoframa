@@ -9,7 +9,7 @@ export {
 export type { CallDeps, CallRequest, CallResult, ModelCallRow } from './call.ts';
 export { resolveVendors, VendorGuardError, VENDORS, type Role, type Vendor } from './vendors.ts';
 export { loadPrompt, PROMPTS_DIR, type Prompt } from './prompts.ts';
-export { VendorHttpError } from './adapters.ts';
+export { VendorHttpError, type Image } from './adapters.ts';
 export {
   costOf,
   formatInr,
@@ -49,3 +49,14 @@ export {
 } from './seats.ts';
 export { resolveSeat, storedSeats } from './call.ts';
 export { compatibleComplete } from './adapters.ts';
+export {
+  openVoice,
+  recordVoiceLine,
+  voiceSession,
+  REALTIME_CALLS_URL,
+  TRANSCRIBE_MODEL,
+  VOICE_PROMPT,
+  type OpenVoiceDeps,
+  type OpenVoiceRequest,
+} from './realtime.ts';
+export { synthesize, SPEECH_MODEL, type SpeechDeps } from './speech.ts';

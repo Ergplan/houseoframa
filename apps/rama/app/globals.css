@@ -1065,3 +1065,49 @@ body:has(.rama-stage) {
 .lakefront a.eg-btn {
   text-decoration: none;
 }
+
+/* The voice in the room (Stage 10): at the foot of every page of a site while a session lasts. */
+.voice-dock {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  padding: 0 16px 16px;
+}
+.voice-room,
+.voice-start {
+  display: grid;
+  gap: 10px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.voice-room__talk,
+.voice-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.voice-room__typed {
+  display: flex;
+  gap: 6px;
+}
+.voice-room__typed input {
+  min-width: 260px;
+}
+.voice-room__transcript {
+  margin: 0;
+  padding: 10px 14px;
+  list-style: none;
+  max-height: 180px;
+  overflow: auto;
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  font-size: 13px;
+  line-height: 19px;
+}
+.voice-room__transcript .agent b {
+  color: var(--accent);
+}
+.voice-error {
+  color: var(--red);
+}

@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
+  "commit": "3a61a408bcaeaa26a396bd665ba615dc5788635a",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -12389,6 +12389,33 @@
       "sha": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
       "short": "f29d0d1",
       "subject": "Stage 9: report — final reviewer run clean of code defects; the box runs Stage 9"
+    },
+    {
+      "at": "2026-10-27T00:22:48Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 37,
+          "del": 10,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-9.md"
+        },
+        {
+          "add": 6,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/test/testdrive.test.ts"
+        }
+      ],
+      "sha": "3a61a408bcaeaa26a396bd665ba615dc5788635a",
+      "short": "3a61a40",
+      "subject": "Stage 9: Test drive's test sets its seats itself, so CI says what the laptop says"
     }
   ],
   "edges": [
@@ -12748,6 +12775,111 @@
         "newProduct"
       ],
       "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/handler.test.ts",
+      "symbols": [
+        "handleRehearsal"
+      ],
+      "to": "apps/rama/app/api/rehearsal/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/handler.test.ts",
+      "symbols": [
+        "back"
+      ],
+      "to": "apps/rama/server/http.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/rehearsal/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/handler.test.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/rehearsal/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/handler.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/route.ts",
+      "symbols": [
+        "handleRehearsal"
+      ],
+      "to": "apps/rama/app/api/rehearsal/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/route.ts",
+      "symbols": [
+        "authMember"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/route.ts",
+      "symbols": [
+        "back",
+        "baseUrlOf"
+      ],
+      "to": "apps/rama/server/http.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/route.ts",
+      "symbols": [
+        "jobDb"
+      ],
+      "to": "apps/rama/server/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/rehearsal/route.ts",
+      "symbols": [
+        "newRehearsal"
+      ],
+      "to": "packages/ears/src/index.ts",
       "typeOnly": false
     },
     {
@@ -13126,6 +13258,70 @@
         "createDb"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/[frame]/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/[frame]/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/[frame]/route.ts",
+      "symbols": [
+        "boardFrame"
+      ],
+      "to": "packages/board/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/route.ts",
+      "symbols": [
+        "handleBoard"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/board/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
       "typeOnly": false
     },
     {
@@ -14140,6 +14336,316 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/voice/agree/route.ts",
+      "symbols": [
+        "handleAgree"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/agree/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/agree/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/agree/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/end/route.ts",
+      "symbols": [
+        "handleEnd"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/end/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/end/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/end/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts",
+      "symbols": [
+        "VoiceDeps",
+        "handleAgree",
+        "handleBoard",
+        "handleEnd",
+        "handleHeard",
+        "handleSaid",
+        "handleSession",
+        "handleStart",
+        "placeUrl"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts",
+      "symbols": [
+        "RoomState"
+      ],
+      "to": "packages/ears/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "symbols": [
+        "BoardDraft"
+      ],
+      "to": "packages/board/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "symbols": [
+        "Line",
+        "Place",
+        "Reply",
+        "RoomState",
+        "mouthCheck",
+        "startState",
+        "welcome"
+      ],
+      "to": "packages/ears/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/heard/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/heard/route.ts",
+      "symbols": [
+        "handleHeard"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/heard/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/heard/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/heard/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/said/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/said/route.ts",
+      "symbols": [
+        "handleSaid"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/said/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/said/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/said/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/session/route.ts",
+      "symbols": [
+        "handleSession"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/session/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/session/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/session/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/start/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/start/route.ts",
+      "symbols": [
+        "handleStart"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/start/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/start/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/voice/start/route.ts",
+      "symbols": [
+        "voiceDeps"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/testdrive/route.ts",
       "symbols": [
         "authDeps"
@@ -14233,6 +14739,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/rehearsal/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/settings/brains/route.ts",
       "typeOnly": false
     },
@@ -14266,6 +14780,22 @@
         "*"
       ],
       "to": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/board/[frame]/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/board/route.ts",
       "typeOnly": false
     },
     {
@@ -15109,6 +15639,46 @@
         "withDb"
       ],
       "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/layout.tsx",
+      "symbols": [
+        "VoiceRoom"
+      ],
+      "to": "apps/rama/components/ears/VoiceRoom.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/layout.tsx",
+      "symbols": [
+        "pageSite"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/layout.tsx",
+      "symbols": [
+        "voiceMode"
+      ],
+      "to": "apps/rama/server/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/layout.tsx",
+      "symbols": [
+        "readMembers"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/layout.tsx",
+      "symbols": [
+        "readRoom"
+      ],
+      "to": "packages/ears/src/index.ts",
       "typeOnly": false
     },
     {
@@ -17274,6 +17844,81 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "VoiceDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "jobDb"
+      ],
+      "to": "apps/rama/server/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "readBoard"
+      ],
+      "to": "packages/board/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "addTurn",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "Member",
+        "readMembers",
+        "secretFor"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "EARS_COMPONENT",
+        "agree",
+        "hear",
+        "linesToSay",
+        "readRoom",
+        "roomDeps",
+        "writeRoom"
+      ],
+      "to": "packages/ears/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "openVoice",
+        "recordVoiceLine",
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/voice.ts",
+      "symbols": [
+        "seatsOf"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/test/banned.test.ts",
       "symbols": [
         "BANNED",
@@ -19245,6 +19890,58 @@
       "typeOnly": false
     },
     {
+      "from": "packages/board/src/board.ts",
+      "symbols": [
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/board/src/board.ts",
+      "symbols": [
+        "CallDeps",
+        "Image",
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/board/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/board/src/board.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/board/test/board.test.ts",
+      "symbols": [
+        "boardFrame",
+        "listBoards",
+        "readBoard"
+      ],
+      "to": "packages/board/src/board.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/board/test/board.test.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "packages/ceremony/bin/rama-ceremony.mjs",
       "symbols": [
         "*"
@@ -20343,6 +21040,538 @@
       "typeOnly": false
     },
     {
+      "from": "packages/ears/src/brains.ts",
+      "symbols": [
+        "normalise"
+      ],
+      "to": "packages/ears/src/grammar.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/brains.ts",
+      "symbols": [
+        "BUILDER_VENDOR",
+        "SEATS",
+        "Seat",
+        "SeatChoice",
+        "Seats",
+        "VENDOR_REGISTRY",
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/conductor.ts",
+      "symbols": [
+        "brainsSpoken",
+        "parseBrains"
+      ],
+      "to": "packages/ears/src/brains.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/conductor.ts",
+      "symbols": [
+        "TrackStep",
+        "matchName",
+        "parseCommand"
+      ],
+      "to": "packages/ears/src/grammar.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/conductor.ts",
+      "symbols": [
+        "spokenNumber"
+      ],
+      "to": "packages/ears/src/numbers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/conductor.ts",
+      "symbols": [
+        "FigureOnHand",
+        "answerTrack"
+      ],
+      "to": "packages/ears/src/track.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/conductor.ts",
+      "symbols": [
+        "Seats",
+        "seatProblems"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/conductor.ts",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/brains.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/conductor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/grammar.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/mouth.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/numbers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/rehearsal.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/room.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/track.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/ears/src/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/mouth.ts",
+      "symbols": [
+        "numbersIn"
+      ],
+      "to": "packages/ears/src/numbers.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/ears/src/rehearsal.ts",
+      "symbols": [
+        "SiteLocation",
+        "createProductSite",
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/rehearsal.ts",
+      "symbols": [
+        "decide"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the table of sites, one per target repository"
+      },
+      "from": "packages/ears/src/rehearsal.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/rehearsal.ts",
+      "symbols": [
+        "SAMPLE_CARDS",
+        "SAMPLE_IDEA"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options; a site's saved blueprint, if it has one"
+      },
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "SiteLocation",
+        "readSiteBlueprint",
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "addTurn",
+        "currentDecisions",
+        "decide",
+        "draftQuestion",
+        "listDecisions",
+        "listSessions",
+        "readSignoffs",
+        "signaturesInForce",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the table of model calls"
+      },
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "ensurePerson",
+        "modelCalls",
+        "readMembers",
+        "secretFor"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "Building",
+        "RoomDeps",
+        "RoomState"
+      ],
+      "to": "packages/ears/src/conductor.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "mouthCheck"
+      ],
+      "to": "packages/ears/src/mouth.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "FigureOnHand"
+      ],
+      "to": "packages/ears/src/track.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "CallDeps",
+        "Seats",
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "readCapture",
+        "runInSandbox",
+        "showroomOf"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/room.ts",
+      "symbols": [
+        "chooseProductSeats",
+        "seatsOf",
+        "siteLakefront"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/src/track.ts",
+      "symbols": [
+        "TrackStep"
+      ],
+      "to": "packages/ears/src/grammar.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/src/track.ts",
+      "symbols": [
+        "Trail"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/src/voice.ts",
+      "symbols": [
+        "Line"
+      ],
+      "to": "packages/ears/src/conductor.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/src/voice.ts",
+      "symbols": [
+        "VOICE_PROMPT",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/conductor.test.ts",
+      "symbols": [
+        "BRAINS_QUESTION",
+        "RoomDeps",
+        "RoomState",
+        "agree",
+        "hear",
+        "startState",
+        "welcome"
+      ],
+      "to": "packages/ears/src/conductor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/conductor.test.ts",
+      "symbols": [
+        "ON_HAND"
+      ],
+      "to": "packages/ears/test/fixtures.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/conductor.test.ts",
+      "symbols": [
+        "Seats",
+        "seatProblems"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/conductor.test.ts",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/test/fixtures.ts",
+      "symbols": [
+        "FigureOnHand"
+      ],
+      "to": "packages/ears/src/track.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/test/fixtures.ts",
+      "symbols": [
+        "Trail"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/ears/test/grammar.test.ts",
+      "symbols": [
+        "matchName",
+        "parseCommand"
+      ],
+      "to": "packages/ears/src/grammar.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/grammar.test.ts",
+      "symbols": [
+        "numbersIn",
+        "spokenNumber"
+      ],
+      "to": "packages/ears/src/numbers.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/mouth.vendor.test.ts",
+      "symbols": [
+        "mouthCheck"
+      ],
+      "to": "packages/ears/src/mouth.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/mouth.vendor.test.ts",
+      "symbols": [
+        "sayEvent"
+      ],
+      "to": "packages/ears/src/voice.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/mouth.vendor.test.ts",
+      "symbols": [
+        "VOICE_PROMPT",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/ears/test/room.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "createProductSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/room.test.ts",
+      "symbols": [
+        "decide",
+        "listDecisions",
+        "listSessions",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations; the table of sites, one per target repository"
+      },
+      "from": "packages/ears/test/room.test.ts",
+      "symbols": [
+        "Db",
+        "createDb",
+        "ensurePerson",
+        "runMigrations",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/room.test.ts",
+      "symbols": [
+        "RoomState",
+        "agree",
+        "hear",
+        "startState"
+      ],
+      "to": "packages/ears/src/conductor.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/room.test.ts",
+      "symbols": [
+        "readRoom",
+        "roomDeps",
+        "writeRoom"
+      ],
+      "to": "packages/ears/src/room.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/track.test.ts",
+      "symbols": [
+        "mouthCheck"
+      ],
+      "to": "packages/ears/src/mouth.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/track.test.ts",
+      "symbols": [
+        "answerTrack"
+      ],
+      "to": "packages/ears/src/track.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/ears/test/track.test.ts",
+      "symbols": [
+        "ON_HAND",
+        "TAKINGS"
+      ],
+      "to": "packages/ears/test/fixtures.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/model/src/adapters.ts",
       "symbols": [
         "SecretName"
@@ -20482,6 +21711,7 @@
         "Completion",
         "CompletionRequest",
         "Fetch",
+        "Image",
         "VendorHttpError",
         "compatibleComplete"
       ],
@@ -20546,6 +21776,7 @@
       },
       "from": "packages/model/src/index.ts",
       "symbols": [
+        "Image",
         "VendorHttpError",
         "compatibleComplete"
       ],
@@ -20631,6 +21862,21 @@
     {
       "from": "packages/model/src/index.ts",
       "symbols": [
+        "OpenVoiceDeps",
+        "OpenVoiceRequest",
+        "REALTIME_CALLS_URL",
+        "TRANSCRIBE_MODEL",
+        "VOICE_PROMPT",
+        "openVoice",
+        "recordVoiceLine",
+        "voiceSession"
+      ],
+      "to": "packages/model/src/realtime.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
         "BRAINS_SETTING",
         "BUILDER_VENDOR",
         "Protocol",
@@ -20648,6 +21894,16 @@
         "vendorEntry"
       ],
       "to": "packages/model/src/seats.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/index.ts",
+      "symbols": [
+        "SPEECH_MODEL",
+        "SpeechDeps",
+        "synthesize"
+      ],
+      "to": "packages/model/src/speech.ts",
       "typeOnly": false
     },
     {
@@ -20704,6 +21960,112 @@
         "formatInr"
       ],
       "to": "packages/model/src/prices.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/realtime.test.ts",
+      "symbols": [
+        "anthropicComplete",
+        "openaiComplete"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a row written to the model calls table"
+      },
+      "from": "packages/model/src/realtime.test.ts",
+      "symbols": [
+        "ModelCallRow"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/model/src/realtime.test.ts",
+      "symbols": [
+        "REALTIME_CALLS_URL",
+        "openVoice",
+        "recordVoiceLine",
+        "voiceSession"
+      ],
+      "to": "packages/model/src/realtime.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
+      "from": "packages/model/src/realtime.ts",
+      "symbols": [
+        "SecretName",
+        "createDb",
+        "modelCalls",
+        "secretFor"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the web request function; an error for failed HTTP responses from a model vendor"
+      },
+      "from": "packages/model/src/realtime.ts",
+      "symbols": [
+        "Fetch",
+        "VendorHttpError"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a row written to the model calls table; an error type for model configuration problems"
+      },
+      "from": "packages/model/src/realtime.ts",
+      "symbols": [
+        "ModelCallRow",
+        "ModelConfigError"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the folder where the prompt files are kept; a loader that reads a named, versioned prompt"
+      },
+      "from": "packages/model/src/realtime.ts",
+      "symbols": [
+        "PROMPTS_DIR",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/prompts.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/model/src/realtime.ts",
+      "symbols": [
+        "vendorEntry"
+      ],
+      "to": "packages/model/src/seats.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the error for a missing or unknown vendor setting"
+      },
+      "from": "packages/model/src/realtime.ts",
+      "symbols": [
+        "VendorGuardError"
+      ],
+      "to": "packages/model/src/vendors.ts",
       "typeOnly": false
     },
     {
@@ -20765,6 +22127,59 @@
         "default"
       ],
       "to": "packages/model/vendors.json",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
+      "from": "packages/model/src/speech.ts",
+      "symbols": [
+        "SecretName",
+        "createDb",
+        "modelCalls",
+        "secretFor"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of the web request function; an error for failed HTTP responses from a model vendor"
+      },
+      "from": "packages/model/src/speech.ts",
+      "symbols": [
+        "Fetch",
+        "VendorHttpError"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a row written to the model calls table"
+      },
+      "from": "packages/model/src/speech.ts",
+      "symbols": [
+        "ModelCallRow"
+      ],
+      "to": "packages/model/src/call.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the folder where the prompt files are kept; a loader that reads a named, versioned prompt"
+      },
+      "from": "packages/model/src/speech.ts",
+      "symbols": [
+        "PROMPTS_DIR",
+        "loadPrompt"
+      ],
+      "to": "packages/model/src/prompts.ts",
       "typeOnly": false
     },
     {
@@ -23235,6 +24650,22 @@
       "typeOnly": false
     },
     {
+      "from": "scripts/record-rehearsal.ts",
+      "symbols": [
+        "SELF_SITE_ID"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "scripts/record-rehearsal.ts",
+      "symbols": [
+        "synthesize"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "making a model call for a given role"
@@ -23406,6 +24837,91 @@
         "startDevServer"
       ],
       "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-10.e2e.test.ts",
+      "symbols": [
+        "listDecisions",
+        "listSessions"
+      ],
+      "to": "packages/ceremony/src/store.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL"
+      },
+      "from": "tests/stage-10.e2e.test.ts",
+      "symbols": [
+        "createDb"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-10.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-10.e2e.test.ts",
+      "symbols": [
+        "throwawayDb"
+      ],
+      "to": "tests/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-10.vendor.e2e.test.ts",
+      "symbols": [
+        "listDecisions",
+        "listSessions"
+      ],
+      "to": "packages/ceremony/src/store.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; the table of model calls"
+      },
+      "from": "tests/stage-10.vendor.e2e.test.ts",
+      "symbols": [
+        "createDb",
+        "modelCalls"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-10.vendor.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-10.vendor.e2e.test.ts",
+      "symbols": [
+        "throwawayDb"
+      ],
+      "to": "tests/session.ts",
       "typeOnly": false
     },
     {
@@ -24112,6 +25628,12 @@
     {
       "dev": false,
       "manifest": "apps/rama/package.json",
+      "name": "@rama/board",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
       "name": "@rama/ceremony",
       "version": "workspace:*"
     },
@@ -24119,6 +25641,12 @@
       "dev": false,
       "manifest": "apps/rama/package.json",
       "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "apps/rama/package.json",
+      "name": "@rama/ears",
       "version": "workspace:*"
     },
     {
@@ -24495,6 +26023,24 @@
     },
     {
       "dev": false,
+      "manifest": "packages/board/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/board/package.json",
+      "name": "@rama/model",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/board/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
+      "dev": false,
       "manifest": "packages/ceremony/package.json",
       "name": "@rama/blueprint",
       "version": "workspace:*"
@@ -24574,6 +26120,60 @@
     {
       "dev": false,
       "manifest": "packages/db/package.json",
+      "name": "zod",
+      "version": "4.6.5"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/blueprint",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/ceremony",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/db",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/model",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/shared",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/trace",
+      "version": "workspace:*"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
+      "name": "@rama/workbench",
+      "version": "workspace:*"
+    },
+    {
+      "dev": true,
+      "manifest": "packages/ears/package.json",
+      "name": "postgres",
+      "version": "3.4.9"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/ears/package.json",
       "name": "zod",
       "version": "4.6.5"
     },
@@ -24770,7 +26370,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T00:04:22Z",
+  "extractedAt": "2026-10-27T00:22:48Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -25383,6 +26983,63 @@
     },
     {
       "binary": false,
+      "bytes": 1618,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "hosts": [
+        "rama.test"
+      ],
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 37,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/rehearsal/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1041,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "RehearsalDeps",
+        "handleRehearsal"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 23,
+      "path": "apps/rama/app/api/rehearsal/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 609,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 18,
+      "path": "apps/rama/app/api/rehearsal/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 253,
       "changes": 1,
       "env": [],
@@ -25497,7 +27154,7 @@
     },
     {
       "binary": false,
-      "bytes": 3463,
+      "bytes": 3837,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -25509,7 +27166,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 87,
+      "lines": 93,
       "packages": [
         "vitest"
       ],
@@ -25518,7 +27175,7 @@
     },
     {
       "binary": false,
-      "bytes": 3559,
+      "bytes": 3895,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -25532,7 +27189,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 89,
+      "lines": 97,
       "path": "apps/rama/app/api/site/[siteId]/act/handler.ts",
       "test": false
     },
@@ -25610,6 +27267,42 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 35,
       "path": "apps/rama/app/api/site/[siteId]/audit/confirm/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 933,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 25,
+      "path": "apps/rama/app/api/site/[siteId]/board/[frame]/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 608,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/board/route.ts",
       "test": false
     },
     {
@@ -26142,6 +27835,160 @@
     },
     {
       "binary": false,
+      "bytes": 535,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/voice/agree/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 531,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/voice/end/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 8577,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 219,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 9064,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "VoiceDeps",
+        "handleAgree",
+        "handleBoard",
+        "handleEnd",
+        "handleHeard",
+        "handleSaid",
+        "handleSession",
+        "handleStart",
+        "placeUrl"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 222,
+      "packages": [
+        "zod"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/voice/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 604,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/voice/heard/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 612,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/voice/said/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 567,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/voice/session/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 614,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/voice/start/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 603,
       "changes": 1,
       "env": [],
@@ -26160,7 +28007,7 @@
     },
     {
       "binary": false,
-      "bytes": 15566,
+      "bytes": 16170,
       "changes": 9,
       "env": [
         "DATABASE_URL",
@@ -26176,7 +28023,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 397,
+      "lines": 411,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -26248,7 +28095,7 @@
     },
     {
       "binary": false,
-      "bytes": 20788,
+      "bytes": 21607,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -26257,7 +28104,7 @@
       "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1067,
+      "lines": 1113,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -26550,6 +28397,29 @@
     },
     {
       "binary": false,
+      "bytes": 1394,
+      "changes": 0,
+      "env": [
+        "RAMA_VOICE_CLIPS"
+      ],
+      "envDynamic": false,
+      "exports": [
+        "default",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 43,
+      "packages": [
+        "react"
+      ],
+      "path": "apps/rama/app/site/[siteId]/layout.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 7568,
       "changes": 7,
       "env": [
@@ -26680,7 +28550,7 @@
     },
     {
       "binary": false,
-      "bytes": 3158,
+      "bytes": 3809,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -26692,7 +28562,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 88,
+      "lines": 101,
       "packages": [
         "next"
       ],
@@ -27122,6 +28992,28 @@
         "react"
       ],
       "path": "apps/rama/components/ceremony/WalkthroughView.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 17821,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "VoiceModeView",
+        "VoiceRoom"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 500,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/ears/VoiceRoom.tsx",
       "test": false
     },
     {
@@ -27674,7 +29566,7 @@
     },
     {
       "binary": false,
-      "bytes": 933,
+      "bytes": 970,
       "changes": 5,
       "env": [
         "NEXT_DIST_DIR"
@@ -27687,7 +29579,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 25,
+      "lines": 27,
       "path": "apps/rama/next.config.ts",
       "purpose": {
         "confirmed": false,
@@ -27697,7 +29589,7 @@
     },
     {
       "binary": false,
-      "bytes": 903,
+      "bytes": 970,
       "changes": 9,
       "env": [],
       "envDynamic": false,
@@ -27706,7 +29598,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 34,
+      "lines": 36,
       "path": "apps/rama/package.json",
       "purpose": {
         "confirmed": false,
@@ -28035,6 +29927,26 @@
           "writes": false
         }
       ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3394,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Member",
+        "VoiceMode",
+        "voiceDeps",
+        "voiceMode"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 90,
+      "path": "apps/rama/server/voice.ts",
       "test": false
     },
     {
@@ -28482,7 +30394,7 @@
     },
     {
       "binary": false,
-      "bytes": 61429,
+      "bytes": 70553,
       "changes": 27,
       "env": [],
       "envDynamic": false,
@@ -28491,7 +30403,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 204,
+      "lines": 227,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -28520,7 +30432,7 @@
     },
     {
       "binary": false,
-      "bytes": 58316,
+      "bytes": 63038,
       "changes": 91,
       "env": [],
       "envDynamic": false,
@@ -28529,7 +30441,7 @@
       "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 233,
+      "lines": 248,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -28569,7 +30481,7 @@
     },
     {
       "binary": false,
-      "bytes": 19072,
+      "bytes": 20636,
       "changes": 38,
       "env": [],
       "envDynamic": false,
@@ -28578,7 +30490,7 @@
       "lastCommit": "612bfdb0e54185d294dc5c5a1c38f9b4c276f3d4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 63,
+      "lines": 68,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -28954,12 +30866,12 @@
     {
       "binary": false,
       "bytes": 20412,
-      "changes": 35,
+      "changes": 36,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "f29d0d19b01e659bcb770ff8e4ceeceef7541834",
+      "lastCommit": "3a61a408bcaeaa26a396bd665ba615dc5788635a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 173,
@@ -29007,6 +30919,81 @@
         "confirmed": false,
         "text": "Settings for the code-style checker: which folders it skips and the rules applied to the main app."
       },
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 280844,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 0,
+      "path": "fixtures/rehearsal/01-idea.wav",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 266444,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 0,
+      "path": "fixtures/rehearsal/02-brains.wav",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 45644,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 0,
+      "path": "fixtures/rehearsal/03-yes.wav",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 105644,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 0,
+      "path": "fixtures/rehearsal/04-build-it.wav",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1314,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 25,
+      "path": "fixtures/rehearsal/script.json",
       "test": false
     },
     {
@@ -29116,7 +31103,7 @@
     },
     {
       "binary": false,
-      "bytes": 1995,
+      "bytes": 2054,
       "changes": 17,
       "env": [],
       "envDynamic": false,
@@ -29125,7 +31112,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 60,
+      "lines": 61,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -30936,6 +32923,97 @@
     },
     {
       "binary": false,
+      "bytes": 453,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 18,
+      "path": "packages/board/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4702,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BOARD_COMPONENT",
+        "BoardDraft",
+        "BoardReading",
+        "MAX_FRAME_BYTES",
+        "boardFrame",
+        "listBoards",
+        "readBoard"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 130,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/board/src/board.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 28,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 1,
+      "path": "packages/board/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3242,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 95,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/board/test/board.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 74,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/board/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 2977,
       "changes": 5,
       "env": [],
@@ -32435,6 +34513,378 @@
     },
     {
       "binary": false,
+      "bytes": 828,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: package manifest",
+      "lines": 29,
+      "path": "packages/ears/package.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3856,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "brainsSpoken",
+        "parseBrains"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 101,
+      "path": "packages/ears/src/brains.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 18274,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Act",
+        "Asked",
+        "BRAINS_QUESTION",
+        "Building",
+        "Line",
+        "LineKind",
+        "Place",
+        "Reply",
+        "RoomDeps",
+        "RoomState",
+        "agree",
+        "hear",
+        "startState",
+        "welcome"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 514,
+      "path": "packages/ears/src/conductor.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5586,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Command",
+        "TRACK_STEPS",
+        "TrackStep",
+        "matchName",
+        "normalise",
+        "parseCommand"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 128,
+      "path": "packages/ears/src/grammar.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 264,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "*"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 9,
+      "path": "packages/ears/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1470,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "MouthReport",
+        "mouthCheck"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 29,
+      "path": "packages/ears/src/mouth.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3034,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "numbersIn",
+        "spokenNumber",
+        "wordsToNumber"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 114,
+      "path": "packages/ears/src/numbers.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1919,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "REHEARSAL_NAME",
+        "newRehearsal"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 58,
+      "path": "packages/ears/src/rehearsal.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 13238,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "EARS_COMPONENT",
+        "cardBuildings",
+        "lakefrontOf",
+        "memberNamed",
+        "narrateDesign",
+        "readRoom",
+        "roomDeps",
+        "whatIf",
+        "writeRoom"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 343,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/ears/src/room.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3105,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "FigureOnHand",
+        "answerTrack"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 55,
+      "path": "packages/ears/src/track.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1167,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "linesToSay",
+        "sayEvent"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 26,
+      "path": "packages/ears/src/voice.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 11705,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 268,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/ears/test/conductor.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2538,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GST",
+        "ON_HAND",
+        "TAKINGS"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 83,
+      "path": "packages/ears/test/fixtures.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3608,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 78,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/ears/test/grammar.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 4720,
+      "changes": 0,
+      "env": [
+        "OPENAI_API_KEY",
+        "RAMA_VOICE_MODEL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 113,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/ears/test/mouth.vendor.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6463,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 155,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
+      "path": "packages/ears/test/room.test.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3903,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 91,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/ears/test/track.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 74,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "default: tsconfig",
+      "lines": 4,
+      "path": "packages/ears/tsconfig.json",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 830,
       "changes": 2,
       "env": [],
@@ -32473,7 +34923,7 @@
     },
     {
       "binary": false,
-      "bytes": 5035,
+      "bytes": 5972,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -32482,6 +34932,7 @@
         "Completion",
         "CompletionRequest",
         "Fetch",
+        "Image",
         "VendorHttpError",
         "anthropicComplete",
         "compatibleComplete",
@@ -32495,7 +34946,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 172,
+      "lines": 204,
       "path": "packages/model/src/adapters.ts",
       "purpose": {
         "confirmed": false,
@@ -32587,7 +35038,7 @@
     },
     {
       "binary": false,
-      "bytes": 9982,
+      "bytes": 10217,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -32609,7 +35060,7 @@
       "lastCommit": "2e1693773b18a5f3effaa61776234a6b2a07f586",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 296,
+      "lines": 305,
       "path": "packages/model/src/call.ts",
       "purpose": {
         "confirmed": false,
@@ -32649,7 +35100,7 @@
     },
     {
       "binary": false,
-      "bytes": 1162,
+      "bytes": 1433,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -32664,6 +35115,7 @@
         "CallRequest",
         "CallResult",
         "Cost",
+        "Image",
         "KEY_HELP",
         "KeyCheck",
         "MAX_ATTEMPTS",
@@ -32672,22 +35124,29 @@
         "ModelCallRow",
         "ModelConfigError",
         "ModelPrice",
+        "OpenVoiceDeps",
+        "OpenVoiceRequest",
         "OutputParseError",
         "OutputTruncatedError",
         "PRICES_SET_ON",
         "PROMPTS_DIR",
         "Prompt",
         "Protocol",
+        "REALTIME_CALLS_URL",
         "Role",
         "SEATS",
         "SEAT_WORDS",
+        "SPEECH_MODEL",
         "Seat",
         "SeatChoice",
         "Seats",
         "Spawned",
+        "SpeechDeps",
+        "TRANSCRIBE_MODEL",
         "USD_INR",
         "VENDORS",
         "VENDOR_REGISTRY",
+        "VOICE_PROMPT",
         "Vendor",
         "VendorEntry",
         "VendorGuardError",
@@ -32702,19 +35161,23 @@
         "formatInr",
         "lastJson",
         "loadPrompt",
+        "openVoice",
+        "recordVoiceLine",
         "resolveSeat",
         "resolveVendors",
         "runAgent",
         "runProgram",
         "seatProblems",
         "storedSeats",
-        "vendorEntry"
+        "synthesize",
+        "vendorEntry",
+        "voiceSession"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 51,
+      "lines": 62,
       "path": "packages/model/src/index.ts",
       "purpose": {
         "confirmed": false,
@@ -32836,6 +35299,59 @@
     },
     {
       "binary": false,
+      "bytes": 6253,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 167,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/model/src/realtime.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 6228,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "OpenVoiceDeps",
+        "OpenVoiceRequest",
+        "REALTIME_CALLS_URL",
+        "TRANSCRIBE_MODEL",
+        "VOICE_NAME",
+        "VOICE_PROMPT",
+        "openVoice",
+        "recordVoiceLine",
+        "voiceSession"
+      ],
+      "firstCommit": "",
+      "hosts": [
+        "api.openai.com"
+      ],
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 173,
+      "path": "packages/model/src/realtime.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 8943,
       "changes": 1,
       "env": [],
@@ -32882,6 +35398,36 @@
       "layerRule": "overlay: packages/*",
       "lines": 117,
       "path": "packages/model/src/seats.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2943,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "SPEECH_MODEL",
+        "SPEECH_URL",
+        "SpeechDeps",
+        "synthesize"
+      ],
+      "firstCommit": "",
+      "hosts": [
+        "api.openai.com"
+      ],
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 84,
+      "path": "packages/model/src/speech.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": true
+        }
+      ],
       "test": false
     },
     {
@@ -33979,7 +36525,7 @@
     },
     {
       "binary": false,
-      "bytes": 1530,
+      "bytes": 1755,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33988,7 +36534,7 @@
       "lastCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 41,
+      "lines": 45,
       "path": "packages/trace/src/sandbox-runner.mjs",
       "test": false
     },
@@ -34014,7 +36560,7 @@
     },
     {
       "binary": false,
-      "bytes": 2726,
+      "bytes": 2898,
       "changes": 2,
       "env": [
         "HOME",
@@ -34030,7 +36576,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 69,
+      "lines": 71,
       "path": "packages/trace/src/sandbox.ts",
       "test": false
     },
@@ -34799,14 +37345,14 @@
     {
       "binary": false,
       "bytes": 7278,
-      "changes": 5,
+      "changes": 6,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
-      "lastCommit": "7a758a6a5616541f0d61d1bb5b11957f655d4126",
+      "lastCommit": "3a61a408bcaeaa26a396bd665ba615dc5788635a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 165,
@@ -34852,7 +37398,7 @@
     },
     {
       "binary": false,
-      "bytes": 107689,
+      "bytes": 109011,
       "changes": 15,
       "env": [],
       "envDynamic": false,
@@ -34861,7 +37407,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3407,
+      "lines": 3459,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -34890,7 +37436,7 @@
     },
     {
       "binary": false,
-      "bytes": 274,
+      "bytes": 529,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -34924,6 +37470,21 @@
     },
     {
       "binary": false,
+      "bytes": 1026,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 15,
+      "path": "prompts/board.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 4912,
       "changes": 1,
       "env": [],
@@ -34950,6 +37511,21 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 30,
       "path": "prompts/build.v2.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 211,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1,
+      "path": "prompts/clip.v1.md",
       "test": false
     },
     {
@@ -34988,6 +37564,21 @@
     },
     {
       "binary": false,
+      "bytes": 1493,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 15,
+      "path": "prompts/narrate.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1392,
       "changes": 1,
       "env": [],
@@ -35022,6 +37613,21 @@
         "confirmed": false,
         "text": "Instructions for the independent reviewer, who checks each build stage against a fixed checklist and answers with findings in a set format."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1019,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 9,
+      "path": "prompts/voice.v1.md",
       "test": false
     },
     {
@@ -35461,6 +38067,21 @@
     },
     {
       "binary": false,
+      "bytes": 1138,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 26,
+      "path": "scripts/record-rehearsal.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 4743,
       "changes": 4,
       "env": [],
@@ -35502,7 +38123,7 @@
     },
     {
       "binary": false,
-      "bytes": 9007,
+      "bytes": 9164,
       "changes": 13,
       "env": [],
       "envDynamic": false,
@@ -35511,7 +38132,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 265,
+      "lines": 269,
       "path": "scripts/watch.mjs",
       "purpose": {
         "confirmed": false,
@@ -36001,6 +38622,53 @@
     },
     {
       "binary": false,
+      "bytes": 7283,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 158,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
+      "path": "tests/stage-10.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7097,
+      "changes": 0,
+      "env": [
+        "OPENAI_API_KEY"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 165,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
+      "path": "tests/stage-10.vendor.e2e.test.ts",
+      "tables": [
+        {
+          "name": "model_calls",
+          "reads": true,
+          "writes": false
+        }
+      ],
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 8627,
       "changes": 4,
       "env": [
@@ -36279,7 +38947,7 @@
     },
     {
       "binary": false,
-      "bytes": 1959,
+      "bytes": 2156,
       "changes": 10,
       "env": [
         "RAMA_VENDOR_TESTS"
@@ -36292,7 +38960,7 @@
       "lastCommit": "cb19d8ac279c136a772f3bfd57cb4fe99962c8c5",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 51,
+      "lines": 53,
       "packages": [
         "vitest"
       ],
@@ -36374,7 +39042,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -36493,7 +39163,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/trace/src/keys.ts",
@@ -36572,7 +39244,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/trace/src/keys.ts",
@@ -36675,7 +39349,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/trace/src/keys.ts",
@@ -36755,7 +39431,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -36813,6 +39491,7 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/app/site/[siteId]/page.tsx",
         "apps/rama/canvas/audit.ts",
         "apps/rama/canvas/draw.ts",
@@ -36822,6 +39501,7 @@
         "apps/rama/canvas/pick.ts",
         "apps/rama/canvas/timeline.ts",
         "apps/rama/components/audit/ConfirmReport.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
@@ -36838,7 +39518,9 @@
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
         "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
         "design/harmony/components/bundle.css",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
@@ -36867,6 +39549,8 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
         "packages/ceremony/src/discovery.ts",
         "packages/ceremony/src/gate.ts",
         "packages/ceremony/src/importer.ts",
@@ -36887,6 +39571,16 @@
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
         "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
         "packages/model/src/agent.ts",
@@ -36895,7 +39589,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -36954,7 +39650,9 @@
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/audit/page.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/components/audit/ConfirmReport.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
@@ -36964,7 +39662,9 @@
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
         "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
         "design/harmony/components/bundle.css",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
@@ -36993,6 +39693,8 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
         "packages/ceremony/src/discovery.ts",
         "packages/ceremony/src/gate.ts",
         "packages/ceremony/src/importer.ts",
@@ -37013,6 +39715,16 @@
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
         "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
         "packages/model/src/agent.ts",
@@ -37021,7 +39733,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -37080,7 +39794,9 @@
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/discovery/page.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/components/ceremony/DiscoveryView.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
@@ -37090,7 +39806,9 @@
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
         "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
         "design/harmony/components/bundle.css",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
@@ -37119,6 +39837,8 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
         "packages/ceremony/src/discovery.ts",
         "packages/ceremony/src/gate.ts",
         "packages/ceremony/src/importer.ts",
@@ -37139,6 +39859,16 @@
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
         "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
         "packages/model/src/agent.ts",
@@ -37147,7 +39877,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -37206,6 +39938,8 @@
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/handover/page.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/floor/Action.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
@@ -37216,7 +39950,9 @@
         "apps/rama/components/workbench/TrainerConsole.tsx",
         "apps/rama/server/handover.ts",
         "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
         "design/harmony/components/bundle.css",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
@@ -37245,6 +39981,8 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
         "packages/ceremony/src/discovery.ts",
         "packages/ceremony/src/gate.ts",
         "packages/ceremony/src/importer.ts",
@@ -37266,6 +40004,16 @@
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
         "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
         "packages/model/src/agent.ts",
@@ -37274,7 +40022,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -37332,7 +40082,9 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/app/site/[siteId]/showroom/page.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
@@ -37344,7 +40096,9 @@
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
         "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
         "design/harmony/components/bundle.css",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
@@ -37373,6 +40127,8 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
         "packages/ceremony/src/discovery.ts",
         "packages/ceremony/src/gate.ts",
         "packages/ceremony/src/importer.ts",
@@ -37393,6 +40149,16 @@
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
         "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
         "packages/model/src/agent.ts",
@@ -37401,7 +40167,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -37458,60 +40226,14 @@
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/app/site/[siteId]/triptych/page.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/floor/TriptychView.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
+        "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
-        "design/harmony/components/bundle.css",
-        "packages/blueprint/package.json",
-        "packages/blueprint/src/diff.ts",
-        "packages/blueprint/src/extract.ts",
-        "packages/blueprint/src/files.ts",
-        "packages/blueprint/src/git.ts",
-        "packages/blueprint/src/glob.ts",
-        "packages/blueprint/src/glossary.ts",
-        "packages/blueprint/src/json.ts",
-        "packages/blueprint/src/layers.ts",
-        "packages/blueprint/src/metrics/index.ts",
-        "packages/blueprint/src/metrics/states.ts",
-        "packages/blueprint/src/parse.ts",
-        "packages/blueprint/src/resolve.ts",
-        "packages/blueprint/src/screens.ts",
-        "packages/blueprint/src/site.ts",
-        "packages/db/package.json",
-        "packages/db/src/auth.ts",
-        "packages/db/src/client.ts",
-        "packages/db/src/index.ts",
-        "packages/db/src/members.ts",
-        "packages/db/src/migrate.ts",
-        "packages/db/src/schema.ts",
-        "packages/db/src/secrets.ts",
-        "packages/db/src/seed.ts",
-        "packages/db/src/settings.ts"
-      ],
-      "file": "apps/rama/app/site/[siteId]/triptych/page.tsx",
-      "id": "apps/rama/app:/site/[siteId]/triptych",
-      "name": "Site › [siteId] › Triptych",
-      "route": "/site/[siteId]/triptych"
-    },
-    {
-      "bricks": [
-        "apps/rama/app/api/site/[siteId]/act/handler.ts",
-        "apps/rama/app/globals.css",
-        "apps/rama/app/harmony-tokens.css",
-        "apps/rama/app/layout.tsx",
-        "apps/rama/app/site/[siteId]/walkthrough/page.tsx",
-        "apps/rama/components/ceremony/WalkthroughView.tsx",
-        "apps/rama/components/harmony/HarmonyRuntime.tsx",
-        "apps/rama/components/harmony/Shell.tsx",
-        "apps/rama/components/harmony/ui.tsx",
-        "apps/rama/components/workbench/ActForm.tsx",
-        "apps/rama/components/workbench/JobSteps.tsx",
-        "apps/rama/components/workbench/Said.tsx",
-        "apps/rama/components/workbench/SiteShell.tsx",
-        "apps/rama/components/workbench/TrainerConsole.tsx",
-        "apps/rama/server/http.ts",
-        "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
         "design/harmony/components/bundle.css",
         "packages/audit/src/auditor.ts",
         "packages/audit/src/checks/ceremony.ts",
@@ -37540,6 +40262,8 @@
         "packages/blueprint/src/resolve.ts",
         "packages/blueprint/src/screens.ts",
         "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
         "packages/ceremony/src/discovery.ts",
         "packages/ceremony/src/gate.ts",
         "packages/ceremony/src/importer.ts",
@@ -37560,6 +40284,16 @@
         "packages/db/src/secrets.ts",
         "packages/db/src/seed.ts",
         "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
         "packages/model/package.json",
         "packages/model/src/adapters.ts",
         "packages/model/src/agent.ts",
@@ -37568,7 +40302,153 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
+        "packages/model/src/vendors.ts",
+        "packages/model/vendors.json",
+        "packages/stage/src/building.ts",
+        "packages/stage/src/draw.ts",
+        "packages/stage/src/drones.ts",
+        "packages/stage/src/features.ts",
+        "packages/stage/src/geometry.ts",
+        "packages/stage/src/index.ts",
+        "packages/stage/src/iso.ts",
+        "packages/stage/src/palette.ts",
+        "packages/stage/src/pick.ts",
+        "packages/stage/src/read.ts",
+        "packages/stage/src/replay.ts",
+        "packages/stage/src/services.ts",
+        "packages/stage/src/street.ts",
+        "packages/stage/src/words.ts",
+        "packages/trace/src/capture.ts",
+        "packages/trace/src/code.ts",
+        "packages/trace/src/config.ts",
+        "packages/trace/src/convention.ts",
+        "packages/trace/src/here.ts",
+        "packages/trace/src/index.ts",
+        "packages/trace/src/keys.ts",
+        "packages/trace/src/sandbox.ts",
+        "packages/trace/src/showroom.ts",
+        "packages/trace/src/trail.ts",
+        "packages/workbench/src/actions.ts",
+        "packages/workbench/src/build.ts",
+        "packages/workbench/src/builders/claude-code.ts",
+        "packages/workbench/src/builders/index.ts",
+        "packages/workbench/src/builders/recorded.ts",
+        "packages/workbench/src/builders/stubs.ts",
+        "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/github.ts",
+        "packages/workbench/src/index.ts",
+        "packages/workbench/src/jobs.ts",
+        "packages/workbench/src/lakefront.ts",
+        "packages/workbench/src/modules.ts",
+        "packages/workbench/src/products.ts",
+        "packages/workbench/src/sample.ts",
+        "packages/workbench/src/scaffold.ts",
+        "packages/workbench/src/seats.ts",
+        "packages/workbench/src/states.ts",
+        "packages/workbench/src/testdrive.ts",
+        "packages/workbench/src/tests.ts"
+      ],
+      "file": "apps/rama/app/site/[siteId]/triptych/page.tsx",
+      "id": "apps/rama/app:/site/[siteId]/triptych",
+      "name": "Site › [siteId] › Triptych",
+      "route": "/site/[siteId]/triptych"
+    },
+    {
+      "bricks": [
+        "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/globals.css",
+        "apps/rama/app/harmony-tokens.css",
+        "apps/rama/app/layout.tsx",
+        "apps/rama/app/site/[siteId]/layout.tsx",
+        "apps/rama/app/site/[siteId]/walkthrough/page.tsx",
+        "apps/rama/components/ceremony/WalkthroughView.tsx",
+        "apps/rama/components/ears/VoiceRoom.tsx",
+        "apps/rama/components/harmony/HarmonyRuntime.tsx",
+        "apps/rama/components/harmony/Shell.tsx",
+        "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/workbench/ActForm.tsx",
+        "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/Said.tsx",
+        "apps/rama/components/workbench/SiteShell.tsx",
+        "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/server/http.ts",
+        "apps/rama/server/jobs.ts",
+        "apps/rama/server/session.ts",
+        "apps/rama/server/voice.ts",
+        "design/harmony/components/bundle.css",
+        "packages/audit/src/auditor.ts",
+        "packages/audit/src/checks/ceremony.ts",
+        "packages/audit/src/checks/index.ts",
+        "packages/audit/src/checks/run.ts",
+        "packages/audit/src/checks/static.ts",
+        "packages/audit/src/findings.ts",
+        "packages/audit/src/index.ts",
+        "packages/audit/src/report.ts",
+        "packages/audit/src/source.ts",
+        "packages/audit/src/view.ts",
+        "packages/blueprint/package.json",
+        "packages/blueprint/src/diff.ts",
+        "packages/blueprint/src/draft.ts",
+        "packages/blueprint/src/extract.ts",
+        "packages/blueprint/src/files.ts",
+        "packages/blueprint/src/git.ts",
+        "packages/blueprint/src/glob.ts",
+        "packages/blueprint/src/glossary.ts",
+        "packages/blueprint/src/index.ts",
+        "packages/blueprint/src/json.ts",
+        "packages/blueprint/src/layers.ts",
+        "packages/blueprint/src/metrics/index.ts",
+        "packages/blueprint/src/metrics/states.ts",
+        "packages/blueprint/src/parse.ts",
+        "packages/blueprint/src/resolve.ts",
+        "packages/blueprint/src/screens.ts",
+        "packages/blueprint/src/site.ts",
+        "packages/board/src/board.ts",
+        "packages/board/src/index.ts",
+        "packages/ceremony/src/discovery.ts",
+        "packages/ceremony/src/gate.ts",
+        "packages/ceremony/src/importer.ts",
+        "packages/ceremony/src/imports.ts",
+        "packages/ceremony/src/index.ts",
+        "packages/ceremony/src/install.ts",
+        "packages/ceremony/src/records.ts",
+        "packages/ceremony/src/seal.ts",
+        "packages/ceremony/src/store.ts",
+        "packages/ceremony/src/walkthrough.ts",
+        "packages/db/package.json",
+        "packages/db/src/auth.ts",
+        "packages/db/src/client.ts",
+        "packages/db/src/index.ts",
+        "packages/db/src/members.ts",
+        "packages/db/src/migrate.ts",
+        "packages/db/src/schema.ts",
+        "packages/db/src/secrets.ts",
+        "packages/db/src/seed.ts",
+        "packages/db/src/settings.ts",
+        "packages/ears/src/brains.ts",
+        "packages/ears/src/conductor.ts",
+        "packages/ears/src/grammar.ts",
+        "packages/ears/src/index.ts",
+        "packages/ears/src/mouth.ts",
+        "packages/ears/src/numbers.ts",
+        "packages/ears/src/rehearsal.ts",
+        "packages/ears/src/room.ts",
+        "packages/ears/src/track.ts",
+        "packages/ears/src/voice.ts",
+        "packages/model/package.json",
+        "packages/model/src/adapters.ts",
+        "packages/model/src/agent.ts",
+        "packages/model/src/call.ts",
+        "packages/model/src/index.ts",
+        "packages/model/src/keys.ts",
+        "packages/model/src/prices.ts",
+        "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
+        "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",
@@ -37687,7 +40567,9 @@
         "packages/model/src/keys.ts",
         "packages/model/src/prices.ts",
         "packages/model/src/prompts.ts",
+        "packages/model/src/realtime.ts",
         "packages/model/src/seats.ts",
+        "packages/model/src/speech.ts",
         "packages/model/src/vendors.ts",
         "packages/model/vendors.json",
         "packages/stage/src/building.ts",

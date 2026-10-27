@@ -83,6 +83,19 @@ export default async function TestDrive() {
           </Button>
         </form>
       ) : null}
+      {member.role === 'trainer' ? (
+        <Card title="Rehearse by voice">
+          <p className="eg-muted" style={{ marginTop: 0 }}>
+            Acts 1 to 3 of a session on the same sample, spoken: the voice greets the room, asks
+            which brains build, check and speak, reads each card for a spoken yes, explains the
+            design building by building, and asks “Shall I build this?”. The cards are drafted in
+            your name and left open.
+          </p>
+          <form action="/api/rehearsal" method="post">
+            <Button type="submit">Start a rehearsal</Button>
+          </form>
+        </Card>
+      ) : null}
     </Shell>
   );
 }

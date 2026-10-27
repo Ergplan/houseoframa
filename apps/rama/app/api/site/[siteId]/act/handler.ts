@@ -7,7 +7,7 @@ import { back } from '../../../../../server/http';
 
 export const ACTS = {
   'start-session': { label: 'Start session', enabledBy: null },
-  'close-ideation': { label: 'Close ideation', enabledBy: 'Stage 10 (the voice and the board)' },
+  'close-ideation': { label: 'Close ideation', enabledBy: null },
   'start-build': { label: 'Start build', enabledBy: null },
   'pause-build': { label: 'Pause build', enabledBy: null },
   'start-walkthrough': { label: 'Start walkthrough', enabledBy: null },
@@ -73,6 +73,14 @@ export async function handleAct(
         ok: true,
         sentence: 'Pause build: the build stops after the lift in hand.',
       });
+    case 'close-ideation':
+      // Act 3 is spoken: the room explains the design aloud and asks "Shall I build this?".
+      if (site.kind !== 'product')
+        return back(deps.baseUrl, page, {
+          ok: false,
+          sentence: 'Only a product made here has an ideation to close.',
+        });
+      return back(deps.baseUrl, `${page}/discovery?act=agree`);
     case 'start-session': {
       await deps.startSession(site, `Session of ${deps.now().toISOString().slice(0, 10)}`, who);
       return back(deps.baseUrl, `${page}/discovery`);

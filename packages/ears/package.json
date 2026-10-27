@@ -1,0 +1,29 @@
+{
+  "name": "@rama/ears",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The voice in the room, a mouth and not a mind: the Realtime session, the commands, the track by voice, the builder's lines and the check that the voice said nothing else.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./grammar": "./src/grammar.ts",
+    "./voice": "./src/voice.ts",
+    "./mouth": "./src/mouth.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@rama/blueprint": "workspace:*",
+    "@rama/ceremony": "workspace:*",
+    "@rama/db": "workspace:*",
+    "@rama/model": "workspace:*",
+    "@rama/shared": "workspace:*",
+    "@rama/trace": "workspace:*",
+    "@rama/workbench": "workspace:*",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "postgres": "3.4.9"
+  }
+}

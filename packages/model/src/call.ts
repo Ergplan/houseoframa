@@ -10,6 +10,7 @@ import {
   type Completion,
   type CompletionRequest,
   type Fetch,
+  type Image,
 } from './adapters.ts';
 import { loadPrompt, PROMPTS_DIR } from './prompts.ts';
 import {
@@ -57,6 +58,8 @@ export interface CallRequest<I, O> {
   /** Person id or `rama:<component>@<version>` that asked for the call. */
   createdBy: string;
   maxTokens?: number;
+  /** Pictures sent with the input (Stage 10: a frame of the board). Not stored in the row. */
+  images?: Image[];
   /**
    * Vendors that may not answer this call, whatever the seats say: the companies whose builders built
    * the product an audit checks (Invariant 5). Refused before any prompt is read or vendor called.
@@ -240,7 +243,13 @@ export async function call<I, O>(
     attempts++;
     try {
       completion = await seat.complete(
-        { model, system: prompt.text, user, maxTokens },
+        {
+          model,
+          system: prompt.text,
+          user,
+          maxTokens,
+          ...(req.images ? { images: req.images } : {}),
+        },
         apiKey ?? '',
         deps.fetch,
       );

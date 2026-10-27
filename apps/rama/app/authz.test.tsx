@@ -162,6 +162,18 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     async () => (await import('./api/site/[siteId]/features/route')).POST as Handler,
   ],
   ['POST brains', async () => (await import('./api/site/[siteId]/brains/route')).POST as Handler],
+  ...(['start', 'heard', 'said', 'agree', 'session', 'end'] as const).map(
+    (r) =>
+      [
+        `POST voice/${r}`,
+        async () => (await import(`./api/site/[siteId]/voice/${r}/route`)).POST as Handler,
+      ] as [string, () => Promise<Handler>],
+  ),
+  ['POST board', async () => (await import('./api/site/[siteId]/board/route')).POST as Handler],
+  [
+    'GET board/[frame]',
+    async () => (await import('./api/site/[siteId]/board/[frame]/route')).GET as Handler,
+  ],
 ];
 
 describe('every site route: 401 without a session, 404 for another member’s site, through for the owner', () => {
@@ -179,11 +191,11 @@ describe('every site route: 401 without a session, 404 for another member’s si
       // never touches this repository.
       const owner = (await h(post('ravi'), ctx('shop'))).status;
       expect([401, 403]).not.toContain(owner);
-      expect(owner === 404 && name !== 'GET shots/[name]').toBe(false);
+      expect(owner === 404 && !name.startsWith('GET ')).toBe(false);
       // A trainer opens every site.
       const trainer = (await h(post('tara'), ctx('shop'))).status;
       expect([401, 403]).not.toContain(trainer);
-      expect(trainer === 404 && name !== 'GET shots/[name]').toBe(false);
+      expect(trainer === 404 && !name.startsWith('GET ')).toBe(false);
     });
   }
 
@@ -212,6 +224,8 @@ describe('every site route: 401 without a session, 404 for another member’s si
   it('POST /api/testdrive, /api/products and /api/settings/* need a session; Settings a trainer', async () => {
     const td = await import('./api/testdrive/route');
     expect((await td.POST(post(null))).status).toBe(401);
+    const rehearsal = await import('./api/rehearsal/route');
+    expect((await rehearsal.POST(post(null))).status).toBe(401);
     const products = await import('./api/products/route');
     expect((await products.POST(post(null))).status).toBe(401);
     const keys = await import('./api/settings/keys/route');

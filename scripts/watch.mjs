@@ -44,6 +44,8 @@ const PROJECTS = [
     name: '@rama/workbench',
     dirs: ['packages/workbench/', 'fixtures/', 'templates/', 'scripts/make-sample.mjs'],
   },
+  { name: '@rama/ears', dirs: ['packages/ears/', 'prompts/'] },
+  { name: '@rama/board', dirs: ['packages/board/'] },
   { name: '@rama/app', dirs: ['apps/rama/'] },
   { name: 'e2e', dirs: ['tests/'] },
 ];
@@ -57,6 +59,8 @@ const TS_PACKAGES = [
   'packages/audit',
   'packages/workbench',
   'packages/stage',
+  'packages/ears',
+  'packages/board',
   'apps/rama',
   'scripts',
 ];

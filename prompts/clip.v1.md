@@ -1,0 +1,1 @@
+Speak as a person in a meeting room in India, talking to a colleague: natural Indian English, at an easy pace, plainly, without reading-aloud emphasis. Say exactly the words given, nothing before or after them.

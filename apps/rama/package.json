@@ -13,8 +13,10 @@
   "dependencies": {
     "@rama/audit": "workspace:*",
     "@rama/blueprint": "workspace:*",
+    "@rama/board": "workspace:*",
     "@rama/ceremony": "workspace:*",
     "@rama/db": "workspace:*",
+    "@rama/ears": "workspace:*",
     "@rama/model": "workspace:*",
     "@rama/shared": "workspace:*",
     "@rama/stage": "workspace:*",

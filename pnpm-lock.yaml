@@ -83,12 +83,18 @@ importers:
       '@rama/blueprint':
         specifier: workspace:*
         version: link:../../packages/blueprint
+      '@rama/board':
+        specifier: workspace:*
+        version: link:../../packages/board
       '@rama/ceremony':
         specifier: workspace:*
         version: link:../../packages/ceremony
       '@rama/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@rama/ears':
+        specifier: workspace:*
+        version: link:../../packages/ears
       '@rama/model':
         specifier: workspace:*
         version: link:../../packages/model
@@ -195,6 +201,18 @@ importers:
         specifier: 3.4.9
         version: 3.4.9
 
+  packages/board:
+    dependencies:
+      '@rama/blueprint':
+        specifier: workspace:*
+        version: link:../blueprint
+      '@rama/model':
+        specifier: workspace:*
+        version: link:../model
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+
   packages/ceremony:
     dependencies:
       '@rama/blueprint':
@@ -245,11 +263,45 @@ importers:
         specifier: 0.31.11
         version: 0.31.11
 
+  packages/ears:
+    dependencies:
+      '@rama/blueprint':
+        specifier: workspace:*
+        version: link:../blueprint
+      '@rama/ceremony':
+        specifier: workspace:*
+        version: link:../ceremony
+      '@rama/db':
+        specifier: workspace:*
+        version: link:../db
+      '@rama/model':
+        specifier: workspace:*
+        version: link:../model
+      '@rama/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@rama/trace':
+        specifier: workspace:*
+        version: link:../trace
+      '@rama/workbench':
+        specifier: workspace:*
+        version: link:../workbench
+      zod:
+        specifier: 4.6.5
+        version: 4.6.5
+    devDependencies:
+      postgres:
+        specifier: 3.4.9
+        version: 3.4.9
+
   packages/model:
     dependencies:
       '@rama/db':
         specifier: workspace:*
         version: link:../db
+      drizzle-orm:
+        specifier: 0.45.3
+        version: 0.45.3(postgres@3.4.9)
       zod:
         specifier: 4.6.5
         version: 4.6.5
