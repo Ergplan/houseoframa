@@ -97,12 +97,46 @@ What is left for the stage's "done when" is the member doing this himself, in hi
 
 ## Reviewer findings
 
-(Filled in after the independent review.)
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 10`) ran 3 times; every run is in `docs/reports/stage-10.review.md`.
+
+Fixed in code:
+
+- **Run 1: the builder's narration was not marked as drafted** (Invariant 6). Now the voice says before it that the design is the builder's draft and none of it is decided until a yes. The room marks each such line "drafted by the builder, unconfirmed until a named yes", and the "Yes, build it" card records that the yes confirmed the builder's draft.
+- **Run 1: the room did not move to each building as it was read** (a report claim the code did not support). Each line now carries its place as an address, and the room goes there before the line is read.
+- **Run 2: the drafter's next question was not marked as drafted.** It is now, as a question drafted by the drafter that decides nothing.
+
+Not resolved by code:
+
+- **Run 3 found no code defect.** Its three items, and the same items in runs 1 and 2, are cannot-tell:
+  - (c) the decision writers' append-only and audit guards are in code outside the diff (they stand from Stage 4, and `room.test.ts` checks the `audit_log` row of a spoken yes);
+  - (d) the drift checks and CI wiring are outside the diff;
+  - (e) the live runs are history a diff cannot prove. Their output is quoted above; the clips and the tests are in the repository.
 
 ## Real model cost
 
-(Filled in at the end.)
+`pnpm cost 10`:
+
+| What                        | Model           | Calls | Cost       |
+| --------------------------- | --------------- | ----- | ---------- |
+| Independent reviewer        | gpt-6.1-sol     | 3     | ₹55        |
+| The rehearsal's audio clips | gpt-4o-mini-tts | 4     | not priced |
+| **Recorded total**          |                 |       | **₹55**    |
+
+Not in that table:
+
+- **The live runs** (the mouth test, the narration, the rehearsal through the real voice) wrote their rows to throwaway databases, or none, so they are not counted here. Two of them went through the Realtime API, whose audio tokens have no price in the table (KNOWN-GAPS). The narration was one call of `gpt-6.1-sol`, a few rupees.
+- **One narration call to Anthropic** went out from a test before the room's model calls were bound to its own environment. Its answer was not recorded; with the account's credit as it was later that night, it was most likely refused and nothing charged.
 
 ## Open questions
 
-(Filled in at the end.)
+- **The member's own rehearsal, by voice.** This is the stage's last "done when", and only you can do it. Two things stand in the way:
+  - **The microphone needs a secure page.** The box is plain http, so a browser will not give it the microphone. Either:
+    - open House of Rama on `localhost` through a tunnel: `ssh -L 3000:localhost:3000` to this VM, then http://localhost:3000; or
+    - redeploy the box with Stage 10 and, in Chrome, add http://34.131.209.81:3389 under chrome://flags/#unsafely-treat-insecure-origin-as-secure.
+
+    Then: Test drive → Start a rehearsal → in the site office, tick yourself → Start the session with the voice → hold your button and talk.
+
+  - **Redeploying the box with Stage 10** waits for your word.
+- **The Anthropic account's credit balance is too low.** Claude Code builds, the builder's narration and drafting on Anthropic stop until it is topped up. Until then, Test drive replays the recorded build, and act 3 reads the cards as decided.
+- **The box is open to anyone with its address** (Stage 9's question stands). With the voice, someone there could also spend on the OpenAI key's Realtime minutes.
+- **The voice's price.** Add the Realtime audio prices to the table (from OpenAI's price list), or keep showing those rows as not priced?
