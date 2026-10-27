@@ -116,6 +116,8 @@ export default async function SitePage({
     return (
       <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
         <BuildingView
+          // One view per building: "Next building" starts a fresh camera on the next one (reviewer run 6).
+          key={chosen!.id}
           siteId={site.id}
           building={chosen!}
           scene={scene}

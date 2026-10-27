@@ -79,7 +79,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 - **Explanations:**
   - cached by hash and asked once per block;
   - only the block, its imports and its figures sent;
-  - a figure the mapping did not give is never named;
+  - the pane's figure (its chip, and the way to its trail) is only ever one the mapping gave; the sentence itself is the drafter's words, shown unconfirmed until a person confirms it;
   - unconfirmed until confirmed, and the overlay write audited;
   - "Not explained yet" with no drafter key;
   - no developer word kept;
