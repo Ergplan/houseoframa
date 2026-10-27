@@ -1,6 +1,6 @@
 # House of Rama — Master Prompt
 
-Built on trust. This document drives the build of House of Rama. It is committed once; after that the agent reads it from disk, one stage per session. Revised 2026-10-24 after Stage 6 and Gaps 1: Stages 0–6 stand as built; Stages 7–11 build the Pod Edition (`docs/POD-EDITION.md`) on top, ending with the first real product, ergPLAN.
+Built on trust. This document drives the build of House of Rama. It is committed once; after that the agent reads it from disk, one stage per session. Revised 2026-10-24 after Stage 6 and Gaps 1: Stages 0–6 stand as built; Stages 7–12 build the Pod Edition (`docs/POD-EDITION.md`) on top, ending with the first real product, ergPLAN.
 
 ## 0. How to use this prompt
 
@@ -26,9 +26,9 @@ Built on trust. This document drives the build of House of Rama. It is committed
 
 (See `CLAUDE.md` §4. Verbatim.)
 
-## 5. Plan — the Pod Edition, Stages 7–11
+## 5. Plan — the Pod Edition, Stages 7–12
 
-Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Showroom and trails, ceremony, audit, floor-edition plumbing, sealed signatures, deploy). From Stage 7 the build follows the Pod Edition construct. Sequenced by what becomes permanent earliest: the workbench that holds people and keys, then the face, then the scaffold that makes products traceable by construction, then the voice, then ergPLAN.
+Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Showroom and trails, ceremony, audit, floor-edition plumbing, sealed signatures, deploy). From Stage 7 the build follows the Pod Edition construct. Sequenced by what becomes permanent earliest: the workbench that holds people and keys, then the face, then the scaffold that makes products traceable by construction, then the voice, then the glass that shows the code being written, then ergPLAN.
 
 | Stage | Name | What becomes permanent | Proven on |
 | --- | --- | --- | --- |
@@ -36,11 +36,12 @@ Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Show
 | 8 | Lakefront | The isometric renderer: Street and Building levels, facades from capture, flags, Harmony; audit drones and replay on the lakefront | self, sample product |
 | 9 | House stack | The scaffold; figures traced by construction; the build loop with automatic extract, capture and re-execution after every lift; the four seats (builder, auditor, drafter, voice) with the customer's choice of vendor | the sample product, rebuilt from the scaffold |
 | 10 | Ears | GPT Live voice, transcript, the track asked by voice, decision cards by spoken yes, scrap and restart, the board | a rehearsal on the sample product |
-| 11 | ergPLAN | The first real product, built entirely inside House of Rama | ergPLAN |
+| 11 | Glass | The camera: turn and zoom the lakefront; live code written inside the glass as the builder works, with plain English beside every block, drafted and unconfirmed until confirmed; the same view in replay | the sample product, built and replayed |
+| 12 | ergPLAN | The first real product, built entirely inside House of Rama | ergPLAN |
 
 Deferred (notes in `docs/POD-EDITION.md`): wallet, customer-owned GitHub at handover, the fixed board camera, pod lights and bookings in daily use.
 
-## 6. Stage prompts — Stages 7–11
+## 6. Stage prompts — Stages 7–12
 
 ### Stage 7 — Workbench
 
@@ -127,10 +128,34 @@ Tests: command grammar; the mouth-not-mind test; track questions from trail fixt
 Done when: the member runs acts 1 to 3 of a rehearsal on the sample product by voice, the design is explained aloud, and the first signature is a spoken yes; reviewer run; report. STOP.
 ```
 
-### Stage 11 — ergPLAN
+### Stage 11 — Glass
 
 ```
-Stage 11 is the first real product. House of Rama is used, not built; the report is the first customer story.
+Stage 11 makes the glass worth looking through. Two things the trainer asked for after seeing the lakefront: the building must turn and zoom under the hand, and the code must be seen being written inside it, with plain English beside every block. Nothing here changes what is recorded; it changes what is seen.
+
+packages/stage — the camera:
+- `camera` is one state object {level, orientation, scale, centre} and every draw takes it. Orientation is one of four (north, east, south, west): the isometric grid turns in quarter steps, animated over 300 ms, so lines stay crisp and the picture stays honest about depth. Free rotation is not offered. Turn by dragging sideways, by the on-screen ring, by the arrow keys, or by the words turn left / turn right / turn around (added to Stage 10's command grammar).
+- Zoom is continuous within a level (wheel, pinch, + and −, the words closer / further) between the three levels' hand-off points: zoom far enough into a building and the Building level opens; far enough into a floor and the Brick level opens; zoom out and the levels fall back. The breadcrumb follows. The camera is in the URL so a view can be sent, and the voice drives the same state.
+- Determinism: the same Blueprint, features and camera give the same frame; depth sorting is correct in all four orientations; pick() works in all four. Facades stay readable at every orientation: the screenshot is drawn on whichever face is toward the camera and the plain-word label never mirrors.
+
+packages/stage and packages/workbench — code written inside the glass:
+- While the builder works a lift (Stage 9's `startBuild`), House of Rama tails the builder's stream of file edits and shows them as they happen. Inside the glass at Building level the brick being written glows and grows by its line count. At Brick level the file's lines type in as the builder writes them, in JetBrains Mono from Harmony, at the builder's pace but never faster than a person could read a line; a "catch up" button jumps to now. Deleted lines fall out of the brick.
+- Beside the code, the English pane: the file is split into blocks by the TypeScript parser (import group, type, function or component, query, table, route handler, test), deterministically; for every block one or two sentences in plain English say what the block does and which figure or screen it serves. The sentences are drafted by the drafter seat (prompt explain.v1, one call per changed block, cached by content hash so a block is never explained twice) and shown with the unconfirmed state until a named person confirms them in the pane; confirmed sentences are written to `.rama/explanations.json` in the product as an overlay (Invariant 1), with the confirmation in `audit_log`. A block with no sentence yet shows "Not explained yet" and nothing else. The drafter receives only the block, the names it imports and its figure mapping; the pane never says what the code does not say.
+- Every number in a block that is a marked figure is a link to its trail; the pane's sentence names the figure in the customer's words from `.rama/figures`.
+- Replay: the same view scrubs commit by commit after the fact, for products built here and for outside sites. In replay the typing is reconstructed from the commit diff; the pane shows the explanations recorded at that commit, or "Not explained yet".
+- Cost: explanations run only when the drafter key is set; without it the pane shows "Not explained yet" everywhere and the build is unaffected. The stage report states the drafter cost of one sample-product build.
+
+apps/rama: the camera ring and zoom controls in Harmony, with plain words from the glossary; the English pane as a Harmony panel at the Brick level and, folded, at the Building level; the banned-word test extends to the pane.
+
+Tests: camera reducer (turn, zoom, level hand-offs, URL round trip); frame determinism in four orientations; pick in four orientations; the block splitter on fixtures (every line belongs to exactly one block); the typing stream from a recorded lift (order, pace floor, deletions); explanation cache by hash; unconfirmed until confirmed, and the overlay write audited; the pane shows "Not explained yet" with no drafter key; banned words; e2e: replay the sample product's recorded build, turn the Street twice, zoom into Take an order down to the code, watch it typed, read every block's English, confirm one.
+
+Done when: a person can turn and zoom the sample product with a mouse and with words, watch its code written inside the glass during Test drive, and read a plain-English line beside every block, each marked unconfirmed until someone signs it; reviewer run; report. STOP.
+```
+
+### Stage 12 — ergPLAN
+
+```
+Stage 12 is the first real product. House of Rama is used, not built; the report is the first customer story.
 
 Create the product ergPLAN in the workbench with its repository under the configured GitHub account. Run discovery with the member as the customer and a trainer from members.json: the idea, the buildings in the customer's words, the figures each will show, what it will not do, the spoken yes. Build from the scaffold through the loop; every lift on the lakefront; the member walks and signs every customer screen; the audit runs; the keys page is produced. Anything House of Rama cannot do during this stage is a KNOWN-GAPS entry with the sentence the customer heard, fixed in a small follow-up stage before another product starts.
 
@@ -344,6 +369,7 @@ interface Finding { id: string; auditId: string; brick: string; check: string; v
 | 8 | Street/Building/Brick over one Blueprint; banned-word test passes; facades and flags live; drones and replay on the lakefront; member names every building of the sample product from the Street; reviewer |
 | 9 | Scaffold lint refuses an unmarked number; sample product rebuilt from the scaffold by the builder with no human command, 100% traced, all Verified; Test drive uses this path; four seats chosen in Settings and asked in discovery, builder ≠ auditor enforced, OpenAI-compatible adapter covers Gemini/Grok/Kimi/Ollama; reviewer |
 | 10 | Mouth-not-mind test; track questions answered only from trails; spoken yes creates a named decision; rehearsal acts 1–3 by voice; reviewer |
-| 11 | ergPLAN first signed release: own repository, 100% traced, customer screens Confirmed, signed audit, member's name on signature one |
+| 11 | Four orientations and continuous zoom, deterministic frames and pick in all four; code typed inside the glass during a real lift and in replay; one English line per block, drafted by the drafter and unconfirmed until confirmed; "Not explained yet" with no key; banned-word test covers the pane; reviewer |
+| 12 | ergPLAN first signed release: own repository, 100% traced, customer screens Confirmed, signed audit, member's name on signature one |
 
 Two honest numbers wherever a rate is reported: figures traced over figures shown, and screens signed over screens changed, each with its audience named. An untraced figure correctly shown as untraced is never scored as a failure.
