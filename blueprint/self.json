@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
+  "commit": "9e181842fccef1c65ca5cfaec225e932d1263b65",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -13064,6 +13064,48 @@
       "sha": "7b834f104e29790e50867b07aa8ca6398b51e6da",
       "short": "7b834f1",
       "subject": "Stage 10: reviewer run 2 — the drafter's next question is marked as drafted, deciding nothing"
+    },
+    {
+      "at": "2026-10-27T09:14:11+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "CLAUDE.md"
+        },
+        {
+          "add": 34,
+          "del": 8,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        }
+      ],
+      "sha": "4a2524e494d0bdbcdc6dc4fb2907fd5e4c01d8ab",
+      "short": "4a2524e",
+      "subject": "Master prompt: Stage 11 Glass (turn and zoom, live code inside the glass with English beside every block); ergPLAN becomes Stage 12"
+    },
+    {
+      "at": "2026-10-27T09:29:01+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "CLAUDE.md"
+        },
+        {
+          "add": 22,
+          "del": 8,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        }
+      ],
+      "sha": "9e181842fccef1c65ca5cfaec225e932d1263b65",
+      "short": "9e18184",
+      "subject": "Master prompt: Stage 11 becomes Glass and flow — journey tabs with one lit action, pipes with real data flowing in slow motion; two days"
     }
   ],
   "edges": [
@@ -27095,7 +27137,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T03:29:19Z",
+  "extractedAt": "2026-10-27T09:29:01+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -27323,13 +27365,13 @@
     },
     {
       "binary": false,
-      "bytes": 15646,
-      "changes": 4,
+      "bytes": 15821,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
+      "lastCommit": "9e181842fccef1c65ca5cfaec225e932d1263b65",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 108,
@@ -31225,16 +31267,16 @@
     },
     {
       "binary": false,
-      "bytes": 37564,
-      "changes": 4,
+      "bytes": 47337,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "0ec64f7227ec3971b407ed8d95f6ac6553a311f2",
+      "lastCommit": "9e181842fccef1c65ca5cfaec225e932d1263b65",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 349,
+      "lines": 389,
       "path": "docs/MASTER-PROMPT.md",
       "purpose": {
         "confirmed": false,
