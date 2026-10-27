@@ -267,6 +267,16 @@ describe('commands that move the room, and the track', () => {
     expect(r.lines[0]!.text).toBe('If cups were 3, “Tip jar” would be worked out again.');
   });
 
+  it('marks the drafter’s question as drafted: it decides nothing', async () => {
+    const room = memoryRoom();
+    room.deps.seats = async () => ({ seats: {}, chosen: true });
+    room.deps.question = async () => 'Who takes the orders at the stall?';
+    const r = await hear(room.deps, s0, 'Asha Rao', 'It is a small stall.');
+    expect(r.lines).toEqual([
+      { kind: 'question', text: 'Who takes the orders at the stall?', drafted: 'drafter' },
+    ]);
+  });
+
   it('reads the board on request, as a draft', async () => {
     const { deps } = memoryRoom();
     const r = await hear(deps, s0, 'Tara', 'Read the board');

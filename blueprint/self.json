@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+  "commit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -12950,6 +12950,75 @@
       "sha": "0c6e425b6a291919a42fb63f1db413cf2854f007",
       "short": "0c6e425",
       "subject": "Stage 10: what if against the sandbox, narrate.v2, the picked figure in the address, report draft"
+    },
+    {
+      "at": "2026-10-27T03:10:46Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 5,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/app/api/site/[siteId]/voice/handler.ts"
+        },
+        {
+          "add": 10,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/components/ears/VoiceRoom.tsx"
+        },
+        {
+          "add": 129,
+          "del": 39,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/reports/stage-10.md"
+        },
+        {
+          "add": 19,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-10.review.md"
+        },
+        {
+          "add": 32,
+          "del": 10,
+          "kind": "M",
+          "path": "packages/ears/src/conductor.ts"
+        },
+        {
+          "add": 5,
+          "del": 6,
+          "kind": "M",
+          "path": "packages/ears/src/room.ts"
+        },
+        {
+          "add": 27,
+          "del": 19,
+          "kind": "M",
+          "path": "packages/ears/test/conductor.test.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/ears/test/room.test.ts"
+        }
+      ],
+      "sha": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
+      "short": "1c67d83",
+      "subject": "Stage 10: reviewer run 1 — the builder's narration is a draft until a yes; the room shows each building as it is read"
     }
   ],
   "edges": [
@@ -26981,7 +27050,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T02:35:06Z",
+  "extractedAt": "2026-10-27T03:10:46Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -28501,7 +28570,7 @@
     {
       "binary": false,
       "bytes": 9235,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -28516,7 +28585,7 @@
         "placeUrl"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 226,
@@ -29607,8 +29676,8 @@
     },
     {
       "binary": false,
-      "bytes": 18193,
-      "changes": 1,
+      "bytes": 18245,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -29616,10 +29685,10 @@
         "VoiceRoom"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 508,
+      "lines": 514,
       "packages": [
         "next",
         "react"
@@ -31043,13 +31112,13 @@
     },
     {
       "binary": false,
-      "bytes": 63398,
-      "changes": 93,
+      "bytes": 63544,
+      "changes": 94,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 248,
@@ -31267,12 +31336,12 @@
     {
       "binary": false,
       "bytes": 11497,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
-      "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 108,
@@ -31281,16 +31350,16 @@
     },
     {
       "binary": false,
-      "bytes": 9716,
-      "changes": 0,
+      "bytes": 18826,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 19,
+      "lines": 35,
       "path": "docs/reports/stage-10.review.md",
       "test": false
     },
@@ -35187,8 +35256,8 @@
     },
     {
       "binary": false,
-      "bytes": 19257,
-      "changes": 2,
+      "bytes": 19374,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35208,10 +35277,10 @@
         "welcome"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 536,
+      "lines": 540,
       "path": "packages/ears/src/conductor.ts",
       "test": false
     },
@@ -35319,7 +35388,7 @@
     {
       "binary": false,
       "bytes": 13254,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35334,7 +35403,7 @@
         "writeRoom"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0c6e425b6a291919a42fb63f1db413cf2854f007",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 342,
@@ -35389,16 +35458,16 @@
     },
     {
       "binary": false,
-      "bytes": 12187,
-      "changes": 1,
+      "bytes": 12656,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 276,
+      "lines": 286,
       "packages": [
         "vitest"
       ],
@@ -35487,14 +35556,14 @@
     {
       "binary": false,
       "bytes": 6525,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 156,

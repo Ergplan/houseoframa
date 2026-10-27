@@ -8,7 +8,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-type Line = { kind: string; text: string; event: unknown; go: string | null; drafted?: 'builder' };
+type Line = {
+  kind: string;
+  text: string;
+  event: unknown;
+  go: string | null;
+  drafted?: 'builder' | 'drafter';
+};
 type Reply = {
   ok: boolean;
   sentence?: string;
@@ -18,7 +24,7 @@ type Reply = {
   board?: boolean;
   decided?: { title: string; by: string } | null;
 };
-type Said = { speaker: string; text: string; flag?: string; drafted?: boolean };
+type Said = { speaker: string; text: string; flag?: string; drafted?: 'builder' | 'drafter' };
 type Read = { said: string; usage: { inputTokens: number; outputTokens: number; ms: number } };
 export type VoiceModeView = { mode: 'live'; label: string } | { mode: 'stand-in'; why: string };
 
@@ -266,7 +272,7 @@ export function VoiceRoom({
             {
               speaker: 'Rama',
               text: said,
-              drafted: line.drafted === 'builder',
+              ...(line.drafted ? { drafted: line.drafted } : {}),
               ...(check.mouth && !check.mouth.ok
                 ? {
                     flag: `The voice said ${check.mouth.unsupported.join(', ')}, which no builder line gave it.`,

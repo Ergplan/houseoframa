@@ -37,10 +37,11 @@ export interface Line {
   /** Where to look while it is read (act 3 shows each building as it is explained). */
   go?: Place;
   /**
-   * Drafted by a model (the builder's narration) and unconfirmed: it stands only once a named person
-   * says yes to it (Invariant 6). Fixed lines, read-backs and the cards as decided are not drafts.
+   * Drafted by a model and unconfirmed (Invariant 6): the builder's narration, which stands only once a
+   * named person says yes to it, or the drafter's next question, which decides nothing. Fixed lines,
+   * read-backs and the cards as decided are not drafts.
    */
-  drafted?: 'builder';
+  drafted?: 'builder' | 'drafter';
 }
 
 /** The session's acts: 1 arrive, 2 ideate, 3 agree (the design explained aloud), 4 agreed. */
@@ -178,7 +179,10 @@ async function next(deps: RoomDeps): Promise<{ lines: Line[]; asked: Asked }> {
     };
   const question = await deps.question();
   return question
-    ? { lines: [{ kind: 'question', text: question }], asked: { kind: 'question' } }
+    ? {
+        lines: [{ kind: 'question', text: question, drafted: 'drafter' }],
+        asked: { kind: 'question' },
+      }
     : {
         lines: [
           {
