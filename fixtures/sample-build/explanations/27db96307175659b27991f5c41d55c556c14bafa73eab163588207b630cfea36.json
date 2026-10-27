@@ -1,0 +1,12 @@
+{
+  "hash": "27db96307175659b27991f5c41d55c556c14bafa73eab163588207b630cfea36",
+  "path": "app/layout.tsx",
+  "kind": "value",
+  "name": "metadata",
+  "sentence": "Sets the page title to Chai Stall (Test drive).",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-1",
+  "at": "2026-10-27T06:09:23.955Z"
+}

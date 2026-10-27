@@ -1,0 +1,12 @@
+{
+  "hash": "ba563b332a5e7c0ff3f1fd02e178b55ced4b117c1c569dd4ade3aa7c507e85e2",
+  "path": "vitest.config.ts",
+  "kind": "value",
+  "name": "default",
+  "sentence": "Sets up the 'unit' checks to use files named '*.test.ts' or '*.test.tsx', leaving out files under 'node_modules'.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-19",
+  "at": "2026-10-27T06:10:04.616Z"
+}

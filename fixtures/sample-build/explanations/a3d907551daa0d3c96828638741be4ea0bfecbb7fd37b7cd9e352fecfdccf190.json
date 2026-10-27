@@ -1,0 +1,12 @@
+{
+  "hash": "a3d907551daa0d3c96828638741be4ea0bfecbb7fd37b7cd9e352fecfdccf190",
+  "path": "app/page.test.tsx",
+  "kind": "test",
+  "name": "shows the plan’s count of buildings as a traced figure",
+  "sentence": "Checks that the Welcome screen marks building-count as a tracked figure with a value of 1.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-3",
+  "at": "2026-10-27T06:09:28.162Z"
+}

@@ -1,0 +1,12 @@
+{
+  "hash": "784090613c06215b203c9375560f47f9c16ae75db00097091a611faac20dbf44",
+  "path": "components/Figure.tsx",
+  "kind": "type",
+  "name": "Figures",
+  "sentence": "Says that Figures has the same structure as figures.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-5",
+  "at": "2026-10-27T06:09:33.670Z"
+}

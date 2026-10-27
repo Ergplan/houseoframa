@@ -1,0 +1,12 @@
+{
+  "hash": "b21f43e0c846125a2bac7135dd292957ca2ece6e321f9f035da5db1194a27516",
+  "path": "components/Figure.tsx",
+  "kind": "component",
+  "name": "Figure",
+  "sentence": "Works out a number from the supplied inputs and shows it in the chosen format. It also keeps the figure’s identifier, inputs and unformatted value alongside the displayed number.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-6",
+  "at": "2026-10-27T06:09:36.075Z"
+}

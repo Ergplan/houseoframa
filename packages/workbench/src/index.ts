@@ -12,3 +12,7 @@ export * from './build.ts';
 export * from './builders/index.ts';
 export * from './sample.ts';
 export * from './seats.ts';
+export * from './blocks.ts';
+export * from './explain.ts';
+export * from './tail.ts';
+export * from './code.ts';

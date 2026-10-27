@@ -471,6 +471,8 @@ export interface BuildingFrame {
   hover: string | null;
   /** Verdicts per file from the audit shown, as small marks on the bricks. */
   verdicts?: Record<string, Verdict>;
+  /** Stage 11: the file the builder is writing now and its lines so far: its brick glows and grows. */
+  writing?: { path: string; lines: number } | null;
 }
 
 export function drawBuilding(ctx: CanvasRenderingContext2D, frame: BuildingFrame): void {
@@ -503,12 +505,17 @@ export function drawBuilding(ctx: CanvasRenderingContext2D, frame: BuildingFrame
     ctx.stroke();
     for (const x of fl.bricks) {
       const on = frame.hover === x.path;
+      const writing = frame.writing?.path === x.path ? frame.writing : null;
+      // The brick being written glows, and grows upward by its line count (up to twice its height).
+      const grown = writing
+        ? { ...x, z1: x.z1 + (x.z1 - x.z0) * Math.min(1, writing.lines / 60) }
+        : x;
       fillPoly(
         ctx,
-        brickOnFace(side, sc.h, x),
-        on ? c.ink : c['ink-muted'],
-        on ? c.accent : null,
-        1.5,
+        brickOnFace(side, sc.h, grown),
+        writing ? c.harmony : on ? c.ink : c['ink-muted'],
+        writing ? c.glow : on ? c.accent : null,
+        writing ? 3 : 1.5,
       );
       const v = frame.verdicts?.[x.path];
       if (v && v !== 'pass') {

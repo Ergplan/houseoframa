@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+  "commit": "b9884f93761b6824b203ce8e8dd144337cce6315",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -13280,6 +13280,159 @@
       "sha": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "short": "859cd1e",
       "subject": "Stage 11, part 1: the journey — five acts as tabs with one lit action each, Care at the end"
+    },
+    {
+      "at": "2026-10-27T06:06:34Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": ".rama/features.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/api/site/[siteId]/voice/handler.ts"
+        },
+        {
+          "add": 23,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/app/globals.css"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.tsx"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/ears/VoiceRoom.tsx"
+        },
+        {
+          "add": 70,
+          "del": 4,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/BuildingView.tsx"
+        },
+        {
+          "add": 79,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/CameraRing.tsx"
+        },
+        {
+          "add": 108,
+          "del": 9,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/StreetView.tsx"
+        },
+        {
+          "add": 74,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/lakefront/useCamera.ts"
+        },
+        {
+          "add": 544,
+          "del": 77,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 13,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/ears/src/conductor.ts"
+        },
+        {
+          "add": 13,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/ears/src/grammar.ts"
+        },
+        {
+          "add": 9,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/ears/test/conductor.test.ts"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/ears/test/grammar.test.ts"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/stage/src/building.ts"
+        },
+        {
+          "add": 266,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/camera.test.ts"
+        },
+        {
+          "add": 287,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/stage/src/camera.ts"
+        },
+        {
+          "add": 21,
+          "del": 24,
+          "kind": "M",
+          "path": "packages/stage/src/draw.ts"
+        },
+        {
+          "add": 26,
+          "del": 11,
+          "kind": "M",
+          "path": "packages/stage/src/geometry.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/stage/src/index.ts"
+        },
+        {
+          "add": 9,
+          "del": 2,
+          "kind": "M",
+          "path": "packages/stage/src/pick.ts"
+        },
+        {
+          "add": 29,
+          "del": 11,
+          "kind": "M",
+          "path": "packages/stage/src/street.ts"
+        }
+      ],
+      "sha": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "short": "b9884f9",
+      "subject": "Stage 11, part 2: the camera — quarter turns and zoom, by hand and by voice"
     }
   ],
   "edges": [
@@ -14512,6 +14665,131 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.test.ts",
+      "symbols": [
+        "CodeDeps",
+        "handleCode",
+        "handleConfirm",
+        "handleTyping"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.test.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.test.ts",
+      "symbols": [
+        "CodeView"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "symbols": [
+        "CodeView",
+        "Confirmed",
+        "EditEvent"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/route.ts",
+      "symbols": [
+        "handleCode"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/code/route.ts",
+      "symbols": [
+        "codeDeps"
+      ],
+      "to": "apps/rama/server/code.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of what the confirm handler relies on; the handler that confirms an edge or purpose for a site as the local member"
@@ -14819,6 +15097,46 @@
         "authSite"
       ],
       "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
+      "symbols": [
+        "handleConfirm"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
+      "symbols": [
+        "codeDeps"
+      ],
+      "to": "apps/rama/server/code.ts",
       "typeOnly": false
     },
     {
@@ -15197,6 +15515,38 @@
         "confirmStructure"
       ],
       "to": "packages/ceremony/src/structure.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/typing/route.ts",
+      "symbols": [
+        "handleTyping"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/typing/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/typing/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/typing/route.ts",
+      "symbols": [
+        "codeDeps"
+      ],
+      "to": "apps/rama/server/code.ts",
       "typeOnly": false
     },
     {
@@ -15683,6 +16033,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/site/[siteId]/code/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/site/[siteId]/confirm/route.ts",
       "typeOnly": false
     },
@@ -15739,6 +16097,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/site/[siteId]/features/route.ts",
       "typeOnly": false
     },
@@ -15780,6 +16146,14 @@
         "*"
       ],
       "to": "apps/rama/app/api/site/[siteId]/structure/confirm/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/typing/route.ts",
       "typeOnly": false
     },
     {
@@ -16690,6 +17064,14 @@
         "CodeCamera"
       ],
       "to": "apps/rama/components/lakefront/CameraRing.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "CodePane"
+      ],
+      "to": "apps/rama/components/lakefront/CodePane.tsx",
       "typeOnly": false
     },
     {
@@ -17757,12 +18139,36 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/lakefront/BuildingEnglish.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingEnglish.tsx",
+      "symbols": [
+        "CodeView"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "apps/rama/components/lakefront/BuildingView.tsx",
       "symbols": [
         "Folder",
         "StateChip"
       ],
       "to": "apps/rama/components/harmony/ui.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/BuildingView.tsx",
+      "symbols": [
+        "BuildingEnglish"
+      ],
+      "to": "apps/rama/components/lakefront/BuildingEnglish.tsx",
       "typeOnly": false
     },
     {
@@ -17871,6 +18277,25 @@
         "CameraAction"
       ],
       "to": "packages/stage/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/CodePane.tsx",
+      "symbols": [
+        "TypedLine",
+        "TypingPlan",
+        "typedAt",
+        "typingPlan"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/CodePane.tsx",
+      "symbols": [
+        "CodeView"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": true
     },
     {
@@ -18544,6 +18969,47 @@
         "sites"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/code.ts",
+      "symbols": [
+        "CodeDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/server/code.ts",
+      "symbols": [
+        "jobDb"
+      ],
+      "to": "apps/rama/server/jobs.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/server/code.ts",
+      "symbols": [
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/code.ts",
+      "symbols": [
+        "codeView",
+        "confirmExplanation",
+        "jobStatus",
+        "latestJob",
+        "readEdits",
+        "siteLakefront"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": false
     },
     {
@@ -23940,6 +24406,14 @@
       "symbols": [
         "*"
       ],
+      "to": "packages/stage/src/typing.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
       "to": "packages/stage/src/words.ts",
       "typeOnly": false
     },
@@ -24211,6 +24685,19 @@
         "servicesOf"
       ],
       "to": "packages/stage/src/services.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/typing.test.ts",
+      "symbols": [
+        "FALL_MS",
+        "FileChange",
+        "READ_MS",
+        "lineDiff",
+        "typedAt",
+        "typingPlan"
+      ],
+      "to": "packages/stage/src/typing.ts",
       "typeOnly": false
     },
     {
@@ -24806,6 +25293,23 @@
     {
       "from": "packages/workbench/src/build.ts",
       "symbols": [
+        "figuresOfBlock",
+        "productFigures"
+      ],
+      "to": "packages/workbench/src/code.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "explainFile"
+      ],
+      "to": "packages/workbench/src/explain.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
         "pushTo"
       ],
       "to": "packages/workbench/src/github.ts",
@@ -24856,6 +25360,14 @@
         "siteStates"
       ],
       "to": "packages/workbench/src/states.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
+        "startTail"
+      ],
+      "to": "packages/workbench/src/tail.ts",
       "typeOnly": false
     },
     {
@@ -24937,6 +25449,14 @@
     {
       "from": "packages/workbench/src/builders/recorded.ts",
       "symbols": [
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/builders/recorded.ts",
+      "symbols": [
         "BuilderDriver",
         "LiftAnswer"
       ],
@@ -24954,11 +25474,108 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/src/code.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/code.ts",
+      "symbols": [
+        "readCapture",
+        "readConvention"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/code.ts",
+      "symbols": [
+        "Block",
+        "splitBlocks"
+      ],
+      "to": "packages/workbench/src/blocks.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/code.ts",
+      "symbols": [
+        "BlockFigure",
+        "Explanation",
+        "explanationsFor"
+      ],
+      "to": "packages/workbench/src/explain.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/src/explain.ts",
+      "symbols": [
+        "SiteLocation",
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the audit log table"
+      },
+      "from": "packages/workbench/src/explain.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "auditLog",
+        "homeDir"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/workbench/src/explain.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/explain.ts",
+      "symbols": [
+        "Block",
+        "splitBlocks"
+      ],
+      "to": "packages/workbench/src/blocks.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/workbench/src/index.ts",
       "symbols": [
         "*"
       ],
       "to": "packages/workbench/src/actions.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/blocks.ts",
       "typeOnly": false
     },
     {
@@ -24975,6 +25592,22 @@
         "*"
       ],
       "to": "packages/workbench/src/builders/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/code.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/explain.ts",
       "typeOnly": false
     },
     {
@@ -25047,6 +25680,14 @@
         "*"
       ],
       "to": "packages/workbench/src/states.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/tail.ts",
       "typeOnly": false
     },
     {
@@ -25364,6 +26005,14 @@
       "typeOnly": false
     },
     {
+      "from": "packages/workbench/src/tail.ts",
+      "symbols": [
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of a site's location: its checkout, blueprint file and options; regenerating and saving a site's blueprint file"
@@ -25526,6 +26175,14 @@
       "typeOnly": false
     },
     {
+      "from": "packages/workbench/test/blocks.test.ts",
+      "symbols": [
+        "splitBlocks"
+      ],
+      "to": "packages/workbench/src/blocks.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of a site's location: its checkout, blueprint file and options"
@@ -25580,6 +26237,66 @@
         "BUILDER_OPTIONS"
       ],
       "to": "packages/workbench/src/seats.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/test/explain.test.ts",
+      "symbols": [
+        "SiteLocation",
+        "createProductSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations; the table of sites, one per target repository"
+      },
+      "from": "packages/workbench/test/explain.test.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "createDb",
+        "ensurePerson",
+        "runMigrations",
+        "sites"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/workbench/test/explain.test.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/explain.test.ts",
+      "symbols": [
+        "splitBlocks"
+      ],
+      "to": "packages/workbench/src/blocks.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/explain.test.ts",
+      "symbols": [
+        "confirmExplanation",
+        "explainFile",
+        "explanationsFor"
+      ],
+      "to": "packages/workbench/src/explain.ts",
       "typeOnly": false
     },
     {
@@ -25842,6 +26559,23 @@
       "typeOnly": false
     },
     {
+      "from": "packages/workbench/test/tail.test.ts",
+      "symbols": [
+        "bannedWords"
+      ],
+      "to": "packages/workbench/src/explain.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/tail.test.ts",
+      "symbols": [
+        "readEdits",
+        "startTail"
+      ],
+      "to": "packages/workbench/src/tail.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "a database connection opened from a URL; running the database migrations"
@@ -25924,6 +26658,60 @@
         "modelCalls"
       ],
       "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "scripts/record-explanations.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "scripts/record-explanations.ts",
+      "symbols": [
+        "SELF_SITE_ID"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "scripts/record-explanations.ts",
+      "symbols": [
+        "CallDeps",
+        "ModelCallRow",
+        "call",
+        "costOf"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "scripts/record-explanations.ts",
+      "symbols": [
+        "explainFile",
+        "figuresOfBlock",
+        "productFigures"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "scripts/record-explanations.ts",
+      "symbols": [
+        "makeSample",
+        "sampleLifts"
+      ],
+      "to": "scripts/make-sample.mjs",
       "typeOnly": false
     },
     {
@@ -27589,6 +28377,12 @@
     {
       "dev": false,
       "manifest": "packages/workbench/package.json",
+      "name": "typescript",
+      "version": "6.0.3"
+    },
+    {
+      "dev": false,
+      "manifest": "packages/workbench/package.json",
       "name": "zod",
       "version": "4.6.5"
     },
@@ -27647,7 +28441,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T04:59:10Z",
+  "extractedAt": "2026-10-27T06:06:34Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -27812,12 +28606,12 @@
     {
       "binary": false,
       "bytes": 3414,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 91,
@@ -28739,6 +29533,68 @@
     },
     {
       "binary": false,
+      "bytes": 4248,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "hosts": [
+        "rama.test"
+      ],
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 120,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/code/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 3423,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CodeDeps",
+        "handleCode",
+        "handleConfirm",
+        "handleTyping"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 71,
+      "packages": [
+        "zod"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/code/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 537,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/code/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 5940,
       "changes": 2,
       "env": [],
@@ -28916,6 +29772,24 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 13,
       "path": "apps/rama/app/api/site/[siteId]/discovery/turns/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 623,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/explain/confirm/route.ts",
       "test": false
     },
     {
@@ -29112,6 +29986,24 @@
     },
     {
       "binary": false,
+      "bytes": 547,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/typing/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 535,
       "changes": 1,
       "env": [],
@@ -29167,7 +30059,7 @@
     {
       "binary": false,
       "bytes": 9269,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -29182,7 +30074,7 @@
         "placeUrl"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 227,
@@ -29284,7 +30176,7 @@
     },
     {
       "binary": false,
-      "bytes": 16170,
+      "bytes": 16490,
       "changes": 10,
       "env": [
         "DATABASE_URL",
@@ -29300,7 +30192,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 411,
+      "lines": 417,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -29372,16 +30264,16 @@
     },
     {
       "binary": false,
-      "bytes": 24193,
-      "changes": 14,
+      "bytes": 25567,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1234,
+      "lines": 1307,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -29738,8 +30630,8 @@
     },
     {
       "binary": false,
-      "bytes": 6090,
-      "changes": 9,
+      "bytes": 6235,
+      "changes": 10,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -29747,10 +30639,10 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 170,
+      "lines": 172,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -30292,7 +31184,7 @@
     {
       "binary": false,
       "bytes": 18682,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30300,7 +31192,7 @@
         "VoiceRoom"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 519,
@@ -30538,8 +31430,29 @@
     },
     {
       "binary": false,
-      "bytes": 17924,
-      "changes": 4,
+      "bytes": 2501,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildingEnglish"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 74,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/BuildingEnglish.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 19085,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30547,10 +31460,10 @@
         "BuildingView"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 456,
+      "lines": 484,
       "packages": [
         "next",
         "react"
@@ -30561,15 +31474,15 @@
     {
       "binary": false,
       "bytes": 2374,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CameraRing",
         "CodeCamera"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 79,
@@ -30578,8 +31491,29 @@
     },
     {
       "binary": false,
+      "bytes": 10471,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CodePane"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 303,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/CodePane.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 25051,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30588,7 +31522,7 @@
         "flagSentence"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 673,
@@ -30663,7 +31597,7 @@
     {
       "binary": false,
       "bytes": 2856,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -30673,8 +31607,8 @@
         "cameraHref",
         "useCamera"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 74,
@@ -31064,6 +31998,23 @@
           "writes": false
         }
       ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1073,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "codeDeps"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 33,
+      "path": "apps/rama/server/code.ts",
       "test": false
     },
     {
@@ -31775,16 +32726,16 @@
     },
     {
       "binary": false,
-      "bytes": 72250,
-      "changes": 30,
+      "bytes": 75197,
+      "changes": 31,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 230,
+      "lines": 234,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -31813,16 +32764,16 @@
     },
     {
       "binary": false,
-      "bytes": 65666,
-      "changes": 96,
+      "bytes": 67175,
+      "changes": 97,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 256,
+      "lines": 259,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -32484,6 +33435,741 @@
     },
     {
       "binary": false,
+      "bytes": 198,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 10,
+      "path": "fixtures/sample-build/explanations-cost.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 482,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/0d5717f811ed9af7eb234f1f8cc3a26580cddf2f7cdc5cadf87fcb084789367e.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 470,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/11156359fbad36742100836bcee80ffdaaaa4854ce7485140222361893b02c15.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 405,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/158b637f7694530c32d2f94f3cd30cc8c0fd1c6b480d52091d4ef92895cccd97.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 432,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/1eddea1a2e9bc6c7887a2368cb6722a5c8ca2ebca32a0ea73acab33ca557fd70.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 487,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/212c6b9051aea493bbb8240392cb20d33f087a4bf249baa4afff6fa97f6ee5af.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 454,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/22a82a84eed9340d504e4af7bd71cf98a7fc742aa97d783dc7c8cfcf66f8da6c.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 338,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/27db96307175659b27991f5c41d55c556c14bafa73eab163588207b630cfea36.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 388,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/2c59f23fa90b3d26f758d560f5e91151fca6711f8a3db3d3e04ee5bbf982e20f.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 442,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/2c5a07212c5e6397a3d897c648a3f1e9184793e56fe0be118051c19b213aa06d.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 467,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/2cd68f7324e8acce40c41f7ed0400a76bbbf5907ff164b4832b331589973603b.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 327,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/3810a91abf799a4a4d3093ca38ce0998c9d8976eee1e70862561406feb082d76.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 394,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/3cc2fa6066c3bb90ba2e18d6c339fb7fb2cff3038e6949cc7c7bb6aa7af08555.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 410,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/4457298e3c21f9e7c34f1deb4f5ce1b4f0ba0fcb62658b98c8d532d83133f45e.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 368,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/4d887220f07af6f5c41725ffa5cfcc8bb4df601f40f6f1114c80ce7cea625b6f.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 361,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/5430d1b25bc6ec7746d30b1723e7974288602314b6346eaa32368e1a4bd7df29.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 470,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/54ba70a82332dc8334ad5b5221b5387be5b4878a95e6eaff782e475c2dee6781.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 385,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/589852b763c7c87eb07482f7a6a2e6bfd79493d95ec73d4e62cdd4206e5962e1.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 433,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/5bbd0dbe540b578166a9d53bd9e66a5ec7872ac34a544152ab23f3684382d453.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 395,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/617753a3683b39f74296511e7bfac70be8e4a9bdc3482f91218247d8337a0297.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 425,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/64a166598d9ca6e280d9167d9c48ad4a9eea682d5ae6abb413cd367e1c3c03bb.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 477,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/680138fce1af3a21fe7c278a0d928e7b9bb8d5733ba1329a57e8151d64a5514f.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 378,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/7017b3a7190838f7750813989e5c66694f5b61538ef56ad82bb0d5058cb05883.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 411,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/741eff2feb017c99c3c4caf40f8b4212767804f74ff7552d2247c9478f212da4.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 456,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/76ed0780adde50e5d76f4911c486eef805b0a555cad25cecc9b573288244fa85.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 432,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/77bc9b0e40c08180c0f1e175e9f8e9342fca357414b302ea123d3bd11ea6d301.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 348,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/784090613c06215b203c9375560f47f9c16ae75db00097091a611faac20dbf44.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 516,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/79672a44774200334d9d88f0699e1d18c6bd6335e87cfcdf19398dbe58ec7101.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 504,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/82d9f5b3ac9de12f4c170d4397adc873c1e18cd82bb0d4e1bc3a65b9decfcafc.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 398,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/83c29bf450810ad9643e58c0d7506302c2b08856afdef2608bd27f64e0e0173f.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 432,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/8bff61be4b6628efbb69226e6faea1bc1af87bc5e25bb771d42931a1f8b7227d.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 476,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/8d1efc98cb5deca3e7309a65b4e8efe89e30cc6a2561ba2987507a4cf01a73ab.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 422,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/944bb07c36210e32bf044787946faf28bd764fea7dfd3043a56e6c4e47615dba.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 508,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/9981f53d1c044f28213461d4f5f7c9a5d3e15efb1105774e2ea6c9ffc025591a.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 431,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/a3d907551daa0d3c96828638741be4ea0bfecbb7fd37b7cd9e352fecfdccf190.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 380,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/a4d6a15a1115ce13ea4731728d7f803818e4c1c8e9455869ab9d0e64dd46221a.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 450,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/a589ea67fe32d1ffa403c354adc8501b2a04b79d3e2df39a7335c0e125122b92.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 378,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/a8080d71091bc6cca0fc3bcc32f2fe33faa0ec7b35cf8bd455fd175db0eb42d0.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 480,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/b21f43e0c846125a2bac7135dd292957ca2ece6e321f9f035da5db1194a27516.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 406,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/ba563b332a5e7c0ff3f1fd02e178b55ced4b117c1c569dd4ade3aa7c507e85e2.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 367,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/bbf0d950920be274d535994e2814d330c0287153b61764c0ccf4cd073db4cee8.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 431,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/bf34175809d42716bed2042c09d67f1b6ae1af8d8eafd9a0b44ad7bfa88c6e95.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 405,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/cbc00c4364272d55217293663a6aea5da379f00d1d823bab750cc58303ab8e13.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 454,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/d77bd5267b5400b8e00a17b16c6da3a2d2e35f1f96213bbc3800cbb35f4325dc.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 459,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/d85bf59ab4934554e24cf891c61a30bcfc4ebfbed160406f94041c4083900aa5.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 381,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/e9d9f513bdedd2aa743b81ffbd944514a1ea2e3c6b1b7f40648fcafa939e7a2e.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 423,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/f0870d87a847d9cde1ec5e78c6e7465542cac77495c1b635ea9e5f9f32f5cac8.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 492,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/f1495f68d0014167aa6b8f467c5118797272e4e218f474726397b65c2eb01dd3.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 469,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 12,
+      "path": "fixtures/sample-build/explanations/f3a89a595f0d01303a155d96e8519e9af55365760c36619599877a9e6754abd5.json",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1916,
       "changes": 1,
       "env": [],
@@ -32514,7 +34200,7 @@
     },
     {
       "binary": false,
-      "bytes": 2054,
+      "bytes": 2119,
       "changes": 18,
       "env": [],
       "envDynamic": false,
@@ -32523,7 +34209,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 61,
+      "lines": 62,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -35958,7 +37644,7 @@
     {
       "binary": false,
       "bytes": 19829,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35978,7 +37664,7 @@
         "welcome"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 552,
@@ -35988,7 +37674,7 @@
     {
       "binary": false,
       "bytes": 6274,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -36001,7 +37687,7 @@
         "parseCommand"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 141,
@@ -36161,12 +37847,12 @@
     {
       "binary": false,
       "bytes": 12951,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "7b834f104e29790e50867b07aa8ca6398b51e6da",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 295,
@@ -36198,12 +37884,12 @@
     {
       "binary": false,
       "bytes": 3908,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 83,
@@ -37180,7 +38866,7 @@
     {
       "binary": false,
       "bytes": 6446,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37196,7 +38882,7 @@
         "buildingAt"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 208,
@@ -37206,12 +38892,12 @@
     {
       "binary": false,
       "bytes": 10254,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 266,
@@ -37224,7 +38910,7 @@
     {
       "binary": false,
       "bytes": 10509,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37245,8 +38931,8 @@
         "unview",
         "viewTransform"
       ],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 287,
@@ -37273,8 +38959,8 @@
     },
     {
       "binary": false,
-      "bytes": 20458,
-      "changes": 2,
+      "bytes": 20971,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37287,10 +38973,10 @@
         "standingHeight"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 591,
+      "lines": 598,
       "path": "packages/stage/src/draw.ts",
       "test": false
     },
@@ -37390,7 +39076,7 @@
     {
       "binary": false,
       "bytes": 3099,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37405,7 +39091,7 @@
         "subFace"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 74,
@@ -37414,18 +39100,18 @@
     },
     {
       "binary": false,
-      "bytes": 558,
-      "changes": 1,
+      "bytes": 587,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "*"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 15,
+      "lines": 16,
       "path": "packages/stage/src/index.ts",
       "test": false
     },
@@ -37496,7 +39182,7 @@
     {
       "binary": false,
       "bytes": 3324,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37507,7 +39193,7 @@
         "toPicture"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 92,
@@ -37616,7 +39302,7 @@
     {
       "binary": false,
       "bytes": 11792,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37646,11 +39332,54 @@
         "street"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
+      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 345,
       "path": "packages/stage/src/street.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4347,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 101,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/typing.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 5014,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "FALL_MS",
+        "FileChange",
+        "Op",
+        "READ_MS",
+        "TypedLine",
+        "TypingPlan",
+        "lineDiff",
+        "typedAt",
+        "typingPlan"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 140,
+      "path": "packages/stage/src/typing.ts",
       "test": false
     },
     {
@@ -38211,7 +39940,7 @@
     },
     {
       "binary": false,
-      "bytes": 735,
+      "bytes": 762,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -38220,7 +39949,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 28,
+      "lines": 29,
       "path": "packages/workbench/package.json",
       "test": false
     },
@@ -38254,7 +39983,29 @@
     },
     {
       "binary": false,
-      "bytes": 16459,
+      "bytes": 5257,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Block",
+        "BlockKind",
+        "splitBlocks"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 131,
+      "packages": [
+        "typescript"
+      ],
+      "path": "packages/workbench/src/blocks.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 18166,
       "changes": 2,
       "env": [
         "HOME",
@@ -38274,6 +40025,7 @@
         "checkedSentence",
         "complete",
         "ensurePackages",
+        "explainLift",
         "pauseBuild",
         "startBuild"
       ],
@@ -38281,7 +40033,7 @@
       "lastCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 426,
+      "lines": 471,
       "path": "packages/workbench/src/build.ts",
       "test": false
     },
@@ -38335,7 +40087,7 @@
     },
     {
       "binary": false,
-      "bytes": 2618,
+      "bytes": 3328,
       "changes": 1,
       "env": [
         "HOME",
@@ -38351,7 +40103,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 71,
+      "lines": 82,
       "packages": [
         "zod"
       ],
@@ -38406,6 +40158,66 @@
     },
     {
       "binary": false,
+      "bytes": 4761,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "CodeView",
+        "changeAt",
+        "codeView",
+        "figuresOfBlock",
+        "fileAt",
+        "productFigures"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 128,
+      "path": "packages/workbench/src/code.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 9112,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BlockFigure",
+        "Confirmed",
+        "Drafted",
+        "EXPLAIN_COMPONENT",
+        "EXPLANATIONS_FILE",
+        "Explanation",
+        "bannedWords",
+        "confirmExplanation",
+        "confirmedIn",
+        "drafted",
+        "explainFile",
+        "explanationsFor"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 264,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/workbench/src/explain.ts",
+      "tables": [
+        {
+          "name": "audit_log",
+          "reads": false,
+          "writes": true
+        }
+      ],
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 4782,
       "changes": 1,
       "env": [],
@@ -38433,7 +40245,7 @@
     },
     {
       "binary": false,
-      "bytes": 421,
+      "bytes": 534,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -38444,7 +40256,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 14,
+      "lines": 18,
       "path": "packages/workbench/src/index.ts",
       "test": false
     },
@@ -38642,6 +40454,26 @@
     },
     {
       "binary": false,
+      "bytes": 3470,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "EditEvent",
+        "readEdits",
+        "startTail",
+        "typingFile"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 100,
+      "path": "packages/workbench/src/tail.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 10574,
       "changes": 3,
       "env": [],
@@ -38695,6 +40527,24 @@
     },
     {
       "binary": false,
+      "bytes": 3351,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 92,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/blocks.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 3439,
       "changes": 1,
       "env": [],
@@ -38709,6 +40559,34 @@
         "vitest"
       ],
       "path": "packages/workbench/test/builders.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7947,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 208,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
+      "path": "packages/workbench/test/explain.test.ts",
+      "tables": [
+        {
+          "name": "sites",
+          "reads": false,
+          "writes": true
+        }
+      ],
       "test": true
     },
     {
@@ -38849,6 +40727,24 @@
     },
     {
       "binary": false,
+      "bytes": 2505,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 59,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/tail.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 7278,
       "changes": 6,
       "env": [
@@ -38903,7 +40799,7 @@
     },
     {
       "binary": false,
-      "bytes": 108926,
+      "bytes": 108992,
       "changes": 17,
       "env": [],
       "envDynamic": false,
@@ -38912,7 +40808,7 @@
       "lastCommit": "609a7ab9d69596374d91cbddf2ead661516d4443",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3456,
+      "lines": 3459,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -39046,6 +40942,21 @@
       "layerRule": "overlay: packages/db, prompts",
       "lines": 9,
       "path": "prompts/discovery.v1.md",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1511,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 13,
+      "path": "prompts/explain.v1.md",
       "test": false
     },
     {
@@ -39543,6 +41454,25 @@
     },
     {
       "binary": false,
+      "bytes": 408,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "SAMPLE_BUILD",
+        "makeSample",
+        "sampleLifts"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 6,
+      "path": "scripts/make-sample.d.mts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 2713,
       "changes": 3,
       "env": [
@@ -39583,6 +41513,24 @@
           "writes": false
         }
       ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4601,
+      "changes": 0,
+      "env": [
+        "OPENAI_MODEL",
+        "RAMA_DRAFTER"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 104,
+      "path": "scripts/record-explanations.ts",
       "test": false
     },
     {
@@ -40581,6 +42529,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -40593,12 +42542,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -40609,6 +42561,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -40971,6 +42924,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -40983,12 +42937,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -40999,6 +42956,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41029,8 +42987,10 @@
         "apps/rama/components/harmony/ui.tsx",
         "apps/rama/components/inspector/Inspector.tsx",
         "apps/rama/components/inspector/words.ts",
+        "apps/rama/components/lakefront/BuildingEnglish.tsx",
         "apps/rama/components/lakefront/BuildingView.tsx",
         "apps/rama/components/lakefront/CameraRing.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/lakefront/StreetView.tsx",
         "apps/rama/components/lakefront/Words.tsx",
         "apps/rama/components/lakefront/live.ts",
@@ -41133,6 +43093,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -41145,12 +43106,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -41161,6 +43125,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41279,6 +43244,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -41291,12 +43257,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -41307,6 +43276,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41423,6 +43393,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -41435,12 +43406,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -41451,6 +43425,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41569,6 +43544,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -41581,12 +43557,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -41597,6 +43576,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41716,6 +43696,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -41728,12 +43709,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -41744,6 +43728,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41863,6 +43848,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -41875,12 +43861,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -41891,6 +43880,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -41999,6 +43989,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -42011,12 +44002,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -42027,6 +44021,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -42145,6 +44140,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -42157,12 +44153,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -42173,6 +44172,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],
@@ -42267,6 +44267,7 @@
         "packages/stage/src/replay.ts",
         "packages/stage/src/services.ts",
         "packages/stage/src/street.ts",
+        "packages/stage/src/typing.ts",
         "packages/stage/src/words.ts",
         "packages/trace/src/capture.ts",
         "packages/trace/src/code.ts",
@@ -42279,12 +44280,15 @@
         "packages/trace/src/showroom.ts",
         "packages/trace/src/trail.ts",
         "packages/workbench/src/actions.ts",
+        "packages/workbench/src/blocks.ts",
         "packages/workbench/src/build.ts",
         "packages/workbench/src/builders/claude-code.ts",
         "packages/workbench/src/builders/index.ts",
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/code.ts",
+        "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
@@ -42295,6 +44299,7 @@
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
         "packages/workbench/src/states.ts",
+        "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
         "packages/workbench/src/tests.ts"
       ],

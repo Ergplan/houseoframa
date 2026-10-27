@@ -1,0 +1,12 @@
+{
+  "hash": "3cc2fa6066c3bb90ba2e18d6c339fb7fb2cff3038e6949cc7c7bb6aa7af08555",
+  "path": "features/welcome/plan.ts",
+  "kind": "type",
+  "name": "Building",
+  "sentence": "Describes a Building with an id, a name, a description of what it does, and a list of screens.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-9",
+  "at": "2026-10-27T06:09:42.161Z"
+}

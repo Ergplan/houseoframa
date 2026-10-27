@@ -1,0 +1,12 @@
+{
+  "hash": "7017b3a7190838f7750813989e5c66694f5b61538ef56ad82bb0d5058cb05883",
+  "path": "features/welcome/plan.ts",
+  "kind": "function",
+  "name": "planned",
+  "sentence": "Gives the list of buildings on the plan, as listed in .rama/features.json.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-10",
+  "at": "2026-10-27T06:09:44.106Z"
+}

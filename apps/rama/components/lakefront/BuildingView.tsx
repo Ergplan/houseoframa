@@ -28,6 +28,7 @@ import { flagSentence } from './StreetView';
 import { Words } from './Words';
 import { CameraRing } from './CameraRing';
 import { useCamera } from './useCamera';
+import { BuildingEnglish } from './BuildingEnglish';
 
 export interface BuildingProps {
   siteId: string;
@@ -65,6 +66,31 @@ export function BuildingView(p: BuildingProps) {
     y: number;
   } | null>(null);
   const [ready, setReady] = useState(false);
+  // While the builder works a lift, the file it is writing glows in the building and grows (Stage 11).
+  const [writing, setWriting] = useState<{ path: string; lines: number } | null>(null);
+  useEffect(() => {
+    let stop = false;
+    let since = 0;
+    const poll = async () => {
+      try {
+        const r = (await (await fetch(`/api/site/${p.siteId}/typing?since=${since}`)).json()) as {
+          building: boolean;
+          edits: { path: string; after: string | null }[];
+        };
+        since += r.edits.length;
+        const mine = r.edits.filter((e) => p.building.bricks.includes(e.path)).at(-1);
+        if (mine) setWriting({ path: mine.path, lines: (mine.after ?? '').split('\n').length });
+        if (!r.building) setWriting(null);
+        if (!stop && r.building) setTimeout(poll, 1000);
+      } catch {
+        if (!stop) setTimeout(poll, 3000);
+      }
+    };
+    void poll();
+    return () => {
+      stop = true;
+    };
+  }, [p.siteId, p.building.bricks]);
   const canvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const ctx = canvas.current?.getContext('2d');
@@ -82,9 +108,10 @@ export function BuildingView(p: BuildingProps) {
       picked,
       hover: hover?.key ?? null,
       verdicts: p.verdicts,
+      writing,
     });
     setReady(true);
-  }, [pal, sc, p.flag, image, version, picked, hover, p.verdicts, cam]);
+  }, [pal, sc, p.flag, image, version, picked, hover, p.verdicts, cam, writing]);
   useEffect(() => {
     const el = canvas.current;
     if (!el) return;
@@ -256,6 +283,7 @@ export function BuildingView(p: BuildingProps) {
           {trail && open ? trail.title : p.building.name}
         </summary>
         <div className="lake-fold__body">
+          <BuildingEnglish siteId={p.siteId} building={p.building.id} bricks={p.building.bricks} />
           {trail && open ? (
             <Folder title={trail.title} sub={trail.what}>
               <div className="lake-trail eg-on-folder" data-trail={open.key}>

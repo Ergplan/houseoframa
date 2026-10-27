@@ -1,0 +1,12 @@
+{
+  "hash": "617753a3683b39f74296511e7bfac70be8e4a9bdc3482f91218247d8337a0297",
+  "path": "app/layout.tsx",
+  "kind": "component",
+  "name": "RootLayout",
+  "sentence": "Sets the page language to English and shows its content using the system font with a margin of 16.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-2",
+  "at": "2026-10-27T06:09:25.970Z"
+}

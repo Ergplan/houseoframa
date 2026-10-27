@@ -2,9 +2,11 @@
 // the tests). A recording is a folder holding `lifts.json`, which lists each lift's patch and the
 // builder's answer, and the patches themselves (`git format-patch` of the real build). Each lift applies
 // the next patch as the commit the builder made, with its author, message and time, and answers as the
-// builder answered. Nothing is made up: what the recording does not hold, it does not do.
+// builder answered. Nothing is made up: what the recording does not hold, it does not do. Its
+// `explanations/` are the drafter's sentences from the real build, kept by block hash.
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { workDir } from '@rama/blueprint/site';
 import path from 'node:path';
 import { z } from 'zod';
 import { LiftAnswer, type BuilderDriver } from './types.ts';
@@ -63,6 +65,15 @@ export function recorded(dir: string): BuilderDriver {
           } as unknown as NodeJS.ProcessEnv,
         },
       );
+      // The English the drafter wrote beside the real build's blocks, recorded with it (Stage 11): the
+      // pane shows it as drafted and unconfirmed, exactly as it was drafted then.
+      const said = path.join(dir, 'explanations');
+      if (existsSync(said)) {
+        const into = path.join(workDir(), req.siteId, 'explain');
+        mkdirSync(into, { recursive: true });
+        for (const f of readdirSync(said))
+          if (f.endsWith('.json')) copyFileSync(path.join(said, f), path.join(into, f));
+      }
       const { patch: _patch, ...answer } = lift;
       void _patch;
       return { answer, session: null, callId: null, costUsd: null };

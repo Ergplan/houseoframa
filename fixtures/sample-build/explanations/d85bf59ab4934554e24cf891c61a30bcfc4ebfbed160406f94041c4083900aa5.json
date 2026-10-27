@@ -1,0 +1,12 @@
+{
+  "hash": "d85bf59ab4934554e24cf891c61a30bcfc4ebfbed160406f94041c4083900aa5",
+  "path": "features/count-the-days-takings/takings.ts",
+  "kind": "function",
+  "name": "gstOnTakings",
+  "sentence": "Works out “GST on today’s takings” as five percent of the day’s takings, rounded to the nearest paisa.",
+  "figure": "GST on today’s takings",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-47",
+  "at": "2026-10-27T06:11:07.740Z"
+}

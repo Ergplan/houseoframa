@@ -1,0 +1,12 @@
+{
+  "hash": "2c5a07212c5e6397a3d897c648a3f1e9184793e56fe0be118051c19b213aa06d",
+  "path": "rama/define.ts",
+  "kind": "value",
+  "name": "SHOW",
+  "sentence": "Shows counts with Indian digit grouping, amounts held in paise as rupees with 2 decimal places and ₹, and percentages with up to 2 decimal places and %.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-12",
+  "at": "2026-10-27T06:09:48.620Z"
+}

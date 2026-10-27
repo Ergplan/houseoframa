@@ -1,0 +1,12 @@
+{
+  "hash": "5bbd0dbe540b578166a9d53bd9e66a5ec7872ac34a544152ab23f3684382d453",
+  "path": "features/take-an-order/order.ts",
+  "kind": "function",
+  "name": "cupChoice",
+  "sentence": "Writes the cup count in words using no, one, two or three, and many for other counts, with cup for 1 and cups otherwise.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-39",
+  "at": "2026-10-27T06:10:49.626Z"
+}

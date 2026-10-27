@@ -1,0 +1,12 @@
+{
+  "hash": "22a82a84eed9340d504e4af7bd71cf98a7fc742aa97d783dc7c8cfcf66f8da6c",
+  "path": "features/see-todays-orders/orders.ts",
+  "kind": "function",
+  "name": "cupsInWords",
+  "sentence": "Writes the number of cups in words from no to ten, using “many” for other values. Uses “cup” for one and “cups” otherwise.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-30",
+  "at": "2026-10-27T06:10:30.608Z"
+}

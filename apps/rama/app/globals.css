@@ -1232,3 +1232,76 @@ body:has(.rama-stage) {
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
+
+/* Code written inside the glass (Stage 11): the lines in JetBrains Mono, the English beside each block. */
+.code-pane {
+  display: grid;
+  gap: 10px;
+}
+.code-pane__head {
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.code-pane__path {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.code-pane__body {
+  display: grid;
+  gap: 2px;
+  max-height: 70vh;
+  overflow: auto;
+}
+.code-block {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 1fr);
+  gap: 16px;
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+}
+.code-block__lines {
+  margin: 0;
+  font: 400 12.5px/19px var(--font-mono);
+  overflow-x: auto;
+}
+.code-line {
+  display: flex;
+  gap: 12px;
+  white-space: pre;
+}
+.code-line__no {
+  min-width: 2.5em;
+  text-align: right;
+  color: var(--ink-faint, var(--ink-muted));
+  user-select: none;
+}
+.code-line.typed,
+.code-line.typing {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+.code-line.falling {
+  color: var(--red);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.code-caret {
+  display: inline-block;
+  width: 7px;
+  height: 15px;
+  background: var(--harmony);
+  vertical-align: text-bottom;
+}
+.code-block__english {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  font-size: 13px;
+  line-height: 19px;
+}
+@media (max-width: 900px) {
+  .code-block {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

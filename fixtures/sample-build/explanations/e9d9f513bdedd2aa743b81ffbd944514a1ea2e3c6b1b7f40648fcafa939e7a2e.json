@@ -1,0 +1,12 @@
+{
+  "hash": "e9d9f513bdedd2aa743b81ffbd944514a1ea2e3c6b1b7f40648fcafa939e7a2e",
+  "path": "rama/define.ts",
+  "kind": "function",
+  "name": "defineFigures",
+  "sentence": "Keeps the product’s figure definitions unchanged, grouped by their identifiers.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-17",
+  "at": "2026-10-27T06:09:59.689Z"
+}

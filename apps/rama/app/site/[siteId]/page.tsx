@@ -11,6 +11,7 @@ import { SiteShell, auditOf, consoleProps } from '../../../components/workbench/
 import { StreetView } from '../../../components/lakefront/StreetView';
 import { BuildingView } from '../../../components/lakefront/BuildingView';
 import { CodeCamera } from '../../../components/lakefront/CameraRing';
+import { CodePane } from '../../../components/lakefront/CodePane';
 import { placeHref } from '../../../components/lakefront/places';
 
 export const dynamic = 'force-dynamic';
@@ -146,6 +147,7 @@ export default async function SitePage({
   return (
     <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
       <CodeCamera siteId={site.id} start={cameraFrom(q, 'code', chosen?.id ?? null)} />
+      <CodePane siteId={site.id} path={brick ?? null} member={member.name} />
       <div className="site-col">
         <SiteView
           siteId={site.id}

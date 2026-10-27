@@ -1,0 +1,12 @@
+{
+  "hash": "d77bd5267b5400b8e00a17b16c6da3a2d2e35f1f96213bbc3800cbb35f4325dc",
+  "path": "app/page.test.tsx",
+  "kind": "test",
+  "name": "shows the orders so far and each order with its amount",
+  "sentence": "Checks that Today’s orders shows 4 orders so far and 4 order amounts, including two cups, ₹30.00 and ₹45.00.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-20",
+  "at": "2026-10-27T06:10:06.638Z"
+}

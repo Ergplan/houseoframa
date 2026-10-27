@@ -1,0 +1,12 @@
+{
+  "hash": "83c29bf450810ad9643e58c0d7506302c2b08856afdef2608bd27f64e0e0173f",
+  "path": "rama/define.ts",
+  "kind": "type",
+  "name": "FigureInput",
+  "sentence": "Describes an input to a figure: its label, where its value enters the code, and where the value is kept.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-14",
+  "at": "2026-10-27T06:09:53.205Z"
+}

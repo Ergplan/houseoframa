@@ -1,0 +1,12 @@
+{
+  "hash": "5430d1b25bc6ec7746d30b1723e7974288602314b6346eaa32368e1a4bd7df29",
+  "path": "db/orders.ts",
+  "kind": "function",
+  "name": "todaysOrders",
+  "sentence": "Provides the sample list of orders without checking their dates.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-23",
+  "at": "2026-10-27T06:10:16.540Z"
+}

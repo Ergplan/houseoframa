@@ -1,0 +1,12 @@
+{
+  "hash": "212c6b9051aea493bbb8240392cb20d33f087a4bf249baa4afff6fa97f6ee5af",
+  "path": "rama/define.ts",
+  "kind": "type",
+  "name": "FigureDef",
+  "sentence": "Describes a figure’s title, what it tells the reader, how it is worked out, the information it uses, and how it is shown. It can also list additional files to include in the figure’s history.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-16",
+  "at": "2026-10-27T06:09:57.565Z"
+}

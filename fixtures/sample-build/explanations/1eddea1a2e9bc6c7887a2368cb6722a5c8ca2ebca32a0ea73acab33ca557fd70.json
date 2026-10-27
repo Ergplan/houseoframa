@@ -1,0 +1,12 @@
+{
+  "hash": "1eddea1a2e9bc6c7887a2368cb6722a5c8ca2ebca32a0ea73acab33ca557fd70",
+  "path": "features/count-the-days-takings/takings.ts",
+  "kind": "type",
+  "name": "PricedOrder",
+  "sentence": "Describes the order details needed to work out takings: the number of cups and the price of one cup, in paise.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-45",
+  "at": "2026-10-27T06:11:03.892Z"
+}

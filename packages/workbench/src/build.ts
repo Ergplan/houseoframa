@@ -27,6 +27,9 @@ import { commitAll, houseRef } from './products.ts';
 import { layDownScaffold, lintProduct, onHouseStack } from './scaffold.ts';
 import { siteStates } from './states.ts';
 import { runSiteTests } from './tests.ts';
+import { startTail } from './tail.ts';
+import { explainFile } from './explain.ts';
+import { figuresOfBlock, productFigures } from './code.ts';
 
 export const BUILD_COMPONENT = 'rama:workbench-build@0.1.0';
 /** Lifts in one build, at most: a build that needs more stops and says so. */
@@ -337,20 +340,24 @@ export async function build(
     await lift(
       `Lift ${n}`,
       async () => {
-        const answer = await opts.driver.lift({
-          repoDir: site.repoDir,
-          siteId: site.id,
-          session,
-          createdBy: opts.createdBy ?? BUILD_COMPONENT,
-          input: {
-            product,
-            cards,
-            lifts,
-            ask: fixing ? 'fix' : 'next',
-            problems: fixing ? was.last!.problems : [],
-            notYet: was.last?.notYet ?? [],
-          },
-        });
+        // The builder's edits, as it makes them, for the code typed inside the glass (Stage 11).
+        const tail = startTail(site.repoDir, site.id, n, { env });
+        const answer = await opts.driver
+          .lift({
+            repoDir: site.repoDir,
+            siteId: site.id,
+            session,
+            createdBy: opts.createdBy ?? BUILD_COMPONENT,
+            input: {
+              product,
+              cards,
+              lifts,
+              ask: fixing ? 'fix' : 'next',
+              problems: fixing ? was.last!.problems : [],
+              notYet: was.last?.notYet ?? [],
+            },
+          })
+          .finally(() => tail.stop());
         got.answer = answer;
         session = answer.session ?? session;
         cost += answer.costUsd ?? 0;
@@ -363,6 +370,8 @@ export async function build(
           );
         }
         subject = git(site.repoDir, ['log', '-1', '--format=%s']);
+        // Plain English for the blocks the lift changed, drafted beside the build, never holding it up.
+        void explainLift(site, before!, after, env);
         const check = await checkLift(site, base!, env);
         got.check = check;
         was.last = check;
@@ -423,4 +432,40 @@ async function pushIfOnGitHub(
   } catch (err) {
     return ` ${(err as Error).message}`;
   }
+}
+
+/**
+ * Drafts the English for every block a lift changed (Stage 11): one drafter call per block not yet
+ * explained, cached by hash. Without a drafter key nothing is drafted and the pane says "Not explained
+ * yet"; a failure here never touches the build.
+ */
+export async function explainLift(
+  site: SiteLocation,
+  from: string,
+  to: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<{ drafted: number; failed: string | null }> {
+  let drafted = 0;
+  let failed: string | null = null;
+  try {
+    const changed = git(site.repoDir, ['diff', '--name-only', '--diff-filter=AM', from, to])
+      .split('\n')
+      .filter((f) => /\.tsx?$/.test(f));
+    const figures = productFigures(site.repoDir);
+    for (const file of changed) {
+      const source = git(site.repoDir, ['show', `${to}:${file}`]);
+      const r = await explainFile(site, file, source, (b) => figuresOfBlock(file, b, figures), {
+        env,
+        createdBy: BUILD_COMPONENT,
+      });
+      drafted += r.drafted;
+      if (r.failed) {
+        failed = r.failed;
+        break;
+      }
+    }
+  } catch (err) {
+    failed = (err as Error).message;
+  }
+  return { drafted, failed };
 }

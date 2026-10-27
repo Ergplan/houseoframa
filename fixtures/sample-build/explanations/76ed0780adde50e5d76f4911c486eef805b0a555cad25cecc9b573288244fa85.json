@@ -1,0 +1,12 @@
+{
+  "hash": "76ed0780adde50e5d76f4911c486eef805b0a555cad25cecc9b573288244fa85",
+  "path": "db/schema.ts",
+  "kind": "function",
+  "name": "provenance",
+  "sentence": "Defines required details for a record: its site, when it was created, and who created it. The creation time includes a time zone and defaults to the current time.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-7",
+  "at": "2026-10-27T06:09:38.428Z"
+}
