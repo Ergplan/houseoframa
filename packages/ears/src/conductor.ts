@@ -3,7 +3,7 @@
 // voice to read (builder lines), where to look, and what was decided. The voice decides nothing and
 // writes nothing: a card is decided here, by the person whose yes it was, to the question the voice
 // was given to ask (Invariant 9). Plain code except two drafted texts, each a builder line: the next
-// question (drafter seat) and the design explained aloud (narrate.v1).
+// question (drafter seat) and the design explained aloud (narrate.v2).
 import type { Decision } from '@rama/shared';
 import { seatProblems, type Seats } from '@rama/model';
 import { brainsSpoken, parseBrains } from './brains.ts';

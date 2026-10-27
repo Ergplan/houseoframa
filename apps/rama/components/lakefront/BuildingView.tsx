@@ -40,6 +40,13 @@ export function BuildingView(p: BuildingProps) {
   const { image, version } = useImages();
   const sc = p.scene;
   const [picked, setPicked] = useState<string | null>(p.initialFigure);
+  // The figure picked is in the address, so the voice's "this number" means the one in front (Stage 10).
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (picked) url.searchParams.set('figure', picked);
+    else url.searchParams.delete('figure');
+    window.history.replaceState(window.history.state, '', url);
+  }, [picked]);
   const [hover, setHover] = useState<{
     key: string | null;
     text: string;

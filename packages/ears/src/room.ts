@@ -102,7 +102,7 @@ const Narration = z.object({
 });
 
 /**
- * The design explained aloud. The builder seat writes it from the decided cards (narrate.v1); a line
+ * The design explained aloud. The builder seat writes it from the decided cards (narrate.v2); a line
  * holding a number no card holds is refused, and so is a narration that cannot be had: then each card is
  * read as it was decided, word for word. Which it was is said in `by`.
  */
@@ -134,7 +134,7 @@ export async function narrateDesign(
   try {
     const res = await (opts.call ?? call)({
       name: 'narrate',
-      version: 1,
+      version: 2,
       input: {
         product: site.name,
         cards: decided.map((c) => ({ title: c.title, statement: c.statement })),
