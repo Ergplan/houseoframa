@@ -64,6 +64,14 @@ function deps() {
       callId: 'c',
       draft: true as const,
     })),
+    ideaAsk: vi.fn(async () => ({
+      id: 'r1',
+      speaker: 'Drafter',
+      text: 'Good. **Two shifts**, then:\n\n- one by day\n- one by night\n\n```cards\nx\n```',
+      draft: true,
+      at: '2026-10-28T10:00:00Z',
+      meta: { cards: [{ title: 'Two shifts', statement: 'The factory runs two shifts.' }] },
+    })),
     now: () => new Date('2026-10-27T10:00:00Z'),
     flowStep: (_s, key, step) =>
       key === 'todays-total/todays-takings' && step === 0 ? '4 rows left data/orders.json.' : null,
@@ -118,6 +126,56 @@ describe('the voice’s routes', () => {
       go: '/site/chai?b=count',
       board: false,
       decided: null,
+    });
+  });
+
+  it('in the idea room, what is said goes to the drafter and the voice reads its reply, marked a draft', async () => {
+    const { d, room } = deps();
+    const start = await body(
+      await handleStart(site, tara, { people: ['Asha Rao'], idea: true }, d),
+    );
+    expect((start.lines as { text: string }[])[0]!.text).toMatch(
+      /^Welcome, Asha Rao\. I am the voice of the idea room\./,
+    );
+    expect(room()).toMatchObject({ idea: true });
+    const r = await body(
+      await handleHeard(
+        site,
+        { speaker: 'Asha Rao', text: 'We run two shifts', files: ['load.csv'], webSearch: true },
+        d,
+      ),
+    );
+    expect(d.hear).not.toHaveBeenCalled();
+    expect(d.ideaAsk).toHaveBeenCalledWith(site, {
+      speaker: 'Asha Rao',
+      text: 'We run two shifts',
+      files: ['load.csv'],
+      webSearch: true,
+    });
+    expect(r.lines).toMatchObject([
+      {
+        kind: 'idea',
+        text: 'Good. Two shifts, then: one by day. one by night.',
+        drafted: 'drafter',
+      },
+      {
+        kind: 'idea',
+        text: 'The drafter proposes a card: Two shifts. Say yes to it on the screen to write it down.',
+      },
+    ]);
+    expect(r.idea).toMatchObject({ speaker: 'Asha Rao', turn: { id: 'r1', draft: true } });
+    // What the voice reads is a line it was given, so the mouth check counts it.
+    expect(room()!.given).toContain('Good. Two shifts, then: one by day. one by night.');
+    const failing = deps();
+    failing.d.ideaAsk = async () => {
+      throw new Error('ANTHROPIC_API_KEY is not set');
+    };
+    await handleStart(site, tara, { people: ['Asha Rao'], idea: true }, failing.d);
+    expect(
+      await body(await handleHeard(site, { speaker: 'Asha Rao', text: 'Hi' }, failing.d)),
+    ).toEqual({
+      ok: false,
+      sentence: 'The drafter could not answer: ANTHROPIC_API_KEY is not set',
     });
   });
 

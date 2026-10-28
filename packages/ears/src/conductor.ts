@@ -45,7 +45,8 @@ export type LineKind =
   | 'what-if'
   | 'narration'
   | 'ask-build'
-  | 'refusal';
+  | 'refusal'
+  | 'idea';
 
 /** A builder line: the only text the voice is given to say. */
 export interface Line {
@@ -91,6 +92,11 @@ export interface RoomState {
   endedAt?: string;
   /** The model_calls row of the voice's session, while one is open. */
   voiceCall?: string;
+  /**
+   * The voice is in the product's idea room (Stage 12): what a person says goes to the drafter, as a
+   * message typed in the room does, and the voice reads the drafter's reply. No act is conducted.
+   */
+  idea?: boolean;
 }
 
 export interface Building {
@@ -180,6 +186,33 @@ export function welcome(state: RoomState): Line[] {
       text: `Welcome, ${listed(state.people)}. I am the voice of House of Rama. I ask, I read back, and I write nothing down myself: what is decided is decided by your yes. Tell me the idea, in your own words.`,
     },
   ];
+}
+
+/** The idea room's welcome: what the voice does there, and an invitation to talk. */
+export function ideaWelcome(state: RoomState): Line[] {
+  return [
+    {
+      kind: 'welcome',
+      text: `Welcome, ${listed(state.people)}. I am the voice of the idea room. Talk to me about the idea, as roughly as you like: the drafter answers, and I read you what it says. Nothing is decided until you say yes on the screen. So, tell me about it.`,
+    },
+  ];
+}
+
+/** The drafter's Markdown as words to read aloud: no marks, list items as sentences. */
+export function spoken(markdown: string): string {
+  return markdown
+    .replace(/```[\s\S]*?```/g, ' ')
+    .split('\n')
+    .map((l) => l.replace(/^\s*#{1,6}\s+/, '').replace(/^\s*([-*]|\d+\.)\s+/, ''))
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => (/[.!?:;…]$/.test(l) ? l : `${l}.`))
+    .join(' ')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /** What to ask next in act 2: the brains first, then each open card, then the drafter's question. */

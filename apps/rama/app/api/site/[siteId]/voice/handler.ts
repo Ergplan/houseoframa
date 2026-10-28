@@ -7,7 +7,9 @@ import { z } from 'zod';
 import type { SiteLocation } from '@rama/blueprint/site';
 import type { Member } from '@rama/db';
 import {
+  ideaWelcome,
   mouthCheck,
+  spoken,
   startState,
   welcome,
   type Line,
@@ -16,6 +18,7 @@ import {
   type RoomState,
 } from '@rama/ears';
 import type { BoardDraft } from '@rama/board';
+import type { RoomTurn } from '@rama/workbench';
 import { placeHref } from '../../../../../components/lakefront/places';
 
 export interface VoiceDeps {
@@ -49,6 +52,14 @@ export interface VoiceDeps {
     image: { mediaType: 'image/jpeg' | 'image/png' | 'image/webp'; base64: string },
   ) => Promise<BoardDraft>;
   now: () => Date;
+  /**
+   * What a person said in the idea room (Stage 12), asked of the drafter as a typed message is: the
+   * drafter's reply, kept as a draft turn of the room.
+   */
+  ideaAsk: (
+    site: SiteLocation,
+    input: { speaker: string; text: string; files: string[]; webSearch: boolean },
+  ) => Promise<RoomTurn>;
   /** A step of a figure's flow, as House of Rama derived it (packages/trace flowOf); null when none. */
   flowStep: (site: SiteLocation, figureKey: string, step: number) => string | null;
 }
@@ -100,7 +111,11 @@ async function answer(
 /** POST voice/start {people}: opens the room, act 1. */
 export async function handleStart(site: SiteLocation, who: Member, raw: unknown, deps: VoiceDeps) {
   const body = z
-    .object({ people: z.array(z.string().min(1).max(80)).min(1).max(8) })
+    .object({
+      people: z.array(z.string().min(1).max(80)).min(1).max(8),
+      /** The session is held in the idea room (Stage 12). */
+      idea: z.boolean().default(false),
+    })
     .safeParse(raw);
   if (!body.success) return fail(400, 'Choose who is in the room.');
   const known = new Set(deps.members());
@@ -111,8 +126,9 @@ export async function handleStart(site: SiteLocation, who: Member, raw: unknown,
     `Session with the voice, ${deps.now().toISOString().slice(0, 10)}`,
     who,
   );
-  const state = startState(site.id, sessionId, [...new Set(body.data.people)]);
-  const lines = welcome(state);
+  const opened = startState(site.id, sessionId, [...new Set(body.data.people)]);
+  const state = body.data.idea ? { ...opened, idea: true } : opened;
+  const lines = body.data.idea ? ideaWelcome(state) : welcome(state);
   return answer(site, deps, { lines, state: { ...state, given: lines.map((l) => l.text) } });
 }
 
@@ -123,6 +139,9 @@ export async function handleHeard(site: SiteLocation, raw: unknown, deps: VoiceD
       speaker: z.string().min(1).max(80),
       text: z.string().trim().min(1).max(2000),
       focus: z.string().max(200).nullish(),
+      /** In the idea room: the room's files sent with what was said, and whether to search the web. */
+      files: z.array(z.string().min(1).max(200)).max(12).default([]),
+      webSearch: z.boolean().default(false),
     })
     .safeParse(raw);
   if (!body.success) return fail(400, 'expected {speaker, text}');
@@ -130,12 +149,44 @@ export async function handleHeard(site: SiteLocation, raw: unknown, deps: VoiceD
   if (!state) return fail(409, 'The room is not open: start a session with the voice first.');
   if (!state.people.includes(body.data.speaker))
     return fail(400, `${body.data.speaker} is not in the room.`);
+  if (state.idea) return ideaHeard(site, state, body.data, deps);
   const s = body.data.focus ? { ...state, focus: body.data.focus } : state;
   try {
     return await answer(site, deps, await deps.hear(site, s, body.data.speaker, body.data.text));
   } catch (err) {
     return fail(409, (err as Error).message);
   }
+}
+
+/**
+ * In the idea room the drafter answers what was said, and its reply is the line the voice reads (the
+ * drafter's draft, marked as one); a card it proposes is said by title, to be decided on the screen.
+ */
+async function ideaHeard(
+  site: SiteLocation,
+  state: RoomState,
+  said: { speaker: string; text: string; files: string[]; webSearch: boolean },
+  deps: VoiceDeps,
+) {
+  let turn: RoomTurn;
+  try {
+    turn = await deps.ideaAsk(site, said);
+  } catch (err) {
+    return fail(502, `The drafter could not answer: ${(err as Error).message}`);
+  }
+  const lines: Line[] = [{ kind: 'idea', text: spoken(turn.text), drafted: 'drafter' }];
+  const cards = turn.meta?.cards ?? [];
+  if (cards.length)
+    lines.push({
+      kind: 'idea',
+      text: `The drafter proposes ${cards.length === 1 ? 'a card' : `${cards.length} cards`}: ${cards.map((c) => c.title).join('; ')}. Say yes to ${cards.length === 1 ? 'it' : 'each'} on the screen to write ${cards.length === 1 ? 'it' : 'them'} down.`,
+    });
+  return answer(
+    site,
+    deps,
+    { lines, state: { ...state, given: [...state.given, ...lines.map((l) => l.text)] } },
+    { idea: { speaker: said.speaker, text: said.text, files: said.files, turn } },
+  );
 }
 
 /**

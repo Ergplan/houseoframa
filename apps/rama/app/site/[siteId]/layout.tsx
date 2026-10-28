@@ -38,6 +38,7 @@ export default async function SiteLayout({
             present={member.name}
             mode={await voiceMode(site.id)}
             open={open}
+            idea={open ? Boolean(room!.idea) : false}
             people={open ? room!.people : []}
             act={open ? room!.act : 1}
             clips={process.env.RAMA_VOICE_CLIPS === '1'}

@@ -1,10 +1,19 @@
 // The voice routes' deps on the real records (Stage 10), and whether the room can have the real voice.
 import { readMembers, secretFor, type Member } from '@rama/db';
 import { startSession, addTurn } from '@rama/ceremony';
-import { agree, EARS_COMPONENT, hear, linesToSay, readRoom, roomDeps, writeRoom } from '@rama/ears';
+import {
+  agree,
+  EARS_COMPONENT,
+  hear,
+  linesToSay,
+  memberNamed,
+  readRoom,
+  roomDeps,
+  writeRoom,
+} from '@rama/ears';
 import { readBoard } from '@rama/board';
 import { openVoice, recordVoiceLine, vendorEntry } from '@rama/model';
-import { seatsOf } from '@rama/workbench';
+import { askDrafter, seatsOf } from '@rama/workbench';
 import { flowOf, readCapture } from '@rama/trace';
 import type { VoiceDeps } from '../app/api/site/[siteId]/voice/handler';
 import { jobDb } from './jobs';
@@ -59,6 +68,15 @@ export function voiceDeps(): VoiceDeps {
     },
     board: (site, who, image) =>
       readBoard({ siteId: site.id, product: site.name, image, by: who.name, createdBy: who.id }),
+    ideaAsk: (site, said) =>
+      jobDb(async (db) =>
+        askDrafter(db, site, {
+          person: await memberNamed(db, said.speaker),
+          text: said.text,
+          files: said.files,
+          webSearch: said.webSearch,
+        }),
+      ),
     now: () => new Date(),
     flowStep: (site, key, step) => {
       const capture = readCapture(site.id);

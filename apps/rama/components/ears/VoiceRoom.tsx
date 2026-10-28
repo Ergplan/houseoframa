@@ -170,6 +170,7 @@ export function VoiceRoom({
   present,
   mode,
   open,
+  idea: ideaOpen,
   people: roomPeople,
   act: startAct,
   clips,
@@ -181,6 +182,8 @@ export function VoiceRoom({
   mode: VoiceModeView;
   /** Whether a session with the voice is open on the server. */
   open: boolean;
+  /** The open session is held in the idea room (Stage 12): the drafter answers, the voice reads it. */
+  idea: boolean;
   people: string[];
   act: number;
   /** Whether a recorded clip may stand in for the microphone (the recorded rehearsal). */
@@ -202,6 +205,7 @@ export function VoiceRoom({
   const [typed, setTyped] = useState('');
   /** The session is by chat: no microphone, and the voice's lines are shown, not spoken. */
   const chat = useRef(false);
+  const [ideaMode, setIdeaMode] = useState(ideaOpen);
   const [writer, setWriter] = useState(
     roomPeople.length && !roomPeople.includes(present) ? roomPeople[0]! : present,
   );
@@ -314,14 +318,32 @@ export function VoiceRoom({
   );
 
   const heard = useCallback(
-    async (speaker: string, text: string) => {
+    async (
+      speaker: string,
+      text: string,
+      extra: { files?: string[]; webSearch?: boolean } = {},
+    ) => {
       setTalk((t) => [...t, { speaker, text }]);
       setState('thinking');
       setCaption(`${speaker}: ${text}`);
+      // In the idea room the conversation is the room's: it shows the turn and the drafter's reply.
+      if (ideaMode)
+        window.dispatchEvent(
+          new CustomEvent('rama:idea-asking', { detail: { speaker, text, files: extra.files } }),
+        );
       const focus = new URLSearchParams(window.location.search).get('figure');
-      await speak(await post('voice/heard', { speaker, text, focus }));
+      const r = (await post('voice/heard', { speaker, text, focus, ...extra })) as Reply & {
+        idea?: { turn: unknown };
+      };
+      if (ideaMode)
+        window.dispatchEvent(
+          new CustomEvent('rama:idea-turn', {
+            detail: r.ok && r.idea ? { turn: r.idea.turn } : { error: r.sentence },
+          }),
+        );
+      await speak(r);
     },
-    [post, speak],
+    [post, speak, ideaMode],
   );
 
   const connect = useCallback(
@@ -344,8 +366,9 @@ export function VoiceRoom({
     [mode.mode, siteId, heard],
   );
 
-  const begin = async (byChat = false) => {
-    const r = await post('voice/start', { people: chosen });
+  const begin = async (byChat = false, idea = false) => {
+    const r = await post('voice/start', { people: chosen, idea });
+    setIdeaMode(idea);
     if (!r.ok) return setError(r.sentence ?? 'The room could not open.');
     setPeople(chosen);
     setWriter(chosen.includes(present) ? present : chosen[0]!);
@@ -354,12 +377,35 @@ export function VoiceRoom({
 
   // "Talk with the voice" in the idea room (Stage 12): the session opens with the person signed in.
   useEffect(() => {
-    const on = () => {
-      if (!open && !connected) void begin();
+    const on = (e: Event) => {
+      if (!open && !connected)
+        void begin(false, Boolean((e as CustomEvent<{ idea?: boolean }>).detail?.idea));
     };
     window.addEventListener('rama:voice-start', on);
     return () => window.removeEventListener('rama:voice-start', on);
   });
+
+  // The idea room sends what is typed there through the voice while it is on, so the reply is read.
+  useEffect(() => {
+    const say = (e: Event) => {
+      const d = (e as CustomEvent<{ text: string; files?: string[]; webSearch?: boolean }>).detail;
+      void heard(people.includes(present) ? present : people[0]!, d.text, {
+        files: d.files ?? [],
+        webSearch: Boolean(d.webSearch),
+      });
+    };
+    const tell = () =>
+      window.dispatchEvent(
+        new CustomEvent('rama:voice-state', { detail: { on: connected && ideaMode } }),
+      );
+    tell();
+    window.addEventListener('rama:voice-say', say);
+    window.addEventListener('rama:voice-ask-state', tell);
+    return () => {
+      window.removeEventListener('rama:voice-say', say);
+      window.removeEventListener('rama:voice-ask-state', tell);
+    };
+  }, [connected, ideaMode, heard, people, present]);
 
   // "Close ideation" from the console comes here as ?act=agree.
   const agreeAsked = search.get('act') === 'agree';
@@ -511,7 +557,7 @@ export function VoiceRoom({
           {board}
         </p>
       ) : null}
-      {talk.length ? (
+      {talk.length && !ideaMode ? (
         <ol className="voice-room__transcript" data-testid="voice-transcript" ref={transcript}>
           {talk.map((t, i) => (
             <li key={i} className={t.speaker === 'Rama' ? 'agent' : ''}>
@@ -527,7 +573,7 @@ export function VoiceRoom({
           ))}
         </ol>
       ) : null}
-      {connected ? (
+      {connected && !ideaMode ? (
         // The chat: the same turn as a spoken one, typed; the voice's answer comes back in the transcript.
         <form
           className="voice-room__typed"

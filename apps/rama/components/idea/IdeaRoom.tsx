@@ -120,6 +120,8 @@ export function IdeaRoom(p: IdeaRoomProps) {
   const [pad, setPad] = useState(p.scratchpad.text);
   const [padSaved, setPadSaved] = useState(p.scratchpad);
   const [decided, setDecided] = useState(p.decided);
+  /** The voice is on in this room: what is typed goes through it, so the reply is read aloud too. */
+  const [voiceOn, setVoiceOn] = useState(false);
   const list = useRef<HTMLDivElement | null>(null);
   const picker = useRef<HTMLInputElement | null>(null);
   const box = useRef<HTMLTextAreaElement | null>(null);
@@ -127,6 +129,42 @@ export function IdeaRoom(p: IdeaRoomProps) {
   useEffect(() => {
     list.current?.scrollTo({ top: list.current.scrollHeight, behavior: 'smooth' });
   }, [turns, thinking]);
+
+  // The voice in the room (Stage 12): the turns it carries are shown here, as typed ones are.
+  useEffect(() => {
+    const state = (e: Event) => setVoiceOn(Boolean((e as CustomEvent<{ on: boolean }>).detail?.on));
+    const asking = (e: Event) => {
+      const d = (e as CustomEvent<{ speaker: string; text: string; files?: string[] }>).detail;
+      setTurns((t) => [
+        ...t,
+        {
+          id: `local-${Date.now()}`,
+          speaker: d.speaker,
+          text: d.text,
+          draft: false,
+          at: new Date().toISOString(),
+          ...(d.files?.length ? { meta: { files: d.files } } : {}),
+        },
+      ]);
+      setNote(null);
+      setThinking(true);
+    };
+    const answered = (e: Event) => {
+      const d = (e as CustomEvent<{ turn?: RoomTurnView; error?: string }>).detail;
+      if (d.turn) setTurns((t) => [...t, d.turn!]);
+      else setNote(d.error ?? 'The drafter could not answer.');
+      setThinking(false);
+    };
+    window.addEventListener('rama:voice-state', state);
+    window.addEventListener('rama:idea-asking', asking);
+    window.addEventListener('rama:idea-turn', answered);
+    window.dispatchEvent(new CustomEvent('rama:voice-ask-state'));
+    return () => {
+      window.removeEventListener('rama:voice-state', state);
+      window.removeEventListener('rama:idea-asking', asking);
+      window.removeEventListener('rama:idea-turn', answered);
+    };
+  }, []);
 
   const decidedTitles = useMemo(() => new Map(decided.map((d) => [d.title, d.by])), [decided]);
 
@@ -167,6 +205,17 @@ export function IdeaRoom(p: IdeaRoomProps) {
   const send = async (words = text) => {
     const message = words.trim();
     if (!message || thinking) return;
+    if (voiceOn) {
+      // The voice carries it: the room shows the turn and the reply when it comes, and the voice reads it.
+      window.dispatchEvent(
+        new CustomEvent('rama:voice-say', {
+          detail: { text: message, files: attached, webSearch },
+        }),
+      );
+      setText('');
+      setAttached([]);
+      return;
+    }
     const mine: RoomTurnView = {
       id: `local-${Date.now()}`,
       speaker: p.member,
@@ -240,13 +289,23 @@ export function IdeaRoom(p: IdeaRoomProps) {
             <span className="eg-chip" title="Who answers in this room">
               {p.drafter} answers here
             </span>
-            <button
-              type="button"
-              className="eg-btn eg-btn--sm"
-              onClick={() => window.dispatchEvent(new CustomEvent('rama:voice-start'))}
-            >
-              Talk with the voice
-            </button>
+            {voiceOn ? (
+              <span className="eg-chip eg-chip--accent">
+                The voice is on: hold to talk below, or write here
+              </span>
+            ) : (
+              <button
+                type="button"
+                className="eg-btn eg-btn--sm"
+                onClick={() =>
+                  window.dispatchEvent(
+                    new CustomEvent('rama:voice-start', { detail: { idea: true } }),
+                  )
+                }
+              >
+                Talk with the voice
+              </button>
+            )}
           </div>
         </header>
 
