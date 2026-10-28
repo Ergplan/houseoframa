@@ -160,7 +160,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
 ## Reviewer findings
 
-The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 14 times; every run is in `docs/reports/stage-11.review.md`. Runs 13 and 14 came after the plan's sixth part, the ground opened, was built.
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 15 times; every run is in `docs/reports/stage-11.review.md`. Runs 13 to 15 came after the plan's sixth part, the ground opened, was built.
 
 Fixed in code:
 
@@ -195,7 +195,7 @@ Fixed in code:
 - **Run 13** (the first over the ground opened). The code level read a file of a product's checkout through a link to a file outside it. A file is now read only when it resolves inside the checkout.
 - **Run 14.** The live tail of a lift had the same opening: a link the builder wrote to a file elsewhere would have been followed and its text typed in. The tail now reads only files inside the checkout, through the same check.
 
-Run 12 found no code defect; its one finding, a report claim, is corrected.
+Runs 12 and 15 found no code defect; run 12's one finding, a report claim, is corrected, and run 15's only finding is the standing cannot-tell on (d).
 
 Report claims corrected (runs 1, 2, 4, 5, 6, 9, 12 and 14): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, how many files a replayed lift types in, and the number of reviewer runs.
 
@@ -209,9 +209,9 @@ Not resolved by code:
 
 | What                                                              | Model             | Calls | Cost     |
 | ----------------------------------------------------------------- | ----------------- | ----- | -------- |
-| Independent reviewer                                              | gpt-6.1-sol       | 14    | ₹508     |
+| Independent reviewer                                              | gpt-6.1-sol       | 15    | ₹563     |
 | Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215 | ₹292     |
-| **Recorded total**                                                |                   |       | **₹801** |
+| **Recorded total**                                                |                   |       | **₹856** |
 
 The ground opened makes no model call: its columns are read from the code and its rows from the database.
 
@@ -224,6 +224,7 @@ Not in that table:
 
 ## Open questions
 
+- **The sample's orders in its own database.** The stall still reads its day from a file, so its orders plot opens empty. Rebuilding the sample to keep its orders in the database it now has would show real rows in Test drive. That is a new recorded build. Shall it be done?
 - **Pipes across the Street.** Should a trail that crosses into another building's code get pipes along the Street's roads? It is a picture-only change, with no change to the record.
 - **The flow in replay.** Keeping each commit's re-execution would let replay show older flows. That needs more stored per commit. Is it worth it?
 - **The Anthropic credit.** The drafter's calls to Anthropic succeeded on 27 Oct (the leak above), so the account seems to have credit again. The recording was drafted on OpenAI while it had none, and no Claude Code build was run in this stage.
