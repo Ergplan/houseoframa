@@ -238,6 +238,10 @@ Not in that table:
 - **The sample build's English** (`pnpm record-explanations`, gpt-6.1-sol): for the rebuilt sample, 84 calls, 45,005 input and 4,063 output tokens, $0.131 (₹12). Its rows were counted by the script and not written, so the recording carries its own cost (`fixtures/sample-build/explanations-cost.json`). The first recording's English (72 calls, ₹10) was replaced with it. A first run for the rebuilt sample on the drafter seat (Claude) stopped when one reply put words before its JSON; its calls were counted by the script and lost when it stopped, so their cost is not recorded.
 - **A live build's English costs about the same per build**: one call per block a lift changes, never the same block twice.
 
+## The box
+
+Redeployed on 2026-10-28 after a database backup (`/backups/rama-2026-10-28.dump`, 14:31 UTC), with commit `53b8679`, the last commit with code in this stage. `/api/health` answers `{"ok":true,"commit":"53b8679"}`. The commit after it records this section and changes nothing else. The port stays as it is; the member closes it.
+
 ## Open questions
 
 - **The Anthropic account works again.** The rebuilt sample was built by Claude Code on claude-sonnet-5-5 (₹118) and drafted live on it in the same Test drive. The recording's English was drafted on OpenAI after one Claude reply came back with words before its JSON. Should the drafter seat move back to Claude?

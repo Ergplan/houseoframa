@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "c3e48294f7b993a603179485340c86a5bc9034ac",
+  "commit": "53b867969a14606d124897f99858b864c54de33d",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -17199,6 +17199,33 @@
       "sha": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "short": "c3e4829",
       "subject": "Stage 11: reviewer run 16 — on the Street, an input kept where its figure is worked out keeps its own pipe; the report's English cost and open questions brought up to date"
+    },
+    {
+      "at": "2026-10-28T14:31:49Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 61,
+          "del": 16,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 11,
+          "del": 8,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 15,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        }
+      ],
+      "sha": "53b867969a14606d124897f99858b864c54de33d",
+      "short": "53b8679",
+      "subject": "Stage 11 report: the member's answers, reviewer runs 16–17, the real model cost"
     }
   ],
   "edges": [
@@ -32987,7 +33014,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T14:00:13Z",
+  "extractedAt": "2026-10-28T14:31:49Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -37415,28 +37442,28 @@
     },
     {
       "binary": false,
-      "bytes": 31975,
-      "changes": 14,
+      "bytes": 32317,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
+      "lastCommit": "53b867969a14606d124897f99858b864c54de33d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 245,
+      "lines": 249,
       "path": "docs/reports/stage-11.md",
       "test": false
     },
     {
       "binary": false,
       "bytes": 163298,
-      "changes": 16,
+      "changes": 17,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
+      "lastCommit": "53b867969a14606d124897f99858b864c54de33d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 272,
