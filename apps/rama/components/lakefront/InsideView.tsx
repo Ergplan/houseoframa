@@ -13,6 +13,7 @@ import { auditScript, type AuditView, type Verdict } from '@rama/audit/view';
 import { brickMarks } from '@rama/blueprint/metrics';
 import {
   brickTop,
+  drawCodeWindow,
   drawInside,
   drawnOn,
   drawPipes,
@@ -24,6 +25,8 @@ import {
   startAudit,
   stepAudit,
   toPicture,
+  typedAt,
+  typingPlan,
   unview,
   viewTransform,
   type Camera,
@@ -31,6 +34,7 @@ import {
   type CameraAction,
   type InsideFloorKind,
   type LogEntry,
+  type TypingPlan,
 } from '@rama/stage';
 import type { Flow } from '@rama/trace';
 import {
@@ -141,20 +145,9 @@ export function InsideView(p: InsideProps) {
     setK(c);
     setSelected(null);
     setView(c ? { kind: 'commit', index: c - 1 } : { kind: 'report' });
+    skipTyping();
+    if (c) void typeLift(c);
   };
-
-  // The replay: a lift every STEP_MS while playing.
-  useEffect(() => {
-    if (!playing) return;
-    const id = setTimeout(() => {
-      if (k >= lifts) setPlaying(false);
-      else {
-        setK(k + 1);
-        setView({ kind: 'commit', index: k });
-      }
-    }, STEP_MS);
-    return () => clearTimeout(id);
-  }, [playing, k, lifts]);
 
   // The flow of one figure: its pipes between the bricks, the water a step a second.
   const [flowKey, setFlowKey] = useState<string | null>(null);
@@ -232,21 +225,56 @@ export function InsideView(p: InsideProps) {
     return () => window.removeEventListener('rama:flow', on);
   });
 
-  // While the builder works a lift, the file it is writing glows and grows.
-  const [writing, setWriting] = useState<{ path: string; lines: number } | null>(null);
+  // The code being written, seen inside the building: over the brick of each file a lift changes, a glass
+  // card types its lines in at a readable pace, deletions falling out first (typing.ts), and the brick
+  // glows and grows. Live, the changes are the builder's as it makes them; in the replay of the lifts,
+  // each lift's changes to this building's files. One change at a time, in order; the card is drawn on
+  // its own canvas, every frame, outside React.
+  const queue = useRef<TypingPlan[]>([]);
+  const [typing, setTyping] = useState<{ plan: TypingPlan; from: number } | null>(null);
+  const [live, setLive] = useState(false);
+  const codeCanvas = useRef<HTMLCanvasElement>(null);
+  const enqueue = (plans: TypingPlan[]) => {
+    queue.current.push(...plans.filter((x) => x.added || x.deleted));
+    setTyping((t) => t ?? nextTyping());
+  };
+  const nextTyping = () => {
+    const plan = queue.current.shift();
+    return plan ? { plan, from: performance.now() } : null;
+  };
+  const skipTyping = () => {
+    queue.current = [];
+    setTyping(null);
+  };
   useEffect(() => {
     let stop = false;
     let since = 0;
+    let lastAt = 0;
+    let first = true;
     const poll = async () => {
       try {
         const r = (await (await fetch(`/api/site/${p.siteId}/typing?since=${since}`)).json()) as {
           building: boolean;
-          edits: { path: string; after: string | null }[];
+          edits: { path: string; at: number; before: string | null; after: string | null }[];
         };
         since += r.edits.length;
-        const mine = r.edits.filter((e) => p.building.bricks.includes(e.path)).at(-1);
-        if (mine) setWriting({ path: mine.path, lines: (mine.after ?? '').split('\n').length });
-        if (!r.building) setWriting(null);
+        // Only a build running now is typed live; the record of an earlier one is the replay's. On the
+        // first look into a running lift, only its latest change is typed: the rest has been written.
+        const fresh = first ? r.edits.slice(-1) : r.edits;
+        first = false;
+        const mine = r.building ? fresh.filter((e) => p.building.bricks.includes(e.path)) : [];
+        if (mine.length) {
+          setK(lifts);
+          // The builder's own pace: the time between its edits, never faster than a line can be read.
+          enqueue(
+            mine.map((e) => {
+              const pace = Math.max(0, e.at - lastAt);
+              lastAt = e.at;
+              return typingPlan(e, pace);
+            }),
+          );
+        }
+        setLive(r.building);
         if (!stop && r.building) setTimeout(poll, 1000);
       } catch {
         if (!stop) setTimeout(poll, 3000);
@@ -257,6 +285,75 @@ export function InsideView(p: InsideProps) {
       stop = true;
     };
   }, [p.siteId, p.building.bricks]);
+  // The replay of the lifts: each lift's changes to this building's files typed in, before the next lift.
+  // While a lift's changes are being fetched, the replay waits for them.
+  const [fetching, setFetching] = useState(0);
+  const typeLift = async (n: number) => {
+    const c = p.blueprint.commits[n - 1];
+    if (!c) return;
+    setFetching((x) => x + 1);
+    const files = c.changes
+      .filter((x) => x.kind !== 'D' && here.has(x.path) && !nodes.get(x.path)?.binary)
+      .slice(0, 4);
+    const plans: TypingPlan[] = [];
+    for (const f of files) {
+      try {
+        const q = new URLSearchParams({ path: f.path, commit: c.sha });
+        const r = (await (await fetch(`/api/site/${p.siteId}/code?${q}`)).json()) as
+          | { ok: true; view: { change: { before: string | null; after: string | null } | null } }
+          | { ok: false };
+        if (r.ok && r.view.change) plans.push(typingPlan({ path: f.path, ...r.view.change }));
+      } catch {
+        // A file that cannot be read now is not typed; the lift still stands.
+      }
+    }
+    enqueue(plans);
+    setFetching((x) => x - 1);
+  };
+  const plan = typing?.plan ?? null;
+  const writing = plan
+    ? {
+        path: plan.path,
+        lines: plan.ops.filter((o) => o.op !== 'del').length,
+      }
+    : null;
+  useEffect(() => {
+    const ctx = codeCanvas.current?.getContext('2d');
+    if (!ctx || !pal) return;
+    const clear = () => {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, sc.width, sc.height);
+    };
+    clear();
+    if (!typing) return;
+    let raf = 0;
+    const tick = (now: number) => {
+      const ms = now - typing.from;
+      clear();
+      const v = viewTransform(cam, sc);
+      ctx.setTransform(v.scale, 0, 0, v.scale, v.dx, v.dy);
+      drawCodeWindow(ctx, sc, typing.plan.path, typedAt(typing.plan, ms), pal);
+      // Held a moment once typed, then the next change.
+      if (ms < typing.plan.total + 1200) raf = requestAnimationFrame(tick);
+      else setTyping(nextTyping());
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [typing, pal, sc, cam]);
+
+  // The replay: the next lift once this one's code has typed in, and at least STEP_MS after it.
+  useEffect(() => {
+    if (!playing || typing || fetching) return;
+    const id = setTimeout(() => {
+      if (k >= lifts) setPlaying(false);
+      else {
+        setK(k + 1);
+        setView({ kind: 'commit', index: k });
+        void typeLift(k + 1);
+      }
+    }, STEP_MS);
+    return () => clearTimeout(id);
+  }, [playing, k, lifts, typing, fetching]);
 
   // The audit, flown over this building's bricks as it was over the Stage 2 building: two drones beam
   // over one brick at a time and leave its verdict; the log and then the report are in the panel.
@@ -494,6 +591,14 @@ export function InsideView(p: InsideProps) {
             height={sc.height}
             aria-hidden
           />
+          <canvas
+            className="lake-water"
+            ref={codeCanvas}
+            width={sc.width}
+            height={sc.height}
+            data-typing={typing ? typing.plan.path : ''}
+            aria-hidden
+          />
           {hover && node ? (
             <div className="lake-tip" style={{ left: hover.x + 14, top: hover.y - 30 }}>
               {hover.path} · {node.binary ? 'not text' : `${node.lines} lines`}: click to open it
@@ -506,6 +611,7 @@ export function InsideView(p: InsideProps) {
             className="eg-btn eg-btn--sm"
             onClick={() => {
               if (!playing && k >= lifts) setK(0);
+              if (playing) skipTyping();
               setSelected(null);
               setPlaying(!playing);
             }}
@@ -528,6 +634,16 @@ export function InsideView(p: InsideProps) {
           >
             Later lift
           </button>
+          {typing ? (
+            <button type="button" className="eg-btn eg-btn--sm" onClick={skipTyping}>
+              Skip the typing
+            </button>
+          ) : null}
+          {live ? (
+            <span className="eg-chip eg-chip--accent">
+              <span className="eg-dot eg-dot--live" aria-hidden /> The builder is writing
+            </span>
+          ) : null}
           <span className="eg-muted" data-lift={k}>
             {k === 0
               ? 'Before the first lift'

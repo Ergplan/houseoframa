@@ -276,21 +276,6 @@ export function CodePane({
               ) : (
                 <>
                   <p style={{ margin: 0 }}>{b.explanation.sentence}</p>
-                  {b.figures.map((f) =>
-                    f.href ? (
-                      <Link
-                        key={f.id}
-                        className="eg-chip eg-chip--accent code-figure"
-                        href={f.href}
-                      >
-                        {f.title}: where it comes from
-                      </Link>
-                    ) : (
-                      <span key={f.id} className="eg-chip">
-                        {f.title}
-                      </span>
-                    ),
-                  )}
                   <div className="rama-row">
                     <span
                       className={`eg-chip${b.explanation.state === 'confirmed' ? ' eg-chip--positive' : ''}`}
@@ -310,6 +295,18 @@ export function CodePane({
                     ) : null}
                   </div>
                 </>
+              )}
+              {/* The figures a block serves lead to their trails, explained or not (reviewer run 11). */}
+              {b.figures.map((f) =>
+                f.href ? (
+                  <Link key={f.id} className="eg-chip eg-chip--accent code-figure" href={f.href}>
+                    {f.title}: where it comes from
+                  </Link>
+                ) : (
+                  <span key={f.id} className="eg-chip">
+                    {f.title}
+                  </span>
+                ),
               )}
             </aside>
           </div>

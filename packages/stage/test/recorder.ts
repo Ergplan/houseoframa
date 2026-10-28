@@ -18,6 +18,7 @@ export function recorder(): { ctx: CanvasRenderingContext2D; rec: Recording } {
     beginPath: noop,
     moveTo: noop,
     lineTo: noop,
+    quadraticCurveTo: noop,
     closePath: noop,
     stroke: noop,
     fill: () => rec.fills.push(String(state.fillStyle)),

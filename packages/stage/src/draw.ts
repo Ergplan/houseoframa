@@ -30,6 +30,7 @@ import {
   type InsideScene,
 } from './inside.ts';
 import { faceTransform, type Pt } from './iso.ts';
+import { codeWindow, type TypedLine } from './typing.ts';
 import type { Palette } from './palette.ts';
 import { craneAt, laid, type StreetTimeline } from './replay.ts';
 import { at, type Street, type StreetBuilding } from './street.ts';
@@ -740,5 +741,75 @@ export function drawInside(ctx: CanvasRenderingContext2D, frame: InsideFrame): v
       }
       drone(ctx, d, pal);
     });
-  label(ctx, `${s.name} · inside`, a(0, 0, top).x, a(0, 0, top).y - 12, c.ink, pal, 16, 700);
+  // Its name under the front corner, clear of the code being written above.
+  const foot = a(s.w, s.d, 0);
+  label(ctx, `${s.name} · inside`, foot.x, foot.y + 30, c.ink, pal, 16, 700);
+}
+
+/**
+ * The code being written, over its brick inside the building: a glass card with the lines around the one
+ * typing in (JetBrains Mono, the only place in the picture it is used), a caret on it, falling lines struck
+ * through, and a leader down to the brick, which glows. `lines` is typedAt's frame (typing.ts).
+ */
+export function drawCodeWindow(
+  ctx: CanvasRenderingContext2D,
+  s: InsideScene,
+  path: string,
+  lines: TypedLine[],
+  pal: Palette,
+  rows = 8,
+): void {
+  const x = s.bricks.find((b) => b.path === path);
+  if (!x) return;
+  const c = pal.color;
+  const w = codeWindow(lines, rows);
+  const at = brickTop(s, x);
+  const LINE = 16;
+  const W = 380;
+  const H = 30 + rows * LINE + 8;
+  // Above the brick, kept inside the picture.
+  const left = Math.max(8, Math.min(s.width - W - 8, at.x - W / 2));
+  const top = Math.max(8, at.y - H - 40);
+  ctx.strokeStyle = c.harmony;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(at.x, at.y);
+  ctx.lineTo(Math.max(left + 12, Math.min(left + W - 12, at.x)), top + H);
+  ctx.stroke();
+  ctx.fillStyle = c['glass-strong'];
+  ctx.strokeStyle = c.harmony;
+  ctx.beginPath();
+  ctx.roundRect(left, top, W, H, 10);
+  ctx.fill();
+  ctx.stroke();
+  ctx.font = `600 12px ${pal.sans}`;
+  ctx.fillStyle = c.ink;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(`Being written: ${path}`, left + 12, top + 15, W - 24);
+  ctx.font = `400 12px "JetBrains Mono", ui-monospace, monospace`;
+  w.lines.forEach((l, i) => {
+    const y = top + 30 + i * LINE + LINE / 2;
+    if (l.state === 'typing' || l.state === 'typed') {
+      ctx.fillStyle = c['accent-soft'];
+      ctx.fillRect(left + 6, y - LINE / 2, W - 12, LINE);
+    }
+    ctx.fillStyle = c['ink-faint'];
+    ctx.textAlign = 'right';
+    ctx.fillText(String(w.from + i), left + 38, y);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = l.state === 'falling' ? c.negative : c.ink;
+    ctx.globalAlpha = l.state === 'falling' ? 1 - l.progress * 0.8 : 1;
+    const text = l.shown.length > 44 ? `${l.shown.slice(0, 43)}…` : l.shown;
+    ctx.fillText(text, left + 46, y);
+    if (l.state === 'falling') {
+      const tw = ctx.measureText(text).width;
+      ctx.fillRect(left + 46, y, tw, 1);
+    }
+    ctx.globalAlpha = 1;
+    if (i === w.active && l.state === 'typing') {
+      ctx.fillStyle = c.harmony;
+      ctx.fillRect(left + 46 + ctx.measureText(text).width + 1, y - 7, 7, 14);
+    }
+  });
 }

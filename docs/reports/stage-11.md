@@ -73,6 +73,10 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 - **The lifts.** The deck replays them commit by commit; each commit opens in the panel.
 - **The flow's pipes** run between the bricks: from where an input is kept, to the brick that works the figure out, to the brick that shows it.
 - **Fly the audit.** The drones beam over the bricks, as they did on the old building, with the live log and the report in the panel.
+- **The code is seen being written inside the building** (asked for after the inside was built). Over the brick of each file a lift changes, a glass card types the change in at the builder's pace, never faster than a line can be read. Deletions fall out first, a caret sits on the line being written, and the brick glows and grows.
+  - Live, it follows the builder.
+  - In the replay of the lifts, each lift's changes to the building's files type in before the next lift.
+  - Screenshot: `docs/reports/stage-11/inside-typing.png`.
 - **A brick opens to its code in the side panel**: the typing view and the English pane, with the Stage 2 inspector under them, unchanged in meaning (the Trust report, a Commit, the Brick in English, Confirm). Inside, the panel is a column of its own beside the picture.
 
 ## Tests
@@ -105,6 +109,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
   - where checks and papers stand;
   - a chosen floor;
   - pipes for every step between the bricks, from every side, with a dry pipe for each untraced one;
+  - the window over the brick being written (the rows around the line typing, with deletions falling), and the inside and the card drawn in Harmony's tokens only (`typing.test.ts`, `draw.test.ts`);
   - **the walk:** every brick of the sample product and of this repository (716 files) is clicked inside its building from all four sides, and the panel shows for it the English edges, the lift that laid it, and the figures the Stage 2 inspector showed; every commit opens.
 
   The Stage 2, 5 and 8 end-to-end tests now click bricks, fly the audit and read the inspector inside the buildings.
@@ -113,7 +118,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
   - a new product, built by the recorded builder through the loop;
   - the five tabs and Care walked, with one lit action on each act that has a next thing to do, and a screenshot of each;
   - the recorded build replayed on the Street, and the Street turned twice;
-  - Take an order zoomed into down to its code;
+  - Take an order zoomed into down to its inside, and its lifts replayed with the code typed in over the bricks;
   - a change of its plan typed in, every block's English read, and one confirmed by name;
   - the flow of the day's takings watched until the real rows become ₹113.00 on the screen.
 
@@ -163,6 +168,7 @@ Fixed in code:
   - At an older lift of the replay, the inside still offered today's flow. It no longer offers one there.
   - A link to another brick of the same building kept the brick that was open. The inside is now fresh for each brick a link opens on.
 - **Run 10.** When no brick of the building shows the figure, the screen step had no pipe. Every step now has its pipe, inside and at the Building level: up to the glass, dry and labelled when untraced.
+- **Run 11.** A block with no English yet hid its figures' links to their trails. They are now shown whether or not the block is explained.
 
 Report claims corrected (runs 1, 2, 4, 5, 6 and 9): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, and where the pipes are drawn.
 

@@ -4,7 +4,15 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { FALL_MS, lineDiff, READ_MS, typedAt, typingPlan, type FileChange } from './typing.ts';
+import {
+  codeWindow,
+  FALL_MS,
+  lineDiff,
+  READ_MS,
+  typedAt,
+  typingPlan,
+  type FileChange,
+} from './typing.ts';
 
 /** The first change a recorded patch makes to a file: its old text and its new, from the diff. */
 function fromPatch(patch: string, file: string): FileChange {
@@ -97,5 +105,33 @@ describe('the typing stream', () => {
       fromPatch(lift1, [...lift1.matchAll(/^\+\+\+ b\/([^\n]+)$/gm)][0]![1]!),
     );
     expect(JSON.stringify(typedAt(plan, 2345))).toBe(JSON.stringify(typedAt(plan, 2345)));
+  });
+});
+
+describe('the window over the brick being written', () => {
+  const plan = typingPlan({
+    path: 'f.ts',
+    before: 'a\nb\nc\n',
+    after: Array.from({ length: 30 }, (_, i) => `line ${i + 1}`).join('\n'),
+  });
+
+  it('shows the rows around the line typing in, with its line number', () => {
+    const at = plan.typeFrom + 12.5 * plan.lineMs; // line 13 half typed
+    const w = codeWindow(typedAt(plan, at), 8);
+    expect(w.lines).toHaveLength(8);
+    expect(w.lines[w.active!]!.state).toBe('typing');
+    expect(w.lines[w.active!]!.text).toBe('line 13');
+    expect(w.from).toBe(13 - w.active!);
+  });
+
+  it('shows the deletions while they fall, and the whole of a short file', () => {
+    const w = codeWindow(typedAt(plan, 0), 8);
+    expect(w.lines.some((l) => l.state === 'falling')).toBe(true);
+    const short = typingPlan({ path: 'g.ts', before: null, after: 'x\ny\n' });
+    expect(codeWindow(typedAt(short, Infinity), 8)).toEqual({
+      from: 1,
+      lines: typedAt(short, Infinity),
+      active: 1,
+    });
   });
 });

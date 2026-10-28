@@ -138,3 +138,23 @@ export function typedAt(plan: TypingPlan, ms: number): TypedLine[] {
   }
   return out;
 }
+
+/**
+ * The lines a small window over a brick shows: `rows` lines around the one being written (typing, else
+ * falling, else the last typed), with the first one's line number. The whole file when it is short.
+ */
+export function codeWindow(
+  lines: TypedLine[],
+  rows = 8,
+): { from: number; lines: TypedLine[]; active: number | null } {
+  let active = lines.findIndex((l) => l.state === 'typing');
+  if (active < 0) active = lines.findIndex((l) => l.state === 'falling');
+  if (active < 0) active = lines.map((l) => l.state).lastIndexOf('typed');
+  const at = active < 0 ? 0 : active;
+  const from = Math.max(0, Math.min(at - Math.floor(rows / 2), lines.length - rows));
+  return {
+    from: from + 1,
+    lines: lines.slice(from, from + rows),
+    active: active < 0 ? null : active - from,
+  };
+}

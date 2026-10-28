@@ -234,6 +234,15 @@ describe('stage 11 e2e', () => {
     // The inside: the same building from within, the file open in the panel beside it.
     await page.locator('[data-level="inside"] canvas[data-ready="true"]').waitFor();
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'inside.png') });
+    // The code being written, seen inside the building: the lifts replayed, each change to its files
+    // typed in over its brick.
+    await page.goto(`${server.browserUrl}/site/${SITE}?at=code&b=take-an-order`);
+    await page.locator('[data-level="inside"] canvas[data-ready="true"]').waitFor();
+    await page.getByRole('button', { name: 'Play the lifts' }).click();
+    await page.locator('canvas[data-typing]:not([data-typing=""])').waitFor({ timeout: 90_000 });
+    await page.waitForTimeout(1500);
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'inside-typing.png') });
+    await page.getByRole('button', { name: 'Pause', exact: true }).click();
     const site = locateSite(SITE, { ...process.env, RAMA_WORK_DIR: work })!;
     const overlay = JSON.parse(
       readFileSync(path.join(site.repoDir, '.rama/explanations.json'), 'utf8'),

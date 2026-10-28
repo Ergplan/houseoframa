@@ -3,9 +3,11 @@ import tokens from '../../../design/harmony/tokens.json' with { type: 'json' };
 import { recorder } from '../test/recorder.ts';
 import { stallBlueprint, stallFeatures } from '../test/blueprint.ts';
 import { building } from './building.ts';
-import { drawBuilding, drawStreet, type Flag } from './draw.ts';
+import { drawBuilding, drawCodeWindow, drawInside, drawStreet, type Flag } from './draw.ts';
 import { parseFeatures, resolveFeatures } from './features.ts';
 import { paletteFromTokens, STAGE_TOKENS } from './palette.ts';
+import { inside, laidInOf } from './inside.ts';
+import { typedAt, typingPlan } from './typing.ts';
 import { streetTimeline } from './replay.ts';
 import { street } from './street.ts';
 
@@ -52,6 +54,28 @@ describe('the lakefront is drawn with Harmony’s tokens only', () => {
         hover: null,
         verdicts: { 'db/orders.ts': 'note' },
       });
+      // The inside (Stage 11), with everything it can show at once, and the code being written.
+      const laid = laidInOf(bp);
+      const ins = inside(s.buildings[0]!, nodeOf, new Set(), (p) => laid.get(p) ?? -1);
+      const brick = ins.bricks[0]!.path;
+      drawInside(ctx, {
+        scene: ins,
+        palette: pal,
+        selected: brick,
+        hover: ins.bricks.at(-1)!.path,
+        glow: new Set([brick]),
+        replay: { k: 1, lifts: bp.commits.length },
+        signed: new Set([brick]),
+        verdicts: { [brick]: 'defect' },
+        links: { imports: ins.bricks.map((b) => b.path), importedBy: [] },
+        writing: { path: brick, lines: 30 },
+        floor: ins.bricks[0]!.floor,
+        drones: { at: [{ x: 10, y: 10 }], scan: { path: brick, drone: 0 } },
+      });
+      const plan = typingPlan({ path: brick, before: 'a\nb\n', after: 'a\nc\nd\n' });
+      drawCodeWindow(ctx, ins, brick, typedAt(plan, plan.typeFrom + plan.lineMs / 2), pal);
+      drawCodeWindow(ctx, ins, brick, typedAt(plan, 0), pal);
+      expect(rec.texts).toContain(`Being written: ${brick}`);
       expect(rec.colors.length).toBeGreaterThan(20);
       expect(rec.colors.filter((c) => !allowed.has(c))).toEqual([]);
     });
