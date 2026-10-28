@@ -1149,10 +1149,12 @@ body:has(.rama-stage) {
 
 /* The voice in the room (Stage 10): at the foot of every page of a site while a session lasts. */
 .voice-dock {
+  padding: 0 16px 16px;
+}
+.voice-dock--open {
   position: sticky;
   bottom: 0;
   z-index: 20;
-  padding: 0 16px 16px;
 }
 .voice-room,
 .voice-start {
@@ -1173,13 +1175,14 @@ body:has(.rama-stage) {
   gap: 6px;
 }
 .voice-room__typed input {
-  min-width: 260px;
+  flex: 1;
+  min-width: 0;
 }
 .voice-room__transcript {
   margin: 0;
   padding: 10px 14px;
   list-style: none;
-  max-height: 180px;
+  max-height: 260px;
   overflow: auto;
   border-radius: var(--radius-lg);
   background: var(--glass);
@@ -1428,4 +1431,199 @@ body:has(.rama-stage) {
 }
 .lakefront--ground .lake-screen canvas {
   max-height: none;
+}
+
+/* The idea room (Stage 12): a conversation in the middle, the room's files, notes and cards beside it. */
+.idea-room {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+.idea-room--drop {
+  outline: 2px dashed var(--accent);
+  outline-offset: 6px;
+  border-radius: var(--radius-lg);
+}
+.idea-room__main {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.idea-room__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.idea-room__title {
+  margin: 0;
+  font-size: 22px;
+}
+.idea-room__head p {
+  margin: 4px 0 0;
+}
+.idea-room__talk {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-height: 320px;
+  max-height: 62vh;
+  overflow: auto;
+  padding: 4px 2px;
+}
+.idea-room__welcome {
+  padding: 22px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  border: 1px solid var(--line-strong);
+}
+.idea-room__welcome h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+.idea-room__welcome p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+.idea-room__starters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.idea-room__starters .eg-chip {
+  cursor: pointer;
+}
+.idea-turn {
+  display: grid;
+  gap: 6px;
+  max-width: 88%;
+}
+.idea-turn--person {
+  justify-self: end;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+}
+.idea-turn--drafter {
+  justify-self: start;
+}
+.idea-turn__who {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.idea-turn__body {
+  line-height: 1.55;
+}
+.idea-turn__body p,
+.idea-turn__body ul,
+.idea-turn__body ol {
+  margin: 0 0 8px;
+}
+.idea-turn__body h4 {
+  margin: 8px 0 4px;
+}
+.idea-turn__files,
+.idea-room__attached {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.idea-room__attached button {
+  all: unset;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.idea-turn__sources summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+.idea-turn__sources ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.idea-turn__cards {
+  display: grid;
+  gap: 8px;
+}
+.idea-card {
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-strong);
+  background: var(--glass);
+}
+.idea-card__title {
+  font-weight: 600;
+}
+.idea-card p {
+  margin: 4px 0 8px;
+}
+.idea-room__composer textarea {
+  min-height: 66px;
+}
+.idea-room__side {
+  display: grid;
+  gap: 14px;
+  position: sticky;
+  top: 12px;
+}
+.idea-side {
+  display: grid;
+  gap: 10px;
+}
+.idea-drop {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-muted);
+}
+.idea-drop:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+.idea-files,
+.idea-decided {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.idea-files li {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+}
+.idea-pad {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--ink);
+  font: 400 14px/1.45 var(--font-sans);
+}
+@media (max-width: 960px) {
+  .idea-room {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .idea-room__side {
+    position: static;
+  }
 }

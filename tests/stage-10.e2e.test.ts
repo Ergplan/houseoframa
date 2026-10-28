@@ -56,7 +56,10 @@ async function say(page: Page, text: string) {
     .catch(() => 0);
   const box = page.getByLabel(`What ${SCRIPT.speaker} said`);
   await box.fill(text);
-  await page.getByRole('button', { name: `Say it as ${SCRIPT.speaker}` }).click();
+  await page
+    .getByRole('region', { name: 'The voice' })
+    .getByRole('button', { name: 'Send' })
+    .click();
   // The person's own turn, then at least one line read by the voice, then the bar at rest.
   await page.waitForFunction(
     (n) => document.querySelectorAll('[data-testid="voice-transcript"] li').length >= n + 2,
@@ -86,7 +89,6 @@ describe('stage 10 e2e', () => {
 
     // Act 1: who is in the room, then the voice greets them.
     const start = page.locator('.voice-start');
-    await start.getByLabel('Test drive').uncheck();
     expect(await start.innerText()).toContain(
       'It is the stand-in voice: this server is set to use the stand-in voice.',
     );

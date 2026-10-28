@@ -9,7 +9,14 @@ export {
 export type { CallDeps, CallRequest, CallResult, ModelCallRow } from './call.ts';
 export { resolveVendors, VendorGuardError, VENDORS, type Role, type Vendor } from './vendors.ts';
 export { loadPrompt, PROMPTS_DIR, type Prompt } from './prompts.ts';
-export { VendorHttpError, type Image } from './adapters.ts';
+export {
+  AdapterSupportError,
+  anthropicSources,
+  VendorHttpError,
+  type Document,
+  type Image,
+  type Source,
+} from './adapters.ts';
 export {
   costOf,
   formatInr,

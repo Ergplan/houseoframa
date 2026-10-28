@@ -67,6 +67,7 @@ export function journeyTab(p: ConsoleProps, tab: Tab): JourneyTab {
   const product = p.kind === 'product';
   const building = p.jobs.some((j) => j.kind === 'build' && j.status === 'running');
   const open = p.cards.filter((c) => c.status === 'open' || c.status === 'not-built');
+  const agreed = p.cards.filter((c) => c.status === 'decided');
   const unsigned = p.states.screens.filter((s) => s.audience === 'customer' && !s.state.confirmed);
   const openai = p.keys?.find((k) => k.name === 'OPENAI_API_KEY');
   const lit = (actions: TabAction[], want: (Act | 'sign')[]): JourneyTab => ({
@@ -77,19 +78,27 @@ export function journeyTab(p: ConsoleProps, tab: Tab): JourneyTab {
   switch (tab) {
     case 'idea': {
       const actions: TabAction[] = [
-        { act: 'start-session', why: null },
+        // A product's idea room is always open (Stage 12): people write or talk there, so a session
+        // is not started by a button.
+        {
+          act: 'start-session',
+          why: product ? 'The idea room below is open: write or talk there.' : null,
+        },
         {
           act: 'close-ideation',
           why: !product
             ? 'Only a product made here has an ideation to close.'
-            : p.sessions === 0
-              ? 'Start a session first.'
-              : open.length
-                ? `${open.length === 1 ? 'One card is' : `${open.length} cards are`} still open.`
-                : null,
+            : open.length
+              ? `${open.length === 1 ? 'One card is' : `${open.length} cards are`} still open.`
+              : agreed.length
+                ? null
+                : 'No card is decided yet: agree them in the idea room.',
         },
       ];
-      return lit(actions, p.sessions === 0 ? ['start-session'] : ['close-ideation']);
+      return lit(
+        actions,
+        product ? ['close-ideation'] : p.sessions === 0 ? ['start-session'] : ['close-ideation'],
+      );
     }
     case 'build': {
       const actions: TabAction[] = [
@@ -99,7 +108,9 @@ export function journeyTab(p: ConsoleProps, tab: Tab): JourneyTab {
             ? 'Only a product made here is built here.'
             : building
               ? 'The builder is at work.'
-              : null,
+              : agreed.length
+                ? null
+                : 'No decision card has a yes yet: agree the cards under Idea first.',
         },
         { act: 'pause-build', why: building ? null : 'No build is running.' },
       ];

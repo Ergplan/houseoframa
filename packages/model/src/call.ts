@@ -10,7 +10,9 @@ import {
   type Completion,
   type CompletionRequest,
   type Fetch,
+  type Document,
   type Image,
+  type Source,
 } from './adapters.ts';
 import { loadPrompt, PROMPTS_DIR } from './prompts.ts';
 import {
@@ -60,6 +62,10 @@ export interface CallRequest<I, O> {
   maxTokens?: number;
   /** Pictures sent with the input (Stage 10: a frame of the board). Not stored in the row. */
   images?: Image[];
+  /** Files sent with the input (Stage 12: the idea room's). Not stored in the row; their names are. */
+  documents?: Document[];
+  /** Lets the model search the web (Stage 12); the pages it read come back as `sources`. */
+  webSearch?: boolean;
   /**
    * Vendors that may not answer this call, whatever the seats say: the companies whose builders built
    * the product an audit checks (Invariant 5). Refused before any prompt is read or vendor called.
@@ -76,6 +82,8 @@ export interface CallResult<O> {
   /** Summed over every attempt that got a reply. */
   inputTokens: number | null;
   outputTokens: number | null;
+  /** The pages a web search read, as the vendor returned them; present only when asked for. */
+  sources?: Source[];
 }
 
 export type ModelCallRow = typeof modelCalls.$inferInsert;
@@ -256,6 +264,8 @@ export async function call<I, O>(
           user,
           maxTokens,
           ...(req.images ? { images: req.images } : {}),
+          ...(req.documents?.length ? { documents: req.documents } : {}),
+          ...(req.webSearch ? { webSearch: true } : {}),
         },
         apiKey ?? '',
         deps.fetch,
@@ -288,8 +298,18 @@ export async function call<I, O>(
     role: req.role,
     vendor,
     model: completion?.model ?? model,
-    input: req.input as object,
-    output: ok ? (output as object) : completion ? { unparsed: completion.text } : null,
+    input: (req.documents?.length || req.webSearch
+      ? {
+          ...(req.input as object),
+          ...(req.documents?.length ? { files: req.documents.map((d) => d.name) } : {}),
+          ...(req.webSearch ? { webSearch: true } : {}),
+        }
+      : req.input) as object,
+    output: ok
+      ? ((completion?.sources ? { output, sources: completion.sources } : output) as object)
+      : completion
+        ? { unparsed: completion.text }
+        : null,
     status: ok ? 'ok' : 'error',
     error: ok ? null : String((lastError as Error)?.message ?? lastError),
     attempts,
@@ -308,5 +328,6 @@ export async function call<I, O>(
     attempts,
     inputTokens,
     outputTokens,
+    ...(completion?.sources ? { sources: completion.sources } : {}),
   };
 }

@@ -1,0 +1,1 @@
+ALTER TABLE "discovery_turns" ADD COLUMN "meta" jsonb;

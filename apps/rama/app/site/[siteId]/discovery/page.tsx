@@ -1,14 +1,29 @@
 import Link from 'next/link';
 import { pageSite } from '../../../../server/session';
-import { createDb } from '@rama/db';
-import { readSiteBlueprint } from '@rama/blueprint/site';
-import { listDecisions, listSessions, type SessionWithTurns } from '@rama/ceremony';
+import { createDb, listSecrets } from '@rama/db';
+import { readSiteBlueprint, siteRecord } from '@rama/blueprint/site';
+import {
+  currentDecisions,
+  listDecisions,
+  listSessions,
+  type SessionWithTurns,
+} from '@rama/ceremony';
 import type { Decision } from '@rama/shared';
 import { DiscoveryView } from '../../../../components/ceremony/DiscoveryView';
 import { SiteShell } from '../../../../components/workbench/SiteShell';
 import { BrainsForm } from '../../../../components/workbench/BrainsForm';
-import { VENDOR_REGISTRY } from '@rama/model';
-import { BUILDER_OPTIONS, seatsOf, seatsSentence } from '@rama/workbench';
+import { VENDOR_REGISTRY, vendorEntry } from '@rama/model';
+import {
+  BUILDER_OPTIONS,
+  IDEA_SESSION,
+  listIdeaFiles,
+  readScratchpad,
+  roomTurns,
+  seatsOf,
+  seatsSentence,
+  type RoomTurn,
+} from '@rama/workbench';
+import { IdeaRoom } from '../../../../components/idea/IdeaRoom';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,13 +33,17 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
   let sessions: SessionWithTurns[];
   let decisions: Decision[];
   let brains: Awaited<ReturnType<typeof seatsOf>>;
+  let room: RoomTurn[];
+  let keys: Awaited<ReturnType<typeof listSecrets>>;
   try {
     const conn = createDb();
     try {
-      [sessions, decisions, brains] = await Promise.all([
+      [sessions, decisions, brains, room, keys] = await Promise.all([
         listSessions(conn.db, site.id),
         listDecisions(conn.db, site.id),
         seatsOf(conn.db, site.id),
+        roomTurns(conn.db, site.id).then((r) => r.turns),
+        listSecrets(conn.db),
       ]);
     } finally {
       await conn.close();
@@ -47,16 +66,47 @@ async function DiscoveryPage({ params }: { params: Promise<{ siteId: string }> }
       siteId={site.id}
       name={site.name}
       member={member.name}
-      sessions={sessions}
+      sessions={sessions.filter((s) => s.title !== IDEA_SESSION)}
       decisions={decisions}
       bricks={bp?.nodes.map((n) => n.path) ?? []}
       screens={bp?.screens.map((s) => s.id) ?? []}
     />
   );
   if (site.kind !== 'product') return view;
+  // The drafter answers in the idea room (Stage 12): its seat, its key, and whether it can search.
+  const drafter = brains.seats.drafter;
+  const vendor = drafter ? vendorEntry(drafter.vendor) : undefined;
+  const key = vendor?.key ? keys.find((k) => k.name === vendor.key) : undefined;
+  const noDrafter = !drafter
+    ? 'No one holds the drafter seat yet: choose the brains below, and the drafter will answer here.'
+    : vendor?.key && !key?.set
+      ? `The drafter needs the ${vendor.label} key: a trainer enters it in Settings.`
+      : null;
+  const current = currentDecisions(decisions);
+  const record = siteRecord(site.id);
   // A product's first question: its brains (Stage 9). The answer is a card like any other.
   return (
     <>
+      <IdeaRoom
+        siteId={site.id}
+        name={site.name}
+        idea={record?.idea ?? null}
+        member={member.name}
+        turns={room}
+        files={listIdeaFiles(site)}
+        scratchpad={readScratchpad(site)}
+        decided={current
+          .filter((d) => d.status === 'decided')
+          .map((d) => ({ title: d.title, by: d.by }))}
+        open={current.filter((d) => d.status === 'open').length}
+        drafter={vendor ? `${vendor.label} (${drafter!.model})` : 'The drafter'}
+        noSearch={
+          vendor?.protocol === 'anthropic'
+            ? null
+            : 'Web search is wired for an Anthropic drafter only; choose one in the brains below.'
+        }
+        noDrafter={noDrafter}
+      />
       <section className="eg-card brains-ask" data-brains-ask={brains.from}>
         <h2 className="eg-card__title">Which brains will build, check and speak?</h2>
         <p className="eg-muted">

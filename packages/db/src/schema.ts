@@ -97,6 +97,14 @@ export const discoverySessions = pgTable('discovery_sessions', {
 });
 
 /** One turn of a discovery session. Append-only; a model's draft is marked as one. */
+/** What came with a discovery turn (Stage 12). */
+export interface TurnMeta {
+  files?: string[];
+  sources?: { url: string; title: string }[];
+  cards?: { title: string; statement: string }[];
+  callId?: string;
+}
+
 export const discoveryTurns = pgTable('discovery_turns', {
   id: uuid('id').primaryKey().defaultRandom(),
   siteId: text('site_id')
@@ -111,6 +119,11 @@ export const discoveryTurns = pgTable('discovery_turns', {
   text: text('text').notNull(),
   /** True for a question Rama drafted through packages/model: unconfirmed until the member uses it. */
   draft: boolean('draft').notNull().default(false),
+  /**
+   * What came with the turn (Stage 12, the idea room): the files a person put with it, and for the
+   * drafter's reply the pages its web search read, the cards it proposed and its model_calls row.
+   */
+  meta: jsonb('meta').$type<TurnMeta>(),
   at: timestamp('at', { withTimezone: true }).notNull(),
   ...provenance,
 });

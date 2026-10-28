@@ -10,7 +10,14 @@
 // mirror lags, never lies, and is repaired forward, append-only.
 import { asc, eq, sql } from 'drizzle-orm';
 import type { Decision, Signoff } from '@rama/shared';
-import { decisions, discoverySessions, discoveryTurns, signoffs, type Db } from '@rama/db';
+import {
+  decisions,
+  discoverySessions,
+  discoveryTurns,
+  signoffs,
+  type Db,
+  type TurnMeta,
+} from '@rama/db';
 import { randomUUID } from 'node:crypto';
 import { checkChain, DECISIONS_FILE, SIGNOFFS_FILE, syncMirror } from './records.ts';
 import type { Sealer } from './seal.ts';
@@ -227,7 +234,15 @@ export interface SessionWithTurns {
   reconstructed: boolean;
   source: string | null;
   createdAt: string;
-  turns: { id: string; seq: number; speaker: string; text: string; draft: boolean; at: string }[];
+  turns: {
+    id: string;
+    seq: number;
+    speaker: string;
+    text: string;
+    draft: boolean;
+    at: string;
+    meta?: TurnMeta;
+  }[];
 }
 
 export async function startSession(
@@ -252,7 +267,14 @@ export async function addTurn(
   db: Db,
   siteId: string,
   sessionId: string,
-  input: { speaker: string; text: string; draft?: boolean; at: Date; createdBy: string },
+  input: {
+    speaker: string;
+    text: string;
+    draft?: boolean;
+    meta?: TurnMeta;
+    at: Date;
+    createdBy: string;
+  },
 ): Promise<void> {
   await db.transaction(async (tx) => {
     const turns = await tx
@@ -266,6 +288,7 @@ export async function addTurn(
       speaker: input.speaker,
       text: input.text,
       draft: Boolean(input.draft),
+      meta: input.meta ?? null,
       at: input.at,
       createdBy: input.createdBy,
     });
@@ -298,6 +321,7 @@ export async function listSessions(db: Db, siteId: string): Promise<SessionWithT
         text: t.text,
         draft: t.draft,
         at: t.at.toISOString(),
+        ...(t.meta ? { meta: t.meta } : {}),
       })),
   }));
 }

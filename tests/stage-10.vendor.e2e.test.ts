@@ -102,7 +102,6 @@ describe('@vendor stage 10 e2e, the real voice', () => {
 
     const start = page.locator('.voice-start');
     expect(await start.innerText()).toContain('It speaks with OpenAI (gpt-realtime).');
-    await start.getByLabel('Test drive').uncheck();
     await start.getByRole('button', { name: 'Start the session with the voice' }).click();
     await agentLines(page).first().waitFor();
     await page.evaluate(() =>

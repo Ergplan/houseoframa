@@ -4,6 +4,7 @@
 import { Suspense, type ReactNode } from 'react';
 import { readMembers } from '@rama/db';
 import { readRoom } from '@rama/ears';
+import { TEST_DRIVE_PERSON } from '@rama/workbench';
 import { pageSite } from '../../../server/session';
 import { voiceMode } from '../../../server/voice';
 import { VoiceRoom } from '../../../components/ears/VoiceRoom';
@@ -18,18 +19,23 @@ export default async function SiteLayout({
   params: Promise<{ siteId: string }>;
 }) {
   const { siteId } = await params;
-  const { site } = await pageSite(siteId);
+  const { site, member } = await pageSite(siteId);
   if (site.kind !== 'product') return children;
   const room = readRoom(site.id);
   const open = Boolean(room && !room.endedAt);
   return (
     <>
       {children}
-      <div className="voice-dock">
+      {/* The voice stays at the foot of the screen only while a session is open. */}
+      <div className={`voice-dock${open ? ' voice-dock--open' : ''}`}>
         <Suspense fallback={null}>
           <VoiceRoom
             siteId={site.id}
-            members={readMembers().map((m) => m.name)}
+            // Test drive signs in to run the sample on its own; it is never a person in the room.
+            members={readMembers()
+              .map((m) => m.name)
+              .filter((n) => n !== TEST_DRIVE_PERSON)}
+            present={member.name}
             mode={await voiceMode(site.id)}
             open={open}
             people={open ? room!.people : []}

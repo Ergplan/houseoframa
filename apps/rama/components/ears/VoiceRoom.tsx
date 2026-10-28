@@ -167,6 +167,7 @@ class LiveVoice {
 export function VoiceRoom({
   siteId,
   members,
+  present,
   mode,
   open,
   people: roomPeople,
@@ -175,6 +176,8 @@ export function VoiceRoom({
 }: {
   siteId: string;
   members: string[];
+  /** The person signed in: the one ticked in the room until others are. */
+  present: string;
   mode: VoiceModeView;
   /** Whether a session with the voice is open on the server. */
   open: boolean;
@@ -187,14 +190,21 @@ export function VoiceRoom({
   const search = useSearchParams();
   const pathname = usePathname();
   const [people, setPeople] = useState<string[]>(roomPeople);
-  const [chosen, setChosen] = useState<string[]>(members.slice(0, 2));
+  const [chosen, setChosen] = useState<string[]>(
+    members.includes(present) ? [present] : members.slice(0, 1),
+  );
   const [act, setAct] = useState(startAct);
   const [state, setState] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
   const [caption, setCaption] = useState(open ? 'The voice is ready when you are.' : '');
   const [talk, setTalk] = useState<Said[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
-  const [typed, setTyped] = useState<Record<string, string>>({});
+  const [typed, setTyped] = useState('');
+  /** The session is by chat: no microphone, and the voice's lines are shown, not spoken. */
+  const chat = useRef(false);
+  const [writer, setWriter] = useState(
+    roomPeople.length && !roomPeople.includes(present) ? roomPeople[0]! : present,
+  );
   const [board, setBoard] = useState<string | null>(null);
   const live = useRef<LiveVoice | null>(null);
   const transcript = useRef<HTMLOListElement | null>(null);
@@ -272,7 +282,7 @@ export function VoiceRoom({
             const read = await live.current.say(line);
             said = read.said || line.text;
             usage = read.usage;
-          } else await standInSpeak(line.text);
+          } else if (!chat.current) await standInSpeak(line.text);
           const check = (await post('voice/said', {
             text: said,
             line: line.text,
@@ -314,28 +324,42 @@ export function VoiceRoom({
     [post, speak],
   );
 
-  const connect = useCallback(async () => {
-    setError(null);
-    if (mode.mode === 'live') {
-      try {
-        const v = new LiveVoice(siteId, (s, t) => void heard(s, t));
-        await v.start();
-        live.current = v;
-      } catch (err) {
-        setError(`The voice could not start: ${(err as Error).message}`);
-        return false;
+  const connect = useCallback(
+    async (byChat = false) => {
+      setError(null);
+      chat.current = byChat;
+      if (mode.mode === 'live' && !byChat) {
+        try {
+          const v = new LiveVoice(siteId, (s, t) => void heard(s, t));
+          await v.start();
+          live.current = v;
+        } catch (err) {
+          setError(`The voice could not start: ${(err as Error).message}`);
+          return false;
+        }
       }
-    }
-    setConnected(true);
-    return true;
-  }, [mode.mode, siteId, heard]);
+      setConnected(true);
+      return true;
+    },
+    [mode.mode, siteId, heard],
+  );
 
-  const begin = async () => {
+  const begin = async (byChat = false) => {
     const r = await post('voice/start', { people: chosen });
     if (!r.ok) return setError(r.sentence ?? 'The room could not open.');
     setPeople(chosen);
-    if (await connect()) await speak(r);
+    setWriter(chosen.includes(present) ? present : chosen[0]!);
+    if (await connect(byChat)) await speak(r);
   };
+
+  // "Talk with the voice" in the idea room (Stage 12): the session opens with the person signed in.
+  useEffect(() => {
+    const on = () => {
+      if (!open && !connected) void begin();
+    };
+    window.addEventListener('rama:voice-start', on);
+    return () => window.removeEventListener('rama:voice-start', on);
+  });
 
   // "Close ideation" from the console comes here as ?act=agree.
   const agreeAsked = search.get('act') === 'agree';
@@ -399,9 +423,14 @@ export function VoiceRoom({
             </label>
           ))}
         </div>
-        <button className="eg-btn" disabled={!chosen.length} onClick={() => void begin()}>
-          Start the session with the voice
-        </button>
+        <div className="rama-row">
+          <button className="eg-btn" disabled={!chosen.length} onClick={() => void begin()}>
+            Start the session with the voice
+          </button>
+          <button className="eg-btn" disabled={!chosen.length} onClick={() => void begin(true)}>
+            Start the session by chat
+          </button>
+        </div>
         {error ? <p className="eg-muted voice-error">{error}</p> : null}
       </section>
     );
@@ -425,52 +454,35 @@ export function VoiceRoom({
         </div>
       </div>
       {!connected ? (
-        <button className="eg-btn" onClick={() => void connect()}>
-          Rejoin the voice
-        </button>
+        <div className="rama-row">
+          <button className="eg-btn" onClick={() => void connect()}>
+            Rejoin the voice
+          </button>
+          <button className="eg-btn" onClick={() => void connect(true)}>
+            Carry on by chat
+          </button>
+        </div>
       ) : (
         <div className="voice-room__talk">
-          {people.map((p) =>
-            live.current ? (
-              <button
-                key={p}
-                className="eg-btn"
-                onPointerDown={() => {
-                  setState('listening');
-                  setCaption(`${p} is talking…`);
-                  live.current?.press(p);
-                }}
-                onPointerUp={() => {
-                  setState('thinking');
-                  live.current?.release();
-                }}
-              >
-                Hold to talk: {p}
-              </button>
-            ) : (
-              <form
-                key={p}
-                className="voice-room__typed"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  const text = (typed[p] ?? '').trim();
-                  if (!text) return;
-                  setTyped((t) => ({ ...t, [p]: '' }));
-                  void heard(p, text);
-                }}
-              >
-                <input
-                  aria-label={`What ${p} said`}
-                  placeholder={`What ${p} said`}
-                  value={typed[p] ?? ''}
-                  onChange={(e) => setTyped((t) => ({ ...t, [p]: e.target.value }))}
-                />
-                <button type="submit" className="eg-btn">
-                  Say it as {p}
+          {live.current
+            ? people.map((p) => (
+                <button
+                  key={p}
+                  className="eg-btn"
+                  onPointerDown={() => {
+                    setState('listening');
+                    setCaption(`${p} is talking…`);
+                    live.current?.press(p);
+                  }}
+                  onPointerUp={() => {
+                    setState('thinking');
+                    live.current?.release();
+                  }}
+                >
+                  Hold to talk: {p}
                 </button>
-              </form>
-            ),
-          )}
+              ))
+            : null}
           {act === 2 ? (
             <button className="eg-btn" onClick={() => void post('voice/agree').then(speak)}>
               Close ideation
@@ -514,6 +526,42 @@ export function VoiceRoom({
             </li>
           ))}
         </ol>
+      ) : null}
+      {connected ? (
+        // The chat: the same turn as a spoken one, typed; the voice's answer comes back in the transcript.
+        <form
+          className="voice-room__typed"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const text = typed.trim();
+            if (!text) return;
+            setTyped('');
+            void heard(writer, text);
+          }}
+        >
+          {people.length > 1 ? (
+            <select
+              className="eg-input"
+              aria-label="Who is writing"
+              value={writer}
+              onChange={(e) => setWriter(e.target.value)}
+            >
+              {people.map((p) => (
+                <option key={p}>{p}</option>
+              ))}
+            </select>
+          ) : null}
+          <input
+            className="eg-input"
+            aria-label={`What ${writer} said`}
+            placeholder={`Write to the voice as ${writer}`}
+            value={typed}
+            onChange={(e) => setTyped(e.target.value)}
+          />
+          <button type="submit" className="eg-btn">
+            Send
+          </button>
+        </form>
       ) : null}
     </section>
   );

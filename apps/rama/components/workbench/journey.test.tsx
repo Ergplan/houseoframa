@@ -29,7 +29,7 @@ const props = (over: Partial<ConsoleProps> = {}): ConsoleProps => ({
     unsaid: 0,
     figures: { traced: 8, shown: 8 },
   },
-  cards: [],
+  cards: [{ id: 'd0', title: 'Orders', status: 'decided' } as never],
   keys: null,
   jobs: [],
   captured: true,
@@ -80,7 +80,12 @@ describe('the journey of a build', () => {
     for (const tab of ['walk', 'handover', 'care'] as const)
       expect(primaries(bar(p, tab)), tab).toBe(0);
     // Before any session, Start session is the one lit on Idea; while building, Pause build on Build.
-    expect(journeyTab(props({ sessions: 0 }), 'idea').lit).toBe('start-session');
+    // A product's idea room is always open, so Start session is never lit for it; an outside site's is.
+    expect(journeyTab(props({ sessions: 0 }), 'idea').lit).toBe('close-ideation');
+    expect(journeyTab(props({ sessions: 0, kind: 'outside' }), 'idea').lit).toBe('start-session');
+    expect(journeyTab(props({ sessions: 0 }), 'idea').actions[0]!.why).toBe(
+      'The idea room below is open: write or talk there.',
+    );
     const running = props({
       jobs: [
         { kind: 'build', status: 'running', job: { id: 'j', kind: 'build', steps: [] } as never },
@@ -88,6 +93,14 @@ describe('the journey of a build', () => {
     });
     expect(journeyTab(running, 'build').lit).toBe('pause-build');
     expect(primaries(bar(running, 'build'))).toBe(1);
+    // A new product, no card agreed yet: Start build stays quiet and says to agree the cards first.
+    const fresh = journeyTab(props({ cards: [], sessions: 0, captured: false }), 'build');
+    expect(fresh.lit).toBeNull();
+    expect(fresh.actions[0]).toEqual({
+      act: 'start-build',
+      why: 'No decision card has a yes yet: agree the cards under Idea first.',
+    });
+    expect(primaries(bar(props({ cards: [] }), 'build'))).toBe(0);
     // Care lights Photograph only while the screens are not photographed.
     expect(journeyTab(props({ captured: false }), 'care').lit).toBe('photograph');
   });

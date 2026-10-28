@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "53b867969a14606d124897f99858b864c54de33d",
+  "commit": "c487e7f5d341f377d81ba2454009176fb20e9f12",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -17226,6 +17226,27 @@
       "sha": "53b867969a14606d124897f99858b864c54de33d",
       "short": "53b8679",
       "subject": "Stage 11 report: the member's answers, reviewer runs 16–17, the real model cost"
+    },
+    {
+      "at": "2026-10-28T14:37:56Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 35,
+          "del": 8,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 4,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        }
+      ],
+      "sha": "c487e7f5d341f377d81ba2454009176fb20e9f12",
+      "short": "c487e7f",
+      "subject": "Stage 11 report: the box runs 53b8679, after a database backup"
     }
   ],
   "edges": [
@@ -17534,10 +17555,12 @@
     {
       "from": "apps/rama/app/api/products/handlers.ts",
       "symbols": [
-        "Flag"
+        "Flag",
+        "REPOSITORY_NAME_RULE",
+        "repositoryNameOk"
       ],
       "to": "packages/workbench/src/index.ts",
-      "typeOnly": true
+      "typeOnly": false
     },
     {
       "from": "apps/rama/app/api/products/route.ts",
@@ -19276,6 +19299,316 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/idea/agree/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/agree/route.ts",
+      "symbols": [
+        "ideaDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/agree/route.ts",
+      "symbols": [
+        "handleAgree"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/agree/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/agree/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/ask/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/ask/route.ts",
+      "symbols": [
+        "ideaDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/ask/route.ts",
+      "symbols": [
+        "handleAsk"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/ask/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/ask/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "symbols": [
+        "IdeaDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "symbols": [
+        "withDb"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "symbols": [
+        "siteRecord"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "symbols": [
+        "readSecret"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "symbols": [
+        "addIdeaFile",
+        "agreeCard",
+        "askDrafter",
+        "pushTo",
+        "readIdeaFile",
+        "saveScratchpad"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "symbols": [
+        "ideaDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "symbols": [
+        "handleFile"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/route.ts",
+      "symbols": [
+        "ideaDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/route.ts",
+      "symbols": [
+        "handleUpload"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/files/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.test.ts",
+      "symbols": [
+        "IdeaDeps",
+        "handleAgree",
+        "handleAsk",
+        "handleFile",
+        "handleScratchpad",
+        "handleUpload"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.test.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.test.ts",
+      "symbols": [
+        "IdeaError"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "symbols": [
+        "Member"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "symbols": [
+        "AskInput",
+        "IdeaError",
+        "IdeaFile",
+        "ProposedCard",
+        "RoomTurn"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "symbols": [
+        "readBody"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ceremony-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "symbols": [
+        "ideaDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "symbols": [
+        "handleScratchpad"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/site/[siteId]/repository/route.ts",
       "symbols": [
         "authDeps"
@@ -20090,6 +20423,14 @@
       "symbols": [
         "*"
       ],
+      "to": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
       "to": "apps/rama/app/api/site/[siteId]/repository/route.ts",
       "typeOnly": false
     },
@@ -20763,6 +21104,14 @@
     {
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
+        "IdeaRoom"
+      ],
+      "to": "apps/rama/components/idea/IdeaRoom.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
+      "symbols": [
         "BrainsForm"
       ],
       "to": "apps/rama/components/workbench/BrainsForm.tsx",
@@ -20791,7 +21140,8 @@
       },
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
-        "readSiteBlueprint"
+        "readSiteBlueprint",
+        "siteRecord"
       ],
       "to": "packages/blueprint/src/site.ts",
       "typeOnly": false
@@ -20800,6 +21150,7 @@
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
         "SessionWithTurns",
+        "currentDecisions",
         "listDecisions",
         "listSessions"
       ],
@@ -20813,7 +21164,8 @@
       },
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
-        "createDb"
+        "createDb",
+        "listSecrets"
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": false
@@ -20821,7 +21173,8 @@
     {
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
-        "VENDOR_REGISTRY"
+        "VENDOR_REGISTRY",
+        "vendorEntry"
       ],
       "to": "packages/model/src/index.ts",
       "typeOnly": false
@@ -20838,6 +21191,11 @@
       "from": "apps/rama/app/site/[siteId]/discovery/page.tsx",
       "symbols": [
         "BUILDER_OPTIONS",
+        "IDEA_SESSION",
+        "RoomTurn",
+        "listIdeaFiles",
+        "readScratchpad",
+        "roomTurns",
         "seatsOf",
         "seatsSentence"
       ],
@@ -20915,6 +21273,14 @@
         "readRoom"
       ],
       "to": "packages/ears/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/layout.tsx",
+      "symbols": [
+        "TEST_DRIVE_PERSON"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": false
     },
     {
@@ -25618,6 +25984,7 @@
       "from": "packages/ceremony/src/store.ts",
       "symbols": [
         "Db",
+        "TurnMeta",
         "decisions",
         "discoverySessions",
         "discoveryTurns",
@@ -26976,6 +27343,19 @@
       "typeOnly": false
     },
     {
+      "from": "packages/model/src/adapters.test.ts",
+      "symbols": [
+        "AdapterSupportError",
+        "CompletionRequest",
+        "anthropicComplete",
+        "anthropicSources",
+        "compatibleComplete",
+        "openaiComplete"
+      ],
+      "to": "packages/model/src/adapters.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/model/src/adapters.ts",
       "symbols": [
         "SecretName"
@@ -27114,8 +27494,10 @@
         "ADAPTERS",
         "Completion",
         "CompletionRequest",
+        "Document",
         "Fetch",
         "Image",
+        "Source",
         "VendorHttpError",
         "compatibleComplete"
       ],
@@ -27180,8 +27562,12 @@
       },
       "from": "packages/model/src/index.ts",
       "symbols": [
+        "AdapterSupportError",
+        "Document",
         "Image",
+        "Source",
         "VendorHttpError",
+        "anthropicSources",
         "compatibleComplete"
       ],
       "to": "packages/model/src/adapters.ts",
@@ -29912,6 +30298,73 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/src/idea.ts",
+      "symbols": [
+        "SiteLocation",
+        "siteRecord"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/idea.ts",
+      "symbols": [
+        "addTurn",
+        "currentDecisions",
+        "decide",
+        "listDecisions",
+        "listSessions",
+        "startSession"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/idea.ts",
+      "symbols": [
+        "Db",
+        "Member",
+        "TurnMeta"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/workbench/src/idea.ts",
+      "symbols": [
+        "Document",
+        "Image",
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/idea.ts",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/idea.ts",
+      "symbols": [
+        "jobStatus",
+        "latestJob"
+      ],
+      "to": "packages/workbench/src/jobs.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/workbench/src/index.ts",
       "symbols": [
         "*"
@@ -29973,6 +30426,14 @@
         "*"
       ],
       "to": "packages/workbench/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/idea.ts",
       "typeOnly": false
     },
     {
@@ -30158,6 +30619,7 @@
       },
       "from": "packages/workbench/src/products.ts",
       "symbols": [
+        "GITHUB_NAME",
         "SiteLocation",
         "createProductSite",
         "locateSite",
@@ -30780,6 +31242,83 @@
         "onHouseStack"
       ],
       "to": "packages/workbench/src/scaffold.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/test/idea.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/idea.test.ts",
+      "symbols": [
+        "currentDecisions",
+        "listDecisions"
+      ],
+      "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations"
+      },
+      "from": "packages/workbench/test/idea.test.ts",
+      "symbols": [
+        "Member",
+        "createDb",
+        "ensurePerson",
+        "runMigrations"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "making a model call for a given role"
+      },
+      "from": "packages/workbench/test/idea.test.ts",
+      "symbols": [
+        "call"
+      ],
+      "to": "packages/model/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/idea.test.ts",
+      "symbols": [
+        "DRAFTER_SPEAKER",
+        "IdeaError",
+        "MAX_FILE_BYTES",
+        "addIdeaFile",
+        "agreeCard",
+        "askDrafter",
+        "listIdeaFiles",
+        "readIdeaFile",
+        "readScratchpad",
+        "roomTurns",
+        "safeFileName",
+        "saveScratchpad",
+        "splitCards"
+      ],
+      "to": "packages/workbench/src/idea.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/idea.test.ts",
+      "symbols": [
+        "ProductDeps",
+        "newProduct"
+      ],
+      "to": "packages/workbench/src/products.ts",
       "typeOnly": false
     },
     {
@@ -33014,7 +33553,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T14:31:49Z",
+  "extractedAt": "2026-10-28T14:37:56Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -33569,7 +34108,7 @@
     },
     {
       "binary": false,
-      "bytes": 2551,
+      "bytes": 3238,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33581,7 +34120,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 75,
+      "lines": 93,
       "packages": [
         "vitest"
       ],
@@ -33590,7 +34129,7 @@
     },
     {
       "binary": false,
-      "bytes": 1841,
+      "bytes": 2332,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33603,7 +34142,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 45,
+      "lines": 59,
       "path": "apps/rama/app/api/products/handlers.ts",
       "test": false
     },
@@ -34548,6 +35087,156 @@
     },
     {
       "binary": false,
+      "bytes": 589,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/idea/agree/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 585,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/idea/ask/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1044,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ideaDeps"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 31,
+      "path": "apps/rama/app/api/site/[siteId]/idea/deps.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 572,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 16,
+      "path": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 562,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/idea/files/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5641,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 155,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/idea/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 5749,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "IdeaDeps",
+        "handleAgree",
+        "handleAsk",
+        "handleFile",
+        "handleScratchpad",
+        "handleUpload"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 152,
+      "packages": [
+        "zod"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/idea/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 599,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 14,
+      "path": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 878,
       "changes": 1,
       "env": [],
@@ -34846,7 +35535,7 @@
     },
     {
       "binary": false,
-      "bytes": 16498,
+      "bytes": 16877,
       "changes": 12,
       "env": [
         "DATABASE_URL",
@@ -34862,7 +35551,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 417,
+      "lines": 428,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -34934,7 +35623,7 @@
     },
     {
       "binary": false,
-      "bytes": 28798,
+      "bytes": 32317,
       "changes": 19,
       "env": [],
       "envDynamic": false,
@@ -34943,7 +35632,7 @@
       "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1431,
+      "lines": 1629,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -35060,7 +35749,7 @@
     },
     {
       "binary": false,
-      "bytes": 5741,
+      "bytes": 6157,
       "changes": 7,
       "env": [
         "GIT_SHA"
@@ -35074,7 +35763,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 158,
+      "lines": 168,
       "packages": [
         "next"
       ],
@@ -35208,7 +35897,7 @@
     },
     {
       "binary": false,
-      "bytes": 4040,
+      "bytes": 5845,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -35220,7 +35909,7 @@
       "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 108,
+      "lines": 158,
       "packages": [
         "next"
       ],
@@ -35254,7 +35943,7 @@
     },
     {
       "binary": false,
-      "bytes": 1394,
+      "bytes": 1779,
       "changes": 1,
       "env": [
         "RAMA_VOICE_CLIPS"
@@ -35268,7 +35957,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 43,
+      "lines": 49,
       "packages": [
         "react"
       ],
@@ -35533,7 +36222,7 @@
     },
     {
       "binary": false,
-      "bytes": 19397,
+      "bytes": 21067,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -35545,7 +36234,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 533,
+      "lines": 581,
       "packages": [
         "next",
         "react"
@@ -35682,6 +36371,31 @@
         "next"
       ],
       "path": "apps/rama/components/harmony/ui.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 19655,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "IdeaRoom",
+        "IdeaRoomProps",
+        "Prose",
+        "RoomFileView",
+        "RoomTurnView"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 560,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/idea/IdeaRoom.tsx",
       "test": false
     },
     {
@@ -36247,7 +36961,7 @@
     },
     {
       "binary": false,
-      "bytes": 4926,
+      "bytes": 5777,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -36256,7 +36970,7 @@
       "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 125,
+      "lines": 138,
       "packages": [
         "react-dom",
         "vitest"
@@ -36266,7 +36980,7 @@
     },
     {
       "binary": false,
-      "bytes": 4934,
+      "bytes": 5432,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -36283,16 +36997,17 @@
       "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 146,
+      "lines": 157,
       "path": "apps/rama/components/workbench/journey.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 970,
+      "bytes": 1181,
       "changes": 6,
       "env": [
-        "NEXT_DIST_DIR"
+        "NEXT_DIST_DIR",
+        "RAMA_BASE_URL"
       ],
       "envDynamic": false,
       "exports": [
@@ -36302,7 +37017,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 27,
+      "lines": 29,
       "path": "apps/rama/next.config.ts",
       "purpose": {
         "confirmed": false,
@@ -37151,7 +37866,7 @@
     },
     {
       "binary": false,
-      "bytes": 88590,
+      "bytes": 94045,
       "changes": 37,
       "env": [],
       "envDynamic": false,
@@ -37160,7 +37875,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 242,
+      "lines": 251,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -37189,7 +37904,7 @@
     },
     {
       "binary": false,
-      "bytes": 83725,
+      "bytes": 88685,
       "changes": 111,
       "env": [],
       "envDynamic": false,
@@ -37198,7 +37913,7 @@
       "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 292,
+      "lines": 303,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -37238,7 +37953,7 @@
     },
     {
       "binary": false,
-      "bytes": 22392,
+      "bytes": 23985,
       "changes": 43,
       "env": [],
       "envDynamic": false,
@@ -37247,7 +37962,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 74,
+      "lines": 79,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -37443,12 +38158,12 @@
     {
       "binary": false,
       "bytes": 32317,
-      "changes": 15,
+      "changes": 16,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "53b867969a14606d124897f99858b864c54de33d",
+      "lastCommit": "c487e7f5d341f377d81ba2454009176fb20e9f12",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 249,
@@ -40735,12 +41450,13 @@
     },
     {
       "binary": false,
-      "bytes": 16415,
+      "bytes": 16870,
       "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
         "Confirmation",
+        "GITHUB_NAME",
         "GLOSSARY_FILE",
         "PURPOSES_FILE",
         "SELF_EXTRACT",
@@ -40773,7 +41489,7 @@
       "lastCommit": "2a907b0af32452beac12837ab806a2b9ee92cc22",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 371,
+      "lines": 384,
       "packages": [
         "zod"
       ],
@@ -41588,7 +42304,7 @@
     },
     {
       "binary": false,
-      "bytes": 10151,
+      "bytes": 10348,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -41611,7 +42327,7 @@
       "lastCommit": "f3bb28351da240abb9494595d9815c99fbbb7b90",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 303,
+      "lines": 327,
       "packages": [
         "drizzle-orm"
       ],
@@ -42084,6 +42800,21 @@
     },
     {
       "binary": false,
+      "bytes": 54,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1,
+      "path": "packages/db/migrations/0010_turn_meta.sql",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 9168,
       "changes": 1,
       "env": [],
@@ -42238,7 +42969,22 @@
     },
     {
       "binary": false,
-      "bytes": 1446,
+      "bytes": 47255,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 1860,
+      "path": "packages/db/migrations/meta/0010_snapshot.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1584,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -42247,7 +42993,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 76,
+      "lines": 83,
       "path": "packages/db/migrations/meta/_journal.json",
       "purpose": {
         "confirmed": false,
@@ -42574,13 +43320,14 @@
     },
     {
       "binary": false,
-      "bytes": 13992,
+      "bytes": 14461,
       "changes": 13,
       "env": [],
       "envDynamic": false,
       "exports": [
         "APPEND_ONLY_TABLES",
         "AUDITED_TABLES",
+        "TurnMeta",
         "auditConfirmations",
         "auditLog",
         "audits",
@@ -42604,7 +43351,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 375,
+      "lines": 388,
       "packages": [
         "drizzle-orm"
       ],
@@ -43229,18 +43976,47 @@
     },
     {
       "binary": false,
-      "bytes": 5972,
+      "bytes": 5814,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "hosts": [
+        "a.in",
+        "cea.nic.in",
+        "g.test",
+        "merc.gov.in",
+        "o.test"
+      ],
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 155,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/model/src/adapters.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 10360,
       "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [
         "ADAPTERS",
+        "AdapterSupportError",
         "Completion",
         "CompletionRequest",
+        "Document",
         "Fetch",
         "Image",
+        "Source",
         "VendorHttpError",
         "anthropicComplete",
+        "anthropicSources",
         "compatibleComplete",
         "openaiComplete"
       ],
@@ -43252,7 +44028,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 204,
+      "lines": 307,
       "path": "packages/model/src/adapters.ts",
       "purpose": {
         "confirmed": false,
@@ -43344,7 +44120,7 @@
     },
     {
       "binary": false,
-      "bytes": 10608,
+      "bytes": 11549,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -43366,7 +44142,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 312,
+      "lines": 333,
       "path": "packages/model/src/call.ts",
       "purpose": {
         "confirmed": false,
@@ -43406,12 +44182,13 @@
     },
     {
       "binary": false,
-      "bytes": 1433,
+      "bytes": 1513,
       "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
         "AGENT_TOOLS",
+        "AdapterSupportError",
         "AgentDeps",
         "AgentRequest",
         "AgentResult",
@@ -43421,6 +44198,7 @@
         "CallRequest",
         "CallResult",
         "Cost",
+        "Document",
         "Image",
         "KEY_HELP",
         "KeyCheck",
@@ -43446,6 +44224,7 @@
         "Seat",
         "SeatChoice",
         "Seats",
+        "Source",
         "Spawned",
         "SpeechDeps",
         "TRANSCRIBE_MODEL",
@@ -43457,6 +44236,7 @@
         "VendorEntry",
         "VendorGuardError",
         "VendorHttpError",
+        "anthropicSources",
         "auditorChoices",
         "brainsSettingOf",
         "call",
@@ -43483,7 +44263,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 62,
+      "lines": 69,
       "path": "packages/model/src/index.ts",
       "purpose": {
         "confirmed": false,
@@ -45691,7 +46471,52 @@
     },
     {
       "binary": false,
-      "bytes": 563,
+      "bytes": 15368,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "AskDeps",
+        "AskInput",
+        "DRAFTER_SPEAKER",
+        "FileKind",
+        "IDEA_COMPONENT",
+        "IDEA_FILES",
+        "IDEA_SESSION",
+        "IdeaError",
+        "IdeaFile",
+        "MAX_FILE_BYTES",
+        "ProposedCard",
+        "RoomTurn",
+        "SCRATCHPAD",
+        "Scratchpad",
+        "addIdeaFile",
+        "agreeCard",
+        "askDrafter",
+        "building",
+        "fileKind",
+        "listIdeaFiles",
+        "readIdeaFile",
+        "readScratchpad",
+        "roomTurns",
+        "safeFileName",
+        "saveScratchpad",
+        "splitCards"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 435,
+      "packages": [
+        "zod"
+      ],
+      "path": "packages/workbench/src/idea.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 590,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -45702,7 +46527,7 @@
       "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 19,
+      "lines": 20,
       "path": "packages/workbench/src/index.ts",
       "test": false
     },
@@ -45774,7 +46599,7 @@
     },
     {
       "binary": false,
-      "bytes": 7334,
+      "bytes": 7835,
       "changes": 3,
       "env": [
         "RAMA_GITHUB_API"
@@ -45784,18 +46609,20 @@
         "Flag",
         "PRODUCT_COMPONENT",
         "ProductDeps",
+        "REPOSITORY_NAME_RULE",
         "commitAll",
         "createProductRepository",
         "defaultProductDeps",
         "houseRef",
         "newProduct",
-        "productId"
+        "productId",
+        "repositoryNameOk"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 201,
+      "lines": 212,
       "path": "packages/workbench/src/products.ts",
       "tables": [
         {
@@ -46116,6 +46943,31 @@
     },
     {
       "binary": false,
+      "bytes": 11279,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "hosts": [
+        "api.github.test",
+        "merc.gov.in"
+      ],
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 287,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
+      "path": "packages/workbench/test/idea.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 4915,
       "changes": 2,
       "env": [],
@@ -46134,7 +46986,7 @@
     },
     {
       "binary": false,
-      "bytes": 8691,
+      "bytes": 9623,
       "changes": 2,
       "env": [
         "DATABASE_URL"
@@ -46149,7 +47001,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 205,
+      "lines": 230,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -46328,7 +47180,7 @@
     },
     {
       "binary": false,
-      "bytes": 654,
+      "bytes": 844,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -46482,6 +47334,21 @@
         "confirmed": false,
         "text": "Instructions for the AI to write short plain-English phrases describing what one file gets when it imports a symbol from another."
       },
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3476,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "data",
+      "layerRule": "overlay: packages/db, prompts",
+      "lines": 29,
+      "path": "prompts/idea.v1.md",
       "test": false
     },
     {
@@ -46956,6 +47823,21 @@
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 59,
       "path": "scripts/gen-harmony-css.mjs",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3350,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "foundation",
+      "layerRule": "overlay: repo config, CI and scripts",
+      "lines": 97,
+      "path": "scripts/https.mjs",
       "test": false
     },
     {
@@ -47655,7 +48537,7 @@
     },
     {
       "binary": false,
-      "bytes": 7290,
+      "bytes": 7273,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -47664,7 +48546,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 158,
+      "lines": 160,
       "packages": [
         "playwright",
         "vitest"
@@ -47674,7 +48556,7 @@
     },
     {
       "binary": false,
-      "bytes": 7097,
+      "bytes": 7045,
       "changes": 1,
       "env": [
         "OPENAI_API_KEY"
@@ -47685,7 +48567,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 165,
+      "lines": 164,
       "packages": [
         "playwright",
         "vitest"
@@ -47702,7 +48584,7 @@
     },
     {
       "binary": false,
-      "bytes": 17418,
+      "bytes": 17445,
       "changes": 6,
       "env": [
         "RAMA_SHOTS"
@@ -47923,7 +48805,7 @@
     },
     {
       "binary": false,
-      "bytes": 8521,
+      "bytes": 8549,
       "changes": 11,
       "env": [],
       "envDynamic": false,
@@ -47964,7 +48846,7 @@
     },
     {
       "binary": false,
-      "bytes": 8595,
+      "bytes": 8623,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -48144,6 +49026,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -48544,6 +49427,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -48715,6 +49599,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -48871,6 +49756,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49025,6 +49911,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49056,6 +49943,7 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/idea/IdeaRoom.tsx",
         "apps/rama/components/workbench/BrainsForm.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
         "apps/rama/components/workbench/Said.tsx",
@@ -49181,6 +50069,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49338,6 +50227,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49495,6 +50385,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49641,6 +50532,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49797,6 +50689,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -49929,6 +50822,7 @@
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
         "packages/workbench/src/ground.ts",
+        "packages/workbench/src/idea.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -50193,7 +51087,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 225,
+      "line": 238,
       "name": "audit_confirmations",
       "symbol": "auditConfirmations"
     },
@@ -50406,7 +51300,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 180,
+      "line": 193,
       "name": "audits",
       "symbol": "audits"
     },
@@ -50509,7 +51403,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 267,
+      "line": 280,
       "name": "bookings",
       "symbol": "bookings"
     },
@@ -50601,7 +51495,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 286,
+      "line": 299,
       "name": "checkins",
       "symbol": "checkins"
     },
@@ -50754,7 +51648,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 119,
+      "line": 132,
       "name": "decisions",
       "symbol": "decisions"
     },
@@ -50848,6 +51742,7 @@
         "speaker",
         "text",
         "draft",
+        "meta",
         "at"
       ],
       "fields": [
@@ -50917,6 +51812,15 @@
           "unique": false
         },
         {
+          "key": "meta",
+          "name": "meta",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
           "key": "at",
           "name": "at",
           "notNull": true,
@@ -50947,7 +51851,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 100,
+      "line": 108,
       "name": "discovery_turns",
       "symbol": "discoveryTurns"
     },
@@ -51089,7 +51993,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 201,
+      "line": 214,
       "name": "findings",
       "symbol": "findings"
     },
@@ -51202,7 +52106,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 304,
+      "line": 317,
       "name": "handovers",
       "symbol": "handovers"
     },
@@ -51535,7 +52439,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 256,
+      "line": 269,
       "name": "pods",
       "symbol": "pods"
     },
@@ -51656,7 +52560,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 329,
+      "line": 342,
       "name": "secrets",
       "symbol": "secrets"
     },
@@ -51748,7 +52652,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 243,
+      "line": 256,
       "name": "sessions",
       "symbol": "sessions"
     },
@@ -51829,7 +52733,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 343,
+      "line": 356,
       "name": "settings",
       "symbol": "settings"
     },
@@ -51982,7 +52886,7 @@
         }
       ],
       "file": "packages/db/src/schema.ts",
-      "line": 146,
+      "line": 159,
       "name": "signoffs",
       "symbol": "signoffs"
     },

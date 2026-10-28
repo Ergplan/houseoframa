@@ -180,6 +180,17 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
     'GET board/[frame]',
     async () => (await import('./api/site/[siteId]/board/[frame]/route')).GET as Handler,
   ],
+  ...(['files', 'scratchpad', 'ask', 'agree'] as const).map(
+    (r) =>
+      [
+        `POST idea/${r}`,
+        async () => (await import(`./api/site/[siteId]/idea/${r}/route`)).POST as Handler,
+      ] as [string, () => Promise<Handler>],
+  ),
+  [
+    'GET idea/files/[name]',
+    async () => (await import('./api/site/[siteId]/idea/files/[name]/route')).GET as Handler,
+  ],
 ];
 
 describe('every site route: 401 without a session, 404 for another member’s site, through for the owner', () => {
