@@ -177,9 +177,12 @@ describe('the pipes inside a building', () => {
 
   it('draws a dry, labelled pipe for every untraced step', () => {
     const l = insidePipes(at('north'), flow(null, null), () => null, null);
-    expect(l.pipes.filter((p) => p.dry).map((p) => p.step)).toEqual([0, 1]);
+    expect(l.pipes.filter((p) => p.dry).map((p) => p.step)).toEqual([0, 1, 3]);
     expect(l.pipes.find((p) => p.step === 0)!.label).toBe('Today’s orders: untraced');
-    // No screen brick to reach: no pipe onto the screen, and its stop is unknown.
-    expect(l.pipes.some((p) => p.step === 3)).toBe(false);
+    // No screen brick to reach: the screen step still has its pipe, up to the glass, dry and labelled.
+    const screen = l.pipes.find((p) => p.step === 3)!;
+    expect(screen.dry).toBe(true);
+    expect(screen.label).toBe('untraced: no water reaches the screen');
+    expect(l.stops[3]).toEqual(screen.points.at(-1));
   });
 });

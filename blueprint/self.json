@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+  "commit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -15332,6 +15332,57 @@
       "sha": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "short": "4cb7c4c",
       "subject": "Stage 11, part 5: the inside of the building replaces the Stage 2 brick canvas; tests no longer spend this laptop's drafter key"
+    },
+    {
+      "at": "2026-10-28T01:27:56Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.test.tsx"
+        },
+        {
+          "add": 3,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/page.tsx"
+        },
+        {
+          "add": 6,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/InsideView.tsx"
+        },
+        {
+          "add": 375,
+          "del": 84,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 5,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        }
+      ],
+      "sha": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
+      "short": "198ef48",
+      "subject": "Stage 11: reviewer run 9 — no flow offered at an older lift; the inside opens fresh on each linked brick"
     }
   ],
   "edges": [
@@ -30459,7 +30510,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T01:05:51Z",
+  "extractedAt": "2026-10-28T01:27:56Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -32645,14 +32696,14 @@
     {
       "binary": false,
       "bytes": 8224,
-      "changes": 8,
+      "changes": 9,
       "env": [
         "DATABASE_URL"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 187,
@@ -32668,7 +32719,7 @@
     {
       "binary": false,
       "bytes": 8172,
-      "changes": 14,
+      "changes": 15,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -32676,7 +32727,7 @@
         "dynamic"
       ],
       "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 209,
@@ -33247,7 +33298,7 @@
     {
       "binary": false,
       "bytes": 25734,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -33255,7 +33306,7 @@
         "InsideView"
       ],
       "firstCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 734,
@@ -34514,16 +34565,16 @@
     },
     {
       "binary": false,
-      "bytes": 74651,
-      "changes": 103,
+      "bytes": 74873,
+      "changes": 104,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 273,
+      "lines": 274,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -34767,31 +34818,31 @@
     },
     {
       "binary": false,
-      "bytes": 18403,
-      "changes": 5,
+      "bytes": 18606,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 193,
+      "lines": 194,
       "path": "docs/reports/stage-11.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 86811,
-      "changes": 8,
+      "bytes": 96146,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 151,
+      "lines": 166,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -41524,7 +41575,7 @@
     },
     {
       "binary": false,
-      "bytes": 7647,
+      "bytes": 7828,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -41533,7 +41584,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 185,
+      "lines": 188,
       "packages": [
         "vitest"
       ],
@@ -41542,7 +41593,7 @@
     },
     {
       "binary": false,
-      "bytes": 10392,
+      "bytes": 10922,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -41560,7 +41611,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 276,
+      "lines": 285,
       "path": "packages/stage/src/pipes.ts",
       "test": false
     },

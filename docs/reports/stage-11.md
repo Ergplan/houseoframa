@@ -162,6 +162,7 @@ Fixed in code:
 - **Run 9** (the first over the inside):
   - At an older lift of the replay, the inside still offered today's flow. It no longer offers one there.
   - A link to another brick of the same building kept the brick that was open. The inside is now fresh for each brick a link opens on.
+- **Run 10.** When no brick of the building shows the figure, the screen step had no pipe. Every step now has its pipe, inside and at the Building level: up to the glass, dry and labelled when untraced.
 
 Report claims corrected (runs 1, 2, 4, 5, 6 and 9): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, and where the pipes are drawn.
 

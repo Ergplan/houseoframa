@@ -96,7 +96,6 @@ export function buildingPipes(
   const over = { x: figure?.x ?? fnAt.x, y: top.y };
   stops[fnIndex] = fnAt;
   stops[formulaIndex] = top;
-  stops[screenIndex] = figure;
   // Up from the part that works it out (the function), across as the formula is applied, down onto the
   // figure on the glass (the screen).
   pipes.push({
@@ -111,13 +110,18 @@ export function buildingPipes(
     dry: dry(formulaIndex),
     label: label(formulaIndex, 'the formula'),
   });
-  if (figure)
+  // The screen step always has its pipe (reviewer run 10): onto the figure, or up past the roof when
+  // no face of this building shows it.
+  if (screenIndex >= 0) {
+    const end = figure ?? { x: over.x, y: over.y - 24 };
+    stops[screenIndex] = end;
     pipes.push({
       step: screenIndex,
-      points: [over, figure],
+      points: [over, end],
       dry: dry(screenIndex),
       label: dry(screenIndex) ? 'untraced: no water reaches the screen' : null,
     });
+  }
   return { pipes, stops };
 }
 
@@ -252,7 +256,6 @@ export function insidePipes(
   const over = { x: shows?.x ?? fnAt.x, y: top.y };
   stops[fnIndex] = fnAt;
   stops[formulaIndex] = top;
-  stops[screenIndex] = shows;
   pipes.push({
     step: fnIndex,
     points: [fnAt, top],
@@ -265,12 +268,18 @@ export function insidePipes(
     dry: dry(formulaIndex),
     label: label(formulaIndex, 'the formula'),
   });
-  if (shows)
+  // The screen step always has its pipe (reviewer run 10): onto the brick that shows the figure, or,
+  // when no brick of this building does, up to the glass at the top of the building.
+  if (screenIndex >= 0) {
+    const glass = a(0, sc.d, sc.h + 20);
+    const end = shows ?? { x: over.x, y: Math.min(over.y, glass.y) - 24 };
+    stops[screenIndex] = end;
     pipes.push({
       step: screenIndex,
-      points: [over, shows],
+      points: [over, end],
       dry: dry(screenIndex),
       label: dry(screenIndex) ? 'untraced: no water reaches the screen' : null,
     });
+  }
   return { pipes, stops };
 }
