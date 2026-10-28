@@ -75,7 +75,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 - **Fly the audit.** The drones beam over the bricks, as they did on the old building, with the live log and the report in the panel.
 - **The code is seen being written inside the building** (asked for after the inside was built). Over the brick of each file a lift changes, a glass card types the change in at the builder's pace, never faster than a line can be read. Deletions fall out first, a caret sits on the line being written, and the brick glows and grows.
   - Live, it follows the builder.
-  - In the replay of the lifts, each lift's changes to the building's files type in before the next lift.
+  - In the replay of the lifts, each lift's changes to the building's files type in before the next lift: up to four files a lift, the first four it changed. A file a lift deleted is not typed: the inside stands only the files the product has now.
   - Screenshot: `docs/reports/stage-11/inside-typing.png`.
 - **A brick opens to its code in the side panel**: the typing view and the English pane, with the Stage 2 inspector under them, unchanged in meaning (the Trust report, a Commit, the Brick in English, Confirm). Inside, the panel is a column of its own beside the picture.
 
@@ -138,7 +138,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
 ## Reviewer findings
 
-The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran RUNS times; every run is in `docs/reports/stage-11.review.md`.
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 12 times; every run is in `docs/reports/stage-11.review.md`.
 
 Fixed in code:
 
@@ -170,7 +170,9 @@ Fixed in code:
 - **Run 10.** When no brick of the building shows the figure, the screen step had no pipe. Every step now has its pipe, inside and at the Building level: up to the glass, dry and labelled when untraced.
 - **Run 11.** A block with no English yet hid its figures' links to their trails. They are now shown whether or not the block is explained.
 
-Report claims corrected (runs 1, 2, 4, 5, 6 and 9): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, and where the pipes are drawn.
+Run 12 found no code defect; its one finding, a report claim, is corrected.
+
+Report claims corrected (runs 1, 2, 4, 5, 6, 9 and 12): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, and how many files a replayed lift types in.
 
 Not resolved by code:
 
@@ -180,11 +182,13 @@ Not resolved by code:
 
 `pnpm cost 11`:
 
-| What                                                              | Model             | Calls    | Cost      |
-| ----------------------------------------------------------------- | ----------------- | -------- | --------- |
-| Independent reviewer                                              | gpt-6.1-sol       | REVCALLS | REVCOST   |
-| Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215    | ₹292      |
-| **Recorded total**                                                |                   |          | **TOTAL** |
+| What                                                              | Model             | Calls | Cost     |
+| ----------------------------------------------------------------- | ----------------- | ----- | -------- |
+| Independent reviewer                                              | gpt-6.1-sol       | 12    | ₹399     |
+| Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215 | ₹292     |
+| **Recorded total**                                                |                   |       | **₹692** |
+
+The drafter rows are the leak described under Deviations. None was added after the fix (`4cb7c4c`): the watcher's later runs drafted nothing.
 
 Not in that table:
 
@@ -195,6 +199,6 @@ Not in that table:
 
 - **Pipes across the Street.** Should a trail that crosses into another building's code get pipes along the Street's roads? It is a picture-only change, with no change to the record.
 - **The flow in replay.** Keeping each commit's re-execution would let replay show older flows. That needs more stored per commit. Is it worth it?
-- **The Anthropic credit.** It still limits Claude Code builds. The drafter here ran on OpenAI for the recording.
+- **The Anthropic credit.** The drafter's calls to Anthropic succeeded on 27 Oct (the leak above), so the account seems to have credit again. The recording was drafted on OpenAI while it had none, and no Claude Code build was run in this stage.
 - **The box is open to anyone with its address** (Stage 9's question stands).
 - **This VM's memory.** The watcher's full run (several dev servers and headless browsers) took the VM near its 16 GB during the stage, and the dev app and the watcher were stopped once for it. A larger VM, or running the end-to-end tests one at a time in the watcher, would avoid it.
