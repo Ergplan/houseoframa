@@ -248,6 +248,30 @@ describe('the pipes along the Street', () => {
     );
   });
 
+  it('gives a source kept where the figure is worked out its own pipe too, dry and labelled when empty', () => {
+    const f = across('[1]', '1');
+    f.steps = [
+      { kind: 'source', label: 'The price', file: sharedFile, table: null, value: null },
+      ...f.steps,
+    ];
+    const l = streetPipes(s, f, ownerOf, 'see-orders')!;
+    expect(l.pipes.map((p) => p.step).sort()).toEqual([0, 1, 2, 3, 4]);
+    const own = l.pipes.find((p) => p.step === 0)!;
+    expect(own).toMatchObject({ dry: true, label: 'The price: untraced' });
+    expect(own.points).toHaveLength(2);
+    // No water runs past it.
+    const { ctx } = recorder();
+    const strokes: string[] = [];
+    const real = ctx.stroke.bind(ctx);
+    (ctx as unknown as { stroke: () => void }).stroke = () => {
+      strokes.push(String(ctx.strokeStyle));
+      real();
+    };
+    const pal = paletteFromTokens(tokens, 'dark');
+    drawPipes(ctx, l, pal, { step: 4, progress: 1 });
+    expect(strokes).not.toContain(pal.color.harmony);
+  });
+
   it('draws the steps it cannot derive dry and labelled, and is the same from every side, every time', () => {
     const l = streetPipes(s, across(null, null), ownerOf, 'see-orders')!;
     expect(l.pipes.filter((p) => p.dry).map((p) => p.step)).toEqual([0, 1, 3]);

@@ -206,9 +206,11 @@ Fixed in code:
 - **Run 13** (the first over the ground opened). The code level read a file of a product's checkout through a link to a file outside it. A file is now read only when it resolves inside the checkout.
 - **Run 14.** The live tail of a lift had the same opening: a link the builder wrote to a file elsewhere would have been followed and its text typed in. The tail now reads only files inside the checkout, through the same check.
 
+- **Run 16** (the first over the member's answers). On the Street, an input kept in the same building as its working-out had no pipe, so its dry label was missing and the water could run past it. It now has a short pipe into that building, labelled and stopping the water when it has no value.
+
 Runs 12 and 15 found no code defect; run 12's one finding, a report claim, is corrected, and run 15's only finding is the standing cannot-tell on (d).
 
-Report claims corrected (runs 1, 2, 4, 5, 6, 9, 12 and 14): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, how many files a replayed lift types in, and the number of reviewer runs.
+Report claims corrected (runs 1, 2, 4, 5, 6, 9, 12, 14 and 16): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, how many files a replayed lift types in, the number of reviewer runs, the sample English's cost, and open questions the member had answered.
 
 Not resolved by code:
 
@@ -230,14 +232,11 @@ The drafter rows are the leak described under Deviations. None was added after t
 
 Not in that table:
 
-- **The sample build's English** (`pnpm record-explanations`, gpt-6.1-sol): 72 calls, 38,879 input and 3,048 output tokens, $0.108 (₹10). Its rows were counted by the script and not written, so the recording carries its own cost (`fixtures/sample-build/explanations-cost.json`).
+- **The sample build's English** (`pnpm record-explanations`, gpt-6.1-sol): for the rebuilt sample, 84 calls, 45,005 input and 4,063 output tokens, $0.131 (₹12). Its rows were counted by the script and not written, so the recording carries its own cost (`fixtures/sample-build/explanations-cost.json`). The first recording's English (72 calls, ₹10) was replaced with it. A first run for the rebuilt sample on the drafter seat (Claude) stopped when one reply put words before its JSON; its calls were counted by the script and lost when it stopped, so their cost is not recorded.
 - **A live build's English costs about the same per build**: one call per block a lift changes, never the same block twice.
 
 ## Open questions
 
-- **The sample's orders in its own database.** The stall still reads its day from a file, so its orders plot opens empty. Rebuilding the sample to keep its orders in the database it now has would show real rows in Test drive. That is a new recorded build. Shall it be done?
-- **Pipes across the Street.** Should a trail that crosses into another building's code get pipes along the Street's roads? It is a picture-only change, with no change to the record.
-- **The flow in replay.** Keeping each commit's re-execution would let replay show older flows. That needs more stored per commit. Is it worth it?
-- **The Anthropic credit.** The drafter's calls to Anthropic succeeded on 27 Oct (the leak above), so the account seems to have credit again. The recording was drafted on OpenAI while it had none, and no Claude Code build was run in this stage.
-- **The box is open to anyone with its address** (Stage 9's question stands).
-- **This VM's memory.** The watcher's full run (several dev servers and headless browsers) took the VM near its 16 GB during the stage, and the dev app and the watcher were stopped once for it. A larger VM, or running the end-to-end tests one at a time in the watcher, would avoid it.
+- **The Anthropic account works again.** The rebuilt sample was built by Claude Code on claude-sonnet-5-5 (₹118) and drafted live on it in the same Test drive. The recording's English was drafted on OpenAI after one Claude reply came back with words before its JSON. Should the drafter seat move back to Claude?
+- **The sample's New order screen still saves nothing** (its card says so). Saving an order would put the product's own writes on the ground as they happen. Is that wanted for the sample, or kept for ergPLAN?
+- **The Street's pipes take one turn over the ground from a plot**, around the buildings in the way, because plots have no roads. Should the ground get paths from each plot to the buildings that use it?

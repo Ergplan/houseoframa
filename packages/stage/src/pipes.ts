@@ -412,7 +412,10 @@ export function streetPipes(
   flow.steps.forEach((x, i) => {
     if (x.kind !== 'source') return;
     const from = places.steps[i] ?? works;
-    const points = route(from, works);
+    let points = route(from, works);
+    // Kept where it is worked out: a short pipe into that building's foot, so the step still has its
+    // pipe, its label when dry, and stops the water when it has no value.
+    if (points.length === 1) points = [p(wf.gx - 1, wf.gy + 1, LIFT), points[0]!];
     stops[i] = points[0] ?? null;
     if (points.length > 1) pipes.push({ step: i, points, dry: dry(i), label: label(i, x.label) });
   });
