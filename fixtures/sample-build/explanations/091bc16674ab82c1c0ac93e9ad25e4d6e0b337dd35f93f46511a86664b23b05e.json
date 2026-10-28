@@ -1,0 +1,14 @@
+{
+  "hash": "091bc16674ab82c1c0ac93e9ad25e4d6e0b337dd35f93f46511a86664b23b05e",
+  "path": "db/orders.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes sample orders, the database connection, the site identifier and the orders table available for use.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-38",
+  "at": "2026-10-28T11:35:07.318Z",
+  "commit": null,
+  "lift": 1
+}

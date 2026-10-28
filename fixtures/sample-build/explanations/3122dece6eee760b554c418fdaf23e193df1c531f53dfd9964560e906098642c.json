@@ -1,0 +1,14 @@
+{
+  "hash": "3122dece6eee760b554c418fdaf23e193df1c531f53dfd9964560e906098642c",
+  "path": "db/connect.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in the tools and data definitions used to work with the product’s database.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-11",
+  "at": "2026-10-28T11:34:08.721Z",
+  "commit": null,
+  "lift": 0
+}

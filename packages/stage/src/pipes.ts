@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
-// The trail drawn as plumbing (Stage 11), at the Building level: from where an input is kept (a part of
+// The trail drawn as plumbing (Stage 11), at the Building level (and along the Street's roads when it
+// crosses buildings, `streetPipes`): from where an input is kept (a part of
 // the building, or the ground under it when it is kept elsewhere) along the floors to the part of the
 // building that works the figure out, and up through the floors to the figure on the glass front. Pipes
 // are drawn only for steps the trail has; a step with no value is a dry, broken pipe labelled untraced
@@ -10,6 +11,7 @@ import { brickOnFace, facadeShape, floorFaceOf, subFace } from './geometry.ts';
 import type { Pt } from './iso.ts';
 import { brickTop, insideAt, type InsideScene } from './inside.ts';
 import type { Palette } from './palette.ts';
+import { at, type Street } from './street.ts';
 
 /** A flow as packages/trace gives it (flowOf): what the pipes need of it. */
 export interface FlowLike {
@@ -281,5 +283,166 @@ export function insidePipes(
       label: dry(screenIndex) ? 'untraced: no water reaches the screen' : null,
     });
   }
+  return { pipes, stops };
+}
+
+type GroundPt = { gx: number; gy: number };
+
+/** How many of these buildings a straight run over the ground passes through. */
+export function runsThrough(
+  buildings: Street['buildings'],
+  a: GroundPt,
+  b: GroundPt,
+  skip: (string | null)[] = [],
+): number {
+  const [x0, x1] = [Math.min(a.gx, b.gx), Math.max(a.gx, b.gx)];
+  const [y0, y1] = [Math.min(a.gy, b.gy), Math.max(a.gy, b.gy)];
+  return buildings.filter(
+    (q) =>
+      !skip.includes(q.id) && x0 < q.gx + q.side && x1 > q.gx && y0 < q.gy + q.side && y1 > q.gy,
+  ).length;
+}
+
+/**
+ * The one turn a pipe takes over the ground where no road joins two places (a plot has none): on the
+ * side that passes through fewer other buildings, the first when they tie.
+ */
+export function groundTurn(
+  buildings: Street['buildings'],
+  a: GroundPt,
+  b: GroundPt,
+  skip: (string | null)[] = [],
+): GroundPt {
+  const turns: [GroundPt, GroundPt] = [
+    { gx: a.gx, gy: b.gy },
+    { gx: b.gx, gy: a.gy },
+  ];
+  const cost = (t: GroundPt) =>
+    runsThrough(buildings, a, t, skip) + runsThrough(buildings, t, b, skip);
+  return cost(turns[1]) < cost(turns[0]) ? turns[1] : turns[0];
+}
+
+/** Where a step of a flow stands on the Street: a building, or a table's plot in the ground. */
+export type StreetPlace = { building: string } | { table: string };
+
+const placeKey = (p: StreetPlace) => ('building' in p ? `b:${p.building}` : `t:${p.table}`);
+
+/**
+ * Where each step of a flow stands on the Street. `ownerOf` names the building a file stands in;
+ * `shownIn` is the building whose glass shows the figure. A source kept in a table stands on its plot,
+ * one kept in a file on that file's building, and one kept elsewhere (the form, a file of no building)
+ * nowhere: its water starts where the figure is worked out.
+ */
+export function flowPlaces(
+  flow: FlowLike,
+  ownerOf: (file: string) => string | null,
+  shownIn: string,
+): { steps: (StreetPlace | null)[]; crosses: boolean } {
+  const fn = flow.steps.find((s) => s.kind === 'function');
+  const fnOwner = fn?.file ? ownerOf(fn.file) : null;
+  const steps = flow.steps.map((s): StreetPlace | null => {
+    if (s.kind === 'source') {
+      if (s.table) return { table: s.table };
+      const owner = s.file ? ownerOf(s.file) : null;
+      return owner ? { building: owner } : null;
+    }
+    if (s.kind === 'screen') return { building: shownIn };
+    return { building: fnOwner ?? shownIn };
+  });
+  const distinct = new Set(steps.flatMap((p) => (p ? [placeKey(p)] : [])));
+  return { steps, crosses: distinct.size > 1 };
+}
+
+/**
+ * The pipes of one figure's flow along the Street (Stage 11), drawn when its trail crosses buildings:
+ * from the plot or building where each input is kept, along the road between them (or straight over the
+ * ground when no road joins them), to the building that works the figure out; up through that building
+ * as it is worked out; across its roof as the formula is applied; and along the road to the building
+ * whose glass shows it, up to the figure. The same steps and the same dry pipes as inside a building.
+ * Null when the whole trail stays in one building: that flow is drawn at the Building level.
+ */
+export function streetPipes(
+  s: Street,
+  flow: FlowLike,
+  ownerOf: (file: string) => string | null,
+  shownIn: string,
+): PipeLayout | null {
+  const places = flowPlaces(flow, ownerOf, shownIn);
+  if (!places.crosses) return null;
+  const p = at(s);
+  const foot = (pl: StreetPlace): { gx: number; gy: number; h: number } | null => {
+    if ('table' in pl) {
+      const x = s.plots.find((q) => q.table === pl.table);
+      return x ? { gx: x.gx + x.w / 2, gy: x.gy + x.d / 2, h: 0 } : null;
+    }
+    const b = s.buildings.find((q) => q.id === pl.building);
+    return b ? { gx: b.gx + b.side / 2, gy: b.gy + b.side / 2, h: b.height } : null;
+  };
+  const LIFT = 4;
+  // The ground route from one place to another: the road between the two buildings when there is one.
+  const route = (a: StreetPlace, b: StreetPlace): Pt[] => {
+    const fa = foot(a);
+    const fb = foot(b);
+    if (!fa || !fb) return [];
+    if (placeKey(a) === placeKey(b)) return [p(fa.gx, fa.gy, LIFT)];
+    const ida = 'building' in a ? a.building : null;
+    const idb = 'building' in b ? b.building : null;
+    const road = s.roads.find(
+      (r) => (r.from === ida && r.to === idb) || (r.from === idb && r.to === ida),
+    );
+    const mids = road
+      ? road.from === ida
+        ? road.points
+        : [...road.points].reverse()
+      : [groundTurn(s.buildings, fa, fb, [ida, idb])];
+    return [p(fa.gx, fa.gy, LIFT), ...mids.map((m) => p(m.gx, m.gy, LIFT)), p(fb.gx, fb.gy, LIFT)];
+  };
+  const fnIndex = flow.steps.findIndex((x) => x.kind === 'function');
+  const formulaIndex = flow.steps.findIndex((x) => x.kind === 'formula');
+  const screenIndex = flow.steps.findIndex((x) => x.kind === 'screen');
+  const works = places.steps[fnIndex] ?? { building: shownIn };
+  const shows: StreetPlace = { building: shownIn };
+  const wf = foot(works);
+  const sf = foot(shows);
+  if (!wf || !sf) return null;
+  const dry = (i: number) => flow.steps[i]?.value === null;
+  const label = (i: number, what: string) => (dry(i) ? `${what}: untraced` : null);
+  const pipes: Pipe[] = [];
+  const stops: (Pt | null)[] = [];
+  flow.steps.forEach((x, i) => {
+    if (x.kind !== 'source') return;
+    const from = places.steps[i] ?? works;
+    const points = route(from, works);
+    stops[i] = points[0] ?? null;
+    if (points.length > 1) pipes.push({ step: i, points, dry: dry(i), label: label(i, x.label) });
+  });
+  const roof = p(wf.gx, wf.gy, wf.h + 18);
+  stops[fnIndex] = roof;
+  pipes.push({
+    step: fnIndex,
+    points: [p(wf.gx, wf.gy, LIFT), roof],
+    dry: dry(fnIndex),
+    label: label(fnIndex, 'worked out'),
+  });
+  const over = p(wf.gx, wf.gy, wf.h + 40);
+  stops[formulaIndex] = over;
+  pipes.push({
+    step: formulaIndex,
+    points: [roof, over],
+    dry: dry(formulaIndex),
+    label: label(formulaIndex, 'how it is worked out'),
+  });
+  const glass = p(sf.gx, sf.gy, sf.h * 0.9);
+  stops[screenIndex] = glass;
+  pipes.push({
+    step: screenIndex,
+    points: [
+      over,
+      ...route(works, shows).slice(placeKey(works) === placeKey(shows) ? 1 : 0),
+      glass,
+    ],
+    dry: dry(screenIndex),
+    label: dry(screenIndex) ? 'untraced: no water reaches the screen' : null,
+  });
   return { pipes, stops };
 }

@@ -1,0 +1,185 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Claude Code (builder)" <builder@houseoframa.local>
+Date: Wed, 28 Oct 2026 11:30:06 +0000
+Subject: [PATCH 4/4] Count the day's takings: the Today's total screen shows
+ the takings and the GST on them
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .rama/features.json                           |  6 ++++++
+ .rama/screens.json                            |  6 ++++++
+ app/total/page.test.tsx                       | 14 +++++++++++++
+ app/total/page.tsx                            | 21 +++++++++++++++++++
+ .../count-the-days-takings/takings.test.ts    | 21 +++++++++++++++++++
+ features/count-the-days-takings/takings.ts    | 15 +++++++++++++
+ rama/figures.ts                               | 19 +++++++++++++++++
+ 7 files changed, 102 insertions(+)
+ create mode 100644 app/total/page.test.tsx
+ create mode 100644 app/total/page.tsx
+ create mode 100644 features/count-the-days-takings/takings.test.ts
+ create mode 100644 features/count-the-days-takings/takings.ts
+
+diff --git a/.rama/features.json b/.rama/features.json
+index 9742b66..7a2ac90 100644
+--- a/.rama/features.json
++++ b/.rama/features.json
+@@ -11,6 +11,12 @@
+       "name": "Take an order",
+       "does": "Writes down a new order and shows what it will cost before it is saved.",
+       "screens": ["/new"]
++    },
++    {
++      "id": "count-the-days-takings",
++      "name": "Count the day’s takings",
++      "does": "Adds up everything the stall took today and the GST owed on it.",
++      "screens": ["/total"]
+     }
+   ]
+ }
+diff --git a/.rama/screens.json b/.rama/screens.json
+index 3f1b723..44d1d53 100644
+--- a/.rama/screens.json
++++ b/.rama/screens.json
+@@ -21,6 +21,12 @@
+       "title": "New order",
+       "route": "/new",
+       "audience": "customer"
++    },
++    {
++      "name": "todays-total",
++      "title": "Today’s total",
++      "route": "/total",
++      "audience": "staff"
+     }
+   ]
+ }
+diff --git a/app/total/page.test.tsx b/app/total/page.test.tsx
+new file mode 100644
+index 0000000..1c1b959
+--- /dev/null
++++ b/app/total/page.test.tsx
+@@ -0,0 +1,14 @@
++import { renderToStaticMarkup } from 'react-dom/server';
++import { expect, it } from 'vitest';
++import TodaysTotal from './page';
++
++it('shows the day’s takings and the GST on them for the sample day', async () => {
++  const html = renderToStaticMarkup(await TodaysTotal());
++  expect(html).toContain('Today’s total');
++  expect(html).toContain('data-rama-figure="todays-takings"');
++  expect(html).toContain('data-rama-value="11300"');
++  expect(html).toContain('₹113.00');
++  expect(html).toContain('data-rama-figure="gst-on-todays-takings"');
++  expect(html).toContain('data-rama-value="565"');
++  expect(html).toContain('₹5.65');
++});
+diff --git a/app/total/page.tsx b/app/total/page.tsx
+new file mode 100644
+index 0000000..46e2f5e
+--- /dev/null
++++ b/app/total/page.tsx
+@@ -0,0 +1,21 @@
++import { Figure } from '../../components/Figure';
++import { listOrders } from '../../db/orders';
++import { gstOnTakings, todaysTakings } from '../../features/count-the-days-takings/takings';
++
++export const dynamic = 'force-dynamic';
++
++export default async function TodaysTotal() {
++  const orders = await listOrders();
++  return (
++    <main>
++      <h1>{'Today’s total'}</h1>
++      <p>
++        Today’s takings: <Figure id="todays-takings" fn={todaysTakings} args={[orders]} show="rupees" />
++      </p>
++      <p>
++        GST on today’s takings:{' '}
++        <Figure id="gst-on-todays-takings" fn={gstOnTakings} args={[orders]} show="rupees" />
++      </p>
++    </main>
++  );
++}
+diff --git a/features/count-the-days-takings/takings.test.ts b/features/count-the-days-takings/takings.test.ts
+new file mode 100644
+index 0000000..532d2ed
+--- /dev/null
++++ b/features/count-the-days-takings/takings.test.ts
+@@ -0,0 +1,21 @@
++import { expect, it } from 'vitest';
++import { gstOnTakings, todaysTakings } from './takings';
++
++const at = '2026-10-28T09:00:00+05:30';
++const sampleDay = [
++  { item: 'Masala chai', cups: 2, pricePaise: 1500, takenAt: at },
++  { item: 'Ginger chai', cups: 1, pricePaise: 1800, takenAt: at },
++  { item: 'Masala chai', cups: 3, pricePaise: 1500, takenAt: at },
++  { item: 'Lemon tea', cups: 1, pricePaise: 2000, takenAt: at },
++];
++
++it('adds up every order’s amount', () => {
++  expect(todaysTakings(sampleDay)).toBe(11300);
++  expect(todaysTakings([])).toBe(0);
++});
++
++it('works out five percent GST, rounded to the paisa', () => {
++  expect(gstOnTakings(sampleDay)).toBe(565);
++  expect(gstOnTakings([{ item: 'Tea', cups: 1, pricePaise: 1010, takenAt: at }])).toBe(51);
++  expect(gstOnTakings([])).toBe(0);
++});
+diff --git a/features/count-the-days-takings/takings.ts b/features/count-the-days-takings/takings.ts
+new file mode 100644
+index 0000000..2ccb344
+--- /dev/null
++++ b/features/count-the-days-takings/takings.ts
+@@ -0,0 +1,15 @@
++// Count the day's takings: everything the stall took today and the GST owed on it.
++import type { Order } from '../../db/orders';
++
++/** Five percent GST, as a share of the takings. */
++const GST_PERCENT = 5;
++
++/** Today's takings, in paise: every order's amount (cups times the price of a cup), added up. */
++export function todaysTakings(orders: Order[]): number {
++  return orders.reduce((sum, o) => sum + o.cups * o.pricePaise, 0);
++}
++
++/** The GST owed on today's takings, in paise: five percent, rounded to the paisa. */
++export function gstOnTakings(orders: Order[]): number {
++  return Math.round((todaysTakings(orders) * GST_PERCENT) / 100);
++}
+diff --git a/rama/figures.ts b/rama/figures.ts
+index e1e09c7..5e6297c 100644
+--- a/rama/figures.ts
++++ b/rama/figures.ts
+@@ -2,6 +2,7 @@
+ // and what it means in the customer's words. A screen shows a figure only through <Figure id>, and
+ // rama/lint.ts fails the build on any number shown any other way.
+ import { orderAmount, orderCount } from '../features/see-todays-orders/orders';
++import { gstOnTakings, todaysTakings } from '../features/count-the-days-takings/takings';
+ import { newOrderAmount } from '../features/take-an-order/order';
+ import { defineFigures } from './define';
+ 
+@@ -38,4 +39,22 @@ export const figures = defineFigures({
+     ],
+     show: 'rupees',
+   },
++  'todays-takings': {
++    fn: todaysTakings,
++    title: 'Today’s takings',
++    what: 'Everything the stall took today.',
++    english: 'Every order’s amount, added up.',
++    inputs: [{ label: 'Today’s orders', source: 'todaysTakings(orders)', data: 'orders table' }],
++    show: 'rupees',
++    files: ['data/orders.json'],
++  },
++  'gst-on-todays-takings': {
++    fn: gstOnTakings,
++    title: 'GST on today’s takings',
++    what: 'The GST owed on what the stall took today.',
++    english: 'Five percent of the day’s takings, rounded to the paisa.',
++    inputs: [{ label: 'Today’s orders', source: 'gstOnTakings(orders)', data: 'orders table' }],
++    show: 'rupees',
++    files: ['data/orders.json'],
++  },
+ });

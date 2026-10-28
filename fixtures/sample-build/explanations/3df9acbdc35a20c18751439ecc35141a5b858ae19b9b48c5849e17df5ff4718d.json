@@ -1,0 +1,14 @@
+{
+  "hash": "3df9acbdc35a20c18751439ecc35141a5b858ae19b9b48c5849e17df5ff4718d",
+  "path": "features/see-todays-orders/orders.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Uses Order to describe orders.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-48",
+  "at": "2026-10-28T11:35:27.577Z",
+  "commit": null,
+  "lift": 1
+}

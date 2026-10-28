@@ -3,12 +3,12 @@
   "path": "app/total/page.test.tsx",
   "kind": "imports",
   "name": null,
-  "sentence": "Brings in TodaysTotal and tools to turn it into page text and check it in tests.",
+  "sentence": "Brings together TodaysTotal and the tools used to check its page content.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-61",
-  "at": "2026-10-27T10:04:40.146Z",
+  "callId": "row-70",
+  "at": "2026-10-28T11:36:09.260Z",
   "commit": null,
   "lift": 4
 }

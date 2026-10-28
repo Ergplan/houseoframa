@@ -1,0 +1,14 @@
+{
+  "hash": "21dc86035ad53426f292b80d07fb7ed0d94f3e8b46b12084cda8fd6be70e927a",
+  "path": "app/new/page.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes Figure, STARTING_CUPS and newOrderAmount available to the page.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-61",
+  "at": "2026-10-28T11:35:53.487Z",
+  "commit": null,
+  "lift": 3
+}

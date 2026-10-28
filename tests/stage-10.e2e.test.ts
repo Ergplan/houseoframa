@@ -118,7 +118,7 @@ describe('stage 10 e2e', () => {
     );
     await page.locator('.eg-voice[data-state="idle"]').waitFor();
     const narrated = await page.locator('[data-testid="voice-transcript"]').innerText();
-    expect(narrated).toContain('It does not save an order, take a payment, print a bill');
+    expect(narrated).toContain('It does not save a new order yet, take a payment, print a bill');
     await say(page, SCRIPT.turns.find((t) => t.at === 'act 3')!.text);
     expect(await lastSaid(page)).toContain(
       'Signed: Rachit Agarwal said yes, build it. That is the first signature.',

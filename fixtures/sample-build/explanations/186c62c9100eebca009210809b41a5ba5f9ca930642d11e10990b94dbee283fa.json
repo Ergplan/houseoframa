@@ -1,0 +1,14 @@
+{
+  "hash": "186c62c9100eebca009210809b41a5ba5f9ca930642d11e10990b94dbee283fa",
+  "path": "rama/figures.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings together the calculations for order amounts, order counts, today’s takings, GST on takings and a new order’s amount, along with the tool for defining figures.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-83",
+  "at": "2026-10-28T11:36:40.306Z",
+  "commit": null,
+  "lift": 4
+}

@@ -3,12 +3,12 @@
   "path": "app/page.test.tsx",
   "kind": "test",
   "name": "shows the plan’s count of buildings as a traced figure",
-  "sentence": "Checks that Welcome includes a marked building-count figure and a marked value of 1.",
+  "sentence": "Checks that Welcome includes a figure marked building-count and a marked value of 1.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
   "callId": "row-5",
-  "at": "2026-10-27T10:02:22.810Z",
+  "at": "2026-10-28T11:33:52.765Z",
   "commit": null,
   "lift": 0
 }

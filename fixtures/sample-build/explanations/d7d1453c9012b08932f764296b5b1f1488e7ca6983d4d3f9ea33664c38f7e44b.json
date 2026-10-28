@@ -1,0 +1,14 @@
+{
+  "hash": "d7d1453c9012b08932f764296b5b1f1488e7ca6983d4d3f9ea33664c38f7e44b",
+  "path": "db/orders.test.ts",
+  "kind": "test",
+  "name": "writes the sample day into an empty table the first time, as sample",
+  "sentence": "Checks that an empty table is filled with 4 sample orders for chai and that all 4 are returned. It also checks that the first order is Masala chai with 2 cups and pricePaise of 1500.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-58",
+  "at": "2026-10-28T11:35:46.855Z",
+  "commit": null,
+  "lift": 2
+}

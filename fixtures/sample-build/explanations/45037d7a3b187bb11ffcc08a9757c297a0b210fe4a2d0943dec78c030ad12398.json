@@ -1,0 +1,14 @@
+{
+  "hash": "45037d7a3b187bb11ffcc08a9757c297a0b210fe4a2d0943dec78c030ad12398",
+  "path": "features/see-todays-orders/orders.ts",
+  "kind": "function",
+  "name": "cupsInWords",
+  "sentence": "Puts a cup count into words, such as \"two cups\", using \"no\" through \"ten\" and \"many\" for other counts. Uses \"cup\" only when the count is 1.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-51",
+  "at": "2026-10-28T11:35:33.033Z",
+  "commit": null,
+  "lift": 1
+}

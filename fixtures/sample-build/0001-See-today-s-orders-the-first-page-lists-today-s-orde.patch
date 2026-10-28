@@ -1,0 +1,361 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Claude Code (builder)" <builder@houseoframa.local>
+Date: Wed, 28 Oct 2026 11:26:58 +0000
+Subject: [PATCH 1/4] See today's orders: the first page lists today's orders,
+ their amounts and the count
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .rama/features.json                       |  6 ++--
+ .rama/screens.json                        |  4 +--
+ README.md                                 | 13 ++++++++
+ app/page.test.tsx                         | 16 +++++++---
+ app/page.tsx                              | 23 +++++++++----
+ data/orders.json                          |  6 ++++
+ db/orders.ts                              | 39 +++++++++++++++++++++++
+ db/schema.ts                              | 12 ++++++-
+ features/see-todays-orders/orders.test.ts | 19 +++++++++++
+ features/see-todays-orders/orders.ts      | 22 +++++++++++++
+ features/welcome/plan.test.ts             |  7 ----
+ features/welcome/plan.ts                  | 20 ------------
+ rama/figures.ts                           | 28 +++++++++++-----
+ 13 files changed, 162 insertions(+), 53 deletions(-)
+ create mode 100644 data/orders.json
+ create mode 100644 db/orders.ts
+ create mode 100644 features/see-todays-orders/orders.test.ts
+ create mode 100644 features/see-todays-orders/orders.ts
+ delete mode 100644 features/welcome/plan.test.ts
+ delete mode 100644 features/welcome/plan.ts
+
+diff --git a/.rama/features.json b/.rama/features.json
+index 4501b7a..f0ee1c9 100644
+--- a/.rama/features.json
++++ b/.rama/features.json
+@@ -1,9 +1,9 @@
+ {
+   "features": [
+     {
+-      "id": "welcome",
+-      "name": "Welcome",
+-      "does": "Says what the product is for and how many buildings its plan has.",
++      "id": "see-todays-orders",
++      "name": "See today’s orders",
++      "does": "Lists every order the stall has taken today, what each one costs, and how many there are.",
+       "screens": ["/"]
+     }
+   ]
+diff --git a/.rama/screens.json b/.rama/screens.json
+index 033479b..153fe19 100644
+--- a/.rama/screens.json
++++ b/.rama/screens.json
+@@ -11,8 +11,8 @@
+   },
+   "screens": [
+     {
+-      "name": "welcome",
+-      "title": "Welcome",
++      "name": "todays-orders",
++      "title": "Today’s orders",
+       "route": "/",
+       "audience": "customer"
+     }
+diff --git a/README.md b/README.md
+index 77a2efb..38220bf 100644
+--- a/README.md
++++ b/README.md
+@@ -14,3 +14,16 @@ name before it merges.
+ - `.rama/screens.json`: which screens House of Rama photographs, and who each is for.
+ - `db/schema.ts`: the tables. `db/connect.ts`: the product's own database, when House of Rama connects one;
+   without one (the tests, a build) a building reads its sample rows from `data/<table>.json`.
++
++## Tables and the database
++
++- `orders` (in `db/schema.ts`) holds the stall's orders: item, cups, price of a cup in paise, and when it was
++  taken. It keeps one day, so every order in it is today's. Like every table it carries the provenance columns.
++- `db/orders.ts` is how a building reads it. When `database()` is connected (the running app), it reads the
++  table; the first time the table is empty it writes in the sample day (four orders) with `createdBy: 'sample'`
++  and `siteId: siteId()`. When `database()` is null (the tests, `npm run build`), it reads the same four
++  orders from `data/orders.json`. No table is created and no migration is run here: House of Rama makes the
++  tables from `db/schema.ts` before the app starts.
++- A page that reads a table is an `async` component and exports `const dynamic = 'force-dynamic'`, so it reads
++  when it opens, not when the app is built.
++- All amounts are kept in paise and shown in rupees with two places, like ₹45.00.
+diff --git a/app/page.test.tsx b/app/page.test.tsx
+index e673e18..c6dfdb5 100644
+--- a/app/page.test.tsx
++++ b/app/page.test.tsx
+@@ -1,9 +1,15 @@
+ import { renderToStaticMarkup } from 'react-dom/server';
+ import { expect, it } from 'vitest';
+-import Welcome from './page';
++import TodaysOrders from './page';
+ 
+-it('shows the plan’s count of buildings as a traced figure', () => {
+-  const html = renderToStaticMarkup(<Welcome />);
+-  expect(html).toContain('data-rama-figure="building-count"');
+-  expect(html).toContain('data-rama-value="1"');
++it('shows the sample day: four orders and what each costs', async () => {
++  const html = renderToStaticMarkup(await TodaysOrders());
++  expect(html).toContain('Today’s orders');
++  expect(html).toContain('data-rama-figure="orders-so-far"');
++  expect(html).toContain('data-rama-value="4"');
++  expect(html).toContain('two cups');
++  expect(html).toContain('one cup');
++  expect(html).toContain('three cups');
++  for (const v of [3000, 1800, 4500, 2000]) expect(html).toContain(`data-rama-value="${v}"`);
++  expect(html).toContain('₹30.00');
+ });
+diff --git a/app/page.tsx b/app/page.tsx
+index eb4f1ba..03f6499 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,16 +1,25 @@
+ import { Figure } from '../components/Figure';
+-import { buildingCount, planned } from '../features/welcome/plan';
++import { listOrders } from '../db/orders';
++import { cupsInWords, orderAmount, orderCount } from '../features/see-todays-orders/orders';
+ 
+-export default function Welcome() {
+-  const buildings = planned();
++export const dynamic = 'force-dynamic';
++
++export default async function TodaysOrders() {
++  const orders = await listOrders();
+   return (
+     <main>
+-      <h1>{'Chai Stall (Test drive)'}</h1>
+-      <p>{'A chai stall takes orders through the day and sees the day’s takings and GST.'}</p>
++      <h1>{'Today’s orders'}</h1>
+       <p>
+-        Buildings planned:{' '}
+-        <Figure id="building-count" fn={buildingCount} args={[buildings]} show="count" />
++        Orders so far: <Figure id="orders-so-far" fn={orderCount} args={[orders]} show="count" />
+       </p>
++      <ul>
++        {orders.map((o, i) => (
++          <li key={i}>
++            {o.item}, {cupsInWords(o.cups)}. Order amount:{' '}
++            <Figure id="order-amount" fn={orderAmount} args={[o.cups, o.pricePaise]} show="rupees" />
++          </li>
++        ))}
++      </ul>
+     </main>
+   );
+ }
+diff --git a/data/orders.json b/data/orders.json
+new file mode 100644
+index 0000000..8159d7e
+--- /dev/null
++++ b/data/orders.json
+@@ -0,0 +1,6 @@
++[
++  { "item": "Masala chai", "cups": 2, "pricePaise": 1500, "takenAt": "2026-10-28T08:05:00+05:30" },
++  { "item": "Ginger chai", "cups": 1, "pricePaise": 1800, "takenAt": "2026-10-28T08:20:00+05:30" },
++  { "item": "Masala chai", "cups": 3, "pricePaise": 1500, "takenAt": "2026-10-28T09:10:00+05:30" },
++  { "item": "Lemon tea", "cups": 1, "pricePaise": 2000, "takenAt": "2026-10-28T09:45:00+05:30" }
++]
+diff --git a/db/orders.ts b/db/orders.ts
+new file mode 100644
+index 0000000..ba24141
+--- /dev/null
++++ b/db/orders.ts
+@@ -0,0 +1,39 @@
++// The orders table: the stall keeps one day, so every order in it is today's. With a database the table
++// itself is read (and the sample day written in the first time it is empty); without one, data/orders.json.
++import sample from '../data/orders.json';
++import { database, siteId } from './connect';
++import { orders } from './schema';
++
++export interface Order {
++  item: string;
++  cups: number;
++  /** Price of one cup, in paise. */
++  pricePaise: number;
++  takenAt: string;
++}
++
++/** Every order the stall has taken today. */
++export async function listOrders(): Promise<Order[]> {
++  const db = database();
++  if (!db) return sample;
++  let rows = await db.select().from(orders);
++  if (rows.length === 0) {
++    await db.insert(orders).values(
++      sample.map((o) => ({
++        siteId: siteId(),
++        createdBy: 'sample',
++        item: o.item,
++        cups: o.cups,
++        pricePaise: o.pricePaise,
++        takenAt: new Date(o.takenAt),
++      })),
++    );
++    rows = await db.select().from(orders);
++  }
++  return rows.map((r) => ({
++    item: r.item,
++    cups: r.cups,
++    pricePaise: r.pricePaise,
++    takenAt: r.takenAt.toISOString(),
++  }));
++}
+diff --git a/db/schema.ts b/db/schema.ts
+index fea6ff1..dc026ed 100644
+--- a/db/schema.ts
++++ b/db/schema.ts
+@@ -2,10 +2,20 @@
+ // product it belongs to, when the row was written and by whom. Spread `provenance()` into each one:
+ //
+ //   export const orders = pgTable('orders', { id: serial('id').primaryKey(), ...provenance(), … });
+-import { text, timestamp } from 'drizzle-orm/pg-core';
++import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+ 
+ export const provenance = () => ({
+   siteId: text('site_id').notNull(),
+   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+   createdBy: text('created_by').notNull(),
+ });
++
++export const orders = pgTable('orders', {
++  id: serial('id').primaryKey(),
++  ...provenance(),
++  item: text('item').notNull(),
++  cups: integer('cups').notNull(),
++  /** Price of one cup, in paise. */
++  pricePaise: integer('price_paise').notNull(),
++  takenAt: timestamp('taken_at', { withTimezone: true }).notNull().defaultNow(),
++});
+diff --git a/features/see-todays-orders/orders.test.ts b/features/see-todays-orders/orders.test.ts
+new file mode 100644
+index 0000000..a36925e
+--- /dev/null
++++ b/features/see-todays-orders/orders.test.ts
+@@ -0,0 +1,19 @@
++import { expect, it } from 'vitest';
++import { cupsInWords, orderAmount, orderCount } from './orders';
++
++const order = { item: 'Lemon tea', cups: 1, pricePaise: 2000, takenAt: '2026-10-28T09:45:00+05:30' };
++
++it('counts the orders', () => {
++  expect(orderCount([order, order])).toBe(2);
++  expect(orderCount([])).toBe(0);
++});
++
++it('multiplies cups by the price of a cup', () => {
++  expect(orderAmount(2, 1500)).toBe(3000);
++  expect(orderAmount(1, 1800)).toBe(1800);
++});
++
++it('says cups in words', () => {
++  expect(cupsInWords(1)).toBe('one cup');
++  expect(cupsInWords(2)).toBe('two cups');
++});
+diff --git a/features/see-todays-orders/orders.ts b/features/see-todays-orders/orders.ts
+new file mode 100644
+index 0000000..4cb1e4c
+--- /dev/null
++++ b/features/see-todays-orders/orders.ts
+@@ -0,0 +1,22 @@
++// See today's orders: what each order costs and how many orders there are.
++import type { Order } from '../../db/orders';
++
++/** How many orders the stall has taken today. */
++export function orderCount(orders: Order[]): number {
++  return orders.length;
++}
++
++/** What one order costs, in paise: its cups times the price of a cup. */
++export function orderAmount(cups: number, pricePaise: number): number {
++  return cups * pricePaise;
++}
++
++/**
++ * A small count of cups, in words ("two cups").
++ * @words
++ */
++export function cupsInWords(cups: number): string {
++  const names = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
++  const word = names[cups] ?? 'many';
++  return word + (cups === 1 ? ' cup' : ' cups');
++}
+diff --git a/features/welcome/plan.test.ts b/features/welcome/plan.test.ts
+deleted file mode 100644
+index ce0a933..0000000
+--- a/features/welcome/plan.test.ts
++++ /dev/null
+@@ -1,7 +0,0 @@
+-import { expect, it } from 'vitest';
+-import { buildingCount, planned } from './plan';
+-
+-it('counts the buildings on the plan', () => {
+-  expect(buildingCount(planned())).toBe(1);
+-  expect(buildingCount([])).toBe(0);
+-});
+diff --git a/features/welcome/plan.ts b/features/welcome/plan.ts
+deleted file mode 100644
+index 3ced38f..0000000
+--- a/features/welcome/plan.ts
++++ /dev/null
+@@ -1,20 +0,0 @@
+-// The welcome building: how many buildings the product's plan has. The builder replaces this building
+-// with the product's own; it is here so the scaffold shows one traced figure from the first lift.
+-import plan from '../../.rama/features.json';
+-
+-export interface Building {
+-  id: string;
+-  name: string;
+-  does: string;
+-  screens: string[];
+-}
+-
+-/** The buildings on the plan, as .rama/features.json lists them. */
+-export function planned(): Building[] {
+-  return plan.features;
+-}
+-
+-/** How many buildings the plan has. */
+-export function buildingCount(buildings: Building[]): number {
+-  return buildings.length;
+-}
+diff --git a/rama/figures.ts b/rama/figures.ts
+index 9456501..4c3ca21 100644
+--- a/rama/figures.ts
++++ b/rama/figures.ts
+@@ -1,17 +1,29 @@
+ // Every figure the product shows (docs/HOUSE-STYLE.md): its function, imported from where it is written,
+ // and what it means in the customer's words. A screen shows a figure only through <Figure id>, and
+ // rama/lint.ts fails the build on any number shown any other way.
+-import { buildingCount } from '../features/welcome/plan';
++import { orderAmount, orderCount } from '../features/see-todays-orders/orders';
+ import { defineFigures } from './define';
+ 
+ export const figures = defineFigures({
+-  'building-count': {
+-    fn: buildingCount,
+-    title: 'Buildings planned',
+-    what: 'How many things the product will do, as its plan lists them.',
+-    english: 'The number of buildings on the plan.',
+-    inputs: [{ label: 'The plan', source: 'buildingCount(buildings)', data: '.rama/features.json' }],
++  'orders-so-far': {
++    fn: orderCount,
++    title: 'Orders so far',
++    what: 'The number of orders the stall has taken today.',
++    english: 'The number of orders taken today.',
++    inputs: [{ label: 'Today’s orders', source: 'orderCount(orders)', data: 'orders table' }],
+     show: 'count',
+-    files: ['.rama/features.json'],
++    files: ['data/orders.json'],
++  },
++  'order-amount': {
++    fn: orderAmount,
++    title: 'Order amount',
++    what: 'What one order costs.',
++    english: 'Cups times the price of a cup.',
++    inputs: [
++      { label: 'Cups', source: 'orderAmount(cups, …)', data: 'orders.cups' },
++      { label: 'Price of a cup, in paise', source: 'orderAmount(…, pricePaise)', data: 'orders.price_paise' },
++    ],
++    show: 'rupees',
++    files: ['data/orders.json'],
+   },
+ });

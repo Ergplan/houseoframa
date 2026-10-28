@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Claude Code (builder)" <builder@houseoframa.local>
+Date: Wed, 28 Oct 2026 11:27:40 +0000
+Subject: [PATCH 2/4] Put tests behind the orders table and how the stall reads
+ it
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ db/orders.test.ts | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
+ create mode 100644 db/orders.test.ts
+
+diff --git a/db/orders.test.ts b/db/orders.test.ts
+new file mode 100644
+index 0000000..ba87028
+--- /dev/null
++++ b/db/orders.test.ts
+@@ -0,0 +1,44 @@
++import { getTableName } from 'drizzle-orm';
++import { afterEach, expect, it, vi } from 'vitest';
++import { listOrders } from './orders';
++import { orders } from './schema';
++
++afterEach(() => {
++  vi.resetModules();
++  vi.doUnmock('./connect');
++});
++
++it('reads the sample day from the file when no database is connected', async () => {
++  const rows = await listOrders();
++  expect(rows).toHaveLength(4);
++  expect(rows.map((r) => r.cups * r.pricePaise)).toEqual([3000, 1800, 4500, 2000]);
++});
++
++it('keeps orders in the orders table with provenance', () => {
++  expect(getTableName(orders)).toBe('orders');
++  for (const column of ['item', 'cups', 'pricePaise', 'takenAt', 'siteId', 'createdAt', 'createdBy']) {
++    expect(orders).toHaveProperty(column);
++  }
++});
++
++it('writes the sample day into an empty table the first time, as sample', async () => {
++  const inserted: Array<Record<string, unknown>> = [];
++  let stored: Array<Record<string, unknown>> = [];
++  const db = {
++    select: () => ({ from: async () => stored }),
++    insert: () => ({
++      values: async (rows: Array<Record<string, unknown>>) => {
++        inserted.push(...rows);
++        stored = rows;
++      },
++    }),
++  };
++  vi.resetModules();
++  vi.doMock('./connect', () => ({ database: () => db, siteId: () => 'chai' }));
++  const { listOrders: list } = await import('./orders');
++  const rows = await list();
++  expect(inserted).toHaveLength(4);
++  expect(inserted.every((r) => r.createdBy === 'sample' && r.siteId === 'chai')).toBe(true);
++  expect(rows).toHaveLength(4);
++  expect(rows[0]).toMatchObject({ item: 'Masala chai', cups: 2, pricePaise: 1500 });
++});

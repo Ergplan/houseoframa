@@ -1,0 +1,14 @@
+{
+  "hash": "62fb4a45675fa47bca697525dcbed6a6a5404be110cc842a02eb3ef699e374cc",
+  "path": "app/total/page.tsx",
+  "kind": "component",
+  "name": "TodaysTotal",
+  "sentence": "Reads the list of orders and shows Today’s takings and GST on today’s takings in rupees on the Today’s total page.",
+  "figure": "Today’s takings",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-73",
+  "at": "2026-10-28T11:36:18.356Z",
+  "commit": null,
+  "lift": 4
+}

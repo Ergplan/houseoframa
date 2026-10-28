@@ -1,0 +1,14 @@
+{
+  "hash": "3dfca460dcae0e3114beb4e19856931a902c3412b5a8fb37de09b7cdee98e6b8",
+  "path": "features/take-an-order/order.ts",
+  "kind": "function",
+  "name": "newOrderAmount",
+  "sentence": "Works out the New order amount in paise by rounding cups down to a whole number and multiplying by the price of a cup.",
+  "figure": "New order amount",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-67",
+  "at": "2026-10-28T11:36:03.811Z",
+  "commit": null,
+  "lift": 3
+}

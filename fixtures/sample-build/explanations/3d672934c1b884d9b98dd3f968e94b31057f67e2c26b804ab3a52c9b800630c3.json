@@ -1,0 +1,14 @@
+{
+  "hash": "3d672934c1b884d9b98dd3f968e94b31057f67e2c26b804ab3a52c9b800630c3",
+  "path": "features/count-the-days-takings/takings.test.ts",
+  "kind": "test",
+  "name": "adds up every order’s amount",
+  "sentence": "Checks that adding up every order’s amount in sampleDay gives 11300, and that no orders gives 0.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-77",
+  "at": "2026-10-28T11:36:26.016Z",
+  "commit": null,
+  "lift": 4
+}

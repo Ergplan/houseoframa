@@ -3,12 +3,12 @@
   "path": "rama/define.ts",
   "kind": "value",
   "name": "SHOW",
-  "sentence": "Shows counts with Indian digit grouping, converts amounts from paise to rupees with two decimal places, and shows percentages with up to two decimal places.",
+  "sentence": "Writes counts with Indian digit grouping, converts amounts in paise to rupees with two decimal places, and writes percentages with up to two decimal places.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-19",
-  "at": "2026-10-27T10:02:58.528Z",
+  "callId": "row-23",
+  "at": "2026-10-28T11:34:32.489Z",
   "commit": null,
   "lift": 0
 }

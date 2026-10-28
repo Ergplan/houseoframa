@@ -23,7 +23,7 @@ export const BUILDER_GIT = (label: string) => ({
   GIT_COMMITTER_EMAIL: 'builder@houseoframa.local',
 });
 
-export const BUILD_PROMPT = { name: 'build', version: 2 } as const;
+export const BUILD_PROMPT = { name: 'build', version: 3 } as const;
 
 export function claudeCode(
   opts: { model: string; env?: NodeJS.ProcessEnv; deps?: Partial<AgentDeps> } = {

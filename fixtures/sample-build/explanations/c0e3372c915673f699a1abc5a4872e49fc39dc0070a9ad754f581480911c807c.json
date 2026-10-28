@@ -1,0 +1,14 @@
+{
+  "hash": "c0e3372c915673f699a1abc5a4872e49fc39dc0070a9ad754f581480911c807c",
+  "path": "features/take-an-order/order.ts",
+  "kind": "value",
+  "name": "PRICE_OF_A_CUP_PAISE",
+  "sentence": "Keeps the price of a cup of Masala chai at 1500 paise.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-65",
+  "at": "2026-10-28T11:36:00.573Z",
+  "commit": null,
+  "lift": 3
+}

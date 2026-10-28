@@ -1,0 +1,14 @@
+{
+  "hash": "a8fabedc4a7d480d6144a176c4e7aaafdaf21e9a6b7a34c156b2af5e8466847d",
+  "path": "features/see-todays-orders/orders.ts",
+  "kind": "function",
+  "name": "orderAmount",
+  "sentence": "Works out the Order amount in paise by multiplying the number of cups by the price of a cup.",
+  "figure": "Order amount",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-50",
+  "at": "2026-10-28T11:35:30.998Z",
+  "commit": null,
+  "lift": 1
+}

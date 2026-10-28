@@ -13,6 +13,7 @@ const FROM: Record<string, string> = {
   '@types/react': 'apps/rama',
   '@types/react-dom': 'apps/rama',
   'drizzle-orm': 'packages/db',
+  postgres: 'packages/db',
   typescript: '.',
   vitest: '.',
   '@types/node': '.',

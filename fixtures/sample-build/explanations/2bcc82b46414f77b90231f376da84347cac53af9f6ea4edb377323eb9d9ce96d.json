@@ -1,0 +1,14 @@
+{
+  "hash": "2bcc82b46414f77b90231f376da84347cac53af9f6ea4edb377323eb9d9ce96d",
+  "path": "features/see-todays-orders/orders.ts",
+  "kind": "function",
+  "name": "orderCount",
+  "sentence": "Counts the orders in the list for “Orders so far”.",
+  "figure": "Orders so far",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-49",
+  "at": "2026-10-28T11:35:29.291Z",
+  "commit": null,
+  "lift": 1
+}

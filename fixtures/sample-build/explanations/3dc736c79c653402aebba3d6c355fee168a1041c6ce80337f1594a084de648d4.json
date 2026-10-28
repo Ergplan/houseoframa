@@ -3,12 +3,12 @@
   "path": "app/layout.tsx",
   "kind": "imports",
   "name": null,
-  "sentence": "Provides a way to describe content that React can show on the screen.",
+  "sentence": "Makes ReactNode available to describe content that can be shown on the screen.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
   "callId": "row-1",
-  "at": "2026-10-27T10:02:12.625Z",
+  "at": "2026-10-28T11:33:45.297Z",
   "commit": null,
   "lift": 0
 }

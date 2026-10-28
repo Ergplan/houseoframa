@@ -18,7 +18,7 @@ import {
   signoffs,
   type Db,
 } from '@rama/db';
-import { dropSandboxes, readRows, rowsSource } from '../src/ground.ts';
+import { dropSandboxes, readRows, rowsSource, type GroundRows } from '../src/ground.ts';
 import { jobStatus, latestJob, readJob } from '../src/jobs.ts';
 import { latestTestDrive, startTestDrive } from '../src/testdrive.ts';
 
@@ -107,7 +107,7 @@ describe('Test drive', () => {
       next: 'The builder fixes this in the next lift.',
     });
     expect(said('Lift 1').sentence).toMatch(
-      /The merge gate refuses the screen \/: it changed and no passing check stands behind db\/orders\.ts\.$/,
+      /The merge gate refuses the screen \/: it changed and no passing check stands behind db\/orders\.ts, db\/schema\.ts\.$/,
     );
     for (const n of [0, 2, 3, 4])
       expect(end.steps.find((s) => s.name.startsWith(`Lift ${n}`))!.ok).toBe(true);
@@ -169,13 +169,24 @@ describe('Test drive', () => {
 });
 
 describe('the sample product’s own database (Stage 11)', () => {
-  it('is made by its photographs, holds its orders table, and no row: it reads its day from a file', async () => {
+  it('is made by its photographs and holds the sample day, written in by the stall itself', async () => {
     const src = await rowsSource({ id: 'testdrive-1', kind: 'product' }, null as never, env);
     expect(src.kind).toBe('sandbox');
     const bp = JSON.parse(readFileSync(path.join(work, 'testdrive-1', 'blueprint.json'), 'utf8'));
     const orders = bp.tables.find((t: { name: string }) => t.name === 'orders');
-    const r = await readRows((src as { url: string }).url, orders);
-    expect(r).toMatchObject({ total: 0, today: 0, rows: [], missing: [] });
+    const r = (await readRows((src as { url: string }).url, orders)) as GroundRows;
+    expect(r).toMatchObject({ total: 4, today: 4, missing: [] });
+    // Written by the product's own code the first time its first page opened, with its provenance.
+    const col = (row: (string | null)[], name: string) => row[r.columns.indexOf(name)];
+    const fields = ['item', 'cups', 'created_by', 'site_id'];
+    expect(r.rows.map((x) => fields.map((f) => col(x, f)))).toEqual(
+      expect.arrayContaining([
+        ['Masala chai', '2', 'sample', 'testdrive-1'],
+        ['Ginger chai', '1', 'sample', 'testdrive-1'],
+        ['Masala chai', '3', 'sample', 'testdrive-1'],
+        ['Lemon tea', '1', 'sample', 'testdrive-1'],
+      ]),
+    );
   });
 });
 

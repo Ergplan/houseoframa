@@ -1,0 +1,14 @@
+{
+  "hash": "a157f889ae0e405558cf29ff02dc7a031e80af9a0fb5d1e038095127107b6005",
+  "path": "app/new/page.test.tsx",
+  "kind": "test",
+  "name": "shows the new order form with its amount for two cups",
+  "sentence": "Checks that the New order screen shows Masala chai, the choices one cup, two cups and three cups, Take the order, and an amount of ₹30.00.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-60",
+  "at": "2026-10-28T11:35:50.921Z",
+  "commit": null,
+  "lift": 3
+}

@@ -1,0 +1,14 @@
+{
+  "hash": "2a4f6c95aa4d057946a4cb92fbe222a5c6902c24bccf2d29e64dff50153ae55e",
+  "path": "rama/figures.ts",
+  "kind": "value",
+  "name": "figures",
+  "sentence": "Keeps the details for Orders so far and Order amount, including how each is worked out, what information it uses, and how it is shown.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-53",
+  "at": "2026-10-28T11:35:36.649Z",
+  "commit": null,
+  "lift": 1
+}

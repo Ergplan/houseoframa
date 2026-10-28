@@ -3,12 +3,12 @@
   "path": "db/schema.ts",
   "kind": "imports",
   "name": null,
-  "sentence": "Brings in tools for defining tables with whole numbers, text, timestamps and automatically numbered entries.",
+  "sentence": "Makes tools available for defining tables with whole numbers, text, timestamps and automatically numbered records.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-36",
-  "at": "2026-10-27T10:03:41.140Z",
+  "callId": "row-41",
+  "at": "2026-10-28T11:35:13.476Z",
   "commit": null,
   "lift": 1
 }

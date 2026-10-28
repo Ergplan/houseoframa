@@ -3,12 +3,12 @@
   "path": "db/schema.ts",
   "kind": "imports",
   "name": null,
-  "sentence": "Makes text and date-and-time field types available for the product’s tables.",
+  "sentence": "Makes text and date-and-time tools available for defining the product’s tables.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-11",
-  "at": "2026-10-27T10:02:39.208Z",
+  "callId": "row-15",
+  "at": "2026-10-28T11:34:17.641Z",
   "commit": null,
   "lift": 0
 }

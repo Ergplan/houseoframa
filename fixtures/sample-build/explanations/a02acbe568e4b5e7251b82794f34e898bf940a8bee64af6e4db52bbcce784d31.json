@@ -1,0 +1,14 @@
+{
+  "hash": "a02acbe568e4b5e7251b82794f34e898bf940a8bee64af6e4db52bbcce784d31",
+  "path": "features/see-todays-orders/orders.test.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings in tools for testing cupsInWords, orderAmount and orderCount.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-43",
+  "at": "2026-10-28T11:35:17.887Z",
+  "commit": null,
+  "lift": 1
+}

@@ -1,0 +1,14 @@
+{
+  "hash": "63f9aab84c08a3b27ac5f85d0d9e9a69951842019ccb0ef66a6f86829e5af425",
+  "path": "features/count-the-days-takings/takings.ts",
+  "kind": "function",
+  "name": "gstOnTakings",
+  "sentence": "Works out GST on today’s takings in paise, rounded to the nearest paisa, for “GST on today’s takings”.",
+  "figure": "GST on today’s takings",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-82",
+  "at": "2026-10-28T11:36:38.206Z",
+  "commit": null,
+  "lift": 4
+}

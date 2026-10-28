@@ -1,0 +1,14 @@
+{
+  "hash": "65366cba74dcc94448902066c1c598bf69870c9dbe68c987c887e811bed88a32",
+  "path": "db/connect.ts",
+  "kind": "function",
+  "name": "database",
+  "sentence": "Keeps and returns a database connection, creating it if needed, or returns null when DATABASE_URL is missing.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-13",
+  "at": "2026-10-28T11:34:12.480Z",
+  "commit": null,
+  "lift": 0
+}

@@ -2,7 +2,7 @@
 // file's order, never faster than a person reads a line, deleted lines falling out first, and the file
 // as the commit left it once caught up.
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   codeWindow,
@@ -36,10 +36,12 @@ function fromPatch(patch: string, file: string): FileChange {
   };
 }
 
+// The recorded build's first lift, whatever the builder called it.
+const recording = path.resolve(import.meta.dirname, '../../../fixtures/sample-build');
 const lift1 = readFileSync(
-  path.resolve(
-    import.meta.dirname,
-    '../../../fixtures/sample-build/0001-See-today-s-orders-list-the-day-s-orders-with-their-.patch',
+  path.join(
+    recording,
+    readdirSync(recording).find((f) => f.startsWith('0001-'))!,
   ),
   'utf8',
 );

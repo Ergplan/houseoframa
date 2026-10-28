@@ -1,0 +1,14 @@
+{
+  "hash": "f265ac5862d7ea1692da69f5b9dfce69942ba74916acfb59d2ba839b6d6ba6c3",
+  "path": "features/count-the-days-takings/takings.ts",
+  "kind": "function",
+  "name": "todaysTakings",
+  "sentence": "Works out Today’s takings in paise by multiplying the cups in each order by the price per cup, then adding the amounts together.",
+  "figure": "Today’s takings",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-81",
+  "at": "2026-10-28T11:36:36.184Z",
+  "commit": null,
+  "lift": 4
+}

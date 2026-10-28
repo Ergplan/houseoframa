@@ -1,0 +1,14 @@
+{
+  "hash": "1bca5986c86d94f3c1ed363541346d292bf962efa4eb1d68f23ede5c6193932c",
+  "path": "features/see-todays-orders/orders.test.ts",
+  "kind": "test",
+  "name": "multiplies cups by the price of a cup",
+  "sentence": "Checks that 2 cups at 1500 each total 3000, and 1 cup at 1800 totals 1800.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-46",
+  "at": "2026-10-28T11:35:23.457Z",
+  "commit": null,
+  "lift": 1
+}

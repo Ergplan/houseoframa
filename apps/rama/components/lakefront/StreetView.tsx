@@ -2,17 +2,22 @@
 // The Street, the home of a site (Stage 8): one building per thing the product does on the lakefront, in
 // the customer's words. Click a building to choose it (it becomes the folder, the one green object);
 // click it again, or say "open", to go in. Play replays the lifts with the crane at the building being
-// built; "Fly the audit" sends the drones building by building and their badges stay. Everything drawn
-// is also written below the picture, so the Street reads without it.
+// built; "Fly the audit" sends the drones building by building and their badges stay. A figure's flow
+// whose trail crosses buildings (`?flow=`) runs along the roads, a step a second. Everything drawn is
+// also written below the picture, so the Street reads without it.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { AuditView } from '@rama/audit/view';
 import type { BuildingState } from '@rama/blueprint/metrics';
+import type { Flow } from '@rama/trace';
 import {
   buildingFaces,
   buildingVerdicts,
+  drawPipes,
   drawStreet,
+  flowAt,
+  streetPipes,
   orientStreet,
   unview,
   viewTransform,
@@ -39,6 +44,7 @@ import { usePalette, useImages, useReducedMotion } from './live';
 import { placeHref } from './places';
 import { Words } from './Words';
 import { CameraRing } from './CameraRing';
+import { FlowPanel } from './FlowPanel';
 import { TURN_MS, useCamera } from './useCamera';
 
 const PER_SECOND = 0.35; // progress through one lift per second
@@ -57,6 +63,10 @@ export interface StreetProps {
   unknownScreens: string[];
   /** The camera the page opened with (from the address). */
   camera: Camera;
+  /** Stage 11: each traced figure's flow, by appearance key, with the building whose glass shows it. */
+  flows?: Record<string, { flow: Flow; shownIn: string }>;
+  /** A figure's flow to play along the roads on arrival (`?flow=`). */
+  initialFlow?: string | null;
 }
 
 /** What a building keeps and talks to, in words. */
@@ -112,6 +122,45 @@ export function StreetView(p: StreetProps) {
   const run = useRef<AuditRun | null>(null);
   const live = useRef({ k, prog, playing, selected, hover: hover?.id ?? null });
   live.current = { k, prog, playing, selected, hover: hover?.id ?? null };
+  // A flow along the roads (Stage 11): drawn over the Street every frame, the page changing only when
+  // the water reaches the next step.
+  const [flowKey, setFlowKey] = useState<string | null>(p.initialFlow ?? null);
+  const [flowMs, setFlowMs] = useState(0);
+  const [flowing, setFlowing] = useState(false);
+  const flowClock = useRef({ start: 0, ms: 0, on: false });
+  const across = flowKey ? (p.flows?.[flowKey] ?? null) : null;
+  const pipes = useMemo(() => {
+    if (!across) return null;
+    const owner = new Map(s.buildings.flatMap((b) => b.bricks.map((x) => [x, b.id] as const)));
+    return streetPipes(s, across.flow, (f) => owner.get(f) ?? null, across.shownIn);
+  }, [across, s]);
+  const water = across && pipes ? flowAt(across.flow.steps.length, flowMs) : null;
+  const playFlow = (from: number) => {
+    flowClock.current = { start: performance.now() - from, ms: from, on: true };
+    setFlowMs(from);
+    setFlowing(true);
+  };
+  const holdFlow = (ms: number) => {
+    flowClock.current = { ...flowClock.current, ms, on: false };
+    setFlowMs(ms);
+    setFlowing(false);
+  };
+  // Arriving with a flow that crosses buildings: it plays at once.
+  const arrived = useRef(false);
+  useEffect(() => {
+    if (arrived.current) return;
+    arrived.current = true;
+    if (pipes) playFlow(0);
+  });
+  // Each step's sentence is handed to the voice as builder text, once, as the water reaches it.
+  const told = useRef(-1);
+  useEffect(() => {
+    if (!across || !water || water.step === told.current) return;
+    told.current = water.step;
+    window.dispatchEvent(
+      new CustomEvent('rama:tell', { detail: { figure: across.flow.key, step: water.step } }),
+    );
+  }, [across, water]);
   const flags = useMemo(
     () =>
       Object.fromEntries(
@@ -210,8 +259,21 @@ export function StreetView(p: StreetProps) {
               ? null
               : hourOf(timeline, live.current.k),
         });
+        const fc = flowClock.current;
+        if (pipes && across) {
+          const steps = across.flow.steps.length;
+          if (fc.on) {
+            fc.ms = now - fc.start;
+            if (fc.ms >= steps * 1000) holdFlow(fc.ms);
+            else
+              setFlowMs((was) =>
+                Math.floor(was / 1000) === Math.floor(fc.ms / 1000) ? was : fc.ms,
+              );
+          }
+          drawPipes(ctx, pipes, pal, flowAt(steps, fc.ms));
+        }
       }
-      if (!reduced || st.playing || (run.current && !run.current.done))
+      if (!reduced || st.playing || flowClock.current.on || (run.current && !run.current.done))
         raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -233,6 +295,9 @@ export function StreetView(p: StreetProps) {
     selected,
     hover,
     cam,
+    pipes,
+    across,
+    flowing,
   ]);
 
   const open = (id: string) =>
@@ -358,7 +423,7 @@ export function StreetView(p: StreetProps) {
     <div
       className="lakefront"
       data-level="street"
-      data-flowing={playing || mode === 'flying' ? 'true' : 'false'}
+      data-flowing={playing || mode === 'flying' || flowing ? 'true' : 'false'}
     >
       <div className="lake-main">
         <CameraRing cam={cam} act={act} />
@@ -486,6 +551,37 @@ export function StreetView(p: StreetProps) {
           buildings={s.buildings.map((b) => ({ id: b.id, name: b.name }))}
           tables={s.plots.map((x) => ({ name: x.table, by: [...x.writtenBy, ...x.readBy] }))}
         />
+        {across && water ? (
+          <div data-street-flow={across.flow.key}>
+            <FlowPanel
+              flow={across.flow}
+              step={water.step}
+              playing={flowing}
+              done={water.done}
+              onPlay={() => playFlow(water.done ? 0 : flowMs)}
+              onPause={() => holdFlow(flowClock.current.ms)}
+              onStep={(by) =>
+                holdFlow(
+                  Math.max(0, Math.min(across.flow.steps.length - 1, water.step + by)) * 1000 + 999,
+                )
+              }
+              onClose={() => {
+                holdFlow(0);
+                setFlowKey(null);
+              }}
+            />
+          </div>
+        ) : across ? (
+          <p className="eg-muted" data-street-flow-home={across.flow.key}>
+            The flow of {across.flow.title} stays inside one building.{' '}
+            <Link
+              href={`${placeHref(p.siteId, { level: 'building', building: across.shownIn })}&flow=${encodeURIComponent(across.flow.key)}`}
+            >
+              Watch it there
+            </Link>
+            .
+          </p>
+        ) : null}
         {mode !== 'off' ? (
           <section
             className="eg-glass rama-card lake-log"

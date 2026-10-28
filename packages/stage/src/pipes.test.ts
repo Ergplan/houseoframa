@@ -7,10 +7,20 @@ import { stallBlueprint, stallFeatures } from '../test/blueprint.ts';
 import { building, type FacadeInput } from './building.ts';
 import { parseFeatures, resolveFeatures } from './features.ts';
 import { paletteFromTokens } from './palette.ts';
-import { buildingPipes, drawPipes, flowAt, insidePipes, type FlowLike } from './pipes.ts';
+import {
+  buildingPipes,
+  drawPipes,
+  flowAt,
+  flowPlaces,
+  groundTurn,
+  runsThrough,
+  insidePipes,
+  streetPipes,
+  type FlowLike,
+} from './pipes.ts';
 import { brickTop, inside, laidInOf } from './inside.ts';
-import { street } from './street.ts';
-import { ORIENTATIONS, orientScene } from './camera.ts';
+import { at as streetAt, street } from './street.ts';
+import { ORIENTATIONS, orientScene, orientStreet } from './camera.ts';
 
 const bp = stallBlueprint();
 const s = street(bp, resolveFeatures(bp, parseFeatures(stallFeatures)), {});
@@ -184,5 +194,85 @@ describe('the pipes inside a building', () => {
     expect(screen.dry).toBe(true);
     expect(screen.label).toBe('untraced: no water reaches the screen');
     expect(l.stops[3]).toEqual(screen.points.at(-1));
+  });
+});
+
+describe('the pipes along the Street', () => {
+  const ownerOf = (file: string) => s.buildings.find((b) => b.bricks.includes(file))?.id ?? null;
+  const sharedFile = s.buildings.find((b) => b.id === 'shared')!.bricks[0]!;
+  const across = (value: string | null, shown: string | null): FlowLike => {
+    const f = flow(value, shown);
+    return {
+      ...f,
+      steps: f.steps.map((st) => (st.kind === 'function' ? { ...st, file: sharedFile } : st)),
+    };
+  };
+
+  it('stands each step where it is kept: the table on its plot, the working-out in its building', () => {
+    const pl = flowPlaces(across('[1]', '1'), ownerOf, 'see-orders');
+    expect(pl.steps).toEqual([
+      { table: 'orders' },
+      { building: 'shared' },
+      { building: 'shared' },
+      { building: 'see-orders' },
+    ]);
+    expect(pl.crosses).toBe(true);
+    // Kept in no table and worked out where it is shown: the trail stays in one building.
+    const home = flow('[1]', '1');
+    home.steps = home.steps.map((st) => (st.kind === 'source' ? { ...st, table: null } : st));
+    expect(flowPlaces(home, ownerOf, 'see-orders').crosses).toBe(false);
+    expect(streetPipes(s, home, ownerOf, 'see-orders')).toBeNull();
+  });
+
+  it('runs from the plot to the building that works it out, along the road to the one that shows it', () => {
+    const l = streetPipes(s, across('[1]', '1'), ownerOf, 'see-orders')!;
+    expect(l.pipes.map((p) => [p.step, p.dry])).toEqual([
+      [0, false],
+      [1, false],
+      [2, false],
+      [3, false],
+    ]);
+    for (let i = 1; i < l.pipes.length; i++)
+      expect(l.pipes[i]!.points[0]).toEqual(l.pipes[i - 1]!.points.at(-1));
+    const p = streetAt(s);
+    const plot = s.plots.find((x) => x.table === 'orders')!;
+    expect(l.stops[0]).toEqual(p(plot.gx + plot.w / 2, plot.gy + plot.d / 2, 4));
+    // The water to the screen runs along the road from "shared" to "see-orders", every bend of it.
+    const road = s.roads.find((r) => r.from === 'see-orders' && r.to === 'shared')!;
+    const screen = l.pipes.find((x) => x.step === 3)!;
+    for (const q of [...road.points].reverse())
+      expect(screen.points).toContainEqual(p(q.gx, q.gy, 4));
+    const shows = s.buildings.find((b) => b.id === 'see-orders')!;
+    expect(l.stops[3]).toEqual(
+      p(shows.gx + shows.side / 2, shows.gy + shows.side / 2, shows.height * 0.9),
+    );
+  });
+
+  it('draws the steps it cannot derive dry and labelled, and is the same from every side, every time', () => {
+    const l = streetPipes(s, across(null, null), ownerOf, 'see-orders')!;
+    expect(l.pipes.filter((p) => p.dry).map((p) => p.step)).toEqual([0, 1, 3]);
+    for (const o of ORIENTATIONS) {
+      const t = orientStreet(s, o);
+      const a = streetPipes(t, across('[1]', '1'), ownerOf, 'see-orders')!;
+      expect(a.pipes).toHaveLength(4);
+      expect(JSON.stringify(streetPipes(t, across('[1]', '1'), ownerOf, 'see-orders'))).toBe(
+        JSON.stringify(a),
+      );
+    }
+  });
+});
+
+describe('a pipe over the ground where no road runs', () => {
+  it('turns on the side that passes through fewer other buildings', () => {
+    const b = (id: string, gx: number, gy: number) =>
+      ({ id, gx, gy, side: 2 }) as unknown as (typeof s.buildings)[number];
+    // From (0, 0) to (10, 10): the turn at (0, 10) passes a building standing at (0, 5).
+    const blocker = [b('in-the-way', -1, 5)];
+    expect(runsThrough(blocker, { gx: 0, gy: 0 }, { gx: 0, gy: 10 })).toBe(1);
+    expect(groundTurn(blocker, { gx: 0, gy: 0 }, { gx: 10, gy: 10 })).toEqual({ gx: 10, gy: 0 });
+    // Nothing in the way, or the same either side: the first turn.
+    expect(groundTurn([], { gx: 0, gy: 0 }, { gx: 10, gy: 10 })).toEqual({ gx: 0, gy: 10 });
+    // The two buildings it joins are never in its own way.
+    expect(runsThrough(blocker, { gx: 0, gy: 0 }, { gx: 0, gy: 10 }, ['in-the-way'])).toBe(0);
   });
 });

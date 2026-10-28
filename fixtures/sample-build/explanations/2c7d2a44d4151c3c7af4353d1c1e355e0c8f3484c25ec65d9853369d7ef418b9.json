@@ -1,0 +1,14 @@
+{
+  "hash": "2c7d2a44d4151c3c7af4353d1c1e355e0c8f3484c25ec65d9853369d7ef418b9",
+  "path": "features/count-the-days-takings/takings.test.ts",
+  "kind": "test",
+  "name": "works out five percent GST, rounded to the paisa",
+  "sentence": "Checks that five percent GST is rounded to the paisa: 565 for sampleDay and 51 for 1 Tea priced at 1010 paisa. It also checks that no takings gives 0.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-78",
+  "at": "2026-10-28T11:36:30.335Z",
+  "commit": null,
+  "lift": 4
+}

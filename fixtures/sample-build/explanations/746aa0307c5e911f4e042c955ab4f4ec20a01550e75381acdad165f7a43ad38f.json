@@ -1,0 +1,14 @@
+{
+  "hash": "746aa0307c5e911f4e042c955ab4f4ec20a01550e75381acdad165f7a43ad38f",
+  "path": "app/page.tsx",
+  "kind": "component",
+  "name": "TodaysOrders",
+  "sentence": "Shows the Today’s orders page with Orders so far and a list of orders. Each order shows its item, cups in words, and Order amount in rupees.",
+  "figure": "Orders so far",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-37",
+  "at": "2026-10-28T11:35:05.348Z",
+  "commit": null,
+  "lift": 1
+}

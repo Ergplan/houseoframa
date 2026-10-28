@@ -1,31 +1,32 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: House of Rama <people@houseoframa.local>
-Date: Sun, 25 Oct 2026 12:20:22 +0000
+Date: Wed, 28 Oct 2026 11:25:22 +0000
 Subject: [PATCH] Start from the house stack
 
 ---
- .github/workflows/build.yml     |  21 +++
- .github/workflows/rama-gate.yml | 101 +++++++++++
+ .github/workflows/build.yml     |  21 +
+ .github/workflows/rama-gate.yml | 101 ++++
  .gitignore                      |   3 +
- .rama/decisions.jsonl           |  14 ++
+ .rama/decisions.jsonl           |  14 +
  .rama/features.json             |  10 +
- .rama/screens.json              |  20 ++
- README.md                       |  15 ++
- app/layout.tsx                  |  11 ++
+ .rama/screens.json              |  20 +
+ README.md                       |  16 +
+ app/layout.tsx                  |  11 +
  app/page.test.tsx               |   9 +
- app/page.tsx                    |  16 ++
- components/Figure.tsx           |  28 +++
- db/schema.ts                    |  11 ++
+ app/page.tsx                    |  16 +
+ components/Figure.tsx           |  28 ++
+ db/connect.ts                   |  19 +
+ db/schema.ts                    |  11 +
  features/welcome/plan.test.ts   |   7 +
- features/welcome/plan.ts        |  20 ++
+ features/welcome/plan.ts        |  20 +
  next.config.mjs                 |   2 +
- package.json                    |  29 +++
- rama/define.ts                  |  48 +++++
- rama/figures.ts                 |  17 ++
- rama/lint.ts                    | 312 ++++++++++++++++++++++++++++++++
- tsconfig.json                   |  36 ++++
- vitest.config.ts                |  14 ++
- 21 files changed, 744 insertions(+)
+ package.json                    |  30 ++
+ rama/define.ts                  |  48 ++
+ rama/figures.ts                 |  17 +
+ rama/lint.ts                    | 860 ++++++++++++++++++++++++++++++++
+ tsconfig.json                   |  36 ++
+ vitest.config.ts                |  14 +
+ 22 files changed, 1313 insertions(+)
  create mode 100644 .github/workflows/build.yml
  create mode 100644 .github/workflows/rama-gate.yml
  create mode 100644 .gitignore
@@ -37,6 +38,7 @@ Subject: [PATCH] Start from the house stack
  create mode 100644 app/page.test.tsx
  create mode 100644 app/page.tsx
  create mode 100644 components/Figure.tsx
+ create mode 100644 db/connect.ts
  create mode 100644 db/schema.ts
  create mode 100644 features/welcome/plan.test.ts
  create mode 100644 features/welcome/plan.ts
@@ -77,7 +79,7 @@ index 0000000..4b83c65
 +      - run: npm run build
 diff --git a/.github/workflows/rama-gate.yml b/.github/workflows/rama-gate.yml
 new file mode 100644
-index 0000000..dcddf9f
+index 0000000..ee09eae
 --- /dev/null
 +++ b/.github/workflows/rama-gate.yml
 @@ -0,0 +1,101 @@
@@ -150,7 +152,7 @@ index 0000000..dcddf9f
 +        uses: actions/checkout@v4
 +        with:
 +          repository: Ergplan/houseoframa
-+          ref: 0ec64f7227ec3971b407ed8d95f6ac6553a311f2
++          ref: ca547bb8a2a3ee458f8860af7c1604d1baefaa45
 +          persist-credentials: false
 +          path: rama
 +
@@ -193,24 +195,24 @@ index 0000000..beb7067
 +next-env.d.ts
 diff --git a/.rama/decisions.jsonl b/.rama/decisions.jsonl
 new file mode 100644
-index 0000000..10d5ef6
+index 0000000..57be2c7
 --- /dev/null
 +++ b/.rama/decisions.jsonl
 @@ -0,0 +1,14 @@
-+{"at":"2026-10-25T12:20:21.551Z","bricks":[],"by":"Test drive","id":"c0c37f1b-3d2f-4d98-8c83-b0869a37c611","siteId":"testdrive-5","statement":"A chai stall takes orders through the day and sees the day’s takings and GST.","status":"open","title":"Build the chai stall"}
-+{"at":"2026-10-25T12:20:21.639Z","bricks":[],"by":"Test drive","id":"ab319952-0faa-470c-9880-a3dd622b1b75","siteId":"testdrive-5","statement":"A chai stall takes orders through the day and sees the day’s takings and GST.","status":"decided","supersedes":"c0c37f1b-3d2f-4d98-8c83-b0869a37c611","title":"Build the chai stall"}
-+{"at":"2026-10-25T12:20:21.783Z","bricks":[],"by":"Test drive","id":"25925a41-3231-4c32-9cf7-675bd5e2a515","siteId":"testdrive-5","statement":"Every amount is kept in paise (100 paise make a rupee) and shown in rupees with two places, like ₹45.00.","status":"open","title":"Money is kept in paise"}
-+{"at":"2026-10-25T12:20:21.853Z","bricks":[],"by":"Test drive","id":"989b99f6-0219-4998-b7eb-2e7fabb6026b","siteId":"testdrive-5","statement":"Every amount is kept in paise (100 paise make a rupee) and shown in rupees with two places, like ₹45.00.","status":"decided","supersedes":"25925a41-3231-4c32-9cf7-675bd5e2a515","title":"Money is kept in paise"}
-+{"at":"2026-10-25T12:20:21.872Z","bricks":[],"by":"Test drive","id":"430ac029-3dc2-4ef0-96c9-ebbaf347bc46","siteId":"testdrive-5","statement":"Until a database is connected, the stall reads its sample day from a file: four orders. Masala chai, two cups at 1,500 paise a cup. Ginger chai, one cup at 1,800 paise. Masala chai, three cups at 1,500 paise. Lemon tea, one cup at 2,000 paise. The orders table keeps each order’s item, cups and price of a cup, with when it was taken.","status":"open","title":"The sample day"}
-+{"at":"2026-10-25T12:20:21.901Z","bricks":[],"by":"Test drive","id":"a7657f12-635c-4ed0-a25c-2c3445ae7e70","siteId":"testdrive-5","statement":"Until a database is connected, the stall reads its sample day from a file: four orders. Masala chai, two cups at 1,500 paise a cup. Ginger chai, one cup at 1,800 paise. Masala chai, three cups at 1,500 paise. Lemon tea, one cup at 2,000 paise. The orders table keeps each order’s item, cups and price of a cup, with when it was taken.","status":"decided","supersedes":"430ac029-3dc2-4ef0-96c9-ebbaf347bc46","title":"The sample day"}
-+{"at":"2026-10-25T12:20:21.926Z","bricks":[],"by":"Test drive","id":"1307b3b6-7379-44e7-b0ef-3a73673d8e13","siteId":"testdrive-5","statement":"Building “See today’s orders”: lists every order the stall has taken today, what each one costs, and how many there are. Its screen is the stall’s first page (/), for the customer, titled “Today’s orders”. It shows “Orders so far”: the number of orders taken today. Then each order’s item, its cups in words (“two cups”), and its “Order amount”: cups times the price of a cup.","status":"open","title":"Building: See today’s orders"}
-+{"at":"2026-10-25T12:20:21.967Z","bricks":[],"by":"Test drive","id":"8625c8f4-cd99-4f51-a8d6-5a381393da49","siteId":"testdrive-5","statement":"Building “See today’s orders”: lists every order the stall has taken today, what each one costs, and how many there are. Its screen is the stall’s first page (/), for the customer, titled “Today’s orders”. It shows “Orders so far”: the number of orders taken today. Then each order’s item, its cups in words (“two cups”), and its “Order amount”: cups times the price of a cup.","status":"decided","supersedes":"1307b3b6-7379-44e7-b0ef-3a73673d8e13","title":"Building: See today’s orders"}
-+{"at":"2026-10-25T12:20:21.999Z","bricks":[],"by":"Test drive","id":"8957a7fa-5481-472a-8f9c-ef76658c7b56","siteId":"testdrive-5","statement":"Building “Take an order”: writes down a new order and shows what it will cost before it is saved. Its screen is /new, for the customer, titled “New order”: the item (Masala chai to start with) and the cups (one, two or three cups, two to start with), and “New order amount”: whole cups times the price of a cup, at 1,500 paise a cup, for the cups chosen when the page opens. A button “Take the order”.","status":"open","title":"Building: Take an order"}
-+{"at":"2026-10-25T12:20:22.019Z","bricks":[],"by":"Test drive","id":"264f9543-5558-4e80-90f8-43b8e82e869a","siteId":"testdrive-5","statement":"Building “Take an order”: writes down a new order and shows what it will cost before it is saved. Its screen is /new, for the customer, titled “New order”: the item (Masala chai to start with) and the cups (one, two or three cups, two to start with), and “New order amount”: whole cups times the price of a cup, at 1,500 paise a cup, for the cups chosen when the page opens. A button “Take the order”.","status":"decided","supersedes":"8957a7fa-5481-472a-8f9c-ef76658c7b56","title":"Building: Take an order"}
-+{"at":"2026-10-25T12:20:22.043Z","bricks":[],"by":"Test drive","id":"e2274e1c-684c-43f9-b01b-8958f271c0cf","siteId":"testdrive-5","statement":"Building “Count the day’s takings”: adds up everything the stall took today and the GST owed on it. Its screen is /total, for the staff, titled “Today’s total”. It shows “Today’s takings”: every order’s amount, added up; and “GST on today’s takings”: five percent of the day’s takings, rounded to the paisa.","status":"open","title":"Building: Count the day’s takings"}
-+{"at":"2026-10-25T12:20:22.064Z","bricks":[],"by":"Test drive","id":"825cd652-4527-4a3f-8766-cbcdd322d91e","siteId":"testdrive-5","statement":"Building “Count the day’s takings”: adds up everything the stall took today and the GST owed on it. Its screen is /total, for the staff, titled “Today’s total”. It shows “Today’s takings”: every order’s amount, added up; and “GST on today’s takings”: five percent of the day’s takings, rounded to the paisa.","status":"decided","supersedes":"e2274e1c-684c-43f9-b01b-8958f271c0cf","title":"Building: Count the day’s takings"}
-+{"at":"2026-10-25T12:20:22.091Z","bricks":[],"by":"Test drive","id":"4ddda267-914f-4c5f-8749-73752df4a9e2","siteId":"testdrive-5","statement":"It does not save an order, take a payment, print a bill or keep more than one day: no database is connected yet. It has no sign-in.","status":"open","title":"What it will not do"}
-+{"at":"2026-10-25T12:20:22.114Z","bricks":[],"by":"Test drive","id":"96928453-b187-406c-97d3-40f96c28a08c","siteId":"testdrive-5","statement":"It does not save an order, take a payment, print a bill or keep more than one day: no database is connected yet. It has no sign-in.","status":"decided","supersedes":"4ddda267-914f-4c5f-8749-73752df4a9e2","title":"What it will not do"}
++{"at":"2026-10-28T11:25:21.945Z","bricks":[],"by":"Test drive","id":"ea718d6c-f79d-4677-a622-28d515de2b74","siteId":"testdrive-6","statement":"A chai stall takes orders through the day and sees the day’s takings and GST.","status":"open","title":"Build the chai stall"}
++{"at":"2026-10-28T11:25:21.983Z","bricks":[],"by":"Test drive","id":"6d384322-b767-4e6a-97e8-162c6e26fa66","siteId":"testdrive-6","statement":"A chai stall takes orders through the day and sees the day’s takings and GST.","status":"decided","supersedes":"ea718d6c-f79d-4677-a622-28d515de2b74","title":"Build the chai stall"}
++{"at":"2026-10-28T11:25:21.997Z","bricks":[],"by":"Test drive","id":"b2cbeab1-984d-44f7-849c-d7adeac6cd7f","siteId":"testdrive-6","statement":"Every amount is kept in paise (100 paise make a rupee) and shown in rupees with two places, like ₹45.00.","status":"open","title":"Money is kept in paise"}
++{"at":"2026-10-28T11:25:22.008Z","bricks":[],"by":"Test drive","id":"958b0810-8307-4732-aa2c-9700862846fe","siteId":"testdrive-6","statement":"Every amount is kept in paise (100 paise make a rupee) and shown in rupees with two places, like ₹45.00.","status":"decided","supersedes":"b2cbeab1-984d-44f7-849c-d7adeac6cd7f","title":"Money is kept in paise"}
++{"at":"2026-10-28T11:25:22.023Z","bricks":[],"by":"Test drive","id":"b775dd23-6434-43de-9796-e828022c314b","siteId":"testdrive-6","statement":"The stall keeps its orders in its database, in the orders table: each order’s item, cups and price of a cup, with when it was taken. It keeps one day, so every order in the table is today’s. The first time the stall opens with no orders in the table, it writes in the sample day: four orders. Masala chai, two cups at 1,500 paise a cup. Ginger chai, one cup at 1,800 paise. Masala chai, three cups at 1,500 paise. Lemon tea, one cup at 2,000 paise. Without a database (its tests), it reads the same four orders from a file.","status":"open","title":"The sample day"}
++{"at":"2026-10-28T11:25:22.033Z","bricks":[],"by":"Test drive","id":"57aaf424-88bd-4e47-b215-1735ade8d464","siteId":"testdrive-6","statement":"The stall keeps its orders in its database, in the orders table: each order’s item, cups and price of a cup, with when it was taken. It keeps one day, so every order in the table is today’s. The first time the stall opens with no orders in the table, it writes in the sample day: four orders. Masala chai, two cups at 1,500 paise a cup. Ginger chai, one cup at 1,800 paise. Masala chai, three cups at 1,500 paise. Lemon tea, one cup at 2,000 paise. Without a database (its tests), it reads the same four orders from a file.","status":"decided","supersedes":"b775dd23-6434-43de-9796-e828022c314b","title":"The sample day"}
++{"at":"2026-10-28T11:25:22.043Z","bricks":[],"by":"Test drive","id":"d34151fd-0d4e-43ee-b495-9a992904f290","siteId":"testdrive-6","statement":"Building “See today’s orders”: lists every order the stall has taken today, what each one costs, and how many there are. Its screen is the stall’s first page (/), for the customer, titled “Today’s orders”. It shows “Orders so far”: the number of orders taken today. Then each order’s item, its cups in words (“two cups”), and its “Order amount”: cups times the price of a cup.","status":"open","title":"Building: See today’s orders"}
++{"at":"2026-10-28T11:25:22.058Z","bricks":[],"by":"Test drive","id":"ec9fb857-1c42-48a7-bcba-8be917a8c482","siteId":"testdrive-6","statement":"Building “See today’s orders”: lists every order the stall has taken today, what each one costs, and how many there are. Its screen is the stall’s first page (/), for the customer, titled “Today’s orders”. It shows “Orders so far”: the number of orders taken today. Then each order’s item, its cups in words (“two cups”), and its “Order amount”: cups times the price of a cup.","status":"decided","supersedes":"d34151fd-0d4e-43ee-b495-9a992904f290","title":"Building: See today’s orders"}
++{"at":"2026-10-28T11:25:22.069Z","bricks":[],"by":"Test drive","id":"614f31e6-f9ac-445a-9d30-d844314abe99","siteId":"testdrive-6","statement":"Building “Take an order”: writes down a new order and shows what it will cost before it is saved. Its screen is /new, for the customer, titled “New order”: the item (Masala chai to start with) and the cups (one, two or three cups, two to start with), and “New order amount”: whole cups times the price of a cup, at 1,500 paise a cup, for the cups chosen when the page opens. A button “Take the order”.","status":"open","title":"Building: Take an order"}
++{"at":"2026-10-28T11:25:22.082Z","bricks":[],"by":"Test drive","id":"b6a2d2b8-78f8-4a9d-bdc2-30e8d83ba2aa","siteId":"testdrive-6","statement":"Building “Take an order”: writes down a new order and shows what it will cost before it is saved. Its screen is /new, for the customer, titled “New order”: the item (Masala chai to start with) and the cups (one, two or three cups, two to start with), and “New order amount”: whole cups times the price of a cup, at 1,500 paise a cup, for the cups chosen when the page opens. A button “Take the order”.","status":"decided","supersedes":"614f31e6-f9ac-445a-9d30-d844314abe99","title":"Building: Take an order"}
++{"at":"2026-10-28T11:25:22.093Z","bricks":[],"by":"Test drive","id":"1a9db38c-ed4c-4c1a-be9a-aed5d203d21f","siteId":"testdrive-6","statement":"Building “Count the day’s takings”: adds up everything the stall took today and the GST owed on it. Its screen is /total, for the staff, titled “Today’s total”. It shows “Today’s takings”: every order’s amount, added up; and “GST on today’s takings”: five percent of the day’s takings, rounded to the paisa.","status":"open","title":"Building: Count the day’s takings"}
++{"at":"2026-10-28T11:25:22.104Z","bricks":[],"by":"Test drive","id":"aedff8c1-1412-489d-a886-9627b20fd6c3","siteId":"testdrive-6","statement":"Building “Count the day’s takings”: adds up everything the stall took today and the GST owed on it. Its screen is /total, for the staff, titled “Today’s total”. It shows “Today’s takings”: every order’s amount, added up; and “GST on today’s takings”: five percent of the day’s takings, rounded to the paisa.","status":"decided","supersedes":"1a9db38c-ed4c-4c1a-be9a-aed5d203d21f","title":"Building: Count the day’s takings"}
++{"at":"2026-10-28T11:25:22.117Z","bricks":[],"by":"Test drive","id":"f5a7bcca-d234-462f-bb8c-121dfea08c4f","siteId":"testdrive-6","statement":"It does not save a new order yet, take a payment, print a bill or keep more than one day. It has no sign-in.","status":"open","title":"What it will not do"}
++{"at":"2026-10-28T11:25:22.128Z","bricks":[],"by":"Test drive","id":"744ea7aa-e82b-4dfe-b4f4-05b9b1a9a612","siteId":"testdrive-6","statement":"It does not save a new order yet, take a payment, print a bill or keep more than one day. It has no sign-in.","status":"decided","supersedes":"f5a7bcca-d234-462f-bb8c-121dfea08c4f","title":"What it will not do"}
 diff --git a/.rama/features.json b/.rama/features.json
 new file mode 100644
 index 0000000..4501b7a
@@ -255,10 +257,10 @@ index 0000000..033479b
 +}
 diff --git a/README.md b/README.md
 new file mode 100644
-index 0000000..f372fea
+index 0000000..77a2efb
 --- /dev/null
 +++ b/README.md
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,16 @@
 +# Chai Stall (Test drive)
 +
 +A chai stall takes orders through the day and sees the day’s takings and GST.
@@ -273,7 +275,8 @@ index 0000000..f372fea
 +- `components/Figure.tsx`: the only way a screen shows a number. `npm run lint:figures` (run before every
 +  build) fails on any number shown another way, naming the file and line.
 +- `.rama/screens.json`: which screens House of Rama photographs, and who each is for.
-+- `db/schema.ts`: the tables.
++- `db/schema.ts`: the tables. `db/connect.ts`: the product's own database, when House of Rama connects one;
++  without one (the tests, a build) a building reads its sample rows from `data/<table>.json`.
 diff --git a/app/layout.tsx b/app/layout.tsx
 new file mode 100644
 index 0000000..47ea6ee
@@ -362,6 +365,31 @@ index 0000000..2301fca
 +    </span>
 +  );
 +}
+diff --git a/db/connect.ts b/db/connect.ts
+new file mode 100644
+index 0000000..3977a00
+--- /dev/null
++++ b/db/connect.ts
+@@ -0,0 +1,19 @@
++// The product's own database. House of Rama hands the running app DATABASE_URL (a database for this
++// product alone) and RAMA_SITE_ID (the product's id, for each row's site_id). Without them (the tests,
++// `next build`) `database()` is null and a building reads its sample rows from data/<table>.json.
++import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
++import postgres from 'postgres';
++import * as schema from './schema';
++
++let db: PostgresJsDatabase<typeof schema> | undefined;
++
++/** The database, or null when none is connected. */
++export function database(): PostgresJsDatabase<typeof schema> | null {
++  const url = process.env.DATABASE_URL;
++  if (!url) return null;
++  db ??= drizzle(postgres(url, { max: 3 }), { schema });
++  return db;
++}
++
++/** The product's id, written into each row's site_id. */
++export const siteId = (): string => process.env.RAMA_SITE_ID ?? 'this-product';
 diff --git a/db/schema.ts b/db/schema.ts
 new file mode 100644
 index 0000000..fea6ff1
@@ -428,12 +456,12 @@ index 0000000..c4a407b
 +export default {};
 diff --git a/package.json b/package.json
 new file mode 100644
-index 0000000..06ca92a
+index 0000000..056ffb1
 --- /dev/null
 +++ b/package.json
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,30 @@
 +{
-+  "name": "testdrive-5",
++  "name": "testdrive-6",
 +  "version": "0.1.0",
 +  "private": true,
 +  "type": "module",
@@ -450,6 +478,7 @@ index 0000000..06ca92a
 +  "dependencies": {
 +    "drizzle-orm": "0.45.3",
 +    "next": "16.3.8",
++    "postgres": "3.4.9",
 +    "react": "19.3.0",
 +    "react-dom": "19.3.0"
 +  },
@@ -540,19 +569,19 @@ index 0000000..9456501
 +});
 diff --git a/rama/lint.ts b/rama/lint.ts
 new file mode 100644
-index 0000000..13afc96
+index 0000000..bbe7652
 --- /dev/null
 +++ b/rama/lint.ts
-@@ -0,0 +1,312 @@
+@@ -0,0 +1,860 @@
 +// The figures lint (Invariant 10: traced by construction). Any number a screen shows outside a <Figure>
 +// fails the build, naming the file and the line; so does a <Figure> whose function is not the one
 +// rama/figures.ts names for it, and an entry of rama/figures.ts House of Rama could not read as written.
 +//
-+//   node rama/lint.ts [product folder] [--json]
++//   node rama/lint.ts [product folder] [--json] [--trusted <the house stack's folder>]
 +//
 +// It runs before every build (`prebuild`) and in CI, and House of Rama runs its own copy of this file
 +// after every lift, so editing the product's copy changes nothing House of Rama sees.
-+import { existsSync } from 'node:fs';
++import { existsSync, readFileSync } from 'node:fs';
 +import path from 'node:path';
 +import ts from 'typescript';
 +
@@ -566,8 +595,9 @@ index 0000000..13afc96
 +const FIGURE_COMPONENT = 'components/Figure.tsx';
 +const SHOWS = new Set(['count', 'rupees', 'percent']);
 +/** Attributes whose value a person reads on the screen. */
-+const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label']);
++const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label', 'children']);
 +const SHOWN_VALUE_ON = new Set(['input', 'textarea']);
++
 +const NUMBER_TO_TEXT = new Set([
 +  'toFixed',
 +  'toString',
@@ -576,6 +606,8 @@ index 0000000..13afc96
 +  'toExponential',
 +]);
 +const DIGIT = /\d/;
++/** How many steps a value is followed (a name to what it holds, a call to what it gives back). */
++const FOLLOW_LIMIT = 20;
 +
 +function program(dir: string): ts.Program {
 +  const configFile = path.join(dir, 'tsconfig.json');
@@ -594,11 +626,29 @@ index 0000000..13afc96
 +  show: string | null;
 +}
 +
-+export function lintFigures(dir: string): LintFinding[] {
++/** The files that show a figure: the house stack's own, which a lift may not change. */
++export const TRUSTED_FILES = [FIGURE_COMPONENT, 'rama/define.ts'];
++
++/**
++ * `trusted`: the house stack's own folder (House of Rama passes it when it runs its copy). The files
++ * that show a figure must be the same as there: the lint does not read them, it trusts them.
++ */
++export function lintFigures(dir: string, trusted?: string): LintFinding[] {
 +  const root = path.resolve(dir);
 +  const findings: LintFinding[] = [];
 +  if (!existsSync(path.join(root, 'tsconfig.json')))
 +    return [{ file: 'tsconfig.json', line: 1, sentence: 'The product has no tsconfig.json.' }];
++  if (trusted)
++    for (const f of TRUSTED_FILES) {
++      const mine = path.join(root, f);
++      const theirs = path.join(path.resolve(trusted), f);
++      if (!existsSync(mine) || readFileSync(mine, 'utf8') !== readFileSync(theirs, 'utf8'))
++        findings.push({
++          file: f,
++          line: 1,
++          sentence: `${f}, line 1: is the house stack's own and must stay as it is: it shows every figure, so the lint trusts it rather than reads it.`,
++        });
++    }
 +  const prog = program(root);
 +  const checker = prog.getTypeChecker();
 +  const rel = (sf: ts.SourceFile) => path.relative(root, sf.fileName).split(path.sep).join('/');
@@ -614,7 +664,10 @@ index 0000000..13afc96
 +    );
 +  const own = prog
 +    .getSourceFiles()
-+    .filter((sf) => !sf.isDeclarationFile && !rel(sf).startsWith('..') && !rel(sf).includes('node_modules/'));
++    .filter(
++      (sf) =>
++        !sf.isDeclarationFile && !rel(sf).startsWith('..') && !rel(sf).includes('node_modules/'),
++    );
 +
 +  // The symbol a name stands for, through any renaming on the way in.
 +  const target = (node: ts.Node): ts.Symbol | null => {
@@ -629,7 +682,11 @@ index 0000000..13afc96
 +  const entries = new Map<string, Entry>();
 +  const registry = own.find((sf) => rel(sf) === REGISTRY);
 +  if (!registry)
-+    findings.push({ file: REGISTRY, line: 1, sentence: `${REGISTRY} is missing: every figure is listed there.` });
++    findings.push({
++      file: REGISTRY,
++      line: 1,
++      sentence: `${REGISTRY} is missing: every figure is listed there.`,
++    });
 +  else readRegistry(registry);
 +
 +  function readRegistry(sf: ts.SourceFile) {
@@ -643,7 +700,11 @@ index 0000000..13afc96
 +        found = true;
 +        const arg = node.arguments[0];
 +        if (!arg || !ts.isObjectLiteralExpression(arg)) {
-+          report(sf, node, 'defineFigures is given something other than a list written out in full.');
++          report(
++            sf,
++            node,
++            'defineFigures is given something other than a list written out in full.',
++          );
 +          return;
 +        }
 +        for (const p of arg.properties) readEntry(sf, p);
@@ -677,7 +738,11 @@ index 0000000..13afc96
 +    for (const name of ['title', 'what', 'english']) {
 +      const v = text(field(name));
 +      if (!v?.trim())
-+        report(sf, p, `The figure “${id}” needs its ${name === 'english' ? 'way of working it out in plain English' : name} written as plain text.`);
++        report(
++          sf,
++          p,
++          `The figure “${id}” needs its ${name === 'english' ? 'way of working it out in plain English' : name} written as plain text.`,
++        );
 +    }
 +    const inputs = field('inputs');
 +    if (!inputs || !ts.isArrayLiteralExpression(inputs))
@@ -696,7 +761,11 @@ index 0000000..13afc96
 +            ),
 +          );
 +        if (!ok)
-+          report(sf, i, `An input of “${id}” needs its label, where it enters and where it is kept, as plain text.`);
++          report(
++            sf,
++            i,
++            `An input of “${id}” needs its label, where it enters and where it is kept, as plain text.`,
++          );
 +      }
 +    const show = text(field('show'));
 +    if (!show || !SHOWS.has(show))
@@ -712,9 +781,22 @@ index 0000000..13afc96
 +      if (!decl || !at || at.startsWith('..') || at.includes('node_modules/'))
 +        report(sf, fnNode, `The function of “${id}” is not one of the product’s own.`);
 +      else if (at === REGISTRY || at.endsWith('.tsx'))
-+        report(sf, fnNode, `The function of “${id}” must be written in a .ts file of its building, not here.`);
-+      else if (!(ts.isFunctionDeclaration(decl) || (ts.isVariableDeclaration(decl) && decl.initializer && (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer)))))
-+        report(sf, fnNode, `“${fnNode.text}”, the function of “${id}”, is not written as a function.`);
++        report(
++          sf,
++          fnNode,
++          `The function of “${id}” must be written in a .ts file of its building, not here.`,
++        );
++      else if (!(
++        ts.isFunctionDeclaration(decl) ||
++        (ts.isVariableDeclaration(decl) &&
++          decl.initializer &&
++          (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer)))
++      ))
++        report(
++          sf,
++          fnNode,
++          `“${fnNode.text}”, the function of “${id}”, is not written as a function.`,
++        );
 +    }
 +    entries.set(id, { id, fn, show });
 +  }
@@ -730,34 +812,204 @@ index 0000000..13afc96
 +  };
 +  const isNumber = (e: ts.Expression) => numberLike(checker.getTypeAtLocation(e));
 +
++  /** The values given to a name, or a property, after it was declared: `x = …`, `o.x = …`, `x += …`. */
++  const assigned = new Map<ts.Symbol, ts.Expression[]>();
++  function assignedTo(sym: ts.Symbol, sf: ts.SourceFile): ts.Expression[] {
++    const known = assigned.get(sym);
++    if (known) return known;
++    const out: ts.Expression[] = [];
++    const visit = (n: ts.Node) => {
++      if (
++        ts.isBinaryExpression(n) &&
++        n.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
++        n.operatorToken.kind <= ts.SyntaxKind.LastAssignment
++      ) {
++        const left = ts.isPropertyAccessExpression(n.left) ? n.left.name : n.left;
++        if (target(left) === sym) out.push(n.right);
++      }
++      ts.forEachChild(n, visit);
++    };
++    visit(sf);
++    assigned.set(sym, out);
++    return out;
++  }
++
++  /**
++   * What a destructured name may hold: its default (`{ label = '123' }`), and the whole value it is
++   * destructured from when that is a variable's (`const { label } = { label: '123' }`).
++   */
++  function destructuredFrom(el: ts.BindingElement): ts.Expression[] {
++    const out: ts.Expression[] = el.initializer ? [el.initializer] : [];
++    let up: ts.Node = el.parent;
++    while (ts.isObjectBindingPattern(up) || ts.isArrayBindingPattern(up) || ts.isBindingElement(up))
++      up = up.parent;
++    if (ts.isVariableDeclaration(up) && up.initializer) out.push(up.initializer);
++    return out;
++  }
++
++  /** The function a callee or a callback stands for, through any names for it; null when not found. */
++  function fnOf(x: ts.Node | undefined): ts.FunctionLikeDeclaration | null {
++    let at: ts.Node | undefined =
++      x && ts.isExpression(x as ts.Expression) ? unwrap(x as ts.Expression) : x;
++    for (let hops = 0; at && hops < FOLLOW_LIMIT; hops++) {
++      if (
++        ts.isFunctionDeclaration(at) ||
++        ts.isMethodDeclaration(at) ||
++        ts.isArrowFunction(at) ||
++        ts.isFunctionExpression(at)
++      )
++        return at;
++      if (ts.isIdentifier(at) || ts.isPropertyAccessExpression(at))
++        at = target(ts.isPropertyAccessExpression(at) ? at.name : at)?.valueDeclaration;
++      else if (ts.isVariableDeclaration(at) && at.initializer) at = unwrap(at.initializer);
++      else return null;
++    }
++    return null;
++  }
++
 +  /** Whether the expression, shown as a child of an element, shows a number; and why. */
-+  function shows(e: ts.Expression): string | null {
-+    while (ts.isParenthesizedExpression(e) || ts.isAsExpression(e) || ts.isNonNullExpression(e))
-+      e = e.expression;
++  function shows(e: ts.Expression, depth = 0): string | null {
++    e = unwrap(e);
++    // A value followed this far without an end is not taken on trust.
++    if (depth >= FOLLOW_LIMIT)
++      return `“${e.getText().slice(0, 40)}”, which the lint cannot follow to where it is written, so it may be a number`;
 +    if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
 +    if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
 +      return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
-+    if (ts.isConditionalExpression(e)) return shows(e.whenTrue) ?? shows(e.whenFalse);
++    // An object written in place and handed over (to a function, a component, createElement): any text
++    // in it may be what is shown. A number in it is judged where it is shown.
++    if (ts.isObjectLiteralExpression(e)) {
++      for (const p of e.properties) {
++        const values =
++          (ts.isGetAccessorDeclaration(p) || ts.isMethodDeclaration(p)) && p.body
++            ? returnsOf(p.body)
++            : [
++                ts.isPropertyAssignment(p)
++                  ? p.initializer
++                  : ts.isShorthandPropertyAssignment(p)
++                    ? p.name
++                    : ts.isSpreadAssignment(p)
++                      ? p.expression
++                      : undefined,
++              ];
++        for (const value of values) {
++          if (!value || ts.isArrowFunction(value) || ts.isFunctionExpression(value)) continue;
++          if (!ts.isObjectLiteralExpression(value) && !ts.isStringLiteral(value) && isNumber(value))
++            continue;
++          const why = shows(value, depth + 1);
++          if (why) return why;
++        }
++      }
++    }
++    // A spread inside a list (`[...xs]`) holds what it spreads.
++    if (ts.isSpreadElement(e)) return shows(e.expression, depth + 1);
++    // A list written in place (and joined, or shown as it is): any element may be shown.
++    if (ts.isArrayLiteralExpression(e)) {
++      for (const el of e.elements) {
++        const why = shows(el, depth + 1);
++        if (why) return why;
++      }
++    }
++    if (ts.isConditionalExpression(e)) return shows(e.whenTrue, depth) ?? shows(e.whenFalse, depth);
 +    if (ts.isBinaryExpression(e)) {
 +      const op = e.operatorToken.kind;
-+      if (op === ts.SyntaxKind.AmpersandAmpersandToken) return shows(e.right);
++      if (op === ts.SyntaxKind.AmpersandAmpersandToken) return shows(e.right, depth);
 +      if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
-+        return shows(e.left) ?? shows(e.right);
++        return shows(e.left, depth) ?? shows(e.right, depth);
++      // Text joined from parts: a part that holds a number is shown.
++      if (op === ts.SyntaxKind.PlusToken) return shows(e.left, depth) ?? shows(e.right, depth);
 +    }
 +    const type = checker.getTypeAtLocation(e);
 +    if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown))
 +      return `“${e.getText().slice(0, 40)}”, whose kind is not known, so it may be a number`;
 +    if (numberLike(type)) return `the number “${e.getText().slice(0, 40)}”`;
++    // Text whose every possible value is known, and one of them holds a number.
++    const texts = type.isUnion() ? type.types : [type];
++    const numbered = texts.find((t) => t.isStringLiteral() && DIGIT.test(t.value));
++    if (numbered?.isStringLiteral())
++      return `“${e.getText().slice(0, 40)}”, which may be “${numbered.value.slice(0, 40)}”`;
++    // One element of a list or record (written in place, or by a name, a call…): any of its elements may
++    // be the one shown, so it is judged by what it is read from.
++    if (ts.isElementAccessExpression(e)) {
++      const why = shows(e.expression, depth + 1);
++      if (why) return `“${e.getText().slice(0, 40)}”, which may be ${why}`;
++    }
++    // A name for a value written in the product's own code: what it was given is what is shown.
++    if (ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) {
++      const decl = target(ts.isPropertyAccessExpression(e) ? e.name : e)?.valueDeclaration;
++      // What it holds as written: a variable's or a field's first value, a shorthand's name, or what a
++      // getter gives back.
++      const givenAll: ts.Expression[] = !decl
++        ? []
++        : (ts.isVariableDeclaration(decl) ||
++              ts.isPropertyAssignment(decl) ||
++              ts.isPropertyDeclaration(decl)) &&
++            decl.initializer
++          ? [decl.initializer]
++          : ts.isShorthandPropertyAssignment(decl)
++            ? [decl.name]
++            : ts.isGetAccessorDeclaration(decl) && decl.body
++              ? returnsOf(decl.body)
++              : ts.isBindingElement(decl)
++                ? destructuredFrom(decl)
++                : [];
++      // A map callback's parameter holds each element of the list mapped (`['123'].map((x) => x)`).
++      // A name destructured from the parameter (`({ label }) => …`) is that parameter's too.
++      let param: ts.Node | undefined = decl;
++      while (
++        param &&
++        (ts.isBindingElement(param) ||
++          ts.isObjectBindingPattern(param) ||
++          ts.isArrayBindingPattern(param))
++      )
++        param = param.parent;
++      if (param && ts.isParameter(param) && ts.isIdentifier(e)) {
++        const decl = param;
++        const cb = decl.parent;
++        const call = cb.parent;
++        if (
++          (ts.isArrowFunction(cb) || ts.isFunctionExpression(cb)) &&
++          cb.parameters[0] === decl &&
++          ts.isCallExpression(call) &&
++          call.arguments[0] === cb &&
++          ts.isPropertyAccessExpression(call.expression) &&
++          ['map', 'flatMap', 'forEach'].includes(call.expression.name.text)
++        ) {
++          const why = shows(call.expression.expression, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, an element of a list that holds ${why}`;
++        }
++      }
++      const sym = target(ts.isPropertyAccessExpression(e) ? e.name : e);
++      // What it was given first, and every value given to it after (`label = '123'`).
++      const values = [
++        ...givenAll.filter((g) => !rel(g.getSourceFile()).includes('node_modules/')),
++        ...(sym && decl && !rel(decl.getSourceFile()).includes('node_modules/')
++          ? assignedTo(sym, decl.getSourceFile())
++          : []),
++      ];
++      for (const v of values) {
++        const why = shows(v, depth + 1);
++        if (why) return `“${e.getText().slice(0, 40)}”, which holds ${why}`;
++      }
++    }
 +    if (ts.isTemplateExpression(e)) {
 +      const span = e.templateSpans.find((s) => isNumber(s.expression));
 +      if (span) return `the number “${span.expression.getText().slice(0, 40)}” written into text`;
++      for (const part of e.templateSpans) {
++        const why = shows(part.expression, depth + 1);
++        if (why) return `${why}, written into text`;
++      }
 +      if (DIGIT.test(e.head.text) || e.templateSpans.some((s) => DIGIT.test(s.literal.text)))
 +        return `the number in “${e.getText().slice(0, 40)}”`;
 +      return null;
 +    }
 +    if (ts.isCallExpression(e)) {
 +      const callee = e.expression;
-+      if (ts.isPropertyAccessExpression(callee) && NUMBER_TO_TEXT.has(callee.name.text) && isNumber(callee.expression))
++      if (
++        ts.isPropertyAccessExpression(callee) &&
++        NUMBER_TO_TEXT.has(callee.name.text) &&
++        isNumber(callee.expression)
++      )
 +        return `the number “${callee.expression.getText().slice(0, 40)}” written as text`;
 +      const sym = target(ts.isPropertyAccessExpression(callee) ? callee.name : callee);
 +      const decl = sym?.valueDeclaration ?? sym?.declarations?.[0];
@@ -765,6 +1017,71 @@ index 0000000..13afc96
 +      const numeric = e.arguments.find((a) => isNumber(a));
 +      if (numeric && !words)
 +        return `“${e.getText().slice(0, 40)}”, text made from the number “${numeric.getText().slice(0, 30)}”`;
++      // A library's function or method (concat, join, createElement…) makes what it shows from what it
++      // is called on and given.
++      const builtIn = decl && rel(decl.getSourceFile()).includes('node_modules/');
++      if (builtIn) {
++        // map and flatMap show what their callback gives back, not what they run over.
++        const mapping =
++          ts.isPropertyAccessExpression(callee) && ['map', 'flatMap'].includes(callee.name.text);
++        const parts = mapping
++          ? e.arguments.slice(1)
++          : [...(ts.isPropertyAccessExpression(callee) ? [callee.expression] : []), ...e.arguments];
++        for (const part of parts) {
++          const why = shows(part, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
++        }
++        // A list made by map or flatMap holds what the callback gives back, inline or by name.
++        if (mapping)
++          for (const cb of e.arguments.slice(0, 1)) {
++            const fn = fnOf(cb);
++            if (!fn?.body)
++              return `“${e.getText().slice(0, 40)}”, made by a callback the lint cannot follow, so it may hold a number`;
++            for (const given of returnsOf(fn.body)) {
++              const why = shows(given, depth + 1);
++              if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
++            }
++            // A callback that gives back what it is handed (its parameter, inline or named) gives the
++            // list's own elements: the list mapped is judged too.
++            // Every name the parameters bind, destructured ones included.
++            const bound = (n: ts.BindingName): ts.Identifier[] =>
++              ts.isIdentifier(n)
++                ? [n]
++                : n.elements.flatMap((el) => (ts.isBindingElement(el) ? bound(el.name) : []));
++            const params = new Set(
++              fn.parameters.flatMap((p) => bound(p.name).map((id) => target(id))),
++            );
++            const usesParam = (n: ts.Node): boolean =>
++              (ts.isIdentifier(n) && params.has(target(n))) ||
++              ts.forEachChild(n, usesParam) === true;
++            if (
++              ts.isPropertyAccessExpression(callee) &&
++              returnsOf(fn.body).some((r) => usesParam(r))
++            ) {
++              const why = shows(callee.expression, depth + 1);
++              if (why) return `“${e.getText().slice(0, 40)}”, which gives back elements of ${why}`;
++            }
++          }
++      }
++      // A function of the product's own, through any names for it (`const alias = label`): what it gives
++      // back is what is shown.
++      const fn = fnOf(decl);
++      const own = Boolean(decl && !rel(decl.getSourceFile()).includes('node_modules/'));
++      // A call of the product's own that cannot be followed to a function (a function handed in, a
++      // name too far) gives text the lint cannot judge: it is not taken on trust.
++      if (own && !words && (!fn || !fn.body) && !numberLike(checker.getTypeAtLocation(e)))
++        return `“${e.getText().slice(0, 40)}”, a call the lint cannot follow to the function it runs, so it may give a number`;
++      if (fn && fn.body && !words && !rel(fn.getSourceFile()).includes('node_modules/')) {
++        // What it is given may be what it gives back (`label('123')` returning its argument).
++        for (const part of e.arguments) {
++          const why = shows(part, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
++        }
++        for (const given of returnsOf(fn.body)) {
++          const why = shows(given, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
++        }
++      }
 +    }
 +    return null;
 +  }
@@ -789,48 +1106,260 @@ index 0000000..13afc96
 +    const fnExpr = fnInit && ts.isJsxExpression(fnInit) ? fnInit.expression : undefined;
 +    const fn = fnExpr && ts.isIdentifier(fnExpr) ? target(fnExpr) : null;
 +    if (!fn || (entry.fn && fn !== entry.fn))
-+      report(sf, el, `The Figure “${id}” must be worked out by the function ${REGISTRY} names for it.`);
++      report(
++        sf,
++        el,
++        `The Figure “${id}” must be worked out by the function ${REGISTRY} names for it.`,
++      );
 +    const showInit = attr('show')?.initializer;
 +    const show = showInit && ts.isStringLiteral(showInit) ? showInit.text : null;
 +    if (show !== entry.show)
-+      report(sf, el, `The Figure “${id}” must be shown as ${REGISTRY} says (${entry.show ?? 'not said'}).`);
++      report(
++        sf,
++        el,
++        `The Figure “${id}” must be shown as ${REGISTRY} says (${entry.show ?? 'not said'}).`,
++      );
 +  }
 +
 +  const tagOf = (el: ts.JsxSelfClosingElement | ts.JsxOpeningElement) => el.tagName.getText();
 +
 +  for (const sf of own) {
 +    const file = rel(sf);
-+    if (!file.endsWith('.tsx') || /\.test\.tsx$/.test(file) || file === FIGURE_COMPONENT) continue;
++    // Every file a screen may be made of: elements in .tsx, components made with createElement in .ts
++    // too, tests included (a page may bring a component in from one). Configuration is not a screen;
++    // the files that show a figure are trusted (above), and this lint is not a screen.
++    if (
++      !/\.tsx?$/.test(file) ||
++      /^(vitest|next|drizzle|playwright)\.config\.ts$/.test(file) ||
++      TRUSTED_FILES.includes(file) ||
++      file === 'rama/lint.ts'
++    )
++      continue;
 +    const visit = (node: ts.Node) => {
 +      if (ts.isJsxSelfClosingElement(node) || ts.isJsxElement(node)) {
 +        const open = ts.isJsxElement(node) ? node.openingElement : node;
-+        if (tagOf(open) === 'Figure') {
++        // Only the house stack's own Figure is a figure: a component of another file that is merely named
++        // Figure is read like any other.
++        const figureDecl = target(open.tagName)?.declarations?.[0];
++        if (
++          tagOf(open) === 'Figure' &&
++          figureDecl &&
++          rel(figureDecl.getSourceFile()) === FIGURE_COMPONENT
++        ) {
 +          checkFigure(sf, open);
 +          return; // what a Figure holds is the Figure's
 +        }
 +        const tag = tagOf(open);
-+        for (const a of open.attributes.properties) {
-+          if (!ts.isJsxAttribute(a) || !a.initializer) continue;
-+          const name = a.name.getText();
++        const tagDecl = /^[A-Z]/.test(tag) ? target(open.tagName)?.declarations?.[0] : undefined;
++        const ownComponent = Boolean(
++          tagDecl && !rel(tagDecl.getSourceFile()).includes('node_modules/'),
++        );
++        // Props spread in (`{...{ text: '123' }}`, or a name for such an object) count as written.
++        // Spread props, opened all the way down (`{...{ ...{ children: '123' } }}`, names followed).
++        type Prop = {
++          node: ts.Node;
++          name: string;
++          given: ts.Expression | undefined;
++          /** A spread the lint could not follow to where it is written: refused, not trusted. */
++          lost?: true;
++        };
++        const opened = (at: ts.Node, e: ts.Expression, steps = 0): Prop[] => {
++          const lost: Prop[] = [{ node: at, name: '', given: undefined, lost: true }];
++          if (steps >= FOLLOW_LIMIT) return lost;
++          const next = (x: ts.Expression) => opened(at, x, steps + 1);
++          if (unwrap(e) !== e) return next(unwrap(e));
++          if (ts.isIdentifier(e)) {
++            const d: ts.Declaration | undefined = target(e)?.valueDeclaration;
++            if (d && ts.isVariableDeclaration(d))
++              return d.initializer
++                ? [
++                    ...next(d.initializer),
++                    ...assignedTo(target(e)!, d.getSourceFile()).flatMap(next),
++                  ]
++                : [];
++            // A component's own props spread on (`{...props}`) are judged where it is given them.
++            if (d && (ts.isParameter(d) || ts.isBindingElement(d))) return [];
++            return lost;
++          }
++          // Either branch may be the one spread.
++          if (ts.isConditionalExpression(e)) return [...next(e.whenTrue), ...next(e.whenFalse)];
++          if (ts.isBinaryExpression(e)) {
++            const op = e.operatorToken.kind;
++            if (op === ts.SyntaxKind.AmpersandAmpersandToken) return next(e.right);
++            if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
++              return [...next(e.left), ...next(e.right)];
++            return lost;
++          }
++          // One of the product's own functions: what it gives back is spread.
++          if (ts.isCallExpression(e)) {
++            const callee = ts.isPropertyAccessExpression(e.expression)
++              ? e.expression.name
++              : e.expression;
++            const d = target(callee)?.valueDeclaration;
++            const fn =
++              d && ts.isFunctionDeclaration(d)
++                ? d
++                : d &&
++                    ts.isVariableDeclaration(d) &&
++                    d.initializer &&
++                    (ts.isArrowFunction(d.initializer) || ts.isFunctionExpression(d.initializer))
++                  ? d.initializer
++                  : undefined;
++            if (fn?.body && !rel(fn.getSourceFile()).includes('node_modules/'))
++              return [
++                ...returnsOf(fn.body).flatMap(next),
++                // What it is given may be what it gives back (`make({ children: '123' })`).
++                ...e.arguments
++                  .filter((x) => ts.isStringLiteral(x) || !isNumber(x))
++                  .map((x): Prop => ({ node: at, name: 'children', given: x })),
++              ];
++            return lost;
++          }
++          if (!ts.isObjectLiteralExpression(e)) {
++            // Nothing (null, undefined, false) spreads nothing; anything else is not taken on trust.
++            const t = checker.getTypeAtLocation(e);
++            return t.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.BooleanLike)
++              ? []
++              : lost;
++          }
++          return e.properties.flatMap((p): Prop[] => {
++            if (ts.isShorthandPropertyAssignment(p))
++              return [{ node: at, name: p.name.text, given: p.name }];
++            if (ts.isSpreadAssignment(p)) return next(p.expression);
++            const name = propName(p.name);
++            if (ts.isPropertyAssignment(p)) return [{ node: at, name, given: p.initializer }];
++            // A getter or a method gives what it returns.
++            if ((ts.isGetAccessorDeclaration(p) || ts.isMethodDeclaration(p)) && p.body)
++              return returnsOf(p.body).map((given) => ({ node: at, name, given }));
++            return [];
++          });
++        };
++        const spread = open.attributes.properties.flatMap((a) =>
++          ts.isJsxSpreadAttribute(a) ? opened(a, a.expression) : [],
++        );
++        const written = open.attributes.properties.flatMap((a) =>
++          ts.isJsxAttribute(a) && a.initializer
++            ? [
++                {
++                  node: a as ts.Node,
++                  name: a.name.getText(),
++                  given: ts.isStringLiteral(a.initializer)
++                    ? (a.initializer as ts.Expression)
++                    : ts.isJsxExpression(a.initializer)
++                      ? a.initializer.expression
++                      : undefined,
++                },
++              ]
++            : [],
++        );
++        for (const a of [...written, ...spread]) {
++          if ('lost' in a && a.lost) {
++            unmarked(
++              sf,
++              a.node,
++              `a spread the lint cannot follow to where it is written, so it may hold a number`,
++            );
++            continue;
++          }
++          if (!a.given) continue;
++          const name = a.name;
++          // Text handed to one of the product's own components may be shown by it, where the lint sees
++          // only "some text": every prop but `key` is judged where it is handed over (a number handed
++          // over is judged where the component shows it). A library's component (a link, an image) is
++          // judged only by the attributes a person reads.
++          // A number handed over is left to where the component shows it only when the prop is a plain
++          // number there (then the lint sees a number); handed into a prop of any wider kind
++          // (`ReactNode`) it would be seen only as "an element", so it is judged here.
++          const expected = checker.getContextualType(a.given);
++          const plainNumber =
++            expected !== undefined &&
++            Boolean(expected.flags & (ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)) &&
++            !expected.isUnion();
++          const handed =
++            ownComponent &&
++            name !== 'key' &&
++            !(!ts.isStringLiteral(a.given) && isNumber(a.given) && plainNumber);
 +          const shown =
-+            /^[a-z]/.test(tag) &&
-+            (SHOWN_ATTRIBUTES.has(name) ||
-+              ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag)));
++            handed ||
++            (!ownComponent && (SHOWN_ATTRIBUTES.has(name) || name === 'dangerouslySetInnerHTML')) ||
++            ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag));
 +          if (!shown) continue;
-+          const why = ts.isStringLiteral(a.initializer)
-+            ? DIGIT.test(a.initializer.text)
-+              ? `the number in “${a.initializer.text.slice(0, 40)}”`
-+              : null
-+            : ts.isJsxExpression(a.initializer) && a.initializer.expression
-+              ? shows(a.initializer.expression)
-+              : null;
-+          if (why) unmarked(sf, a, why);
++          // HTML set directly is shown as it is written: its object opened like a spread (names, choices,
++          // functions followed), and refused when it cannot be opened.
++          if (name === 'dangerouslySetInnerHTML') {
++            for (const h of opened(a.node, a.given)) {
++              const why = h.lost
++                ? 'raw HTML the lint cannot follow to where it is written, so it may hold a number'
++                : h.name === '__html' && h.given
++                  ? shows(h.given)
++                  : null;
++              if (why) unmarked(sf, a.node, why);
++            }
++            continue;
++          }
++          const given = a.given;
++          const why = given ? shows(given) : null;
++          if (why) unmarked(sf, a.node, why);
 +        }
 +      }
++      // A component shows what it gives back, element or not: a function named with a capital, or the
++      // file's default export (a page), named or not.
++      const isFn = (x: ts.Node | undefined): x is ts.ArrowFunction | ts.FunctionExpression =>
++        Boolean(x && (ts.isArrowFunction(x) || ts.isFunctionExpression(x)));
++      const defaulted = (n: ts.Node) =>
++        ts.canHaveModifiers(n) &&
++        (ts.getModifiers(n) ?? []).some((m) => m.kind === ts.SyntaxKind.DefaultKeyword);
++      let exported: ts.Expression | undefined;
++      let exportedBody: ts.ConciseBody | undefined;
++      // The default export by name (`export default page`, `export { page as default }`): its function.
++      const byName = (id: ts.Identifier | ts.ModuleExportName) => {
++        const d = target(id)?.valueDeclaration;
++        if (d && ts.isFunctionDeclaration(d)) return d.body;
++        if (d && ts.isVariableDeclaration(d) && isFn(d.initializer)) return d.initializer.body;
++        return undefined;
++      };
++      if (ts.isExportAssignment(node) && !node.isExportEquals) {
++        exported = node.expression;
++        if (exported) exported = unwrap(exported);
++        if (exported && ts.isIdentifier(exported)) exportedBody = byName(exported);
++      }
++      if (
++        ts.isExportDeclaration(node) &&
++        !node.moduleSpecifier &&
++        node.exportClause &&
++        ts.isNamedExports(node.exportClause)
++      )
++        for (const el of node.exportClause.elements)
++          if (el.name.text === 'default') exportedBody = byName(el.propertyName ?? el.name);
++      const component =
++        (ts.isFunctionDeclaration(node) &&
++          ((node.name && /^[A-Z]/.test(node.name.text)) || defaulted(node))) ||
++        (ts.isVariableDeclaration(node) &&
++          ts.isIdentifier(node.name) &&
++          /^[A-Z]/.test(node.name.text) &&
++          isFn(node.initializer)) ||
++        isFn(exported) ||
++        Boolean(exportedBody);
++      const body = ts.isFunctionDeclaration(node)
++        ? node.body
++        : ts.isVariableDeclaration(node) && isFn(node.initializer)
++          ? node.initializer.body
++          : isFn(exported)
++            ? exported.body
++            : exportedBody;
++      if (component && body)
++        for (const given of returnsOf(body)) {
++          const why = shows(given);
++          if (why) unmarked(sf, given, why);
++        }
 +      if (ts.isJsxText(node) && DIGIT.test(node.text)) {
 +        unmarked(sf, node, `the number in “${node.text.trim().slice(0, 40)}”`);
 +      }
-+      if (ts.isJsxExpression(node) && node.expression && (ts.isJsxElement(node.parent) || ts.isJsxFragment(node.parent))) {
++      if (
++        ts.isJsxExpression(node) &&
++        node.expression &&
++        (ts.isJsxElement(node.parent) || ts.isJsxFragment(node.parent))
++      ) {
 +        const why = shows(node.expression);
 +        if (why) unmarked(sf, node, why);
 +      }
@@ -838,21 +1367,69 @@ index 0000000..13afc96
 +    };
 +    visit(sf);
 +  }
-+  return findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line);
++  // One finding a line: two ways of seeing the same number there say the same thing.
++  const seen = new Set<string>();
++  return findings
++    .sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
++    .filter((f) => !seen.has(`${f.file}:${f.line}`) && Boolean(seen.add(`${f.file}:${f.line}`)));
++}
++
++/**
++ * A property's name as written: a computed one written as text is read, and any other computed name is
++ * taken as `children`, a name that is shown, so its value is judged rather than skipped.
++ */
++function propName(n: ts.PropertyName): string {
++  if (ts.isIdentifier(n) || ts.isStringLiteral(n) || ts.isNumericLiteral(n)) return n.text;
++  if (ts.isComputedPropertyName(n)) {
++    const x = unwrap(n.expression);
++    if (ts.isStringLiteral(x) || ts.isNoSubstitutionTemplateLiteral(x)) return x.text;
++  }
++  return 'children';
++}
++
++/** The value inside wrappers that do not change it: brackets, `as`, `satisfies`, `!`, `<T>`. */
++function unwrap(e: ts.Expression): ts.Expression {
++  while (
++    ts.isParenthesizedExpression(e) ||
++    ts.isAsExpression(e) ||
++    ts.isSatisfiesExpression(e) ||
++    ts.isNonNullExpression(e) ||
++    ts.isTypeAssertionExpression(e)
++  )
++    e = e.expression;
++  return e;
++}
++
++/** What a function body gives back: its return statements' values, not those of functions inside it. */
++function returnsOf(body: ts.ConciseBody): ts.Expression[] {
++  if (!ts.isBlock(body)) return [body];
++  const out: ts.Expression[] = [];
++  const visit = (n: ts.Node) => {
++    if (ts.isReturnStatement(n) && n.expression) out.push(n.expression);
++    if (ts.isFunctionLike(n)) return;
++    ts.forEachChild(n, visit);
++  };
++  ts.forEachChild(body, visit);
++  return out;
 +}
 +
 +const line = (sf: ts.SourceFile, node: ts.Node) =>
 +  sf.getLineAndCharacterOfPosition(node.getStart(sf)).line + 1;
 +
-+const self = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename);
++const self =
++  process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename);
 +if (self) {
 +  const args = process.argv.slice(2);
-+  const dir = args.find((a) => !a.startsWith('--')) ?? process.cwd();
-+  const found = lintFigures(dir);
++  const dir =
++    args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--trusted') ?? process.cwd();
++  const trustedAt = args.indexOf('--trusted');
++  const found = lintFigures(dir, trustedAt >= 0 ? args[trustedAt + 1] : undefined);
 +  if (args.includes('--json')) process.stdout.write(JSON.stringify(found) + '\n');
 +  else if (found.length) {
 +    for (const f of found) console.error(f.sentence);
-+    console.error(`\n${found.length} thing${found.length === 1 ? '' : 's'} to fix before the build.`);
++    console.error(
++      `\n${found.length} thing${found.length === 1 ? '' : 's'} to fix before the build.`,
++    );
 +  } else console.log('Every number on a screen is a traced figure.');
 +  process.exitCode = found.length ? 1 : 0;
 +}

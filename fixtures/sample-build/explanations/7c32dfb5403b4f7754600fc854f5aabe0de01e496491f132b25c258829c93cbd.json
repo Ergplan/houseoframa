@@ -1,0 +1,14 @@
+{
+  "hash": "7c32dfb5403b4f7754600fc854f5aabe0de01e496491f132b25c258829c93cbd",
+  "path": "rama/figures.ts",
+  "kind": "value",
+  "name": "figures",
+  "sentence": "Describes Orders so far, Order amount and New order amount, including what each means, where its information comes from and whether it is shown as a count or in rupees.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-69",
+  "at": "2026-10-28T11:36:07.468Z",
+  "commit": null,
+  "lift": 3
+}

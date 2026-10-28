@@ -3,12 +3,12 @@
   "path": "rama/figures.ts",
   "kind": "imports",
   "name": null,
-  "sentence": "Makes buildingCount and defineFigures available for describing the figures the product shows.",
+  "sentence": "Makes buildingCount and defineFigures available here.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-25",
-  "at": "2026-10-27T10:03:10.608Z",
+  "callId": "row-29",
+  "at": "2026-10-28T11:34:43.522Z",
   "commit": null,
   "lift": 0
 }

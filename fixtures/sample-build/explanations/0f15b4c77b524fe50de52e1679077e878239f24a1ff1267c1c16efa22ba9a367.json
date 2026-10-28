@@ -1,0 +1,14 @@
+{
+  "hash": "0f15b4c77b524fe50de52e1679077e878239f24a1ff1267c1c16efa22ba9a367",
+  "path": "db/connect.ts",
+  "kind": "value",
+  "name": "db",
+  "sentence": "Keeps a place for the database connection, which may not yet be set.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-12",
+  "at": "2026-10-28T11:34:10.485Z",
+  "commit": null,
+  "lift": 0
+}

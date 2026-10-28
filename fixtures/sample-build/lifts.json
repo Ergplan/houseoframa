@@ -1,32 +1,32 @@
 {
   "builder": "Claude Code",
   "model": "claude-sonnet-5-5",
-  "recordedAt": "2026-10-25T12:29:19.182Z",
-  "costUsd": 0.9411584,
+  "recordedAt": "2026-10-28T11:31:39.897Z",
+  "costUsd": 1.2469032,
   "lifts": [
     {
       "done": false,
-      "next": "Build \"Take an order\": the New order screen at /new with the item, the cups, the New order amount and a Take the order button.",
-      "said": "The stall's first page, Today's orders, now lists the four sample orders, each with its cups in words and its Order amount, plus Orders so far. It replaces the example Welcome building.",
-      "patch": "0001-See-today-s-orders-list-the-day-s-orders-with-their-.patch"
+      "next": "Build \"Take an order\": the New order screen at /new, with item and cups choices and the New order amount shown before saving.",
+      "said": "The stall's first page now lists today's orders from the sample day. It shows how many orders there are, each order's cups in words, and what each order costs.",
+      "patch": "0001-See-today-s-orders-the-first-page-lists-today-s-orde.patch"
     },
     {
       "done": false,
-      "next": "Build \"Take an order\": the New order screen at /new with the item, the cups, the New order amount and a Take the order button.",
-      "said": "I added a passing test for the code that reads the sample day's orders. The merge gate refused the Today's orders screen because that code had no test behind it.",
-      "patch": "0002-Test-that-the-sample-day-is-read-from-the-orders-fil.patch"
+      "next": "Build \"Take an order\": the New order screen at /new, with item and cups choices and the New order amount shown before saving.",
+      "said": "I added tests for the orders table and for how the stall reads its orders. They cover the sample-day file, the table's columns, and the first-time write of the four sample orders into an empty table. That should clear the merge gate's refusal of the first page.",
+      "patch": "0002-Put-tests-behind-the-orders-table-and-how-the-stall-.patch"
     },
     {
       "done": false,
-      "next": "Build \"Count the day's takings\": the Today's total screen at /total for staff, showing Today's takings and GST on today's takings.",
-      "said": "I built the New order screen at /new. It has the item (Masala chai), the cups (one, two or three, with two chosen to start), the New order amount (₹30.00 for two cups at 1,500 paise a cup), and a Take the order button that doesn't save anything yet.",
-      "patch": "0003-Take-an-order-the-New-order-screen-with-the-cost-sho.patch"
+      "next": "Build \"Count the day's takings\": the Today's total screen at /total for staff, with Today's takings and GST on today's takings.",
+      "said": "The New order screen at /new now has the item (Masala chai), the cups (one, two or three, two to start with), and the New order amount (₹30.00 at the start). It also has a Take the order button, which doesn't save anything yet.",
+      "patch": "0003-Take-an-order-the-New-order-screen-shows-what-an-ord.patch"
     },
     {
       "done": true,
       "next": null,
-      "said": "I built the staff screen Today's total at /total. It shows Today's takings (₹113.00 for the sample day) and GST on today's takings (₹5.65, five percent rounded to the paisa).",
-      "patch": "0004-Count-the-day-s-takings-the-Today-s-total-screen-wit.patch"
+      "said": "The Today's total screen at /total, for staff, now shows Today's takings (₹113.00 on the sample day) and GST on today's takings (₹5.65, which is five percent rounded to the paisa).",
+      "patch": "0004-Count-the-day-s-takings-the-Today-s-total-screen-sho.patch"
     }
   ]
 }

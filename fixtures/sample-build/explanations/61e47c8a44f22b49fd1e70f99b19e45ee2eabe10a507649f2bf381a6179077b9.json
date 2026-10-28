@@ -1,0 +1,14 @@
+{
+  "hash": "61e47c8a44f22b49fd1e70f99b19e45ee2eabe10a507649f2bf381a6179077b9",
+  "path": "db/orders.test.ts",
+  "kind": "test",
+  "name": "keeps orders in the orders table with provenance",
+  "sentence": "Checks that orders are kept in a table named orders, with item, cups, pricePaise, takenAt, siteId, createdAt and createdBy fields.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-57",
+  "at": "2026-10-28T11:35:43.963Z",
+  "commit": null,
+  "lift": 2
+}

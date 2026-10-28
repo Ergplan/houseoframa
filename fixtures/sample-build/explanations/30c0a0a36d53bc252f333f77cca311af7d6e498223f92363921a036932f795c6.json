@@ -1,0 +1,14 @@
+{
+  "hash": "30c0a0a36d53bc252f333f77cca311af7d6e498223f92363921a036932f795c6",
+  "path": "features/see-todays-orders/orders.test.ts",
+  "kind": "value",
+  "name": "order",
+  "sentence": "Keeps an order for Lemon tea with 1 cup, a price of 2000 paise, and a time of 2026-10-28T09:45:00+05:30.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-44",
+  "at": "2026-10-28T11:35:20.087Z",
+  "commit": null,
+  "lift": 1
+}

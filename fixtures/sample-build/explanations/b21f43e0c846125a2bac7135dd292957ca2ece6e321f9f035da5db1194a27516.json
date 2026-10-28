@@ -3,12 +3,12 @@
   "path": "components/Figure.tsx",
   "kind": "component",
   "name": "Figure",
-  "sentence": "Works out a number from the supplied details and shows it in the chosen format. It also keeps the figure’s identifier, the supplied details and the unformatted number alongside the displayed text.",
+  "sentence": "Works out a figure’s value from the supplied inputs and shows it in the chosen format. Keeps the figure’s identifier, inputs and value attached to the displayed result.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
   "callId": "row-10",
-  "at": "2026-10-27T10:02:36.780Z",
+  "at": "2026-10-28T11:34:06.444Z",
   "commit": null,
   "lift": 0
 }

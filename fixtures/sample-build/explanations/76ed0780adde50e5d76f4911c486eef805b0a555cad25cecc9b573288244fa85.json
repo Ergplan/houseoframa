@@ -3,12 +3,12 @@
   "path": "db/schema.ts",
   "kind": "function",
   "name": "provenance",
-  "sentence": "Keeps a required site ID, creation time with time zone, and creator. The creation time defaults to the current time.",
+  "sentence": "Keeps a required site ID, creation time with a time zone, and creator. The creation time defaults to the current time.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-12",
-  "at": "2026-10-27T10:02:43.232Z",
+  "callId": "row-16",
+  "at": "2026-10-28T11:34:19.443Z",
   "commit": null,
   "lift": 0
 }

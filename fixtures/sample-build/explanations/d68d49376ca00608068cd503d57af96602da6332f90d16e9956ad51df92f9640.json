@@ -1,0 +1,14 @@
+{
+  "hash": "d68d49376ca00608068cd503d57af96602da6332f90d16e9956ad51df92f9640",
+  "path": "app/total/page.test.tsx",
+  "kind": "test",
+  "name": "shows the day’s takings and the GST on them for the sample day",
+  "sentence": "Checks that the page shows Today’s total, with the day’s takings of ₹113.00 and GST of ₹5.65 for the sample day.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-71",
+  "at": "2026-10-28T11:36:11.174Z",
+  "commit": null,
+  "lift": 4
+}

@@ -1,0 +1,14 @@
+{
+  "hash": "1e287e45926a1516facabf421d292e569444250bb408505a0281712a7a8d9f70",
+  "path": "features/count-the-days-takings/takings.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Uses the details defined for Order.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-79",
+  "at": "2026-10-28T11:36:32.139Z",
+  "commit": null,
+  "lift": 4
+}

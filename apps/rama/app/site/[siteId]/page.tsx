@@ -35,7 +35,8 @@ const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) 
 /**
  * A site's lakefront (Stage 8): the Street is its home; `?b=<building>` opens a building; `?at=code`
  * (or a decision card's `?brick=`) is the inside of the building (Stage 11), where each brick opens to
- * its code; `?ground=<table>` is a table of the ground, opened to its columns and its real rows.
+ * its code; `?ground=<table>` is a table of the ground, opened to its columns and its real rows; a
+ * Street's `?flow=` plays a figure's flow along the roads when its trail crosses buildings.
  */
 export default async function SitePage({
   params,
@@ -120,6 +121,19 @@ export default async function SitePage({
         : [street, { label: 'inside' }];
 
   if (level === 'street') {
+    // Every figure's flow, with the building whose glass shows it: a flow that crosses buildings plays
+    // along the roads (`?flow=`, Stage 11).
+    const nodes = new Map(blueprint.nodes.map((n) => [n.path, n]));
+    const screenFiles = new Set(blueprint.screens.map((x) => x.file));
+    const flows = Object.fromEntries(
+      lf.street.buildings.flatMap((b) => {
+        const sc = buildingScene(b, lf.facades[b.id] ?? [], (x) => nodes.get(x)!, screenFiles);
+        const keys = sc.facades.flatMap((f) => f.figures.map((g) => g.key));
+        return Object.entries(buildingFlows(site, blueprint, keys)).map(
+          ([k, flow]) => [k, { flow, shownIn: b.id }] as const,
+        );
+      }),
+    );
     return (
       <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
         <StreetView
@@ -137,6 +151,8 @@ export default async function SitePage({
           problem={lf.problem}
           unknownScreens={lf.features.unknownScreens}
           camera={cameraFrom(q, 'street', null)}
+          flows={flows}
+          initialFlow={one(q.flow)}
         />
       </SiteShell>
     );

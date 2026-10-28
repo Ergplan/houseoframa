@@ -3,12 +3,12 @@
   "path": "app/page.test.tsx",
   "kind": "imports",
   "name": null,
-  "sentence": "Brings together Welcome and the tools used to check the page’s output.",
+  "sentence": "Makes Welcome and the tools for checking its page output available for tests.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
   "callId": "row-4",
-  "at": "2026-10-27T10:02:20.563Z",
+  "at": "2026-10-28T11:33:50.843Z",
   "commit": null,
   "lift": 0
 }

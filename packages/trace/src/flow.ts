@@ -78,8 +78,12 @@ export function flowOf(capture: Capture, key: string): Flow | null {
     const value = ran?.inputs.find((i) => i.label === input.label)?.value ?? null;
     const rows = rowsOf(value);
     const data = input.data ?? null;
-    const table =
-      data && /^[a-z_][a-z0-9_]*\.[a-z_][a-z0-9_]*$/i.test(data) ? data.split('.')[0]! : null;
+    // Kept in a table: `orders.cups`, or the whole table in words, `orders table` / `the orders table`.
+    const table = data
+      ? (/^([a-z_][a-z0-9_]*)\.[a-z_][a-z0-9_]*$/i.exec(data)?.[1] ??
+        /^(?:the )?([a-z_][a-z0-9_]*) table$/i.exec(data)?.[1] ??
+        null)
+      : null;
     const kept = data ?? 'a place nobody has written down';
     return {
       kind: 'source',

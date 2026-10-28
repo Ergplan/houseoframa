@@ -1,0 +1,14 @@
+{
+  "hash": "ae399d7ff75ec95ce1e91444e49179c10fd9204c6d885f3e1391dfc6f5dfd403",
+  "path": "rama/figures.ts",
+  "kind": "value",
+  "name": "figures",
+  "sentence": "Keeps the titles, explanations, inputs and display formats for Orders so far, Order amount, New order amount, Today’s takings and GST on today’s takings.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-84",
+  "at": "2026-10-28T11:36:42.177Z",
+  "commit": null,
+  "lift": 4
+}

@@ -1,5 +1,6 @@
 // capture(site): photographs the target's real screens. Builds the app in its checkout, starts it with
-// no secrets (PATH and HOME only: no database URL, no vendor keys), drives Playwright through
+// no secrets (PATH and HOME only: no vendor keys, and no database URL but a product's own sandbox
+// database when the caller hands one), drives Playwright through
 // `.rama/screens.json`, and writes work/<site>/shots/<name>.png plus work/<site>/capture.json:
 //  - each screen with the bricks that render it (the route's import closure from the Blueprint);
 //  - every figure on it with its box and text: traced ones (`data-rama-figure`, or the overlay's
@@ -153,7 +154,7 @@ async function startApp(
   repoDir: string,
   cfg: ScreensConfig,
   log: (s: string) => void,
-  database?: string,
+  database?: { url: string; siteId: string },
 ): Promise<{ url: string; stop: () => void }> {
   const port = await freePort();
   const command = cfg.app.start.replaceAll('{port}', String(port));
@@ -166,7 +167,7 @@ async function startApp(
       ...CLEAN_ENV(),
       NODE_ENV: 'production',
       PORT: String(port),
-      ...(database ? { DATABASE_URL: database } : {}),
+      ...(database ? { DATABASE_URL: database.url, RAMA_SITE_ID: database.siteId } : {}),
     },
     stdio: ['ignore', 'pipe', 'pipe'],
     detached: true,
@@ -235,7 +236,8 @@ export interface CaptureOptions {
   now?: () => Date;
   /**
    * The product's own sandbox database (Stage 11), handed to the running app as its DATABASE_URL: a
-   * database and a login of its own, never House of Rama's.
+   * database and a login of its own, never House of Rama's. The app also gets RAMA_SITE_ID, the product's
+   * id, for the site_id of the rows it writes.
    */
   database?: string;
 }
@@ -294,7 +296,12 @@ export async function capture(
   const shotsDir = path.join(opts.outDir, 'shots');
   rmSync(shotsDir, { recursive: true, force: true });
   mkdirSync(shotsDir, { recursive: true });
-  const app = await startApp(site.repoDir, cfg, log, opts.database);
+  const app = await startApp(
+    site.repoDir,
+    cfg,
+    log,
+    opts.database ? { url: opts.database, siteId: site.id } : undefined,
+  );
   const screens: CapturedScreen[] = [];
   const browser = await chromium.launch();
   try {

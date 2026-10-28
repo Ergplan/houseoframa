@@ -1,0 +1,14 @@
+{
+  "hash": "c0df0118b084bf3d778396d9778fc4c0a04cc193c070d7b35125bed5656b70eb",
+  "path": "app/page.test.tsx",
+  "kind": "test",
+  "name": "shows the sample day: four orders and what each costs",
+  "sentence": "Checks that the page shows Today’s orders, an order count of 4, the cup descriptions, cost values of 3000, 1800, 4500 and 2000, and ₹30.00.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-34",
+  "at": "2026-10-28T11:34:54.783Z",
+  "commit": null,
+  "lift": 1
+}

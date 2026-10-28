@@ -3,12 +3,12 @@
   "path": "app/page.tsx",
   "kind": "component",
   "name": "Welcome",
-  "sentence": "Shows the Chai Stall (Test drive) page, with a description of taking orders and seeing the day’s takings and GST. Shows Buildings planned as a count of the items in the plan.",
+  "sentence": "Shows the Chai Stall (Test drive) page with a description of taking orders and seeing the day’s takings and GST. Shows Buildings planned by counting the planned buildings.",
   "figure": "Buildings planned",
   "vendor": "openai",
   "model": "gpt-6.1-sol",
   "callId": "row-7",
-  "at": "2026-10-27T10:02:28.366Z",
+  "at": "2026-10-28T11:33:56.430Z",
   "commit": null,
   "lift": 0
 }

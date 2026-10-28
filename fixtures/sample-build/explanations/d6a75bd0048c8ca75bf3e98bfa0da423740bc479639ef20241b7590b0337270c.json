@@ -1,0 +1,14 @@
+{
+  "hash": "d6a75bd0048c8ca75bf3e98bfa0da423740bc479639ef20241b7590b0337270c",
+  "path": "db/orders.test.ts",
+  "kind": "other",
+  "name": null,
+  "sentence": "After each test, this clears previously loaded code and stops using a test replacement for './connect'.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-55",
+  "at": "2026-10-28T11:35:40.395Z",
+  "commit": null,
+  "lift": 2
+}

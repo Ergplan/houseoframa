@@ -3,12 +3,12 @@
   "path": "components/Figure.tsx",
   "kind": "type",
   "name": "Figures",
-  "sentence": "Says that Figures has the same structure as figures.",
+  "sentence": "Describes the kind of information held in figures.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
   "callId": "row-9",
-  "at": "2026-10-27T10:02:34.611Z",
+  "at": "2026-10-28T11:34:03.954Z",
   "commit": null,
   "lift": 0
 }

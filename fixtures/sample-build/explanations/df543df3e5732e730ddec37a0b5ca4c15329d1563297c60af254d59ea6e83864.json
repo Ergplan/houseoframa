@@ -3,12 +3,12 @@
   "path": "features/welcome/plan.ts",
   "kind": "imports",
   "name": null,
-  "sentence": "Reads the product’s plan from a file.",
+  "sentence": "Reads the product's plan from '../../.rama/features.json'.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-15",
-  "at": "2026-10-27T10:02:50.023Z",
+  "callId": "row-19",
+  "at": "2026-10-28T11:34:25.848Z",
   "commit": null,
   "lift": 0
 }

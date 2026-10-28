@@ -1,0 +1,14 @@
+{
+  "hash": "92d5305a28669d355eb7191fd8ddbca20be01b72f5097df42880ae43a34fad34",
+  "path": "db/orders.test.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Brings together tools for checking listOrders and orders, including reading a table name and cleaning up after each check.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-54",
+  "at": "2026-10-28T11:35:38.721Z",
+  "commit": null,
+  "lift": 2
+}

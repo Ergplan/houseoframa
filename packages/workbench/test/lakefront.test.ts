@@ -85,9 +85,10 @@ describe('siteLakefront', () => {
       ['Take an order', true],
       ['Count the day’s takings', true],
     ]);
-    // The table the stall defines is a plot; no screen's code reads it yet (the stall reads its sample day).
+    // The table the stall defines is a plot, lit: the stall's shared code reads it and writes the
+    // sample day into it (Stage 11, its orders in its own database).
     expect(lf.street.plots.map((p) => [p.table, p.readBy, p.writtenBy])).toEqual([
-      ['orders', [], []],
+      ['orders', ['shared'], ['shared']],
     ]);
   });
 

@@ -1,0 +1,14 @@
+{
+  "hash": "bdae91796b735ac71b6ec96829496d7f9a513335cfe197dbd42bcbb38ff01054",
+  "path": "app/new/page.tsx",
+  "kind": "component",
+  "name": "NewOrder",
+  "sentence": "Shows the New order page with Masala chai selected, a choice of one cup, two cups or three cups, and two cups selected initially. Shows New order amount in rupees using STARTING_CUPS, and a Take the order button.",
+  "figure": "New order amount",
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-62",
+  "at": "2026-10-28T11:35:55.685Z",
+  "commit": null,
+  "lift": 3
+}

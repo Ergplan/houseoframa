@@ -1,0 +1,14 @@
+{
+  "hash": "d1be2049aad57f3f2ae31ebc76821e48bdb66414e425ae7849e5de3dc6eb4c45",
+  "path": "features/count-the-days-takings/takings.test.ts",
+  "kind": "value",
+  "name": "sampleDay",
+  "sentence": "Keeps a sample list of drinks taken, with the item, cups, price in paise and time for each entry.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-76",
+  "at": "2026-10-28T11:36:24.154Z",
+  "commit": null,
+  "lift": 4
+}

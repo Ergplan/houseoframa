@@ -1,0 +1,14 @@
+{
+  "hash": "ad5c5a4fd508221faef85c752e7f7b375c7386d541e168aa4bbbe21b85b53cce",
+  "path": "features/take-an-order/order.test.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes test checks and newOrderAmount available for use.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-63",
+  "at": "2026-10-28T11:35:57.412Z",
+  "commit": null,
+  "lift": 3
+}

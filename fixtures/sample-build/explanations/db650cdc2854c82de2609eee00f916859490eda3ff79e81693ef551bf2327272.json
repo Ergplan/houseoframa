@@ -1,0 +1,14 @@
+{
+  "hash": "db650cdc2854c82de2609eee00f916859490eda3ff79e81693ef551bf2327272",
+  "path": "app/page.tsx",
+  "kind": "value",
+  "name": "dynamic",
+  "sentence": "Sets dynamic to 'force-dynamic'.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-36",
+  "at": "2026-10-28T11:35:02.040Z",
+  "commit": null,
+  "lift": 1
+}

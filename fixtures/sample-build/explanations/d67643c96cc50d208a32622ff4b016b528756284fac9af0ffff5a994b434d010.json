@@ -1,0 +1,14 @@
+{
+  "hash": "d67643c96cc50d208a32622ff4b016b528756284fac9af0ffff5a994b434d010",
+  "path": "app/page.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes Figure, listOrders, cupsInWords, orderAmount and orderCount available for use on the page.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-35",
+  "at": "2026-10-28T11:34:59.520Z",
+  "commit": null,
+  "lift": 1
+}

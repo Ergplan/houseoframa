@@ -1,0 +1,14 @@
+{
+  "hash": "d5afe53cbc9e5b9fb5174a1776de00b939089d36989772c8f01294d0f331fb8f",
+  "path": "rama/figures.ts",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes orderAmount, orderCount, newOrderAmount and defineFigures available for describing the figures the product shows.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-68",
+  "at": "2026-10-28T11:36:05.600Z",
+  "commit": null,
+  "lift": 3
+}

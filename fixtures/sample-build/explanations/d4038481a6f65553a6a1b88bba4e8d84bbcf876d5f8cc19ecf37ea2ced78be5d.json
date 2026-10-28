@@ -1,0 +1,14 @@
+{
+  "hash": "d4038481a6f65553a6a1b88bba4e8d84bbcf876d5f8cc19ecf37ea2ced78be5d",
+  "path": "db/orders.ts",
+  "kind": "type",
+  "name": "Order",
+  "sentence": "Describes an Order with an item, number of cups, price of one cup in paise, and when it was taken.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-39",
+  "at": "2026-10-28T11:35:09.037Z",
+  "commit": null,
+  "lift": 1
+}

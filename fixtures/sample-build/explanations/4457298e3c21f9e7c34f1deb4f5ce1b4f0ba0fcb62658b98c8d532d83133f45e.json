@@ -3,12 +3,12 @@
   "path": "features/welcome/plan.test.ts",
   "kind": "test",
   "name": "counts the buildings on the plan",
-  "sentence": "Checks that the building count is 1 for the planned list and 0 for an empty list.",
+  "sentence": "Checks that the building count is 1 for the planned buildings and 0 for an empty list.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-14",
-  "at": "2026-10-27T10:02:47.909Z",
+  "callId": "row-18",
+  "at": "2026-10-28T11:34:23.138Z",
   "commit": null,
   "lift": 0
 }

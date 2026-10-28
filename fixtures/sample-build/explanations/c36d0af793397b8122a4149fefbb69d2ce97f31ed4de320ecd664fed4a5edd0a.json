@@ -1,0 +1,14 @@
+{
+  "hash": "c36d0af793397b8122a4149fefbb69d2ce97f31ed4de320ecd664fed4a5edd0a",
+  "path": "features/count-the-days-takings/takings.test.ts",
+  "kind": "value",
+  "name": "at",
+  "sentence": "Keeps the date and time '2026-10-28T09:00:00+05:30'.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-75",
+  "at": "2026-10-28T11:36:21.878Z",
+  "commit": null,
+  "lift": 4
+}

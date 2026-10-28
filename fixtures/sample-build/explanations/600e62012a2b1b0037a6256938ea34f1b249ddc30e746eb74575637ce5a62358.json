@@ -1,0 +1,14 @@
+{
+  "hash": "600e62012a2b1b0037a6256938ea34f1b249ddc30e746eb74575637ce5a62358",
+  "path": "features/take-an-order/order.test.ts",
+  "kind": "test",
+  "name": "works out a new order as whole cups times the price of a cup",
+  "sentence": "Checks that a new order amount is 3000 for 2 cups, 1500 for 1 cup, and 4500 for 3 cups. It also checks that 2.9 cups gives 3000, counting only whole cups.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-64",
+  "at": "2026-10-28T11:35:59.091Z",
+  "commit": null,
+  "lift": 3
+}

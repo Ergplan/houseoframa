@@ -1,0 +1,14 @@
+{
+  "hash": "1f162450ae57cb30aae33cc0e6214eaca84a9290a23769d7f5aa1bf4cba8d9a7",
+  "path": "db/connect.ts",
+  "kind": "function",
+  "name": "siteId",
+  "sentence": "Reads the product's id from RAMA_SITE_ID, or uses 'this-product' if it is not set.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-14",
+  "at": "2026-10-28T11:34:15.526Z",
+  "commit": null,
+  "lift": 0
+}

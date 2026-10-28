@@ -1,0 +1,14 @@
+{
+  "hash": "2877e709b1794a28a22df18a7242db68ef4a84e3931bf32b5ae3d73344533ecf",
+  "path": "db/orders.ts",
+  "kind": "function",
+  "name": "listOrders",
+  "sentence": "Reads the saved orders, including each item's cups, price and time taken. If no orders are saved, it saves and returns sample orders; if the database is unavailable, it returns sample orders without saving them.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-40",
+  "at": "2026-10-28T11:35:11.306Z",
+  "commit": null,
+  "lift": 1
+}

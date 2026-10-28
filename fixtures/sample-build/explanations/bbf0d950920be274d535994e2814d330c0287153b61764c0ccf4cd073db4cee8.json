@@ -3,12 +3,12 @@
   "path": "rama/define.ts",
   "kind": "type",
   "name": "Formula",
-  "sentence": "Describes a calculation that accepts any number of values and returns a number.",
+  "sentence": "Describes a calculation that can take any number of values and must return a number.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-22",
-  "at": "2026-10-27T10:03:03.891Z",
+  "callId": "row-26",
+  "at": "2026-10-28T11:34:37.671Z",
   "commit": null,
   "lift": 0
 }

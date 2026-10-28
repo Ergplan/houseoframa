@@ -3,12 +3,12 @@
   "path": "features/welcome/plan.ts",
   "kind": "type",
   "name": "Building",
-  "sentence": "Describes a Building with an id, a name, what it does, and a list of screens.",
+  "sentence": "Describes a Building by its id, name, what it does, and list of screens.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-16",
-  "at": "2026-10-27T10:02:52.152Z",
+  "callId": "row-20",
+  "at": "2026-10-28T11:34:27.401Z",
   "commit": null,
   "lift": 0
 }

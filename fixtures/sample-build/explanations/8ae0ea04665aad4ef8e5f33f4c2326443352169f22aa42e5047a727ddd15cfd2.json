@@ -1,0 +1,14 @@
+{
+  "hash": "8ae0ea04665aad4ef8e5f33f4c2326443352169f22aa42e5047a727ddd15cfd2",
+  "path": "db/orders.test.ts",
+  "kind": "test",
+  "name": "reads the sample day from the file when no database is connected",
+  "sentence": "Checks that the list of orders has 4 entries and that multiplying cups by pricePaise gives [3000, 1800, 4500, 2000].",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-56",
+  "at": "2026-10-28T11:35:42.148Z",
+  "commit": null,
+  "lift": 2
+}

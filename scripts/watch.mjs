@@ -1,5 +1,6 @@
 // Continuous checks beside the build (CLAUDE.md §4). On every save it runs, in order: eslint,
-// prettier --check, tsc --noEmit per package, vitest for the changed packages then the full suite,
+// prettier --check, tsc --noEmit per package, vitest for the changed packages then the full suite, then the
+// end-to-end tests alone, one file at a time,
 // drizzle-kit check plus a schema-drift probe, the docs/BLUEPRINT.md drift check, and the
 // blueprint/self.json drift check. It writes .watch/status.json ({ok, checks:[{name, ok, ms, detail}], at})
 // and appends to .watch/log.txt.
@@ -164,10 +165,12 @@ async function runChecks(changed) {
     checks.push(await check(`tsc ${pkg}`, command(BIN('tsc'), ['--noEmit', '-p', pkg])));
   }
 
+  // The end-to-end tests run on their own, after the rest and one file at a time: side by side with
+  // the other suites, their dev servers and browsers took this VM near its memory (Stage 11).
   const projects = changed
-    ? PROJECTS.filter((p) => [...changed].some((f) => p.dirs.some((d) => f.startsWith(d)))).map(
-        (p) => p.name,
-      )
+    ? PROJECTS.filter(
+        (p) => p.name !== 'e2e' && [...changed].some((f) => p.dirs.some((d) => f.startsWith(d))),
+      ).map((p) => p.name)
     : [];
   let changedOk = true;
   if (projects.length) {
@@ -176,11 +179,25 @@ async function runChecks(changed) {
     changedOk = c.ok;
     checks.push(c);
   }
+  const units = PROJECTS.filter((p) => p.name !== 'e2e').flatMap((p) => ['--project', p.name]);
   checks.push(
     changedOk
-      ? await check('vitest full suite', command(BIN('vitest'), ['run']))
+      ? await check('vitest full suite', command(BIN('vitest'), ['run', ...units]))
       : {
           name: 'vitest full suite',
+          ok: false,
+          ms: 0,
+          detail: 'not run: the changed-package tests failed',
+        },
+  );
+  checks.push(
+    changedOk
+      ? await check(
+          'vitest end-to-end, one file at a time',
+          command(BIN('vitest'), ['run', '--project', 'e2e']),
+        )
+      : {
+          name: 'vitest end-to-end, one file at a time',
           ok: false,
           ms: 0,
           detail: 'not run: the changed-package tests failed',

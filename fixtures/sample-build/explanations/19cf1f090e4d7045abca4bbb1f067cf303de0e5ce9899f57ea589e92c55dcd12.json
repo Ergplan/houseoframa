@@ -1,0 +1,14 @@
+{
+  "hash": "19cf1f090e4d7045abca4bbb1f067cf303de0e5ce9899f57ea589e92c55dcd12",
+  "path": "features/see-todays-orders/orders.test.ts",
+  "kind": "test",
+  "name": "counts the orders",
+  "sentence": "Checks that counting orders gives 2 for a list containing order twice and 0 for an empty list.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-45",
+  "at": "2026-10-28T11:35:21.696Z",
+  "commit": null,
+  "lift": 1
+}

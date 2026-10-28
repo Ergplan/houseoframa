@@ -3,7 +3,8 @@
 // journey are walked with one lit action on each (a screenshot of each kept for the report), the
 // recorded build is replayed on the Street, the Street is turned twice, Take an order is zoomed into down
 // to its code, a change of it is typed in, every block's English is read and one confirmed by name, and
-// the flow of the day's takings is shown: the real rows become the figure on the screen. Then the ground
+// the flow of the day's takings is shown: the real rows become the figure on the screen, and, since they
+// leave the orders plot, the same flow runs along the Street's roads. Then the ground
 // is opened: "open orders" dives into the plot, and the table fills the stage with its columns from the
 // code and its rows from the product's own database, read-only, 50 at a time.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -264,12 +265,23 @@ describe('stage 11 e2e', () => {
     await page.locator('[data-show-flow="todays-total/todays-takings"]').click();
     await page.locator('.flow-panel[data-step="3"]').waitFor({ timeout: 15_000 });
     const steps = await page.locator('.flow-steps li').allInnerTexts();
-    expect(steps[0]).toMatch(
-      /^4 rows left data\/orders\.json: Masala chai, cups 2, price of cup 1500/,
-    );
+    // The rows come from the product's own database now: the stall wrote its sample day there.
+    expect(steps[0]).toMatch(/^4 rows left orders table: Masala chai, cups 2, price paise 1500/);
     expect(steps.at(-1)).toBe('₹113.00 on the screen “Today’s total”.');
     expect(bannedIn(steps.join(' '))).toEqual([]);
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'flow.png') });
+    // Its trail crosses the Street (the rows leave the orders plot): followed along the roads.
+    await page.locator('[data-flow-along]').click();
+    await page.waitForURL(/\/site\/[^?]+\?flow=todays-total%2Ftodays-takings$/);
+    await page.locator('[data-level="street"] canvas[data-ready="true"]').waitFor();
+    await page
+      .locator('[data-street-flow="todays-total/todays-takings"] .flow-panel[data-step="3"]')
+      .waitFor({ timeout: 30_000 });
+    expect(await page.locator('[data-street-flow] .flow-steps li').allInnerTexts()).toEqual(steps);
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'street-flow.png') });
+    // A figure worked out where its own input is kept stays inside one building, and says so.
+    await page.goto(`${server.browserUrl}/site/${SITE}?flow=new-order%2Fnew-order-amount`);
+    await page.locator('[data-street-flow-home="new-order/new-order-amount"]').waitFor();
 
     // The ground, opened: "open orders" from the Street, and the table fills the stage.
     await page.goto(`${server.browserUrl}/site/${SITE}`);
@@ -281,7 +293,7 @@ describe('stage 11 e2e', () => {
     expect(await page.locator('.eg-crumbs').innerText()).toMatch(
       /Street\s*›\s*the ground\s*›\s*orders$/,
     );
-    // Its columns are the code's; the stall reads its day from a file, so its own database holds none.
+    // Its columns are the code's, and its rows the four of the sample day the stall wrote in itself.
     const heads = await page
       .locator('table[data-ground-table] th')
       .evaluateAll((ths) => ths.map((th) => th.getAttribute('data-name')));
@@ -292,10 +304,13 @@ describe('stage 11 e2e', () => {
       'created_by',
       'item',
       'cups',
-      'price_of_cup',
+      'price_paise',
       'taken_at',
     ]);
-    expect(await page.locator('[data-count]').innerText()).toBe('0 orders today · 0 in all');
+    expect(await page.locator('[data-count]').innerText()).toBe('4 orders today · 4 in all');
+    expect(
+      await page.locator('table[data-ground-table] tbody tr td:nth-child(4)').allInnerTexts(),
+    ).toEqual(['sample', 'sample', 'sample', 'sample']);
     // Orders written into the product's own database by its own login, as the product writes them: the
     // slab shows them as the table holds them, newest first, 50 at a time.
     const own = postgres(
@@ -307,22 +322,30 @@ describe('stage 11 e2e', () => {
     );
     try {
       for (let i = 1; i <= 60; i++)
-        await own`insert into orders (site_id, created_by, item, cups, price_of_cup, taken_at, created_at)
+        await own`insert into orders (site_id, created_by, item, cups, price_paise, taken_at, created_at)
           values (${SITE}, 'the product', ${`Order ${i}`}, ${(i % 3) + 1}, 1500, now(), now() - ${`${60 - i} seconds`}::interval)`;
     } finally {
       await own.end();
     }
     await page.reload();
     await slab.waitFor();
-    expect(await page.locator('[data-count]').innerText()).toBe('60 orders today · 60 in all');
+    expect(await page.locator('[data-count]').innerText()).toBe('64 orders today · 64 in all');
     const items = () =>
       page.locator('table[data-ground-table] tbody tr td:nth-child(5)').allInnerTexts();
     expect((await items()).slice(0, 2)).toEqual(['Order 60', 'Order 59']);
     expect(await items()).toHaveLength(50);
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'ground.png') });
     await page.locator('[data-more]').click();
-    await page.getByText('Rows 51–60').waitFor();
-    expect(await items()).toEqual(Array.from({ length: 10 }, (_, i) => `Order ${10 - i}`));
+    await page.getByText('Rows 51–64').waitFor();
+    expect((await items()).slice(0, 10)).toEqual(
+      Array.from({ length: 10 }, (_, i) => `Order ${10 - i}`),
+    );
+    expect((await items()).slice(10).sort()).toEqual([
+      'Ginger chai',
+      'Lemon tea',
+      'Masala chai',
+      'Masala chai',
+    ]);
     // A column a figure is worked out from is marked, and its card leads to that figure's flow.
     expect(await page.locator('th[data-name="cups"]').getAttribute('data-figure')).toBe('yes');
     await clickGround(page, -1, heads.indexOf('cups'));

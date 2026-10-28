@@ -1,0 +1,14 @@
+{
+  "hash": "25a05d088f529715359145d72d2649fc8284a76d07c528966ccc0858c2ddd986",
+  "path": "features/take-an-order/order.ts",
+  "kind": "value",
+  "name": "STARTING_CUPS",
+  "sentence": "Sets the cups chosen when the page opens to 2.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-66",
+  "at": "2026-10-28T11:36:02.194Z",
+  "commit": null,
+  "lift": 3
+}

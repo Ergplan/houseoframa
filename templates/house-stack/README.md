@@ -12,4 +12,5 @@ name before it merges.
 - `components/Figure.tsx`: the only way a screen shows a number. `npm run lint:figures` (run before every
   build) fails on any number shown another way, naming the file and line.
 - `.rama/screens.json`: which screens House of Rama photographs, and who each is for.
-- `db/schema.ts`: the tables.
+- `db/schema.ts`: the tables. `db/connect.ts`: the product's own database, when House of Rama connects one;
+  without one (the tests, a build) a building reads its sample rows from `data/<table>.json`.

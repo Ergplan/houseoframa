@@ -1,6 +1,7 @@
 // The sample product of Test drive (rule 16), the Chai Stall, as decision cards: what the owner said
 // yes to, in their words. The builder builds it from these on the house stack, like any product
-// (Stage 9); nothing of the stall is written by hand any more. The cards stand in for discovery's yes.
+// (Stage 9; rebuilt in Stage 11 to keep its orders in its own database); nothing of the stall is written
+// by hand any more. The cards stand in for discovery's yes.
 import path from 'node:path';
 import { homeDir } from '@rama/db';
 
@@ -22,7 +23,7 @@ export const SAMPLE_CARDS: { title: string; statement: string }[] = [
   {
     title: 'The sample day',
     statement:
-      'Until a database is connected, the stall reads its sample day from a file: four orders. Masala chai, two cups at 1,500 paise a cup. Ginger chai, one cup at 1,800 paise. Masala chai, three cups at 1,500 paise. Lemon tea, one cup at 2,000 paise. The orders table keeps each order’s item, cups and price of a cup, with when it was taken.',
+      'The stall keeps its orders in its database, in the orders table: each order’s item, cups and price of a cup, with when it was taken. It keeps one day, so every order in the table is today’s. The first time the stall opens with no orders in the table, it writes in the sample day: four orders. Masala chai, two cups at 1,500 paise a cup. Ginger chai, one cup at 1,800 paise. Masala chai, three cups at 1,500 paise. Lemon tea, one cup at 2,000 paise. Without a database (its tests), it reads the same four orders from a file.',
   },
   {
     title: 'Building: See today’s orders',
@@ -42,6 +43,6 @@ export const SAMPLE_CARDS: { title: string; statement: string }[] = [
   {
     title: 'What it will not do',
     statement:
-      'It does not save an order, take a payment, print a bill or keep more than one day: no database is connected yet. It has no sign-in.',
+      'It does not save a new order yet, take a payment, print a bill or keep more than one day. It has no sign-in.',
   },
 ];

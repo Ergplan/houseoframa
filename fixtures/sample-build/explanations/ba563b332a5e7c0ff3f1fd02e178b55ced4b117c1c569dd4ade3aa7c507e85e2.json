@@ -3,12 +3,12 @@
   "path": "vitest.config.ts",
   "kind": "value",
   "name": "default",
-  "sentence": "Sets up the 'unit' tests to use files ending in .test.ts or .test.tsx, leaving out node_modules.",
+  "sentence": "Sets up the unit tests to include files ending in .test.ts or .test.tsx and exclude files under node_modules.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-28",
-  "at": "2026-10-27T10:03:17.545Z",
+  "callId": "row-32",
+  "at": "2026-10-28T11:34:50.908Z",
   "commit": null,
   "lift": 0
 }

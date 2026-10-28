@@ -13,6 +13,7 @@ import {
   drawBuilding,
   drawPipes,
   flowAt,
+  flowPlaces,
   orientScene,
   pickBuilding,
   toPicture,
@@ -417,6 +418,22 @@ export function BuildingView(p: BuildingProps) {
           {flow && water ? (
             <FlowPanel
               flow={flow}
+              along={
+                flowPlaces(
+                  flow,
+                  // The working-out's file stands in some building; a source file outside every
+                  // building (a data file) stands nowhere.
+                  (f) =>
+                    p.building.bricks.includes(f)
+                      ? p.building.id
+                      : flow.steps.some((x) => x.kind === 'function' && x.file === f)
+                        ? 'another building'
+                        : null,
+                  p.building.id,
+                ).crosses
+                  ? `${placeHref(p.siteId, { level: 'street' })}?flow=${encodeURIComponent(flow.key)}`
+                  : null
+              }
               step={water.step}
               playing={flowing}
               done={water.done}

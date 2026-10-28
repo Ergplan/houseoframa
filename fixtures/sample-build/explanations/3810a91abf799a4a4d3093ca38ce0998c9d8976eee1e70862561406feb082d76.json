@@ -3,12 +3,12 @@
   "path": "rama/define.ts",
   "kind": "type",
   "name": "Show",
-  "sentence": "Limits Show to the names listed in SHOW.",
+  "sentence": "Limits Show to the names in SHOW.",
   "figure": null,
   "vendor": "openai",
   "model": "gpt-6.1-sol",
-  "callId": "row-20",
-  "at": "2026-10-27T10:03:00.389Z",
+  "callId": "row-24",
+  "at": "2026-10-28T11:34:34.023Z",
   "commit": null,
   "lift": 0
 }

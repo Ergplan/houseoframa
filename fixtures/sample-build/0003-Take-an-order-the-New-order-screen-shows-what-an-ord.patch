@@ -1,0 +1,179 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Claude Code (builder)" <builder@houseoframa.local>
+Date: Wed, 28 Oct 2026 11:28:30 +0000
+Subject: [PATCH 3/4] Take an order: the New order screen shows what an order
+ will cost before it is saved
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .rama/features.json                  |  6 +++++
+ .rama/screens.json                   |  6 +++++
+ app/new/page.test.tsx                | 16 +++++++++++++
+ app/new/page.tsx                     | 35 ++++++++++++++++++++++++++++
+ features/take-an-order/order.test.ts |  9 +++++++
+ features/take-an-order/order.ts      | 12 ++++++++++
+ rama/figures.ts                      | 12 ++++++++++
+ 7 files changed, 96 insertions(+)
+ create mode 100644 app/new/page.test.tsx
+ create mode 100644 app/new/page.tsx
+ create mode 100644 features/take-an-order/order.test.ts
+ create mode 100644 features/take-an-order/order.ts
+
+diff --git a/.rama/features.json b/.rama/features.json
+index f0ee1c9..9742b66 100644
+--- a/.rama/features.json
++++ b/.rama/features.json
+@@ -5,6 +5,12 @@
+       "name": "See today’s orders",
+       "does": "Lists every order the stall has taken today, what each one costs, and how many there are.",
+       "screens": ["/"]
++    },
++    {
++      "id": "take-an-order",
++      "name": "Take an order",
++      "does": "Writes down a new order and shows what it will cost before it is saved.",
++      "screens": ["/new"]
+     }
+   ]
+ }
+diff --git a/.rama/screens.json b/.rama/screens.json
+index 153fe19..3f1b723 100644
+--- a/.rama/screens.json
++++ b/.rama/screens.json
+@@ -15,6 +15,12 @@
+       "title": "Today’s orders",
+       "route": "/",
+       "audience": "customer"
++    },
++    {
++      "name": "new-order",
++      "title": "New order",
++      "route": "/new",
++      "audience": "customer"
+     }
+   ]
+ }
+diff --git a/app/new/page.test.tsx b/app/new/page.test.tsx
+new file mode 100644
+index 0000000..5dd1a1c
+--- /dev/null
++++ b/app/new/page.test.tsx
+@@ -0,0 +1,16 @@
++import { renderToStaticMarkup } from 'react-dom/server';
++import { expect, it } from 'vitest';
++import NewOrder from './page';
++
++it('shows the new order form with its amount for two cups', () => {
++  const html = renderToStaticMarkup(<NewOrder />);
++  expect(html).toContain('New order');
++  expect(html).toContain('Masala chai');
++  expect(html).toContain('one cup');
++  expect(html).toContain('two cups');
++  expect(html).toContain('three cups');
++  expect(html).toContain('Take the order');
++  expect(html).toContain('data-rama-figure="new-order-amount"');
++  expect(html).toContain('data-rama-value="3000"');
++  expect(html).toContain('₹30.00');
++});
+diff --git a/app/new/page.tsx b/app/new/page.tsx
+new file mode 100644
+index 0000000..6301b37
+--- /dev/null
++++ b/app/new/page.tsx
+@@ -0,0 +1,35 @@
++import { Figure } from '../../components/Figure';
++import { STARTING_CUPS, newOrderAmount } from '../../features/take-an-order/order';
++
++export default function NewOrder() {
++  return (
++    <main>
++      <h1>{'New order'}</h1>
++      <form>
++        <p>
++          <label>
++            Item{' '}
++            <select name="item" defaultValue="Masala chai">
++              <option value="Masala chai">Masala chai</option>
++            </select>
++          </label>
++        </p>
++        <p>
++          <label>
++            Cups{' '}
++            <select name="cups" defaultValue="2">
++              <option value="1">one cup</option>
++              <option value="2">two cups</option>
++              <option value="3">three cups</option>
++            </select>
++          </label>
++        </p>
++        <p>
++          New order amount:{' '}
++          <Figure id="new-order-amount" fn={newOrderAmount} args={[STARTING_CUPS]} show="rupees" />
++        </p>
++        <button type="button">Take the order</button>
++      </form>
++    </main>
++  );
++}
+diff --git a/features/take-an-order/order.test.ts b/features/take-an-order/order.test.ts
+new file mode 100644
+index 0000000..8a3e967
+--- /dev/null
++++ b/features/take-an-order/order.test.ts
+@@ -0,0 +1,9 @@
++import { expect, it } from 'vitest';
++import { newOrderAmount } from './order';
++
++it('works out a new order as whole cups times the price of a cup', () => {
++  expect(newOrderAmount(2)).toBe(3000);
++  expect(newOrderAmount(1)).toBe(1500);
++  expect(newOrderAmount(3)).toBe(4500);
++  expect(newOrderAmount(2.9)).toBe(3000);
++});
+diff --git a/features/take-an-order/order.ts b/features/take-an-order/order.ts
+new file mode 100644
+index 0000000..68ee429
+--- /dev/null
++++ b/features/take-an-order/order.ts
+@@ -0,0 +1,12 @@
++// Take an order: what a new order will cost before it is saved.
++
++/** The price of a cup of Masala chai, in paise. */
++export const PRICE_OF_A_CUP_PAISE = 1500;
++
++/** The cups chosen when the page opens. */
++export const STARTING_CUPS = 2;
++
++/** What a new order will cost, in paise: whole cups times the price of a cup. */
++export function newOrderAmount(cups: number): number {
++  return Math.floor(cups) * PRICE_OF_A_CUP_PAISE;
++}
+diff --git a/rama/figures.ts b/rama/figures.ts
+index 4c3ca21..e1e09c7 100644
+--- a/rama/figures.ts
++++ b/rama/figures.ts
+@@ -2,6 +2,7 @@
+ // and what it means in the customer's words. A screen shows a figure only through <Figure id>, and
+ // rama/lint.ts fails the build on any number shown any other way.
+ import { orderAmount, orderCount } from '../features/see-todays-orders/orders';
++import { newOrderAmount } from '../features/take-an-order/order';
+ import { defineFigures } from './define';
+ 
+ export const figures = defineFigures({
+@@ -26,4 +27,15 @@ export const figures = defineFigures({
+     show: 'rupees',
+     files: ['data/orders.json'],
+   },
++  'new-order-amount': {
++    fn: newOrderAmount,
++    title: 'New order amount',
++    what: 'What the new order will cost, before it is saved.',
++    english: 'Whole cups times the price of a cup, at 1,500 paise a cup.',
++    inputs: [
++      { label: 'Cups chosen', source: 'newOrderAmount(cups)', data: 'the form (not saved yet)' },
++      { label: 'Price of a cup, in paise', source: 'PRICE_OF_A_CUP_PAISE', data: 'features/take-an-order/order.ts' },
++    ],
++    show: 'rupees',
++  },
+ });

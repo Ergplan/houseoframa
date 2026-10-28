@@ -1,0 +1,14 @@
+{
+  "hash": "0ed3846b106171dab53185a458c0bc7b26bfacf3291159fa1a0bf831f2290ebe",
+  "path": "features/count-the-days-takings/takings.ts",
+  "kind": "value",
+  "name": "GST_PERCENT",
+  "sentence": "Keeps GST at 5 percent of the takings.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-80",
+  "at": "2026-10-28T11:36:33.641Z",
+  "commit": null,
+  "lift": 4
+}

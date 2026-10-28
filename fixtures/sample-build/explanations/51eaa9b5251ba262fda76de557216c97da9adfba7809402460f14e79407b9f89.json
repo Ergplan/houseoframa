@@ -1,0 +1,14 @@
+{
+  "hash": "51eaa9b5251ba262fda76de557216c97da9adfba7809402460f14e79407b9f89",
+  "path": "app/total/page.tsx",
+  "kind": "imports",
+  "name": null,
+  "sentence": "Makes tools for showing figures, listing orders and working out takings available to the page.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-72",
+  "at": "2026-10-28T11:36:15.979Z",
+  "commit": null,
+  "lift": 4
+}

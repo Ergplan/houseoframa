@@ -96,3 +96,18 @@ describe('the flow of a figure', () => {
     );
   });
 });
+
+describe('where an input is kept', () => {
+  const keptIn = (data: string) => {
+    const c: Capture = structuredClone(capture);
+    c.mappings['todays-takings']!.inputs[0]!.data = data;
+    return flowOf(c, 'todays-total/todays-takings')!.steps[0]!;
+  };
+  it('stands in a table when its column is named, or the table in words', () => {
+    expect(keptIn('orders.cups')).toMatchObject({ table: 'orders', file: null });
+    expect(keptIn('orders table')).toMatchObject({ table: 'orders', file: null });
+    expect(keptIn('the orders table')).toMatchObject({ table: 'orders', file: null });
+    expect(keptIn('data/orders.json')).toMatchObject({ table: null, file: 'data/orders.json' });
+    expect(keptIn('the orders and the bills')).toMatchObject({ table: null, file: null });
+  });
+});

@@ -2,6 +2,7 @@
 // The flow of a figure, in words (Stage 11): each step of the water from the ground to the screen, the
 // one playing lit, with play and pause, a step back and a step on. Each step's sentence is handed to the
 // voice as builder text when a session is open (the `rama:tell` event the room listens for).
+import Link from 'next/link';
 import type { Flow } from '@rama/trace';
 
 export function FlowPanel({
@@ -13,6 +14,7 @@ export function FlowPanel({
   onPause,
   onStep,
   onClose,
+  along,
 }: {
   flow: Flow;
   step: number;
@@ -22,6 +24,8 @@ export function FlowPanel({
   onPause: () => void;
   onStep: (by: number) => void;
   onClose: () => void;
+  /** Where the flow runs along the Street's roads, when its trail crosses buildings (Stage 11). */
+  along?: string | null;
 }) {
   // No water runs past the first step with nothing recorded: the steps after it are dry too.
   const firstDry = flow.steps.findIndex((s) => s.value === null);
@@ -42,6 +46,15 @@ export function FlowPanel({
           </li>
         ))}
       </ol>
+      {along ? (
+        <p style={{ margin: 0 }}>
+          This flow crosses the Street.{' '}
+          <Link href={along} data-flow-along>
+            Follow it along the roads
+          </Link>
+          .
+        </p>
+      ) : null}
       <div className="rama-row">
         <button
           type="button"

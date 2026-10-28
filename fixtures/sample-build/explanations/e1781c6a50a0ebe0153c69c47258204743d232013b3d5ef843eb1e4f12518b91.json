@@ -1,0 +1,14 @@
+{
+  "hash": "e1781c6a50a0ebe0153c69c47258204743d232013b3d5ef843eb1e4f12518b91",
+  "path": "db/schema.ts",
+  "kind": "table",
+  "name": "orders",
+  "sentence": "Keeps orders with an identifying number, the item, the number of cups, the price of one cup in paise, and the time taken, which defaults to the current time.",
+  "figure": null,
+  "vendor": "openai",
+  "model": "gpt-6.1-sol",
+  "callId": "row-42",
+  "at": "2026-10-28T11:35:16.053Z",
+  "commit": null,
+  "lift": 1
+}
