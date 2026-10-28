@@ -18,7 +18,12 @@ export {
   type Showroom,
   type ShowroomScreen,
 } from './showroom.ts';
-export { runInSandbox, type SandboxAnswer, type SandboxRequest } from './sandbox.ts';
+export {
+  runInSandbox,
+  type SandboxAnswer,
+  type SandboxRequest,
+  type SandboxTable,
+} from './sandbox.ts';
 export * from './config.ts';
 export { appearanceKey, appearanceKeys } from './keys.ts';
 export { readConvention, isHouseStackConvention, type ConventionReading } from './convention.ts';

@@ -51,6 +51,10 @@ export interface BuildingProps {
   flows: Record<string, Flow>;
   /** The file each table is defined in, so water leaves from the table's own part of the building. */
   tableFiles: Record<string, string>;
+  /** A figure's flow to play on arrival (`?flow=`), as a column of an opened table links to it. */
+  initialFlow?: string | null;
+  /** The ground's tables, for "open orders" and "show me the table". */
+  tables?: { name: string; by: string[] }[];
 }
 
 export function BuildingView(p: BuildingProps) {
@@ -136,6 +140,13 @@ export function BuildingView(p: BuildingProps) {
     setFlowMs(0);
     setFlowing(true);
   };
+  // Arriving from a column of an opened table (Stage 11): its figure's flow plays at once.
+  const arrived = useRef(false);
+  useEffect(() => {
+    if (arrived.current) return;
+    arrived.current = true;
+    if (p.initialFlow && p.flows[p.initialFlow]) showFlow(p.initialFlow);
+  });
   // "Show me the flow" said to the voice: the figure named, or the one open.
   useEffect(() => {
     const on = (e: Event) => {
@@ -373,6 +384,7 @@ export function BuildingView(p: BuildingProps) {
           siteId={p.siteId}
           here={{ level: 'building', building: p.building.id }}
           buildings={p.all}
+          tables={p.tables}
         />
         {tiles.length ? (
           <div className="lake-stats" aria-label="Its traced figures">

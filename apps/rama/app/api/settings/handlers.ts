@@ -16,6 +16,12 @@ export interface SettingsDeps {
   setOwner: (owner: string, by: string) => Promise<void>;
   /** Saves the default seats (Settings → Brains); returns why not when they cannot stand. */
   setBrains: (seats: Partial<Seats>, by: Member) => Promise<string[]>;
+  /** Stage 11: an outside site's read-only database address, its rows' only source. */
+  siteName: (siteId: string) => string | null;
+  setSiteDatabase: (siteId: string, url: string, by: string) => Promise<void>;
+  removeSiteDatabase: (siteId: string) => Promise<void>;
+  /** Runs the address's Test and records its light; null when none is entered. */
+  testSiteDatabase: (siteId: string) => Promise<{ ok: boolean; sentence: string } | null>;
   baseUrl: string;
 }
 
@@ -91,4 +97,48 @@ export async function handleBrains(form: FormData | null, deps: SettingsDeps): P
       ? { ok: false, sentence: problems.join(' ') }
       : { ok: true, sentence: 'The brains are saved: every new product starts with them.' },
   );
+}
+
+/** POST /api/settings/databases: `site` and `action` (save with `value`, remove, or test). */
+export async function handleSiteDatabase(
+  form: FormData | null,
+  deps: SettingsDeps,
+): Promise<Response> {
+  const who = await deps.trainer();
+  if (who instanceof Response) return who;
+  const site = String(form?.get('site') ?? '');
+  const name = deps.siteName(site);
+  if (!name)
+    return back(deps.baseUrl, '/settings', { ok: false, sentence: 'There is no such site.' });
+  const action = String(form?.get('action') ?? 'save');
+  if (action === 'remove') {
+    await deps.removeSiteDatabase(site);
+    return back(deps.baseUrl, '/settings', {
+      ok: true,
+      sentence: `The database of ${name} is removed: its rows are no longer read.`,
+    });
+  }
+  if (action === 'test') {
+    const r = await deps.testSiteDatabase(site);
+    return back(
+      deps.baseUrl,
+      '/settings',
+      r ?? {
+        ok: false,
+        sentence: `No database is entered for ${name}, so there is nothing to test.`,
+      },
+    );
+  }
+  const value = String(form?.get('value') ?? '').trim();
+  if (!/^postgres(ql)?:\/\/\S+$/.test(value))
+    return back(deps.baseUrl, '/settings', {
+      ok: false,
+      sentence: 'Paste the database address first: it starts with postgres://.',
+    });
+  await deps.setSiteDatabase(site, value, who.id);
+  const r = await deps.testSiteDatabase(site);
+  return back(deps.baseUrl, '/settings', {
+    ok: r?.ok ?? true,
+    sentence: `The database of ${name} is saved. ${r?.sentence ?? ''}`.trim(),
+  });
 }

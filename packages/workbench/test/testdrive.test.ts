@@ -18,6 +18,7 @@ import {
   signoffs,
   type Db,
 } from '@rama/db';
+import { dropSandboxes, readRows, rowsSource } from '../src/ground.ts';
 import { jobStatus, latestJob, readJob } from '../src/jobs.ts';
 import { latestTestDrive, startTestDrive } from '../src/testdrive.ts';
 
@@ -58,6 +59,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  // The sample product's own database, made by its photographs (Stage 11).
+  if (env) await dropSandboxes(env);
   await admin.unsafe(`DROP DATABASE IF EXISTS ${dbName} WITH (FORCE)`);
   await admin.end();
   rmSync(work, { recursive: true, force: true });
@@ -162,6 +165,17 @@ describe('Test drive', () => {
     expect(latestTestDrive(['testdrive-1', 'testdrive-2', 'testdrive-10', 'chai'])).toBe(
       'testdrive-10',
     );
+  });
+});
+
+describe('the sample product’s own database (Stage 11)', () => {
+  it('is made by its photographs, holds its orders table, and no row: it reads its day from a file', async () => {
+    const src = await rowsSource({ id: 'testdrive-1', kind: 'product' }, null as never, env);
+    expect(src.kind).toBe('sandbox');
+    const bp = JSON.parse(readFileSync(path.join(work, 'testdrive-1', 'blueprint.json'), 'utf8'));
+    const orders = bp.tables.find((t: { name: string }) => t.name === 'orders');
+    const r = await readRows((src as { url: string }).url, orders);
+    expect(r).toMatchObject({ total: 0, today: 0, rows: [], missing: [] });
   });
 });
 

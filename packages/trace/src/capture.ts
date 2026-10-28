@@ -153,6 +153,7 @@ async function startApp(
   repoDir: string,
   cfg: ScreensConfig,
   log: (s: string) => void,
+  database?: string,
 ): Promise<{ url: string; stop: () => void }> {
   const port = await freePort();
   const command = cfg.app.start.replaceAll('{port}', String(port));
@@ -161,7 +162,12 @@ async function startApp(
   let output = '';
   const child: ChildProcess = spawn('bash', ['-lc', command], {
     cwd,
-    env: { ...CLEAN_ENV(), NODE_ENV: 'production', PORT: String(port) },
+    env: {
+      ...CLEAN_ENV(),
+      NODE_ENV: 'production',
+      PORT: String(port),
+      ...(database ? { DATABASE_URL: database } : {}),
+    },
     stdio: ['ignore', 'pipe', 'pipe'],
     detached: true,
   });
@@ -227,6 +233,11 @@ export interface CaptureOptions {
   build?: boolean;
   log?: (s: string) => void;
   now?: () => Date;
+  /**
+   * The product's own sandbox database (Stage 11), handed to the running app as its DATABASE_URL: a
+   * database and a login of its own, never House of Rama's.
+   */
+  database?: string;
 }
 
 export async function capture(
@@ -283,7 +294,7 @@ export async function capture(
   const shotsDir = path.join(opts.outDir, 'shots');
   rmSync(shotsDir, { recursive: true, force: true });
   mkdirSync(shotsDir, { recursive: true });
-  const app = await startApp(site.repoDir, cfg, log);
+  const app = await startApp(site.repoDir, cfg, log, opts.database);
   const screens: CapturedScreen[] = [];
   const browser = await chromium.launch();
   try {

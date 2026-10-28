@@ -208,8 +208,27 @@ export function extract(repoPath: string, opts: ExtractOptions = {}): Blueprint 
     glossary,
   );
 
-  const tables: Table[] = [...facts.entries()]
-    .flatMap(([file, f]) => f.tables.map((t) => ({ name: t.name, file, line: t.line, symbol: t.symbol, columns: t.columns })))
+  const defs = [...facts.entries()].flatMap(([file, f]) => f.tables.map((t) => ({ file, t })));
+  // A reference as written (`sites.siteId`) to the table and column it names (`sites.site_id`): the
+  // table of that symbol in the same file, else the only one of that symbol anywhere; else as written.
+  const pointsAt = (file: string, ref: string) => {
+    const m = /^([A-Za-z_$][\w$]*)\.([A-Za-z_$][\w$]*)$/.exec(ref);
+    if (!m) return ref;
+    const same = defs.filter((d) => d.t.symbol === m[1]);
+    const to = same.find((d) => d.file === file)?.t ?? (same.length === 1 ? same[0]!.t : null);
+    const col = to?.fields.find((c) => c.key === m[2]);
+    return to && col ? `${to.name}.${col.name}` : ref;
+  };
+  const tables: Table[] = defs
+    .map(({ file, t }) => ({
+      name: t.name,
+      file,
+      line: t.line,
+      symbol: t.symbol,
+      columns: t.columns,
+      fields: t.fields.map((c) => (c.references ? { ...c, references: pointsAt(file, c.references) } : c)),
+      ...(t.unread.length ? { unread: t.unread } : {}),
+    }))
     .sort((a, b) => byString(a.file, b.file) || byString(a.name, b.name));
   const tablesOf = tableUse(edges, facts, tables, reexports);
 

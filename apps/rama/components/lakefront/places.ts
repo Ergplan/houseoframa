@@ -1,6 +1,6 @@
 // Where each level of a site's lakefront lives: the Street at /site/<id>, a building at ?b=<building>,
-// the code at ?at=code (with the building it was opened from). Plain links, so the back button, the
-// breadcrumb and a shared address all work.
+// the code at ?at=code (with the building it was opened from), a table of the ground at ?ground=<table>.
+// Plain links, so the back button, the breadcrumb and a shared address all work.
 import type { Place } from '@rama/stage';
 
 export function placeHref(siteId: string, place: Place): string {
@@ -12,6 +12,7 @@ export function placeHref(siteId: string, place: Place): string {
     q.set('at', 'code');
     if (place.building) q.set('b', place.building);
   }
+  if (place.level === 'ground') q.set('ground', place.table);
   const s = q.toString();
   return s ? `${base}?${s}` : base;
 }

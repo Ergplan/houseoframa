@@ -23,6 +23,33 @@ export interface TableDef {
   line: number;
   /** The keys of the columns object, in source order. */
   columns: string[];
+  /** Every column with what its definition says of it, spread columns included (Stage 11). */
+  fields: ColumnDef[];
+  /** Spreads in the columns object the parser could not open (defined in another file): their columns are not read. */
+  unread: string[];
+}
+
+/**
+ * A column as its Drizzle definition writes it: `integer('cups').notNull()` is the column `cups` of
+ * type integer that may not be empty. Read from the syntax only; what the code does not say is not
+ * guessed (a column whose builder is not a call has the type `unknown`).
+ */
+export interface ColumnDef {
+  /** The key in the columns object. */
+  key: string;
+  /** Its name in the database: the builder's first argument, else the key. */
+  name: string;
+  /** The Drizzle builder that makes it (`serial`, `integer`, `text`, `timestamp`, …); `unknown` when unread. */
+  type: string;
+  primary: boolean;
+  notNull: boolean;
+  unique: boolean;
+  /** The column it points at, as written (`sites.siteId`); absent when it points at none. */
+  references?: string;
+  /** True when the definition marks it secret (a `@secret` tag in its comment). */
+  secret: boolean;
+  /** The spread it came from (`provenance`), when it was not written in the object itself. */
+  from?: string;
 }
 
 export interface SourceFacts {
@@ -128,6 +155,99 @@ function envNamesFor(expr: ts.Expression, consts: Map<string, string[]>): string
     }
   }
   return null;
+}
+
+/** A Drizzle column builder chain to what it says: `integer('cups').notNull().references(() => x.id)`. */
+function columnOf(key: string, init: ts.Expression, sf: ts.SourceFile, comment: string): ColumnDef {
+  const def: ColumnDef = {
+    key,
+    name: key,
+    type: 'unknown',
+    primary: false,
+    notNull: false,
+    unique: false,
+    secret: /@secret\b/.test(comment),
+  };
+  let e: ts.Expression = init;
+  for (;;) {
+    if (!ts.isCallExpression(e)) break;
+    const callee = e.expression;
+    if (ts.isPropertyAccessExpression(callee) && ts.isCallExpression(callee.expression)) {
+      const m = callee.name.text;
+      if (m === 'primaryKey') def.primary = true;
+      else if (m === 'notNull') def.notNull = true;
+      else if (m === 'unique') def.unique = true;
+      else if (m === 'references') {
+        const fn = e.arguments[0];
+        if (fn && ts.isArrowFunction(fn) && !ts.isBlock(fn.body)) def.references = fn.body.getText(sf);
+      }
+      e = callee.expression;
+      continue;
+    }
+    // The builder itself: `integer('cups')`, or `t.integer('cups')` in the callback form.
+    def.type = ts.isIdentifier(callee)
+      ? callee.text
+      : ts.isPropertyAccessExpression(callee)
+        ? callee.name.text
+        : 'unknown';
+    const first = e.arguments[0];
+    if (first && ts.isStringLiteralLike(first)) def.name = first.text;
+    break;
+  }
+  if (def.primary) def.notNull = true;
+  return def;
+}
+
+/** The comment written before a node, for its tags. */
+const commentOf = (node: ts.Node, sf: ts.SourceFile) =>
+  (ts.getLeadingCommentRanges(sf.text, node.getFullStart()) ?? [])
+    .map((r) => sf.text.slice(r.pos, r.end))
+    .join('\n');
+
+/** The object a same-file binding spreads into a table: `const provenance = { … }` or `() => ({ … })`. */
+function spreadObject(sf: ts.SourceFile, name: string): ts.ObjectLiteralExpression | null {
+  for (const stmt of sf.statements) {
+    if (!ts.isVariableStatement(stmt)) continue;
+    for (const d of stmt.declarationList.declarations) {
+      if (!ts.isIdentifier(d.name) || d.name.text !== name || !d.initializer) continue;
+      let init: ts.Expression = d.initializer;
+      while (ts.isParenthesizedExpression(init) || ts.isAsExpression(init)) init = init.expression;
+      if (ts.isObjectLiteralExpression(init)) return init;
+      if (ts.isArrowFunction(init) && !ts.isBlock(init.body)) {
+        let body: ts.Expression = init.body;
+        while (ts.isParenthesizedExpression(body)) body = body.expression;
+        if (ts.isObjectLiteralExpression(body)) return body;
+      }
+    }
+  }
+  return null;
+}
+
+/** The columns of a columns object, a same-file spread opened up; an unread spread stands as itself. */
+function fieldsOf(
+  cols: ts.ObjectLiteralExpression,
+  sf: ts.SourceFile,
+  unread: string[],
+  from?: string,
+): ColumnDef[] {
+  return cols.properties.flatMap((p): ColumnDef[] => {
+    if (ts.isPropertyAssignment(p) && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))) {
+      const c = columnOf(p.name.text, p.initializer, sf, commentOf(p, sf));
+      return [from ? { ...c, from } : c];
+    }
+    if (ts.isSpreadAssignment(p)) {
+      const x = p.expression;
+      const name = ts.isIdentifier(x)
+        ? x.text
+        : ts.isCallExpression(x) && ts.isIdentifier(x.expression)
+          ? x.expression.text
+          : null;
+      const obj = name ? spreadObject(sf, name) : null;
+      if (obj && !from) return fieldsOf(obj, sf, unread, name!);
+      unread.push(x.getText(sf));
+    }
+    return [];
+  });
 }
 
 export function parseSource(path: string, source: string): SourceFacts {
@@ -236,6 +356,7 @@ export function parseSource(path: string, source: string): SourceFacts {
       hasModifier(node.parent.parent, ts.SyntaxKind.ExportKeyword)
     ) {
       const cols = node.initializer.arguments[1];
+      const unread: string[] = [];
       tables.push({
         name: node.initializer.arguments[0].text,
         symbol: node.name.text,
@@ -244,6 +365,8 @@ export function parseSource(path: string, source: string): SourceFacts {
           cols && ts.isObjectLiteralExpression(cols)
             ? cols.properties.flatMap((p) => (p.name && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name)) ? [p.name.text] : []))
             : [],
+        fields: cols && ts.isObjectLiteralExpression(cols) ? fieldsOf(cols, sf, unread) : [],
+        unread,
       });
     }
     // Uses of imported names as values: `db.insert(orders)` writes, `from(orders)` reads.

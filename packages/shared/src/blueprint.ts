@@ -87,6 +87,32 @@ export interface Table {
   symbol: string;
   /** The columns as the definition names them, in source order. */
   columns: string[];
+  /** Every column as its definition writes it, spread columns of the same file included (Stage 11); absent in older extractions. */
+  fields?: TableField[];
+  /** Spreads in the definition whose columns could not be read (defined in another file); absent when none. */
+  unread?: string[];
+}
+
+/** A column of a table as its Drizzle definition writes it, read from the syntax: nothing it does not say. */
+export interface TableField {
+  /** The key in the definition's columns object. */
+  key: string;
+  /** Its name in the database. */
+  name: string;
+  /** The Drizzle builder that makes it (`serial`, `integer`, `text`, `timestamp`, …); `unknown` when unread. */
+  type: string;
+  /** True for the primary key. */
+  primary: boolean;
+  /** True when it may not be empty. */
+  notNull: boolean;
+  /** True when no two rows may hold the same value. */
+  unique: boolean;
+  /** The column it points at (`sites.site_id`), as resolved, else as written; absent when none. */
+  references?: string;
+  /** True when the definition marks it secret (`@secret` in its comment): its values are masked. */
+  secret: boolean;
+  /** The spread it came from (`provenance`), when not written in the columns object itself. */
+  from?: string;
 }
 
 /** A screen of the target's app: a route and the bricks that render it. */

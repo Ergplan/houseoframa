@@ -271,6 +271,16 @@ describe('extract --worktree (a repository carrying its own Blueprint)', () => {
   });
 });
 
+const col = (name: string, type: string) => ({
+  key: name,
+  name,
+  type,
+  primary: false,
+  notNull: false,
+  unique: false,
+  secret: false,
+});
+
 describe('extract: the ground and the outside', () => {
   let g: FixtureRepo;
   beforeAll(() => {
@@ -296,8 +306,22 @@ describe('extract: the ground and the outside', () => {
   it('finds the tables defined in code, and which files read or write them', () => {
     const bp = extract(g.dir);
     expect(bp.tables).toEqual([
-      { name: 'orders', file: 'db/schema.ts', line: 2, symbol: 'orders', columns: ['id', 'item'] },
-      { name: 'people', file: 'db/schema.ts', line: 3, symbol: 'people', columns: ['name'] },
+      {
+        name: 'orders',
+        file: 'db/schema.ts',
+        line: 2,
+        symbol: 'orders',
+        columns: ['id', 'item'],
+        fields: [col('id', 'integer'), col('item', 'text')],
+      },
+      {
+        name: 'people',
+        file: 'db/schema.ts',
+        line: 3,
+        symbol: 'people',
+        columns: ['name'],
+        fields: [col('name', 'text')],
+      },
     ]);
     const node = (p: string) => bp.nodes.find((n) => n.path === p)!;
     // people is used in a type only: not a use.
@@ -332,5 +356,25 @@ describe('file helpers', () => {
   it('treats a NUL byte in the first 8000 bytes as binary', () => {
     expect(isBinary(Buffer.from('plain text'))).toBe(false);
     expect(isBinary(Buffer.from([0x41, 0x00]))).toBe(true);
+  });
+});
+
+describe('extract: the columns of the ground (Stage 11)', () => {
+  let g: FixtureRepo;
+  beforeAll(() => {
+    g = fixtureRepo();
+    g.write({
+      'db/sites.ts':
+        "import { pgTable, text } from 'drizzle-orm/pg-core';\nexport const sites = pgTable('sites', { siteId: text('site_id').primaryKey() });\n",
+      'db/orders.ts':
+        "import { pgTable, serial, text } from 'drizzle-orm/pg-core';\nimport { sites } from './sites';\nexport const orders = pgTable('orders', { id: serial('id').primaryKey(), site: text('site').references(() => sites.siteId), who: text('who').references(() => people.id) });\n",
+    });
+    g.commit('two tables');
+  });
+  afterAll(() => g?.cleanup());
+
+  it('resolves a reference to the table and column it names, and keeps one it cannot as written', () => {
+    const t = extract(g.dir).tables.find((x) => x.name === 'orders')!;
+    expect(t.fields!.map((c) => c.references ?? null)).toEqual([null, 'sites.site_id', 'people.id']);
   });
 });

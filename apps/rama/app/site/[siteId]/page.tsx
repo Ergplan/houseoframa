@@ -4,12 +4,21 @@ import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { building as buildingScene } from '@rama/stage';
-import { buildingFlows, buildingTrails, siteLakefront, unsaidSentence } from '@rama/workbench';
+import {
+  buildingFlows,
+  buildingTrails,
+  groundTable,
+  siteLakefront,
+  unsaidSentence,
+} from '@rama/workbench';
 import { Said } from '../../../components/workbench/Said';
 import { SiteShell, auditOf, consoleProps } from '../../../components/workbench/SiteShell';
 import { StreetView } from '../../../components/lakefront/StreetView';
 import { BuildingView } from '../../../components/lakefront/BuildingView';
 import { InsideView } from '../../../components/lakefront/InsideView';
+import { GroundView } from '../../../components/lakefront/GroundView';
+import { loadGround } from '../../api/site/[siteId]/ground/handler';
+import { groundDeps } from '../../../server/ground';
 import { placeHref } from '../../../components/lakefront/places';
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +35,7 @@ const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) 
 /**
  * A site's lakefront (Stage 8): the Street is its home; `?b=<building>` opens a building; `?at=code`
  * (or a decision card's `?brick=`) is the inside of the building (Stage 11), where each brick opens to
- * its code.
+ * its code; `?ground=<table>` is a table of the ground, opened to its columns and its real rows.
  */
 export default async function SitePage({
   params,
@@ -59,9 +68,50 @@ export default async function SitePage({
   const cp = (await consoleProps(site, member, audit))!;
   const lf = siteLakefront(site, blueprint, process.env, cp.states);
   const chosen = lf.street.buildings.find((b) => b.id === one(q.b)) ?? null;
+  // The ground's tables and the buildings that use each, for "open orders" and "show me the table".
+  const tables = lf.street.plots.map((x) => ({ name: x.table, by: [...x.writtenBy, ...x.readBy] }));
+  const all = lf.street.buildings.map((b) => ({ id: b.id, name: b.name }));
+  const street = { label: 'Street', href: placeHref(site.id, { level: 'street' }) };
+
+  // A table of the ground, opened (Stage 11): a level of the stage, under the same camera.
+  const opened = one(q.ground);
+  if (opened) {
+    const table = groundTable(site, blueprint, lf.street, opened, readCapture(site.id));
+    if (!table)
+      return (
+        <SiteShell
+          site={site}
+          member={member}
+          q={q}
+          console={cp}
+          levels={[street, { label: 'the ground' }]}
+        >
+          <p>The product keeps no table called {opened}.</p>
+        </SiteShell>
+      );
+    const def = blueprint.tables.find((t) => t.name === opened)!;
+    return (
+      <SiteShell
+        site={site}
+        member={member}
+        q={q}
+        console={cp}
+        levels={[street, { label: 'the ground' }, { label: opened }]}
+      >
+        <GroundView
+          key={opened}
+          siteId={site.id}
+          table={table}
+          page={await loadGround(site, def, 0, groundDeps())}
+          camera={{ ...cameraFrom(q, 'ground', null), table: opened }}
+          all={all}
+          tables={tables}
+        />
+      </SiteShell>
+    );
+  }
   const level =
     one(q.at) === 'code' || (brick && !chosen) ? 'code' : chosen ? 'building' : 'street';
-  const street = { label: 'Street', href: placeHref(site.id, { level: 'street' }) };
   const levels =
     level === 'street'
       ? [{ label: 'Street' }]
@@ -117,6 +167,8 @@ export default async function SitePage({
             signaturesInForce(readSignoffs(site.repoDir)),
           )}
           initialFigure={one(q.figure)}
+          initialFlow={one(q.flow)}
+          tables={tables}
           verdicts={Object.fromEntries(
             chosen!.bricks.flatMap((p) => (audit?.verdicts[p] ? [[p, audit.verdicts[p]!]] : [])),
           )}
@@ -185,7 +237,8 @@ export default async function SitePage({
         owners={Object.fromEntries(
           [...files].flatMap(([id, paths]) => paths.map((p) => [p, id] as const)),
         )}
-        all={lf.street.buildings.map((b) => ({ id: b.id, name: b.name }))}
+        all={all}
+        tables={tables}
         camera={cameraFrom(q, 'code', into.id)}
         member={member.name}
         initialBrick={brick}

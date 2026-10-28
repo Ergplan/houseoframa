@@ -12,11 +12,28 @@ import { spokenNumber } from './numbers.ts';
 import { answerTrack, type FigureOnHand } from './track.ts';
 
 /** Where the room is looking: the lakefront's levels, and a screen's own picture. */
+/** A table a spoken name says exactly: `orders`, "the orders table", `model calls` for model_calls. */
+export function tableNamed(spoken: string, tables: string[]): string | null {
+  const k = spoken
+    .toLowerCase()
+    .replace(/^(?:the|a)\s+/, '')
+    .replace(/\s+(?:table|records|rows)$/, '')
+    .trim();
+  return (
+    tables.find((t) => {
+      const w = t.toLowerCase().replace(/_/g, ' ');
+      return k === w || k === w.replace(/s$/, '') || `${k}s` === w;
+    }) ?? null
+  );
+}
+
 export type Place =
   | { level: 'street' }
   | { level: 'building'; building: string }
   | { level: 'code'; building?: string }
-  | { level: 'screen'; screen: string; building?: string };
+  | { level: 'screen'; screen: string; building?: string }
+  /** Stage 11: a table of the ground, opened. */
+  | { level: 'ground'; table: string };
 
 export type LineKind =
   | 'welcome'
@@ -80,6 +97,8 @@ export interface Building {
   id: string;
   name: string;
   screens: { id: string; title: string }[];
+  /** Stage 11: the tables of the ground it reads or writes. */
+  tables?: string[];
 }
 
 export interface RoomDeps {
@@ -109,6 +128,8 @@ export interface RoomDeps {
     by: 'builder' | 'cards';
   }>;
   buildings: () => Building[];
+  /** Stage 11: the tables of the ground; absent where the product has none on record. */
+  tables?: () => string[];
   /** Every figure of the product, with the building it belongs to. */
   figures: () => (FigureOnHand & { building: string })[];
   /** "What if": the figure worked out again by its own function with one input changed. */
@@ -343,7 +364,42 @@ export async function hear(
         ],
         { ...state, asked: { kind: 'scrap' } },
       );
+    case 'table': {
+      // The one the building in view touches, else the product's only one.
+      const tables = deps.tables?.() ?? [];
+      const here =
+        state.place.level === 'building' ||
+        state.place.level === 'screen' ||
+        state.place.level === 'code'
+          ? state.place.building
+          : undefined;
+      const near = here ? (deps.buildings().find((b) => b.id === here)?.tables ?? []) : [];
+      const one = near.length === 1 ? near[0]! : tables.length === 1 ? tables[0]! : null;
+      if (!one)
+        return said(
+          [
+            {
+              kind: 'refusal',
+              text: tables.length
+                ? `Which table? Say "open" and its name: ${listed((near.length ? near : tables).map(q))}.`
+                : 'The product keeps no records of its own yet.',
+            },
+          ],
+          state,
+        );
+      const place: Place = { level: 'ground', table: one };
+      return said([{ kind: 'ack', text: `Here is the table ${q(one)}.` }], go(state, place), {
+        go: place,
+      });
+    }
     case 'show': {
+      const t = tableNamed(cmd.building, deps.tables?.() ?? []);
+      if (t) {
+        const place: Place = { level: 'ground', table: t };
+        return said([{ kind: 'ack', text: `Here is the table ${q(t)}.` }], go(state, place), {
+          go: place,
+        });
+      }
       const b = matchName(cmd.building, deps.buildings(), (b) => b.name);
       if (!b)
         return said(
@@ -361,6 +417,14 @@ export async function hear(
       });
     }
     case 'open': {
+      // "open orders" is the table orders, before any screen whose title holds the word.
+      const t = tableNamed(cmd.screen, deps.tables?.() ?? []);
+      if (t) {
+        const place: Place = { level: 'ground', table: t };
+        return said([{ kind: 'ack', text: `Here is the table ${q(t)}.` }], go(state, place), {
+          go: place,
+        });
+      }
       const screens = deps
         .buildings()
         .flatMap((b) => b.screens.map((s) => ({ ...s, building: b.id })));

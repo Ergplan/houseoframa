@@ -27,7 +27,26 @@ export type SandboxRequest =
   | { kind: 'call'; file: string; fn: string; args: unknown[] }
   | { kind: 'harness'; file: string }
   /** A value written the way the product writes it on a screen: `SHOW[show](value)` of rama/define.ts. */
-  | { kind: 'show'; file: string; show: string; value: unknown };
+  | { kind: 'show'; file: string; show: string; value: unknown }
+  /** The tables a schema file exports, as the product's own Drizzle describes them (Stage 11). */
+  | { kind: 'tables'; file: string };
+
+/** A table as the product's own Drizzle describes it: what the build loop's sandbox database is made from. */
+export interface SandboxTable {
+  name: string;
+  columns: {
+    name: string;
+    /** The SQL type Drizzle writes for it (`serial`, `timestamp with time zone`). */
+    type: string;
+    primary: boolean;
+    notNull: boolean;
+    unique: boolean;
+    /** The default as SQL, when the column has one Postgres applies. */
+    default: string | null;
+  }[];
+  /** A primary key over several columns, when the table declares one. */
+  primaryKey: string[];
+}
 
 export type SandboxAnswer = { ok: true; value: unknown } | { ok: false; error: string };
 

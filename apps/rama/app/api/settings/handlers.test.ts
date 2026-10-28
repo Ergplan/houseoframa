@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Member } from '@rama/db';
 import { choiceProblems } from '@rama/workbench';
-import { handleBrains, handleGitHub, handleKey, type SettingsDeps } from './handlers';
+import {
+  handleBrains,
+  handleGitHub,
+  handleKey,
+  handleSiteDatabase,
+  type SettingsDeps,
+} from './handlers';
 
 const tara: Member = { id: 't1', name: 'Tara', email: null, role: 'trainer' };
 const deps = (over: Partial<SettingsDeps> = {}): SettingsDeps => ({
@@ -12,6 +18,10 @@ const deps = (over: Partial<SettingsDeps> = {}): SettingsDeps => ({
   setOwner: vi.fn(async () => {}),
   // The real rule, with nothing stored.
   setBrains: vi.fn(async (seats) => choiceProblems(seats)),
+  siteName: (id) => (id === 'ekbill' ? 'EkBill' : null),
+  setSiteDatabase: vi.fn(async () => {}),
+  removeSiteDatabase: vi.fn(async () => {}),
+  testSiteDatabase: vi.fn(async () => ({ ok: true, sentence: 'Connected: 3 tables, read only.' })),
   baseUrl: 'http://rama.test',
   ...over,
 });
@@ -129,5 +139,47 @@ describe('POST /api/settings/brains', () => {
     const d = deps({ trainer: async () => new Response(null, { status: 403 }) });
     expect((await handleBrains(seats('openai'), d)).status).toBe(403);
     expect(d.setBrains).not.toHaveBeenCalled();
+  });
+});
+
+describe('POST /api/settings/databases (Stage 11)', () => {
+  const url = 'postgres://reader:pw-secret@db.example.in:5432/ekbill';
+  it('saves an outside site’s database address, tests it at once, and never repeats it', async () => {
+    const d = deps();
+    const r = await handleSiteDatabase(form({ site: 'ekbill', value: ` ${url} ` }), d);
+    expect(d.setSiteDatabase).toHaveBeenCalledWith('ekbill', url, 't1');
+    expect(said(r)).toEqual({
+      page: '/settings',
+      said: 'The database of EkBill is saved. Connected: 3 tables, read only.',
+      error: null,
+    });
+    expect(r.headers.get('location')).not.toContain('pw-secret');
+  });
+
+  it('refuses what is not a database address, an unknown site, and anyone but a trainer', async () => {
+    const d = deps();
+    expect(
+      said(await handleSiteDatabase(form({ site: 'ekbill', value: 'sk-1' }), d)).error,
+    ).toMatch(/starts with postgres:\/\//);
+    expect(said(await handleSiteDatabase(form({ site: 'nope', value: url }), d)).error).toBe(
+      'There is no such site.',
+    );
+    const no = deps({ trainer: async () => new Response(null, { status: 403 }) });
+    expect((await handleSiteDatabase(form({ site: 'ekbill', value: url }), no)).status).toBe(403);
+    expect(d.setSiteDatabase).not.toHaveBeenCalled();
+    expect(no.setSiteDatabase).not.toHaveBeenCalled();
+  });
+
+  it('tests and removes; a red test comes back as its sentence', async () => {
+    const red = deps({
+      testSiteDatabase: async () => ({ ok: false, sentence: 'Could not read from it: refused.' }),
+    });
+    expect(
+      said(await handleSiteDatabase(form({ site: 'ekbill', action: 'test' }), red)).error,
+    ).toBe('Could not read from it: refused.');
+    const d = deps();
+    const r = await handleSiteDatabase(form({ site: 'ekbill', action: 'remove' }), d);
+    expect(d.removeSiteDatabase).toHaveBeenCalledWith('ekbill');
+    expect(said(r).said).toMatch(/no longer read/);
   });
 });

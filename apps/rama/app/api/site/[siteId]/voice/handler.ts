@@ -64,6 +64,7 @@ export function placeUrl(siteId: string, place: Place): string {
     return placeHref(siteId, { level: 'building', building: place.building });
   if (place.level === 'code')
     return placeHref(siteId, { level: 'code', building: place.building ?? null });
+  if (place.level === 'ground') return placeHref(siteId, { level: 'ground', table: place.table });
   return placeHref(siteId, { level: 'street' });
 }
 

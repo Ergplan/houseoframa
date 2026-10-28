@@ -85,7 +85,7 @@ export async function listSecrets(
   db: Db,
   env: Record<string, string | undefined> = process.env,
 ): Promise<SecretView[]> {
-  const rows = await db.select().from(secrets);
+  const rows = (await db.select().from(secrets)).filter((r) => isSecretName(r.name));
   const byName = new Map(rows.map((r) => [r.name, r]));
   const fromEnv = rows.length === 0;
   return SECRET_NAMES.map((name) => {
@@ -166,7 +166,7 @@ export async function readSecret(
   env: Record<string, string | undefined> = process.env,
   keyFile = secretKeyFile(env),
 ): Promise<string | undefined> {
-  const rows = await db.select().from(secrets);
+  const rows = (await db.select().from(secrets)).filter((r) => isSecretName(r.name));
   if (rows.length === 0) return env[name]?.trim() || undefined;
   const r = rows.find((x) => x.name === name);
   return r ? decryptSecret(r.ciphertext, appKey(keyFile)) : undefined;
@@ -183,4 +183,96 @@ export async function secretFor(
   } finally {
     await close();
   }
+}
+
+// A site's own database address (Stage 11): for an outside site, the read-only address its rows are
+// read from, entered in Settings. Kept beside the keys, encrypted the same way, under the name
+// `DATABASE_URL:<site>`; it is never one of the keys above, so it never decides where those are read.
+const siteDbName = (siteId: string) => `DATABASE_URL:${siteId}`;
+
+/** What a view may show of a database address: its host and database, never its login or password. */
+export function maskDatabaseUrl(url: string): string {
+  try {
+    const u = new URL(url);
+    return `${u.protocol}//••••@${u.host}${u.pathname}`;
+  } catch {
+    return '••••';
+  }
+}
+
+export interface SiteDatabaseView {
+  siteId: string;
+  masked: string;
+  check: { ok: boolean; sentence: string; at: string } | null;
+  updatedBy: string;
+}
+
+export async function setSiteDatabase(
+  db: Db,
+  siteId: string,
+  url: string,
+  by: string,
+  keyFile = secretKeyFile(),
+): Promise<void> {
+  const v = url.trim();
+  if (!/^postgres(ql)?:\/\//.test(v)) throw new Error('a database address starts with postgres://');
+  const row = {
+    ciphertext: encryptSecret(v, appKey(keyFile)),
+    hint: maskDatabaseUrl(v),
+    checkedAt: null,
+    checkOk: null,
+    checkSentence: null,
+    updatedAt: new Date(),
+    updatedBy: by,
+  };
+  await db
+    .insert(secrets)
+    .values({ name: siteDbName(siteId), ...row, createdBy: by })
+    .onConflictDoUpdate({ target: secrets.name, set: row });
+}
+
+export async function removeSiteDatabase(db: Db, siteId: string): Promise<void> {
+  await db.delete(secrets).where(eq(secrets.name, siteDbName(siteId)));
+}
+
+export async function recordSiteDatabaseCheck(
+  db: Db,
+  siteId: string,
+  check: { ok: boolean; sentence: string },
+  at = new Date(),
+): Promise<void> {
+  await db
+    .update(secrets)
+    .set({ checkOk: check.ok, checkSentence: check.sentence, checkedAt: at })
+    .where(eq(secrets.name, siteDbName(siteId)));
+}
+
+/** Every site's database address entered in Settings, masked. */
+export async function listSiteDatabases(db: Db): Promise<SiteDatabaseView[]> {
+  const rows = await db.select().from(secrets);
+  return rows
+    .filter((r) => r.name.startsWith('DATABASE_URL:'))
+    .map((r) => ({
+      siteId: r.name.slice('DATABASE_URL:'.length),
+      masked: r.hint,
+      check:
+        r.checkOk === null || !r.checkedAt
+          ? null
+          : { ok: r.checkOk, sentence: r.checkSentence ?? '', at: r.checkedAt.toISOString() },
+      updatedBy: r.updatedBy,
+    }));
+}
+
+/** A site's database address, for the read-only reader only. */
+export async function readSiteDatabase(
+  db: Db,
+  siteId: string,
+  env: Record<string, string | undefined> = process.env,
+  keyFile = secretKeyFile(env),
+): Promise<string | undefined> {
+  const [r] = await db
+    .select()
+    .from(secrets)
+    .where(eq(secrets.name, siteDbName(siteId)));
+  return r ? decryptSecret(r.ciphertext, appKey(keyFile)) : undefined;
 }

@@ -21,6 +21,8 @@ export type Command =
   | { kind: 'board' }
   /** Stage 11: a figure's data flowing through the building; figure is null for the one in front. */
   | { kind: 'flow'; figure: string | null }
+  /** Stage 11: a table of the ground opened ("show me the table"); table null for the one in view. */
+  | { kind: 'table' }
   /** Stage 11: the camera, by voice. */
   | { kind: 'camera'; move: CameraMove }
   /** A track question; figure is null for "this number", the one in front of the person. */
@@ -57,6 +59,7 @@ const CAMERA: [RegExp, CameraMove][] = [
   [/^(?:further|farther|further away|zoom out|go further|back up)$/, 'further'],
 ];
 const SHOW = /^(?:show me|go to|take me to|let's see|let me see)\s+(.+)$/;
+const TABLE = /^(?:show me|open|let me see|go to|take me to) the (?:table|tables|ground|records)$/;
 const OPEN = /^open\s+(.+)$/;
 const WHAT_IF =
   /^what if\s+(?:the\s+)?(.+?)\s+(?:is|were|was|are|becomes|became|goes to|changes to|=)\s+(.+)$/;
@@ -123,6 +126,7 @@ export function parseCommand(said: string): Command {
   }
   const w = WHAT_IF.exec(t);
   if (w) return { kind: 'what-if', input: stripThe(w[1]!), value: w[2]!.trim() };
+  if (TABLE.test(t)) return { kind: 'table' };
   const s = SHOW.exec(t);
   if (s && stripThe(s[1]!)) return { kind: 'show', building: stripThe(s[1]!) };
   const o = OPEN.exec(t);

@@ -63,3 +63,46 @@ describe('understand', () => {
     expect(findBuilding('orders', buildings)?.id).toBe('see-orders');
   });
 });
+
+describe('understand: the ground (Stage 11)', () => {
+  const tables = [
+    { name: 'orders', by: ['see-orders', 'take-an-order', 'count'] },
+    { name: 'model_calls', by: [] },
+  ];
+  it('opens a table by its name, before a building whose name holds the word', () => {
+    expect(understand('open orders', { level: 'street' }, buildings, tables)).toEqual({
+      to: { level: 'ground', table: 'orders' },
+    });
+    expect(understand('show me the model calls', { level: 'street' }, buildings, tables)).toEqual({
+      to: { level: 'ground', table: 'model_calls' },
+    });
+    // A building's whole name still opens the building.
+    expect(understand('open see todays orders', { level: 'street' }, buildings, tables)).toEqual({
+      to: { level: 'building', building: 'see-orders' },
+    });
+  });
+
+  it('"show me the table" opens the one the building in view uses, or asks which', () => {
+    expect(
+      understand('show me the table', { level: 'building', building: 'count' }, buildings, tables),
+    ).toEqual({ to: { level: 'ground', table: 'orders' } });
+    expect(understand('show me the table', { level: 'street' }, buildings, tables)).toEqual({
+      say: 'Which table? Say "open" and its name: orders, model_calls.',
+    });
+    expect(understand('show me the table', { level: 'street' }, buildings, [])).toEqual({
+      say: 'The product keeps no records of its own yet.',
+    });
+    expect(understand('show me the table', { level: 'street' }, buildings, [tables[0]!])).toEqual({
+      to: { level: 'ground', table: 'orders' },
+    });
+  });
+
+  it('goes back from a table to the Street', () => {
+    expect(understand('go back', { level: 'ground', table: 'orders' }, buildings, tables)).toEqual({
+      to: { level: 'street' },
+    });
+    expect(understand('inside', { level: 'ground', table: 'orders' }, buildings, tables)).toEqual({
+      say: 'This is a table of the ground; say "go back" first.',
+    });
+  });
+});

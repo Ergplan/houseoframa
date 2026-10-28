@@ -81,13 +81,20 @@ function memoryRoom() {
       ],
     }),
     buildings: () => [
-      { id: 'see', name: 'See today’s orders', screens: [{ id: 'home', title: 'Today’s orders' }] },
+      {
+        id: 'see',
+        name: 'See today’s orders',
+        screens: [{ id: 'home', title: 'Today’s orders' }],
+        tables: ['orders'],
+      },
       {
         id: 'count',
         name: 'Count the day’s takings',
         screens: [{ id: 'total', title: 'Today’s total' }],
+        tables: ['orders'],
       },
     ],
+    tables: () => ['orders', 'model_calls'],
     figures: () => ON_HAND,
     whatIf: async (f, input, value) =>
       `If ${input} were ${value}, “${f.name}” would be worked out again.`,
@@ -230,6 +237,24 @@ describe('a rehearsal, act by act', () => {
 
 describe('commands that move the room, and the track', () => {
   const s0 = { ...startState('chai', 's1', ['Asha Rao']), act: 2 as const };
+  it('opens a table of the ground by its name, or the one in view (Stage 11)', async () => {
+    const { deps } = memoryRoom();
+    // "open orders" is the table, before the screen "Today’s orders" that holds the word.
+    let r = await hear(deps, s0, 'Asha Rao', 'Open orders');
+    expect(r.go).toEqual({ level: 'ground', table: 'orders' });
+    expect(r.lines[0]!.text).toBe('Here is the table “orders”.');
+    r = await hear(deps, s0, 'Asha Rao', 'Show me the model calls table');
+    expect(r.go).toEqual({ level: 'ground', table: 'model_calls' });
+    r = await hear(deps, s0, 'Asha Rao', 'Show me the table');
+    expect(r.go).toBeUndefined();
+    expect(r.lines[0]!.text).toBe(
+      'Which table? Say "open" and its name: “orders” and “model_calls”.',
+    );
+    r = await hear(deps, s0, 'Asha Rao', 'Show me count the day’s takings');
+    r = await hear(deps, r.state, 'Asha Rao', 'Show me the table');
+    expect(r.go).toEqual({ level: 'ground', table: 'orders' });
+  });
+
   it('shows a building, opens a screen, shows the code, goes back', async () => {
     const { deps } = memoryRoom();
     let r = await hear(deps, s0, 'Asha Rao', 'Show me count the day’s takings');

@@ -76,3 +76,51 @@ describe('isCode', () => {
     expect(['a.d.ts', 'a.css', 'a.json', 'a.md'].some(isCode)).toBe(false);
   });
 });
+
+describe('parseSource: the columns of a table (Stage 11)', () => {
+  const src = `import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { shared } from './elsewhere';
+const provenance = () => ({
+  siteId: text('site_id').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+export const sites = pgTable('sites', { siteId: text('site_id').primaryKey() });
+export const orders = pgTable('orders', {
+  id: serial('id').primaryKey(),
+  ...provenance(),
+  ...shared,
+  site: text('site').references(() => sites.siteId),
+  /** The card used. @secret */
+  card: text('card_number').unique(),
+  cups: integer().notNull(),
+  odd: someColumn,
+});`;
+  const orders = () => parseSource('db/schema.ts', src).tables.find((t) => t.name === 'orders')!;
+
+  it('reads each column’s name, type and keys as the definition writes them', () => {
+    const f = orders().fields;
+    expect(f.map((c) => [c.key, c.name, c.type])).toEqual([
+      ['id', 'id', 'serial'],
+      ['siteId', 'site_id', 'text'],
+      ['createdAt', 'created_at', 'timestamp'],
+      ['site', 'site', 'text'],
+      ['card', 'card_number', 'text'],
+      ['cups', 'cups', 'integer'],
+      ['odd', 'odd', 'unknown'],
+    ]);
+    expect(f[0]).toMatchObject({ primary: true, notNull: true });
+    expect(f[3]).toMatchObject({ references: 'sites.siteId', notNull: false });
+    expect(f[4]).toMatchObject({ unique: true, secret: true });
+    expect(f[5]).toMatchObject({ notNull: true, secret: false });
+  });
+
+  it('opens a spread written in the same file, and names the one it cannot', () => {
+    expect(orders().fields.filter((c) => c.from).map((c) => [c.key, c.from])).toEqual([
+      ['siteId', 'provenance'],
+      ['createdAt', 'provenance'],
+    ]);
+    expect(orders().unread).toEqual(['shared']);
+    // The keys written in the object itself are unchanged.
+    expect(orders().columns).toEqual(['id', 'site', 'card', 'cups', 'odd']);
+  });
+});

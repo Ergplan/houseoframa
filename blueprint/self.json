@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
+  "commit": "16bf95b3fff82052a8a8e13f1036158a0f5390a6",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -15569,6 +15569,63 @@
       "sha": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
       "short": "d27de56",
       "subject": "Stage 11: the code seen being written inside the building; reviewer run 11 — figure links with or without English"
+    },
+    {
+      "at": "2026-10-28T02:40:08Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 191,
+          "del": 50,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 13,
+          "del": 9,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        }
+      ],
+      "sha": "34c95f68ad7403eb53c0f128234b6d3ce974b738",
+      "short": "34c95f6",
+      "subject": "Stage 11 report: reviewer findings (12 runs), the real model cost, open questions"
+    },
+    {
+      "at": "2026-10-28T09:51:09+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 10,
+          "del": 4,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        }
+      ],
+      "sha": "1d7d3b40aab5131650706908d3ad6975c71b13f2",
+      "short": "1d7d3b4",
+      "subject": "Master prompt: Stage 11 opens the ground — a plot shows its Postgres columns and real rows, read-only"
+    },
+    {
+      "at": "2026-10-28T09:52:31+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 2,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        }
+      ],
+      "sha": "16bf95b3fff82052a8a8e13f1036158a0f5390a6",
+      "short": "16bf95b",
+      "subject": "Master prompt: an opened table fills the stage like an opened building"
     }
   ],
   "edges": [
@@ -16052,6 +16109,22 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/settings/databases/route.ts",
+      "symbols": [
+        "settingsDeps"
+      ],
+      "to": "apps/rama/app/api/settings/deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/settings/databases/route.ts",
+      "symbols": [
+        "handleSiteDatabase"
+      ],
+      "to": "apps/rama/app/api/settings/handlers.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/settings/deps.ts",
       "symbols": [
         "SettingsDeps"
@@ -16092,15 +16165,31 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "a way to find one site's location by its id"
+      },
+      "from": "apps/rama/app/api/settings/deps.ts",
+      "symbols": [
+        "locateSite"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/settings/deps.ts",
       "symbols": [
         "GITHUB_OWNER",
         "listSecrets",
         "putSetting",
         "readSecret",
+        "readSiteDatabase",
         "recordSecretCheck",
+        "recordSiteDatabaseCheck",
         "removeSecret",
-        "setSecret"
+        "removeSiteDatabase",
+        "setSecret",
+        "setSiteDatabase"
       ],
       "to": "packages/db/src/index.ts",
       "typeOnly": false
@@ -16116,6 +16205,7 @@
     {
       "from": "apps/rama/app/api/settings/deps.ts",
       "symbols": [
+        "checkDatabase",
         "chooseDefaultSeats"
       ],
       "to": "packages/workbench/src/index.ts",
@@ -16143,7 +16233,8 @@
         "SettingsDeps",
         "handleBrains",
         "handleGitHub",
-        "handleKey"
+        "handleKey",
+        "handleSiteDatabase"
       ],
       "to": "apps/rama/app/api/settings/handlers.ts",
       "typeOnly": false
@@ -17441,6 +17532,107 @@
         "writeFeatures"
       ],
       "to": "packages/stage/src/read.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.test.ts",
+      "symbols": [
+        "GroundDeps",
+        "handleGround"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.test.ts",
+      "symbols": [
+        "Blueprint",
+        "Table"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.test.ts",
+      "symbols": [
+        "GroundRows"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "symbols": [
+        "Blueprint",
+        "Table"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "symbols": [
+        "GroundRows",
+        "RowsSource",
+        "countSentence"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/route.ts",
+      "symbols": [
+        "handleGround"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/ground/route.ts",
+      "symbols": [
+        "groundDeps"
+      ],
+      "to": "apps/rama/server/ground.ts",
       "typeOnly": false
     },
     {
@@ -18794,6 +18986,18 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the sorted list of known sites, leaving out the project's own"
+      },
+      "from": "apps/rama/app/settings/page.tsx",
+      "symbols": [
+        "listSites"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/settings/page.tsx",
       "symbols": [
         "GITHUB_OWNER",
@@ -18801,6 +19005,7 @@
         "getSetting",
         "homeDir",
         "listSecrets",
+        "listSiteDatabases",
         "readMembers",
         "seesEverything"
       ],
@@ -19155,6 +19360,14 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
       "symbols": [
+        "GroundView"
+      ],
+      "to": "apps/rama/components/lakefront/GroundView.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.test.tsx",
+      "symbols": [
         "InsideView"
       ],
       "to": "apps/rama/components/lakefront/InsideView.tsx",
@@ -19226,9 +19439,25 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.tsx",
       "symbols": [
+        "loadGround"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
         "BuildingView"
       ],
       "to": "apps/rama/components/lakefront/BuildingView.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "GroundView"
+      ],
+      "to": "apps/rama/components/lakefront/GroundView.tsx",
       "typeOnly": false
     },
     {
@@ -19271,6 +19500,14 @@
         "consoleProps"
       ],
       "to": "apps/rama/components/workbench/SiteShell.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "groundDeps"
+      ],
+      "to": "apps/rama/server/ground.ts",
       "typeOnly": false
     },
     {
@@ -19325,6 +19562,7 @@
       "symbols": [
         "buildingFlows",
         "buildingTrails",
+        "groundTable",
         "siteLakefront",
         "unsaidSentence"
       ],
@@ -20035,6 +20273,79 @@
         "Flow"
       ],
       "to": "packages/trace/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "GroundPage"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "CameraRing"
+      ],
+      "to": "apps/rama/components/lakefront/CameraRing.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "Words"
+      ],
+      "to": "apps/rama/components/lakefront/Words.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "usePalette"
+      ],
+      "to": "apps/rama/components/lakefront/live.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "TURN_MS",
+        "useCamera"
+      ],
+      "to": "apps/rama/components/lakefront/useCamera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "Camera",
+        "CameraAction",
+        "GroundInput",
+        "drawGround",
+        "ground",
+        "pickGround",
+        "toPicture",
+        "unview",
+        "viewTransform"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/GroundView.tsx",
+      "symbols": [
+        "GroundTable"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": true
     },
     {
@@ -20978,6 +21289,43 @@
         "readCapture"
       ],
       "to": "packages/trace/src/showroom.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/ground.ts",
+      "symbols": [
+        "GroundDeps"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/server/ground.ts",
+      "symbols": [
+        "withDb"
+      ],
+      "to": "apps/rama/server/session.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "a site's saved blueprint, if it has one"
+      },
+      "from": "apps/rama/server/ground.ts",
+      "symbols": [
+        "readSiteBlueprint"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/server/ground.ts",
+      "symbols": [
+        "readRows",
+        "rowsSource"
+      ],
+      "to": "packages/workbench/src/index.ts",
       "typeOnly": false
     },
     {
@@ -25657,7 +26005,8 @@
         "ImportEdge",
         "Layer",
         "Screen",
-        "Table"
+        "Table",
+        "TableField"
       ],
       "to": "packages/shared/src/blueprint.ts",
       "typeOnly": true
@@ -26013,6 +26362,18 @@
     {
       "from": "packages/stage/src/draw.ts",
       "symbols": [
+        "G_HEADER",
+        "G_ROW",
+        "GroundScene",
+        "columnKind",
+        "tableFaceOf"
+      ],
+      "to": "packages/stage/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
         "InsideBrick",
         "InsideFloorKind",
         "InsideScene",
@@ -26029,7 +26390,8 @@
       "from": "packages/stage/src/draw.ts",
       "symbols": [
         "Pt",
-        "faceTransform"
+        "faceTransform",
+        "project"
       ],
       "to": "packages/stage/src/iso.ts",
       "typeOnly": false
@@ -26197,6 +26559,90 @@
       "typeOnly": false
     },
     {
+      "from": "packages/stage/src/ground.test.ts",
+      "symbols": [
+        "default"
+      ],
+      "to": "design/harmony/tokens.json",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.test.ts",
+      "symbols": [
+        "ORIENTATIONS"
+      ],
+      "to": "packages/stage/src/camera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.test.ts",
+      "symbols": [
+        "drawGround"
+      ],
+      "to": "packages/stage/src/draw.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.test.ts",
+      "symbols": [
+        "G_HEADER",
+        "G_ROW",
+        "GroundInput",
+        "cellPoint",
+        "ground",
+        "pickGround"
+      ],
+      "to": "packages/stage/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.test.ts",
+      "symbols": [
+        "paletteFromTokens"
+      ],
+      "to": "packages/stage/src/palette.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.test.ts",
+      "symbols": [
+        "recorder"
+      ],
+      "to": "packages/stage/test/recorder.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.ts",
+      "symbols": [
+        "ORIENTATIONS",
+        "Orientation"
+      ],
+      "to": "packages/stage/src/camera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.ts",
+      "symbols": [
+        "subFace"
+      ],
+      "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/ground.ts",
+      "symbols": [
+        "Pt",
+        "TILE_H",
+        "TILE_W",
+        "boxFaces",
+        "inPolygon",
+        "project",
+        "toFace"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/stage/src/index.ts",
       "symbols": [
         "*"
@@ -26242,6 +26688,14 @@
         "*"
       ],
       "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/stage/src/ground.ts",
       "typeOnly": false
     },
     {
@@ -27083,6 +27537,7 @@
       "symbols": [
         "SandboxAnswer",
         "SandboxRequest",
+        "SandboxTable",
         "runInSandbox"
       ],
       "to": "packages/trace/src/sandbox.ts",
@@ -27383,6 +27838,14 @@
         "readCapture"
       ],
       "to": "packages/trace/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/actions.ts",
+      "symbols": [
+        "ensureSandbox"
+      ],
+      "to": "packages/workbench/src/ground.ts",
       "typeOnly": false
     },
     {
@@ -27753,6 +28216,67 @@
       "typeOnly": false
     },
     {
+      "from": "packages/workbench/src/ground.ts",
+      "symbols": [
+        "Glossary"
+      ],
+      "to": "packages/blueprint/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "packages/workbench/src/ground.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/ground.ts",
+      "symbols": [
+        "Db",
+        "SECRET_NAMES",
+        "appKey",
+        "readSiteDatabase",
+        "secretKeyFile"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/ground.ts",
+      "symbols": [
+        "Blueprint",
+        "Table",
+        "TableField"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/ground.ts",
+      "symbols": [
+        "Street"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/src/ground.ts",
+      "symbols": [
+        "Capture",
+        "SandboxTable",
+        "appearanceKeys",
+        "runInSandbox"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "packages/workbench/src/index.ts",
       "symbols": [
         "*"
@@ -27806,6 +28330,14 @@
         "*"
       ],
       "to": "packages/workbench/src/github.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/ground.ts",
       "typeOnly": false
     },
     {
@@ -28505,6 +29037,55 @@
     {
       "english": {
         "confirmed": false,
+        "text": "a database connection opened from a URL; running the database migrations"
+      },
+      "from": "packages/workbench/test/ground.test.ts",
+      "symbols": [
+        "createDb",
+        "runMigrations",
+        "setSiteDatabase"
+      ],
+      "to": "packages/db/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/ground.test.ts",
+      "symbols": [
+        "Table"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/ground.test.ts",
+      "symbols": [
+        "Capture"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/workbench/test/ground.test.ts",
+      "symbols": [
+        "MASK",
+        "countSentence",
+        "dropSandboxes",
+        "ensureSandbox",
+        "groundTable",
+        "maskedColumn",
+        "readOnly",
+        "readRows",
+        "rowsSource",
+        "sandboxDdl",
+        "sandboxName",
+        "sandboxUrl"
+      ],
+      "to": "packages/workbench/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
         "text": "the shape of a site's location: its checkout, blueprint file and options"
       },
       "from": "packages/workbench/test/house-stack.test.ts",
@@ -28788,6 +29369,16 @@
     {
       "from": "packages/workbench/test/testdrive.test.ts",
       "symbols": [
+        "dropSandboxes",
+        "readRows",
+        "rowsSource"
+      ],
+      "to": "packages/workbench/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/testdrive.test.ts",
+      "symbols": [
         "jobStatus",
         "latestJob",
         "readJob"
@@ -29007,6 +29598,16 @@
         "defineFigures"
       ],
       "to": "templates/house-stack/rama/define.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/ground.ts",
+      "symbols": [
+        "GroundInput",
+        "cellPoint",
+        "ground"
+      ],
+      "to": "packages/stage/src/index.ts",
       "typeOnly": false
     },
     {
@@ -29246,6 +29847,15 @@
     {
       "from": "tests/stage-11.e2e.test.ts",
       "symbols": [
+        "dropSandboxes",
+        "sandboxUrl"
+      ],
+      "to": "packages/workbench/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-11.e2e.test.ts",
+      "symbols": [
         "SAMPLE_CARDS",
         "SAMPLE_IDEA",
         "SAMPLE_NAME"
@@ -29264,6 +29874,14 @@
         "startDevServer"
       ],
       "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-11.e2e.test.ts",
+      "symbols": [
+        "clickGround"
+      ],
+      "to": "tests/ground.ts",
       "typeOnly": false
     },
     {
@@ -30658,7 +31276,7 @@
       "version": "0.45.3"
     },
     {
-      "dev": true,
+      "dev": false,
       "manifest": "packages/workbench/package.json",
       "name": "postgres",
       "version": "3.4.9"
@@ -30730,7 +31348,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T02:38:21Z",
+  "extractedAt": "2026-10-28T09:52:31+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -31418,7 +32036,25 @@
     },
     {
       "binary": false,
-      "bytes": 1442,
+      "bytes": 265,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "POST",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 8,
+      "path": "apps/rama/app/api/settings/databases/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2054,
       "changes": 3,
       "env": [
         "RAMA_GITHUB_API"
@@ -31431,7 +32067,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 35,
+      "lines": 51,
       "path": "apps/rama/app/api/settings/deps.ts",
       "test": false
     },
@@ -31455,7 +32091,7 @@
     },
     {
       "binary": false,
-      "bytes": 5569,
+      "bytes": 7796,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -31467,7 +32103,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 133,
+      "lines": 185,
       "packages": [
         "vitest"
       ],
@@ -31476,7 +32112,7 @@
     },
     {
       "binary": false,
-      "bytes": 4053,
+      "bytes": 6035,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -31484,13 +32120,14 @@
         "SettingsDeps",
         "handleBrains",
         "handleGitHub",
-        "handleKey"
+        "handleKey",
+        "handleSiteDatabase"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 94,
+      "lines": 144,
       "path": "apps/rama/app/api/settings/handlers.ts",
       "test": false
     },
@@ -32147,6 +32784,65 @@
     },
     {
       "binary": false,
+      "bytes": 3034,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "hosts": [
+        "rama.test"
+      ],
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 85,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/ground/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2481,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GroundDeps",
+        "GroundPage",
+        "handleGround",
+        "loadGround"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 54,
+      "path": "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 547,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/ground/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 685,
       "changes": 1,
       "env": [],
@@ -32329,7 +33025,7 @@
     },
     {
       "binary": false,
-      "bytes": 9733,
+      "bytes": 9843,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -32338,7 +33034,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 238,
+      "lines": 239,
       "packages": [
         "vitest"
       ],
@@ -32347,7 +33043,7 @@
     },
     {
       "binary": false,
-      "bytes": 10626,
+      "bytes": 10725,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -32367,7 +33063,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
-      "lines": 250,
+      "lines": 251,
       "packages": [
         "zod"
       ],
@@ -32572,7 +33268,7 @@
     },
     {
       "binary": false,
-      "bytes": 27828,
+      "bytes": 28798,
       "changes": 18,
       "env": [],
       "envDynamic": false,
@@ -32581,7 +33277,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1390,
+      "lines": 1431,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -32746,7 +33442,7 @@
     },
     {
       "binary": false,
-      "bytes": 7001,
+      "bytes": 10199,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -32758,7 +33454,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 197,
+      "lines": 277,
       "packages": [
         "next"
       ],
@@ -32915,7 +33611,7 @@
     },
     {
       "binary": false,
-      "bytes": 8224,
+      "bytes": 10013,
       "changes": 9,
       "env": [
         "DATABASE_URL"
@@ -32926,7 +33622,7 @@
       "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 187,
+      "lines": 217,
       "packages": [
         "postgres",
         "react",
@@ -32938,7 +33634,7 @@
     },
     {
       "binary": false,
-      "bytes": 8172,
+      "bytes": 9869,
       "changes": 15,
       "env": [],
       "envDynamic": false,
@@ -32950,7 +33646,7 @@
       "lastCommit": "198ef482bcffa621f4f5a2c7d5e2d7e79980efa4",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 209,
+      "lines": 262,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -33439,7 +34135,7 @@
     },
     {
       "binary": false,
-      "bytes": 24802,
+      "bytes": 25365,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -33451,7 +34147,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 638,
+      "lines": 650,
       "packages": [
         "next",
         "react"
@@ -33517,7 +34213,29 @@
     },
     {
       "binary": false,
-      "bytes": 30286,
+      "bytes": 16342,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GroundProps",
+        "GroundView"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 427,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/GroundView.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 30443,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -33529,7 +34247,7 @@
       "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 850,
+      "lines": 853,
       "packages": [
         "next",
         "react"
@@ -33539,7 +34257,7 @@
     },
     {
       "binary": false,
-      "bytes": 25376,
+      "bytes": 25955,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -33552,7 +34270,7 @@
       "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 683,
+      "lines": 695,
       "packages": [
         "next",
         "react"
@@ -33562,7 +34280,7 @@
     },
     {
       "binary": false,
-      "bytes": 1470,
+      "bytes": 1669,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33573,7 +34291,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 51,
+      "lines": 54,
       "packages": [
         "next",
         "react"
@@ -33625,7 +34343,7 @@
     },
     {
       "binary": false,
-      "bytes": 767,
+      "bytes": 871,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33636,13 +34354,13 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 17,
+      "lines": 18,
       "path": "apps/rama/components/lakefront/places.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 3258,
+      "bytes": 3447,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -33657,7 +34375,7 @@
       "lastCommit": "b418d321ac99a634212473be928855abebbc23a4",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 85,
+      "lines": 91,
       "packages": [
         "next",
         "react"
@@ -34123,6 +34841,23 @@
           "writes": false
         }
       ],
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 520,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "groundDeps"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 13,
+      "path": "apps/rama/server/ground.ts",
       "test": false
     },
     {
@@ -34747,7 +35482,7 @@
     },
     {
       "binary": false,
-      "bytes": 78309,
+      "bytes": 82110,
       "changes": 35,
       "env": [],
       "envDynamic": false,
@@ -34756,7 +35491,7 @@
       "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 237,
+      "lines": 241,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -34766,7 +35501,7 @@
     },
     {
       "binary": false,
-      "bytes": 12358,
+      "bytes": 13721,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -34775,7 +35510,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 213,
+      "lines": 233,
       "path": "docs/BLUEPRINT.md",
       "purpose": {
         "confirmed": false,
@@ -34785,7 +35520,7 @@
     },
     {
       "binary": false,
-      "bytes": 75856,
+      "bytes": 80502,
       "changes": 106,
       "env": [],
       "envDynamic": false,
@@ -34794,7 +35529,7 @@
       "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 276,
+      "lines": 284,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -34834,7 +35569,7 @@
     },
     {
       "binary": false,
-      "bytes": 21537,
+      "bytes": 22339,
       "changes": 41,
       "env": [],
       "envDynamic": false,
@@ -34843,7 +35578,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 71,
+      "lines": 74,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -34853,16 +35588,16 @@
     },
     {
       "binary": false,
-      "bytes": 48994,
-      "changes": 7,
+      "bytes": 51140,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "d459aefbf3cc9ad3adb23d0c84e7db320ba25314",
+      "lastCommit": "16bf95b3fff82052a8a8e13f1036158a0f5390a6",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 395,
+      "lines": 401,
       "path": "docs/MASTER-PROMPT.md",
       "purpose": {
         "confirmed": false,
@@ -35038,28 +35773,28 @@
     },
     {
       "binary": false,
-      "bytes": 20060,
-      "changes": 8,
+      "bytes": 25850,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
+      "lastCommit": "34c95f68ad7403eb53c0f128234b6d3ce974b738",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 204,
+      "lines": 226,
       "path": "docs/reports/stage-11.md",
       "test": false
     },
     {
       "binary": false,
       "bytes": 114825,
-      "changes": 11,
+      "changes": 12,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
+      "lastCommit": "34c95f68ad7403eb53c0f128234b6d3ce974b738",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 195,
@@ -35113,7 +35848,7 @@
     },
     {
       "binary": true,
-      "bytes": 426338,
+      "bytes": 426359,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -35128,7 +35863,22 @@
     },
     {
       "binary": true,
-      "bytes": 268515,
+      "bytes": 857105,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-11/ground.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 268493,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -35143,7 +35893,7 @@
     },
     {
       "binary": true,
-      "bytes": 218318,
+      "bytes": 216939,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -35158,7 +35908,7 @@
     },
     {
       "binary": true,
-      "bytes": 438258,
+      "bytes": 437268,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -35188,7 +35938,7 @@
     },
     {
       "binary": true,
-      "bytes": 357186,
+      "bytes": 357260,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -37450,7 +38200,7 @@
     },
     {
       "binary": false,
-      "bytes": 15983,
+      "bytes": 17311,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -37462,7 +38212,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 336,
+      "lines": 380,
       "packages": [
         "vitest"
       ],
@@ -37475,7 +38225,7 @@
     },
     {
       "binary": false,
-      "bytes": 11710,
+      "bytes": 12585,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -37491,7 +38241,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 281,
+      "lines": 300,
       "packages": [
         "zod"
       ],
@@ -37899,7 +38649,7 @@
     },
     {
       "binary": false,
-      "bytes": 3957,
+      "bytes": 5945,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -37908,7 +38658,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 78,
+      "lines": 126,
       "packages": [
         "vitest"
       ],
@@ -37921,12 +38671,13 @@
     },
     {
       "binary": false,
-      "bytes": 12680,
+      "bytes": 17597,
       "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
         "CODE_EXTENSIONS",
+        "ColumnDef",
         "ImportRef",
         "SourceFacts",
         "TableDef",
@@ -37937,7 +38688,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 308,
+      "lines": 431,
       "packages": [
         "typescript"
       ],
@@ -40030,7 +40781,7 @@
     },
     {
       "binary": false,
-      "bytes": 6747,
+      "bytes": 9773,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -40038,23 +40789,30 @@
         "SECRET_NAMES",
         "SecretName",
         "SecretView",
+        "SiteDatabaseView",
         "appKey",
         "decryptSecret",
         "encryptSecret",
         "isSecretName",
         "listSecrets",
+        "listSiteDatabases",
+        "maskDatabaseUrl",
         "readSecret",
+        "readSiteDatabase",
         "recordSecretCheck",
+        "recordSiteDatabaseCheck",
         "removeSecret",
+        "removeSiteDatabase",
         "secretFor",
         "secretKeyFile",
-        "setSecret"
+        "setSecret",
+        "setSiteDatabase"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "data",
       "layerRule": "overlay: packages/db, prompts",
-      "lines": 186,
+      "lines": 278,
       "packages": [
         "drizzle-orm"
       ],
@@ -40189,7 +40947,7 @@
     },
     {
       "binary": false,
-      "bytes": 20652,
+      "bytes": 23143,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -40207,19 +40965,20 @@
         "agree",
         "hear",
         "startState",
+        "tableNamed",
         "welcome"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 579,
+      "lines": 643,
       "path": "packages/ears/src/conductor.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 6579,
+      "bytes": 6851,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -40236,7 +40995,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 145,
+      "lines": 149,
       "path": "packages/ears/src/grammar.ts",
       "test": false
     },
@@ -40321,7 +41080,7 @@
     },
     {
       "binary": false,
-      "bytes": 13254,
+      "bytes": 13410,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -40340,7 +41099,7 @@
       "lastCommit": "1c67d83750a64b7c8b519d858ecacbd7ef08b86a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 342,
+      "lines": 348,
       "packages": [
         "zod"
       ],
@@ -40392,7 +41151,7 @@
     },
     {
       "binary": false,
-      "bytes": 13540,
+      "bytes": 14672,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -40401,7 +41160,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 308,
+      "lines": 333,
       "packages": [
         "vitest"
       ],
@@ -40429,7 +41188,7 @@
     },
     {
       "binary": false,
-      "bytes": 4059,
+      "bytes": 4208,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -40438,7 +41197,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 85,
+      "lines": 88,
       "packages": [
         "vitest"
       ],
@@ -41252,7 +42011,7 @@
     },
     {
       "binary": false,
-      "bytes": 6494,
+      "bytes": 7725,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -41264,13 +42023,14 @@
         "ImportEdge",
         "Layer",
         "Screen",
-        "Table"
+        "Table",
+        "TableField"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 154,
+      "lines": 180,
       "path": "packages/shared/src/blueprint.ts",
       "purpose": {
         "confirmed": false,
@@ -41302,7 +42062,7 @@
     },
     {
       "binary": false,
-      "bytes": 1484,
+      "bytes": 1526,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -41311,7 +42071,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 42,
+      "lines": 43,
       "packages": [
         "vitest"
       ],
@@ -41324,7 +42084,7 @@
     },
     {
       "binary": false,
-      "bytes": 270,
+      "bytes": 284,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -41340,13 +42100,14 @@
         "Screen",
         "Signoff",
         "Table",
+        "TableField",
         "Trail"
       ],
       "firstCommit": "1e5eab543282d27a6ddcc3a9ff434ccbc11b2b50",
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 13,
+      "lines": 14,
       "path": "packages/shared/src/index.ts",
       "purpose": {
         "confirmed": false,
@@ -41452,7 +42213,7 @@
     },
     {
       "binary": false,
-      "bytes": 10698,
+      "bytes": 11680,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -41461,7 +42222,7 @@
       "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 274,
+      "lines": 294,
       "packages": [
         "vitest"
       ],
@@ -41470,7 +42231,7 @@
     },
     {
       "binary": false,
-      "bytes": 10820,
+      "bytes": 11649,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -41496,7 +42257,7 @@
       "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 293,
+      "lines": 315,
       "path": "packages/stage/src/camera.ts",
       "test": false
     },
@@ -41520,17 +42281,19 @@
     },
     {
       "binary": false,
-      "bytes": 29653,
+      "bytes": 34768,
       "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
         "BuildingFrame",
         "Flag",
+        "GroundFrame",
         "InsideFrame",
         "StreetFrame",
         "drawBuilding",
         "drawCodeWindow",
+        "drawGround",
         "drawInside",
         "drawStreet",
         "sky",
@@ -41540,7 +42303,7 @@
       "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 815,
+      "lines": 951,
       "path": "packages/stage/src/draw.ts",
       "test": false
     },
@@ -41664,7 +42427,55 @@
     },
     {
       "binary": false,
-      "bytes": 644,
+      "bytes": 5195,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 128,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/ground.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 7776,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "G_HEADER",
+        "G_PAD",
+        "G_ROW",
+        "GroundColumnInput",
+        "GroundInput",
+        "GroundPick",
+        "GroundScene",
+        "cellPoint",
+        "columnKind",
+        "columnWidth",
+        "ground",
+        "onTable",
+        "pickGround",
+        "tableFaceOf"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 202,
+      "path": "packages/stage/src/ground.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 673,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -41675,7 +42486,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 18,
+      "lines": 19,
       "path": "packages/stage/src/index.ts",
       "test": false
     },
@@ -42051,7 +42862,7 @@
     },
     {
       "binary": false,
-      "bytes": 2684,
+      "bytes": 4626,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -42060,7 +42871,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 65,
+      "lines": 108,
       "packages": [
         "vitest"
       ],
@@ -42069,7 +42880,7 @@
     },
     {
       "binary": false,
-      "bytes": 3329,
+      "bytes": 5512,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -42077,13 +42888,14 @@
         "Place",
         "Understood",
         "findBuilding",
+        "findTable",
         "understand"
       ],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 76,
+      "lines": 116,
       "path": "packages/stage/src/words.ts",
       "test": false
     },
@@ -42209,7 +43021,7 @@
     },
     {
       "binary": false,
-      "bytes": 16765,
+      "bytes": 17074,
       "changes": 10,
       "env": [
         "HOME",
@@ -42233,7 +43045,7 @@
       "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 451,
+      "lines": 462,
       "packages": [
         "playwright"
       ],
@@ -42368,7 +43180,7 @@
     },
     {
       "binary": false,
-      "bytes": 767,
+      "bytes": 795,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -42385,6 +43197,7 @@
         "RunResult",
         "SandboxAnswer",
         "SandboxRequest",
+        "SandboxTable",
         "Showroom",
         "ShowroomScreen",
         "TrailSource",
@@ -42409,7 +43222,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 25,
+      "lines": 30,
       "path": "packages/trace/src/index.ts",
       "test": false
     },
@@ -42448,7 +43261,7 @@
     },
     {
       "binary": false,
-      "bytes": 1755,
+      "bytes": 3268,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -42457,7 +43270,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 45,
+      "lines": 85,
       "path": "packages/trace/src/sandbox-runner.mjs",
       "test": false
     },
@@ -42483,7 +43296,7 @@
     },
     {
       "binary": false,
-      "bytes": 2898,
+      "bytes": 3602,
       "changes": 3,
       "env": [
         "HOME",
@@ -42493,13 +43306,14 @@
       "exports": [
         "SandboxAnswer",
         "SandboxRequest",
+        "SandboxTable",
         "runInSandbox"
       ],
       "firstCommit": "3d024c953027fa953674489f519967fe396a7b5a",
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 71,
+      "lines": 90,
       "path": "packages/trace/src/sandbox.ts",
       "test": false
     },
@@ -42662,7 +43476,7 @@
     },
     {
       "binary": false,
-      "bytes": 762,
+      "bytes": 735,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -42671,13 +43485,13 @@
       "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 29,
+      "lines": 27,
       "path": "packages/workbench/package.json",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 7890,
+      "bytes": 8330,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -42692,7 +43506,7 @@
       "lastCommit": "fac8107a273411c6331ccf632a9bd8e46cf8b786",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 199,
+      "lines": 208,
       "path": "packages/workbench/src/actions.ts",
       "tables": [
         {
@@ -42967,7 +43781,47 @@
     },
     {
       "binary": false,
-      "bytes": 534,
+      "bytes": 17891,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "ColumnFigure",
+        "GroundColumn",
+        "GroundRows",
+        "GroundTable",
+        "MASK",
+        "ROWS_PAGE",
+        "RowsSource",
+        "checkDatabase",
+        "countSentence",
+        "dropSandboxes",
+        "ensureSandbox",
+        "fieldsOf",
+        "groundTable",
+        "maskedColumn",
+        "readOnly",
+        "readRows",
+        "rowsSource",
+        "sandboxDdl",
+        "sandboxName",
+        "sandboxUrl",
+        "unitOf"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 460,
+      "packages": [
+        "postgres"
+      ],
+      "path": "packages/workbench/src/ground.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 563,
       "changes": 5,
       "env": [],
       "envDynamic": false,
@@ -42978,7 +43832,7 @@
       "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 18,
+      "lines": 19,
       "path": "packages/workbench/src/index.ts",
       "test": false
     },
@@ -43335,6 +44189,27 @@
     },
     {
       "binary": false,
+      "bytes": 12849,
+      "changes": 0,
+      "env": [
+        "DATABASE_URL"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 323,
+      "packages": [
+        "postgres",
+        "vitest"
+      ],
+      "path": "packages/workbench/test/ground.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 24861,
       "changes": 42,
       "env": [],
@@ -43468,7 +44343,7 @@
     },
     {
       "binary": false,
-      "bytes": 7870,
+      "bytes": 8704,
       "changes": 7,
       "env": [
         "DATABASE_URL"
@@ -43479,7 +44354,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 183,
+      "lines": 197,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -43527,7 +44402,7 @@
     },
     {
       "binary": false,
-      "bytes": 108992,
+      "bytes": 108971,
       "changes": 18,
       "env": [],
       "envDynamic": false,
@@ -43536,7 +44411,7 @@
       "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3459,
+      "lines": 3458,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -44725,6 +45600,23 @@
     },
     {
       "binary": false,
+      "bytes": 2106,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "clickGround"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 44,
+      "path": "tests/ground.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1485,
       "changes": 1,
       "env": [],
@@ -44882,7 +45774,7 @@
     },
     {
       "binary": false,
-      "bytes": 12294,
+      "bytes": 15999,
       "changes": 4,
       "env": [
         "RAMA_SHOTS"
@@ -44893,9 +45785,10 @@
       "lastCommit": "d27de56d005aa25c9d86189243dbbd1124c5cde0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 267,
+      "lines": 340,
       "packages": [
         "playwright",
+        "postgres",
         "vitest"
       ],
       "path": "tests/stage-11.e2e.test.ts",
@@ -45287,6 +46180,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -45321,6 +46215,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -45685,6 +46580,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -45719,6 +46615,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -45740,6 +46637,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/ground/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -45757,6 +46655,7 @@
         "apps/rama/components/lakefront/CameraRing.tsx",
         "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/lakefront/FlowPanel.tsx",
+        "apps/rama/components/lakefront/GroundView.tsx",
         "apps/rama/components/lakefront/InsideView.tsx",
         "apps/rama/components/lakefront/StreetView.tsx",
         "apps/rama/components/lakefront/Words.tsx",
@@ -45768,6 +46667,7 @@
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
         "apps/rama/components/workbench/journey.ts",
+        "apps/rama/server/ground.ts",
         "apps/rama/server/http.ts",
         "apps/rama/server/jobs.ts",
         "apps/rama/server/session.ts",
@@ -45851,6 +46751,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -45885,6 +46786,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46005,6 +46907,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46039,6 +46942,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46157,6 +47061,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46191,6 +47096,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46311,6 +47217,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46345,6 +47252,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46466,6 +47374,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46500,6 +47409,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46621,6 +47531,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46655,6 +47566,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46765,6 +47677,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46799,6 +47712,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -46919,6 +47833,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -46953,6 +47868,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -47049,6 +47965,7 @@
         "packages/stage/src/drones.ts",
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
+        "packages/stage/src/ground.ts",
         "packages/stage/src/index.ts",
         "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
@@ -47083,6 +48000,7 @@
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/github.ts",
+        "packages/workbench/src/ground.ts",
         "packages/workbench/src/index.ts",
         "packages/workbench/src/jobs.ts",
         "packages/workbench/src/lakefront.ts",
@@ -47169,6 +48087,80 @@
         "createdAt",
         "createdBy"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "serial",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "item",
+          "name": "item",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "cups",
+          "name": "cups",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "pricePaise",
+          "name": "price_paise",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/blueprint/test/fixtures/hand-stall/db/schema.ts",
       "line": 5,
       "name": "orders",
@@ -47184,6 +48176,94 @@
         "statement",
         "at"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "auditId",
+          "name": "audit_id",
+          "notNull": true,
+          "primary": false,
+          "references": "audits.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "person",
+          "name": "person",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "personId",
+          "name": "person_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "statement",
+          "name": "statement",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 225,
       "name": "audit_confirmations",
@@ -47197,6 +48277,83 @@
         "rowId",
         "action",
         "payload"
+      ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "bigint",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "tableName",
+          "name": "table_name",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "rowId",
+          "name": "row_id",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "action",
+          "name": "action",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "payload",
+          "name": "payload",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 73,
@@ -47215,6 +48372,111 @@
         "at",
         "report"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "commit",
+          "name": "commit",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "vendor",
+          "name": "vendor",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "model",
+          "name": "model",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "callId",
+          "name": "call_id",
+          "notNull": true,
+          "primary": false,
+          "references": "model_calls.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "inputsHash",
+          "name": "inputs_hash",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "report",
+          "name": "report",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 180,
       "name": "audits",
@@ -47230,6 +48492,94 @@
         "startsAt",
         "endsAt"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": false,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "pod",
+          "name": "pod",
+          "notNull": true,
+          "primary": false,
+          "references": "pods.pod",
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "personId",
+          "name": "person_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "shift",
+          "name": "shift",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "startsAt",
+          "name": "starts_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "endsAt",
+          "name": "ends_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 267,
       "name": "bookings",
@@ -47243,6 +48593,84 @@
         "inUse",
         "note",
         "at"
+      ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "personId",
+          "name": "person_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "inUse",
+          "name": "in_use",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "boolean",
+          "unique": false
+        },
+        {
+          "key": "note",
+          "name": "note",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 286,
@@ -47264,6 +48692,139 @@
         "reconstructed",
         "supersedes"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "sessionId",
+          "name": "session_id",
+          "notNull": false,
+          "primary": false,
+          "references": "discovery_sessions.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "title",
+          "name": "title",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "statement",
+          "name": "statement",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "bricks",
+          "name": "bricks",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "key": "screenId",
+          "name": "screen_id",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "status",
+          "name": "status",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "by",
+          "name": "by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "reconstructed",
+          "name": "reconstructed",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "boolean",
+          "unique": false
+        },
+        {
+          "key": "supersedes",
+          "name": "supersedes",
+          "notNull": false,
+          "primary": false,
+          "references": "decisions.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 119,
       "name": "decisions",
@@ -47276,6 +48837,74 @@
         "title",
         "reconstructed",
         "source"
+      ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "title",
+          "name": "title",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "reconstructed",
+          "name": "reconstructed",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "boolean",
+          "unique": false
+        },
+        {
+          "key": "source",
+          "name": "source",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 86,
@@ -47292,6 +48921,102 @@
         "text",
         "draft",
         "at"
+      ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "sessionId",
+          "name": "session_id",
+          "notNull": true,
+          "primary": false,
+          "references": "discovery_sessions.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "seq",
+          "name": "seq",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "speaker",
+          "name": "speaker",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "text",
+          "name": "text",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "draft",
+          "name": "draft",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "boolean",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 100,
@@ -47312,6 +49037,129 @@
         "checkVerdict",
         "auditorNote"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "auditId",
+          "name": "audit_id",
+          "notNull": true,
+          "primary": false,
+          "references": "audits.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "brick",
+          "name": "brick",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "check",
+          "name": "check",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "verdict",
+          "name": "verdict",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "text",
+          "name": "text",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "file",
+          "name": "file",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "line",
+          "name": "line",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "checkVerdict",
+          "name": "check_verdict",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "auditorNote",
+          "name": "auditor_note",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 201,
       "name": "findings",
@@ -47327,6 +49175,103 @@
         "person",
         "structure",
         "at"
+      ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "auditId",
+          "name": "audit_id",
+          "notNull": true,
+          "primary": false,
+          "references": "audits.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "commit",
+          "name": "commit",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "personId",
+          "name": "person_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "person",
+          "name": "person",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "structure",
+          "name": "structure",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 304,
@@ -47352,6 +49297,173 @@
         "outputTokens",
         "ms"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "prompt",
+          "name": "prompt",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "promptVersion",
+          "name": "prompt_version",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "promptHash",
+          "name": "prompt_hash",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "role",
+          "name": "role",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "vendor",
+          "name": "vendor",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "model",
+          "name": "model",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "input",
+          "name": "input",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "key": "output",
+          "name": "output",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "key": "status",
+          "name": "status",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "error",
+          "name": "error",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "attempts",
+          "name": "attempts",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "inputTokens",
+          "name": "input_tokens",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "outputTokens",
+          "name": "output_tokens",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "ms",
+          "name": "ms",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 49,
       "name": "model_calls",
@@ -47365,6 +49477,74 @@
         "email",
         "role"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": false,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "name",
+          "name": "name",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": true
+        },
+        {
+          "key": "email",
+          "name": "email",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": true
+        },
+        {
+          "key": "role",
+          "name": "role",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 26,
       "name": "people",
@@ -47375,6 +49555,56 @@
         "pod",
         "siteId",
         "name"
+      ],
+      "fields": [
+        {
+          "key": "pod",
+          "name": "pod",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "integer",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": false,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "name",
+          "name": "name",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 256,
@@ -47393,6 +49623,110 @@
         "updatedAt",
         "updatedBy"
       ],
+      "fields": [
+        {
+          "key": "name",
+          "name": "name",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": false,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "ciphertext",
+          "name": "ciphertext",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "hint",
+          "name": "hint",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "checkedAt",
+          "name": "checked_at",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "checkOk",
+          "name": "check_ok",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "boolean",
+          "unique": false
+        },
+        {
+          "key": "checkSentence",
+          "name": "check_sentence",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "updatedAt",
+          "name": "updated_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "updatedBy",
+          "name": "updated_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 329,
       "name": "secrets",
@@ -47407,6 +49741,84 @@
         "expiresAt",
         "revokedAt"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": false,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "personId",
+          "name": "person_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "tokenHash",
+          "name": "token_hash",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": true
+        },
+        {
+          "key": "expiresAt",
+          "name": "expires_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "revokedAt",
+          "name": "revoked_at",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 243,
       "name": "sessions",
@@ -47419,6 +49831,74 @@
         "value",
         "updatedAt",
         "updatedBy"
+      ],
+      "fields": [
+        {
+          "key": "key",
+          "name": "key",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": false,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "value",
+          "name": "value",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "jsonb",
+          "unique": false
+        },
+        {
+          "key": "updatedAt",
+          "name": "updated_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "updatedBy",
+          "name": "updated_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 343,
@@ -47440,6 +49920,139 @@
         "withdrawn",
         "seal"
       ],
+      "fields": [
+        {
+          "key": "id",
+          "name": "id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": false,
+          "references": "sites.site_id",
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "person",
+          "name": "person",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "personId",
+          "name": "person_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "targetKind",
+          "name": "target_kind",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "targetId",
+          "name": "target_id",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "targetCommit",
+          "name": "target_commit",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "statement",
+          "name": "statement",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "at",
+          "name": "at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "key": "supersedes",
+          "name": "supersedes",
+          "notNull": false,
+          "primary": false,
+          "references": "signoffs.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "key": "withdrawn",
+          "name": "withdrawn",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "boolean",
+          "unique": false
+        },
+        {
+          "key": "seal",
+          "name": "seal",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
+      ],
       "file": "packages/db/src/schema.ts",
       "line": 146,
       "name": "signoffs",
@@ -47451,6 +50064,65 @@
         "name",
         "repo",
         "memberId"
+      ],
+      "fields": [
+        {
+          "key": "siteId",
+          "name": "site_id",
+          "notNull": true,
+          "primary": true,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "name",
+          "name": "name",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "repo",
+          "name": "repo",
+          "notNull": false,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        },
+        {
+          "key": "memberId",
+          "name": "member_id",
+          "notNull": true,
+          "primary": false,
+          "references": "people.id",
+          "secret": false,
+          "type": "uuid",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdAt",
+          "name": "created_at",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "timestamp",
+          "unique": false
+        },
+        {
+          "from": "provenance",
+          "key": "createdBy",
+          "name": "created_by",
+          "notNull": true,
+          "primary": false,
+          "secret": false,
+          "type": "text",
+          "unique": false
+        }
       ],
       "file": "packages/db/src/schema.ts",
       "line": 38,

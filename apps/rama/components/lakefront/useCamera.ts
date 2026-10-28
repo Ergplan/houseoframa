@@ -18,7 +18,9 @@ export function cameraHref(siteId: string, c: Camera): string {
       ? placeHref(siteId, { level: 'street' })
       : c.level === 'building'
         ? placeHref(siteId, { level: 'building', building: c.building! })
-        : placeHref(siteId, { level: 'code', building: c.building });
+        : c.level === 'ground'
+          ? placeHref(siteId, { level: 'ground', table: c.table! })
+          : placeHref(siteId, { level: 'code', building: c.building });
   const q = new URLSearchParams(cameraQuery(c));
   const s = q.toString();
   return s ? `${base}${base.includes('?') ? '&' : '?'}${s}` : base;
@@ -46,7 +48,11 @@ export function useCamera(
     (given: CameraAction) => {
       const a = decorated.current(given);
       const next = camera(ref.current, a);
-      if (next.level !== level.current || next.building !== ref.current.building) {
+      if (
+        next.level !== level.current ||
+        next.building !== ref.current.building ||
+        (next.table ?? null) !== (ref.current.table ?? null)
+      ) {
         // A hand-off: the next level is its own page.
         router.push(cameraHref(siteId, next));
         return;

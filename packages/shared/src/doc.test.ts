@@ -8,7 +8,7 @@ import { collectTypes, render } from '../../../scripts/gen-blueprint-doc.mjs';
 type Collected = { name: string; kind: string; fields?: { name: string; doc: string }[] };
 
 describe('shared types documentation', () => {
-  it('documents every exported type and every field of MASTER-PROMPT §8 (and Table, Stage 8)', () => {
+  it('documents every exported type and every field of MASTER-PROMPT §8 (and Table, Stage 8; TableField, Stage 11)', () => {
     const types = collectTypes() as Collected[];
     expect(types.map((t) => t.name)).toEqual([
       'Layer',
@@ -16,6 +16,7 @@ describe('shared types documentation', () => {
       'ImportEdge',
       'Commit',
       'Table',
+      'TableField',
       'Screen',
       'FigureRef',
       'Blueprint',

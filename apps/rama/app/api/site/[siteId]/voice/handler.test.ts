@@ -225,7 +225,7 @@ describe('the voice’s routes', () => {
     ).toMatchObject({ mouth: { ok: true } });
   });
 
-  it('places become addresses: the Street, a building, the code, a screen', () => {
+  it('places become addresses: the Street, a building, the code, a screen, a table', () => {
     expect(placeUrl('chai', { level: 'street' })).toBe('/site/chai');
     expect(placeUrl('chai', { level: 'building', building: 'count' })).toBe('/site/chai?b=count');
     expect(placeUrl('chai', { level: 'code', building: 'count' })).toBe(
@@ -234,5 +234,6 @@ describe('the voice’s routes', () => {
     expect(placeUrl('chai', { level: 'screen', screen: 'total', building: 'count' })).toBe(
       '/site/chai/showroom?screen=total',
     );
+    expect(placeUrl('chai', { level: 'ground', table: 'orders' })).toBe('/site/chai?ground=orders');
   });
 });

@@ -3,12 +3,17 @@ import {
   listSecrets,
   putSetting,
   readSecret,
+  readSiteDatabase,
   recordSecretCheck,
+  recordSiteDatabaseCheck,
   removeSecret,
+  removeSiteDatabase,
   setSecret,
+  setSiteDatabase,
 } from '@rama/db';
+import { locateSite } from '@rama/blueprint/site';
 import { checkKey } from '@rama/model';
-import { chooseDefaultSeats } from '@rama/workbench';
+import { checkDatabase, chooseDefaultSeats } from '@rama/workbench';
 import { authManager } from '../../../server/authorize';
 import { authDeps } from '../../../server/auth-deps';
 import { baseUrlOf } from '../../../server/http';
@@ -31,5 +36,16 @@ export const settingsDeps = (req: Request): SettingsDeps => ({
     }),
   setOwner: (owner, by) => withDb((db) => putSetting(db, GITHUB_OWNER, { owner }, by)),
   setBrains: (seats, by) => withDb((db) => chooseDefaultSeats(db, seats, by)),
+  siteName: (id) => locateSite(id)?.name ?? null,
+  setSiteDatabase: (id, url, by) => withDb((db) => setSiteDatabase(db, id, url, by)),
+  removeSiteDatabase: (id) => withDb((db) => removeSiteDatabase(db, id)),
+  testSiteDatabase: (id) =>
+    withDb(async (db) => {
+      const url = await readSiteDatabase(db, id);
+      if (!url) return null;
+      const r = await checkDatabase(url);
+      await recordSiteDatabaseCheck(db, id, r);
+      return r;
+    }),
   baseUrl: baseUrlOf(req),
 });

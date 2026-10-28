@@ -14,6 +14,7 @@ import { InsideView } from '../../../components/lakefront/InsideView';
 import { inner } from '../../../test/shell';
 import { StreetView } from '../../../components/lakefront/StreetView';
 import { BuildingView } from '../../../components/lakefront/BuildingView';
+import { GroundView } from '../../../components/lakefront/GroundView';
 import { bannedIn, visibleText } from '../../../test/banned';
 
 // The lakefront's views route with useRouter; the page's own notFound stays the real one.
@@ -108,6 +109,35 @@ describe('route /site/[siteId]', () => {
     expect(card.props.building.bricks).toContain('package.json');
     // A building that is not there is the Street.
     expect(find(await SitePage(params('self', { b: 'nope' })), StreetView)).not.toBeNull();
+  });
+
+  it('opens a plot at ?ground= to its columns from the code, and says when its rows are not connected', async () => {
+    const g = (await SitePage(params('self', { ground: 'secrets' }))) as ReactElement<{
+      levels: { label: string; href?: string }[];
+    }>;
+    // Street › the ground › secrets (Stage 11).
+    expect(g.props.levels.map((l) => l.label)).toEqual(['Street', 'the ground', 'secrets']);
+    const view = find(g, GroundView) as ReactElement<ComponentProps<typeof GroundView>>;
+    expect(view.props.camera).toMatchObject({ level: 'ground', table: 'secrets' });
+    const cols = view.props.table.columns;
+    expect(cols.map((c) => c.name)).toEqual(
+      expect.arrayContaining(['name', 'ciphertext', 'site_id', 'created_at', 'created_by']),
+    );
+    expect(cols.find((c) => c.name === 'name')).toMatchObject({ type: 'text', primary: true });
+    expect(cols.find((c) => c.name === 'site_id')).toMatchObject({ references: 'sites.site_id' });
+    // A column whose name says it holds a key is masked, whatever is in it.
+    expect(cols.find((c) => c.name === 'ciphertext')!.masked).toBe(true);
+    // This repository is an outside site: no address in Settings, so no rows, and it says so.
+    expect(view.props.page).toEqual({
+      connected: false,
+      why: expect.stringMatching(/^Rows not connected/),
+    });
+    const html = renderToStaticMarkup(view);
+    expect(html).toContain('data-not-connected');
+    expect(html).toContain('Kept secret, never shown: ciphertext');
+    // A table the product does not keep is said so.
+    const none = await SitePage(params('self', { ground: 'nope' }));
+    expect(renderToStaticMarkup(inner(none))).toContain('keeps no table called nope');
   });
 
   it('says no developer word at the Street or Building level (design/harmony/glossary.json)', async () => {

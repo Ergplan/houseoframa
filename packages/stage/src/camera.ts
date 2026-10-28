@@ -11,12 +11,15 @@ import type { Street } from './street.ts';
 
 export const ORIENTATIONS = ['north', 'east', 'south', 'west'] as const;
 export type Orientation = (typeof ORIENTATIONS)[number];
-export type Level = 'street' | 'building' | 'code';
+/** The Street, a building, the inside of one (`code`), or a table of the ground opened (Stage 11). */
+export type Level = 'street' | 'building' | 'code' | 'ground';
 
 export interface Camera {
   level: Level;
   /** The building the Building level and the code are of. */
   building: string | null;
+  /** The table the ground level is of. */
+  table?: string | null;
   orientation: Orientation;
   /** 1 is the whole picture in view; more is closer. */
   scale: number;
@@ -47,11 +50,11 @@ export type CameraAction =
       factor: number;
       /** Where the pointer is in the view (fractions of its width and height), kept still while zooming. */
       at?: { x: number; y: number };
-      /** What is under that point: zooming close onto a building or a floor hands off to it. */
-      over?: { building: string } | null;
+      /** What is under that point: zooming close onto a building, a floor or a plot hands off to it. */
+      over?: { building: string } | { table: string } | null;
     }
   | { type: 'pan'; dx: number; dy: number }
-  | { type: 'open'; level: Level; building?: string | null }
+  | { type: 'open'; level: Level; building?: string | null; table?: string | null }
   | { type: 'reset' };
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
@@ -75,7 +78,9 @@ export function camera(c: Camera, a: CameraAction): Camera {
       return {
         ...c,
         level: a.level,
-        building: a.building ?? (a.level === 'street' ? null : c.building),
+        building:
+          a.level === 'ground' ? null : (a.building ?? (a.level === 'street' ? null : c.building)),
+        table: a.level === 'ground' ? (a.table ?? c.table ?? null) : null,
         scale: 1,
         centre: { x: 0.5, y: 0.5 },
       };
@@ -83,11 +88,21 @@ export function camera(c: Camera, a: CameraAction): Camera {
       const scale = c.scale * a.factor;
       // Closer than the hand-off over a building: the next level down opens, whole.
       if (scale >= HAND_OFF && a.factor > 1) {
-        if (c.level === 'street' && a.over?.building)
+        if (c.level === 'street' && a.over && 'building' in a.over)
           return {
             ...c,
             level: 'building',
             building: a.over.building,
+            scale: 1,
+            centre: { x: 0.5, y: 0.5 },
+          };
+        // Onto a plot: the camera dives into the ground and the table opens.
+        if (c.level === 'street' && a.over && 'table' in a.over)
+          return {
+            ...c,
+            level: 'ground',
+            building: null,
+            table: a.over.table,
             scale: 1,
             centre: { x: 0.5, y: 0.5 },
           };
@@ -103,8 +118,15 @@ export function camera(c: Camera, a: CameraAction): Camera {
             scale: 1,
             centre: { x: 0.5, y: 0.5 },
           };
-        if (c.level === 'building')
-          return { ...c, level: 'street', building: null, scale: 1, centre: { x: 0.5, y: 0.5 } };
+        if (c.level === 'building' || c.level === 'ground')
+          return {
+            ...c,
+            level: 'street',
+            building: null,
+            table: null,
+            scale: 1,
+            centre: { x: 0.5, y: 0.5 },
+          };
       }
       const next = clamp(scale, MIN_SCALE, MAX_SCALE);
       // Keep the point under the pointer where it is. The pointer is a fraction of the view; the

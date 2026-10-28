@@ -82,6 +82,26 @@ Source: `packages/shared/src/blueprint.ts`
 | `line` | `number` | yes | Line of the definition. |
 | `symbol` | `string` | yes | The exported name that holds it. |
 | `columns` | `string[]` | yes | The columns as the definition names them, in source order. |
+| `fields` | `TableField[]` | no | Every column as its definition writes it, spread columns of the same file included (Stage 11); absent in older extractions. |
+| `unread` | `string[]` | no | Spreads in the definition whose columns could not be read (defined in another file); absent when none. |
+
+## TableField
+
+A column of a table as its Drizzle definition writes it, read from the syntax: nothing it does not say.
+
+Source: `packages/shared/src/blueprint.ts`
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `key` | `string` | yes | The key in the definition's columns object. |
+| `name` | `string` | yes | Its name in the database. |
+| `type` | `string` | yes | The Drizzle builder that makes it (`serial`, `integer`, `text`, `timestamp`, …); `unknown` when unread. |
+| `primary` | `boolean` | yes | True for the primary key. |
+| `notNull` | `boolean` | yes | True when it may not be empty. |
+| `unique` | `boolean` | yes | True when no two rows may hold the same value. |
+| `references` | `string` | no | The column it points at (`sites.site_id`), as resolved, else as written; absent when none. |
+| `secret` | `boolean` | yes | True when the definition marks it secret (`@secret` in its comment): its values are masked. |
+| `from` | `string` | no | The spread it came from (`provenance`), when not written in the columns object itself. |
 
 ## Screen
 

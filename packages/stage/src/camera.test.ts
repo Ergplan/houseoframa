@@ -87,6 +87,26 @@ describe('the camera', () => {
     ).toBe('street');
   });
 
+  it('dives into the ground onto a plot, and falls back to the Street (Stage 11)', () => {
+    const c: Camera = { ...startCamera(), scale: HAND_OFF / 1.25 + 0.01 };
+    const g = camera(c, { type: 'zoom', factor: 1.25, over: { table: 'orders' } });
+    expect(g).toMatchObject({ level: 'ground', table: 'orders', building: null, scale: 1 });
+    // Turn and zoom work on the table as on any level.
+    expect(camera(g, { type: 'turn', by: 'right' })).toMatchObject({
+      level: 'ground',
+      orientation: 'east',
+    });
+    expect(camera(g, { type: 'zoom', factor: 1.25 })).toMatchObject({
+      level: 'ground',
+      scale: 1.25,
+    });
+    const back = camera({ ...g, scale: 0.65 }, { type: 'zoom', factor: 0.8 });
+    expect(back).toMatchObject({ level: 'street', table: null, building: null });
+    expect(camera(startCamera(), { type: 'open', level: 'ground', table: 'orders' })).toMatchObject(
+      { level: 'ground', table: 'orders', building: null },
+    );
+  });
+
   it('goes into the address and comes back the same', () => {
     const c: Camera = {
       ...startCamera({ level: 'building', building: 'take-an-order' }),

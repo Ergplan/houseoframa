@@ -299,7 +299,12 @@ export function StreetView(p: StreetProps) {
         type: 'zoom',
         factor: e.deltaY < 0 ? 1.15 : 1 / 1.15,
         at: { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height },
-        over: hit && 'building' in hit ? { building: hit.building } : null,
+        over:
+          hit && 'building' in hit
+            ? { building: hit.building }
+            : hit?.kind === 'plot'
+              ? { table: hit.table }
+              : null,
       });
     };
     el.addEventListener('wheel', wheel, { passive: false });
@@ -318,7 +323,7 @@ export function StreetView(p: StreetProps) {
       const text = b
         ? `${b.name}${hit!.kind === 'facade' ? ': its screen behind the glass' : hit!.kind === 'brick' ? ': a part of it, through the glass' : ''}`
         : hit?.kind === 'plot'
-          ? `${hit.table}: where the product keeps these records`
+          ? `${hit.table}: where the product keeps these records. Click to open the table`
           : hit?.kind === 'jetty'
             ? `${hit.service}: an outside service the product talks to`
             : null;
@@ -329,6 +334,9 @@ export function StreetView(p: StreetProps) {
     if (b) {
       if (selected === b.id) open(b.id);
       else setSelected(b.id);
+    } else if (hit?.kind === 'plot') {
+      // A plot is a real table: the camera dives into the ground and it opens (Stage 11).
+      router.push(placeHref(p.siteId, { level: 'ground', table: hit.table }));
     } else setSelected(null);
   };
 
@@ -476,6 +484,7 @@ export function StreetView(p: StreetProps) {
           siteId={p.siteId}
           here={{ level: 'street', selected }}
           buildings={s.buildings.map((b) => ({ id: b.id, name: b.name }))}
+          tables={s.plots.map((x) => ({ name: x.table, by: [...x.writtenBy, ...x.readBy] }))}
         />
         {mode !== 'off' ? (
           <section
@@ -637,7 +646,10 @@ export function StreetView(p: StreetProps) {
               <ul className="lake-facts">
                 {s.plots.map((pl) => (
                   <li key={pl.table} data-plot={pl.table}>
-                    <b>{pl.table}</b>:{' '}
+                    <Link href={placeHref(p.siteId, { level: 'ground', table: pl.table })}>
+                      <b>{pl.table}</b>
+                    </Link>
+                    :{' '}
                     {pl.readBy.length + pl.writtenBy.length
                       ? [
                           pl.writtenBy.length ? `written by ${names(s, pl.writtenBy)}` : null,

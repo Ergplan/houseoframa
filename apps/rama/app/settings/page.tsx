@@ -6,6 +6,7 @@ import {
   getSetting,
   homeDir,
   listSecrets,
+  listSiteDatabases,
   readMembers,
   seesEverything,
   type SecretView,
@@ -16,6 +17,7 @@ import { BrainsForm } from '../../components/workbench/BrainsForm';
 import { Said } from '../../components/workbench/Said';
 import { Button, Card, Chip } from '../../components/harmony/ui';
 import { Shell } from '../../components/harmony/Shell';
+import { listSites } from '@rama/blueprint/site';
 import { requireMember, withDb } from '../../server/session';
 
 export const dynamic = 'force-dynamic';
@@ -49,8 +51,9 @@ export default async function Settings({
   const member = await requireMember();
   if (!seesEverything(member)) notFound();
   const q = (await searchParams) ?? {};
-  const { keys, owner, brains } = await withDb(async (db) => ({
+  const { keys, owner, brains, databases } = await withDb(async (db) => ({
     keys: await listSecrets(db),
+    databases: await listSiteDatabases(db),
     owner: (await getSetting<{ owner: string }>(db, GITHUB_OWNER))?.owner ?? null,
     brains: await seatsOf(db, null),
   }));
@@ -63,6 +66,9 @@ export default async function Settings({
       })
     : null;
   const people = readMembers();
+  // An outside site's rows are read only from a database address entered here (Stage 11); a product
+  // built here has its own sandbox database and needs none.
+  const outside = listSites().filter((x) => x.kind === 'outside');
   return (
     <Shell
       here="settings"
@@ -162,6 +168,80 @@ export default async function Settings({
           />
           <Button type="submit">Save</Button>
         </form>
+      </Card>
+
+      <Card
+        id="databases"
+        title="Databases of outside sites"
+        sub="Where an outside site keeps its records, so its plots open to their real rows. Give a read-only login: House of Rama only reads, in read-only transactions. Shown by its host and database only."
+      >
+        {outside.length ? (
+          outside.map((x) => {
+            const v = databases.find((d) => d.siteId === x.id) ?? null;
+            const tone = !v
+              ? 'negative'
+              : !v.check
+                ? 'muted'
+                : v.check.ok
+                  ? 'positive'
+                  : 'negative';
+            const word = !v
+              ? 'Missing'
+              : !v.check
+                ? 'Not checked'
+                : v.check.ok
+                  ? 'Works'
+                  : 'Refused';
+            return (
+              <div key={x.id} className="key" data-database={x.id}>
+                <div className="key-head">
+                  <b>{x.name}</b>
+                  <Chip tone={tone} className={`light ${tone}`}>
+                    {word}
+                  </Chip>
+                  {v ? <small>{v.masked}</small> : null}
+                </div>
+                <p className={`light-words ${tone}`} style={{ margin: 0 }}>
+                  {!v
+                    ? 'Not entered: its plots show their columns and say “Rows not connected”.'
+                    : (v.check?.sentence ?? 'Entered, not checked yet. Press Test.')}
+                </p>
+                <form action="/api/settings/databases" method="post" className="rama-row">
+                  <input type="hidden" name="site" value={x.id} />
+                  <input
+                    className="eg-input"
+                    name="value"
+                    type="password"
+                    autoComplete="off"
+                    placeholder={v ? 'Paste a new address to replace it' : 'postgres://…'}
+                    aria-label={`The database of ${x.name}`}
+                  />
+                  <Button type="submit" name="action" value="save">
+                    Save
+                  </Button>
+                  <Button type="submit" name="action" value="test" variant="ghost" formNoValidate>
+                    Test
+                  </Button>
+                  {v ? (
+                    <Button
+                      type="submit"
+                      name="action"
+                      value="remove"
+                      variant="ghost"
+                      formNoValidate
+                    >
+                      Remove
+                    </Button>
+                  ) : null}
+                </form>
+              </div>
+            );
+          })
+        ) : (
+          <p className="eg-muted" style={{ margin: 0 }}>
+            No outside site is added yet.
+          </p>
+        )}
       </Card>
 
       <Card

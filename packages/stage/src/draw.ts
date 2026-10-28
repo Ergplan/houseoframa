@@ -5,7 +5,7 @@
 // object), flags in the three words, roads in `line-strong` (dotted when the use is a type only), jetties
 // in `series-grid`, the active crane and the drones' beam in `harmony` with its `glow`, idle cranes in
 // `ink-faint`. The inside (Stage 11) is drawn the same way: glass bricks on their floors, the open one as
-// the folder. What is shown is decided by street(), building(), inside() and the replay; this only paints.
+// the folder; and the ground opened, a glass slab with the table on its face. What is shown is decided by street(), building(), inside() and the replay; this only paints.
 import type { ScreenState } from '@rama/blueprint/metrics';
 import type { Verdict } from '@rama/audit/view';
 import { buildingAt, type BuildingScene } from './building.ts';
@@ -29,7 +29,8 @@ import {
   type InsideFloorKind,
   type InsideScene,
 } from './inside.ts';
-import { faceTransform, type Pt } from './iso.ts';
+import { columnKind, G_HEADER, G_ROW, tableFaceOf, type GroundScene } from './ground.ts';
+import { faceTransform, project, type Pt } from './iso.ts';
 import { codeWindow, type TypedLine } from './typing.ts';
 import type { Palette } from './palette.ts';
 import { craneAt, laid, type StreetTimeline } from './replay.ts';
@@ -812,4 +813,139 @@ export function drawCodeWindow(
       ctx.fillRect(left + 46 + ctx.measureText(text).width + 1, y - 7, 7, 14);
     }
   });
+}
+
+export interface GroundFrame {
+  scene: GroundScene;
+  palette: Palette;
+  /** The cell or column under the pointer, and the one chosen (drawn as the folder, the one green object). */
+  hover: { row: number; col: number } | null;
+  selected: { row: number; col: number } | null;
+}
+
+/** Fits a value into a width, cut with an ellipsis. */
+function fit(ctx: CanvasRenderingContext2D, text: string, width: number): string {
+  if (ctx.measureText(text).width <= width) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(`${t}…`).width > width) t = t.slice(0, -1);
+  return `${t}…`;
+}
+
+/**
+ * Paints a table of the ground opened: the ground around it, the slab of glass, the table on the face
+ * toward the camera (each column's name over its type and key, a figure's column marked, the rows
+ * below, a secret's values masked), and the lit pipes up to the buildings that read and write it.
+ */
+export function drawGround(ctx: CanvasRenderingContext2D, frame: GroundFrame): void {
+  const { scene: s, palette: pal } = frame;
+  const c = pal.color;
+  const input = s.input;
+  backdrop(ctx, s.width, s.height, pal);
+  const f = s.faces;
+  // The ground it was opened from, and the slab standing in it.
+  const g = (gx: number, gy: number) => {
+    const p = project(gx, gy);
+    return { x: p.x + s.origin.x, y: p.y + s.origin.y };
+  };
+  fillPoly(
+    ctx,
+    [g(-1.5, -1.5), g(s.w + 1.5, -1.5), g(s.w + 1.5, s.d + 1.5), g(-1.5, s.d + 1.5)],
+    c.surface,
+    c.line,
+  );
+  fillPoly(ctx, f.left, c.glass, c['line-strong']);
+  fillPoly(ctx, f.right, c.glass, c['line-strong']);
+  fillPoly(ctx, f.top, c['glass-strong'], c['line-strong']);
+  // The table, in the face's own pixels.
+  const m = faceTransform(tableFaceOf(s));
+  ctx.save();
+  ctx.transform(m.a / s.faceLen, m.b / s.faceLen, m.c / s.h, m.d / s.h, m.e, m.f);
+  ctx.fillStyle = c['surface-2'];
+  ctx.fillRect(0, 0, s.faceLen, G_HEADER);
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'left';
+  const cellOn = (sel: { row: number; col: number } | null, row: number, col: number) =>
+    sel !== null && sel.col === col && sel.row === row;
+  input.columns.forEach((col, i) => {
+    const x = s.cols[i]!;
+    const head = cellOn(frame.selected, -1, i);
+    if (head) {
+      ctx.fillStyle = c.folder;
+      ctx.fillRect(x.x, 0, x.w, G_HEADER);
+    } else if (cellOn(frame.hover, -1, i)) {
+      ctx.fillStyle = c['accent-soft'];
+      ctx.fillRect(x.x, 0, x.w, G_HEADER);
+    }
+    ctx.font = `700 13px ${pal.sans}`;
+    ctx.fillStyle = head ? c['on-folder'] : col.figure ? c.accent : c.ink;
+    ctx.fillText(fit(ctx, `${col.figure ? '◆ ' : ''}${col.name}`, x.w - 12), x.x + 6, 18);
+    ctx.font = `500 11px ${pal.sans}`;
+    ctx.fillStyle = head ? c['on-folder'] : c['ink-muted'];
+    const kind = columnKind(col);
+    ctx.fillText(fit(ctx, kind, x.w - 12), x.x + 6, 38);
+    // The column's edge, down the slab.
+    ctx.fillStyle = c.line;
+    ctx.fillRect(x.x, 0, 1, s.h);
+  });
+  ctx.fillStyle = c['line-strong'];
+  ctx.fillRect(0, G_HEADER - 1, s.faceLen, 1.5);
+  input.rows.forEach((r, row) => {
+    const y = G_HEADER + row * G_ROW;
+    if (row % 2) {
+      ctx.fillStyle = c.glass;
+      ctx.fillRect(0, y, s.faceLen, G_ROW);
+    }
+    input.columns.forEach((col, i) => {
+      const x = s.cols[i]!;
+      const on = cellOn(frame.selected, row, i);
+      if (on) {
+        ctx.fillStyle = c.folder;
+        ctx.fillRect(x.x, y, x.w, G_ROW);
+      } else if (cellOn(frame.hover, row, i)) {
+        ctx.fillStyle = c['accent-soft'];
+        ctx.fillRect(x.x, y, x.w, G_ROW);
+      }
+      const v = r[i] ?? null;
+      ctx.font = `${v === null ? 'italic 400' : '500'} 12px ${pal.sans}`;
+      ctx.fillStyle = on ? c['on-folder'] : v === null ? c['ink-faint'] : c.ink;
+      ctx.fillText(fit(ctx, v ?? 'empty', x.w - 12), x.x + 6, y + G_ROW / 2);
+    });
+  });
+  if (!input.rows.length) {
+    ctx.font = `italic 500 13px ${pal.sans}`;
+    ctx.fillStyle = c['ink-muted'];
+    ctx.fillText(
+      fit(ctx, input.note ?? 'No rows: the table holds none yet.', s.faceLen - 2 * 14),
+      14,
+      G_HEADER + G_ROW * 1.5,
+    );
+  }
+  ctx.restore();
+  // The pipes, lit: up to each building that writes the table and each that reads it.
+  for (const p of s.pipes) {
+    const tone = p.kind === 'writes' ? c.harmony : c.accent;
+    ctx.strokeStyle = tone;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(p.from.x, p.from.y);
+    ctx.lineTo(p.to.x, p.to.y);
+    ctx.stroke();
+    ctx.fillStyle = tone;
+    ctx.beginPath();
+    ctx.arc(p.to.x, p.to.y, 4, 0, Math.PI * 2);
+    ctx.fill();
+    label(
+      ctx,
+      `${p.kind === 'writes' ? 'Written by' : 'Read by'} ${p.building}`,
+      p.to.x,
+      p.to.y - 12,
+      c.ink,
+      pal,
+      12,
+      600,
+    );
+  }
+  // Its name under the front corner.
+  const foot = s.tableFace === 'right' ? f.right[1]! : f.left[1]!;
+  label(ctx, `${s.table} · the ground`, foot.x, foot.y + 30, c.ink, pal, 16, 700);
 }

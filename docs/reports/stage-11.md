@@ -2,7 +2,7 @@
 
 Built 2026-10-27, from tag `stage-11-start` (which sits one commit before the stage's first commit: the lockfile fix that closed Stage 10, `609a7ab`, came after the tag was pushed, and a pushed tag is not moved).
 
-Nothing here changes what is recorded; it changes what is seen. The stage was built in its five parts, committed after each: the journey (`859cd1e`), the camera (`b9884f9`), code written inside the glass (`df6c9b5`), the flow (`4bea3e9`), and the inside, the part added to the plan on 2026-10-28.
+Nothing here changes what is recorded; it changes what is seen. The stage was built in its parts, committed after each: the journey (`859cd1e`), the camera (`b9884f9`), code written inside the glass (`df6c9b5`), the flow (`4bea3e9`), and the two parts added to the plan on 2026-10-28: the inside (`4cb7c4c`), and the ground, opened.
 
 ## What was built
 
@@ -79,6 +79,19 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
   - Screenshot: `docs/reports/stage-11/inside-typing.png`.
 - **A brick opens to its code in the side panel**: the typing view and the English pane, with the Stage 2 inspector under them, unchanged in meaning (the Trust report, a Commit, the Brick in English, Confirm). Inside, the panel is a column of its own beside the picture.
 
+**The ground, opened (packages/blueprint, packages/workbench, packages/stage `ground.ts`, apps/rama `GroundView`).** A plot of the Street is a real Postgres table, and it opens.
+
+- **A level of the stage.** Clicking a plot, zooming onto it, or saying "open orders" or "show me the table" (typed or spoken) dives into the ground. The table fills the stage as a glass slab under the same camera: it turns in quarter steps with the table on the face toward the camera, never mirrored, and it zooms. The breadcrumb reads Street › the ground › orders. It is not a side panel: a click on a column or a cell opens a card on the picture.
+- **Its columns, from the code.** The extractor now reads each column of a Drizzle table from its definition: its name, type, key, whether it may be empty, the column it points at, and a `@secret` tag (`Table.fields`). A spread of the same file (the house stack's `...provenance()`) is opened; one from another file is named as unread. A column a figure on a screen is worked out from is marked ◆, and its card leads to that figure's flow, which plays on arrival.
+- **Who reads and writes it.** A lit pipe rises from the slab to each building that writes the table and each that reads it; a click goes to that building.
+- **Its rows, the real ones.** At most 50 at a time, newest first ("More rows", "Newer rows"), as the table holds them, with a count that says what it counts: "5 orders today · 60 in all".
+  - **A product built here** reads from its own database. That database did not exist, though the prompt took it as there: the build loop's photographs now make one for each product, with a login of its own, its tables made as its own Drizzle describes them. The running product is handed that address and no other.
+  - **An outside site** reads only from a read-only address entered in Settings → Databases of outside sites, with a green or red light and a sentence. Without one the slab shows the columns and says "Rows not connected".
+  - Nothing else is ever shown: no row is invented, sampled, or copied from a fixture. The sample product reads its day from a file, so its orders table is empty and the slab says "0 orders today · 0 in all".
+- **Read-only, and secrets masked.** Every read is on a connection whose transactions start read-only, inside a read-only transaction, with a time limit, never through the builder. A column marked secret, or whose name says it holds a key, is never read: the slab shows •••• or "empty".
+- **The flow from a cell.** A cell of a column a figure is worked out from leads to that figure's flow, and says the water is the run recorded at this commit, not that row's own; any other column's flow is dry and says so.
+- Screenshot: `docs/reports/stage-11/ground.png`.
+
 ## Tests
 
 - **Tab layout:** five acts and Care in order; one lit action per act, Sign and Hand over the page's own; each action in its own act only; no developer word on the tabs or the lit labels (`components/workbench/journey.test.tsx`).
@@ -114,13 +127,19 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
   The Stage 2, 5 and 8 end-to-end tests now click bricks, fly the audit and read the inspector inside the buildings.
 
+- **The ground opened:**
+  - columns read from the definition: names, types, keys, the column pointed at, `@secret`, a same-file spread opened, another file's named as unread (`packages/blueprint/src/parse.test.ts`, `extract.test.ts`);
+  - the slab: deterministic, as tall as its rows, the table on the face toward the camera from all four sides, every cell and column picked back from where it is drawn from all four sides, a pipe for each reader and writer, Harmony's tokens only, a secret never written (`packages/stage/src/ground.test.ts`); the camera's dive onto a plot and back (`camera.test.ts`); "open orders" and "show me the table" in words and in the voice (`words.test.ts`, `packages/ears/test/grammar.test.ts`, `conductor.test.ts`);
+  - against a real Postgres server: the sandbox made from the product's own Drizzle tables, its rows kept when made again, its login refused House of Rama's tables; 50-row paging newest first; the count in the table's unit; masked secrets never sent; columns of the code the database lacks; "Rows not connected" for an outside site until Settings has an address; read-only enforced, a write through the reader refused and nothing changed (`packages/workbench/test/ground.test.ts`); Test drive's sample made its own database, with its empty orders table (`testdrive.test.ts`);
+  - routes: `GET ground` and `POST settings/databases` (`ground/handler.test.ts`, `settings/handlers.test.ts`); the page at `?ground=` on this repository's own tables, a key column masked, "Rows not connected" (`app/site/[siteId]/page.test.tsx`).
 - **E2e** (`tests/stage-11.e2e.test.ts`):
   - a new product, built by the recorded builder through the loop;
   - the five tabs and Care walked, with one lit action on each act that has a next thing to do, and a screenshot of each;
   - the recorded build replayed on the Street, and the Street turned twice;
   - Take an order zoomed into down to its inside, and its lifts replayed with the code typed in over the bricks;
   - a change of its plan typed in, every block's English read, and one confirmed by name;
-  - the flow of the day's takings watched until the real rows become ₹113.00 on the screen.
+  - the flow of the day's takings watched until the real rows become ₹113.00 on the screen;
+  - "open orders" said on the Street opens the table: its columns from the code, "0 orders today · 0 in all"; then 60 orders written through the product's own login show newest first, 50 at a time, and More rows; the cups column is marked, its card leads to its figure's flow, and the slab turns.
 
 ## Deviations and readings of the prompt
 
@@ -129,6 +148,9 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 - **The live typing comes from file snapshots** taken a few times a second during a lift, not from the builder's own keystrokes, so it works the same for every builder (KNOWN-GAPS).
 - **The inside's place for the checks and the papers.** The plan names the four floors. The files the Street does not draw also needed a place inside, or the old building's walk could not pass, so they stand on two more floors below the four, named in plain words. A check stands with the code it imports.
 - **What the old building drew that the inside does not:** the cranes and the digger during the replay, the sky's time of day, and the cables on hover (the open brick's cables are drawn). Nothing a person could read there is gone: each lift, each brick's English, edges, history and figures, and the audit's log and report are all in the panel.
+- **The product's sandbox database was built here.** The prompt says rows come from "the sandbox database the build loop already runs"; there was none (products built here kept no database, and the sample reads a file). It is now made by the build loop's photographs, one per product, as above. It has no foreign keys and no migration step of its own yet, and a renamed or retyped column is not changed in it (KNOWN-GAPS).
+- **The sample's orders table shows no rows.** The sample product's cards say it reads its day from a file until a database is connected, and it was not rebuilt to write orders (that would be a new recorded build, a product change outside this stage). Its plot opens with its columns and an honest "0 orders today · 0 in all"; the end-to-end test writes orders through the product's own login to show real rows paging.
+- **A cell's flow is the recorded run's.** "Show me the flow" from a cell opens the flow of the figure its column feeds, with the values recorded when the screens were photographed; a row picked on the slab is not run through the product's code on its own, and the card says so.
 - **The tag `stage-11-start` sits one commit early**, before the lockfile fix that closed Stage 10 (`609a7ab`). A pushed tag is not moved.
 - **Found at the end of the stage, not by the reviewer: tests spent this laptop's drafter key.** A model call made with a test's own environment still read its key from, and wrote its row into, the laptop's database. On 2026-10-27 the watcher's Test drive test drafted 1,215 blocks this way, ₹292 in total. The cause was two bugs, both fixed:
   - `call()` now takes the key and writes the row through the environment it is given;

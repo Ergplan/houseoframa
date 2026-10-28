@@ -3,18 +3,23 @@
 // journey are walked with one lit action on each (a screenshot of each kept for the report), the
 // recorded build is replayed on the Street, the Street is turned twice, Take an order is zoomed into down
 // to its code, a change of it is typed in, every block's English is read and one confirmed by name, and
-// the flow of the day's takings is shown: the real rows become the figure on the screen.
+// the flow of the day's takings is shown: the real rows become the figure on the screen. Then the ground
+// is opened: "open orders" dives into the plot, and the table fills the stage with its columns from the
+// code and its rows from the product's own database, read-only, 50 at a time.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { chromium, type Browser, type Page } from 'playwright';
+import postgres from 'postgres';
 import { createDb, setSecret } from '@rama/db';
 import { decide } from '../packages/ceremony/src/store.ts';
 import { locateSite } from '../packages/blueprint/src/site.ts';
 import { SAMPLE_CARDS, SAMPLE_IDEA, SAMPLE_NAME } from '../packages/workbench/src/sample.ts';
 import { bannedIn } from '../apps/rama/test/banned.ts';
+import { dropSandboxes, sandboxUrl } from '../packages/workbench/src/ground.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
+import { clickGround } from './ground.ts';
 import { throwawayDb } from './session.ts';
 
 const MEMBER = 'Rachit Agarwal';
@@ -53,6 +58,8 @@ beforeAll(async () => {
 afterAll(async () => {
   await browser?.close();
   await server?.stop();
+  // The product's own database, made by its photographs.
+  if (db) await dropSandboxes({ ...process.env, DATABASE_URL: db.url });
   await db?.drop();
   if (work) rmSync(work, { recursive: true, force: true });
 });
@@ -263,5 +270,71 @@ describe('stage 11 e2e', () => {
     expect(steps.at(-1)).toBe('₹113.00 on the screen “Today’s total”.');
     expect(bannedIn(steps.join(' '))).toEqual([]);
     if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'flow.png') });
+
+    // The ground, opened: "open orders" from the Street, and the table fills the stage.
+    await page.goto(`${server.browserUrl}/site/${SITE}`);
+    await page.getByLabel('Say where to go').fill('open orders');
+    await page.getByRole('button', { name: 'Go', exact: true }).click();
+    await page.waitForURL(/[?&]ground=orders/);
+    const slab = page.locator('[data-level="ground"] canvas[data-ready="true"]');
+    await slab.waitFor();
+    expect(await page.locator('.eg-crumbs').innerText()).toMatch(
+      /Street\s*›\s*the ground\s*›\s*orders$/,
+    );
+    // Its columns are the code's; the stall reads its day from a file, so its own database holds none.
+    const heads = await page
+      .locator('table[data-ground-table] th')
+      .evaluateAll((ths) => ths.map((th) => th.getAttribute('data-name')));
+    expect(heads).toEqual([
+      'id',
+      'site_id',
+      'created_at',
+      'created_by',
+      'item',
+      'cups',
+      'price_of_cup',
+      'taken_at',
+    ]);
+    expect(await page.locator('[data-count]').innerText()).toBe('0 orders today · 0 in all');
+    // Orders written into the product's own database by its own login, as the product writes them: the
+    // slab shows them as the table holds them, newest first, 50 at a time.
+    const own = postgres(
+      sandboxUrl(SITE, { ...process.env, DATABASE_URL: db.url, RAMA_WORK_DIR: work }),
+      {
+        max: 1,
+        onnotice: () => {},
+      },
+    );
+    try {
+      for (let i = 1; i <= 60; i++)
+        await own`insert into orders (site_id, created_by, item, cups, price_of_cup, taken_at, created_at)
+          values (${SITE}, 'the product', ${`Order ${i}`}, ${(i % 3) + 1}, 1500, now(), now() - ${`${60 - i} seconds`}::interval)`;
+    } finally {
+      await own.end();
+    }
+    await page.reload();
+    await slab.waitFor();
+    expect(await page.locator('[data-count]').innerText()).toBe('60 orders today · 60 in all');
+    const items = () =>
+      page.locator('table[data-ground-table] tbody tr td:nth-child(5)').allInnerTexts();
+    expect((await items()).slice(0, 2)).toEqual(['Order 60', 'Order 59']);
+    expect(await items()).toHaveLength(50);
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'ground.png') });
+    await page.locator('[data-more]').click();
+    await page.getByText('Rows 51–60').waitFor();
+    expect(await items()).toEqual(Array.from({ length: 10 }, (_, i) => `Order ${10 - i}`));
+    // A column a figure is worked out from is marked, and its card leads to that figure's flow.
+    expect(await page.locator('th[data-name="cups"]').getAttribute('data-figure')).toBe('yes');
+    await clickGround(page, -1, heads.indexOf('cups'));
+    const card = page.locator('[data-card="column:cups"]');
+    await card.waitFor();
+    expect(await card.innerText()).toMatch(/Order amount/);
+    // Turned, the table stays on the face toward the camera.
+    await slab.focus();
+    await page.keyboard.press('ArrowRight');
+    await page.locator('[data-level="ground"] canvas[data-orientation="east"]').waitFor();
+    await card.locator('[data-flow-link]').first().click();
+    await page.waitForURL(/[?&]flow=/);
+    await page.locator('.flow-panel').waitFor({ timeout: 30_000 });
   }, 1_500_000);
 });

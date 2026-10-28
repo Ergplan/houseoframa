@@ -7,6 +7,7 @@ import { siteRecord, writeSiteBlueprint, type SiteLocation } from '@rama/bluepri
 import { modelCalls, readSecret, type Db } from '@rama/db';
 import { BUILDER_VENDOR, seatProblems, vendorEntry, type CallResult } from '@rama/model';
 import { capture, captureDir, readCapture } from '@rama/trace';
+import { ensureSandbox } from './ground.ts';
 import { StepError } from './jobs.ts';
 import { linkHouseModules } from './modules.ts';
 import { builderLabel, builtByProblems, seatsOf } from './seats.ts';
@@ -49,9 +50,17 @@ export async function photograph(
 ): Promise<string> {
   const bp = writeSiteBlueprint(site);
   linkHouseModules(site.repoDir);
+  // A product built here runs on a database of its own (Stage 11), made or brought up to date first;
+  // without one the photographs go on, and its plots say why they show no rows.
+  let database: string | undefined;
+  if (site.kind === 'product') {
+    const sandbox = await ensureSandbox(site, bp, env, log);
+    log(sandbox.sentence);
+    database = sandbox.url ?? undefined;
+  }
   let c;
   try {
-    c = await capture(site, bp, { outDir: captureDir(site.id, env), log });
+    c = await capture(site, bp, { outDir: captureDir(site.id, env), log, database });
   } catch (err) {
     const why = (err as Error).message;
     if (/screens\.json/.test(why))

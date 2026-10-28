@@ -61,6 +61,8 @@ export interface InsideProps {
   /** The building each file stands in, so a brick of another building opens there. */
   owners: Record<string, string>;
   all: { id: string; name: string }[];
+  /** The ground's tables, for "open orders" and "show me the table" (Stage 11). */
+  tables?: { name: string; by: string[] }[];
   camera: Camera;
   member: string;
   initialBrick: string | null;
@@ -761,6 +763,7 @@ export function InsideView(p: InsideProps) {
           siteId={p.siteId}
           here={{ level: 'code', building: p.building.id }}
           buildings={p.all}
+          tables={p.tables}
         />
       </div>
 

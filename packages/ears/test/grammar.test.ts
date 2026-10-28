@@ -28,6 +28,9 @@ describe('the command grammar', () => {
     ['Show me Count the day’s takings.', { kind: 'show', building: "count the day's takings" }],
     ['Take me to the take an order building', { kind: 'show', building: 'take an order' }],
     ['Open the New order screen.', { kind: 'open', screen: 'new order' }],
+    ['Show me the table.', { kind: 'table' }],
+    ['open the records', { kind: 'table' }],
+    ['Open orders', { kind: 'open', screen: 'orders' }],
     ['What if the cups were three?', { kind: 'what-if', input: 'cups', value: 'three' }],
     ['what if price of a cup is 2000', { kind: 'what-if', input: 'price of a cup', value: '2000' }],
   ])('%s', (said, cmd) => expect(parseCommand(said)).toEqual(cmd));

@@ -6,6 +6,7 @@ export type {
   Screen,
   FigureRef,
   Table,
+  TableField,
   Blueprint,
 } from './blueprint.ts';
 export type { Trail } from './trail.ts';

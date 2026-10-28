@@ -58,9 +58,13 @@ export async function memberNamed(
 export function lakefrontOf(
   site: SiteLocation,
   env: NodeJS.ProcessEnv = process.env,
-): { buildings: Building[]; figures: (FigureOnHand & { building: string })[] } {
+): {
+  buildings: Building[];
+  figures: (FigureOnHand & { building: string })[];
+  tables: string[];
+} {
   const bp = readSiteBlueprint(site);
-  if (!bp) return { buildings: [], figures: [] };
+  if (!bp) return { buildings: [], figures: [], tables: [] };
   const lf = siteLakefront(site, bp, env);
   const capture = readCapture(site.id, env);
   const room =
@@ -75,6 +79,7 @@ export function lakefrontOf(
       id: screenName.get(id)?.name ?? id,
       title: screenName.get(id)?.title ?? id,
     })),
+    tables: b.tables.map((t) => t.name),
   }));
   const figures: (FigureOnHand & { building: string })[] = [];
   for (const b of lf.street.buildings)
@@ -91,7 +96,7 @@ export function lakefrontOf(
         });
       }
     }
-  return { buildings, figures };
+  return { buildings, figures, tables: lf.street.plots.map((p) => p.table) };
 }
 
 const Narration = z.object({
@@ -336,6 +341,7 @@ export function roomDeps(
       return { lines: n.lines, by: n.by };
     },
     buildings: () => lake().buildings,
+    tables: () => lake().tables,
     figures: () => lake().figures,
     whatIf: (figure, input, value) => whatIf(site, figure, input, value, env),
   };
