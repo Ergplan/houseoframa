@@ -17,17 +17,24 @@ const git = (repoDir: string, args: string[]) =>
   });
 
 /**
+ * The real path of a file of the checkout, when it is a file that resolves inside the checkout; null
+ * otherwise. A link in a product's repository to a file elsewhere on the machine is never followed out.
+ */
+export function inCheckout(repoDir: string, file: string): string | null {
+  const p = path.join(repoDir, file);
+  if (!existsSync(p)) return null;
+  const real = realpathSync(p);
+  return real.startsWith(realpathSync(repoDir) + path.sep) && statSync(real).isFile() ? real : null;
+}
+
+/**
  * A file's text at a commit; null when it was not there. Without a commit, as it is in the checkout,
  * and only when it resolves inside the checkout: a link to a file elsewhere is not followed out of it.
  */
 export function fileAt(repoDir: string, file: string, commit?: string): string | null {
   if (!commit) {
-    const p = path.join(repoDir, file);
-    if (!existsSync(p)) return null;
-    const root = realpathSync(repoDir);
-    const real = realpathSync(p);
-    if (!real.startsWith(root + path.sep) || !statSync(real).isFile()) return null;
-    return readFileSync(real, 'utf8');
+    const real = inCheckout(repoDir, file);
+    return real ? readFileSync(real, 'utf8') : null;
   }
   try {
     return git(repoDir, ['show', `${commit}:${file}`]);

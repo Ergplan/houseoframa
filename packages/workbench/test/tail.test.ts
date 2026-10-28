@@ -9,6 +9,7 @@ import {
   readdirSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   unlinkSync,
   writeFileSync,
 } from 'node:fs';
@@ -44,6 +45,22 @@ describe('the tail of a lift', () => {
     expect(events.every((e) => e.lift === 1)).toBe(true);
     expect(readEdits('chai', 0, env)).toEqual(events);
     expect(readEdits('chai', events.length, env)).toEqual([]);
+  });
+});
+
+describe('the tail stays in the checkout (reviewer run 14)', () => {
+  it('does not follow a link the builder writes to a file outside the checkout', async () => {
+    const repo = path.join(work, 'leak', 'repo');
+    mkdirSync(repo, { recursive: true });
+    execFileSync('git', ['-C', repo, 'init', '--quiet']);
+    writeFileSync(path.join(work, 'secret.json'), '{"key":"not the product’s"}\n');
+    const t = startTail(repo, 'leak', 1, { env, everyMs: 30 });
+    symlinkSync(path.join(work, 'secret.json'), path.join(repo, 'leak.json'));
+    writeFileSync(path.join(repo, 'own.ts'), 'export const d = 4;\n');
+    await new Promise((r) => setTimeout(r, 120));
+    const events = t.stop();
+    expect(events.map((e) => e.path)).toEqual(['own.ts']);
+    expect(JSON.stringify(readEdits('leak', 0, env))).not.toContain('not the product');
   });
 });
 

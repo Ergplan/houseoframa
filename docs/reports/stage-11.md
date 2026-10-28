@@ -160,7 +160,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
 ## Reviewer findings
 
-The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 12 times; every run is in `docs/reports/stage-11.review.md`.
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 14 times; every run is in `docs/reports/stage-11.review.md`. Runs 13 and 14 came after the plan's sixth part, the ground opened, was built.
 
 Fixed in code:
 
@@ -192,9 +192,12 @@ Fixed in code:
 - **Run 10.** When no brick of the building shows the figure, the screen step had no pipe. Every step now has its pipe, inside and at the Building level: up to the glass, dry and labelled when untraced.
 - **Run 11.** A block with no English yet hid its figures' links to their trails. They are now shown whether or not the block is explained.
 
+- **Run 13** (the first over the ground opened). The code level read a file of a product's checkout through a link to a file outside it. A file is now read only when it resolves inside the checkout.
+- **Run 14.** The live tail of a lift had the same opening: a link the builder wrote to a file elsewhere would have been followed and its text typed in. The tail now reads only files inside the checkout, through the same check.
+
 Run 12 found no code defect; its one finding, a report claim, is corrected.
 
-Report claims corrected (runs 1, 2, 4, 5, 6, 9 and 12): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, and how many files a replayed lift types in.
+Report claims corrected (runs 1, 2, 4, 5, 6, 9, 12 and 14): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, how many files a replayed lift types in, and the number of reviewer runs.
 
 Not resolved by code:
 
@@ -206,9 +209,11 @@ Not resolved by code:
 
 | What                                                              | Model             | Calls | Cost     |
 | ----------------------------------------------------------------- | ----------------- | ----- | -------- |
-| Independent reviewer                                              | gpt-6.1-sol       | 12    | ₹399     |
+| Independent reviewer                                              | gpt-6.1-sol       | 14    | ₹508     |
 | Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215 | ₹292     |
-| **Recorded total**                                                |                   |       | **₹692** |
+| **Recorded total**                                                |                   |       | **₹801** |
+
+The ground opened makes no model call: its columns are read from the code and its rows from the database.
 
 The drafter rows are the leak described under Deviations. None was added after the fix (`4cb7c4c`): the watcher's later runs drafted nothing.
 

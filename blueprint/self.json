@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
+  "commit": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -16037,6 +16037,45 @@
       "sha": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "short": "b501fc0",
       "subject": "Stage 11, part 6: the ground opened — a plot is a real table, its columns from the code and its rows read-only"
+    },
+    {
+      "at": "2026-10-28T06:04:56Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 589,
+          "del": 152,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 15,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        },
+        {
+          "add": 10,
+          "del": 3,
+          "kind": "M",
+          "path": "packages/workbench/src/code.ts"
+        },
+        {
+          "add": 28,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/workbench/test/code.test.ts"
+        }
+      ],
+      "sha": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
+      "short": "7b71e0e",
+      "subject": "Stage 11: reviewer run 13 — the code level reads a file only inside the checkout, never through a link out of it"
     }
   ],
   "edges": [
@@ -29148,6 +29187,14 @@
       "typeOnly": false
     },
     {
+      "from": "packages/workbench/src/tail.ts",
+      "symbols": [
+        "inCheckout"
+      ],
+      "to": "packages/workbench/src/code.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of a site's location: its checkout, blueprint file and options; regenerating and saving a site's blueprint file"
@@ -31767,7 +31814,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T05:41:49Z",
+  "extractedAt": "2026-10-28T06:04:56Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -35939,16 +35986,16 @@
     },
     {
       "binary": false,
-      "bytes": 80750,
-      "changes": 107,
+      "bytes": 80969,
+      "changes": 108,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
+      "lastCommit": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 285,
+      "lines": 286,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -36192,7 +36239,7 @@
     },
     {
       "binary": false,
-      "bytes": 25850,
+      "bytes": 26497,
       "changes": 10,
       "env": [],
       "envDynamic": false,
@@ -36201,22 +36248,22 @@
       "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 226,
+      "lines": 231,
       "path": "docs/reports/stage-11.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 124519,
-      "changes": 12,
+      "bytes": 134829,
+      "changes": 13,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "34c95f68ad7403eb53c0f128234b6d3ce974b738",
+      "lastCommit": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 210,
+      "lines": 226,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -44113,8 +44160,8 @@
     },
     {
       "binary": false,
-      "bytes": 5197,
-      "changes": 2,
+      "bytes": 5519,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -44123,13 +44170,14 @@
         "codeView",
         "figuresOfBlock",
         "fileAt",
+        "inCheckout",
         "productFigures"
       ],
       "firstCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 136,
+      "lines": 143,
       "path": "packages/workbench/src/code.ts",
       "test": false
     },
@@ -44450,7 +44498,7 @@
     },
     {
       "binary": false,
-      "bytes": 3645,
+      "bytes": 3764,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -44464,7 +44512,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 102,
+      "lines": 104,
       "path": "packages/workbench/src/tail.ts",
       "test": false
     },
@@ -44560,12 +44608,12 @@
     {
       "binary": false,
       "bytes": 1460,
-      "changes": 0,
+      "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "",
-      "lastCommit": "",
+      "firstCommit": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
+      "lastCommit": "7b71e0e3ba34dc49eb3b565aa8281b4027b9c4c8",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 28,
@@ -44762,7 +44810,7 @@
     },
     {
       "binary": false,
-      "bytes": 2505,
+      "bytes": 3371,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -44771,7 +44819,7 @@
       "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 59,
+      "lines": 76,
       "packages": [
         "vitest"
       ],

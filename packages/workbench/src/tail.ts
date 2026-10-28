@@ -6,6 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { appendFileSync, existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { workDir } from '@rama/blueprint/site';
+import { inCheckout } from './code.ts';
 
 export interface EditEvent {
   /** Milliseconds since the lift began. */
@@ -35,8 +36,9 @@ function files(repoDir: string): string[] {
 }
 
 function read(repoDir: string, f: string): { mtime: number; text: string | null } {
-  const p = path.join(repoDir, f);
-  if (!existsSync(p)) return { mtime: 0, text: null };
+  // Only a file inside the checkout: a link out of it is not followed (reviewer run 14).
+  const p = inCheckout(repoDir, f);
+  if (!p) return { mtime: 0, text: null };
   const st = statSync(p);
   if (st.size > MAX_BYTES) return { mtime: st.mtimeMs, text: null };
   return { mtime: st.mtimeMs, text: readFileSync(p, 'utf8') };
