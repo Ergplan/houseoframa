@@ -7,7 +7,8 @@ import { stallBlueprint, stallFeatures } from '../test/blueprint.ts';
 import { building, type FacadeInput } from './building.ts';
 import { parseFeatures, resolveFeatures } from './features.ts';
 import { paletteFromTokens } from './palette.ts';
-import { buildingPipes, drawPipes, flowAt, type FlowLike } from './pipes.ts';
+import { buildingPipes, drawPipes, flowAt, insidePipes, type FlowLike } from './pipes.ts';
+import { brickTop, inside, laidInOf } from './inside.ts';
 import { street } from './street.ts';
 import { ORIENTATIONS, orientScene } from './camera.ts';
 
@@ -152,5 +153,33 @@ describe('the water', () => {
     expect(flowAt(4, 9000)).toEqual({ step: 3, progress: 1, done: true });
     // Held: the same moment gives the same frame. Stepped: a step is a second.
     expect(flowAt(4, 2 * 1000)).toEqual({ step: 2, progress: 0, done: false });
+  });
+});
+
+describe('the pipes inside a building', () => {
+  const laid = laidInOf(bp);
+  const b = s.buildings.find((x) => x.id === 'see-orders')!;
+  const at = (o: (typeof ORIENTATIONS)[number]) =>
+    inside(b, nodeOf, new Set(bp.screens.map((x) => x.file)), (p) => laid.get(p) ?? -1, o);
+
+  it('runs a pipe for every step between the bricks, from every side, ending on the screen’s brick', () => {
+    for (const o of ORIENTATIONS) {
+      const sc2 = at(o);
+      const l = insidePipes(sc2, flow('4 rows', '4'), () => 'db/orders.ts', 'app/page.tsx');
+      expect(l.pipes.map((p) => p.step).sort()).toEqual([0, 1, 2, 3]);
+      expect(l.pipes.every((p) => !p.dry)).toBe(true);
+      const page = sc2.bricks.find((x) => x.path === 'app/page.tsx')!;
+      expect(l.stops[3]).toEqual(brickTop(sc2, page));
+      const orders = sc2.bricks.find((x) => x.path === 'db/orders.ts')!;
+      expect(l.stops[0]).toEqual(brickTop(sc2, orders));
+    }
+  });
+
+  it('draws a dry, labelled pipe for every untraced step', () => {
+    const l = insidePipes(at('north'), flow(null, null), () => null, null);
+    expect(l.pipes.filter((p) => p.dry).map((p) => p.step)).toEqual([0, 1]);
+    expect(l.pipes.find((p) => p.step === 0)!.label).toBe('Today’s orders: untraced');
+    // No screen brick to reach: no pipe onto the screen, and its stop is unknown.
+    expect(l.pipes.some((p) => p.step === 3)).toBe(false);
   });
 });

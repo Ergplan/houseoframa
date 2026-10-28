@@ -4,12 +4,20 @@
 // figure is traced and every screen Verified; then it is walked and signed and audited by the stand-in.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { randomBytes } from 'node:crypto';
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import postgres from 'postgres';
 import { eq } from 'drizzle-orm';
-import { audits, createDb, decisions, runMigrations, signoffs, type Db } from '@rama/db';
+import {
+  audits,
+  createDb,
+  decisions,
+  modelCalls,
+  runMigrations,
+  signoffs,
+  type Db,
+} from '@rama/db';
 import { jobStatus, latestJob, readJob } from '../src/jobs.ts';
 import { latestTestDrive, startTestDrive } from '../src/testdrive.ts';
 
@@ -37,6 +45,7 @@ beforeAll(async () => {
   // here, not taken from the machine's setup file, so CI (which names no models) says the same.
   env = {
     ...process.env,
+    DATABASE_URL: dbUrl,
     RAMA_WORK_DIR: work,
     RAMA_TESTDRIVE_BUILDER: '',
     BUILDER_VENDOR: 'anthropic',
@@ -129,7 +138,16 @@ describe('Test drive', () => {
       ]);
       const [a] = await db.select().from(audits).where(eq(audits.siteId, 'testdrive-1'));
       expect(a!.vendor).toBe('stand-in');
+      // No key: nothing reached a vendor; the one row is the audit's stand-in.
+      const calls = await db.select().from(modelCalls);
+      expect(calls.map((c) => [c.role, c.vendor])).toEqual([['auditor', 'stand-in']]);
     });
+    // The recorded build's English is in this run's own work dir, every sentence of it.
+    expect(readdirSync(path.join(work, 'testdrive-1', 'explain')).sort()).toEqual(
+      readdirSync(
+        path.resolve(import.meta.dirname, '../../../fixtures/sample-build/explanations'),
+      ).sort(),
+    );
   });
 
   it('a second run starts a fresh product and keeps the first one, signature journal and all', async () => {

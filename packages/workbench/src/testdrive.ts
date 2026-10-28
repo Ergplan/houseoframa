@@ -58,7 +58,7 @@ export async function testDriveBuilder(
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<{ driver: BuilderDriver; why: string }> {
   const recording = (why: string) => ({
-    driver: builderFor('recorded', { recording: sampleRecording(env) }),
+    driver: builderFor('recorded', { recording: sampleRecording(env), env }),
     why,
   });
   if (env.RAMA_TESTDRIVE_BUILDER === 'recorded')

@@ -1,10 +1,11 @@
 /// <reference lib="dom" />
-// Paints the Street and the Building level on a canvas, with Harmony's tokens only (palette.ts): the
+// Paints the Street, the Building level and the inside on a canvas, with Harmony's tokens only (palette.ts): the
 // ground in `surface` with `line` hairlines, the lake in `surface-2` with a `glass` sheen, plots lit
 // `accent-soft`, glass buildings with `line` edges, the selected building as the folder (the one green
 // object), flags in the three words, roads in `line-strong` (dotted when the use is a type only), jetties
 // in `series-grid`, the active crane and the drones' beam in `harmony` with its `glow`, idle cranes in
-// `ink-faint`. What is shown is decided by street(), building() and the replay; this only paints.
+// `ink-faint`. The inside (Stage 11) is drawn the same way: glass bricks on their floors, the open one as
+// the folder. What is shown is decided by street(), building(), inside() and the replay; this only paints.
 import type { ScreenState } from '@rama/blueprint/metrics';
 import type { Verdict } from '@rama/audit/view';
 import { buildingAt, type BuildingScene } from './building.ts';
@@ -18,6 +19,16 @@ import {
   plotPolygon,
   subFace,
 } from './geometry.ts';
+import {
+  brickTop,
+  floorSlab,
+  insideAt,
+  insideBrickFaces,
+  standsAt,
+  type InsideBrick,
+  type InsideFloorKind,
+  type InsideScene,
+} from './inside.ts';
 import { faceTransform, type Pt } from './iso.ts';
 import type { Palette } from './palette.ts';
 import { craneAt, laid, type StreetTimeline } from './replay.ts';
@@ -447,18 +458,24 @@ export function drawStreet(ctx: CanvasRenderingContext2D, frame: StreetFrame): v
           ctx.fill();
         }
       }
-      ctx.fillStyle = c.ink;
-      ctx.strokeStyle = c.harmony;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(d.x - 12, d.y - 4, 24, 8, 4);
-      ctx.fill();
-      ctx.stroke();
-      ctx.fillStyle = c.harmony;
-      ctx.fillRect(d.x - 16, d.y - 7, 8, 2);
-      ctx.fillRect(d.x + 8, d.y - 7, 8, 2);
+      drone(ctx, d, pal);
     });
   }
+}
+
+/** A drone: its body in `ink`, its rotors in `harmony`. */
+function drone(ctx: CanvasRenderingContext2D, d: Pt, pal: Palette) {
+  const c = pal.color;
+  ctx.fillStyle = c.ink;
+  ctx.strokeStyle = c.harmony;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(d.x - 12, d.y - 4, 24, 8, 4);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = c.harmony;
+  ctx.fillRect(d.x - 16, d.y - 7, 8, 2);
+  ctx.fillRect(d.x + 8, d.y - 7, 8, 2);
 }
 
 export interface BuildingFrame {
@@ -595,4 +612,133 @@ export function drawBuilding(ctx: CanvasRenderingContext2D, frame: BuildingFrame
   const peak = Math.min(...f.top.map((q) => q.y));
   label(ctx, sc.name, (f.top[0]!.x + f.top[2]!.x) / 2, peak - 12, c.ink, pal, 16, 700);
   if (frame.flag) flag(ctx, frame.flag, f.top[3]!.x + 6, peak - 34, pal);
+}
+
+export interface InsideFrame {
+  scene: InsideScene;
+  palette: Palette;
+  /** The open brick: drawn as the folder, the one green object. */
+  selected: string | null;
+  hover: string | null;
+  /** Bricks outlined (a screen's bricks, a search hit, the audit's defects). */
+  glow?: ReadonlySet<string>;
+  /** The replay: lift k (1-based; 0 before any) of `lifts`. Absent: everything stands. */
+  replay?: { k: number; lifts: number } | null;
+  /** Bricks of a screen signed at this commit: a small mark on their top. */
+  signed?: ReadonlySet<string>;
+  verdicts?: Record<string, Verdict>;
+  /** The open brick's imports and importers in this building, drawn as cables. */
+  links?: { imports: string[]; importedBy: string[] } | null;
+  /** The file the builder is writing now: its brick glows and grows. */
+  writing?: { path: string; lines: number } | null;
+  /** The floor chosen: the others are drawn faint, and only its bricks can be picked. */
+  floor?: InsideFloorKind | null;
+  /** The audit flying: its drones, and the brick under a beam. */
+  drones?: { at: Pt[]; scan: { path: string; drone: number } | null } | null;
+}
+
+/** Paints the inside of a building: the far walls of glass, the floors as slabs, every brick on its floor. */
+export function drawInside(ctx: CanvasRenderingContext2D, frame: InsideFrame): void {
+  const { scene: s, palette: pal } = frame;
+  const c = pal.color;
+  backdrop(ctx, s.width, s.height, pal);
+  const a = insideAt(s);
+  const top = s.h + 20;
+  // The two far walls, glass seen from inside; the near edges as hairlines only, so nothing hides a brick.
+  fillPoly(ctx, [a(0, 0), a(s.w, 0), a(s.w, 0, top), a(0, 0, top)], c.glass, c.line);
+  fillPoly(ctx, [a(0, 0), a(0, s.d), a(0, s.d, top), a(0, 0, top)], c.glass, c.line);
+  const faint = (kind: InsideFloorKind) => (frame.floor && frame.floor !== kind ? 0.22 : 1);
+  for (const f of s.floors) {
+    ctx.globalAlpha = faint(f.kind);
+    fillPoly(ctx, floorSlab(s, f), c.surface, frame.floor === f.kind ? c.accent : c['line-strong']);
+    const edge = a(0, s.d, f.z0);
+    ctx.font = `600 12px ${pal.sans}`;
+    ctx.fillStyle = c['ink-muted'];
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${f.label} · ${f.count}`, edge.x - 14, edge.y - 10);
+  }
+  ctx.globalAlpha = 1;
+  const standing = (x: InsideBrick) =>
+    !frame.replay || standsAt(x, frame.replay.k, frame.replay.lifts);
+  for (const x of s.bricks) {
+    ctx.globalAlpha = faint(x.floor);
+    if (!standing(x)) {
+      // Not laid yet at this lift: its place on the floor, dashed.
+      const f = insideBrickFaces(s, { ...x, z1: x.z0 });
+      ctx.setLineDash([3, 3]);
+      fillPoly(ctx, f.top, null, c['ink-faint']);
+      ctx.setLineDash([]);
+      continue;
+    }
+    const writing = frame.writing?.path === x.path ? frame.writing : null;
+    const grown = writing
+      ? { ...x, z1: x.z1 + (x.z1 - x.z0) * Math.min(1, writing.lines / 60) }
+      : x;
+    const f = insideBrickFaces(s, grown);
+    const open = frame.selected === x.path;
+    const lit = frame.glow?.has(x.path) || frame.hover === x.path;
+    const placing = frame.replay ? x.laidIn === frame.replay.k - 1 : false;
+    const side = open ? c.folder : writing || placing ? c.harmony : c.glass;
+    const lid = open ? c['folder-hi'] : writing || placing ? c.glow : c['glass-strong'];
+    const edge = open ? c['folder-deep'] : lit ? c.accent : c['line-strong'];
+    fillPoly(ctx, f.left, side, edge, lit || open ? 2 : 1);
+    fillPoly(ctx, f.right, side, edge, lit || open ? 2 : 1);
+    fillPoly(ctx, f.top, lid, edge, lit || open ? 2 : 1);
+    const t = brickTop(s, grown);
+    if (frame.signed?.has(x.path)) {
+      ctx.fillStyle = c.positive;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const v = frame.verdicts?.[x.path];
+    if (v && v !== 'pass') {
+      ctx.fillStyle = c[BADGE_TONE[v]];
+      ctx.beginPath();
+      ctx.arc(f.top[1]!.x, f.top[1]!.y, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+  // The open brick's cables: to what it uses, and from what uses it.
+  const open = frame.selected ? s.bricks.find((x) => x.path === frame.selected) : undefined;
+  if (open && frame.links) {
+    const from = brickTop(s, open);
+    for (const [paths, color] of [
+      [frame.links.imports, c.accent],
+      [frame.links.importedBy, c.warning],
+    ] as const)
+      for (const p of paths) {
+        const to = s.bricks.find((x) => x.path === p);
+        if (!to || !standing(to)) continue;
+        const end = brickTop(s, to);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.quadraticCurveTo((from.x + end.x) / 2, Math.min(from.y, end.y) - 40, end.x, end.y);
+        ctx.stroke();
+      }
+  }
+  // The name of the brick under the pointer, or the open one.
+  const named = s.bricks.find((x) => x.path === (frame.hover ?? frame.selected));
+  if (named && standing(named)) {
+    const t = brickTop(s, named);
+    label(ctx, named.path.split('/').pop()!, t.x, t.y - 8, c.ink, pal, 12, 600);
+  }
+  // The audit's drones, and the beam onto the brick being scanned.
+  if (frame.drones)
+    frame.drones.at.forEach((d, i) => {
+      const scan = frame.drones!.scan;
+      const x = scan && scan.drone === i ? s.bricks.find((b) => b.path === scan.path) : undefined;
+      if (x) {
+        const t = insideBrickFaces(s, x).top;
+        ctx.fillStyle = c.glow;
+        poly(ctx, [d, t[1]!, t[3]!]);
+        ctx.fill();
+      }
+      drone(ctx, d, pal);
+    });
+  label(ctx, `${s.name} · inside`, a(0, 0, top).x, a(0, 0, top).y - 12, c.ink, pal, 16, 700);
 }

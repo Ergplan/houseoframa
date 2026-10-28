@@ -25,7 +25,7 @@ export type Recording = z.infer<typeof Recording>;
 export const readRecording = (dir: string): Recording =>
   Recording.parse(JSON.parse(readFileSync(path.join(dir, 'lifts.json'), 'utf8')));
 
-export function recorded(dir: string): BuilderDriver {
+export function recorded(dir: string, env: NodeJS.ProcessEnv = process.env): BuilderDriver {
   const rec = readRecording(dir);
   let next = 0;
   return {
@@ -68,10 +68,10 @@ export function recorded(dir: string): BuilderDriver {
       // The English the drafter wrote beside the real build's blocks, recorded with it (Stage 11): the
       // pane shows it as drafted and unconfirmed. Each lift brings the sentences drafted after it,
       // made at this lift's commit (the house stack's own lift's, at the first), so a replay shows
-      // them from there on.
+      // them from there on. They go into the site's own work dir, where the pane reads them.
       const said = path.join(dir, 'explanations');
       if (existsSync(said)) {
-        const into = path.join(workDir(), req.siteId, 'explain');
+        const into = path.join(workDir(env), req.siteId, 'explain');
         mkdirSync(into, { recursive: true });
         const rev = (ref: string) =>
           execFileSync('git', ['-C', req.repoDir, 'rev-parse', ref], { encoding: 'utf8' }).trim();

@@ -2,7 +2,7 @@
 
 Built 2026-10-27, from tag `stage-11-start` (which sits one commit before the stage's first commit: the lockfile fix that closed Stage 10, `609a7ab`, came after the tag was pushed, and a pushed tag is not moved).
 
-Nothing here changes what is recorded; it changes what is seen. The stage was built in its four parts, committed after each: the journey (`859cd1e`), the camera (`b9884f9`), code written inside the glass (`df6c9b5`), and the flow.
+Nothing here changes what is recorded; it changes what is seen. The stage was built in its five parts, committed after each: the journey (`859cd1e`), the camera (`b9884f9`), code written inside the glass (`df6c9b5`), the flow (`4bea3e9`), and the inside, the part added to the plan on 2026-10-28.
 
 ## What was built
 
@@ -64,6 +64,17 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 - **The pipes.** `buildingPipes` lays them at the Building level: from the table's part of the building, or the ground under it, along the floors to the function's part and up to the figure on the glass. An untraced step gets a dry broken pipe.
 - **The water.** It moves a step a second and can be paused and stepped (`flowAt`, `drawPipes`, `FlowPanel`). "Show me the flow" is on every traced figure, and in the voice's grammar. Each step's sentence is handed to the voice as builder text (`POST voice/tell`).
 
+**The inside (packages/stage `inside.ts`, apps/rama `InsideView`).** The Stage 2 brick building is gone from the app; `apps/rama/canvas` and the site view are removed.
+
+- **The third level is the inside of the same building**, under the same camera: the four orientations, the zoom and the hand-offs. Zooming past the facade goes through the glass; the breadcrumb reads Street › Take an order › inside.
+- **Floors and bricks.** The floors (what it shows, decides, remembers, talks to) are slabs one above the other. Each brick is a glass block on its floor, its height by its lines, laid in the order the lifts laid it.
+- **Every file the old building showed stands inside.** The checks and the papers (documents, settings, pictures), which the Street does not draw, stand on two lower floors: "How it is checked", in the building of the code a check imports, and "Its papers", behind the screens.
+- **Reaching every brick.** A floor can be chosen, so a brick under the floors above can be clicked. The finder opens any file by name, in whichever building it stands.
+- **The lifts.** The deck replays them commit by commit; each commit opens in the panel.
+- **The flow's pipes** run between the bricks: from where an input is kept, to the brick that works the figure out, to the brick that shows it.
+- **Fly the audit.** The drones beam over the bricks, as they did on the old building, with the live log and the report in the panel.
+- **A brick opens to its code in the side panel**: the typing view and the English pane, with the Stage 2 inspector under them, unchanged in meaning (the Trust report, a Commit, the Brick in English, Confirm). Inside, the panel is a column of its own beside the picture.
+
 ## Tests
 
 - **Tab layout:** five acts and Care in order; one lit action per act, Sign and Hand over the page's own; each action in its own act only; no developer word on the tabs or the lit labels (`components/workbench/journey.test.tsx`).
@@ -87,6 +98,17 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 - **Pipe geometry from trail fixtures:** a pipe for every step, a dry labelled one for every untraced step, from the ground when kept elsewhere, the same from every side (`packages/stage/src/pipes.test.ts`).
 - **The flow sequence from a recorded re-execution:** the day's four orders become ₹113.00 step by step; dry steps say untraced; the form is the form; a step a second, held and stepped (`packages/trace/test/flow.test.ts`, `pipes.test.ts`).
 - **Routes:** `GET code`, `GET typing`, `POST explain/confirm` and `POST voice/tell` (`code/handler.test.ts`, `voice/handler.test.ts`, `authz.test.tsx`).
+- **The inside** (`packages/stage/src/inside.test.ts`, `apps/rama/components/lakefront/inside.walk.test.tsx`):
+  - frames are deterministic;
+  - every brick stands on its floor, sized by its lines, in build order;
+  - the replay;
+  - where checks and papers stand;
+  - a chosen floor;
+  - pipes for every step between the bricks, from every side, with a dry pipe for each untraced one;
+  - **the walk:** every brick of the sample product and of this repository (716 files) is clicked inside its building from all four sides, and the panel shows for it the English edges, the lift that laid it, and the figures the Stage 2 inspector showed; every commit opens.
+
+  The Stage 2, 5 and 8 end-to-end tests now click bricks, fly the audit and read the inspector inside the buildings.
+
 - **E2e** (`tests/stage-11.e2e.test.ts`):
   - a new product, built by the recorded builder through the loop;
   - the five tabs and Care walked, with one lit action on each act that has a next thing to do, and a screenshot of each;
@@ -97,16 +119,72 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
 ## Deviations and readings of the prompt
 
-(Filled in at the end.)
+- **The pipes are drawn at the Building level only.** On the Street, and for a trail that crosses into another building's code, the flow is shown as its steps in words (KNOWN-GAPS). The flow of an older commit is not offered in replay: only the current commit's re-execution is kept, and water is only what was recorded.
+- **"Every number" in the code is read as the figure chips.** A block that works out or shows a figure carries a chip in the customer's words, leading to the figure's trail. Other numbers in the code (a loop's bound, a test's fixture) are code, not figures, and carry no chip. The chips are shown for the file as it is now, not for a replayed commit, because the figures file is read as it is today.
+- **The live typing comes from file snapshots** taken a few times a second during a lift, not from the builder's own keystrokes, so it works the same for every builder (KNOWN-GAPS).
+- **The inside's place for the checks and the papers.** The plan names the four floors. The files the Street does not draw also needed a place inside, or the old building's walk could not pass, so they stand on two more floors below the four, named in plain words. A check stands with the code it imports.
+- **What the old building drew that the inside does not:** the cranes and the digger during the replay, the sky's time of day, and the cables on hover (the open brick's cables are drawn). Nothing a person could read there is gone: each lift, each brick's English, edges, history and figures, and the audit's log and report are all in the panel.
+- **The tag `stage-11-start` sits one commit early**, before the lockfile fix that closed Stage 10 (`609a7ab`). A pushed tag is not moved.
+- **Found at the end of the stage, not by the reviewer: tests spent this laptop's drafter key.** A model call made with a test's own environment still read its key from, and wrote its row into, the laptop's database. On 2026-10-27 the watcher's Test drive test drafted 1,215 blocks this way, ₹292 in total. The cause was two bugs, both fixed:
+  - `call()` now takes the key and writes the row through the environment it is given;
+  - the recorded builder now puts the recorded English into the run's own work dir, so the test finds it and drafts nothing.
+
+  The Test drive test now checks both: no model call, and every recorded sentence in its own work dir.
 
 ## Reviewer findings
 
-(Filled in after the independent review.)
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran RUNS times; every run is in `docs/reports/stage-11.review.md`.
+
+Fixed in code:
+
+- **Run 1.**
+  - `voice/tell` took any text from the page as a builder line. It now takes a figure and a step, and the sentence is the flow House of Rama derived.
+  - The import group was never explained. It is now, and the recording was redone: 72 blocks, $0.108.
+  - The tail of a build was cut at every lift, losing the cursor. It is now one growing file.
+  - Replay showed sentences drafted later. A draft now carries its commit and shows only from that commit on.
+  - The pane stayed on "Being written" after a replayed change had typed in.
+  - The Building level did not fade over a turn.
+- **Run 2.** The live typing queued a fresh plan on every poll while one was typing.
+- **Run 3.**
+  - Catch up left the typing marked as playing.
+  - The voice's "closer" skipped the chosen building.
+- **Run 4.**
+  - The builder's pace was lost across polls.
+  - A refused draft was asked again.
+- **Run 5.**
+  - Only two pipes were drawn, not one per step.
+  - A figure shown twice took its first occurrence's value.
+- **Run 6.** "Next building" kept the last building's camera. Each building's view is now fresh.
+- **Run 7.**
+  - Zoom moved the point under the pointer after a first zoom.
+  - Water ran past a dry step.
+- **Run 8.** The code pane kept the previous file when another file was opened. It is now fresh for each file.
+
+Report claims corrected (runs 1, 2, 4, 5 and 6): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, and what the pane names.
+
+Not resolved by code:
+
+- **(d) in every run, and (a) and (c) in most, are cannot-tell.** The generator, the drift checks, the CI wiring, and the append-only and audit guards on `signoffs`, `audits` and `decisions` stand from earlier stages, outside the diff. This stage adds no write to those three tables; the one new write that is audited (`confirmExplanation`) is in the diff, with its test.
 
 ## Real model cost
 
-(Filled in at the end.)
+`pnpm cost 11`:
+
+| What                                                              | Model             | Calls    | Cost      |
+| ----------------------------------------------------------------- | ----------------- | -------- | --------- |
+| Independent reviewer                                              | gpt-6.1-sol       | REVCALLS | REVCOST   |
+| Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215    | ₹292      |
+| **Recorded total**                                                |                   |          | **TOTAL** |
+
+Not in that table:
+
+- **The sample build's English** (`pnpm record-explanations`, gpt-6.1-sol): 72 calls, 38,879 input and 3,048 output tokens, $0.108 (₹10). Its rows were counted by the script and not written, so the recording carries its own cost (`fixtures/sample-build/explanations-cost.json`).
+- **A live build's English costs about the same per build**: one call per block a lift changes, never the same block twice.
 
 ## Open questions
 
-(Filled in at the end.)
+- **Pipes across the Street.** Should a trail that crosses into another building's code get pipes along the Street's roads? It is a picture-only change, with no change to the record.
+- **The flow in replay.** Keeping each commit's re-execution would let replay show older flows. That needs more stored per commit. Is it worth it?
+- **The Anthropic credit.** It still limits Claude Code builds. The drafter here ran on OpenAI for the recording.
+- **The box is open to anyone with its address** (Stage 9's question stands).
+- **This VM's memory.** The watcher's full run (several dev servers and headless browsers) took the VM near its 16 GB during the stage, and the dev app and the watcher were stopped once for it. A larger VM, or running the end-to-end tests one at a time in the watcher, would avoid it.

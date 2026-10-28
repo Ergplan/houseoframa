@@ -1,6 +1,7 @@
 // Stage 2 end to end, in a real browser on the real dev server:
-//  - /site/self renders this repository's own Blueprint (rule 14); clicking a brick on the canvas opens
-//    it in the inspector with its dependencies in English.
+//  - /site/self renders this repository's own Blueprint (rule 14); clicking a brick inside its building
+//    (the third level since Stage 11, which retired the Stage 2 canvas) opens it in the inspector with
+//    its dependencies in English.
 //  - On a cloned site, Confirm writes the member's confirmation into the target's .rama/glossary.json,
 //    the Blueprint is regenerated, the inspector shows the phrase confirmed, and audit_log has the row.
 // The confirming site is a throwaway clone in a temporary work dir with a throwaway database, so the
@@ -10,14 +11,15 @@ import { randomBytes } from 'node:crypto';
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { chromium, type Browser, type Page } from 'playwright';
+import { chromium, type Browser } from 'playwright';
 import postgres from 'postgres';
 import type { Blueprint } from '@rama/shared';
 import { createDb, runMigrations, seed } from '@rama/db';
 import { addSite } from '../packages/blueprint/src/site.ts';
 import { registerSite } from '../packages/blueprint/src/register.ts';
 import { fixtureRepo, type FixtureRepo } from '../packages/blueprint/test/fixture-repo.ts';
-import { layout } from '../apps/rama/canvas/layout.ts';
+import { parseFeatures } from '../packages/stage/src/index.ts';
+import { clickInside } from './inside.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
 import { pageAs, signIn, withSession } from './session.ts';
 
@@ -83,21 +85,6 @@ afterAll(async () => {
   await admin.end();
 });
 
-/** Clicks a brick where the (deterministic) layout puts it, scaled to the canvas on screen. */
-async function clickBrick(page: Page, bp: Blueprint, brick: string) {
-  const box = layout(bp).byPath.get(brick)!;
-  const canvas = page.locator('canvas[data-ready="true"]');
-  await canvas.waitFor({ timeout: 60_000 });
-  await canvas.scrollIntoViewIfNeeded();
-  const rect = (await canvas.boundingBox())!;
-  const sceneW = Number(await canvas.getAttribute('data-scene-width'));
-  const sceneH = Number(await canvas.getAttribute('data-scene-height'));
-  await page.mouse.click(
-    rect.x + ((box.x + box.w / 2) * rect.width) / sceneW,
-    rect.y + ((box.y + box.h / 2) * rect.height) / sceneH,
-  );
-}
-
 describe('stage 2 e2e', () => {
   it('opens /site/self, clicks a brick, and reads its dependencies in English', async () => {
     const self = JSON.parse(
@@ -110,10 +97,13 @@ describe('stage 2 e2e', () => {
     const page = await pageAs(browser, server, token, { viewport: { width: 1500, height: 1000 } });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
-    // The Brick level of Stage 2 is the code, the third level of the lakefront (Stage 8).
+    // The bricks of Stage 2 stand inside the buildings, the third level of the lakefront (Stage 11).
     await page.goto(`${server.browserUrl}/site/self?at=code`);
     await expect(page.locator('.mon h2').textContent()).resolves.toBe('Trust report');
-    await clickBrick(page, self, brick);
+    const features = parseFeatures(
+      JSON.parse(readFileSync(new URL('../.rama/features.json', import.meta.url), 'utf8')),
+    );
+    await clickInside(page, server.browserUrl, 'self', self, features, brick);
 
     await page.locator('.mon h3', { hasText: brick }).waitFor();
     const section = page.locator('section[aria-label="Depends on"]');
@@ -141,8 +131,7 @@ describe('stage 2 e2e', () => {
       readFileSync(path.join(work, 'fixture/blueprint.json'), 'utf8'),
     ) as Blueprint;
     const page = await pageAs(browser, server, token, { viewport: { width: 1500, height: 1000 } });
-    await page.goto(`${server.browserUrl}/site/fixture?at=code`);
-    await clickBrick(page, bp, 'lib/calc.ts');
+    await clickInside(page, server.browserUrl, 'fixture', bp, null, 'lib/calc.ts');
     const row = page.locator(
       'section[aria-label="Depends on"] [data-edge="lib/calc.ts>lib/data.ts"]',
     );

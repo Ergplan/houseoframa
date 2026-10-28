@@ -8,6 +8,7 @@
 import type { BuildingScene } from './building.ts';
 import { brickOnFace, facadeShape, floorFaceOf, subFace } from './geometry.ts';
 import type { Pt } from './iso.ts';
+import { brickTop, insideAt, type InsideScene } from './inside.ts';
 import type { Palette } from './palette.ts';
 
 /** A flow as packages/trace gives it (flowOf): what the pipes need of it. */
@@ -207,4 +208,69 @@ export function drawPipes(
     ctx.arc(w.at.x, w.at.y, 7, 0, Math.PI * 2);
     ctx.fill();
   }
+}
+
+/**
+ * The pipes of one figure's flow inside a building (the third level): from the brick where an input is
+ * kept (or the ground under the floors when it is kept elsewhere), to the brick that works the figure out,
+ * up as the formula is applied, and across to the brick that shows it (`screenFile`, the screen's own
+ * file). The same steps, the same dry pipes.
+ */
+export function insidePipes(
+  sc: InsideScene,
+  flow: FlowLike,
+  tableFile: (table: string) => string | null,
+  screenFile: string | null,
+): PipeLayout {
+  const brickAt = (file: string | null): Pt | null => {
+    const x = file ? sc.bricks.find((b) => b.path === file) : undefined;
+    return x ? brickTop(sc, x) : null;
+  };
+  const a = insideAt(sc);
+  const ground = a(sc.w / 2, sc.d + 0.5, -24);
+  const fnIndex = flow.steps.findIndex((s) => s.kind === 'function');
+  const formulaIndex = flow.steps.findIndex((s) => s.kind === 'formula');
+  const screenIndex = flow.steps.findIndex((s) => s.kind === 'screen');
+  const fnAt = brickAt(flow.steps[fnIndex]?.file ?? null) ?? ground;
+  const shows = brickAt(flow.steps[screenIndex]?.file ?? screenFile);
+  const pipes: Pipe[] = [];
+  const stops: (Pt | null)[] = [];
+  const dry = (i: number) => flow.steps[i]?.value === null;
+  const label = (i: number, what: string) => (dry(i) ? `${what}: untraced` : null);
+  flow.steps.forEach((s, i) => {
+    if (s.kind !== 'source') return;
+    const from = brickAt(s.file) ?? brickAt(s.table ? tableFile(s.table) : null) ?? ground;
+    stops[i] = from;
+    pipes.push({
+      step: i,
+      points: [from, { x: from.x, y: Math.min(from.y, fnAt.y) - 14 }, fnAt],
+      dry: dry(i),
+      label: label(i, s.label),
+    });
+  });
+  const top = { x: fnAt.x, y: Math.min(fnAt.y, shows?.y ?? fnAt.y) - 30 };
+  const over = { x: shows?.x ?? fnAt.x, y: top.y };
+  stops[fnIndex] = fnAt;
+  stops[formulaIndex] = top;
+  stops[screenIndex] = shows;
+  pipes.push({
+    step: fnIndex,
+    points: [fnAt, top],
+    dry: dry(fnIndex),
+    label: label(fnIndex, 'worked out again'),
+  });
+  pipes.push({
+    step: formulaIndex,
+    points: [top, over],
+    dry: dry(formulaIndex),
+    label: label(formulaIndex, 'the formula'),
+  });
+  if (shows)
+    pipes.push({
+      step: screenIndex,
+      points: [over, shows],
+      dry: dry(screenIndex),
+      label: dry(screenIndex) ? 'untraced: no water reaches the screen' : null,
+    });
+  return { pipes, stops };
 }

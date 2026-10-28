@@ -138,13 +138,13 @@ describe('stage 8 e2e', () => {
     expect(await page.locator('.eg-folder').count()).toBe(1);
     expect(bannedIn(await readable(page))).toEqual([]);
 
-    // "Show me the code", in words: the code level, with the building in the breadcrumb.
+    // "Show me the code", in words: the inside of the building, with it in the breadcrumb.
     await page.getByLabel('Say where to go').fill('show me the code');
     await page.getByRole('button', { name: 'Go', exact: true }).click();
     await page.waitForURL(/at=code&b=take-an-order/);
-    await page.locator('canvas[data-scene-width]').waitFor();
+    await page.locator('[data-level="inside"] canvas[data-ready="true"]').waitFor();
     expect(await page.locator('.eg-crumbs').innerText()).toMatch(
-      /Street\s*›\s*Take an order\s*›\s*the code$/,
+      /Street\s*›\s*Take an order\s*›\s*inside$/,
     );
 
     // Back on the Street, the audit: the drones fly building by building and their badges stay.

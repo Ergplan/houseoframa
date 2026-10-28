@@ -1,7 +1,7 @@
 /* House of Rama's own rules, on top of ergOS Harmony (rule 17): every colour, face, space and radius
    here is a Harmony token (apps/rama/app/harmony-tokens.css, generated from design/harmony/tokens.json).
    The names below are the app's older ones, kept as aliases of the tokens so every screen follows them.
-   The Brick canvas keeps its own pixel colours, drawn only inside the canvas (canvas/palette.ts). */
+   (The Stage 2 Brick canvas, with its own pixel colours, was retired in Stage 11.) */
 :root {
   --bg: var(--canvas);
   --panel: var(--surface);
@@ -954,6 +954,46 @@ body:has(.rama-stage) {
 }
 .lake-fold:not([open]) {
   width: auto;
+}
+/* Stage 11, the inside: an open brick's code and its English need the room. */
+/* Inside, the panel is its own column beside the picture, as the Stage 2 inspector was: it holds the
+   code and the inspector, and must never cover the deck. Wider while a file's code is open. */
+.lakefront--inside {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+}
+.lakefront--inside.lakefront--code {
+  grid-template-columns: minmax(0, 1fr) minmax(420px, 56%);
+}
+.lakefront--inside .lake-fold {
+  position: static;
+  width: auto;
+  max-height: none;
+}
+@media (max-width: 900px) {
+  .lakefront--inside,
+  .lakefront--inside.lakefront--code {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.inside-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.inside-track button {
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border-radius: 3px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  cursor: pointer;
+}
+.inside-track button.done {
+  background: var(--accent-soft);
+}
+.inside-track button.cur {
+  background: var(--accent);
 }
 .lake-fold__head {
   cursor: pointer;

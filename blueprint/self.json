@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
+  "commit": "d459aefbf3cc9ad3adb23d0c84e7db320ba25314",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -14969,6 +14969,78 @@
       "sha": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "short": "8e3ee3a",
       "subject": "Stage 11: reviewer run 6 — a fresh camera for the next building; the figure-naming claim as it is"
+    },
+    {
+      "at": "2026-10-27T14:06:27Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 4,
+          "del": 5,
+          "kind": "M",
+          "path": "apps/rama/components/lakefront/FlowPanel.tsx"
+        },
+        {
+          "add": 61,
+          "del": 22,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 16,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/stage/src/camera.test.ts"
+        },
+        {
+          "add": 8,
+          "del": 6,
+          "kind": "M",
+          "path": "packages/stage/src/camera.ts"
+        },
+        {
+          "add": 18,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/stage/src/pipes.test.ts"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/stage/src/pipes.ts"
+        }
+      ],
+      "sha": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
+      "short": "d5edcb5",
+      "subject": "Stage 11: reviewer run 7 — zoom about the pointer at any zoom; water stops at the first dry step"
+    },
+    {
+      "at": "2026-10-28T05:43:55+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 3,
+          "del": 3,
+          "kind": "M",
+          "path": "CLAUDE.md"
+        },
+        {
+          "add": 9,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/MASTER-PROMPT.md"
+        }
+      ],
+      "sha": "d459aefbf3cc9ad3adb23d0c84e7db320ba25314",
+      "short": "d459aef",
+      "subject": "Master prompt: Stage 11 retires the Stage 2 brick building — the third level is the inside of the same glass building under one camera"
     }
   ],
   "edges": [
@@ -18555,21 +18627,17 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
       "symbols": [
-        "StreetView"
+        "InsideView"
       ],
-      "to": "apps/rama/components/lakefront/StreetView.tsx",
+      "to": "apps/rama/components/lakefront/InsideView.tsx",
       "typeOnly": false
     },
     {
-      "english": {
-        "confirmed": false,
-        "text": "the screen for one site and its blueprint"
-      },
       "from": "apps/rama/app/site/[siteId]/page.test.tsx",
       "symbols": [
-        "SiteView"
+        "StreetView"
       ],
-      "to": "apps/rama/components/site/SiteView.tsx",
+      "to": "apps/rama/components/lakefront/StreetView.tsx",
       "typeOnly": false
     },
     {
@@ -18638,17 +18706,9 @@
     {
       "from": "apps/rama/app/site/[siteId]/page.tsx",
       "symbols": [
-        "CodeCamera"
+        "InsideView"
       ],
-      "to": "apps/rama/components/lakefront/CameraRing.tsx",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/app/site/[siteId]/page.tsx",
-      "symbols": [
-        "CodePane"
-      ],
-      "to": "apps/rama/components/lakefront/CodePane.tsx",
+      "to": "apps/rama/components/lakefront/InsideView.tsx",
       "typeOnly": false
     },
     {
@@ -18665,18 +18725,6 @@
         "placeHref"
       ],
       "to": "apps/rama/components/lakefront/places.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the screen for one site and its blueprint"
-      },
-      "from": "apps/rama/app/site/[siteId]/page.tsx",
-      "symbols": [
-        "SiteView"
-      ],
-      "to": "apps/rama/components/site/SiteView.tsx",
       "typeOnly": false
     },
     {
@@ -18730,7 +18778,8 @@
       "from": "apps/rama/app/site/[siteId]/page.tsx",
       "symbols": [
         "building",
-        "cameraFrom"
+        "cameraFrom",
+        "insideFiles"
       ],
       "to": "packages/stage/src/index.ts",
       "typeOnly": false
@@ -19049,450 +19098,6 @@
       "typeOnly": false
     },
     {
-      "from": "apps/rama/canvas/audit.test.ts",
-      "symbols": [
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "to": "apps/rama/canvas/audit.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of a brick's box, with path, layer, colour and untested flag"
-      },
-      "from": "apps/rama/canvas/audit.test.ts",
-      "symbols": [
-        "BrickBox"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "apps/rama/canvas/audit.test.ts",
-      "symbols": [
-        "AuditStep"
-      ],
-      "to": "packages/audit/src/view.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "apps/rama/canvas/audit.ts",
-      "symbols": [
-        "AuditRun",
-        "Drone",
-        "LogEntry",
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "to": "packages/stage/src/index.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of the canvas drawing operations the painter needs; the painter that draws a site's state onto the canvas and returns its frame"
-      },
-      "from": "apps/rama/canvas/draw.test.ts",
-      "symbols": [
-        "Ctx",
-        "draw"
-      ],
-      "to": "apps/rama/canvas/draw.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "a made-up sample blueprint for tests"
-      },
-      "from": "apps/rama/canvas/draw.test.ts",
-      "symbols": [
-        "fixtureBlueprint"
-      ],
-      "to": "apps/rama/test/blueprint.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/draw.test.ts",
-      "symbols": [
-        "Blueprint"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of one picture of the site, with floors, bricks and crane hook; the shape of what the site is showing: blueprint, commit step, progress and selection; the frame worked out for a given site state"
-      },
-      "from": "apps/rama/canvas/draw.ts",
-      "symbols": [
-        "Frame",
-        "SiteState",
-        "frame"
-      ],
-      "to": "apps/rama/canvas/frame.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of a rectangle with position and size; the shape of a brick's box, with path, layer, colour and untested flag; the shape of a crane: author, label, position, colour and jib direction; the shape of the laid-out site: size, ground, building and floors"
-      },
-      "from": "apps/rama/canvas/draw.ts",
-      "symbols": [
-        "Box",
-        "BrickBox",
-        "Crane",
-        "Scene"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the dark ink colour; the colour for a given layer"
-      },
-      "from": "apps/rama/canvas/draw.ts",
-      "symbols": [
-        "INK",
-        "layerColor"
-      ],
-      "to": "apps/rama/canvas/palette.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/draw.ts",
-      "symbols": [
-        "BrickMark"
-      ],
-      "to": "packages/blueprint/src/metrics/index.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of what the site is showing: blueprint, commit step, progress and selection; the frame worked out for a given site state; the cached scene and timeline built from a blueprint; the sky for a given hour of the day"
-      },
-      "from": "apps/rama/canvas/frame.test.ts",
-      "symbols": [
-        "SiteState",
-        "frame",
-        "siteModel",
-        "skyAt"
-      ],
-      "to": "apps/rama/canvas/frame.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "a made-up sample blueprint for tests"
-      },
-      "from": "apps/rama/canvas/frame.test.ts",
-      "symbols": [
-        "fixtureBlueprint"
-      ],
-      "to": "apps/rama/test/blueprint.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of a brick's box, with path, layer, colour and untested flag; the shape of one floor of the building; the shape of the laid-out site: size, ground, building and floors; the scene laid out from a blueprint"
-      },
-      "from": "apps/rama/canvas/frame.ts",
-      "symbols": [
-        "BrickBox",
-        "FloorBox",
-        "Scene",
-        "layout"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the amber highlight colour for imported-by links; the teal highlight colour for imports"
-      },
-      "from": "apps/rama/canvas/frame.ts",
-      "symbols": [
-        "IMPORTED_BY",
-        "IMPORTS"
-      ],
-      "to": "apps/rama/canvas/palette.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of one timed brick event within a lift; the shape of the build history: lifts and which lift laid each brick; the event under way at a given point in a lift; whether a brick is built at a given point in the replay; the replay clock between the previous commit and this one; the local hour of day in a commit's own time zone; the build timeline worked out from a blueprint and its scene"
-      },
-      "from": "apps/rama/canvas/frame.ts",
-      "symbols": [
-        "LiftEvent",
-        "Timeline",
-        "activeEvent",
-        "brickState",
-        "currentTime",
-        "localHour",
-        "timeline"
-      ],
-      "to": "apps/rama/canvas/timeline.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/frame.ts",
-      "symbols": [
-        "BrickMark",
-        "brickMarks"
-      ],
-      "to": "packages/blueprint/src/metrics/index.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/frame.ts",
-      "symbols": [
-        "Blueprint"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the fixed height of a brick; the widest a building may be; the most cranes shown on a site; the most scaffolds shown on a site; the narrowest a building may be; a brick's width worked out from its line count; the scene laid out from a blueprint"
-      },
-      "from": "apps/rama/canvas/layout.test.ts",
-      "symbols": [
-        "BRICK_H",
-        "MAX_BUILDING_W",
-        "MAX_CRANES",
-        "MAX_SCAFFOLDS",
-        "MIN_BUILDING_W",
-        "brickWidth",
-        "layout"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "a made-up sample blueprint for tests; a test helper that builds one file entry for a blueprint"
-      },
-      "from": "apps/rama/canvas/layout.test.ts",
-      "symbols": [
-        "fixtureBlueprint",
-        "node"
-      ],
-      "to": "apps/rama/test/blueprint.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/layout.test.ts",
-      "symbols": [
-        "Blueprint"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the set of six crane colours; the colour for a given layer; a layer's short uppercase name"
-      },
-      "from": "apps/rama/canvas/layout.ts",
-      "symbols": [
-        "CRANE_COLORS",
-        "layerColor",
-        "layerShort"
-      ],
-      "to": "apps/rama/canvas/palette.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the sorted list of distinct commit authors"
-      },
-      "from": "apps/rama/canvas/layout.ts",
-      "symbols": [
-        "authors"
-      ],
-      "to": "packages/blueprint/src/metrics/index.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/layout.ts",
-      "symbols": [
-        "Blueprint"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the cached scene and timeline built from a blueprint"
-      },
-      "from": "apps/rama/canvas/pick.test.ts",
-      "symbols": [
-        "siteModel"
-      ],
-      "to": "apps/rama/canvas/frame.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "what lies under a click: the door, the office, a built brick or nothing; a screen click position converted to scene coordinates"
-      },
-      "from": "apps/rama/canvas/pick.test.ts",
-      "symbols": [
-        "pick",
-        "toScene"
-      ],
-      "to": "apps/rama/canvas/pick.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "a made-up sample blueprint for tests"
-      },
-      "from": "apps/rama/canvas/pick.test.ts",
-      "symbols": [
-        "fixtureBlueprint"
-      ],
-      "to": "apps/rama/test/blueprint.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the cached scene and timeline built from a blueprint"
-      },
-      "from": "apps/rama/canvas/pick.ts",
-      "symbols": [
-        "siteModel"
-      ],
-      "to": "apps/rama/canvas/frame.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of a rectangle with position and size"
-      },
-      "from": "apps/rama/canvas/pick.ts",
-      "symbols": [
-        "Box"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "whether a brick is built at a given point in the replay"
-      },
-      "from": "apps/rama/canvas/pick.ts",
-      "symbols": [
-        "brickState"
-      ],
-      "to": "apps/rama/canvas/timeline.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/pick.ts",
-      "symbols": [
-        "Blueprint"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the scene laid out from a blueprint"
-      },
-      "from": "apps/rama/canvas/timeline.test.ts",
-      "symbols": [
-        "layout"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the event under way at a given point in a lift; whether a brick is built at a given point in the replay; a replay time shown as clock text with its UTC offset; the replay clock between the previous commit and this one; the local hour of day in a commit's own time zone; a time zone offset in minutes read from a timestamp; the build timeline worked out from a blueprint and its scene"
-      },
-      "from": "apps/rama/canvas/timeline.test.ts",
-      "symbols": [
-        "activeEvent",
-        "brickState",
-        "clockText",
-        "currentTime",
-        "localHour",
-        "offsetMinutes",
-        "timeline"
-      ],
-      "to": "apps/rama/canvas/timeline.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "a made-up sample blueprint for tests"
-      },
-      "from": "apps/rama/canvas/timeline.test.ts",
-      "symbols": [
-        "fixtureBlueprint"
-      ],
-      "to": "apps/rama/test/blueprint.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the shape of the laid-out site: size, ground, building and floors"
-      },
-      "from": "apps/rama/canvas/timeline.ts",
-      "symbols": [
-        "Scene"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": true
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "one commit's changes sorted into laid, renovated, knocked out and gone"
-      },
-      "from": "apps/rama/canvas/timeline.ts",
-      "symbols": [
-        "commitBreakdown"
-      ],
-      "to": "packages/blueprint/src/metrics/index.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/canvas/timeline.ts",
-      "symbols": [
-        "Blueprint"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
       "from": "apps/rama/components/ceremony/DiscoveryView.test.tsx",
       "symbols": [
         "DiscoveryView"
@@ -19583,14 +19188,6 @@
     {
       "from": "apps/rama/components/inspector/Inspector.tsx",
       "symbols": [
-        "LogEntry"
-      ],
-      "to": "apps/rama/canvas/audit.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "apps/rama/components/inspector/Inspector.tsx",
-      "symbols": [
         "DraftState"
       ],
       "to": "apps/rama/components/audit/ConfirmReport.tsx",
@@ -19653,6 +19250,14 @@
         "ImportEdge"
       ],
       "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/inspector/Inspector.tsx",
+      "symbols": [
+        "LogEntry"
+      ],
+      "to": "packages/stage/src/index.ts",
       "typeOnly": true
     },
     {
@@ -19905,6 +19510,139 @@
       "typeOnly": true
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the side panel showing the trust report, a commit, or a single file; the shape of what the side panel is showing: report, commit or file"
+      },
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "CapturedScreen",
+        "Inspector",
+        "ScreenStates",
+        "View"
+      ],
+      "to": "apps/rama/components/inspector/Inspector.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "CameraRing"
+      ],
+      "to": "apps/rama/components/lakefront/CameraRing.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "CodePane"
+      ],
+      "to": "apps/rama/components/lakefront/CodePane.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "FlowPanel"
+      ],
+      "to": "apps/rama/components/lakefront/FlowPanel.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "Words"
+      ],
+      "to": "apps/rama/components/lakefront/Words.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "usePalette"
+      ],
+      "to": "apps/rama/components/lakefront/live.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "placeHref"
+      ],
+      "to": "apps/rama/components/lakefront/places.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "TURN_MS",
+        "useCamera"
+      ],
+      "to": "apps/rama/components/lakefront/useCamera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "AuditView",
+        "Verdict",
+        "auditScript"
+      ],
+      "to": "packages/audit/src/view.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "brickMarks"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "Blueprint",
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "AuditRun",
+        "Camera",
+        "CameraAction",
+        "InsideFloorKind",
+        "LogEntry",
+        "brickTop",
+        "drawInside",
+        "drawPipes",
+        "drawnOn",
+        "finishAudit",
+        "flowAt",
+        "inside",
+        "insidePipes",
+        "pickInside",
+        "startAudit",
+        "stepAudit",
+        "toPicture",
+        "unview",
+        "viewTransform"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/InsideView.tsx",
+      "symbols": [
+        "Flow"
+      ],
+      "to": "packages/trace/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "apps/rama/components/lakefront/StreetView.tsx",
       "symbols": [
         "DraftState"
@@ -20026,6 +19764,75 @@
       "typeOnly": false
     },
     {
+      "english": {
+        "confirmed": false,
+        "text": "the side panel showing the trust report, a commit, or a single file; the shape of what the side panel is showing: report, commit or file"
+      },
+      "from": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "symbols": [
+        "Inspector",
+        "View"
+      ],
+      "to": "apps/rama/components/inspector/Inspector.tsx",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the plain-English wording for one file-to-file import, with its confirmation state; a plain paragraph on which files a file depends on, grouped by floor"
+      },
+      "from": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "symbols": [
+        "edgePhrase",
+        "reviewerParagraph"
+      ],
+      "to": "apps/rama/components/inspector/words.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "per-file counts of dependencies, users and test status; one file's change history across commits"
+      },
+      "from": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "symbols": [
+        "brickFigures",
+        "brickHistory"
+      ],
+      "to": "packages/blueprint/src/metrics/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "symbols": [
+        "insidesOf",
+        "parseFeatures",
+        "pickInside",
+        "pointOf",
+        "resolveFeatures",
+        "street"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/components/lakefront/live.ts",
       "symbols": [
         "Palette",
@@ -20092,113 +19899,6 @@
       "from": "apps/rama/components/showroom/TrailPanel.tsx",
       "symbols": [
         "Trail"
-      ],
-      "to": "packages/shared/src/index.ts",
-      "typeOnly": true
-    },
-    {
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "AuditRun",
-        "LogEntry",
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "to": "apps/rama/canvas/audit.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the painter that draws a site's state onto the canvas and returns its frame"
-      },
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "draw"
-      ],
-      "to": "apps/rama/canvas/draw.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the cached scene and timeline built from a blueprint"
-      },
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "siteModel"
-      ],
-      "to": "apps/rama/canvas/frame.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the colour for a given layer"
-      },
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "layerColor"
-      ],
-      "to": "apps/rama/canvas/palette.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "what lies under a click: the door, the office, a built brick or nothing; a screen click position converted to scene coordinates"
-      },
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "pick",
-        "toScene"
-      ],
-      "to": "apps/rama/canvas/pick.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "whether a brick is built at a given point in the replay; a replay time shown as clock text with its UTC offset; the replay clock between the previous commit and this one"
-      },
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "brickState",
-        "clockText",
-        "currentTime"
-      ],
-      "to": "apps/rama/canvas/timeline.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
-        "text": "the side panel showing the trust report, a commit, or a single file; the shape of what the side panel is showing: report, commit or file"
-      },
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "CapturedScreen",
-        "Inspector",
-        "ScreenStates",
-        "View"
-      ],
-      "to": "apps/rama/components/inspector/Inspector.tsx",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "AuditView",
-        "auditScript"
-      ],
-      "to": "packages/audit/src/view.ts",
-      "typeOnly": false
-    },
-    {
-      "from": "apps/rama/components/site/SiteView.tsx",
-      "symbols": [
-        "Blueprint"
       ],
       "to": "packages/shared/src/index.ts",
       "typeOnly": true
@@ -25761,6 +25461,21 @@
     {
       "from": "packages/stage/src/draw.ts",
       "symbols": [
+        "InsideBrick",
+        "InsideFloorKind",
+        "InsideScene",
+        "brickTop",
+        "floorSlab",
+        "insideAt",
+        "insideBrickFaces",
+        "standsAt"
+      ],
+      "to": "packages/stage/src/inside.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/draw.ts",
+      "symbols": [
         "Pt",
         "faceTransform"
       ],
@@ -25973,6 +25688,14 @@
       "symbols": [
         "*"
       ],
+      "to": "packages/stage/src/inside.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/index.ts",
+      "symbols": [
+        "*"
+      ],
       "to": "packages/stage/src/iso.ts",
       "typeOnly": false
     },
@@ -26038,6 +25761,111 @@
         "*"
       ],
       "to": "packages/stage/src/words.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.test.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/inside.test.ts",
+      "symbols": [
+        "ORIENTATIONS"
+      ],
+      "to": "packages/stage/src/camera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.test.ts",
+      "symbols": [
+        "parseFeatures",
+        "resolveFeatures"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.test.ts",
+      "symbols": [
+        "brickHeight",
+        "insideBrickFaces",
+        "insideFiles",
+        "insidesOf",
+        "laidInOf",
+        "pickInside",
+        "pointOf",
+        "standsAt"
+      ],
+      "to": "packages/stage/src/inside.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.test.ts",
+      "symbols": [
+        "street"
+      ],
+      "to": "packages/stage/src/street.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.test.ts",
+      "symbols": [
+        "stallBlueprint",
+        "stallFeatures"
+      ],
+      "to": "packages/stage/test/blueprint.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.ts",
+      "symbols": [
+        "Blueprint",
+        "BrickNode"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "packages/stage/src/inside.ts",
+      "symbols": [
+        "ORIENTATIONS",
+        "Orientation"
+      ],
+      "to": "packages/stage/src/camera.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.ts",
+      "symbols": [
+        "onStreet"
+      ],
+      "to": "packages/stage/src/features.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.ts",
+      "symbols": [
+        "Pt",
+        "boxFaces",
+        "inPolygon",
+        "project"
+      ],
+      "to": "packages/stage/src/iso.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/inside.ts",
+      "symbols": [
+        "FLOOR_LABEL",
+        "FLOOR_ORDER",
+        "StreetBuilding",
+        "floorOf"
+      ],
+      "to": "packages/stage/src/street.ts",
       "typeOnly": false
     },
     {
@@ -26206,6 +26034,16 @@
     {
       "from": "packages/stage/src/pipes.test.ts",
       "symbols": [
+        "brickTop",
+        "inside",
+        "laidInOf"
+      ],
+      "to": "packages/stage/src/inside.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pipes.test.ts",
+      "symbols": [
         "paletteFromTokens"
       ],
       "to": "packages/stage/src/palette.ts",
@@ -26217,7 +26055,8 @@
         "FlowLike",
         "buildingPipes",
         "drawPipes",
-        "flowAt"
+        "flowAt",
+        "insidePipes"
       ],
       "to": "packages/stage/src/pipes.ts",
       "typeOnly": false
@@ -26264,6 +26103,16 @@
         "subFace"
       ],
       "to": "packages/stage/src/geometry.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/stage/src/pipes.ts",
+      "symbols": [
+        "InsideScene",
+        "brickTop",
+        "insideAt"
+      ],
+      "to": "packages/stage/src/inside.ts",
       "typeOnly": false
     },
     {
@@ -28359,7 +28208,7 @@
     {
       "english": {
         "confirmed": false,
-        "text": "a database connection opened from a URL; running the database migrations"
+        "text": "a database connection opened from a URL; the table of model calls; running the database migrations"
       },
       "from": "packages/workbench/test/testdrive.test.ts",
       "symbols": [
@@ -28367,6 +28216,7 @@
         "audits",
         "createDb",
         "decisions",
+        "modelCalls",
         "runMigrations",
         "signoffs"
       ],
@@ -28595,6 +28445,26 @@
         "defineFigures"
       ],
       "to": "templates/house-stack/rama/define.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/inside.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "tests/inside.ts",
+      "symbols": [
+        "FeaturesFile",
+        "insidesOf",
+        "pointOf",
+        "resolveFeatures",
+        "street"
+      ],
+      "to": "packages/stage/src/index.ts",
       "typeOnly": false
     },
     {
@@ -28845,18 +28715,6 @@
     {
       "english": {
         "confirmed": false,
-        "text": "the scene laid out from a blueprint"
-      },
-      "from": "tests/stage-2.e2e.test.ts",
-      "symbols": [
-        "layout"
-      ],
-      "to": "apps/rama/canvas/layout.ts",
-      "typeOnly": false
-    },
-    {
-      "english": {
-        "confirmed": false,
         "text": "a way to register a site for the local member"
       },
       "from": "tests/stage-2.e2e.test.ts",
@@ -28914,6 +28772,14 @@
       "typeOnly": true
     },
     {
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "parseFeatures"
+      ],
+      "to": "packages/stage/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
@@ -28924,6 +28790,14 @@
         "startDevServer"
       ],
       "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-2.e2e.test.ts",
+      "symbols": [
+        "clickInside"
+      ],
+      "to": "tests/inside.ts",
       "typeOnly": false
     },
     {
@@ -30294,7 +30168,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-27T13:45:09Z",
+  "extractedAt": "2026-10-28T05:43:55+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -30522,13 +30396,13 @@
     },
     {
       "binary": false,
-      "bytes": 15821,
-      "changes": 6,
+      "bytes": 15932,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "9e181842fccef1c65ca5cfaec225e932d1263b65",
+      "lastCommit": "d459aefbf3cc9ad3adb23d0c84e7db320ba25314",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 108,
@@ -32136,7 +32010,7 @@
     },
     {
       "binary": false,
-      "bytes": 26785,
+      "bytes": 27828,
       "changes": 17,
       "env": [],
       "envDynamic": false,
@@ -32145,7 +32019,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1350,
+      "lines": 1390,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -32479,7 +32353,7 @@
     },
     {
       "binary": false,
-      "bytes": 7568,
+      "bytes": 8057,
       "changes": 7,
       "env": [
         "DATABASE_URL"
@@ -32490,7 +32364,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 179,
+      "lines": 185,
       "packages": [
         "postgres",
         "react",
@@ -32502,7 +32376,7 @@
     },
     {
       "binary": false,
-      "bytes": 6537,
+      "bytes": 8095,
       "changes": 13,
       "env": [],
       "envDynamic": false,
@@ -32514,7 +32388,7 @@
       "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 176,
+      "lines": 208,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -32626,326 +32500,6 @@
         "next"
       ],
       "path": "apps/rama/app/testdrive/page.tsx",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 2558,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 63,
-      "packages": [
-        "vitest"
-      ],
-      "path": "apps/rama/canvas/audit.test.ts",
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 275,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "AuditRun",
-        "Drone",
-        "LogEntry",
-        "finishAudit",
-        "startAudit",
-        "stepAudit"
-      ],
-      "firstCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 10,
-      "path": "apps/rama/canvas/audit.ts",
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 4270,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 127,
-      "packages": [
-        "vitest"
-      ],
-      "path": "apps/rama/canvas/draw.test.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Tests that the building painter draws the right things at each point of the replay, such as the cleared site, built bricks, the door and the banner."
-      },
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 13563,
-      "changes": 5,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "Ctx",
-        "draw"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 408,
-      "path": "apps/rama/canvas/draw.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Paints one picture of the building on a canvas: bricks, floors, sign, site office, scaffolds, cranes and digger, keeping no state of its own."
-      },
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 4774,
-      "changes": 3,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 135,
-      "packages": [
-        "vitest"
-      ],
-      "path": "apps/rama/canvas/frame.test.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Tests what is visible at each moment of the replay: the cleared site, the brick being lifted, the digger, and the finished building."
-      },
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 9668,
-      "changes": 3,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "Frame",
-        "FrameBrick",
-        "SiteModel",
-        "SiteState",
-        "Sky",
-        "Verdict",
-        "frame",
-        "mix",
-        "siteModel",
-        "skyAt"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "785810db02044e37dd058164c3d9b576f404f196",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 282,
-      "path": "apps/rama/canvas/frame.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Works out everything visible at one instant of the replay as plain data, including the sky, so the painter only has to draw it."
-      },
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 4408,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 120,
-      "packages": [
-        "vitest"
-      ],
-      "path": "apps/rama/canvas/layout.test.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Tests that the building layout is repeatable, stacks floors in order, keeps bricks inside their floors and never overlaps two bricks."
-      },
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 6682,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "BRICK_H",
-        "Box",
-        "BrickBox",
-        "Crane",
-        "FLOOR_PAD",
-        "FloorBox",
-        "GAP",
-        "MAX_BUILDING_W",
-        "MAX_CRANES",
-        "MAX_SCAFFOLDS",
-        "MIN_BUILDING_W",
-        "PLATE",
-        "Scaffold",
-        "Scene",
-        "brickWidth",
-        "buildingWidth",
-        "layout"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 210,
-      "path": "apps/rama/canvas/layout.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Decides where everything stands in the picture: floors, bricks sized by file length, scaffolds, cranes, the Showroom door and the site office."
-      },
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 1367,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "CRANE_COLORS",
-        "IMPORTED_BY",
-        "IMPORTS",
-        "INK",
-        "layerColor",
-        "layerShort"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 38,
-      "path": "apps/rama/canvas/palette.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "The colours of the building: one per floor, one per crane, plus the markers for untested code and file connections."
-      },
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 1680,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 46,
-      "packages": [
-        "vitest"
-      ],
-      "path": "apps/rama/canvas/pick.test.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Tests that clicking the building finds the right brick, door or site office, and that pointer positions map correctly onto the scaled canvas."
-      },
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 1507,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "Picked",
-        "pick",
-        "toScene"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 40,
-      "path": "apps/rama/canvas/pick.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Finds which brick, door or site office lies under a clicked point on the building, counting only bricks already built at that moment."
-      },
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 2991,
-      "changes": 1,
-      "env": [],
-      "envDynamic": false,
-      "exports": [],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 83,
-      "packages": [
-        "vitest"
-      ],
-      "path": "apps/rama/canvas/timeline.test.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "Tests of the replay timeline: one lift per commit, how changes are labelled, how a brick moves from none to built, and the clock."
-      },
-      "test": true
-    },
-    {
-      "binary": false,
-      "bytes": 5054,
-      "changes": 2,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "BrickState",
-        "EventKind",
-        "Lift",
-        "LiftEvent",
-        "Timeline",
-        "activeEvent",
-        "brickState",
-        "clockText",
-        "currentTime",
-        "localHour",
-        "offsetMinutes",
-        "timeline"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "5a2d0ed9b644bfd284bb1f3c547eede8f32f3761",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 134,
-      "path": "apps/rama/canvas/timeline.ts",
-      "purpose": {
-        "confirmed": false,
-        "text": "The replay model: each commit becomes a lift where changed bricks get equal slots, lower floors first, with time of day taken from commit timestamps."
-      },
       "test": false
     },
     {
@@ -33227,7 +32781,7 @@
     },
     {
       "binary": false,
-      "bytes": 27202,
+      "bytes": 27195,
       "changes": 12,
       "env": [],
       "envDynamic": false,
@@ -33385,18 +32939,40 @@
     {
       "binary": false,
       "bytes": 2414,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
         "FlowPanel"
       ],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 77,
       "path": "apps/rama/components/lakefront/FlowPanel.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 25512,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "InsideProps",
+        "InsideView"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 730,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/lakefront/InsideView.tsx",
       "test": false
     },
     {
@@ -33442,6 +33018,25 @@
       ],
       "path": "apps/rama/components/lakefront/Words.tsx",
       "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 3614,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 82,
+      "packages": [
+        "react-dom",
+        "vitest"
+      ],
+      "path": "apps/rama/components/lakefront/inside.walk.test.tsx",
+      "test": true
     },
     {
       "binary": false,
@@ -33549,32 +33144,7 @@
     },
     {
       "binary": false,
-      "bytes": 16559,
-      "changes": 7,
-      "env": [],
-      "envDynamic": false,
-      "exports": [
-        "SiteView"
-      ],
-      "firstCommit": "4b84afbd8f36fce72e5dd73fe1d063b858bc6f5c",
-      "lastCommit": "306a9860215a57579e146e9636ad1f1c9289c44a",
-      "layer": "interface",
-      "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 461,
-      "packages": [
-        "next",
-        "react"
-      ],
-      "path": "apps/rama/components/site/SiteView.tsx",
-      "purpose": {
-        "confirmed": false,
-        "text": "The site screen: the building drawn on a canvas, replay controls beneath it, and the inspector beside it, opening on the finished building."
-      },
-      "test": false
-    },
-    {
-      "binary": false,
-      "bytes": 3086,
+      "bytes": 3189,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33583,7 +33153,7 @@
       "lastCommit": "0e7f45499d6eb42caf3f829e2353d0efd4f0ebfe",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 80,
+      "lines": 81,
       "packages": [
         "vitest"
       ],
@@ -34615,7 +34185,7 @@
     },
     {
       "binary": false,
-      "bytes": 76602,
+      "bytes": 78187,
       "changes": 33,
       "env": [],
       "envDynamic": false,
@@ -34624,7 +34194,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 236,
+      "lines": 237,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -34653,7 +34223,7 @@
     },
     {
       "binary": false,
-      "bytes": 70949,
+      "bytes": 74327,
       "changes": 102,
       "env": [],
       "envDynamic": false,
@@ -34662,7 +34232,7 @@
       "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 266,
+      "lines": 272,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -34702,7 +34272,7 @@
     },
     {
       "binary": false,
-      "bytes": 21225,
+      "bytes": 21537,
       "changes": 40,
       "env": [],
       "envDynamic": false,
@@ -34711,7 +34281,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 70,
+      "lines": 71,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -34721,16 +34291,16 @@
     },
     {
       "binary": false,
-      "bytes": 47337,
-      "changes": 6,
+      "bytes": 48994,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "9e181842fccef1c65ca5cfaec225e932d1263b65",
+      "lastCommit": "d459aefbf3cc9ad3adb23d0c84e7db320ba25314",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 389,
+      "lines": 395,
       "path": "docs/MASTER-PROMPT.md",
       "purpose": {
         "confirmed": false,
@@ -34906,7 +34476,7 @@
     },
     {
       "binary": false,
-      "bytes": 9310,
+      "bytes": 18055,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -34915,22 +34485,22 @@
       "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 112,
+      "lines": 190,
       "path": "docs/reports/stage-11.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 68298,
-      "changes": 6,
+      "bytes": 76648,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "8e3ee3a590a61fb5ecded0be4faed113921a8f0c",
+      "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 119,
+      "lines": 134,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -40559,7 +40129,7 @@
     },
     {
       "binary": false,
-      "bytes": 10217,
+      "bytes": 10608,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -40581,7 +40151,7 @@
       "lastCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 305,
+      "lines": 312,
       "path": "packages/model/src/call.ts",
       "purpose": {
         "confirmed": false,
@@ -41249,6 +40819,21 @@
     },
     {
       "binary": false,
+      "bytes": 187,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 11,
+      "path": "packages/stage/src/__snapshots__/inside.test.ts.snap",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 6446,
       "changes": 2,
       "env": [],
@@ -41276,12 +40861,12 @@
     {
       "binary": false,
       "bytes": 10698,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
-      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 274,
@@ -41294,7 +40879,7 @@
     {
       "binary": false,
       "bytes": 10820,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -41316,7 +40901,7 @@
         "viewTransform"
       ],
       "firstCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
-      "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
+      "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 293,
@@ -41343,15 +40928,17 @@
     },
     {
       "binary": false,
-      "bytes": 20971,
+      "bytes": 27075,
       "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [
         "BuildingFrame",
         "Flag",
+        "InsideFrame",
         "StreetFrame",
         "drawBuilding",
+        "drawInside",
         "drawStreet",
         "sky",
         "standingHeight"
@@ -41360,7 +40947,7 @@
       "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 598,
+      "lines": 744,
       "path": "packages/stage/src/draw.ts",
       "test": false
     },
@@ -41484,7 +41071,7 @@
     },
     {
       "binary": false,
-      "bytes": 615,
+      "bytes": 644,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -41495,8 +41082,68 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 17,
+      "lines": 18,
       "path": "packages/stage/src/index.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5655,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 122,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/stage/src/inside.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 12145,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "INSIDE_LABEL",
+        "INSIDE_ORDER",
+        "IN_CELL",
+        "IN_FLOOR_PAD",
+        "IN_MAX_BRICK",
+        "IN_MIN_BRICK",
+        "IN_SIDE",
+        "InsideBrick",
+        "InsideFloor",
+        "InsideFloorKind",
+        "InsidePick",
+        "InsideScene",
+        "brickHeight",
+        "brickTop",
+        "drawnOn",
+        "floorSlab",
+        "inside",
+        "insideAt",
+        "insideBrickFaces",
+        "insideFiles",
+        "insideFloorOf",
+        "insidesOf",
+        "laidInOf",
+        "pickInside",
+        "pointOf",
+        "standsAt"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 316,
+      "path": "packages/stage/src/inside.ts",
       "test": false
     },
     {
@@ -41586,16 +41233,16 @@
     },
     {
       "binary": false,
-      "bytes": 6172,
-      "changes": 2,
+      "bytes": 7647,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "e9a9df9769f16ece3809a69acdfc423857d41307",
+      "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 156,
+      "lines": 185,
       "packages": [
         "vitest"
       ],
@@ -41604,8 +41251,8 @@
     },
     {
       "binary": false,
-      "bytes": 7910,
-      "changes": 2,
+      "bytes": 10392,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -41615,13 +41262,14 @@
         "along",
         "buildingPipes",
         "drawPipes",
-        "flowAt"
+        "flowAt",
+        "insidePipes"
       ],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "e9a9df9769f16ece3809a69acdfc423857d41307",
+      "lastCommit": "d5edcb511ceb039b3af55c36c8ce71871630a6c5",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 210,
+      "lines": 276,
       "path": "packages/stage/src/pipes.ts",
       "test": false
     },
@@ -42539,7 +42187,7 @@
     },
     {
       "binary": false,
-      "bytes": 1232,
+      "bytes": 1242,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -42567,7 +42215,7 @@
     },
     {
       "binary": false,
-      "bytes": 3898,
+      "bytes": 4004,
       "changes": 3,
       "env": [
         "HOME",
@@ -42660,7 +42308,7 @@
     },
     {
       "binary": false,
-      "bytes": 11561,
+      "bytes": 11627,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -42682,7 +42330,7 @@
       "lastCommit": "178ed60afce32e566c3a09235c1a172a268047a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 329,
+      "lines": 332,
       "packages": [
         "zod"
       ],
@@ -42888,7 +42536,7 @@
     },
     {
       "binary": false,
-      "bytes": 6933,
+      "bytes": 6938,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -42955,7 +42603,7 @@
     },
     {
       "binary": false,
-      "bytes": 10574,
+      "bytes": 10579,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -43044,7 +42692,7 @@
     },
     {
       "binary": false,
-      "bytes": 9903,
+      "bytes": 10470,
       "changes": 3,
       "env": [
         "DATABASE_URL"
@@ -43055,7 +42703,7 @@
       "lastCommit": "178ed60afce32e566c3a09235c1a172a268047a2",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 250,
+      "lines": 265,
       "packages": [
         "postgres",
         "vitest"
@@ -43226,7 +42874,7 @@
     },
     {
       "binary": false,
-      "bytes": 7278,
+      "bytes": 7870,
       "changes": 6,
       "env": [
         "DATABASE_URL"
@@ -43237,7 +42885,7 @@
       "lastCommit": "3a61a408bcaeaa26a396bd665ba615dc5788635a",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 165,
+      "lines": 183,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -43252,6 +42900,11 @@
         },
         {
           "name": "decisions",
+          "reads": true,
+          "writes": false
+        },
+        {
+          "name": "model_calls",
           "reads": true,
           "writes": false
         },
@@ -44478,6 +44131,23 @@
     },
     {
       "binary": false,
+      "bytes": 1485,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "clickInside"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 36,
+      "path": "tests/inside.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1497,
       "changes": 1,
       "env": [],
@@ -44618,7 +44288,7 @@
     },
     {
       "binary": false,
-      "bytes": 11370,
+      "bytes": 11623,
       "changes": 2,
       "env": [
         "RAMA_SHOTS"
@@ -44629,7 +44299,7 @@
       "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 255,
+      "lines": 258,
       "packages": [
         "playwright",
         "vitest"
@@ -44639,7 +44309,7 @@
     },
     {
       "binary": false,
-      "bytes": 8627,
+      "bytes": 8202,
       "changes": 4,
       "env": [
         "DATABASE_URL",
@@ -44651,7 +44321,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 197,
+      "lines": 186,
       "packages": [
         "playwright",
         "postgres",
@@ -44728,7 +44398,7 @@
     },
     {
       "binary": false,
-      "bytes": 8975,
+      "bytes": 9126,
       "changes": 4,
       "env": [
         "DATABASE_URL"
@@ -44739,7 +44409,7 @@
       "lastCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 232,
+      "lines": 235,
       "packages": [
         "playwright",
         "postgres",
@@ -44860,7 +44530,7 @@
     },
     {
       "binary": false,
-      "bytes": 8032,
+      "bytes": 8055,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -45024,6 +44694,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -45421,6 +45092,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -45479,13 +45151,6 @@
         "apps/rama/app/layout.tsx",
         "apps/rama/app/site/[siteId]/layout.tsx",
         "apps/rama/app/site/[siteId]/page.tsx",
-        "apps/rama/canvas/audit.ts",
-        "apps/rama/canvas/draw.ts",
-        "apps/rama/canvas/frame.ts",
-        "apps/rama/canvas/layout.ts",
-        "apps/rama/canvas/palette.ts",
-        "apps/rama/canvas/pick.ts",
-        "apps/rama/canvas/timeline.ts",
         "apps/rama/components/audit/ConfirmReport.tsx",
         "apps/rama/components/ears/VoiceRoom.tsx",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
@@ -45498,12 +45163,12 @@
         "apps/rama/components/lakefront/CameraRing.tsx",
         "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/lakefront/FlowPanel.tsx",
+        "apps/rama/components/lakefront/InsideView.tsx",
         "apps/rama/components/lakefront/StreetView.tsx",
         "apps/rama/components/lakefront/Words.tsx",
         "apps/rama/components/lakefront/live.ts",
         "apps/rama/components/lakefront/places.ts",
         "apps/rama/components/lakefront/useCamera.ts",
-        "apps/rama/components/site/SiteView.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
@@ -45593,6 +45258,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -45746,6 +45412,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -45897,6 +45564,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -46050,6 +45718,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -46204,6 +45873,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -46358,6 +46028,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -46501,6 +46172,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -46654,6 +46326,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",
@@ -46783,6 +46456,7 @@
         "packages/stage/src/features.ts",
         "packages/stage/src/geometry.ts",
         "packages/stage/src/index.ts",
+        "packages/stage/src/inside.ts",
         "packages/stage/src/iso.ts",
         "packages/stage/src/palette.ts",
         "packages/stage/src/pick.ts",

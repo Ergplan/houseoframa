@@ -42,7 +42,8 @@ function spoken(file: string): { line: number; text: string }[] {
 const UI = [
   ...files('apps/rama/app'),
   ...files('apps/rama/components'),
-  ...files('apps/rama/canvas'),
+  // The lakefront's renderer, which draws every word on its pictures (the only one since Stage 11).
+  ...files('packages/stage/src'),
 ];
 
 describe('no command is shown to a person (rule 15)', () => {

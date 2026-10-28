@@ -225,23 +225,26 @@ export async function explainFile(
     inFlight.add(key);
     try {
       const figures = figuresOf(b);
-      const res = await (opts.call ?? call)({
-        name: 'explain',
-        version: 1,
-        input: {
-          file,
-          kind: b.kind,
-          name: b.name,
-          code: b.text,
-          imports: importsUsed(blocks, b),
-          figures,
+      const res = await (opts.call ?? call)(
+        {
+          name: 'explain',
+          version: 1,
+          input: {
+            file,
+            kind: b.kind,
+            name: b.name,
+            code: b.text,
+            imports: importsUsed(blocks, b),
+            figures,
+          },
+          output: Sentence,
+          role: 'drafter',
+          siteId: site.id,
+          createdBy: opts.createdBy ?? EXPLAIN_COMPONENT,
+          maxTokens: 1500,
         },
-        output: Sentence,
-        role: 'drafter',
-        siteId: site.id,
-        createdBy: opts.createdBy ?? EXPLAIN_COMPONENT,
-        maxTokens: 1500,
-      });
+        { env },
+      );
       // A sentence in developer words is not shown: the block stays "Not explained yet", and the
       // refusal is kept so the block is not asked again (reviewer run 4).
       const banned = bannedWords(res.output.sentence, env);

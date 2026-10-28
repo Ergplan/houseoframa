@@ -164,7 +164,7 @@ export async function productBuilder(
 ): Promise<BuilderDriver> {
   // For engineers and the end-to-end tests: replay a recorded build instead of paying a builder.
   if (env.RAMA_BUILDER_RECORDING)
-    return builderFor('recorded', { recording: env.RAMA_BUILDER_RECORDING });
+    return builderFor('recorded', { recording: env.RAMA_BUILDER_RECORDING, env });
   const { seats } = await withDb((db) => seatsOf(db, site.id, env));
   const problems = seatProblems(seats);
   const b = seats.builder;

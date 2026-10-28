@@ -231,6 +231,9 @@ describe('stage 11 e2e', () => {
       .first()
       .click();
     await pane.getByText(`Confirmed by ${MEMBER}`).waitFor();
+    // The inside: the same building from within, the file open in the panel beside it.
+    await page.locator('[data-level="inside"] canvas[data-ready="true"]').waitFor();
+    if (SHOTS) await page.screenshot({ path: path.join(SHOTS, 'inside.png') });
     const site = locateSite(SITE, { ...process.env, RAMA_WORK_DIR: work })!;
     const overlay = JSON.parse(
       readFileSync(path.join(site.repoDir, '.rama/explanations.json'), 'utf8'),

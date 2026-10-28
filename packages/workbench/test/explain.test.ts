@@ -78,6 +78,21 @@ describe('the English pane', () => {
     ]);
   });
 
+  it('asks with its own environment: the keys of its own database, never this laptop’s', async () => {
+    // A throwaway database holds no key and the environment names none, so nothing reaches a vendor,
+    // whatever this laptop's Settings hold.
+    const own = {
+      ...env,
+      DATABASE_URL: dbUrl,
+      BUILDER_VENDOR: 'anthropic',
+      ANTHROPIC_API_KEY: '',
+      OPENAI_API_KEY: '',
+    };
+    const r = await explainFile(site, FILE, SOURCE, () => [], { env: own });
+    expect(r.drafted).toBe(0);
+    expect(r.failed).toMatch(/is not set/);
+  });
+
   it('asks the drafter once per block, with only the block, its imports and its figure, and keeps it', async () => {
     const asked: Parameters<typeof call>[0][] = [];
     const drafter = (async (req: Parameters<typeof call>[0]) => {

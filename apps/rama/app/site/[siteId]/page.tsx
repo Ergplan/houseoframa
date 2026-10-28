@@ -1,17 +1,15 @@
-import { cameraFrom } from '@rama/stage';
+import { cameraFrom, insideFiles } from '@rama/stage';
 import { pageSite } from '../../../server/session';
 import { readSiteBlueprint } from '@rama/blueprint/site';
 import { readCapture } from '@rama/trace/showroom';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
 import { building as buildingScene } from '@rama/stage';
 import { buildingFlows, buildingTrails, siteLakefront, unsaidSentence } from '@rama/workbench';
-import { SiteView } from '../../../components/site/SiteView';
 import { Said } from '../../../components/workbench/Said';
 import { SiteShell, auditOf, consoleProps } from '../../../components/workbench/SiteShell';
 import { StreetView } from '../../../components/lakefront/StreetView';
 import { BuildingView } from '../../../components/lakefront/BuildingView';
-import { CodeCamera } from '../../../components/lakefront/CameraRing';
-import { CodePane } from '../../../components/lakefront/CodePane';
+import { InsideView } from '../../../components/lakefront/InsideView';
 import { placeHref } from '../../../components/lakefront/places';
 
 export const dynamic = 'force-dynamic';
@@ -27,7 +25,8 @@ const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) 
 
 /**
  * A site's lakefront (Stage 8): the Street is its home; `?b=<building>` opens a building; `?at=code`
- * (or a decision card's `?brick=`) is the code, the Brick canvas of Stage 2.
+ * (or a decision card's `?brick=`) is the inside of the building (Stage 11), where each brick opens to
+ * its code.
  */
 export default async function SitePage({
   params,
@@ -68,18 +67,7 @@ export default async function SitePage({
       ? [{ label: 'Street' }]
       : level === 'building'
         ? [street, { label: chosen!.name }]
-        : [
-            street,
-            ...(chosen
-              ? [
-                  {
-                    label: chosen.name,
-                    href: placeHref(site.id, { level: 'building', building: chosen.id }),
-                  },
-                ]
-              : []),
-            { label: 'the code' },
-          ];
+        : [street, { label: 'inside' }];
 
   if (level === 'street') {
     return (
@@ -141,6 +129,20 @@ export default async function SitePage({
     );
   }
 
+  // The inside of a building (Stage 11): the third level, under the same camera. A brick of no
+  // building chosen opens inside the one it stands in; with neither, the first building.
+  const files = insideFiles(blueprint, lf.street.buildings);
+  const owner = brick
+    ? lf.street.buildings.find((b) => files.get(b.id)!.includes(brick))
+    : undefined;
+  const into = chosen ?? owner ?? lf.street.buildings[0] ?? null;
+  if (!into) {
+    return (
+      <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
+        <p>Nothing stands on the Street yet, so there is no building to go inside.</p>
+      </SiteShell>
+    );
+  }
   const capture = readCapture(site.id);
   const captured = (capture?.screens ?? []).map((s) => ({
     name: s.name,
@@ -148,29 +150,59 @@ export default async function SitePage({
     shot: s.shot,
     bricks: s.bricks,
   }));
+  const nodes = new Map(blueprint.nodes.map((n) => [n.path, n]));
+  const screenFiles = new Set(blueprint.screens.map((s) => s.file));
+  const scene = buildingScene(into, lf.facades[into.id] ?? [], (p) => nodes.get(p)!, screenFiles);
+  const keys = scene.facades.flatMap((f) => f.figures.map((g) => g.key));
+  const flows = buildingFlows(site, blueprint, keys);
+  // The file of the screen each figure is shown on, so the water reaches that screen's brick.
+  const flowScreens = Object.fromEntries(
+    Object.keys(flows).map((k) => {
+      const shown = capture?.screens.find((x) => k.startsWith(`${x.name}/`));
+      return [k, shown?.bricks.find((b) => screenFiles.has(b)) ?? null];
+    }),
+  );
   return (
-    <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
-      <CodeCamera siteId={site.id} start={cameraFrom(q, 'code', chosen?.id ?? null)} />
-      <CodePane siteId={site.id} path={brick ?? null} member={member.name} />
-      <div className="site-col">
-        <SiteView
-          siteId={site.id}
-          name={site.name}
-          blueprint={blueprint}
-          member={member.name}
-          captured={captured}
-          signedScreens={signedAt(site.repoDir, blueprint.commit)}
-          initialBrick={brick}
-          audit={audit}
-          screenStates={{
-            tally: cp.states.tally,
-            counts: [
-              ...cp.states.counts.map((c) => c.sentence),
-              ...(cp.states.unsaid ? [unsaidSentence(cp.states.unsaid)] : []),
-            ],
-          }}
-        />
-      </div>
+    <SiteShell
+      site={site}
+      member={member}
+      q={q}
+      console={cp}
+      levels={[
+        street,
+        { label: into.name, href: placeHref(site.id, { level: 'building', building: into.id }) },
+        { label: 'inside' },
+      ]}
+    >
+      <InsideView
+        // One view per building, as at the Building level (reviewer run 6).
+        key={into.id}
+        siteId={site.id}
+        building={{ id: into.id, name: into.name, bricks: files.get(into.id)! }}
+        blueprint={blueprint}
+        screenFiles={[...screenFiles]}
+        owners={Object.fromEntries(
+          [...files].flatMap(([id, paths]) => paths.map((p) => [p, id] as const)),
+        )}
+        all={lf.street.buildings.map((b) => ({ id: b.id, name: b.name }))}
+        camera={cameraFrom(q, 'code', into.id)}
+        member={member.name}
+        initialBrick={brick}
+        captured={captured}
+        signedScreens={signedAt(site.repoDir, blueprint.commit)}
+        screenStates={{
+          tally: cp.states.tally,
+          counts: [
+            ...cp.states.counts.map((c) => c.sentence),
+            ...(cp.states.unsaid ? [unsaidSentence(cp.states.unsaid)] : []),
+          ],
+        }}
+        audit={audit}
+        verdicts={audit?.verdicts ?? {}}
+        flows={flows}
+        flowScreens={flowScreens}
+        tableFiles={Object.fromEntries((blueprint.tables ?? []).map((t) => [t.name, t.file]))}
+      />
     </SiteShell>
   );
 }

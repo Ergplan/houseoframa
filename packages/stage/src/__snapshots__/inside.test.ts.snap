@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`the inside > is deterministic, and four turns come back to the start 1`] = `
+[
+  6,
+  5,
+  114,
+  662,
+  480,
+]
+`;

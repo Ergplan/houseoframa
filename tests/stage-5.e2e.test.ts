@@ -191,10 +191,13 @@ describe('stage 5 e2e', () => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     try {
-      // The drones over the bricks fly at the code level (Stage 8 puts the Street first).
-      await page.goto(`${server.browserUrl}/site/shop?at=code`);
-      await page.locator('canvas[data-ready="true"]').waitFor({ timeout: 60_000 });
-      const button = page.getByRole('button', { name: 'Audit', exact: true });
+      // The drones fly inside the building, over its bricks (Stage 11: the inside replaced the Stage 2
+      // canvas); the building that holds the defective brick.
+      await page.goto(`${server.browserUrl}/site/shop?at=code&brick=lib%2Fbids.ts`);
+      await page
+        .locator('[data-level="inside"] canvas[data-ready="true"]')
+        .waitFor({ timeout: 60_000 });
+      const button = page.getByRole('button', { name: 'Fly the audit', exact: true });
       await expect.poll(() => button.isEnabled(), { timeout: 30_000 }).toBe(true);
       await button.click();
       await page.getByText('Drones are flying the site.').waitFor();
@@ -209,9 +212,9 @@ describe('stage 5 e2e', () => {
         'Generalise the spread to any number of bids',
       );
       await expect(report.textContent()).resolves.toContain('Signed by openai gpt-e2e');
-      // The brick finder opens the defective brick: its latest verdict is in the Brick view.
-      await page.getByLabel('Find a brick by path').fill('lib/bids.ts');
-      await page.getByRole('button', { name: 'Inspect' }).click();
+      // The finder opens the defective brick: its latest verdict is in the Brick view.
+      await page.getByLabel('Find a part by its file').fill('lib/bids.ts');
+      await page.getByRole('button', { name: 'Open', exact: true }).click();
       await page.locator('.verdict[data-verdict="defect"]').waitFor();
       await expect(page.locator('.verdict').textContent()).resolves.toContain(
         'Takes item 2 of a sorted list',

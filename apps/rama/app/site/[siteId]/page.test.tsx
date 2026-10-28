@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs';
 import SitePage from './page';
 import Discovery from './discovery/page';
 import { SiteShell } from '../../../components/workbench/SiteShell';
-import { SiteView } from '../../../components/site/SiteView';
+import { InsideView } from '../../../components/lakefront/InsideView';
 import { inner } from '../../../test/shell';
 import { StreetView } from '../../../components/lakefront/StreetView';
 import { BuildingView } from '../../../components/lakefront/BuildingView';
@@ -60,7 +60,7 @@ describe('route /site/[siteId]', () => {
     for (const n of names) expect(visibleText(html)).toContain(n);
   });
 
-  it('opens a building at ?b=, and the code at ?at=code, with the levels in the breadcrumb', async () => {
+  it('opens a building at ?b=, and its inside at ?at=code, with the levels in the breadcrumb', async () => {
     const b = (await SitePage(params('self', { b: 'keep-the-keys' }))) as ReactElement<{
       levels: { label: string; href?: string }[];
     }>;
@@ -77,27 +77,33 @@ describe('route /site/[siteId]', () => {
     )) as ReactElement<{
       levels: { label: string }[];
     }>;
-    expect(code.props.levels.map((l) => l.label)).toEqual(['Street', 'Keep the keys', 'the code']);
-    const el = find(code, SiteView) as ReactElement<{
-      blueprint: { repo: string; nodes: unknown[] };
-      siteId: string;
-      screenStates: { tally: Record<string, number> };
-    }>;
+    // The third level is the inside of the same building (Stage 11).
+    expect(code.props.levels.map((l) => l.label)).toEqual(['Street', 'Keep the keys', 'inside']);
+    const el = find(code, InsideView) as ReactElement<ComponentProps<typeof InsideView>>;
     const self = JSON.parse(
       readFileSync(new URL('../../../../../blueprint/self.json', import.meta.url), 'utf8'),
     );
     expect(el.props.siteId).toBe('self');
+    expect(el.props.building.id).toBe('keep-the-keys');
+    expect(el.props.camera.level).toBe('code');
     expect(el.props.blueprint.repo).toBe('Ergplan/houseoframa');
     expect(el.props.blueprint.nodes).toHaveLength(self.nodes.length);
-    expect(Object.keys(el.props.screenStates.tally)).toEqual([
+    expect(Object.keys(el.props.screenStates!.tally)).toEqual([
       'Verified',
       'Confirmed',
       'Unverified',
     ]);
-    // A decision card's link to a brick still opens the code.
-    expect(
-      find(await SitePage(params('self', { brick: 'package.json' })), SiteView),
-    ).not.toBeNull();
+    // Every file stands inside some building, so each one opens somewhere.
+    expect(Object.keys(el.props.owners).sort()).toEqual(
+      self.nodes.map((n: { path: string }) => n.path).sort(),
+    );
+    // A decision card's link to a brick opens the inside of the building it stands in, on it.
+    const card = find(
+      await SitePage(params('self', { brick: 'package.json' })),
+      InsideView,
+    ) as ReactElement<ComponentProps<typeof InsideView>>;
+    expect(card.props.initialBrick).toBe('package.json');
+    expect(card.props.building.bricks).toContain('package.json');
     // A building that is not there is the Street.
     expect(find(await SitePage(params('self', { b: 'nope' })), StreetView)).not.toBeNull();
   });

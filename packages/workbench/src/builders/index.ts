@@ -19,7 +19,7 @@ export function builderFor(
       return claudeCode({ model: opts.model ?? 'claude-sonnet-5-5', env: opts.env });
     case 'recorded':
       if (!opts.recording) throw new Error('a recorded builder needs its recording');
-      return recorded(opts.recording);
+      return recorded(opts.recording, opts.env);
     case 'codex':
       return codex;
     case 'gemini-cli':

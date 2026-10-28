@@ -114,8 +114,11 @@ export async function storedSeats(
   }
 }
 
-async function recordToDb(row: ModelCallRow): Promise<string> {
-  const { db, close } = createDb();
+async function recordToDb(
+  row: ModelCallRow,
+  env: Record<string, string | undefined> = process.env,
+): Promise<string> {
+  const { db, close } = createDb(env.DATABASE_URL);
   try {
     const [inserted] = await db.insert(modelCalls).values(row).returning({ id: modelCalls.id });
     if (!inserted) throw new Error('model_calls insert returned no row');
@@ -130,7 +133,7 @@ const defaultDeps = (): CallDeps => ({
   secret: (name) => secretFor(name),
   fetch: globalThis.fetch,
   promptsDir: PROMPTS_DIR,
-  record: recordToDb,
+  record: (row) => recordToDb(row),
   sleep: (ms) => new Promise((r) => setTimeout(r, ms)),
   seats: (siteId) => storedSeats(siteId, process.env),
 });
@@ -207,6 +210,10 @@ export async function call<I, O>(
   // Seats are read from the database the given environment names, so a call made with its own
   // environment (a test) never picks up seats chosen in this laptop's Settings.
   if (!overrides.seats) deps.seats = (siteId) => storedSeats(siteId, deps.env);
+  // So are its keys and its row: a test's call never spends this laptop's keys or writes into its
+  // database.
+  if (overrides.env && !overrides.secret) deps.secret = (name) => secretFor(name, deps.env);
+  if (overrides.env && !overrides.record) deps.record = (row) => recordToDb(row, deps.env);
 
   // Refuse before anything else: no prompt read, no vendor call, no row.
   const seat = await resolveSeat(req.role, req.siteId, deps);

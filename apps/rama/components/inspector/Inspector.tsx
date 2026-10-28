@@ -28,7 +28,7 @@ import {
 import { edgePhrase, floorName, reviewerParagraph } from './words';
 import type { AuditView } from '@rama/audit/view';
 import { DraftState } from '../audit/ConfirmReport';
-import type { LogEntry } from '../../canvas/audit';
+import type { LogEntry } from '@rama/stage';
 
 /** A screen photographed from the target's built app (Stage 3), with the bricks that render it. */
 export interface CapturedScreen {
