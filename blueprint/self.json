@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
+  "commit": "c3e48294f7b993a603179485340c86a5bc9034ac",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -17154,6 +17154,51 @@
       "sha": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "short": "56dd7b4",
       "subject": "Stage 11: the member's answers — the sample keeps its orders in its own database, pipes along the Street's roads, end-to-end tests one at a time"
+    },
+    {
+      "at": "2026-10-28T14:00:13Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 1325,
+          "del": 325,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 7,
+          "del": 8,
+          "kind": "M",
+          "path": "docs/reports/stage-11.md"
+        },
+        {
+          "add": 17,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/reports/stage-11.review.md"
+        },
+        {
+          "add": 24,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/stage/src/pipes.test.ts"
+        },
+        {
+          "add": 4,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/stage/src/pipes.ts"
+        }
+      ],
+      "sha": "c3e48294f7b993a603179485340c86a5bc9034ac",
+      "short": "c3e4829",
+      "subject": "Stage 11: reviewer run 16 — on the Street, an input kept where its figure is worked out keeps its own pipe; the report's English cost and open questions brought up to date"
     }
   ],
   "edges": [
@@ -32942,7 +32987,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T13:28:23Z",
+  "extractedAt": "2026-10-28T14:00:13Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -37118,12 +37163,12 @@
     {
       "binary": false,
       "bytes": 83725,
-      "changes": 110,
+      "changes": 111,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
+      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 292,
@@ -37370,31 +37415,31 @@
     },
     {
       "binary": false,
-      "bytes": 31556,
-      "changes": 13,
+      "bytes": 31975,
+      "changes": 14,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
+      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 242,
+      "lines": 245,
       "path": "docs/reports/stage-11.md",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 154360,
-      "changes": 15,
+      "bytes": 163298,
+      "changes": 16,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
-      "lastCommit": "ca547bb8a2a3ee458f8860af7c1604d1baefaa45",
+      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 257,
+      "lines": 272,
       "path": "docs/reports/stage-11.review.md",
       "test": false
     },
@@ -44430,12 +44475,12 @@
     {
       "binary": false,
       "bytes": 12805,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
+      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 302,
@@ -44448,7 +44493,7 @@
     {
       "binary": false,
       "bytes": 17677,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -44467,7 +44512,7 @@
         "streetPipes"
       ],
       "firstCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
-      "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
+      "lastCommit": "c3e48294f7b993a603179485340c86a5bc9034ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 451,

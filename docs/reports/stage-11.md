@@ -171,7 +171,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
 ## Reviewer findings
 
-The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 15 times; every run is in `docs/reports/stage-11.review.md`. Runs 13 to 15 came after the plan's sixth part, the ground opened, was built.
+The reviewer (OpenAI, gpt-6.1-sol, fresh context, `pnpm review 11`) ran 17 times; every run is in `docs/reports/stage-11.review.md`. Runs 13 to 15 came after the plan's sixth part, the ground opened, was built, and runs 16 and 17 after the member's answers.
 
 Fixed in code:
 
@@ -208,9 +208,9 @@ Fixed in code:
 
 - **Run 16** (the first over the member's answers). On the Street, an input kept in the same building as its working-out had no pipe, so its dry label was missing and the water could run past it. It now has a short pipe into that building, labelled and stopping the water when it has no value.
 
-Runs 12 and 15 found no code defect; run 12's one finding, a report claim, is corrected, and run 15's only finding is the standing cannot-tell on (d).
+Runs 12, 15 and 17 found no code defect; the report claims of runs 12 and 17 (the run count) are corrected, and run 15's only finding is the standing cannot-tell on (d).
 
-Report claims corrected (runs 1, 2, 4, 5, 6, 9, 12, 14 and 16): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, how many files a replayed lift types in, the number of reviewer runs, the sample English's cost, and open questions the member had answered.
+Report claims corrected (runs 1, 2, 4, 5, 6, 9, 12, 14, 16 and 17): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, where the pipes are drawn, how many files a replayed lift types in, the number of reviewer runs, the sample English's cost, and open questions the member had answered.
 
 Not resolved by code:
 
@@ -220,11 +220,14 @@ Not resolved by code:
 
 `pnpm cost 11`:
 
-| What                                                              | Model             | Calls | Cost     |
-| ----------------------------------------------------------------- | ----------------- | ----- | -------- |
-| Independent reviewer                                              | gpt-6.1-sol       | 15    | ₹563     |
-| Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215 | ₹292     |
-| **Recorded total**                                                |                   |       | **₹856** |
+| What                                                              | Model             | Calls | Cost       |
+| ----------------------------------------------------------------- | ----------------- | ----- | ---------- |
+| Independent reviewer                                              | gpt-6.1-sol       | 17    | ₹686       |
+| The sample rebuilt by Claude Code (Test drive `testdrive-6`)      | claude-sonnet-5-5 | 4     | ₹118       |
+| Its English drafted live in that build                            | claude-sonnet-5-5 | 53    | ₹14        |
+| Its audit in that Test drive                                      | gpt-6.1-sol       | 1     | ₹2         |
+| Drafter calls made by tests with the laptop's key (the bug above) | claude-sonnet-5-5 | 1,215 | ₹292       |
+| **Recorded total**                                                |                   |       | **₹1,113** |
 
 The ground opened makes no model call: its columns are read from the code and its rows from the database.
 
