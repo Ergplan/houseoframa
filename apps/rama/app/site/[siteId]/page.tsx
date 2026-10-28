@@ -175,8 +175,9 @@ export default async function SitePage({
       ]}
     >
       <InsideView
-        // One view per building, as at the Building level (reviewer run 6).
-        key={into.id}
+        // One view per building and brick it opens on: a link to another brick opens fresh on it
+        // (reviewer runs 6 and 9).
+        key={`${into.id}/${brick ?? ''}`}
         siteId={site.id}
         building={{ id: into.id, name: into.name, bricks: files.get(into.id)! }}
         blueprint={blueprint}

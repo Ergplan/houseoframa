@@ -103,6 +103,8 @@ describe('route /site/[siteId]', () => {
       InsideView,
     ) as ReactElement<ComponentProps<typeof InsideView>>;
     expect(card.props.initialBrick).toBe('package.json');
+    // Keyed by the brick too, so a link to another brick of the same building opens fresh on it.
+    expect(card.key).toBe(`${card.props.building.id}/package.json`);
     expect(card.props.building.bricks).toContain('package.json');
     // A building that is not there is the Street.
     expect(find(await SitePage(params('self', { b: 'nope' })), StreetView)).not.toBeNull();

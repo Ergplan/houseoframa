@@ -119,7 +119,7 @@ Nothing here changes what is recorded; it changes what is seen. The stage was bu
 
 ## Deviations and readings of the prompt
 
-- **The pipes are drawn at the Building level only.** On the Street, and for a trail that crosses into another building's code, the flow is shown as its steps in words (KNOWN-GAPS). The flow of an older commit is not offered in replay: only the current commit's re-execution is kept, and water is only what was recorded.
+- **The pipes are drawn inside one building only** (at the Building level and inside it). On the Street, and for a trail that crosses into another building's code, the flow is shown as its steps in words (KNOWN-GAPS). The flow of an older commit is not offered in replay: only the current commit's re-execution is kept, and water is only what was recorded.
 - **"Every number" in the code is read as the figure chips.** A block that works out or shows a figure carries a chip in the customer's words, leading to the figure's trail. Other numbers in the code (a loop's bound, a test's fixture) are code, not figures, and carry no chip. The chips are shown for the file as it is now, not for a replayed commit, because the figures file is read as it is today.
 - **The live typing comes from file snapshots** taken a few times a second during a lift, not from the builder's own keystrokes, so it works the same for every builder (KNOWN-GAPS).
 - **The inside's place for the checks and the papers.** The plan names the four floors. The files the Street does not draw also needed a place inside, or the old building's walk could not pass, so they stand on two more floors below the four, named in plain words. A check stands with the code it imports.
@@ -159,8 +159,11 @@ Fixed in code:
   - Zoom moved the point under the pointer after a first zoom.
   - Water ran past a dry step.
 - **Run 8.** The code pane kept the previous file when another file was opened. It is now fresh for each file.
+- **Run 9** (the first over the inside):
+  - At an older lift of the replay, the inside still offered today's flow. It no longer offers one there.
+  - A link to another brick of the same building kept the brick that was open. The inside is now fresh for each brick a link opens on.
 
-Report claims corrected (runs 1, 2, 4, 5 and 6): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, and what the pane names.
+Report claims corrected (runs 1, 2, 4, 5, 6 and 9): "exactly one lit action" (none when the act has no next thing to do, and the bar says why), the turn fade, "Not explained yet" with no key, once-per-block drafting, a pipe per step, what the pane names, and where the pipes are drawn.
 
 Not resolved by code:
 

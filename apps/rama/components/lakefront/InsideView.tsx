@@ -160,7 +160,10 @@ export function InsideView(p: InsideProps) {
   const [flowKey, setFlowKey] = useState<string | null>(null);
   const [flowMs, setFlowMs] = useState(0);
   const [flowing, setFlowing] = useState(false);
-  const flow = flowKey ? (p.flows[flowKey] ?? null) : null;
+  // The flows are this commit's re-execution: at an older lift none is offered, since nothing of that
+  // commit was recorded (reviewer run 9).
+  const atNow = k >= lifts;
+  const flow = flowKey && atNow ? (p.flows[flowKey] ?? null) : null;
   const pipes = useMemo(
     () =>
       flow
@@ -218,6 +221,7 @@ export function InsideView(p: InsideProps) {
   };
   useEffect(() => {
     const on = (e: Event) => {
+      if (!atNow) return;
       const name = (e as CustomEvent<string | null>).detail;
       const key = name
         ? Object.keys(p.flows).find((x) => p.flows[x]!.title.toLowerCase() === name.toLowerCase())
@@ -432,7 +436,7 @@ export function InsideView(p: InsideProps) {
   const node = hover ? nodes.get(hover.path) : null;
   const next = p.all[(p.all.findIndex((b) => b.id === p.building.id) + 1) % p.all.length]!;
   const paths = useMemo(() => p.blueprint.nodes.map((n) => n.path), [p.blueprint]);
-  const figuresHere = Object.values(p.flows);
+  const figuresHere = atNow ? Object.values(p.flows) : [];
 
   return (
     <div
