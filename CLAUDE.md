@@ -54,7 +54,7 @@ These hold in every stage and override anything else in this document. If a stag
 | Language | TypeScript throughout, Node 22 | One language per layer; the extractor must run where the target repo runs |
 | Web | Next.js (App Router) in `apps/rama` | The house stack of the targets it renders |
 | Database | Postgres 16 via Drizzle ORM, migrations in `packages/db/migrations` | Schema in code is what makes traces extractable |
-| Rendering | HTML Canvas, isometric, transparent buildings on a lakefront; three zoom levels (Street, Building, Brick) over one Blueprint; React for everything else | The weekend artifact proved Canvas; the lakefront is the product's face |
+| Rendering | HTML Canvas, isometric, transparent buildings on a lakefront; three zoom levels (Street, Building, the inside) over one Blueprint, all in `packages/stage` with one camera; the Stage 2 brick building is retired; React for everything else | The weekend artifact proved Canvas; the lakefront is the product's face |
 | Product repos | Products built inside House of Rama get their own GitHub repository, created by House of Rama under the GitHub account configured in Settings; the builder pushes to it. Outside repos are cloned read-only into `work/<site>/repo` and never pushed to | A map beside git, never a new repo system |
 | House stack of targets | Next.js + TypeScript + Postgres + Drizzle; a target off this stack gets partial traces and says so | Traces need schema and queries in code |
 | Seats | Four per product: builder, auditor (also reviewer), drafter, voice. Vendor and model per seat chosen in Settings → Brains and asked in discovery; builder ≠ auditor always | The customer chooses the brains; the rule keeps the audit independent |
@@ -78,7 +78,7 @@ house-of-rama/
   apps/rama/                 # Next.js app: site, showroom, discovery, audit, campus
     app/                     # routes
     components/              # React components (inspector, deck, overlays)
-    canvas/                  # the building renderer (Canvas 2D), pure functions over a Blueprint
+    canvas/                  # retired in Stage 11 (the Stage 2 brick building); removed once the inside renders every brick
   packages/
     blueprint/               # git + source → Blueprint JSON; metrics; CLI `rama extract`
     trace/                   # figure trails: formula, inputs, data location, build trail
@@ -87,7 +87,7 @@ house-of-rama/
     model/                   # the one module for model calls; prompts/ loaded by version
     db/                      # Drizzle schema, migrations, seed
     shared/                  # types shared across packages (Blueprint, Trail, Signoff)
-    stage/                   # the isometric lakefront renderer: Street and Building levels (Brick level stays in apps/rama/canvas)
+    stage/                   # the isometric lakefront renderer: all three levels, Street, Building and the inside (from Stage 11)
     ears/                    # GPT Live voice session, transcript, the hand-off of builder text to the voice, recognised commands
     board/                   # whiteboard frames (laptop webcam now; fixed camera later), board readings, product map, drafts
     workbench/               # settings (keys, GitHub account, members), Test drive, product repos, the trainer console
