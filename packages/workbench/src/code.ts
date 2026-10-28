@@ -2,7 +2,7 @@
 // that commit (for the typing in replay), its blocks, the plain English beside each, and the figures it
 // works out or shows, each a way to its trail. Read from git and the product's own files only.
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { SiteLocation } from '@rama/blueprint/site';
 import { readCapture, readConvention } from '@rama/trace';
@@ -16,11 +16,18 @@ const git = (repoDir: string, args: string[]) =>
     maxBuffer: 16 * 1024 * 1024,
   });
 
-/** A file's text at a commit; null when it was not there. Without a commit, as it is in the checkout. */
+/**
+ * A file's text at a commit; null when it was not there. Without a commit, as it is in the checkout,
+ * and only when it resolves inside the checkout: a link to a file elsewhere is not followed out of it.
+ */
 export function fileAt(repoDir: string, file: string, commit?: string): string | null {
   if (!commit) {
     const p = path.join(repoDir, file);
-    return existsSync(p) ? readFileSync(p, 'utf8') : null;
+    if (!existsSync(p)) return null;
+    const root = realpathSync(repoDir);
+    const real = realpathSync(p);
+    if (!real.startsWith(root + path.sep) || !statSync(real).isFile()) return null;
+    return readFileSync(real, 'utf8');
   }
   try {
     return git(repoDir, ['show', `${commit}:${file}`]);
