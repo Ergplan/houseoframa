@@ -83,10 +83,10 @@ describe('stage 9 e2e', () => {
 
     // A new product from an empty repository.
     await page.goto(`${server.browserUrl}/`);
-    await page.getByLabel('Name').fill(SAMPLE_NAME);
+    await page.getByLabel('Name', { exact: true }).fill(SAMPLE_NAME);
     await page.getByLabel('The idea, in one line').fill(SAMPLE_IDEA);
     await page.getByRole('button', { name: 'Start the product' }).click();
-    await page.waitForURL(/\/site\/chai-stall-test-drive\?/);
+    await page.waitForURL(/\/site\/chai-stall-test-drive\/discovery\?/);
     const siteId = 'chai-stall-test-drive';
 
     // Discovery asks for the brains; the answer is a card decided by the member.

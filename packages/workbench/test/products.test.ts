@@ -202,4 +202,29 @@ describe('New product', () => {
       next: expect.stringMatching(/Create it on GitHub/),
     });
   });
+
+  it('a repository named by its maker: created under that name, the product keeps its own id', async () => {
+    const { site, flags } = await newProduct(
+      conn.db,
+      { name: 'ergPLAN', idea: 'Plans, in one place.', repository: 'Resizingdemo', person: asha },
+      deps(stubGitHub()),
+    );
+    expect(site.id).toBe('ergplan');
+    expect(flags.at(-1)).toEqual({
+      ok: true,
+      sentence: 'aayuda/Resizingdemo is created on GitHub and holds the work.',
+    });
+    expect(siteRecord('ergplan', { RAMA_WORK_DIR: work })).toMatchObject({
+      repository: 'Resizingdemo',
+      remote: 'https://github.com/aayuda/Resizingdemo',
+    });
+    await expect(
+      newProduct(
+        conn.db,
+        { name: 'Spaced', idea: 'x', repository: 'two words', person: asha },
+        deps(stubGitHub()),
+      ),
+    ).rejects.toThrow(/no spaces/);
+    expect(siteRecord('spaced', { RAMA_WORK_DIR: work })).toBeNull();
+  });
 });

@@ -2,12 +2,17 @@
 // may start a product, which is theirs; Create repository needs the product's owner or a trainer (the
 // site authorization). Answers are 303s with a plain sentence, never a command.
 import type { Member } from '@rama/db';
-import type { Flag } from '@rama/workbench';
+import { REPOSITORY_NAME_RULE, repositoryNameOk, type Flag } from '@rama/workbench';
 import { back } from '../../../server/http';
 
 export interface ProductRouteDeps {
   member: () => Promise<Member | Response>;
-  newProduct: (input: { name: string; idea: string; person: Member }) => Promise<{
+  newProduct: (input: {
+    name: string;
+    idea: string;
+    repository?: string;
+    person: Member;
+  }) => Promise<{
     siteId: string;
     flags: Flag[];
   }>;
@@ -21,7 +26,7 @@ export const summary = (flags: Flag[]): Flag => {
   return flags.at(-1) ?? { ok: true, sentence: 'Done.' };
 };
 
-/** POST /api/products: `name` and `idea`. */
+/** POST /api/products: `name` and `idea`, and `repository` when its maker names it on GitHub. */
 export async function handleNewProduct(
   form: FormData | null,
   deps: ProductRouteDeps,
@@ -30,6 +35,7 @@ export async function handleNewProduct(
   if (who instanceof Response) return who;
   const name = String(form?.get('name') ?? '').trim();
   const idea = String(form?.get('idea') ?? '').trim();
+  const repository = String(form?.get('repository') ?? '').trim();
   if (!name || !idea)
     return back(deps.baseUrl, '/', {
       ok: false,
@@ -40,6 +46,14 @@ export async function handleNewProduct(
       ok: false,
       sentence: 'Keep the name under 80 letters and the idea to one line.',
     });
-  const { siteId, flags } = await deps.newProduct({ name, idea, person: who });
-  return back(deps.baseUrl, `/site/${siteId}`, summary(flags));
+  if (repository && !repositoryNameOk(repository))
+    return back(deps.baseUrl, '/', { ok: false, sentence: REPOSITORY_NAME_RULE });
+  const { siteId, flags } = await deps.newProduct({
+    name,
+    idea,
+    ...(repository ? { repository } : {}),
+    person: who,
+  });
+  // A new product starts at its idea: the site office, where the first cards are agreed.
+  return back(deps.baseUrl, `/site/${siteId}/discovery`, summary(flags));
 }

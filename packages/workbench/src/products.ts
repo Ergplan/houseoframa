@@ -9,6 +9,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   createProductSite,
+  GITHUB_NAME,
   locateSite,
   siteRecord,
   updateSiteRecord,
@@ -107,26 +108,36 @@ export const defaultProductDeps = (): ProductDeps => ({
 const README = (name: string, idea: string) =>
   `# ${name}\n\n${idea}\n\nBuilt in House of Rama: every screen is walked and signed by name before it merges.\n`;
 
+export const REPOSITORY_NAME_RULE =
+  'A name on GitHub uses letters, digits, dots, dashes and underscores, and no spaces.';
+/** Whether GitHub accepts the name for a repository. */
+export const repositoryNameOk = (name: string) => GITHUB_NAME.test(name);
+
 /** A new product: its site, first commit, first decision card, gate, and repository when GitHub is set. */
 export async function newProduct(
   db: Db,
-  input: { name: string; idea: string; person: Member },
+  input: { name: string; idea: string; repository?: string; person: Member },
   deps: ProductDeps = defaultProductDeps(),
 ): Promise<{ site: SiteLocation; flags: Flag[] }> {
   const name = input.name.trim();
   const idea = input.idea.trim();
+  const repository = input.repository?.trim() || undefined;
   if (!name) throw new Error('A product needs a name.');
   if (!idea) throw new Error('A product needs its idea in one line.');
+  if (repository && !repositoryNameOk(repository)) throw new Error(REPOSITORY_NAME_RULE);
   const id = productId(name, (x) => locateSite(x, deps.env) !== null);
   const at = deps.now();
   const sealer = appSealer(deps.env);
-  const site = createProductSite({ id, name, idea, env: deps.env, now: () => at }, (repoDir) => {
-    git(repoDir, ['init', '--quiet', '--initial-branch=main']);
-    writeFileSync(path.join(repoDir, 'README.md'), README(name, idea));
-    writeFileSync(path.join(repoDir, '.gitignore'), 'node_modules/\n.next/\n');
-    mkdirSync(path.join(repoDir, '.rama'), { recursive: true });
-    installGate(repoDir, houseRef(), sealer.publicKey);
-  });
+  const site = createProductSite(
+    { id, name, idea, repository, env: deps.env, now: () => at },
+    (repoDir) => {
+      git(repoDir, ['init', '--quiet', '--initial-branch=main']);
+      writeFileSync(path.join(repoDir, 'README.md'), README(name, idea));
+      writeFileSync(path.join(repoDir, '.gitignore'), 'node_modules/\n.next/\n');
+      mkdirSync(path.join(repoDir, '.rama'), { recursive: true });
+      installGate(repoDir, houseRef(), sealer.publicKey);
+    },
+  );
   await db.insert(sites).values({
     siteId: id,
     name,
@@ -183,7 +194,7 @@ export async function createProductRepository(
     const repo = await createRepository(
       token,
       owner,
-      site.id,
+      record.repository ?? site.id,
       record.idea ?? site.name,
       deps.github,
     );

@@ -29,6 +29,8 @@ export const GLOSSARY_FILE = '.rama/glossary.json';
 export const PURPOSES_FILE = '.rama/purposes.json';
 
 const SITE_ID = /^[a-z0-9][a-z0-9-]{0,39}$/;
+/** A repository name GitHub accepts: letters, digits, dot, dash and underscore. */
+export const GITHUB_NAME = /^(?!\.+$)[A-Za-z0-9._-]{1,100}$/;
 
 export const SiteRecord = z.object({
   id: z.string().regex(SITE_ID),
@@ -47,6 +49,8 @@ export const SiteRecord = z.object({
   idea: z.string().optional(),
   /** A product's repository on GitHub (https, no credentials), once it is created. */
   remote: z.string().optional(),
+  /** The name its maker gave the product's repository on GitHub (Stage 12); absent means the site id. */
+  repository: z.string().regex(GITHUB_NAME).optional(),
   /** The commit that laid the house stack down (Stage 9): the merge gate's base while the builder builds. */
   houseStack: z.string().regex(/^[0-9a-f]{40}$/).optional(),
   /** The builder that builds the product (Stage 9 seats), as it was when the build last started. */
@@ -237,7 +241,14 @@ export function updateSiteRecord(
  * site.json records it as a product. Refuses an existing id rather than overwrite it.
  */
 export function createProductSite(
-  input: { id: string; name: string; idea: string; now?: () => Date; env?: NodeJS.ProcessEnv },
+  input: {
+    id: string;
+    name: string;
+    idea: string;
+    repository?: string;
+    now?: () => Date;
+    env?: NodeJS.ProcessEnv;
+  },
   init: (repoDir: string) => void,
 ): SiteLocation {
   const env = input.env ?? process.env;
@@ -256,7 +267,9 @@ export function createProductSite(
       addedAt: (input.now ?? (() => new Date()))().toISOString(),
       kind: 'product',
       idea: input.idea,
+      ...(input.repository ? { repository: input.repository } : {}),
     };
+    SiteRecord.parse(record);
     writeFileSync(path.join(dir, 'site.json'), canonicalJson(record));
     return fromRecord(record, dir);
   } catch (err) {

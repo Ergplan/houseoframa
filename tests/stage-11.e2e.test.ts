@@ -81,10 +81,10 @@ describe('stage 11 e2e', () => {
 
     // A product, its cards said yes to, and the audit's key in Settings (so Call the audit can be lit).
     await page.goto(`${server.browserUrl}/`);
-    await page.getByLabel('Name').fill(SAMPLE_NAME);
+    await page.getByLabel('Name', { exact: true }).fill(SAMPLE_NAME);
     await page.getByLabel('The idea, in one line').fill(SAMPLE_IDEA);
     await page.getByRole('button', { name: 'Start the product' }).click();
-    await page.waitForURL(new RegExp(`/site/${SITE}\\?`));
+    await page.waitForURL(new RegExp(`/site/${SITE}/discovery\\?`));
     const conn = createDb(db.url);
     try {
       const site = locateSite(SITE, { ...process.env, RAMA_WORK_DIR: work })!;

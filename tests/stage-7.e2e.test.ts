@@ -124,12 +124,12 @@ describe('stage 7 e2e', () => {
 
     // A new product: its page, and its repository with the work in it.
     await page.goto(`${server.browserUrl}/`);
-    await page.getByLabel('Name').fill('Tiffin');
+    await page.getByLabel('Name', { exact: true }).fill('Tiffin');
     await page
       .getByLabel('The idea, in one line')
       .fill('Lunch boxes by subscription, for offices.');
     await page.getByRole('button', { name: 'Start the product' }).click();
-    await page.waitForURL(/\/site\/tiffin\?/, { timeout: 180_000 });
+    await page.waitForURL(/\/site\/tiffin\/discovery\?/, { timeout: 180_000 });
     await expect(page.locator('.flag').first().textContent()).resolves.toBe(
       'e2e-org/tiffin is created on GitHub and holds the work.',
     );

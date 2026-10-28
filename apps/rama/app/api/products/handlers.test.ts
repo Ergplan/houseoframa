@@ -38,7 +38,7 @@ describe('POST /api/products', () => {
       person: ravi,
     });
     const u = new URL(r.headers.get('location')!);
-    expect(u.pathname).toBe('/site/chai-stall');
+    expect(u.pathname).toBe('/site/chai-stall/discovery');
     expect(u.searchParams.get('error')).toBe(
       'The product is kept on this laptop: no GitHub account is set yet. Enter the GitHub token and account in Settings.',
     );
@@ -53,6 +53,24 @@ describe('POST /api/products', () => {
     expect(d.newProduct).not.toHaveBeenCalled();
     const out = deps({ member: async () => new Response(null, { status: 401 }) });
     expect((await handleNewProduct(form({ name: 'X', idea: 'y' }), out)).status).toBe(401);
+  });
+
+  it('passes the name on GitHub when one is given, and refuses one GitHub would not take', async () => {
+    const d = deps();
+    await handleNewProduct(
+      form({ name: 'ergPLAN', idea: 'Plans.', repository: ' Resizingdemo ' }),
+      d,
+    );
+    expect(d.newProduct).toHaveBeenCalledWith({
+      name: 'ergPLAN',
+      idea: 'Plans.',
+      repository: 'Resizingdemo',
+      person: ravi,
+    });
+    const bad = deps();
+    const r = await handleNewProduct(form({ name: 'X', idea: 'y', repository: 'a b' }), bad);
+    expect(new URL(r.headers.get('location')!).searchParams.get('error')).toMatch(/no spaces/);
+    expect(bad.newProduct).not.toHaveBeenCalled();
   });
 
   it('summary: the last step not done, else the last one', () => {

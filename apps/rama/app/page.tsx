@@ -117,6 +117,16 @@ export default async function Home({
                   placeholder="What it does and for whom"
                 />
               </label>
+              <label className="eg-field">
+                <span className="eg-field__label">GitHub repository name (optional)</span>
+                <input
+                  className="eg-input"
+                  name="repository"
+                  maxLength={100}
+                  pattern="[A-Za-z0-9._\-]+"
+                  placeholder="Empty: named after the product"
+                />
+              </label>
               <div>
                 <Button type="submit" variant="primary">
                   Start the product

@@ -6,6 +6,8 @@ const config: NextConfig = {
   // `next dev` otherwise writes apps/rama/AGENTS.md and CLAUDE.md when it detects an agent. Project rules
   // live only in the root CLAUDE.md; the pointer to Next's bundled docs is in docs/DECISIONS.md.
   agentRules: false,
+  // The dev server reached by its public address (scripts/https.mjs) serves its scripts to that address too.
+  allowedDevOrigins: process.env.RAMA_BASE_URL ? [new URL(process.env.RAMA_BASE_URL).hostname] : [],
   // Workspace packages are TypeScript source (no build step between packages).
   transpilePackages: [
     '@rama/audit',
