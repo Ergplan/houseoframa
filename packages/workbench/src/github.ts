@@ -2,7 +2,7 @@
 // or organisation set in Settings, and pushing to it. The token travels only in request headers and in
 // the environment of one `git push` (as an extra HTTP header); it is never written into a remote URL, a
 // git config file or a log, and a remote is recorded without credentials.
-import { spawnSync } from 'node:child_process';
+import { run } from './spawn.ts';
 
 export type Fetch = typeof fetch;
 
@@ -115,7 +115,7 @@ export async function createRepository(
  * Pushes the checkout's `main` to `remote`. For an https remote the token goes in an Authorization
  * header set through git's environment (GIT_CONFIG_*), so it is in neither the command line nor a file.
  */
-export function pushTo(repoDir: string, remote: string, token: string | null): void {
+export async function pushTo(repoDir: string, remote: string, token: string | null): Promise<void> {
   const env: NodeJS.ProcessEnv = { ...process.env, GIT_TERMINAL_PROMPT: '0' };
   if (token && remote.startsWith('https://')) {
     const basic = Buffer.from(`x-access-token:${token}`).toString('base64');
@@ -125,9 +125,8 @@ export function pushTo(repoDir: string, remote: string, token: string | null): v
       GIT_CONFIG_VALUE_0: `Authorization: Basic ${basic}`,
     });
   }
-  const r = spawnSync('git', ['-C', repoDir, 'push', '--quiet', remote, 'HEAD:refs/heads/main'], {
+  const r = await run('git', ['-C', repoDir, 'push', '--quiet', remote, 'HEAD:refs/heads/main'], {
     env,
-    encoding: 'utf8',
     timeout: 120_000,
   });
   if (r.status !== 0) {

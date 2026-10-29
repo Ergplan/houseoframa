@@ -22,6 +22,7 @@ import { dropSandboxes, sandboxUrl } from '../packages/workbench/src/ground.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
 import { clickGround } from './ground.ts';
 import { throwawayDb } from './session.ts';
+import { wordsOn } from './words.ts';
 
 const MEMBER = 'Rachit Agarwal';
 const RECORDING = path.resolve(import.meta.dirname, '../fixtures/sample-build');
@@ -66,7 +67,6 @@ afterAll(async () => {
 });
 
 const lit = (page: Page) => page.locator('.eg-btn--primary:visible').count();
-const body = (page: Page) => page.locator('main').innerText();
 
 describe('stage 11 e2e', () => {
   it('the journey, the camera, code written in the glass with English, and the flow of a figure', async () => {
@@ -113,7 +113,7 @@ describe('stage 11 e2e', () => {
     }
 
     // Build: the one lit action is Start build; the recorded builder builds through the loop.
-    const job = page.locator('.console [data-job="build"]');
+    const job = page.locator('[data-desk] [data-job="build"]');
     for (let tries = 0; ; tries++) {
       await page.goto(`${server.browserUrl}/site/${SITE}`);
       if (!(await job.count())) {
@@ -152,7 +152,7 @@ describe('stage 11 e2e', () => {
       expect(await lit(page), name).toBe(want);
       // The glossary holds on the tabs and their actions everywhere, and on the whole Street.
       expect(bannedIn(await page.locator('.journey').innerText()), name).toEqual([]);
-      if (name === 'Build') expect(bannedIn(await body(page)), name).toEqual([]);
+      if (name === 'Build') expect(bannedIn(await wordsOn(page)), name).toEqual([]);
       if (SHOTS)
         await page.screenshot({
           path: path.join(SHOTS, `${name.toLowerCase().replace(/\s+/g, '-')}.png`),

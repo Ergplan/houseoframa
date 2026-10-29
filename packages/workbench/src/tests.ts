@@ -12,6 +12,7 @@ import { passingFromReport } from '@rama/ceremony';
 import { scriptCommand } from '@rama/audit';
 import type { TestRun } from '@rama/blueprint/metrics';
 import { workDir, type SiteLocation } from '@rama/blueprint/site';
+import { run as spawnRun } from './spawn.ts';
 
 export const testRunFile = (siteId: string, env: NodeJS.ProcessEnv = process.env) =>
   path.join(workDir(env), siteId, 'tests.json');
@@ -65,11 +66,11 @@ export function executedByTest(
 }
 
 /** Runs the site's tests and records the run; throws a plain sentence when they cannot be run. */
-export function runSiteTests(
+export async function runSiteTests(
   site: SiteLocation,
   env: NodeJS.ProcessEnv = process.env,
   now = () => new Date(),
-): TestRun {
+): Promise<TestRun> {
   const dir = mkdtempSync(path.join(tmpdir(), 'rama-tests-'));
   const out = path.join(dir, 'report.json');
   const coverage = path.join(dir, 'coverage');
@@ -80,7 +81,7 @@ export function runSiteTests(
       '--pool=threads',
     ]);
     if (!argv) throw new Error('This product has no tests to run yet.');
-    spawnSync(argv[0]!, argv.slice(1), {
+    await spawnRun(argv[0]!, argv.slice(1), {
       cwd: site.repoDir,
       // PATH and HOME only: no House of Rama secret reaches the product's code.
       env: {
@@ -89,7 +90,6 @@ export function runSiteTests(
         CI: '1',
         NODE_V8_COVERAGE: coverage,
       } as unknown as NodeJS.ProcessEnv,
-      encoding: 'utf8',
       timeout: 10 * 60_000,
     });
     if (!existsSync(out))

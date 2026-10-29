@@ -81,10 +81,13 @@ export async function photograph(
 }
 
 /** Runs the product's tests; fails the step when any test file fails. */
-export function runTests(site: SiteLocation, env: NodeJS.ProcessEnv = process.env): string {
+export async function runTests(
+  site: SiteLocation,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<string> {
   let run;
   try {
-    run = runSiteTests(site, env);
+    run = await runSiteTests(site, env);
   } catch (err) {
     throw new StepError((err as Error).message, 'The builder adds tests to the product.');
   }

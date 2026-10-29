@@ -1627,3 +1627,84 @@ body:has(.rama-stage) {
     position: static;
   }
 }
+
+/* Stage 12, the Build desk: what was asked for and what the builder did on the left, the lakefront in
+   the middle, the code being written on the right, as a code editor with its assistant is laid out. */
+.rama-screen--wide > .eg-side {
+  display: none;
+}
+.rama-screen--wide .eg-main {
+  max-width: none;
+  width: 100%;
+  min-width: 0;
+}
+.desk {
+  display: grid;
+  grid-template-columns: minmax(240px, 20%) minmax(0, 1fr) minmax(320px, 30%);
+  gap: var(--space-4);
+  align-items: start;
+}
+.desk__brief,
+.desk__code {
+  position: sticky;
+  top: var(--space-4);
+  max-height: calc(100vh - 2 * var(--space-4));
+  overflow: auto;
+  display: grid;
+  gap: var(--space-4);
+}
+.desk__pane {
+  padding: var(--space-4);
+}
+.desk__head {
+  margin: 0 0 var(--space-3);
+}
+.desk__idea {
+  margin: 0 0 var(--space-3);
+  font-style: italic;
+}
+.desk__cards {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.2em;
+  display: grid;
+  gap: var(--space-3);
+}
+.desk__cards p {
+  margin: 2px 0;
+}
+.desk__picture {
+  min-width: 0;
+}
+.desk__code {
+  min-width: 0;
+}
+.desk__code .code-pane {
+  max-height: none;
+  min-width: 0;
+  overflow-x: auto;
+}
+@media (max-width: 1200px) {
+  .desk {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .desk__brief,
+  .desk__code {
+    position: static;
+    max-height: none;
+  }
+  .desk__picture {
+    order: -1;
+  }
+}
+/* In the desk's column the English sits under each block of code, not beside it. */
+.desk__code .code-block {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+.desk__code .code-pane,
+.desk__code .code-pane__body {
+  grid-template-columns: minmax(0, 1fr);
+}
+.desk__code .code-pane select {
+  max-width: 100%;
+}

@@ -60,21 +60,43 @@ const forwarded = (req) => ({
   'x-forwarded-for': req.socket.remoteAddress ?? '',
 });
 
+// A fresh connection to the app per request: a kept-alive one the app has just closed fails the next
+// request with a reset, and the person saw "not running" while the app was there (Stage 12).
+const agent = new http.Agent({ keepAlive: false });
+// Methods safe to send twice: one that fails before any answer is tried once more.
+const SAFE = new Set(['GET', 'HEAD', 'OPTIONS']);
+
 const server = https.createServer(
   { key: readFileSync(key), cert: readFileSync(cert) },
   (req, res) => {
-    const up = http.request(
-      { host: '127.0.0.1', port: to, method: req.method, path: req.url, headers: forwarded(req) },
-      (r) => {
-        res.writeHead(r.statusCode ?? 502, r.headers);
-        r.pipe(res);
-      },
-    );
-    up.on('error', () => {
-      if (!res.headersSent) res.writeHead(502, { 'content-type': 'text/plain; charset=utf-8' });
-      res.end('House of Rama is not running on this machine just now.');
-    });
-    req.pipe(up);
+    const send = (again) => {
+      const up = http.request(
+        {
+          host: '127.0.0.1',
+          port: to,
+          method: req.method,
+          path: req.url,
+          headers: forwarded(req),
+          agent,
+        },
+        (r) => {
+          res.writeHead(r.statusCode ?? 502, r.headers);
+          r.pipe(res);
+        },
+      );
+      up.on('error', (err) => {
+        if (again && !res.headersSent) {
+          setTimeout(() => send(false), 500);
+          return;
+        }
+        console.error(`[https] ${req.method} ${req.url}: ${err.code ?? err.message}`);
+        if (!res.headersSent) res.writeHead(502, { 'content-type': 'text/plain; charset=utf-8' });
+        res.end('House of Rama did not answer just now. Reload the page in a moment.');
+      });
+      if (SAFE.has(req.method ?? '')) up.end();
+      else req.pipe(up);
+    };
+    send(SAFE.has(req.method ?? ''));
   },
 );
 

@@ -5,7 +5,7 @@
 // with a problem is a grey flag with House of Rama's sentence and what the builder does next, and the
 // next lift is the fix. "Pause build" stops after the lift in hand. The build is done when the builder
 // says so and the product shows every figure traced and every screen Verified.
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -21,6 +21,7 @@ import { readCapture, showroomOf } from '@rama/trace';
 import { photograph } from './actions.ts';
 import type { BuilderDriver, LiftInput } from './builders/types.ts';
 import { pushTo } from './github.ts';
+import { run } from './spawn.ts';
 import { linkHouseModules } from './modules.ts';
 import { startJob, StepError, type Job, type Step, type StartedJob } from './jobs.ts';
 import { commitAll, houseRef } from './products.ts';
@@ -73,12 +74,11 @@ export const checkedSentence = (c: LiftCheck) =>
  * Puts the product's packages in place: links to House of Rama's own when the versions match, else the
  * product's own install. Returns why it could not, or null.
  */
-export function ensurePackages(repoDir: string): string | null {
+export async function ensurePackages(repoDir: string): Promise<string | null> {
   if (existsSync(path.join(repoDir, 'node_modules'))) return null;
   if (linkHouseModules(repoDir).linked) return null;
-  const r = spawnSync('npm', ['install', '--no-audit', '--no-fund'], {
+  const r = await run('npm', ['install', '--no-audit', '--no-fund'], {
     cwd: repoDir,
-    encoding: 'utf8',
     env: {
       PATH: process.env.PATH ?? '',
       HOME: process.env.HOME ?? '',
@@ -102,7 +102,7 @@ export async function checkLift(
   const notYet: string[] = [];
   const bp = writeSiteBlueprint(site);
   // The product's packages first: the lint and the tests read them.
-  const packages = ensurePackages(repoDir);
+  const packages = await ensurePackages(repoDir);
   if (packages) problems.push(packages);
 
   // The lint runs in its own process while the tests run and the app is built and photographed.
@@ -110,9 +110,9 @@ export async function checkLift(
 
   let passing: string[] = [];
   try {
-    const run = runSiteTests(site, env);
-    passing = run.passing;
-    for (const t of run.failing) problems.push(`The checks in ${t} fail.`);
+    const tests = await runSiteTests(site, env);
+    passing = tests.passing;
+    for (const t of tests.failing) problems.push(`The checks in ${t} fail.`);
   } catch (err) {
     problems.push((err as Error).message);
   }
@@ -427,7 +427,7 @@ async function pushIfOnGitHub(
   if (!remote) return '';
   try {
     const token = await withDb((db) => readSecret(db, 'GITHUB_TOKEN', env));
-    pushTo(site.repoDir, `${remote}.git`, token ?? null);
+    await pushTo(site.repoDir, `${remote}.git`, token ?? null);
     return ' Sent to GitHub.';
   } catch (err) {
     return ` ${(err as Error).message}`;

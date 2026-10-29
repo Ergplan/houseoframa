@@ -15,6 +15,7 @@ const FROM: Record<string, string> = {
   'drizzle-orm': 'packages/db',
   postgres: 'packages/db',
   typescript: '.',
+  vite: '.',
   vitest: '.',
   '@types/node': '.',
 };

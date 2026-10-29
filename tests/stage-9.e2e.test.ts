@@ -16,6 +16,7 @@ import { SAMPLE_CARDS, SAMPLE_IDEA, SAMPLE_NAME } from '../packages/workbench/sr
 import { bannedIn } from '../apps/rama/test/banned.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
 import { throwawayDb } from './session.ts';
+import { wordsOn } from './words.ts';
 
 const MEMBER = 'Rachit Agarwal';
 const RECORDING = path.resolve(import.meta.dirname, '../fixtures/sample-build');
@@ -118,11 +119,11 @@ describe('stage 9 e2e', () => {
       await conn.close();
     }
 
-    // Start build, from the trainer console; the lifts show there as each is checked.
+    // Start build, from the trainer console; the lifts show on the Build desk as each is checked.
     // The build shows in the console, which refreshes itself while it runs. Under a full test suite
     // the dev server reloads the page when other servers write beside it, and a press can be lost in
     // a reload: press again until the build shows (a press while it runs returns the same build).
-    const job = page.locator('.console [data-job="build"]');
+    const job = page.locator('[data-desk] [data-job="build"]');
     for (let tries = 0; ; tries++) {
       await page.goto(`${server.browserUrl}/site/${siteId}`);
       if (!(await job.count())) {
@@ -186,7 +187,7 @@ describe('stage 9 e2e', () => {
     expect(await page.locator('.console').innerText()).toContain(
       '8 of 8 figures on the screens traced.',
     );
-    expect(bannedIn(await page.locator('body').innerText())).toEqual([]);
+    expect(bannedIn(await wordsOn(page))).toEqual([]);
     // A build of five lifts, each built and photographed: up to twenty minutes on a busy machine.
   }, 1_200_000);
 });

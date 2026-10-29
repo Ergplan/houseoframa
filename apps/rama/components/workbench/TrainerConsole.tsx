@@ -7,9 +7,10 @@
 import Link from 'next/link';
 import type { Decision } from '@rama/shared';
 import type { SecretView } from '@rama/db';
-import { unsaidSentence, type Job, type SiteStates } from '@rama/workbench';
+import { unsaidSentence, type SiteStates } from '@rama/workbench';
 import { ACTS, type Act } from '../../app/api/site/[siteId]/act/handler';
-import { JobSteps } from './JobSteps';
+import { LiveJobs } from './LiveJobs';
+import type { SiteJob } from '../../app/api/site/[siteId]/jobs/handler';
 import { Chip, StateChip } from '../harmony/ui';
 import { journeyTab, TABS, tabHref, type Tab } from './journey';
 
@@ -21,7 +22,7 @@ export interface ConsoleProps {
   states: SiteStates;
   cards: Decision[];
   keys: SecretView[] | null;
-  jobs: { kind: string; job: Job; status: string }[];
+  jobs: SiteJob[];
   captured: boolean;
   /** Whether the site has an audit on record. */
   audited: boolean;
@@ -67,37 +68,17 @@ function ActButton({
   );
 }
 
-/**
- * The jobs' steps. In the journey bar a finished job folds to its last sentence, so the picture stays
- * under the tabs (Stage 11); a running one stays open, as it is the thing to watch.
- */
-function Jobs({ jobs, fold }: { jobs: ConsoleProps['jobs']; fold?: boolean }) {
-  return (
-    <>
-      {jobs.map(({ kind, job, status }) => (
-        <div key={kind} className={`job ${status}`} data-job={kind}>
-          {status === 'running' ? <meta httpEquiv="refresh" content="4" /> : null}
-          {fold && status !== 'running' ? (
-            <details className="job__fold">
-              <summary>{job.steps.at(-1)?.sentence ?? 'Nothing has run yet.'}</summary>
-              <JobSteps job={job} />
-            </details>
-          ) : (
-            <JobSteps job={job} />
-          )}
-          {status === 'interrupted' ? (
-            <small className="eg-muted">
-              Interrupted when the app restarted; press the button again.
-            </small>
-          ) : null}
-        </div>
-      ))}
-    </>
-  );
-}
-
 /** The journey across the top of every page of a site: the tabs, the current tab's actions, the states. */
-export function JourneyBar({ p, tab }: { p: ConsoleProps; tab: Tab }) {
+export function JourneyBar({
+  p,
+  tab,
+  jobsOnDesk,
+}: {
+  p: ConsoleProps;
+  tab: Tab;
+  /** The build's lifts are on the Build desk's left pane instead (Stage 12). */
+  jobsOnDesk?: boolean;
+}) {
   const j = journeyTab(p, tab);
   const inPage = j.actions.find((a) => a.inPage);
   return (
@@ -149,8 +130,10 @@ export function JourneyBar({ p, tab }: { p: ConsoleProps; tab: Tab }) {
           ) : null}
         </div>
       </div>
-      {tab === 'build' ? <Jobs fold jobs={p.jobs.filter((x) => x.kind === 'build')} /> : null}
-      {tab === 'audit' ? <Jobs fold jobs={p.jobs.filter((x) => x.kind === 'audit')} /> : null}
+      {tab === 'build' && !jobsOnDesk ? (
+        <LiveJobs fold siteId={p.siteId} jobs={p.jobs} kinds={['build']} />
+      ) : null}
+      {tab === 'audit' ? <LiveJobs fold siteId={p.siteId} jobs={p.jobs} kinds={['audit']} /> : null}
     </nav>
   );
 }
@@ -163,7 +146,7 @@ export function CarePanel({ p }: { p: ConsoleProps }) {
     <div className="care eg-stack">
       <section className="eg-glass rama-card">
         <div className="eg-overline">Work</div>
-        <Jobs jobs={p.jobs.filter((x) => x.kind !== 'build' && x.kind !== 'audit')} />
+        <LiveJobs siteId={p.siteId} jobs={p.jobs} kinds={['refresh', 'photograph', 'tests']} />
         {p.states.counts.map((c) => (
           <p key={c.audience} className="eg-muted" style={{ margin: 0 }}>
             {c.sentence}.

@@ -21,7 +21,7 @@ export const ideaDeps = (): IdeaDeps => ({
     if (!remote) return null;
     try {
       const token = await withDb((db) => readSecret(db, 'GITHUB_TOKEN'));
-      pushTo(site.repoDir, `${remote}.git`, token ?? null);
+      await pushTo(site.repoDir, `${remote}.git`, token ?? null);
       return null;
     } catch (err) {
       return `Kept here; not sent to GitHub yet: ${(err as Error).message}`;

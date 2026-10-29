@@ -198,7 +198,7 @@ export async function createProductRepository(
       record.idea ?? site.name,
       deps.github,
     );
-    pushTo(site.repoDir, repo.cloneUrl, token);
+    await pushTo(site.repoDir, repo.cloneUrl, token);
     updateSiteRecord(siteId, { remote: repo.htmlUrl }, deps.env);
     return { ok: true, sentence: `${repo.fullName} is created on GitHub and holds the work.` };
   } catch (err) {

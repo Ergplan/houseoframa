@@ -20,6 +20,7 @@ import { GroundView } from '../../../components/lakefront/GroundView';
 import { loadGround } from '../../api/site/[siteId]/ground/handler';
 import { groundDeps } from '../../../server/ground';
 import { placeHref } from '../../../components/lakefront/places';
+import { latestFile } from '../../../components/workbench/desk';
 
 export const dynamic = 'force-dynamic';
 
@@ -111,6 +112,8 @@ export default async function SitePage({
       </SiteShell>
     );
   }
+  // The Build desk's code pane opens on the file written last (Stage 12).
+  const desk = { file: latestFile(blueprint) };
   const level =
     one(q.at) === 'code' || (brick && !chosen) ? 'code' : chosen ? 'building' : 'street';
   const levels =
@@ -135,7 +138,7 @@ export default async function SitePage({
       }),
     );
     return (
-      <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
+      <SiteShell site={site} member={member} q={q} console={cp} levels={levels} desk={desk}>
         <StreetView
           siteId={site.id}
           name={site.name}
@@ -168,7 +171,7 @@ export default async function SitePage({
     );
     const keys = scene.facades.flatMap((f) => f.figures.map((g) => g.key));
     return (
-      <SiteShell site={site} member={member} q={q} console={cp} levels={levels}>
+      <SiteShell site={site} member={member} q={q} console={cp} levels={levels} desk={desk}>
         <BuildingView
           // One view per building: "Next building" starts a fresh camera on the next one (reviewer run 6).
           key={chosen!.id}

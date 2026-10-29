@@ -1,12 +1,15 @@
 // The journey of a build (Stage 11): five tabs and Care; on each tab only its own actions, exactly one
 // lit (the next thing to do in that act), the rest quiet with their reasons; the glossary holds on the
 // tab names and the lit actions' labels.
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { bannedIn, visibleText } from '../../test/banned';
 import { ACTS } from '../../app/api/site/[siteId]/act/handler';
 import { journeyTab, TABS, tabHref, tabOf, type Tab } from './journey';
 import { JourneyBar, type ConsoleProps } from './TrainerConsole';
+
+// A job's steps are followed in place, with useRouter to redraw the picture when one ends (Stage 12).
+vi.mock('next/navigation', () => ({ useRouter: () => ({ refresh: () => {} }) }));
 
 const screen = (id: string, confirmed: boolean) => ({
   id,

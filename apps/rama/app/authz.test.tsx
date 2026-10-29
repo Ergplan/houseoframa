@@ -172,6 +172,7 @@ const siteRoutes: [string, () => Promise<Handler>][] = [
   ['POST board', async () => (await import('./api/site/[siteId]/board/route')).POST as Handler],
   ['GET code', async () => (await import('./api/site/[siteId]/code/route')).GET as Handler],
   ['GET typing', async () => (await import('./api/site/[siteId]/typing/route')).GET as Handler],
+  ['GET jobs', async () => (await import('./api/site/[siteId]/jobs/route')).GET as Handler],
   [
     'POST explain/confirm',
     async () => (await import('./api/site/[siteId]/explain/confirm/route')).POST as Handler,

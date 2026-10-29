@@ -38,7 +38,7 @@ describe('@vendor GitHub', () => {
         '-qm',
         'check',
       ]);
-      pushTo(dir, repo.cloneUrl, token!);
+      await pushTo(dir, repo.cloneUrl, token!);
       const remote = execFileSync('git', ['ls-remote', repo.cloneUrl], {
         encoding: 'utf8',
         env: {

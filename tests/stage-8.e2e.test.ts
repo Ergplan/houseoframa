@@ -15,6 +15,7 @@ import { bannedIn } from '../apps/rama/test/banned.ts';
 import { startDevServer, type DevServer } from './dev-server.ts';
 import { sampleSite } from './sample.ts';
 import { signIn, throwawayDb } from './session.ts';
+import { wordsOn } from './words.ts';
 
 const MEMBER = 'Rachit Agarwal';
 let work: string;
@@ -57,7 +58,7 @@ afterAll(async () => {
 /** The text a person reads on the page, the breadcrumb and the trainer console included. */
 const readable = async (page: Page) =>
   [
-    await page.locator('body').innerText(),
+    await wordsOn(page),
     ...(await page
       .locator('[aria-label], [placeholder], [title]')
       .evaluateAll((els) =>

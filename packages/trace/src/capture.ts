@@ -136,18 +136,32 @@ const CLEAN_ENV = (): NodeJS.ProcessEnv => ({
   NEXT_TELEMETRY_DISABLED: '1',
 });
 
-function sh(command: string, cwd: string, env: NodeJS.ProcessEnv, log: (s: string) => void) {
+/** Runs a step of the target's own (install, build) beside the app, never holding it (Stage 12). */
+function sh(
+  command: string,
+  cwd: string,
+  env: NodeJS.ProcessEnv,
+  log: (s: string) => void,
+): Promise<void> {
   log(`$ ${command}`);
-  const res = spawnSync('bash', ['-lc', command], {
-    cwd,
-    env,
-    encoding: 'utf8',
-    maxBuffer: 64 * 1024 * 1024,
-  });
-  if (res.status !== 0)
-    throw new Error(
-      `\`${command}\` failed in ${cwd}:\n${(res.stdout + res.stderr).trim().split('\n').slice(-15).join('\n')}`,
+  return new Promise((resolve, reject) => {
+    let out = '';
+    const child = spawn('bash', ['-lc', command], { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
+    // The last lines are all a failure shows, so a long build's output is not all kept.
+    const keep = (d: Buffer) => (out = (out + d).slice(-64 * 1024));
+    child.stdout?.on('data', keep);
+    child.stderr?.on('data', keep);
+    child.on('error', reject);
+    child.on('close', (code) =>
+      code === 0
+        ? resolve()
+        : reject(
+            new Error(
+              `\`${command}\` failed in ${cwd}:\n${out.trim().split('\n').slice(-15).join('\n')}`,
+            ),
+          ),
     );
+  });
 }
 
 async function startApp(
@@ -256,9 +270,9 @@ export async function capture(
   const overlay: FiguresOverlay = readFiguresOverlay(site.repoDir);
   const env = CLEAN_ENV();
   if (!existsSync(path.join(site.repoDir, 'node_modules')))
-    sh(cfg.app.install, site.repoDir, { ...env, NODE_ENV: 'development' }, log); // dev dependencies are needed to build
+    await sh(cfg.app.install, site.repoDir, { ...env, NODE_ENV: 'development' }, log); // dev dependencies are needed to build
   if (opts.build !== false)
-    sh(cfg.app.build, site.repoDir, { ...env, NODE_ENV: 'production' }, log);
+    await sh(cfg.app.build, site.repoDir, { ...env, NODE_ENV: 'production' }, log);
 
   // The convention's own mapping, read from the target's code in the sandbox.
   const mappings: Capture['mappings'] = {};

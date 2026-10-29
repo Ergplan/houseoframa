@@ -14,6 +14,8 @@ import { Shell } from '../harmony/Shell';
 import { CarePanel, JourneyBar, type ConsoleProps } from './TrainerConsole';
 import { tabOf } from './journey';
 import { Said } from './Said';
+import { BuildDesk } from './BuildDesk';
+import { siteJobs } from '../../app/api/site/[siteId]/jobs/handler';
 
 /** The site's latest audit, or null when it has none or the database cannot be reached (the site still renders). */
 export async function auditOf(siteId: string): Promise<AuditView | null> {
@@ -44,10 +46,7 @@ export async function consoleProps(
     keys: seesEverything(member) ? await listSecrets(db) : null,
     sessions: (await listSessions(db, site.id)).length,
   })).catch(() => ({ cards: [], keys: null, sessions: 0 }));
-  const jobs = (['build', 'refresh', 'photograph', 'tests', 'audit'] as const)
-    .map((kind) => ({ kind, job: latestJob(kind, site.id) }))
-    .filter((j): j is { kind: typeof j.kind; job: NonNullable<typeof j.job> } => j.job !== null)
-    .map((j) => ({ ...j, status: jobStatus(j.job) }));
+  const jobs = siteJobs(site, { latest: (kind, id) => latestJob(kind, id), status: jobStatus });
   return {
     siteId: site.id,
     name: site.name,
@@ -68,6 +67,7 @@ export async function SiteShell({
   q = {},
   console: given,
   levels,
+  desk,
   children,
 }: {
   site: SiteLocation;
@@ -79,13 +79,17 @@ export async function SiteShell({
   q?: Record<string, string | string[] | undefined>;
   /** Console props already computed by the page, to avoid reading them twice. */
   console?: ConsoleProps | null;
+  /** The Build tab's three panes, with the file the code pane opens on (Stage 12). */
+  desk?: { file: string | null };
   children: ReactNode;
 }) {
   const cp = given === undefined ? await consoleProps(site, member) : given;
+  const onDesk = desk && cp;
   return (
     <Shell
       here={null}
       member={member}
+      wide={Boolean(onDesk)}
       crumbs={[
         { label: 'Home', href: '/' },
         here || levels?.length
@@ -95,10 +99,23 @@ export async function SiteShell({
         ...(levels ?? []),
       ]}
     >
-      {cp ? <JourneyBar p={cp} tab={tabOf(here)} /> : null}
+      {cp ? <JourneyBar p={cp} tab={tabOf(here)} jobsOnDesk={Boolean(onDesk)} /> : null}
       <Said q={q} />
       {here === 'Care' && cp ? <CarePanel p={cp} /> : null}
-      {children}
+      {onDesk ? (
+        <BuildDesk
+          siteId={site.id}
+          member={member.name}
+          idea={siteRecord(site.id)?.idea ?? null}
+          cards={cp.cards}
+          jobs={cp.jobs}
+          file={desk.file}
+        >
+          {children}
+        </BuildDesk>
+      ) : (
+        children
+      )}
     </Shell>
   );
 }

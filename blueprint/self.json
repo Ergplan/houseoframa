@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+  "commit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
   "commits": [
     {
       "at": "2026-10-20T13:13:14+05:30",
@@ -17547,6 +17547,81 @@
       "sha": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
       "short": "abfc45b",
       "subject": "Stage 12: the idea room — a welcoming chat with the drafter, files, a scratchpad and web search"
+    },
+    {
+      "at": "2026-10-28T20:33:52Z",
+      "author": "Rachit Agarwal",
+      "changes": [
+        {
+          "add": 58,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/api/site/[siteId]/voice/handler.test.ts"
+        },
+        {
+          "add": 54,
+          "del": 3,
+          "kind": "M",
+          "path": "apps/rama/app/api/site/[siteId]/voice/handler.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/site/[siteId]/layout.tsx"
+        },
+        {
+          "add": 55,
+          "del": 9,
+          "kind": "M",
+          "path": "apps/rama/components/ears/VoiceRoom.tsx"
+        },
+        {
+          "add": 66,
+          "del": 7,
+          "kind": "M",
+          "path": "apps/rama/components/idea/IdeaRoom.tsx"
+        },
+        {
+          "add": 20,
+          "del": 2,
+          "kind": "M",
+          "path": "apps/rama/server/voice.ts"
+        },
+        {
+          "add": 442,
+          "del": 128,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 3,
+          "del": 3,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": 34,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/ears/src/conductor.ts"
+        }
+      ],
+      "sha": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
+      "short": "1226e2e",
+      "subject": "Stage 12: the voice joins the idea room's conversation"
     }
   ],
   "edges": [
@@ -19909,6 +19984,88 @@
       "typeOnly": false
     },
     {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/handler.test.ts",
+      "symbols": [
+        "handleJobs"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/jobs/handler.test.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/handler.test.ts",
+      "symbols": [
+        "Job"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a site's location: its checkout, blueprint file and options"
+      },
+      "from": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "symbols": [
+        "SiteLocation"
+      ],
+      "to": "packages/blueprint/src/site.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "symbols": [
+        "Job",
+        "JobKind"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/route.ts",
+      "symbols": [
+        "handleJobs"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/route.ts",
+      "symbols": [
+        "authDeps"
+      ],
+      "to": "apps/rama/server/auth-deps.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/route.ts",
+      "symbols": [
+        "authSite"
+      ],
+      "to": "apps/rama/server/authorize.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/api/site/[siteId]/jobs/route.ts",
+      "symbols": [
+        "jobStatus",
+        "latestJob"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/app/api/site/[siteId]/repository/route.ts",
       "symbols": [
         "authDeps"
@@ -20734,6 +20891,14 @@
         "*"
       ],
       "to": "apps/rama/app/api/site/[siteId]/idea/files/[name]/route.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/authz.test.tsx",
+      "symbols": [
+        "*"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/route.ts",
       "typeOnly": false
     },
     {
@@ -21776,6 +21941,14 @@
         "consoleProps"
       ],
       "to": "apps/rama/components/workbench/SiteShell.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/app/site/[siteId]/page.tsx",
+      "symbols": [
+        "latestFile"
+      ],
+      "to": "apps/rama/components/workbench/desk.ts",
       "typeOnly": false
     },
     {
@@ -23077,6 +23250,38 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/workbench/BuildDesk.tsx",
+      "symbols": [
+        "SiteJob"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/workbench/BuildDesk.tsx",
+      "symbols": [
+        "CodePane"
+      ],
+      "to": "apps/rama/components/lakefront/CodePane.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/BuildDesk.tsx",
+      "symbols": [
+        "LiveJobs"
+      ],
+      "to": "apps/rama/components/workbench/LiveJobs.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/BuildDesk.tsx",
+      "symbols": [
+        "Decision"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
+    },
+    {
       "from": "apps/rama/components/workbench/JobSteps.tsx",
       "symbols": [
         "Chip"
@@ -23094,11 +23299,43 @@
       "typeOnly": true
     },
     {
+      "from": "apps/rama/components/workbench/LiveJobs.tsx",
+      "symbols": [
+        "SiteJob"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/workbench/LiveJobs.tsx",
+      "symbols": [
+        "JobSteps"
+      ],
+      "to": "apps/rama/components/workbench/JobSteps.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/SiteShell.tsx",
+      "symbols": [
+        "siteJobs"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "typeOnly": false
+    },
+    {
       "from": "apps/rama/components/workbench/SiteShell.tsx",
       "symbols": [
         "Shell"
       ],
       "to": "apps/rama/components/harmony/Shell.tsx",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/SiteShell.tsx",
+      "symbols": [
+        "BuildDesk"
+      ],
+      "to": "apps/rama/components/workbench/BuildDesk.tsx",
       "typeOnly": false
     },
     {
@@ -23222,6 +23459,14 @@
     {
       "from": "apps/rama/components/workbench/TrainerConsole.tsx",
       "symbols": [
+        "SiteJob"
+      ],
+      "to": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/workbench/TrainerConsole.tsx",
+      "symbols": [
         "Chip",
         "StateChip"
       ],
@@ -23231,9 +23476,9 @@
     {
       "from": "apps/rama/components/workbench/TrainerConsole.tsx",
       "symbols": [
-        "JobSteps"
+        "LiveJobs"
       ],
-      "to": "apps/rama/components/workbench/JobSteps.tsx",
+      "to": "apps/rama/components/workbench/LiveJobs.tsx",
       "typeOnly": false
     },
     {
@@ -23266,12 +23511,27 @@
     {
       "from": "apps/rama/components/workbench/TrainerConsole.tsx",
       "symbols": [
-        "Job",
         "SiteStates",
         "unsaidSentence"
       ],
       "to": "packages/workbench/src/index.ts",
       "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/desk.test.ts",
+      "symbols": [
+        "latestFile"
+      ],
+      "to": "apps/rama/components/workbench/desk.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/workbench/desk.ts",
+      "symbols": [
+        "Blueprint"
+      ],
+      "to": "packages/shared/src/index.ts",
+      "typeOnly": true
     },
     {
       "from": "apps/rama/components/workbench/journey.test.tsx",
@@ -30343,6 +30603,14 @@
     {
       "from": "packages/workbench/src/build.ts",
       "symbols": [
+        "run"
+      ],
+      "to": "packages/workbench/src/spawn.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
         "siteStates"
       ],
       "to": "packages/workbench/src/states.ts",
@@ -30546,6 +30814,14 @@
         "splitBlocks"
       ],
       "to": "packages/workbench/src/blocks.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/github.ts",
+      "symbols": [
+        "run"
+      ],
+      "to": "packages/workbench/src/spawn.ts",
       "typeOnly": false
     },
     {
@@ -31313,6 +31589,14 @@
         "passingFromReport"
       ],
       "to": "packages/ceremony/src/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/tests.ts",
+      "symbols": [
+        "run"
+      ],
+      "to": "packages/workbench/src/spawn.ts",
       "typeOnly": false
     },
     {
@@ -32404,6 +32688,14 @@
       "typeOnly": false
     },
     {
+      "from": "tests/stage-11.e2e.test.ts",
+      "symbols": [
+        "wordsOn"
+      ],
+      "to": "tests/words.ts",
+      "typeOnly": false
+    },
+    {
       "english": {
         "confirmed": false,
         "text": "a way to register a site for the local member"
@@ -33024,6 +33316,14 @@
       "typeOnly": false
     },
     {
+      "from": "tests/stage-8.e2e.test.ts",
+      "symbols": [
+        "wordsOn"
+      ],
+      "to": "tests/words.ts",
+      "typeOnly": false
+    },
+    {
       "from": "tests/stage-9.e2e.test.ts",
       "symbols": [
         "bannedIn"
@@ -33092,6 +33392,14 @@
         "throwawayDb"
       ],
       "to": "tests/session.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-9.e2e.test.ts",
+      "symbols": [
+        "wordsOn"
+      ],
+      "to": "tests/words.ts",
       "typeOnly": false
     }
   ],
@@ -33329,6 +33637,12 @@
       "manifest": "package.json",
       "name": "typescript-eslint",
       "version": "8.71.1"
+    },
+    {
+      "dev": true,
+      "manifest": "package.json",
+      "name": "vite",
+      "version": "8.3.4"
     },
     {
       "dev": true,
@@ -33861,11 +34175,17 @@
     {
       "dev": true,
       "manifest": "templates/house-stack/package.json",
+      "name": "vite",
+      "version": "8.3.4"
+    },
+    {
+      "dev": true,
+      "manifest": "templates/house-stack/package.json",
       "name": "vitest",
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-28T20:07:09Z",
+  "extractedAt": "2026-10-28T20:33:52Z",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -35435,7 +35755,7 @@
     },
     {
       "binary": false,
-      "bytes": 1044,
+      "bytes": 1050,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -35545,6 +35865,63 @@
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 14,
       "path": "apps/rama/app/api/site/[siteId]/idea/scratchpad/route.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1522,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 38,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/app/api/site/[siteId]/jobs/handler.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1118,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "JobsDeps",
+        "SITE_JOB_KINDS",
+        "SiteJob",
+        "handleJobs",
+        "siteJobs"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 29,
+      "path": "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 574,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "GET",
+        "dynamic"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "api",
+      "layerRule": "overlay: apps/rama/app/api/**",
+      "lines": 13,
+      "path": "apps/rama/app/api/site/[siteId]/jobs/route.ts",
       "test": false
     },
     {
@@ -35693,12 +36070,12 @@
     {
       "binary": false,
       "bytes": 12050,
-      "changes": 4,
+      "changes": 5,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 297,
@@ -35711,7 +36088,7 @@
     {
       "binary": false,
       "bytes": 12844,
-      "changes": 6,
+      "changes": 7,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -35727,7 +36104,7 @@
         "placeUrl"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "api",
       "layerRule": "overlay: apps/rama/app/api/**",
       "lines": 302,
@@ -35847,7 +36224,7 @@
     },
     {
       "binary": false,
-      "bytes": 16877,
+      "bytes": 16970,
       "changes": 13,
       "env": [
         "DATABASE_URL",
@@ -35863,7 +36240,7 @@
       "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 428,
+      "lines": 429,
       "packages": [
         "drizzle-orm",
         "postgres",
@@ -35935,7 +36312,7 @@
     },
     {
       "binary": false,
-      "bytes": 32317,
+      "bytes": 33964,
       "changes": 20,
       "env": [],
       "envDynamic": false,
@@ -35944,7 +36321,7 @@
       "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 1629,
+      "lines": 1710,
       "path": "apps/rama/app/globals.css",
       "purpose": {
         "confirmed": false,
@@ -36256,7 +36633,7 @@
     {
       "binary": false,
       "bytes": 1833,
-      "changes": 2,
+      "changes": 3,
       "env": [
         "RAMA_VOICE_CLIPS"
       ],
@@ -36266,7 +36643,7 @@
         "dynamic"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 50,
@@ -36301,7 +36678,7 @@
     },
     {
       "binary": false,
-      "bytes": 10731,
+      "bytes": 10943,
       "changes": 17,
       "env": [],
       "envDynamic": false,
@@ -36313,7 +36690,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 278,
+      "lines": 281,
       "path": "apps/rama/app/site/[siteId]/page.tsx",
       "purpose": {
         "confirmed": false,
@@ -36535,7 +36912,7 @@
     {
       "binary": false,
       "bytes": 22942,
-      "changes": 8,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -36543,7 +36920,7 @@
         "VoiceRoom"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 627,
@@ -36639,7 +37016,7 @@
     },
     {
       "binary": false,
-      "bytes": 3935,
+      "bytes": 4096,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -36653,7 +37030,7 @@
       "lastCommit": "30f38d8c12bcbcf49848f92a12b5a61eb00e3e53",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 132,
+      "lines": 135,
       "packages": [
         "next"
       ],
@@ -36688,7 +37065,7 @@
     {
       "binary": false,
       "bytes": 21896,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -36699,7 +37076,7 @@
         "RoomTurnView"
       ],
       "firstCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 619,
@@ -37195,6 +37572,26 @@
     },
     {
       "binary": false,
+      "bytes": 2812,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "BuildDesk"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 73,
+      "packages": [
+        "next"
+      ],
+      "path": "apps/rama/components/workbench/BuildDesk.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 1471,
       "changes": 2,
       "env": [],
@@ -37208,6 +37605,27 @@
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 41,
       "path": "apps/rama/components/workbench/JobSteps.tsx",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2760,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "LiveJobs"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 87,
+      "packages": [
+        "next",
+        "react"
+      ],
+      "path": "apps/rama/components/workbench/LiveJobs.tsx",
       "test": false
     },
     {
@@ -37229,7 +37647,7 @@
     },
     {
       "binary": false,
-      "bytes": 3862,
+      "bytes": 4290,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -37242,13 +37660,13 @@
       "lastCommit": "859cd1e0a8796880727300bed8325900dbaf66fb",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 104,
+      "lines": 121,
       "path": "apps/rama/components/workbench/SiteShell.tsx",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 9093,
+      "bytes": 8276,
       "changes": 7,
       "env": [],
       "envDynamic": false,
@@ -37264,7 +37682,7 @@
       "lastCommit": "4bea3e99a5159ed810c4ddc9d0e28fefd610c3d1",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 250,
+      "lines": 233,
       "packages": [
         "next"
       ],
@@ -37273,7 +37691,42 @@
     },
     {
       "binary": false,
-      "bytes": 5777,
+      "bytes": 1411,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 40,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/components/workbench/desk.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 811,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "latestFile"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 18,
+      "path": "apps/rama/components/workbench/desk.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 5967,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -37282,7 +37735,7 @@
       "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 138,
+      "lines": 141,
       "packages": [
         "react-dom",
         "vitest"
@@ -37716,7 +38169,7 @@
     {
       "binary": false,
       "bytes": 3909,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -37726,7 +38179,7 @@
         "voiceMode"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "21fc9cda5cd9063f9147f9441f3fc467af485370",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 113,
@@ -38178,16 +38631,16 @@
     },
     {
       "binary": false,
-      "bytes": 94356,
-      "changes": 38,
+      "bytes": 96267,
+      "changes": 39,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 251,
+      "lines": 253,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -38216,16 +38669,16 @@
     },
     {
       "binary": false,
-      "bytes": 89324,
-      "changes": 112,
+      "bytes": 91900,
+      "changes": 113,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 304,
+      "lines": 312,
       "path": "docs/DECISIONS.md",
       "purpose": {
         "confirmed": false,
@@ -38265,16 +38718,16 @@
     },
     {
       "binary": false,
-      "bytes": 24029,
-      "changes": 44,
+      "bytes": 24912,
+      "changes": 45,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "73a3e6b2c98f6e26b602ee00e888b2b264c48018",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 79,
+      "lines": 82,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -40387,7 +40840,7 @@
     },
     {
       "binary": false,
-      "bytes": 2119,
+      "bytes": 2137,
       "changes": 19,
       "env": [],
       "envDynamic": false,
@@ -40396,7 +40849,7 @@
       "lastCommit": "df6c9b55a41dcab0d81221a8a4e8fc8a290eff99",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 62,
+      "lines": 63,
       "path": "package.json",
       "purpose": {
         "confirmed": false,
@@ -43871,7 +44324,7 @@
     {
       "binary": false,
       "bytes": 24410,
-      "changes": 7,
+      "changes": 8,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -43894,7 +44347,7 @@
         "welcome"
       ],
       "firstCommit": "0ba7267072fc7f55440087f9d64110b87785e276",
-      "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
+      "lastCommit": "1226e2e803b7dbcf844644823bcee59db0ebc63c",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 676,
@@ -45984,7 +46437,7 @@
     },
     {
       "binary": false,
-      "bytes": 17373,
+      "bytes": 17889,
       "changes": 12,
       "env": [
         "HOME",
@@ -46008,7 +46461,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 469,
+      "lines": 483,
       "packages": [
         "playwright"
       ],
@@ -46454,7 +46907,7 @@
     },
     {
       "binary": false,
-      "bytes": 8330,
+      "bytes": 8358,
       "changes": 6,
       "env": [],
       "envDynamic": false,
@@ -46469,7 +46922,7 @@
       "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 208,
+      "lines": 211,
       "path": "packages/workbench/src/actions.ts",
       "tables": [
         {
@@ -46504,7 +46957,7 @@
     },
     {
       "binary": false,
-      "bytes": 18186,
+      "bytes": 18226,
       "changes": 4,
       "env": [
         "HOME",
@@ -46718,7 +47171,7 @@
     },
     {
       "binary": false,
-      "bytes": 4782,
+      "bytes": 4761,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -46739,7 +47192,7 @@
       "lastCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 140,
+      "lines": 139,
       "path": "packages/workbench/src/github.ts",
       "test": false
     },
@@ -46896,7 +47349,7 @@
     },
     {
       "binary": false,
-      "bytes": 3142,
+      "bytes": 3155,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -46907,13 +47360,13 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 72,
+      "lines": 73,
       "path": "packages/workbench/src/modules.ts",
       "test": false
     },
     {
       "binary": false,
-      "bytes": 7835,
+      "bytes": 7841,
       "changes": 4,
       "env": [
         "RAMA_GITHUB_API"
@@ -47022,6 +47475,24 @@
     },
     {
       "binary": false,
+      "bytes": 1461,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Ran",
+        "run"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 36,
+      "path": "packages/workbench/src/spawn.ts",
+      "test": false
+    },
+    {
+      "binary": false,
       "bytes": 4167,
       "changes": 3,
       "env": [],
@@ -47092,7 +47563,7 @@
     },
     {
       "binary": false,
-      "bytes": 5006,
+      "bytes": 5048,
       "changes": 2,
       "env": [
         "HOME",
@@ -47197,7 +47668,7 @@
     },
     {
       "binary": false,
-      "bytes": 2484,
+      "bytes": 2490,
       "changes": 1,
       "env": [
         "GITHUB_OWNER",
@@ -47456,7 +47927,7 @@
     },
     {
       "binary": false,
-      "bytes": 108971,
+      "bytes": 109081,
       "changes": 19,
       "env": [],
       "envDynamic": false,
@@ -47465,7 +47936,7 @@
       "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 3458,
+      "lines": 3461,
       "path": "pnpm-lock.yaml",
       "purpose": {
         "confirmed": false,
@@ -48141,7 +48612,7 @@
     },
     {
       "binary": false,
-      "bytes": 3350,
+      "bytes": 4179,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -48150,7 +48621,7 @@
       "lastCommit": "cc01af16ea50b303b7cd4a793ac6b3dea23e123d",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 97,
+      "lines": 119,
       "path": "scripts/https.mjs",
       "test": false
     },
@@ -48338,6 +48809,21 @@
       "layerRule": "default: .gitignore",
       "lines": 3,
       "path": "templates/house-stack/.gitignore",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 328,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 4,
+      "path": "templates/house-stack/.npmrc",
       "test": false
     },
     {
@@ -48557,7 +49043,7 @@
     },
     {
       "binary": false,
-      "bytes": 677,
+      "bytes": 698,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -48566,7 +49052,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "foundation",
       "layerRule": "default: package manifest",
-      "lines": 30,
+      "lines": 31,
       "path": "templates/house-stack/package.json",
       "test": false
     },
@@ -48898,7 +49384,7 @@
     },
     {
       "binary": false,
-      "bytes": 17445,
+      "bytes": 17426,
       "changes": 7,
       "env": [
         "RAMA_SHOTS"
@@ -49141,7 +49627,7 @@
     },
     {
       "binary": false,
-      "bytes": 8055,
+      "bytes": 8074,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -49150,7 +49636,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 165,
+      "lines": 166,
       "packages": [
         "playwright",
         "vitest"
@@ -49160,7 +49646,7 @@
     },
     {
       "binary": false,
-      "bytes": 8623,
+      "bytes": 8657,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -49169,13 +49655,30 @@
       "lastCommit": "cc01af16ea50b303b7cd4a793ac6b3dea23e123d",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 192,
+      "lines": 193,
       "packages": [
         "playwright",
         "vitest"
       ],
       "path": "tests/stage-9.e2e.test.ts",
       "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 891,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "wordsOn"
+      ],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 17,
+      "path": "tests/words.ts",
+      "test": false
     },
     {
       "binary": false,
@@ -49349,6 +49852,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -49750,6 +50254,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -49764,6 +50269,7 @@
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
         "apps/rama/app/api/site/[siteId]/ground/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -49788,10 +50294,13 @@
         "apps/rama/components/lakefront/live.ts",
         "apps/rama/components/lakefront/places.ts",
         "apps/rama/components/lakefront/useCamera.ts",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
+        "apps/rama/components/workbench/desk.ts",
         "apps/rama/components/workbench/journey.ts",
         "apps/rama/server/ground.ts",
         "apps/rama/server/http.ts",
@@ -49922,6 +50431,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -49935,6 +50445,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -49945,8 +50456,11 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/workbench/ActForm.tsx",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
@@ -50079,6 +50593,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -50092,6 +50607,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -50101,7 +50617,10 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
@@ -50234,6 +50753,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -50247,6 +50767,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -50258,8 +50779,11 @@
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
         "apps/rama/components/idea/IdeaRoom.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/workbench/BrainsForm.tsx",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
@@ -50392,6 +50916,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -50405,6 +50930,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -50415,7 +50941,10 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
@@ -50550,6 +51079,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -50563,6 +51093,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -50572,10 +51103,13 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/showroom/ShowroomView.tsx",
         "apps/rama/components/showroom/TrailPanel.tsx",
         "apps/rama/components/workbench/ActForm.tsx",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
@@ -50708,6 +51242,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -50855,6 +51390,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -50868,6 +51404,7 @@
     {
       "bricks": [
         "apps/rama/app/api/site/[siteId]/act/handler.ts",
+        "apps/rama/app/api/site/[siteId]/jobs/handler.ts",
         "apps/rama/app/globals.css",
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
@@ -50878,8 +51415,11 @@
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
         "apps/rama/components/harmony/ui.tsx",
+        "apps/rama/components/lakefront/CodePane.tsx",
         "apps/rama/components/workbench/ActForm.tsx",
+        "apps/rama/components/workbench/BuildDesk.tsx",
         "apps/rama/components/workbench/JobSteps.tsx",
+        "apps/rama/components/workbench/LiveJobs.tsx",
         "apps/rama/components/workbench/Said.tsx",
         "apps/rama/components/workbench/SiteShell.tsx",
         "apps/rama/components/workbench/TrainerConsole.tsx",
@@ -51012,6 +51552,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",
@@ -51145,6 +51686,7 @@
         "packages/workbench/src/sample.ts",
         "packages/workbench/src/scaffold.ts",
         "packages/workbench/src/seats.ts",
+        "packages/workbench/src/spawn.ts",
         "packages/workbench/src/states.ts",
         "packages/workbench/src/tail.ts",
         "packages/workbench/src/testdrive.ts",

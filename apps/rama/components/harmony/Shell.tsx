@@ -95,6 +95,7 @@ export function Shell({
   member,
   crumbs,
   side,
+  wide,
   children,
 }: {
   here: Place | null;
@@ -102,12 +103,14 @@ export function Shell({
   crumbs: { label: string; href?: string }[];
   /** Replaces the navigation in the sidebar (a site's trainer console). */
   side?: ReactNode;
+  /** The sidebar steps aside, for a page that needs the width (the Build desk). */
+  wide?: boolean;
   children: ReactNode;
 }) {
   return (
     <div className="eg-stage rama-stage">
-      <div className="eg-screen rama-screen">
-        <aside className="eg-side">
+      <div className={`eg-screen rama-screen${wide ? ' rama-screen--wide' : ''}`}>
+        <aside className="eg-side" hidden={wide}>
           <div className="eg-brand">
             <Wordmark />
           </div>
