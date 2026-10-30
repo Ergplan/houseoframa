@@ -29,10 +29,13 @@ export {
 export { checkKey, KEY_HELP, type KeyCheck } from './keys.ts';
 export {
   AGENT_TOOLS,
+  agentEvents,
   lastJson,
+  reportOf,
   runAgent,
   runProgram,
   type AgentDeps,
+  type AgentEvent,
   type AgentRequest,
   type AgentResult,
   type Spawned,

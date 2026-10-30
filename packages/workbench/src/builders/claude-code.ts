@@ -53,6 +53,7 @@ export function claudeCode(
           keyName: 'ANTHROPIC_API_KEY',
           session: req.session,
           env: BUILDER_GIT('Claude Code'),
+          ...(req.onEvent ? { onEvent: req.onEvent } : {}),
         },
         opts.deps,
       );

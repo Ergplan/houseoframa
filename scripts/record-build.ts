@@ -1,13 +1,13 @@
 // Records a real build of a product as the recording the recorded builder replays (Stage 9): Test drive
 // without a builder key, the watcher and CI. Writes each lift as `git format-patch` output (the house
 // stack's own lift as 0000-, for make-sample.mjs) and lifts.json with the builder's answers, read from
-// the build's model_calls rows. For engineers:
+// the build's model_calls rows, and narration.jsonl with what the builder said and did as it worked. For engineers:
 //
 //   pnpm record-build <siteId> fixtures/sample-build
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { locateSite, siteRecord } from '@rama/blueprint/site';
+import { locateSite, siteRecord, workDir } from '@rama/blueprint/site';
 import { createDb, modelCalls } from '@rama/db';
 
 if (existsSync('.env')) process.loadEnvFile('.env');
@@ -80,6 +80,9 @@ try {
     lifts: outputs.map((o, i) => ({ ...o.answer, patch: patches[i]! })),
   };
   writeFileSync(path.join(dir, 'lifts.json'), JSON.stringify(recording, null, 2) + '\n');
+  // What the builder said and did while it worked (Stage 13), for the film of every replay.
+  const narration = path.join(workDir(), siteId, 'narration.jsonl');
+  if (existsSync(narration)) copyFileSync(narration, path.join(dir, 'narration.jsonl'));
   console.log(
     `${patches.length} lifts recorded in ${out}, $${recording.costUsd.toFixed(2)} of building.`,
   );

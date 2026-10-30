@@ -29,7 +29,7 @@ import { layDownScaffold, lintProduct, onHouseStack } from './scaffold.ts';
 import { siteStates } from './states.ts';
 import { runSiteTests } from './tests.ts';
 import { startTail } from './tail.ts';
-import { liftsFile, type LiftRecord } from './film.ts';
+import { liftsFile, narrationFile, type LiftRecord, type NarrationLine } from './film.ts';
 import { explainFile } from './explain.ts';
 import { figuresOfBlock, productFigures } from './code.ts';
 
@@ -343,12 +343,26 @@ export async function build(
       async () => {
         // The builder's edits, as it makes them, for the code typed inside the glass (Stage 11).
         const tail = startTail(site.repoDir, site.id, n, { env });
+        const liftStarted = Date.now();
         const answer = await opts.driver
           .lift({
             repoDir: site.repoDir,
             siteId: site.id,
             session,
             createdBy: opts.createdBy ?? BUILD_COMPONENT,
+            // The builder's own words and tools as it works, for the film (Stage 13).
+            onEvent: (e) =>
+              keepNarration(
+                site.id,
+                {
+                  lift: n,
+                  at: Date.now() - liftStarted,
+                  kind: e.kind,
+                  text: e.kind === 'tool' ? `${e.tool}${e.target ? ` ${e.target}` : ''}` : e.text,
+                  ...(e.kind === 'tool' ? { tool: e.tool, target: e.target } : {}),
+                },
+                env,
+              ),
             input: {
               product,
               cards,
@@ -431,6 +445,13 @@ export async function build(
       'The trainer reads the flags above, then presses Start build again.',
     );
   });
+}
+
+/** Appends one line of what the builder said or did to work/<site>/narration.jsonl. */
+function keepNarration(siteId: string, line: NarrationLine, env: NodeJS.ProcessEnv): void {
+  const f = narrationFile(siteId, env);
+  mkdirSync(path.dirname(f), { recursive: true });
+  appendFileSync(f, `${JSON.stringify(line)}\n`);
 }
 
 /** Appends one lift's record to work/<site>/lifts.jsonl (append-only, one JSON object a line). */

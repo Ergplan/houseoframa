@@ -21,6 +21,7 @@ import {
 import type { Film, FilmFile, FilmLift } from '@rama/workbench';
 import type { Flow } from '@rama/trace';
 import { usePalette, useReducedMotion } from '../lakefront/live';
+import { actWords, liftBeats, type Beat } from './beats';
 
 export type FilmScene = 'plan' | 'design' | 'foundation' | 'build' | 'try' | 'ground' | 'walk';
 
@@ -359,7 +360,7 @@ function PlanScene(p: SceneProps) {
 // ---------------------------------------------------------------------------------------------------
 // 2. The design: the architecture, read aloud and lit, before a single block.
 
-interface Beat {
+interface DesignBeat {
   title: string;
   text: string;
   light: {
@@ -371,7 +372,7 @@ interface Beat {
   };
 }
 
-function designBeats(film: Film): Beat[] {
+function designBeats(film: Film): DesignBeat[] {
   const feats = film.design.buildings.filter((b) => b.screens.length);
   const names = feats.map((b) => b.name);
   const t = film.design.tables;
@@ -735,39 +736,39 @@ function englishOf(
   return best?.explanation ?? { state: 'none' };
 }
 
-type Phase =
-  | { kind: 'said'; lift: number }
-  | { kind: 'file'; lift: number; file: number; lines: number }
-  | { kind: 'checked'; lift: number }
-  | { kind: 'end' };
+interface Pos {
+  lift: number;
+  beat: number;
+  /** Characters of words, or lines of a file, shown so far. */
+  shown: number;
+}
 
 function BuildScene(p: SceneProps) {
   const { film } = p;
   const english = useEnglish(film.site.id);
-  const [phase, setPhase] = useState<Phase>(
-    film.lifts.length ? { kind: 'said', lift: 0 } : { kind: 'end' },
+  const beats = useMemo(() => film.lifts.map(liftBeats), [film]);
+  const [pos, setPos] = useState<Pos | 'end'>(
+    film.lifts.length ? { lift: 0, beat: 0, shown: 0 } : 'end',
   );
   const [speed, setSpeed] = useState(1);
   const [paused, setPaused] = useState(false);
-  const [typed, setTyped] = useState(0); // characters of the subtitle typed
   const [askOpen, setAskOpen] = useState(false);
-  const lift: FilmLift | undefined =
-    phase.kind === 'end' ? film.lifts.at(-1) : film.lifts[phase.lift];
-  const file: FilmFile | undefined = phase.kind === 'file' ? lift?.files[phase.file] : undefined;
-  const flagged = phase.kind === 'checked' && lift?.checked && !lift.checked.ok;
+  const liftN = pos === 'end' ? film.lifts.length - 1 : pos.lift;
+  const lift: FilmLift | undefined = film.lifts[liftN];
+  const beat: Beat | undefined = pos === 'end' ? undefined : beats[pos.lift]?.[pos.beat];
+  const file: FilmFile | undefined = beat?.kind === 'file' ? lift?.files[beat.index] : undefined;
+  const flagged = beat?.kind === 'checked' && lift?.checked && !lift.checked.ok;
 
-  // The words for the phase: the builder's own, then each file's card, then the checks.
+  // The voice reads each beat once, as it starts.
+  const beatKey = pos === 'end' ? 'end' : `${pos.lift}:${pos.beat}`;
   useEffect(() => {
-    if (!lift) return;
-    if (phase.kind === 'said') {
-      setTyped(0);
+    if (!beat || !lift) return;
+    if (beat.kind === 'say')
       p.say(
-        lift.said?.source === 'builder'
-          ? 'The Builder · its own words'
-          : 'The Builder · what changed',
-        lift.said?.text ?? lift.subject,
+        beat.source === 'builder' ? 'The Builder · its own words' : 'The Builder · what changed',
+        beat.text,
       );
-    } else if (phase.kind === 'checked') {
+    else if (beat.kind === 'checked') {
       const c = lift.checked;
       p.say(
         'The Checker · the result, as it is',
@@ -777,94 +778,122 @@ function BuildScene(p: SceneProps) {
             : `Grey flag. ${c.sentence}`
           : 'Not checked.',
       );
-    }
-  }, [phase.kind, phase.kind !== 'end' ? phase.lift : -1]);
+    } else if (beat.kind === 'file' && file) p.say('The Builder', `Writing ${file.path}.`);
+  }, [beatKey]);
 
-  // The clock: type the words, then each file's lines, then the check; a grey flag waits.
+  const advance = useCallback(() => {
+    setPos((cur) => {
+      if (cur === 'end') return cur;
+      const bs = beats[cur.lift]!;
+      if (cur.beat + 1 < bs.length) return { lift: cur.lift, beat: cur.beat + 1, shown: 0 };
+      if (cur.lift + 1 < film.lifts.length) return { lift: cur.lift + 1, beat: 0, shown: 0 };
+      return 'end';
+    });
+  }, [beats, film.lifts.length]);
+
+  // The clock: words type at reading pace, files a few lines at a time, a grey flag waits.
   useEffect(() => {
-    if (paused || phase.kind === 'end' || flagged) return;
-    const t = setTimeout(
-      () => {
-        if (!lift) return;
-        if (phase.kind === 'said') {
-          const text = lift.said?.text ?? lift.subject;
-          if (typed < text.length) setTyped((x) => x + Math.max(2, Math.round(3 * speed)));
-          else if (lift.files.length)
-            setPhase({ kind: 'file', lift: phase.lift, file: 0, lines: 0 });
-          else setPhase({ kind: 'checked', lift: phase.lift });
-        } else if (phase.kind === 'file') {
-          const f = lift.files[phase.file]!;
-          const total = f.text ? f.text.split('\n').length : 0;
-          // Never faster than a line can be read at 1×; a long file goes a few lines at a time.
-          const step = Math.max(1, Math.ceil((total / 40) * speed));
-          if (phase.lines < total)
-            setPhase({ ...phase, lines: Math.min(total, phase.lines + step) });
-          else if (phase.file + 1 < lift.files.length)
-            setPhase({ kind: 'file', lift: phase.lift, file: phase.file + 1, lines: 0 });
-          else setPhase({ kind: 'checked', lift: phase.lift });
-        } else if (phase.kind === 'checked') {
-          if (phase.lift + 1 < film.lifts.length) setPhase({ kind: 'said', lift: phase.lift + 1 });
-          else setPhase({ kind: 'end' });
-        }
-      },
-      phase.kind === 'said'
-        ? 40
-        : phase.kind === 'file'
-          ? 160 / speed + (phase.lines === 0 ? 900 : 0)
-          : 2600 / speed,
-    );
+    if (paused || pos === 'end' || flagged || !beat || !lift) return;
+    let wait = 60;
+    let next: () => void = advance;
+    if (beat.kind === 'say') {
+      if (pos.shown < beat.text.length) {
+        wait = 40;
+        next = () => setPos({ ...pos, shown: pos.shown + Math.max(2, Math.round(3 * speed)) });
+      } else wait = 900 / speed;
+    } else if (beat.kind === 'act') wait = 1100 / speed;
+    else if (beat.kind === 'file' && file) {
+      const total = file.text ? file.text.split('\n').length : 0;
+      const step = Math.max(1, Math.ceil((total / 40) * speed));
+      if (pos.shown < total) {
+        wait = 160 / speed + (pos.shown === 0 ? 700 : 0);
+        next = () => setPos({ ...pos, shown: Math.min(total, pos.shown + step) });
+      } else wait = 1200 / speed;
+    } else if (beat.kind === 'checked') wait = 2600 / speed;
+    const t = setTimeout(next, wait);
     return () => clearTimeout(t);
-  }, [phase, typed, paused, speed, lift, film.lifts.length, flagged]);
+  }, [pos, paused, speed, flagged, beat, lift, file, advance]);
 
-  // What stands: everything before this lift, and this lift's files up to the one being written.
-  const k = phase.kind === 'end' ? film.lifts.length : phase.lift;
+  // What stands: everything before this lift, and this lift's files typed so far.
+  const done = pos === 'end' ? film.lifts.length : pos.lift;
   const laid = useMemo(() => {
-    const s = laidUpTo(film, k);
-    if (lift && phase.kind === 'file')
-      for (const f of lift.files.slice(0, phase.file + 1)) s.add(f.path);
-    if (lift && phase.kind === 'checked') for (const f of lift.files) s.add(f.path);
-    return s;
-  }, [film, k, lift, phase]);
-  const plots = useMemo(() => {
-    const o = litUpTo(film, k);
-    if (
-      lift &&
-      (phase.kind === 'checked' ||
-        (phase.kind === 'file' &&
-          lift.files.slice(0, phase.file + 1).some((f) => f.tables.some((t) => t.writes))))
-    )
-      for (const t of lift.tablesLit) o[t] = { lit: true, rows: null };
-    return o;
-  }, [film, k, lift, phase]);
-  const building = file?.building ?? lift?.files.find((f) => f.building)?.building ?? null;
-  const parts = useMemo(() => {
-    const out: { file: FilmFile; lift: FilmLift }[] = [];
-    for (const l of film.lifts.slice(0, k)) for (const f of l.files) out.push({ file: f, lift: l });
-    if (lift && phase.kind !== 'end') {
-      const upto =
-        phase.kind === 'file' ? phase.file : phase.kind === 'checked' ? lift.files.length : 0;
-      for (const f of lift.files.slice(0, upto)) out.push({ file: f, lift });
+    const s = laidUpTo(film, done);
+    if (lift && pos !== 'end') {
+      const bs = beats[pos.lift]!;
+      for (const b of bs.slice(0, pos.beat + 1))
+        if (b.kind === 'file') s.add(lift.files[b.index]!.path);
+      if (beat?.kind === 'checked') for (const f of lift.files) s.add(f.path);
     }
+    return s;
+  }, [film, done, lift, pos, beats, beat]);
+  const plots = useMemo(() => {
+    const o = litUpTo(film, done);
+    if (lift && pos !== 'end') {
+      const written = beats[pos.lift]!.slice(0, pos.beat + 1).some(
+        (b) => b.kind === 'file' && lift.files[b.index]!.tables.some((t) => t.writes),
+      );
+      if (written || beat?.kind === 'checked')
+        for (const t of lift.tablesLit) o[t] = { lit: true, rows: null };
+    }
+    return o;
+  }, [film, done, lift, pos, beats, beat]);
+  const building = file?.building ?? lift?.files.find((f) => f.building)?.building ?? null;
+  // The shelf: every part made so far, and every tool the Builder used on the way (its own, not the product).
+  const shelf = useMemo(() => {
+    const out: (
+      | { kind: 'part'; file: FilmFile; lift: FilmLift }
+      | { kind: 'act'; tool: string; target: string | null; lift: FilmLift }
+    )[] = [];
+    film.lifts.forEach((l, li) => {
+      const upto =
+        pos === 'end' || li < pos.lift ? beats[li]!.length : li === pos.lift ? pos.beat + 1 : 0;
+      for (const b of beats[li]!.slice(0, upto)) {
+        if (b.kind === 'file') out.push({ kind: 'part', file: l.files[b.index]!, lift: l });
+        else if (b.kind === 'act')
+          out.push({ kind: 'act', tool: b.tool, target: b.target, lift: l });
+      }
+    });
     return out.reverse();
-  }, [film, k, lift, phase]);
+  }, [film, beats, pos]);
   const blocks = file && lift ? english(file.path, lift.commit) : null;
   const card = file ? englishOf(blocks, file) : null;
-  const subtitle = lift ? (lift.said?.text ?? lift.subject) : '';
-  const restart = () => {
-    setPhase(film.lifts.length ? { kind: 'said', lift: 0 } : { kind: 'end' });
-    setPaused(false);
-  };
-  const skip = () => {
-    if (phase.kind === 'end') return;
-    if (phase.lift + 1 < film.lifts.length) setPhase({ kind: 'said', lift: phase.lift + 1 });
-    else setPhase({ kind: 'end' });
-  };
+  const sayBeat =
+    pos !== 'end'
+      ? [...beats[pos.lift]!.slice(0, pos.beat + 1)].reverse().find((b) => b.kind === 'say')
+      : undefined;
+  const words =
+    beat?.kind === 'say'
+      ? beat.text.slice(0, pos === 'end' ? undefined : pos.shown)
+      : sayBeat?.kind === 'say'
+        ? sayBeat.text
+        : (lift?.said?.text ?? '');
+  const typing = beat?.kind === 'say' && pos !== 'end' && pos.shown < beat.text.length;
+  const skip = () =>
+    setPos((cur) =>
+      cur === 'end'
+        ? cur
+        : cur.lift + 1 < film.lifts.length
+          ? { lift: cur.lift + 1, beat: 0, shown: 0 }
+          : 'end',
+    );
+  const parts = shelf.filter((x) => x.kind === 'part').length;
   if (!film.lifts.length)
     return (
       <div className="film-canvas film-none">
         Nothing is built yet. When the build starts, every step plays here as it happens.
       </div>
     );
+  const who = beat?.kind === 'checked' ? 'The Checker' : 'The Builder';
+  const whoSmall =
+    beat?.kind === 'checked'
+      ? 'House of Rama’s checks · the result, as it is'
+      : (beat?.kind === 'say'
+            ? beat.source
+            : sayBeat?.kind === 'say'
+              ? sayBeat.source
+              : lift?.said?.source) === 'builder'
+        ? `${film.builder === 'claude-code' ? 'Claude Code' : (film.builder ?? 'The Builder')} · its own words`
+        : 'what changed, from the record';
   return (
     <div className="film-build">
       <div className="film-strip">
@@ -872,11 +901,11 @@ function BuildScene(p: SceneProps) {
           <button
             key={l.commit}
             type="button"
-            className={`film-lift${i < k ? ' done' : ''}${i === k && phase.kind !== 'end' ? ' now' : ''}${l.checked && !l.checked.ok ? ' flag' : ''}`}
-            onClick={() => setPhase({ kind: 'said', lift: i })}
+            className={`film-lift${i < done ? ' done' : ''}${i === done && pos !== 'end' ? ' now' : ''}${l.checked && !l.checked.ok ? ' flag' : ''}`}
+            onClick={() => setPos({ lift: i, beat: 0, shown: 0 })}
             title={l.subject}
           >
-            <i>{i < k ? (l.checked && !l.checked.ok ? '▶' : '✓') : i + 1}</i>
+            <i>{i < done ? (l.checked && !l.checked.ok ? '▶' : '✓') : i + 1}</i>
             {l.subject.split(':')[0]}
           </button>
         ))}
@@ -896,13 +925,13 @@ function BuildScene(p: SceneProps) {
               laid,
               live: file?.path ?? null,
               plots,
-              flags: phase.kind === 'end' ? p.flags : {},
+              flags: pos === 'end' ? p.flags : {},
               agent: building
                 ? {
                     building,
-                    name: phase.kind === 'checked' ? 'The Checker' : 'The Builder',
+                    name: who,
                     vendor:
-                      phase.kind === 'checked'
+                      beat?.kind === 'checked'
                         ? 'House of Rama’s checks'
                         : film.builder === 'claude-code'
                           ? 'Claude Code'
@@ -915,9 +944,7 @@ function BuildScene(p: SceneProps) {
           >
             {card && file ? (
               <div className="film-card" key={`${lift?.commit}:${file.path}`}>
-                <span className="film-eyebrow">
-                  A new part · lift {(phase.kind !== 'end' ? phase.lift : 0) + 1}
-                </span>
+                <span className="film-eyebrow">A new part · lift {liftN + 1}</span>
                 <h4>{file.path}</h4>
                 <p>{card.state === 'none' ? 'Not explained yet.' : card.sentence}</p>
                 <div className="row">
@@ -945,7 +972,7 @@ function BuildScene(p: SceneProps) {
             {flagged && lift?.checked ? (
               <div className="film-flag" role="alert">
                 <div className="film-flagpole">
-                  <i /> Grey flag · lift {phase.kind === 'checked' ? phase.lift + 1 : ''}
+                  <i /> Grey flag · lift {liftN + 1}
                 </div>
                 <h3>The checks stopped this lift.</h3>
                 <p>
@@ -959,11 +986,9 @@ function BuildScene(p: SceneProps) {
                   <button type="button" className="film-btn lit" onClick={skip}>
                     Watch the fix
                   </button>
-                  {p.trainer ? null : (
-                    <span className="film-chip">
-                      A trainer is called only if the Builder cannot fix it
-                    </span>
-                  )}
+                  <span className="film-chip">
+                    A trainer is called only if the Builder cannot fix it
+                  </span>
                 </div>
               </div>
             ) : null}
@@ -974,26 +999,20 @@ function BuildScene(p: SceneProps) {
         <div className="film-subs">
           <div className="who">
             <span className="film-dot" />
-            <b>{phase.kind === 'checked' ? 'The Checker' : 'The Builder'}</b>
-            <small>
-              {phase.kind === 'checked'
-                ? 'House of Rama’s checks · the result, as it is'
-                : lift?.said?.source === 'builder'
-                  ? 'Claude Code · its own words'
-                  : 'what changed, from the record'}
-            </small>
+            <b>{who}</b>
+            <small>{whoSmall}</small>
           </div>
           <p>
-            {phase.kind === 'said'
-              ? subtitle.slice(0, typed)
-              : phase.kind === 'checked'
-                ? lift?.checked
-                  ? lift.checked.ok
-                    ? 'The checks passed. The gate lets this lift through.'
-                    : lift.checked.sentence
-                  : ''
-                : subtitle}
-            {phase.kind === 'said' && typed < subtitle.length ? <span className="cur" /> : null}
+            {beat?.kind === 'checked'
+              ? lift?.checked
+                ? lift.checked.ok
+                  ? 'The checks passed. The gate lets this lift through.'
+                  : lift.checked.sentence
+                : ''
+              : beat?.kind === 'act'
+                ? `${words}`
+                : words}
+            {typing ? <span className="cur" /> : null}
           </p>
         </div>
       </div>
@@ -1001,9 +1020,17 @@ function BuildScene(p: SceneProps) {
         <div className="film-code">
           <header>
             <span className={`film-chip${file ? ' ok' : ''}`}>
-              {file ? 'Being written' : phase.kind === 'end' ? 'Built' : 'Waiting'}
+              {file
+                ? 'Being written'
+                : pos === 'end'
+                  ? 'Built'
+                  : beat?.kind === 'act'
+                    ? 'The Builder is looking'
+                    : 'Waiting'}
             </span>
-            <span className="film-path">{file?.path ?? ''}</span>
+            <span className="film-path">
+              {file?.path ?? (beat?.kind === 'act' ? actWords(beat.tool, beat.target) : '')}
+            </span>
             {file?.building ? (
               <span className="in">
                 · inside {p.street?.buildings.find((b) => b.id === file.building)?.name}
@@ -1014,7 +1041,7 @@ function BuildScene(p: SceneProps) {
             {file
               ? file.text
                   .split('\n')
-                  .slice(0, phase.kind === 'file' ? phase.lines : undefined)
+                  .slice(0, pos !== 'end' ? Math.max(1, pos.shown) : undefined)
                   .map((line, i) => (
                     <div
                       key={i}
@@ -1025,7 +1052,7 @@ function BuildScene(p: SceneProps) {
                     </div>
                   ))
               : null}
-            {file?.cut && phase.kind === 'file' ? (
+            {file?.cut ? (
               <div className="ln cut">… the rest of this long file is not typed here</div>
             ) : null}
           </pre>
@@ -1046,21 +1073,34 @@ function BuildScene(p: SceneProps) {
         </div>
         <div className="film-shelf">
           <span className="film-eyebrow">
-            Parts so far · {parts.length} files, each with its plain English
+            Parts so far · {parts} file{parts === 1 ? '' : 's'} of your product · and the Builder’s
+            own looks around
           </span>
           <div className="list">
-            {parts.slice(0, 30).map(({ file: f, lift: l }) => (
-              <div key={`${l.commit}:${f.path}`} className="film-part">
-                <b>{f.path}</b>
-                <span>
-                  lift {l.n} ·{' '}
-                  {f.status === 'added' ? 'new' : f.status === 'deleted' ? 'taken away' : 'changed'}
-                  {f.tables.length
-                    ? ` · ${f.tables.map((t) => `${t.writes ? 'writes' : 'reads'} ${t.name}`).join(', ')}`
-                    : ''}
-                </span>
-              </div>
-            ))}
+            {shelf.slice(0, 40).map((x, i) =>
+              x.kind === 'part' ? (
+                <div key={`p${i}`} className="film-part">
+                  <b>{x.file.path}</b>
+                  <span>
+                    your product · lift {x.lift.n} ·{' '}
+                    {x.file.status === 'added'
+                      ? 'new'
+                      : x.file.status === 'deleted'
+                        ? 'taken away'
+                        : 'changed'}
+                    {x.file.tables.length
+                      ? ` · ${x.file.tables.map((t) => `${t.writes ? 'writes' : 'reads'} ${t.name}`).join(', ')}`
+                      : ''}
+                  </span>
+                </div>
+              ) : (
+                <div key={`a${i}`} className="film-part act">
+                  <span>
+                    The Builder {actWords(x.tool, x.target)} · its own tool, not your product
+                  </span>
+                </div>
+              ),
+            )}
           </div>
         </div>
       </div>
@@ -1071,21 +1111,28 @@ function BuildScene(p: SceneProps) {
         <button
           type="button"
           className="film-btn"
-          onClick={() => setSpeed((s) => Math.max(0.5, s / 1.5))}
+          onClick={() => setSpeed((x) => Math.max(0.5, x / 1.5))}
         >
           Slower
         </button>
         <button
           type="button"
           className="film-btn"
-          onClick={() => setSpeed((s) => Math.min(6, s * 1.5))}
+          onClick={() => setSpeed((x) => Math.min(6, x * 1.5))}
         >
           Faster
         </button>
         <button type="button" className="film-btn" onClick={skip}>
           Next lift
         </button>
-        <button type="button" className="film-btn" onClick={restart}>
+        <button
+          type="button"
+          className="film-btn"
+          onClick={() => {
+            setPos(film.lifts.length ? { lift: 0, beat: 0, shown: 0 } : 'end');
+            setPaused(false);
+          }}
+        >
           From the start
         </button>
         <span className="film-pace">
@@ -1095,11 +1142,11 @@ function BuildScene(p: SceneProps) {
               ? 'Playing at reading pace'
               : `Playing at ${speed.toFixed(1)}× pace`}{' '}
           ·{' '}
-          {phase.kind === 'end'
+          {pos === 'end'
             ? `built in ${film.lifts.length} lifts`
-            : `lift ${phase.lift + 1} of ${film.lifts.length}`}
+            : `lift ${pos.lift + 1} of ${film.lifts.length}`}
         </span>
-        {phase.kind === 'end' ? (
+        {pos === 'end' ? (
           <button type="button" className="film-btn lit" onClick={p.onNext}>
             Now try it
           </button>

@@ -4,7 +4,7 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { AGENT_TOOLS, lastJson, runAgent, type AgentDeps } from './agent.ts';
+import { AGENT_TOOLS, agentEvents, lastJson, reportOf, runAgent, type AgentDeps } from './agent.ts';
 import type { ModelCallRow } from './call.ts';
 
 const promptsDir = fileURLToPath(new URL('../test/fixtures/prompts', import.meta.url));
@@ -130,5 +130,66 @@ describe('runAgent', () => {
   it('finds the answer as the last JSON in a message', () => {
     expect(lastJson('first {"a":1} then {"b":2}')).toEqual({ b: 2 });
     expect(() => lastJson('no answer')).toThrow(/holds no JSON/);
+  });
+});
+
+describe('the builder’s stream (Stage 13)', () => {
+  const lines = [
+    JSON.stringify({ type: 'system', subtype: 'init', session_id: 'sess-1' }),
+    JSON.stringify({
+      type: 'assistant',
+      message: {
+        content: [
+          { type: 'text', text: 'I will read the bill first.' },
+          { type: 'tool_use', name: 'Read', input: { file_path: 'idea/files/bill.pdf' } },
+        ],
+      },
+    }),
+    JSON.stringify({
+      type: 'user',
+      message: { content: [{ type: 'tool_result', content: 'text…' }] },
+    }),
+    JSON.stringify({
+      type: 'assistant',
+      message: {
+        content: [
+          {
+            type: 'tool_use',
+            name: 'Write',
+            input: { file_path: 'features/read/read.ts', content: 'x' },
+          },
+          { type: 'tool_use', name: 'Bash', input: { command: 'npx vitest run' } },
+        ],
+      },
+    }),
+    report('Done.\n{"said":"Wrote the reader.","done":false}', { type: 'result' }),
+  ];
+
+  it('reads the agent’s words and tools from the stream, and the report from its last line', async () => {
+    const { d, runs } = deps([lines.join('\n')]);
+    const seen: unknown[] = [];
+    d.run = async (args, opts) => {
+      runs.push({ args, env: opts.env, cwd: opts.cwd });
+      for (const l of lines) opts.onLine?.(l);
+      return { code: 0, stdout: lines.join('\n'), stderr: '' };
+    };
+    const r = await runAgent({ ...req, onEvent: (e) => seen.push(e) }, d);
+    expect(runs[0]!.args).toEqual(
+      expect.arrayContaining(['--output-format', 'stream-json', '--verbose']),
+    );
+    expect(r.output).toEqual({ said: 'Wrote the reader.', done: false });
+    expect(seen).toEqual([
+      { kind: 'said', text: 'I will read the bill first.' },
+      { kind: 'tool', tool: 'Read', target: 'idea/files/bill.pdf' },
+      { kind: 'tool', tool: 'Write', target: 'features/read/read.ts' },
+      { kind: 'tool', tool: 'Bash', target: 'npx vitest run' },
+      { kind: 'result', ok: true, text: 'Done.\n{"said":"Wrote the reader.","done":false}' },
+    ]);
+  });
+
+  it('still reads a plain JSON report', () => {
+    expect(reportOf(report('x')).session_id).toBe('sess-1');
+    expect(() => reportOf('not json at all')).toThrow();
+    expect(agentEvents('not json')).toEqual([]);
   });
 });

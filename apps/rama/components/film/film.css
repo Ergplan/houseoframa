@@ -1038,3 +1038,8 @@
   border-left: 1px solid var(--line);
   padding-left: 12px;
 }
+.film-part.act {
+  background: transparent;
+  border-style: dashed;
+  color: var(--ink-muted);
+}

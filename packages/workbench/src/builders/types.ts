@@ -39,7 +39,15 @@ export interface LiftRequest {
   session: string | null;
   /** Person id or `rama:<component>@<version>` the run is recorded as made for. */
   createdBy: string;
+  /** Each thing the builder says or does while it works (Stage 13), for the film; not a record. */
+  onEvent?: (e: BuilderEvent) => void;
 }
+
+/** One moment of the builder's work: its own words, or a tool it used and on what. */
+export type BuilderEvent =
+  | { kind: 'said'; text: string }
+  | { kind: 'tool'; tool: string; target: string | null }
+  | { kind: 'result'; ok: boolean; text: string };
 
 export interface LiftResult {
   answer: LiftAnswer;

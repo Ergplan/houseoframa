@@ -73,7 +73,18 @@ export interface AgentRequest<I, O> {
   timeoutMs?: number;
   /** More environment for the agent: never a secret (the key is added from Settings). */
   env?: Record<string, string>;
+  /**
+   * Each thing the agent says or does while it works, as it happens (Stage 13): its own words between its
+   * actions, and each tool it uses with what on. The film shows these; nothing here is a record.
+   */
+  onEvent?: (e: AgentEvent) => void;
 }
+
+/** One moment of an agent's work, read from its stream. */
+export type AgentEvent =
+  | { kind: 'said'; text: string }
+  | { kind: 'tool'; tool: string; target: string | null }
+  | { kind: 'result'; ok: boolean; text: string };
 
 export interface AgentResult<O> {
   output: O;
@@ -98,7 +109,13 @@ export interface AgentDeps {
   /** Runs the agent program; resolves when it exits. */
   run: (
     args: string[],
-    opts: { cwd: string; env: NodeJS.ProcessEnv; timeoutMs: number },
+    opts: {
+      cwd: string;
+      env: NodeJS.ProcessEnv;
+      timeoutMs: number;
+      /** Each whole line of the program's output, as it arrives. */
+      onLine?: (line: string) => void;
+    },
   ) => Promise<Spawned>;
   sleep: (ms: number) => Promise<void>;
   /** The Claude Code program: CLAUDE_BIN, else `claude` on the PATH. */
@@ -116,7 +133,15 @@ export const runProgram =
       });
       let stdout = '';
       let stderr = '';
-      child.stdout.on('data', (d) => (stdout += d));
+      let partial = '';
+      child.stdout.on('data', (d) => {
+        stdout += d;
+        if (!opts.onLine) return;
+        partial += d;
+        const lines = partial.split('\n');
+        partial = lines.pop() ?? '';
+        for (const l of lines) if (l.trim()) opts.onLine(l);
+      });
       child.stderr.on('data', (d) => (stderr += d));
       const timer = setTimeout(() => child.kill('SIGTERM'), opts.timeoutMs);
       child.on('error', (err) => {
@@ -153,7 +178,7 @@ const defaultDeps = (): AgentDeps => {
 };
 
 /** Claude Code's answer with `--output-format json`. */
-interface RunReport {
+export interface RunReport {
   result?: string;
   is_error?: boolean;
   subtype?: string;
@@ -186,6 +211,63 @@ export function lastJson(text: string): unknown {
     }
   }
   throw new OutputParseError(`the agent's last message holds no JSON: ${text.slice(-500)}`);
+}
+
+/** The run's report: the plain JSON output, or the last 'result' line of the stream. */
+export function reportOf(stdout: string): RunReport {
+  const t = stdout.trim();
+  try {
+    const one = JSON.parse(t) as RunReport & { type?: string };
+    if (!Array.isArray(one)) return one;
+  } catch {
+    // a stream: one object a line
+  }
+  const lines = t.split('\n').filter(Boolean);
+  for (let i = lines.length - 1; i >= 0; i--) {
+    try {
+      const o = JSON.parse(lines[i]!) as RunReport & { type?: string };
+      if (o.type === 'result') return o;
+    } catch {
+      // not a JSON line
+    }
+  }
+  throw new Error('no report in the output');
+}
+
+const TARGET_KEYS = ['file_path', 'path', 'pattern', 'command', 'description'] as const;
+
+/** What a line of the stream says the agent said or did: its words, and each tool with what on. */
+export function agentEvents(line: string): AgentEvent[] {
+  let o: {
+    type?: string;
+    message?: { content?: unknown };
+    is_error?: boolean;
+    result?: string;
+    subtype?: string;
+  };
+  try {
+    o = JSON.parse(line);
+  } catch {
+    return [];
+  }
+  if (o.type === 'result')
+    return [{ kind: 'result', ok: !o.is_error, text: String(o.result ?? o.subtype ?? '') }];
+  if (o.type !== 'assistant' || !Array.isArray(o.message?.content)) return [];
+  const out: AgentEvent[] = [];
+  for (const c of o.message.content as {
+    type?: string;
+    text?: string;
+    name?: string;
+    input?: Record<string, unknown>;
+  }[]) {
+    if (c.type === 'text' && c.text?.trim()) out.push({ kind: 'said', text: c.text.trim() });
+    else if (c.type === 'tool_use' && c.name) {
+      const k = TARGET_KEYS.find((x) => typeof c.input?.[x] === 'string');
+      const target = k ? String(c.input![k]) : null;
+      out.push({ kind: 'tool', tool: c.name, target: target ? target.slice(0, 300) : null });
+    }
+  }
+  return out;
 }
 
 export async function runAgent<I, O>(
@@ -223,8 +305,11 @@ export async function runAgent<I, O>(
     const args = [
       '-p',
       askAgain ?? JSON.stringify(req.input),
+      // The stream: one JSON object a line, the agent's words and tool uses as they happen, and the
+      // same report as the plain JSON output on its last 'result' line.
       '--output-format',
-      'json',
+      'stream-json',
+      '--verbose',
       '--model',
       req.model,
       '--append-system-prompt',
@@ -242,9 +327,16 @@ export async function runAgent<I, O>(
         cwd: req.cwd,
         env,
         timeoutMs: req.timeoutMs ?? 30 * 60_000,
+        ...(req.onEvent
+          ? {
+              onLine: (l: string) => {
+                for (const e of agentEvents(l)) req.onEvent!(e);
+              },
+            }
+          : {}),
       });
       try {
-        report = JSON.parse(out.stdout) as RunReport;
+        report = reportOf(out.stdout);
       } catch {
         throw new Error(
           `the builder ended without a report (exit ${out.code}): ${(out.stderr || out.stdout).slice(-400)}`,

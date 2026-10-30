@@ -83,6 +83,8 @@ export interface FilmLift {
   files: FilmFile[];
   /** Tables that lit up in this lift: written for the first time, or first read. */
   tablesLit: string[];
+  /** The builder's own words and actions during the lift, in order, when its stream was kept. */
+  narration: NarrationLine[];
 }
 
 export interface Film {
@@ -259,6 +261,41 @@ export interface LiftRecord {
 export const liftsFile = (siteId: string, env: NodeJS.ProcessEnv = process.env) =>
   path.join(workDir(env), siteId, 'lifts.jsonl');
 
+/**
+ * What the builder said and did while it worked a lift, in order, as its stream showed it (Stage 13):
+ * its own words between its actions, and each tool it used with what on. Kept in
+ * work/<site>/narration.jsonl, one line each, `at` in ms from the lift's start.
+ */
+export interface NarrationLine {
+  lift: number;
+  at: number;
+  kind: 'said' | 'tool' | 'result';
+  text: string;
+  tool?: string;
+  target?: string | null;
+}
+
+export const narrationFile = (siteId: string, env: NodeJS.ProcessEnv = process.env) =>
+  path.join(workDir(env), siteId, 'narration.jsonl');
+
+export function readNarration(
+  siteId: string,
+  env: NodeJS.ProcessEnv = process.env,
+): NarrationLine[] {
+  const f = narrationFile(siteId, env);
+  if (!existsSync(f)) return [];
+  return readFileSync(f, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .flatMap((l) => {
+      try {
+        return [JSON.parse(l) as NarrationLine];
+      } catch {
+        return [];
+      }
+    });
+}
+
 export function readLiftRecords(
   siteId: string,
   env: NodeJS.ProcessEnv = process.env,
@@ -301,6 +338,7 @@ export function filmOf(input: FilmInput): Film {
   const job = filmJob(site.id, env);
   const records = readLiftRecords(site.id, env);
   const edits = readEdits(site.id, 0, env);
+  const narration = readNarration(site.id, env);
   const bp = input.blueprint;
   const tablesOf = (p: string) => bp?.nodes.find((n) => n.path === p)?.tables ?? [];
 
@@ -376,6 +414,7 @@ export function filmOf(input: FilmInput): Film {
       checked,
       files,
       tablesLit,
+      narration: narration.filter((x) => x.lift === n).sort((a, b) => a.at - b.at),
     };
   });
 

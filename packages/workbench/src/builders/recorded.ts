@@ -83,6 +83,27 @@ export function recorded(dir: string, env: NodeJS.ProcessEnv = process.env): Bui
             writeFileSync(path.join(into, f), `${JSON.stringify({ ...d, commit: at }, null, 2)}\n`);
         }
       }
+      // What the real builder said and did while it made this lift, recorded with it (Stage 13): played
+      // to the film in the same order, as the builder's own words and tools.
+      const narration = path.join(dir, 'narration.jsonl');
+      if (req.onEvent && existsSync(narration))
+        for (const l of readFileSync(narration, 'utf8').split('\n').filter(Boolean)) {
+          const e = JSON.parse(l) as {
+            lift: number;
+            kind: 'said' | 'tool' | 'result';
+            text: string;
+            tool?: string;
+            target?: string | null;
+          };
+          if (e.lift !== next) continue;
+          req.onEvent(
+            e.kind === 'tool'
+              ? { kind: 'tool', tool: e.tool ?? e.text, target: e.target ?? null }
+              : e.kind === 'said'
+                ? { kind: 'said', text: e.text }
+                : { kind: 'result', ok: true, text: e.text },
+          );
+        }
       const { patch: _patch, ...answer } = lift;
       void _patch;
       return { answer, session: null, callId: null, costUsd: null };
