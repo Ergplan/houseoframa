@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { listSites, readSiteBlueprint, type SiteLocation } from '@rama/blueprint/site';
 import {
+  openCalls,
   isTestDriveSite,
   jobStatus,
   latestJob,
@@ -40,6 +41,30 @@ function SiteRow({ site, trainer }: { site: SiteLocation; trainer?: boolean }) {
         </span>
       ) : null}
     </li>
+  );
+}
+
+/** The grey flags the builder could not get past by itself (Stage 13): each calls a trainer. */
+function NeedsATrainer({ siteIds, names }: { siteIds: Set<string>; names: Map<string, string> }) {
+  const calls = openCalls(null).filter((c) => siteIds.has(c.siteId));
+  if (!calls.length) return null;
+  return (
+    <Card
+      title="Needs a trainer"
+      sub="The builder could not get past these by itself. The customer has been told you are coming."
+    >
+      <ul className="eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }} data-calls>
+        {calls.map((c) => (
+          <li key={c.id} className="rama-row" style={{ justifyContent: 'space-between' }}>
+            <span>
+              <b>{names.get(c.siteId) ?? c.siteId}</b> · {c.sentence}
+              {c.next ? <span className="eg-muted"> {c.next}</span> : null}
+            </span>
+            <Link href={`/site/${c.siteId}`}>Open the trainer view</Link>
+          </li>
+        ))}
+      </ul>
+    </Card>
   );
 }
 
@@ -161,6 +186,10 @@ export default async function Home({
       ) : (
         <>
           <Said q={q} />
+          <NeedsATrainer
+            siteIds={new Set(sites.map((s) => s.id))}
+            names={new Map(sites.map((s) => [s.id, s.name]))}
+          />
           <Folder
             title="Test drive"
             sub="The whole loop on the built-in sample product: idea, street, build, walkthrough, audit. No voice, no camera; about a minute. It says pass or fail in words."

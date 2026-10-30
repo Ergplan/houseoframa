@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+  "commit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
   "commits": [
     {
       "at": "2026-10-23T20:04:19+00:00",
@@ -14511,6 +14511,111 @@
       "sha": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
       "short": "b0eba63",
       "subject": "Stage 13, part 1: the film — a product's build as a non-coder watches it, from the record"
+    },
+    {
+      "at": "2026-10-31T01:05:20+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 195,
+          "del": 148,
+          "kind": "M",
+          "path": "apps/rama/components/film/FilmPlayer.tsx"
+        },
+        {
+          "add": 100,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/film/beats.test.ts"
+        },
+        {
+          "add": 60,
+          "del": 0,
+          "kind": "A",
+          "path": "apps/rama/components/film/beats.ts"
+        },
+        {
+          "add": 5,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/film/film.css"
+        },
+        {
+          "add": 1489,
+          "del": 82,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/DECISIONS.md"
+        },
+        {
+          "add": 62,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/model/src/agent.test.ts"
+        },
+        {
+          "add": 97,
+          "del": 5,
+          "kind": "M",
+          "path": "packages/model/src/agent.ts"
+        },
+        {
+          "add": 3,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/model/src/index.ts"
+        },
+        {
+          "add": 22,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/src/build.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/builders/claude-code.ts"
+        },
+        {
+          "add": 21,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/builders/recorded.ts"
+        },
+        {
+          "add": 8,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/builders/types.ts"
+        },
+        {
+          "add": 39,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/film.ts"
+        },
+        {
+          "add": 6,
+          "del": 3,
+          "kind": "M",
+          "path": "scripts/record-build.ts"
+        }
+      ],
+      "sha": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "short": "05ab55f",
+      "subject": "Stage 13, part 2: the builder's own words, as it works, play in the film"
     }
   ],
   "edges": [
@@ -18286,6 +18391,7 @@
     {
       "from": "apps/rama/app/film/[siteId]/page.tsx",
       "symbols": [
+        "openCalls",
         "siteFilm",
         "siteLakefront"
       ],
@@ -18452,6 +18558,7 @@
         "jobStatus",
         "latestJob",
         "latestTestDrive",
+        "openCalls",
         "siteStates"
       ],
       "to": "packages/workbench/src/index.ts",
@@ -19471,6 +19578,16 @@
     {
       "from": "apps/rama/components/film/FilmPlayer.tsx",
       "symbols": [
+        "Beat",
+        "actWords",
+        "liftBeats"
+      ],
+      "to": "apps/rama/components/film/beats.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/film/FilmPlayer.tsx",
+      "symbols": [
         "usePalette",
         "useReducedMotion"
       ],
@@ -19507,6 +19624,32 @@
       "symbols": [
         "Film",
         "FilmFile",
+        "FilmLift"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/film/beats.test.ts",
+      "symbols": [
+        "actWords",
+        "liftBeats"
+      ],
+      "to": "apps/rama/components/film/beats.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "apps/rama/components/film/beats.test.ts",
+      "symbols": [
+        "FilmFile",
+        "FilmLift"
+      ],
+      "to": "packages/workbench/src/index.ts",
+      "typeOnly": true
+    },
+    {
+      "from": "apps/rama/components/film/beats.ts",
+      "symbols": [
         "FilmLift"
       ],
       "to": "packages/workbench/src/index.ts",
@@ -31745,7 +31888,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-31T00:48:54+05:30",
+  "extractedAt": "2026-10-31T01:05:20+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -33949,7 +34092,7 @@
     },
     {
       "binary": false,
-      "bytes": 3640,
+      "bytes": 3698,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -33961,7 +34104,7 @@
       "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 102,
+      "lines": 103,
       "path": "apps/rama/app/film/[siteId]/page.tsx",
       "test": false
     },
@@ -34093,7 +34236,7 @@
     },
     {
       "binary": false,
-      "bytes": 9377,
+      "bytes": 10539,
       "changes": 7,
       "env": [
         "GIT_SHA"
@@ -34107,7 +34250,7 @@
       "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 260,
+      "lines": 289,
       "packages": [
         "next"
       ],
@@ -34591,8 +34734,8 @@
     },
     {
       "binary": false,
-      "bytes": 62201,
-      "changes": 1,
+      "bytes": 62806,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -34601,10 +34744,10 @@
         "FilmScene"
       ],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 1729,
+      "lines": 1743,
       "packages": [
         "react"
       ],
@@ -34613,16 +34756,53 @@
     },
     {
       "binary": false,
-      "bytes": 20415,
+      "bytes": 3254,
       "changes": 1,
       "env": [],
       "envDynamic": false,
       "exports": [],
-      "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "firstCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 1045,
+      "lines": 100,
+      "packages": [
+        "vitest"
+      ],
+      "path": "apps/rama/components/film/beats.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 2353,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "Beat",
+        "actWords",
+        "liftBeats"
+      ],
+      "firstCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 60,
+      "path": "apps/rama/components/film/beats.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 20637,
+      "changes": 2,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "layer": "interface",
+      "layerRule": "overlay: apps/rama components and canvas",
+      "lines": 1056,
       "path": "apps/rama/components/film/film.css",
       "test": false
     },
@@ -36588,16 +36768,16 @@
     },
     {
       "binary": false,
-      "bytes": 102164,
-      "changes": 26,
+      "bytes": 102922,
+      "changes": 27,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 263,
+      "lines": 265,
       "path": "docs/ARCHITECTURE.md",
       "purpose": {
         "confirmed": false,
@@ -36627,12 +36807,12 @@
     {
       "binary": false,
       "bytes": 94457,
-      "changes": 82,
+      "changes": 83,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 319,
@@ -36675,7 +36855,7 @@
     },
     {
       "binary": false,
-      "bytes": 24912,
+      "bytes": 26965,
       "changes": 26,
       "env": [],
       "envDynamic": false,
@@ -36684,7 +36864,7 @@
       "lastCommit": "acc2c3c851405bbd9f027114b0cff021c8b232da",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 82,
+      "lines": 88,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -42763,14 +42943,14 @@
     {
       "binary": false,
       "bytes": 7289,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "PATH"
       ],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 195,
@@ -42784,7 +42964,7 @@
     {
       "binary": false,
       "bytes": 12958,
-      "changes": 1,
+      "changes": 2,
       "env": [
         "CLAUDE_BIN",
         "PATH"
@@ -42805,7 +42985,7 @@
         "runProgram"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 405,
@@ -42911,7 +43091,7 @@
     {
       "binary": false,
       "bytes": 1559,
-      "changes": 5,
+      "changes": 6,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -42991,7 +43171,7 @@
         "voiceSession"
       ],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "abfc45bfd9ee29c589bd7001b39642bbde600c1f",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 72,
@@ -45001,8 +45181,8 @@
     },
     {
       "binary": false,
-      "bytes": 19992,
-      "changes": 6,
+      "bytes": 20449,
+      "changes": 7,
       "env": [
         "HOME",
         "PATH"
@@ -45026,17 +45206,17 @@
         "startBuild"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 516,
+      "lines": 521,
       "path": "packages/workbench/src/build.ts",
       "test": false
     },
     {
       "binary": false,
       "bytes": 2243,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -45046,7 +45226,7 @@
         "claudeCodeHere"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 63,
@@ -45084,7 +45264,7 @@
     {
       "binary": false,
       "bytes": 4939,
-      "changes": 4,
+      "changes": 5,
       "env": [
         "HOME",
         "PATH"
@@ -45096,7 +45276,7 @@
         "recorded"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 112,
@@ -45128,7 +45308,7 @@
     {
       "binary": false,
       "bytes": 2652,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -45143,7 +45323,7 @@
         "LiftResult"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 73,
@@ -45217,7 +45397,7 @@
     {
       "binary": false,
       "bytes": 17326,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -45244,7 +45424,7 @@
         "siteFilm"
       ],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 478,
@@ -45388,7 +45568,7 @@
     },
     {
       "binary": false,
-      "bytes": 676,
+      "bytes": 704,
       "changes": 8,
       "env": [],
       "envDynamic": false,
@@ -45399,7 +45579,7 @@
       "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 23,
+      "lines": 24,
       "path": "packages/workbench/src/index.ts",
       "test": false
     },
@@ -46825,12 +47005,12 @@
     {
       "binary": false,
       "bytes": 3553,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
+      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 91,
@@ -48193,6 +48373,7 @@
         "apps/rama/app/harmony-tokens.css",
         "apps/rama/app/layout.tsx",
         "apps/rama/components/film/FilmPlayer.tsx",
+        "apps/rama/components/film/beats.ts",
         "apps/rama/components/film/film.css",
         "apps/rama/components/harmony/HarmonyRuntime.tsx",
         "apps/rama/components/harmony/Shell.tsx",
@@ -52161,8 +52342,12 @@
   "tags": [],
   "unresolved": [
     {
-      "from": "apps/rama/components/film/FilmPlayer.tsx",
-      "spec": "./beats"
+      "from": "packages/workbench/src/build.ts",
+      "spec": "./calls.ts"
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "spec": "./calls.ts"
     }
   ],
   "worktree": true

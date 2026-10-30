@@ -1,7 +1,7 @@
 import { readSiteBlueprint, siteRecord } from '@rama/blueprint/site';
 import { appearanceKeys, flowOf, readCapture, type Flow } from '@rama/trace';
 import { readSignoffs, signaturesInForce } from '@rama/ceremony/records';
-import { siteFilm, siteLakefront } from '@rama/workbench';
+import { openCalls, siteFilm, siteLakefront } from '@rama/workbench';
 import { pageSite } from '../../../server/session';
 import { Shell } from '../../../components/harmony/Shell';
 import { FilmPlayer, type FilmScene } from '../../../components/film/FilmPlayer';
@@ -96,6 +96,7 @@ export default async function FilmPage({
         person={{ name: member.name, role: member.role }}
         start={SCENES.includes(scene as FilmScene) ? (scene as FilmScene) : null}
         trainer={member.role === 'trainer' || member.role === 'manager'}
+        called={openCalls(site.id)[0] ?? null}
       />
     </Shell>
   );

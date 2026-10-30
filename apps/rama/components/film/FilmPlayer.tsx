@@ -55,6 +55,8 @@ export interface FilmProps {
   person: { name: string; role: string };
   start: FilmScene | null;
   trainer: boolean;
+  /** The trainer's call about this product, while it is not answered. */
+  called?: { at: string; sentence: string; next: string | null } | null;
 }
 
 /** The voice: one line at a time, read aloud by the browser's stand-in voice when asked. */
@@ -117,6 +119,18 @@ export function FilmPlayer(p: FilmProps) {
           ))}
         </nav>
       </div>
+      {p.called ? (
+        <div className="film-called" role="status" data-called>
+          <span className="film-flagpole">
+            <i /> Grey flag
+          </span>
+          <span>
+            The Builder could not get past this by itself: {p.called.sentence} A trainer has been
+            called ({new Date(p.called.at).toLocaleString('en-IN')}). You can wait, or look around
+            the film.
+          </span>
+        </div>
+      ) : null}
       <div className="film-stage">
         {scene === 'plan' && <PlanScene {...p} say={voice.say} onNext={() => go('design')} />}
         {scene === 'design' && (

@@ -30,6 +30,7 @@ import { siteStates } from './states.ts';
 import { runSiteTests } from './tests.ts';
 import { startTail } from './tail.ts';
 import { liftsFile, narrationFile, type LiftRecord, type NarrationLine } from './film.ts';
+import { answerCalls, callTrainer } from './calls.ts';
 import { explainFile } from './explain.ts';
 import { figuresOfBlock, productFigures } from './code.ts';
 
@@ -233,6 +234,8 @@ export function startBuild(
   opts: BuildOptions,
 ): StartedJob {
   pauses.delete(site.id);
+  // A build starting again answers the trainer's calls about this product (Stage 13).
+  answerCalls(site.id, opts.person, opts.env);
   return startJob(
     { kind: 'build', siteId: site.id, person: opts.person },
     (step, job) => build(withDb, step, site, opts, job),
@@ -421,11 +424,13 @@ export async function build(
     );
     if (job && cost) job.about = `builder cost so far: $${cost.toFixed(2)}`;
     if (stuck >= MAX_STUCK) {
+      const sentence = `The build stopped: ${plural(stuck, 'lift')} in a row did not get past the checks.`;
+      const next = 'The trainer reads the grey flags above, then presses Start build again.';
+      // The customer is alone with the voice: a person is called only now, when the builder cannot
+      // get past the flag by itself (Stage 13).
+      callTrainer(site.id, `${sentence} ${was.last?.problems[0] ?? ''}`.trim(), next, env);
       await step('Stopped', () => {
-        throw new StepError(
-          `The build stopped: ${plural(stuck, 'lift')} in a row did not get past the checks.`,
-          'The trainer reads the grey flags above, then presses Start build again.',
-        );
+        throw new StepError(sentence, next);
       });
       return;
     }

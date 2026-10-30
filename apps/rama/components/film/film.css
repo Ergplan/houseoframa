@@ -2,7 +2,7 @@
    app/harmony-tokens.css). The reference is design/film/index.html. */
 .film {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: var(--space-3);
   height: calc(100vh - 130px);
   min-height: 640px;
@@ -73,6 +73,7 @@
 .film-stage {
   min-height: 0;
   display: grid;
+  grid-row: 3;
 }
 .film-two {
   display: grid;
@@ -1042,4 +1043,14 @@
   background: transparent;
   border-style: dashed;
   color: var(--ink-muted);
+}
+.film-called {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: var(--warning-soft);
+  color: var(--ink);
+  font-size: 14px;
 }
