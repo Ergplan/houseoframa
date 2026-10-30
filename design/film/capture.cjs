@@ -3,7 +3,7 @@ const fs = require('fs'), path = require('path');
 const here = process.argv[2]; const out = path.join(here, 'frames'); fs.mkdirSync(out, { recursive: true });
 const body = fs.readFileSync(path.join(here, 'index.html'), 'utf8');
 const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>${body}</body></html>`;
-const scenes = [['arena',1200],['plan',6500],['foundation',22000],['film',46000],['flow',9000],['flag',1500],['ask',9000],['walk',1200]];
+const scenes = [['arena',1200],['plan',6500],['design',4000],['foundation',22000],['film',46000],['flow',9000],['flag',1500],['ask',9000],['walk',1200]];
 (async () => {
   const browser = await chromium.launch();
   for (const [scene, wait] of scenes) {

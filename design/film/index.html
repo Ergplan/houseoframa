@@ -82,6 +82,21 @@ canvas{display:block;width:100%;height:100%}
 .cam .btn{padding:6px 12px;font-size:12px}
 .legend{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
 
+/* DESIGN (the architecture before anything is built) */
+#design{grid-template-columns:1fr 440px;gap:14px}
+.dlist{display:grid;gap:8px;align-content:start;overflow:auto}
+.ditem{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:12px 14px;border-radius:var(--r-md);background:var(--glass);border:1px solid var(--line)}
+.ditem.on{background:var(--accent-soft);border-color:transparent}
+.ditem i{font-style:normal;width:26px;height:26px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--accent)}
+.ditem h4{margin:0;font:500 15px/20px var(--sans)}.ditem p{margin:2px 0 0;color:var(--ink-muted);font-size:13px;line-height:18px}
+/* ACTIONS: what fired */
+.acts-log{display:grid;grid-template-rows:auto 1fr;gap:8px;min-height:0}
+.acts-log .list{display:grid;gap:6px;overflow:auto;align-content:start}
+.act{display:grid;gap:4px;padding:8px 12px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--line);font-size:12px}
+.act .h{display:flex;gap:8px;align-items:center}.act .tool{font:600 11px/14px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.act .what{font:500 12px/16px var(--mono);color:var(--ink)}.act .own{margin-left:auto;color:var(--ink-faint);font-size:11px;white-space:nowrap}
+.act details{color:var(--ink-muted)}.act summary{cursor:pointer;color:var(--accent);font-size:12px;list-style:none}.act summary::before{content:'▸ '}.act details[open] summary::before{content:'▾ '}
+.act pre{margin:6px 0 0;font:400 11px/16px var(--mono);white-space:pre-wrap;color:var(--ink-muted);padding:8px 10px;border-radius:8px;background:var(--canvas)}
 /* FOUNDATION (time-lapse) */
 #foundation{grid-template-columns:1fr 440px;grid-template-rows:1fr auto;gap:14px}
 .explain{display:grid;grid-template-rows:auto auto 1fr;gap:14px;min-height:0}
@@ -137,7 +152,7 @@ canvas{display:block;width:100%;height:100%}
 .shelf .list{display:grid;gap:6px;overflow:auto;align-content:start}
 .part{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 12px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--line);font-size:12px}
 .part b{font:500 12px/16px var(--mono);color:var(--ink)}.part span{color:var(--ink-muted)}
-.right{display:grid;grid-template-rows:minmax(0,1.3fr) minmax(0,1fr);gap:14px;min-height:0}
+.right{display:grid;grid-template-rows:minmax(0,1.1fr) minmax(0,0.9fr) minmax(0,0.7fr);gap:14px;min-height:0}
 /* GREY FLAG overlay */
 .flagcard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,90%);padding:24px 26px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-strong);box-shadow:var(--float)}
 .flagcard h3{margin:6px 0 4px;font:400 26px/32px var(--sans)}.flagcard p{margin:0 0 6px;color:var(--ink-muted)}
@@ -188,7 +203,7 @@ canvas{display:block;width:100%;height:100%}
     <div class="crumb" id="crumb"><a href="#arena">Arena</a><span>›</span><span class="cur">What shall we make?</span></div>
     <div class="spacer"></div>
     <div class="scenes" id="scenes" aria-label="Reference frames">
-      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
+      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="design">Design</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
     </div>
     <div class="person"><div class="avatar">MS</div><div><b style="font-weight:500">Meera Shah</b><small>customer · alone in the chair</small></div></div>
   </div>
@@ -215,6 +230,24 @@ canvas{display:block;width:100%;height:100%}
       <div class="canvas-wrap"><canvas id="cv-plan"></canvas>
         <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
         <div class="legend"><span class="chip">A building for each thing it does</span><span class="chip">The ground is the database</span><span class="chip">Across the water: the web</span></div>
+      </div>
+    </section>
+
+    <!-- DESIGN: the architecture, explained and agreed before anything is built -->
+    <section class="scene" id="design" data-stage="design">
+      <div class="canvas-wrap"><canvas id="cv-design"></canvas>
+        <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
+        <div class="legend"><span class="chip">Nothing is built yet · this is the design</span></div>
+      </div>
+      <div class="dlist" id="dlist">
+        <div><div class="eyebrow">The design · read aloud before the first block</div><h2 class="plan-h">How it will be built.</h2></div>
+        <div class="ditem" data-k="buildings"><i>1</i><div><h4>Three buildings, one for each thing it does</h4><p>Read the bill, Work out the charge, Show the bill. Each is glass: you can see every part inside it at any time.</p></div></div>
+        <div class="ditem" data-k="floors"><i>2</i><div><h4>Every building has the same four floors</h4><p>Remembers (its tables), Decides (its rules and sums), Shows (its screens), Talks to (the outside). A part always lives on the floor that says what it does.</p></div></div>
+        <div class="ditem" data-k="ground"><i>3</i><div><h4>The ground is the database</h4><p>Three plots: bills, tariffs, charges. A plot lights up when a building writes to it, and you can open it and read the rows.</p></div></div>
+        <div class="ditem" data-k="water"><i>4</i><div><h4>Across the water is the web</h4><p>One jetty: Tariff on the web. The only place the product talks to the outside, so what it reads can be kept and shown.</p></div></div>
+        <div class="ditem" data-k="pipes"><i>5</i><div><h4>Pipes carry every number</h4><p>From a row in the ground, through the sum, to the figure on the screen. You can watch a number travel and ask it questions on the way.</p></div></div>
+        <div class="ditem" data-k="gate"><i>6</i><div><h4>A gate at the door, a checker from another company</h4><p>Nothing changes without a test behind it and your signature on the screen. The Checker is not the Builder and signs its own report.</p></div></div>
+        <div class="plan-actions"><button class="btn lit" data-go="foundation">Yes, build it like this</button><button class="btn">Change the design</button></div>
       </div>
     </section>
 
@@ -250,6 +283,7 @@ canvas{display:block;width:100%;height:100%}
       </div>
       <div class="right">
         <div class="code"><header><span class="chip ok">Being written</span><span class="path" id="codepath">features/read-the-bill/read.ts</span><span class="in">· inside Read the bill, floor 2</span></header><pre id="codepre"></pre></div>
+        <div class="acts-log"><div class="eyebrow">What fired · every action the Builder took, and what came back</div><div class="list" id="actlist"></div></div>
         <div class="shelf"><div class="eyebrow">Parts so far · <span id="partcount">0</span> files, each explained</div><div class="list" id="parts"></div></div>
       </div>
       <div class="controls">
@@ -479,11 +513,11 @@ function makeStage(canvas,opts={}){
 /* ---------- Scenes ---------- */
 const scenes={};
 function show(id){if(id==='flow'){show('film');jumpToStep(5);document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s==='flow'));document.getElementById('v-text').textContent='Watch the number travel: 412 units leave the bills table, become ₹3,214 in the sum, gain the fixed charge and the duty, and arrive on the screen as ₹4,312.';try{history.replaceState(null,'','#flow')}catch(e){}return;}document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
-  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
+  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],design:['Arena','Read my bill','The design'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
   const c=crumbs[id];document.getElementById('crumb').innerHTML=c.map((t,i)=>i<c.length-1?`<a href="#${id}">${t}</a><span>›</span>`:`<span class="cur">${t}</span>`).join('');
-  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
+  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',design:'Before a single block, the design. Three glass buildings, four floors each, the database as the ground, the web across the water, pipes for every number, and a gate at the door. Shall I build it like this?',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
   document.getElementById('v-text').textContent=v[id];
-  if(id==='plan')startPlan();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
+  if(id==='plan')startPlan();if(id==='design')startDesign();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
   try{history.replaceState(null,'','#'+id)}catch(e){}
 }
 document.querySelectorAll('#scenes button').forEach(b=>b.onclick=()=>show(b.dataset.s));
@@ -498,7 +532,7 @@ function startPlan(){ if(planStarted)return;planStarted=true;
   scenes.plan=makeStage(document.getElementById('cv-plan'),{cam:{scale:1.15}});
   const list=document.getElementById('planlist');
   PLAN.forEach((s,i)=>{const el=document.createElement('div');el.className='step';el.innerHTML=`<span class="n">${s.n}</span><div><h3>${s.name}</h3><p>${s.what}</p></div><span class="chip bld">${s.bld}</span>`;list.appendChild(el);setTimeout(()=>el.classList.add('in'),400+i*700);});
-  const acts=document.createElement('div');acts.className='plan-actions';acts.innerHTML=`<button class="btn lit" data-go="film">Yes, build it</button><button class="btn">Change something</button><span class="chip">Your yes is written down in your name</span>`;list.appendChild(acts);acts.querySelector('[data-go]').onclick=()=>show('film');
+  const acts=document.createElement('div');acts.className='plan-actions';acts.innerHTML=`<button class="btn lit" data-go="design">Yes, now show me the design</button><button class="btn">Change something</button><span class="chip">Your yes is written down in your name</span>`;list.appendChild(acts);acts.querySelector('[data-go]').onclick=()=>show('design');
 }
 
 /* FILM scene: a scripted timeline of what the builder does, says and writes */
@@ -568,12 +602,13 @@ const FILES={
 };
 // What the builder says, in its own words, as it works (captured from Claude Code's stream)
 const SCRIPT=[
- {step:1,at:'read',say:'I will start with the bill itself. I am opening the PDF you dropped in to see what is printed on it.',agent:'builder'},
- {step:1,file:'features/read-the-bill/read.ts',say:'I am writing a part that reads the bill. It pulls out the units used, the dates and the amount, and marks the units and the amount as figures so they can be traced later.',bricks:['read',3],card:{name:'features/read-the-bill/read.ts',what:'Opens the bill and pulls out the units used, the billing dates and the amount printed on it.',step:'step 1 · Read the bill',figs:2}},
- {step:1,file:'features/read-the-bill/read.test.ts',say:'Now a test, so the gate will let this through: it reads your September bill and expects 412 units.',bricks:['read',4],plot:['bills',1],card:{name:'features/read-the-bill/read.test.ts',what:'Proves the reader finds 412 units on the September bill. The gate needs this before the screen can be signed.',step:'step 1 · Read the bill',figs:0}},
- {step:1,check:true,say:'Reading the bill: 412 units, 1 to 30 September, ₹4,290 printed. The test passes.',agent:'checker',state:['read','Verified']},
- {step:2,at:'tariff',file:'features/find-the-tariff/lookup.ts',say:'Next, the tariff. This part goes across the water to the web, searches for your supplier’s domestic tariff, finds the slab for 412 units and keeps the page it read, so you can see where the rate came from.',bricks:['tariff',6],plot:['tariffs',1],card:{name:'features/find-the-tariff/lookup.ts',what:'Searches the web for the supplier’s tariff, picks the slab for your units and keeps the page it read.',step:'step 2 · Find the tariff',figs:1},state:['tariff','Verified']},
- {step:3,at:'charge',file:'features/work-out-the-charge/charge.ts',say:'Now the sum. Units times the rate, plus a fixed charge of ₹110 from the tariff order, plus 5% duty on the whole. The answer is a figure called “you owe”, so the screen can show where it came from.',bricks:['charge',8],plot:['charges',1],card:{name:'features/work-out-the-charge/charge.ts',what:'Works out what you owe: units × rate, plus the fixed charge, plus 5% duty. Its answer is the figure “you owe”.',step:'step 3 · Work out the charge',figs:1}},
+ {step:1,at:'read',say:'Before I write anything I am reading the bill you dropped in, with my own reading tool, to see what is printed on it. This is my tool, not your product: nothing of yours has run yet.',agent:'builder',acts:[{tool:'Read a file',what:'bill-sep-2026.pdf',own:'the Builder’s own tool',detail:'pdftotext bill-sep-2026.pdf\n→ 1,240 characters of text, 1 page\n\nUTTAR PRADESH POWER CORPORATION LTD\nConsumer No  4123 7788 0021\nPeriod       01-09-2026 to 30-09-2026\nUnits        412\nAmount due   ₹ 4,290\nDue date     15-10-2026'}]},
+ {step:1,at:'read',say:'I can see six things worth keeping: the consumer number, the period, the category, the units, the amount due and the due date. I will build the reader to find exactly those.',agent:'builder',acts:[{tool:'Decided',what:'6 fields to read',own:'written to the plan',detail:'consumer_no · period_from · period_to · category · units · amount_due · due_date'}]},
+ {step:1,file:'features/read-the-bill/read.ts',say:'I am writing a part that reads the bill. It pulls out the units used, the dates and the amount, and marks the units and the amount as figures so they can be traced later.',bricks:['read',3],acts:[{tool:'Write a file',what:'features/read-the-bill/read.ts',own:'your product',detail:'+12 lines · marks units-used and amount-printed as figures'}],card:{name:'features/read-the-bill/read.ts',what:'Opens the bill and pulls out the units used, the billing dates and the amount printed on it.',step:'step 1 · Read the bill',figs:2}},
+ {step:1,file:'features/read-the-bill/read.test.ts',say:'Now a test, so the gate will let this through: it reads your September bill and expects 412 units.',bricks:['read',4],plot:['bills',1],acts:[{tool:'Write a file',what:'features/read-the-bill/read.test.ts',own:'your product',detail:'+7 lines · expects 412 units from the September bill'}],card:{name:'features/read-the-bill/read.test.ts',what:'Proves the reader finds 412 units on the September bill. The gate needs this before the screen can be signed.',step:'step 1 · Read the bill',figs:0}},
+ {step:1,check:true,say:'Reading the bill: 412 units, 1 to 30 September, ₹4,290 printed. The test passes.',agent:'checker',state:['read','Verified'],acts:[{tool:'Run the tests',what:'read.test.ts',own:'your product, run by the Checker',detail:'vitest features/read-the-bill\n✓ reads 412 units from the September bill (412 ms)\n1 passed'}]},
+ {step:2,at:'tariff',file:'features/find-the-tariff/lookup.ts',acts:[{tool:'Write a file',what:'features/find-the-tariff/lookup.ts',own:'your product',detail:'+9 lines · goes across the water through lib/web.ts'},{tool:'Run once',what:'findTariff("UPPCL", 412)',own:'your product',detail:'→ ₹7.80 /kWh · slab 301–500 · source uppcl.org/tariff-2026 · read 30 Oct 11:31'}],say:'Next, the tariff. This part goes across the water to the web, searches for your supplier’s domestic tariff, finds the slab for 412 units and keeps the page it read, so you can see where the rate came from.',bricks:['tariff',6],plot:['tariffs',1],card:{name:'features/find-the-tariff/lookup.ts',what:'Searches the web for the supplier’s tariff, picks the slab for your units and keeps the page it read.',step:'step 2 · Find the tariff',figs:1},state:['tariff','Verified']},
+ {step:3,at:'charge',file:'features/work-out-the-charge/charge.ts',acts:[{tool:'Write a file',what:'features/work-out-the-charge/charge.ts',own:'your product',detail:'+11 lines · the figure you-owe'},{tool:'Run once',what:'charge(412, 7.80)',own:'your product',detail:'→ 4312 · (412 × 7.80 + 110) × 1.05, rounded'}],say:'Now the sum. Units times the rate, plus a fixed charge of ₹110 from the tariff order, plus 5% duty on the whole. The answer is a figure called “you owe”, so the screen can show where it came from.',bricks:['charge',8],plot:['charges',1],card:{name:'features/work-out-the-charge/charge.ts',what:'Works out what you owe: units × rate, plus the fixed charge, plus 5% duty. Its answer is the figure “you owe”.',step:'step 3 · Work out the charge',figs:1}},
  {step:4,at:'charge',file:'db/schema.ts',say:'Keeping it. Three tables in the ground: bills, tariffs and charges. Each month adds a row; nothing is overwritten.',bricks:['charge',8],plots:[['bills',1],['tariffs',1],['charges',1]],card:{name:'db/schema.ts',what:'The three tables: bills, tariffs and charges. Each month adds rows; nothing is overwritten.',step:'step 4 · Keep it',figs:0}},
  {step:5,at:'show',file:'app/bill/page.tsx',say:'The screen. One page with the three figures. Each one is a Figure, so when you click it you see its trail back to the bill, the web page and the sum.',bricks:['show',5],flow:true,card:{name:'app/bill/page.tsx',what:'The one screen: units, tariff and what you owe, each a traced figure.',step:'step 5 · Show the bill',figs:3},state:['show','Verified']},
  {step:6,at:'charge',check:true,say:'Running the tests and the gate on every building.',agent:'checker',flag:true},
@@ -600,6 +635,7 @@ function runEvent(){
   setAgent(ev.agent||'builder');if(ev.at){stage.state.agents[0].at=ev.at;}
   if(ev.state){const b=BUILDINGS.find(x=>x.id===ev.state[0]);b.state=ev.state[1];}
   document.getElementById('v-text').textContent=ev.say;
+  if(ev.acts){const L=document.getElementById('actlist');ev.acts.forEach(a=>{const d=document.createElement('div');d.className='act';d.innerHTML=`<div class="h"><span class="tool">${a.tool}</span><span class="what">${a.what}</span><span class="own">${a.own}</span></div><details><summary>see what fired</summary><pre>${a.detail}</pre></details>`;L.prepend(d);});}
   typeText(document.getElementById('subtitle'),ev.say,22,()=>{
     const after=()=>{if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}if(ev.plots){ev.plots.forEach(([id,n])=>{const p=PLOTS.find(x=>x.id===id);p.rows=n;p.lit=true;});}if(ev.flow){stage.state.flow=true;}
       BUILDINGS.forEach(b=>b.live=false);
@@ -613,7 +649,7 @@ function runEvent(){
 }
 document.getElementById('b-pause').onclick=e=>{film.paused=!film.paused;e.target.textContent=film.paused?'Play':'Pause';document.getElementById('voice').classList.toggle('quiet',film.paused);};
 document.getElementById('b-slower').onclick=()=>{film.speed=Math.max(.5,film.speed/1.5)};document.getElementById('b-faster').onclick=()=>{film.speed=Math.min(4,film.speed*1.5)};
-function skipStep(){const cur=SCRIPT[film.i].step;while(SCRIPT[film.i]&&SCRIPT[film.i].step===cur){const ev=SCRIPT[film.i];if(ev.bricks){BUILDINGS.find(x=>x.id===ev.bricks[0]).bricks=ev.bricks[1];}if(ev.state){BUILDINGS.find(x=>x.id===ev.state[0]).state=ev.state[1];}if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}if(ev.plots){ev.plots.forEach(([id,n])=>{const p=PLOTS.find(x=>x.id===id);p.rows=n;p.lit=true;});}if(ev.card){film.parts++;document.getElementById('partcount').textContent=film.parts;const q=document.createElement('div');q.className='part';q.innerHTML=`<div><b>${ev.card.name}</b><br><span>${ev.card.what}</span></div><span class="chip un">unconfirmed</span>`;document.getElementById('parts').prepend(q);}film.i++;}}
+function skipStep(){const cur=SCRIPT[film.i].step;while(SCRIPT[film.i]&&SCRIPT[film.i].step===cur){const ev=SCRIPT[film.i];if(ev.bricks){BUILDINGS.find(x=>x.id===ev.bricks[0]).bricks=ev.bricks[1];}if(ev.state){BUILDINGS.find(x=>x.id===ev.state[0]).state=ev.state[1];}if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}if(ev.plots){ev.plots.forEach(([id,n])=>{const p=PLOTS.find(x=>x.id===id);p.rows=n;p.lit=true;});}if(ev.acts){const L=document.getElementById('actlist');ev.acts.forEach(a=>{const d=document.createElement('div');d.className='act';d.innerHTML=`<div class="h"><span class="tool">${a.tool}</span><span class="what">${a.what}</span><span class="own">${a.own}</span></div>`;L.prepend(d);});}if(ev.card){film.parts++;document.getElementById('partcount').textContent=film.parts;const q=document.createElement('div');q.className='part';q.innerHTML=`<div><b>${ev.card.name}</b><br><span>${ev.card.what}</span></div><span class="chip un">unconfirmed</span>`;document.getElementById('parts').prepend(q);}film.i++;}}
 function jumpToStep(n){clearTimeout(film.timer);while(SCRIPT[film.i]&&SCRIPT[film.i].step<n)skipStep();if(n>=5){scenes.film.state.flow=true;scenes.film.state.agents[0].at='show';}runEvent();}
 document.getElementById('b-next').onclick=()=>{clearTimeout(film.timer);skipStep();runEvent();};
 document.getElementById('b-replay').onclick=()=>{clearTimeout(film.timer);const cur=SCRIPT[film.i]?SCRIPT[film.i].step:7;while(film.i>0&&SCRIPT[film.i-1].step===cur)film.i--;runEvent();};
@@ -707,6 +743,10 @@ function makeFoundation(canvas){
   requestAnimationFrame(draw);
   return {cam,st,turn(d){cam.o=(cam.o+d+4)%4},zoom(f){cam.scale=Math.max(1.2,Math.min(4,cam.scale*f))}};
 }
+let design=null;
+function startDesign(){if(design)return;design=makeStage(document.getElementById('cv-design'),{cam:{scale:1.2},flow:true});scenes.design=design;
+  const items=[...document.querySelectorAll('#design .ditem')];let k=0;(function nxt(){items.forEach((el,i)=>el.classList.toggle('on',i===k));const el=items[k];if(el){document.getElementById('v-text').textContent=el.querySelector('h4').textContent+'. '+el.querySelector('p').textContent;}k++;if(k<=items.length)setTimeout(nxt,3600);})();
+  document.querySelector('#design [data-go]').onclick=()=>show('foundation');}
 let foundation=null;
 function startFoundation(){if(foundation)return;foundation=makeFoundation(document.getElementById('cv-found'));scenes.foundation=foundation;
   document.getElementById('f-play').onclick=e=>{if(foundation.st.t>=2800){foundation.st.t=0;}foundation.st.playing=!foundation.st.playing;e.target.textContent=foundation.st.playing?'Pause':'Play';};
@@ -714,8 +754,8 @@ function startFoundation(){if(foundation)return;foundation=makeFoundation(docume
 }
 
 /* boot: scene from hash */
-const h=(location.hash||'#arena').slice(1);show(['arena','plan','foundation','film','flow','flag','ask','walk'].includes(h)?h:'arena');
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','foundation','film','flow','flag','ask','walk'].includes(h))show(h);});
+const h=(location.hash||'#arena').slice(1);show(['arena','plan','design','foundation','film','flow','flag','ask','walk'].includes(h)?h:'arena');
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','design','foundation','film','flow','flag','ask','walk'].includes(h))show(h);});
 // grey-flag scene draws the street with the flag state
 (function(){const c=document.getElementById('cv-flag');const obs=new MutationObserver(()=>{if(document.getElementById('flag').classList.contains('on')&&!scenes.flag){scenes.flag=makeStage(c,{cam:{scale:1.2},agents:[{at:'charge',name:'The Checker',vendor:'OpenAI',color:'#7CC8F0'}]});BUILDINGS.forEach(b=>{b.bricks=b.target});PLOTS.forEach(p=>{p.lit=true;p.rows=1});}});obs.observe(document.getElementById('flag'),{attributes:true});})();
 </script>
