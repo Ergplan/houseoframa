@@ -6,7 +6,7 @@
 // next lift is the fix. "Pause build" stops after the lift in hand. The build is done when the builder
 // says so and the product shows every figure traced and every screen Verified.
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import {
@@ -29,6 +29,7 @@ import { layDownScaffold, lintProduct, onHouseStack } from './scaffold.ts';
 import { siteStates } from './states.ts';
 import { runSiteTests } from './tests.ts';
 import { startTail } from './tail.ts';
+import { liftsFile, type LiftRecord } from './film.ts';
 import { explainFile } from './explain.ts';
 import { figuresOfBlock, productFigures } from './code.ts';
 
@@ -376,6 +377,21 @@ export async function build(
         got.check = check;
         was.last = check;
         lifts.push({ n, subject, ok: check.ok, problems: check.problems });
+        // The builder's own words for this lift, kept beside the build for the film (Stage 13).
+        keepLift(
+          site.id,
+          {
+            n,
+            commit: after,
+            subject,
+            said: answer.answer.said,
+            next: answer.answer.next ?? null,
+            ok: check.ok,
+            problems: check.problems,
+            at: now().toISOString(),
+          },
+          env,
+        );
         if (!check.ok) {
           stuck = fixing ? stuck + 1 : 1;
           throw new StepError(
@@ -415,6 +431,13 @@ export async function build(
       'The trainer reads the flags above, then presses Start build again.',
     );
   });
+}
+
+/** Appends one lift's record to work/<site>/lifts.jsonl (append-only, one JSON object a line). */
+function keepLift(siteId: string, r: LiftRecord, env: NodeJS.ProcessEnv): void {
+  const f = liftsFile(siteId, env);
+  mkdirSync(path.dirname(f), { recursive: true });
+  appendFileSync(f, `${JSON.stringify(r)}\n`);
 }
 
 /** Sends the lift to the product's place on GitHub, when it has one; says so, or says why not. */

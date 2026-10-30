@@ -12,16 +12,26 @@ import { Said } from '../components/workbench/Said';
 import { Button, ButtonLink, Card, Folder, StateChip } from '../components/harmony/ui';
 import { Shell } from '../components/harmony/Shell';
 import { currentMember, siteIdsOf, withDb } from '../server/session';
+import '../components/film/film.css';
 
 export const dynamic = 'force-dynamic';
 
 /** A site in a list: its name, and its screens in the three words when it has a picture. */
-function SiteRow({ site }: { site: SiteLocation }) {
+function SiteRow({ site, trainer }: { site: SiteLocation; trainer?: boolean }) {
   const bp = readSiteBlueprint(site);
   const st = bp && site.kind === 'product' ? siteStates(site, bp) : null;
   return (
     <li className="rama-row" style={{ justifyContent: 'space-between' }}>
-      <Link href={`/site/${site.id}`}>{site.name}</Link>
+      <span className="rama-row">
+        <Link href={site.kind === 'product' ? `/film/${site.id}` : `/site/${site.id}`}>
+          {site.name}
+        </Link>
+        {trainer && site.kind === 'product' ? (
+          <Link href={`/site/${site.id}`} className="eg-muted" style={{ fontSize: 12 }}>
+            Trainer view
+          </Link>
+        ) : null}
+      </span>
       {st && st.screens.length ? (
         <span className="rama-row">
           <StateChip state="Verified" count={st.tally.Verified} />
@@ -30,6 +40,84 @@ function SiteRow({ site }: { site: SiteLocation }) {
         </span>
       ) : null}
     </li>
+  );
+}
+
+/**
+ * A customer's front door (Stage 13): one sentence, and the products already made, each opening its film.
+ * The product starts in the idea room, where the plan's steps are made with the drafter and said yes to.
+ */
+function Arena({
+  name,
+  products,
+  outside,
+  q,
+}: {
+  name: string;
+  products: SiteLocation[];
+  outside: SiteLocation[];
+  q: Record<string, string | string[] | undefined>;
+}) {
+  return (
+    <div className="arena">
+      <Said q={q} />
+      <div className="arena-hero">
+        <div className="film-eyebrow">A new product</div>
+        <h1 className="arena-h">
+          Hello {name.split(' ')[0]}. <b>What shall we make</b> today?
+        </h1>
+        <p className="eg-muted">
+          Say it in one sentence, the way you would to a colleague. It is turned into a plan, the
+          plan is read back to you, and then you watch it built.
+        </p>
+        <form action="/api/products" method="post" className="arena-ask">
+          <input
+            className="arena-idea"
+            name="idea"
+            required
+            maxLength={300}
+            aria-label="What you want to make, in one sentence"
+            placeholder="Something that reads my electricity bills and keeps the exact numbers in a database"
+          />
+          <input
+            className="arena-name"
+            name="name"
+            required
+            maxLength={80}
+            aria-label="Its name"
+            placeholder="Its name"
+          />
+          <button type="submit" className="film-btn lit">
+            Make it
+          </button>
+        </form>
+        <p className="eg-muted" style={{ fontSize: 13 }}>
+          Or watch a whole build first: <Link href="/testdrive">Test drive</Link> builds a small
+          sample product in a few minutes, as a film.
+        </p>
+      </div>
+      {products.length ? (
+        <Card
+          title="Your products"
+          sub="Each opens its film: the plan, the build, and the product running."
+        >
+          <ul className="sites eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {products.map((s) => (
+              <SiteRow key={s.id} site={s} />
+            ))}
+          </ul>
+        </Card>
+      ) : null}
+      {outside.length ? (
+        <Card title="Outside sites" sub="Products built elsewhere that House of Rama only shows.">
+          <ul className="sites eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {outside.map((s) => (
+              <SiteRow key={s.id} site={s} />
+            ))}
+          </ul>
+        </Card>
+      ) : null}
+    </div>
   );
 }
 
@@ -55,10 +143,12 @@ export default async function Home({
   const drive = member ? latestJob('testdrive', null) : null;
   return (
     <Shell here="home" member={member} crumbs={[{ label: 'Home' }]}>
-      <div>
-        <h1 className="eg-h1">House of Rama · Built on trust</h1>
-        <BuildStamp sha={process.env.GIT_SHA} />
-      </div>
+      {member?.role === 'customer' ? null : (
+        <div>
+          <h1 className="eg-h1">House of Rama · Built on trust</h1>
+          <BuildStamp sha={process.env.GIT_SHA} />
+        </div>
+      )}
       {!member ? (
         <Card>
           <p style={{ marginTop: 0 }}>Pick your name to see your products.</p>
@@ -66,6 +156,8 @@ export default async function Home({
             Who are you?
           </ButtonLink>
         </Card>
+      ) : member.role === 'customer' ? (
+        <Arena name={member.name} products={products} outside={outside} q={q} />
       ) : (
         <>
           <Said q={q} />
@@ -139,7 +231,7 @@ export default async function Home({
             {products.length ? (
               <ul className="sites eg-stack" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                 {products.map((s) => (
-                  <SiteRow key={s.id} site={s} />
+                  <SiteRow key={s.id} site={s} trainer={member.role !== 'customer'} />
                 ))}
               </ul>
             ) : (

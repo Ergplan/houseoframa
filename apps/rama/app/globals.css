@@ -121,8 +121,9 @@ a {
   align-items: center;
   gap: 8px 10px;
 }
-/* Buttons that are not yet Harmony components wear Harmony's small glass pill, in sentence case. */
-button:not(.eg-btn):not(.eg-icon-btn) {
+/* Buttons that are not yet Harmony components wear Harmony's small glass pill, in sentence case. The
+   film's buttons (Stage 13) are styled by components/film/film.css and left out here. */
+button:not(.eg-btn):not(.eg-icon-btn):where(:not([class*='film-'])) {
   font: 500 13px/1 var(--font-sans);
   letter-spacing: 0.01em;
   background: var(--glass);
@@ -133,7 +134,7 @@ button:not(.eg-btn):not(.eg-icon-btn) {
   cursor: pointer;
   box-shadow: var(--shadow-edge);
 }
-button:not(.eg-btn):not(.eg-icon-btn):hover {
+button:not(.eg-btn):not(.eg-icon-btn):where(:not([class*='film-'])):hover {
   background: var(--glass-strong);
 }
 button:focus-visible,
@@ -141,7 +142,7 @@ input:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
-button.on:not(.eg-btn),
+button.on:not(.eg-btn):where(:not([class*='film-'])),
 button.primary:not(.eg-btn) {
   background: var(--accent-soft);
   color: var(--accent);

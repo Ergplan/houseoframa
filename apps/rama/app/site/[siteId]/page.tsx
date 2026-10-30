@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { cameraFrom, insideFiles } from '@rama/stage';
 import { pageSite } from '../../../server/session';
 import { readSiteBlueprint } from '@rama/blueprint/site';
@@ -50,6 +51,10 @@ export default async function SitePage({
   const q = (await searchParams) ?? {};
   const brick = one(q.brick);
   const { member, site } = await pageSite(siteId);
+  // The film is a customer's home for a product (Stage 13); this lakefront and its console are the
+  // trainer's view, reached from the film's Trainer view link.
+  if (member.role === 'customer' && site.kind === 'product')
+    redirect(`/film/${encodeURIComponent(site.id)}`);
   const blueprint = readSiteBlueprint(site);
   if (!blueprint) {
     return (

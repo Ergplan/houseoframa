@@ -65,8 +65,8 @@ export default async function TestDrive() {
           >
             {status !== 'running' && site ? (
               <p style={{ margin: 0 }}>
-                <Link href={`/site/${site}`} style={{ color: 'inherit' }}>
-                  Look at the sample product it built
+                <Link href={`/film/${site}`} className="eg-btn eg-btn--primary">
+                  Watch the film of the build
                 </Link>
               </p>
             ) : null}

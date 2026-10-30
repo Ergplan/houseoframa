@@ -24,6 +24,7 @@ export function recorder(): { ctx: CanvasRenderingContext2D; rec: Recording } {
     fill: () => rec.fills.push(String(state.fillStyle)),
     roundRect: noop,
     arc: noop,
+    ellipse: noop,
     save: noop,
     restore: noop,
     clip: noop,
