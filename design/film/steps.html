@@ -1,0 +1,179 @@
+<title>Build Steps · Read my bill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column of steps, each a panel in three parts — what the agent does (its words), what you see, what it means. Harmony dark. */
+:root{--canvas:#000B1A;--surface:#0B1722;--surface-2:#13202B;--glass:rgba(255,255,255,0.055);--line:rgba(255,255,255,0.09);--line-strong:rgba(255,255,255,0.20);
+--ink:#F2F6F3;--muted:#9DABA6;--faint:#5E6C68;--accent:#68E78E;--accent-soft:rgba(104,231,142,0.13);--folder-hi:#418F59;--folder:#2B7445;--folder-deep:#1F5A35;
+--warning:#F2C46B;--warning-soft:rgba(242,196,107,0.13);--grey:#9DABA6;--glow:rgba(104,231,142,0.32);
+--sans:Urbanist,"Avenir Next","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;color-scheme:dark}
+body{margin:0;background:var(--canvas);color:var(--ink);font:400 15px/22px var(--sans)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px;display:grid;gap:28px}
+h1{font:300 44px/48px var(--sans);letter-spacing:-0.015em;margin:0;text-wrap:balance}h1 b{font-weight:300;color:var(--accent)}
+.lead{color:var(--muted);max-width:66ch;margin:0}
+.eyebrow{font:600 11px/14px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ask{display:flex;gap:12px;align-items:center;padding:14px 22px;border-radius:999px;background:var(--surface);border:1px solid var(--line-strong);font-size:17px}
+.ask .mic{width:34px;height:34px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.timeline{display:grid;gap:18px}
+.step{display:grid;grid-template-columns:64px 1fr;gap:18px}
+.step .n{font:300 44px/48px var(--sans);color:var(--accent);text-align:right}
+.panel{display:grid;grid-template-columns:1.2fr 1fr;gap:0;border-radius:28px;background:var(--surface);border:1px solid var(--line);overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,0.10)}
+.says{padding:22px 24px;display:grid;gap:12px;align-content:start;border-right:1px solid var(--line)}
+.says h2{margin:0;font:500 20px/26px var(--sans)}
+.quote{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.av{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;color:#03200E;background:var(--accent);box-shadow:0 0 0 4px var(--glow);margin-top:2px}
+.av.c{background:#7CC8F0;box-shadow:none}.av.v{background:#B9A8F2;box-shadow:none}.av.u{background:var(--surface-2);color:var(--ink);box-shadow:none}
+.quote p{margin:0;font-size:16px;line-height:23px}
+.quote small{display:block;color:var(--faint);font-size:11px;margin-top:2px}
+.does{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px/16px var(--sans);padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.chip.ok{color:var(--accent);background:var(--accent-soft);border-color:transparent}.chip.warn{color:var(--warning);background:var(--warning-soft);border-color:transparent}.chip.grey{color:var(--grey);background:rgba(255,255,255,.08);border-color:transparent}
+.sees{padding:22px 24px;display:grid;gap:12px;align-content:start;background:var(--surface-2)}
+.sees .eyebrow{color:var(--faint)}
+.mini{border-radius:16px;background:var(--canvas);border:1px solid var(--line);padding:14px;display:grid;gap:8px;min-height:120px}
+.mini .t{font-size:12px;color:var(--muted)}
+.mono{font:400 12px/18px var(--mono);color:var(--ink);white-space:pre-wrap}
+.k{color:#B9A8F2}.s{color:#F3E37C}.f{color:#7CC8F0}.c{color:var(--faint)}.g{color:var(--accent)}
+.means{grid-column:1/-1;padding:14px 24px;border-top:1px solid var(--line);display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:linear-gradient(90deg,var(--accent-soft),transparent 60%)}
+.means b{font-weight:500;color:var(--accent);white-space:nowrap}
+.table{display:grid;gap:4px}.row{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:8px;font:400 12px/18px var(--mono);padding:4px 8px;border-radius:8px}
+.row.h{color:var(--faint);font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.row.d{background:var(--accent-soft)}
+.bill{display:grid;gap:3px;font:400 12px/18px var(--mono);padding:10px;border-radius:10px;background:#fff;color:#111;border:1px solid var(--line)}
+.bill .hl{background:rgba(104,231,142,.45);border-radius:3px;padding:0 2px}
+.plan{display:grid;gap:6px}.plan div{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13px}.plan i{font-style:normal;color:var(--accent)}
+.screen{border-radius:12px;background:var(--surface);border:1px solid var(--line);padding:12px;display:grid;gap:8px}
+.screen h4{margin:0;font:500 14px/18px var(--sans)}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tile{padding:8px;border-radius:10px;background:var(--surface-2);display:grid;gap:2px}.tile small{font-size:10px;color:var(--faint)}.tile b{font:300 18px/22px var(--sans)}
+.fail{color:#FF8F7E}.pass{color:var(--accent)}
+.foot{color:var(--muted);max-width:70ch;padding-top:10px;border-top:1px solid var(--line)}
+@media (max-width:760px){.step{grid-template-columns:1fr}.step .n{text-align:left}.panel{grid-template-columns:1fr}.says{border-right:0;border-bottom:1px solid var(--line)}}
+</style>
+<div class="wrap">
+  <div>
+    <div class="eyebrow">House of Rama · the build, step by step</div>
+    <h1>What happens when you say <b>“read my bills”</b></h1>
+  </div>
+  <p class="lead">This is the real sequence an agent goes through, in the order it goes through it, when a non-coder gives it one sentence. Left: what the agent does and says, in its own words. Right: what you see on screen at that moment. Under each: what it means for you. Twelve steps, about twenty minutes.</p>
+  <div class="ask"><span class="mic">●</span><span>“Make me something that reads my electricity bills, gives me the exact data printed on them, and keeps every bill in a database.”</span></div>
+
+  <div class="timeline">
+
+  <div class="step"><div class="n">1</div><div class="panel">
+    <div class="says"><h2>It reads your sentence and asks two things it cannot guess.</h2>
+      <div class="quote"><span class="av">B</span><div><p>Before I build anything: which supplier’s bills are these, and may I look at one? Bills differ by supplier, and I want to read the real thing, not guess the layout.</p><small>The Builder · Claude Code · its own words</small></div></div>
+      <div class="quote"><span class="av u">M</span><div><p>UPPCL. Here is September’s.</p><small>Meera · said, and dropped the file</small></div></div>
+      <div class="does"><span class="chip">asks</span><span class="chip">waits for your answer</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">The Street is empty ground. One card appears with the two questions and a place to drop the bill.</span><div class="chip warn">Waiting for you · 2 questions</div></div></div>
+    <div class="means"><b>What it means</b><span>Nothing is built yet. The agent will not start until it knows what it is reading. Your answers are written down in your name.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">2</div><div class="panel">
+    <div class="says"><h2>It opens the bill and reads what is printed.</h2>
+      <div class="quote"><span class="av">B</span><div><p>I am opening bill-sep-2026.pdf and reading its text. I can see a consumer number, a billing period, units consumed, a tariff category, an amount due and a due date. I will treat those six as the data you want.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">reads a file</span><span class="chip">lists what it found</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="bill">UTTAR PRADESH POWER CORPORATION LTD
+Consumer No   <span class="hl">4123 7788 0021</span>
+Period        <span class="hl">01-09-2026 to 30-09-2026</span>
+Category      <span class="hl">LMV-1 Domestic</span>
+Units         <span class="hl">412</span>
+Amount due    <span class="hl">₹ 4,290</span>
+Due date      <span class="hl">15-10-2026</span></div><span class="t" style="font-size:12px;color:var(--muted)">Your bill, with the six things it will read lit up.</span></div>
+    <div class="means"><b>What it means</b><span>“Exact data” now has a definition: these six, from this layout. If a future bill looks different, the agent will say so instead of guessing.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">3</div><div class="panel">
+    <div class="says"><h2>It writes the plan and reads it to you.</h2>
+      <div class="quote"><span class="av">B</span><div><p>Here is what I will do, in order. Say yes, or change anything.</p><small>The Builder</small></div></div>
+      <div class="plan"><div><i>1</i>Lay the foundation: a new, empty product on the house stack.</div><div><i>2</i>Make the table in the ground: one row per bill, six columns.</div><div><i>3</i>Write the reader: PDF in, the six values out.</div><div><i>4</i>Prove it on September’s bill.</div><div><i>5</i>Keep each bill: save the six values.</div><div><i>6</i>The screen: drop a bill, see its data, see every bill so far.</div><div><i>7</i>Check everything, then walk you through it.</div></div>
+      <div class="does"><span class="chip">plans</span><span class="chip ok">your yes starts the build</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">The Street appears as three named, empty glass buildings — <b>Read the bill</b>, <b>Keep it</b>, <b>Show the bills</b> — and one empty plot in the ground named <b>bills</b>. The voice reads the seven steps. One lit button: <b>Yes, build it</b>.</span></div></div>
+    <div class="means"><b>What it means</b><span>This is the contract. Every later step points back to a line here. Your yes is the first signature.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">4</div><div class="panel">
+    <div class="says"><h2>It lays the foundation.</h2>
+      <div class="quote"><span class="av">B</span><div><p>I am creating the product from the house stack: a web app, a database, tests and the merge gate already wired. Nothing of yours is in it yet; this is the empty shell every product here starts from.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">creates a repository</span><span class="chip">copies the scaffold</span><span class="chip">runs the first test</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">The ground under the three buildings fills in. A repository appears on GitHub with the product’s name. The Checker says: <span class="pass">1 test passes</span>.</span><div class="mono"><span class="c">// 14 files laid down · 0 of yours yet</span></div></div></div>
+    <div class="means"><b>What it means</b><span>Everything built from here is inspectable by construction: every number it ever shows will have to say where it came from, or the gate will refuse it.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">5</div><div class="panel">
+    <div class="says"><h2>It makes the table in the ground.</h2>
+      <div class="quote"><span class="av">B</span><div><p>One table, bills, one row per bill, six columns matching the six things on the paper, plus when it was read and by whom. Nothing is ever overwritten; a re-read is a new row.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">writes db/schema.ts</span><span class="chip">writes a migration</span><span class="chip">applies it</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><div class="table"><div class="row h"><span>column</span><span>kind</span><span>from</span><span></span></div><div class="row"><span>consumer_no</span><span>text</span><span>the bill</span><span></span></div><div class="row"><span>period_from · period_to</span><span>date</span><span>the bill</span><span></span></div><div class="row"><span>category</span><span>text</span><span>the bill</span><span></span></div><div class="row"><span>units</span><span>number</span><span>the bill</span><span></span></div><div class="row"><span>amount_due</span><span>₹</span><span>the bill</span><span></span></div><div class="row"><span>due_date</span><span>date</span><span>the bill</span><span></span></div></div><span class="t">The plot <b>bills</b> lifts out of the ground and shows its columns. Still empty.</span></div></div>
+    <div class="means"><b>What it means</b><span>“Stores in a database” is now a real place you can open and look into, with a column for each thing you asked for.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">6</div><div class="panel">
+    <div class="says"><h2>It writes the reader.</h2>
+      <div class="quote"><span class="av">B</span><div><p>Now the part that reads a bill. It opens the PDF, gets its text, and picks out each of the six values by where it sits on the page. Each value is marked as a figure, so the screen can later show which line of the bill it came from.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">writes features/read-the-bill/read.ts</span><span class="chip">48 lines</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><div class="mono"><span class="k">export async function</span> <span class="f">readBill</span>(file) {
+  <span class="k">const</span> text = <span class="k">await</span> readPdf(file);
+  <span class="k">return</span> {
+    units:  <span class="g">figure</span>(<span class="s">'units'</span>, after(text, <span class="s">'Units'</span>)),
+    amount: <span class="g">figure</span>(<span class="s">'amount-due'</span>, after(text, <span class="s">'Amount due'</span>)),
+    <span class="c">… four more …</span>
+  };
+}</div><span class="t">The code types in on the right, line by line, at reading pace. Inside the glass of <b>Read the bill</b>, a brick is laid for the file. A green card: <b>read.ts — opens the bill and pulls out the six values.</b></span></div></div>
+    <div class="means"><b>What it means</b><span>You just watched the thing you asked for being made. The words beside it are the agent’s own; the card is an explanation you can confirm or reject later.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">7</div><div class="panel">
+    <div class="says"><h2>It proves the reader on your bill — and the first try fails.</h2>
+      <div class="quote"><span class="av">B</span><div><p>A test: read September’s bill and expect 412 units, ₹4,290 due, due on 15 October. Running it now.</p><small>The Builder</small></div></div>
+      <div class="quote"><span class="av c">C</span><div><p><span class="fail">1 of 3 checks failed.</span> Expected ₹4,290, got ₹4. The reader stopped at the comma.</p><small>The Checker · the test result, as it is</small></div></div>
+      <div class="quote"><span class="av">B</span><div><p>I see it: I read “4,290” as the number 4. I will strip the comma before turning it into a number, and run again.</p><small>The Builder</small></div></div>
+      <div class="quote"><span class="av c">C</span><div><p><span class="pass">3 of 3 checks pass.</span></p><small>The Checker</small></div></div>
+      <div class="does"><span class="chip">writes read.test.ts</span><span class="chip grey">grey flag · 40 seconds</span><span class="chip">fixes</span><span class="chip ok">Verified</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">A grey flag rises over <b>Read the bill</b> with one sentence: <i>“It read ₹4,290 as 4. The Builder is fixing the comma.”</i> The voice says the same. Forty seconds later the flag turns green: <b>Verified</b>.</span><div class="chip grey">▶ Grey flag · the comma in ₹4,290</div><div class="chip ok">▶ Verified · 3 of 3 pass</div></div></div>
+    <div class="means"><b>What it means</b><span>This is the moment a non-coder normally never sees. Here it is in plain words, and it is the reason to trust the number later: it was wrong once, caught, fixed, and proved on your own bill.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">8</div><div class="panel">
+    <div class="says"><h2>It keeps the bill.</h2>
+      <div class="quote"><span class="av">B</span><div><p>Saving what the reader found into the bills table: one row for September. I will also keep the PDF itself beside the row, so the source is never lost.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">writes features/keep-it/save.ts</span><span class="chip">runs it once on September</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><div class="table"><div class="row h"><span>consumer_no</span><span>units</span><span>amount_due</span><span>due_date</span></div><div class="row d"><span>4123 7788 0021</span><span>412</span><span>4290</span><span>2026-10-15</span></div></div><span class="t">The plot <b>bills</b> lights green: <b>1 row</b>. A pipe appears from <b>Read the bill</b> down into the ground.</span></div></div>
+    <div class="means"><b>What it means</b><span>Your first bill is in the database, as the exact six values, with the PDF kept beside them. You can open the plot and read the row yourself.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">9</div><div class="panel">
+    <div class="says"><h2>It makes the screen.</h2>
+      <div class="quote"><span class="av">B</span><div><p>One page. Drop a bill at the top; the six values appear, each one clickable to see which line of the bill it came from; below, every bill so far as a list.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">writes app/bills/page.tsx</span><span class="chip">photographs it</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="screen"><h4>Your bills</h4><div class="tiles"><div class="tile"><small>Units</small><b>412</b></div><div class="tile"><small>Amount due</small><b>₹4,290</b></div><div class="tile"><small>Due</small><b>15 Oct</b></div></div><span class="t" style="font-size:11px;color:var(--faint)">September 2026 · 4123 7788 0021 · LMV-1 Domestic · read 30 Oct by the Builder</span></div><span class="t" style="font-size:12px;color:var(--muted)">The real screen, photographed, becomes the glass facade of <b>Show the bills</b>. Each figure carries a “traced” mark.</span></div>
+    <div class="means"><b>What it means</b><span>The product exists. Every number on it answers “where did you come from?” with a line on the bill, a line of code and a row in the ground.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">10</div><div class="panel">
+    <div class="says"><h2>The Checker flies the site.</h2>
+      <div class="quote"><span class="av c">C</span><div><p>I am from a different company than the Builder. I ran every test, re-read September’s bill myself and got the same six values, and checked that every figure on the screen is traced. Two findings: the reader has no test for a bill with two pages, and the due date is assumed to be this year. Neither blocks hand-over; both are written down.</p><small>The Checker · OpenAI · signs its own report</small></div></div>
+      <div class="does"><span class="chip">audits</span><span class="chip ok">report signed</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">Drones cross the Street building by building. Each gets a badge. The report appears as a page you can read: what was checked, what was found, who signed.</span><div class="chip ok">3 buildings checked</div><div class="chip warn">2 findings · neither blocking</div></div></div>
+    <div class="means"><b>What it means</b><span>Someone who did not build it has looked, independently, and put their name to what they found — including what is still weak.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">11</div><div class="panel">
+    <div class="says"><h2>You walk through it and say yes.</h2>
+      <div class="quote"><span class="av v">V</span><div><p>This screen shows a bill as it was read: 412 units, ₹4,290 due on 15 October, consumer 4123 7788 0021. Shall I write down that you agree?</p><small>The Voice · reading the Builder’s line</small></div></div>
+      <div class="quote"><span class="av u">M</span><div><p>Yes.</p><small>Meera · spoken, recorded in her name</small></div></div>
+      <div class="does"><span class="chip ok">signed · Meera Shah · 12:14</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">The facade of <b>Show the bills</b> turns from Verified to <b>Confirmed by Meera Shah</b>. The signature is sealed and cannot be edited, only reversed by a new one.</span><div class="chip ok">▶ Confirmed · Meera Shah</div></div></div>
+    <div class="means"><b>What it means</b><span>You have signed what you saw, not a document about it. Nothing can change on that screen later without a new signature.</span></div>
+  </div></div>
+
+  <div class="step"><div class="n">12</div><div class="panel">
+    <div class="says"><h2>Hand over.</h2>
+      <div class="quote"><span class="av">B</span><div><p>The repository, the database and the signed trail are yours. Next month, drop October’s bill on the screen; the same reader runs, and if the layout has changed it will raise a grey flag and call for help rather than guess.</p><small>The Builder</small></div></div>
+      <div class="does"><span class="chip">pushes to your GitHub</span><span class="chip">keys to you</span></div></div>
+    <div class="sees"><span class="eyebrow">What you see</span><div class="mini"><span class="t">The Street at rest: three green buildings, one lit plot with 1 row, the Checker’s badges, your signature on the facade. A button: <b>Open your product</b>.</span></div></div>
+    <div class="means"><b>What it means</b><span>You own it. And you can ask any part of it, any time, what it does — it will answer from its own lines.</span></div>
+  </div></div>
+
+  </div>
+  <p class="foot">Time: about twenty minutes of film for this product; the agent’s own pace is faster, so the film never runs quicker than a person can read a line. Cost: a few hundred rupees of model time. Every sentence attributed to the Builder is the kind of thing Claude Code says between its actions; in the live product those words are captured from its stream, not written in advance.</p>
+</div>
