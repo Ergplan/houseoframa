@@ -1,0 +1,604 @@
+<title>The Film · Read my bill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one dark screen, the lakefront in the middle, the voice at the bottom. Harmony dark only (design/harmony/tokens.json). */
+:root{
+  --charcoal:#000B1A; --canvas:#000B1A; --surface:#0B1722; --surface-2:#13202B;
+  --glass:rgba(255,255,255,0.055); --glass-strong:rgba(255,255,255,0.10);
+  --line:rgba(255,255,255,0.09); --line-strong:rgba(255,255,255,0.20);
+  --ink:#F2F6F3; --ink-muted:#9DABA6; --ink-faint:#5E6C68;
+  --harmony:#68E78E; --accent:#68E78E; --accent-soft:rgba(104,231,142,0.13); --on-accent:#03200E;
+  --folder-hi:#418F59; --folder:#2B7445; --folder-deep:#1F5A35; --on-folder:#fff; --on-folder-muted:#E0F1E5;
+  --glow:rgba(104,231,142,0.32); --warning:#F2C46B; --warning-soft:rgba(242,196,107,0.13);
+  --negative:#FF8F7E; --negative-soft:rgba(255,143,126,0.13);
+  --grey-flag:#9DABA6;
+  --sans:Urbanist,"Avenir Next","Segoe UI",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r-sm:14px; --r-md:20px; --r-lg:28px; --r-xl:36px; --pill:999px;
+  --edge:inset 0 1px 0 rgba(255,255,255,0.10); --float:0 24px 60px -20px rgba(0,0,0,0.65); --shadow-glow:0 10px 40px -8px rgba(104,231,142,0.45);
+  --blur:blur(22px) saturate(140%);
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--canvas);color:var(--ink);font:400 15px/22px var(--sans);overflow:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(900px 500px at 18% 10%,rgba(104,231,142,0.10),transparent 60%),radial-gradient(700px 420px at 85% 90%,rgba(104,231,142,0.07),transparent 60%)}
+#app{position:relative;z-index:1;height:100%;display:grid;grid-template-rows:auto 1fr auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px;gap:12px;box-sizing:border-box}
+.top{display:flex;align-items:center;gap:16px;min-height:44px}
+.logo{font:400 26px/32px var(--sans);letter-spacing:-0.01em}.logo b{font-weight:400;color:var(--accent)}
+.crumb{display:flex;gap:8px;color:var(--ink-muted);font-size:13px}.crumb a{color:var(--accent);text-decoration:none}.crumb span.cur{color:var(--ink)}
+.spacer{flex:1}
+.person{display:flex;align-items:center;gap:10px;background:var(--glass);border:1px solid var(--line);border-radius:var(--pill);padding:6px 14px 6px 8px;box-shadow:var(--edge)}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--folder-hi),var(--folder-deep));display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff}
+.person small{display:block;color:var(--ink-muted);font-size:11px;line-height:12px}
+.scenes{display:flex;gap:4px;background:var(--glass);border:1px solid var(--line);border-radius:var(--pill);padding:4px}
+.scenes button{all:unset;cursor:pointer;font:500 13px/18px var(--sans);padding:6px 12px;border-radius:var(--pill);color:var(--ink-muted)}
+.scenes button.on{background:var(--glass-strong);color:var(--ink)}
+.scenes button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stage{position:relative;min-height:0}
+.scene{position:absolute;inset:0;display:none}.scene.on{display:grid}
+/* buttons */
+.btn{all:unset;cursor:pointer;font:500 13px/18px var(--sans);padding:10px 18px;border-radius:var(--pill);border:1px solid var(--line-strong);color:var(--ink);background:var(--glass);box-shadow:var(--edge);white-space:nowrap}
+.btn:hover{background:var(--glass-strong)}.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn.lit{background:radial-gradient(120% 140% at 20% 0%,var(--folder-hi),var(--folder) 55%,var(--folder-deep));color:var(--on-folder);border-color:transparent;box-shadow:var(--shadow-glow),var(--edge);font-size:15px;padding:12px 24px}
+.btn.quiet{border-color:var(--line);color:var(--ink-muted)}
+.btn[disabled]{opacity:.45;cursor:default}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px/16px var(--sans);padding:4px 10px;border-radius:var(--pill);border:1px solid var(--line);color:var(--ink-muted);background:var(--glass)}
+.chip.ok{color:var(--accent);background:var(--accent-soft);border-color:transparent}
+.chip.warn{color:var(--warning);background:var(--warning-soft);border-color:transparent}
+.chip.flag{color:var(--grey-flag);background:var(--glass-strong);border-color:transparent}
+.chip.un{color:var(--ink-muted);border-style:dashed}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--glow)}
+.eyebrow{font:600 11px/14px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+.glassp{background:var(--glass);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--edge);backdrop-filter:var(--blur)}
+/* ARENA */
+#arena{place-items:center}
+.arena{width:min(820px,100%);display:grid;gap:28px;text-align:center;justify-items:center}
+.arena h1{font:300 44px/48px var(--sans);letter-spacing:-0.015em;margin:0;text-wrap:balance}.arena h1 b{font-weight:300;color:var(--accent)}
+.arena p{margin:0;color:var(--ink-muted);max-width:56ch}
+.ask{width:100%;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 22px;border-radius:var(--pill);background:var(--surface);border:1px solid var(--line-strong);box-shadow:var(--float)}
+.ask input{all:unset;flex:1;font:400 18px/26px var(--sans);color:var(--ink);min-width:0}
+.mic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);border:1px solid transparent}
+.mic.live{box-shadow:0 0 0 6px var(--glow);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px var(--glow)}50%{box-shadow:0 0 0 12px rgba(104,231,142,0.08)}}
+.drop{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.file{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:var(--r-sm);background:var(--glass);border:1px dashed var(--line-strong);color:var(--ink-muted);font-size:13px}
+.file b{font-weight:500;color:var(--ink);font-family:var(--mono);font-size:12px}
+.brains{color:var(--ink-faint);font-size:13px}
+/* PLAN */
+#plan{grid-template-columns:minmax(360px,520px) 1fr;gap:20px}
+.plan-list{display:grid;gap:10px;align-content:start;overflow:auto;padding:4px}
+.plan-h{font:300 32px/36px var(--sans);letter-spacing:-0.01em;margin:0 0 6px}
+.step{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:start;padding:14px 16px;border-radius:var(--r-md);background:var(--glass);border:1px solid var(--line);opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.step.in{opacity:1;transform:none}
+.step .n{font:300 26px/32px var(--sans);color:var(--accent)}
+.step h3{margin:0;font:500 16px/22px var(--sans)}.step p{margin:2px 0 0;color:var(--ink-muted);font-size:13px;line-height:18px}
+.step .bld{font-size:11px;white-space:nowrap}
+.plan-actions{display:flex;gap:10px;align-items:center;padding:8px 4px}
+.canvas-wrap{position:relative;border-radius:var(--r-xl);overflow:hidden;background:radial-gradient(80% 70% at 50% 40%,#0A1826 0%,var(--charcoal) 70%);border:1px solid var(--line);box-shadow:var(--edge);min-height:0}
+canvas{display:block;width:100%;height:100%}
+.cam{position:absolute;top:14px;left:14px;display:flex;gap:6px}
+.cam .btn{padding:6px 12px;font-size:12px}
+.legend{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
+/* FILM */
+#film{grid-template-columns:1fr 420px;grid-template-rows:auto 1fr auto;gap:14px}
+.steps{grid-column:1/-1;display:flex;gap:6px;align-items:center;overflow:auto}
+.steps .s{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 8px;border-radius:var(--pill);border:1px solid var(--line);color:var(--ink-muted);font:500 13px/18px var(--sans);white-space:nowrap}
+.steps .s i{font-style:normal;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--surface-2)}
+.steps .s.done{color:var(--ink)}.steps .s.done i{background:var(--accent-soft);color:var(--accent)}
+.steps .s.now{color:var(--on-folder);background:linear-gradient(135deg,var(--folder-hi),var(--folder-deep));border-color:transparent;box-shadow:var(--shadow-glow)}
+.steps .s.now i{background:rgba(255,255,255,.2);color:#fff}
+.steps .s.flag i{background:var(--glass-strong);color:var(--grey-flag)}
+.agents{margin-left:auto;display:flex;gap:6px}
+.agent{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:var(--pill);border:1px solid var(--line);font-size:12px;color:var(--ink-muted);background:var(--glass)}
+.agent .av{width:22px;height:22px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--ink)}
+.agent.live{color:var(--ink);border-color:transparent;background:var(--accent-soft)}.agent.live .av{background:var(--accent);color:var(--on-accent);box-shadow:0 0 0 4px var(--glow)}
+.agent small{color:var(--ink-faint);font-size:11px}
+.film-main{position:relative;display:grid;grid-template-rows:1fr auto;gap:10px;min-height:0}
+.subs{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:14px 18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--edge);min-height:64px}
+.subs .who{display:grid;gap:2px}.subs .who b{font-weight:500;font-size:13px}.subs .who small{color:var(--ink-faint);font-size:11px}
+.subs p{margin:0;font:400 17px/24px var(--sans);min-height:48px}
+.subs p .cur{display:inline-block;width:2px;height:18px;background:var(--accent);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.code{display:grid;grid-template-rows:auto 1fr;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--edge);overflow:hidden;min-height:0}
+.code header{display:flex;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.code header .path{font:500 12px/16px var(--mono);color:var(--ink)}.code header .in{color:var(--ink-faint);font-size:12px}
+.code pre{margin:0;padding:12px 0;overflow:auto;font:400 12.5px/19px var(--mono);counter-reset:ln}
+.code .ln{position:relative;padding:0 14px 0 54px;white-space:pre}
+.code .ln::before{counter-increment:ln;content:counter(ln);position:absolute;left:0;width:40px;color:var(--ink-faint);text-align:right;font-size:11px}
+.code .ln.hi{background:var(--accent-soft)}.code .ln.new{animation:born .6s}
+@keyframes born{from{background:var(--accent-soft)}to{background:transparent}}
+.k{color:#B9A8F2}.s{color:#F3E37C}.f{color:#7CC8F0}.c{color:var(--ink-faint)}.n{color:var(--harmony)}.fig{color:var(--harmony);text-decoration:underline dotted;cursor:pointer}
+.card{position:absolute;left:16px;bottom:16px;width:340px;padding:18px 20px;border-radius:var(--r-lg);color:var(--on-folder);
+  background:linear-gradient(135deg,var(--folder-hi),var(--folder) 45%,var(--folder-deep));box-shadow:var(--float),var(--edge);transform:translateY(16px);opacity:0;transition:.4s}
+.card.in{transform:none;opacity:1}
+.card .eyebrow{color:var(--on-folder-muted)}.card h4{margin:4px 0 2px;font:500 16px/22px var(--mono)}.card p{margin:6px 0 0;color:var(--on-folder-muted);font-size:13px;line-height:18px}
+.card .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.card .chip{background:rgba(255,255,255,.12);border-color:transparent;color:#fff}
+.controls{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.controls .pace{color:var(--ink-muted);font-size:13px;margin-left:8px}
+.shelf{display:grid;grid-template-rows:auto 1fr;gap:8px;min-height:0}
+.shelf .list{display:grid;gap:6px;overflow:auto;align-content:start}
+.part{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 12px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--line);font-size:12px}
+.part b{font:500 12px/16px var(--mono);color:var(--ink)}.part span{color:var(--ink-muted)}
+.right{display:grid;grid-template-rows:minmax(0,1.3fr) minmax(0,1fr);gap:14px;min-height:0}
+/* GREY FLAG overlay */
+.flagcard{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(560px,90%);padding:24px 26px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-strong);box-shadow:var(--float)}
+.flagcard h3{margin:6px 0 4px;font:400 26px/32px var(--sans)}.flagcard p{margin:0 0 6px;color:var(--ink-muted)}
+.flagcard .acts{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.flagpole{display:inline-flex;align-items:center;gap:8px;color:var(--grey-flag);font-size:13px}
+.flagpole i{width:14px;height:10px;background:var(--grey-flag);clip-path:polygon(0 0,100% 50%,0 100%)}
+/* ASK */
+.askpanel{display:grid;grid-template-rows:auto 1fr auto;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--edge);min-height:0;overflow:hidden}
+.askpanel header{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.turns{overflow:auto;padding:12px 16px;display:grid;gap:12px;align-content:start}
+.turn{display:grid;gap:4px;max-width:92%}.turn .eyebrow{font-size:10px}.turn p{margin:0;font-size:14px;line-height:20px}
+.turn.q{justify-self:end;text-align:right}.turn.q p{display:inline-block;background:var(--accent-soft);color:var(--ink);padding:8px 12px;border-radius:var(--r-sm)}
+.turn.a p{background:var(--glass);padding:10px 12px;border-radius:var(--r-sm);border:1px solid var(--line)}
+.turn .cite{display:inline-flex;gap:4px;margin-top:4px}.turn .cite .chip{font-family:var(--mono);font-size:11px;cursor:pointer}
+.askbar{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+.askbar input{all:unset;flex:1;padding:8px 12px;border-radius:var(--pill);background:var(--surface-2);font-size:14px;min-width:0}
+/* WALKTHROUGH */
+#walk{grid-template-columns:1fr 420px;gap:14px}
+.sign{display:grid;gap:14px;align-content:start}
+.screenframe{position:relative;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--edge);overflow:hidden;min-height:0;display:grid;grid-template-rows:auto 1fr}
+.screenframe header{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.ui{padding:28px;display:grid;gap:18px;align-content:start}
+.ui h2{margin:0;font:300 32px/36px var(--sans)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tile{padding:16px;border-radius:var(--r-md);background:var(--surface-2);display:grid;gap:4px;position:relative}
+.tile .eyebrow{font-size:10px}.tile .v{font:300 32px/36px var(--sans);letter-spacing:-0.01em;font-variant-numeric:tabular-nums}
+.tile .trace{position:absolute;right:12px;top:12px}
+.sigrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:14px 16px;border-radius:var(--r-md);background:var(--glass);border:1px solid var(--line)}
+.sigrow.signed{border-color:transparent;background:var(--accent-soft)}
+.sigrow b{font-weight:500}.sigrow small{display:block;color:var(--ink-muted);font-size:12px}
+.seal{font:500 12px/16px var(--mono);color:var(--accent)}
+/* VOICE BAR */
+.voice{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:10px 12px 10px 10px;border-radius:var(--pill);background:var(--surface);border:1px solid var(--line);box-shadow:var(--float),var(--edge)}
+.voice .wave{display:flex;gap:3px;align-items:center;height:28px;width:44px;justify-content:center}
+.voice .wave i{width:3px;border-radius:2px;background:var(--accent);height:6px;animation:wave 1.1s ease-in-out infinite}
+.voice .wave i:nth-child(2){animation-delay:.15s}.voice .wave i:nth-child(3){animation-delay:.3s}.voice .wave i:nth-child(4){animation-delay:.45s}.voice .wave i:nth-child(5){animation-delay:.6s}
+@keyframes wave{0%,100%{height:6px}50%{height:22px}}
+.voice.quiet .wave i{animation:none;height:4px;background:var(--ink-faint)}
+.voice .line{display:grid;gap:1px;min-width:0}.voice .line b{font-weight:500;font-size:12px;color:var(--ink-muted)}.voice .line span{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.voice .acts{display:flex;gap:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:900px){#film,#plan,#walk{grid-template-columns:1fr}.right{display:none}.scenes{display:none}}
+</style>
+
+<div id="app">
+  <div class="top">
+    <div class="logo">House of <b>Rama</b></div>
+    <div class="crumb" id="crumb"><a href="#arena">Arena</a><span>›</span><span class="cur">What shall we make?</span></div>
+    <div class="spacer"></div>
+    <div class="scenes" id="scenes" aria-label="Reference frames">
+      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="film">Film</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
+    </div>
+    <div class="person"><div class="avatar">MS</div><div><b style="font-weight:500">Meera Shah</b><small>customer · alone in the chair</small></div></div>
+  </div>
+
+  <div class="stage">
+    <!-- ARENA -->
+    <section class="scene on" id="arena">
+      <div class="arena">
+        <div class="eyebrow">Read my bill · a new product</div>
+        <h1>Hello Meera. <b>What shall we make</b> today?</h1>
+        <p>Say it in one sentence, the way you would to a colleague. I will turn it into a plan, read the plan back to you, and build it while you watch.</p>
+        <div class="ask"><input id="idea" value="Something that reads my electricity bill, finds the right tariff on the web, works out what I owe in a sheet, and keeps every bill in a database." aria-label="What you want to make"><button class="btn quiet" style="padding:8px 14px">Type</button><div class="mic live" title="Listening">●</div></div>
+        <div class="drop"><span class="file">📄 <b>bill-sep-2026.pdf</b> dropped in</span><span class="chip">Drop a file here or say what is in it</span></div>
+        <button class="btn lit" data-go="plan">Make it</button>
+        <div class="brains">Claude Code will build · OpenAI will check · the Explainer is Anthropic · the voice is OpenAI. A trainer can change this in Settings.</div>
+      </div>
+    </section>
+
+    <!-- PLAN -->
+    <section class="scene" id="plan">
+      <div class="plan-list" id="planlist">
+        <div><div class="eyebrow">The plan · 7 steps · read aloud</div><h2 class="plan-h">Here is how I will build it.</h2></div>
+      </div>
+      <div class="canvas-wrap"><canvas id="cv-plan"></canvas>
+        <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
+        <div class="legend"><span class="chip">A building for each thing it does</span><span class="chip">The ground is the database</span><span class="chip">Across the water: the web</span></div>
+      </div>
+    </section>
+
+    <!-- FILM -->
+    <section class="scene" id="film">
+      <div class="steps" id="stepstrip"></div>
+      <div class="film-main">
+        <div class="canvas-wrap"><canvas id="cv-film"></canvas>
+          <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
+          <div class="card" id="filecard"><div class="eyebrow">A new part · step 1 · Read the bill</div><h4 id="fc-name">features/read-the-bill/read.ts</h4><p id="fc-what">Opens the bill and pulls out the units used, the billing dates and the amount printed on it.</p><div class="row"><span class="chip">Carries 2 figures</span><span class="chip" id="fc-state">Explained · not yet confirmed</span></div></div>
+        </div>
+        <div class="subs"><div class="who"><span class="dot"></span><b id="sub-who">The Builder</b><small>Claude Code · its own words</small></div><p id="subtitle"></p></div>
+      </div>
+      <div class="right">
+        <div class="code"><header><span class="chip ok">Being written</span><span class="path" id="codepath">features/read-the-bill/read.ts</span><span class="in">· inside Read the bill, floor 2</span></header><pre id="codepre"></pre></div>
+        <div class="shelf"><div class="eyebrow">Parts so far · <span id="partcount">0</span> files, each explained</div><div class="list" id="parts"></div></div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="b-pause">Pause</button><button class="btn" id="b-slower">Slower</button><button class="btn" id="b-faster">Faster</button><button class="btn" id="b-next">Next step</button><button class="btn" id="b-replay">Replay this step</button><button class="btn quiet" id="b-catch">Catch up to now</button>
+        <span class="pace" id="pace">Playing at reading pace · step 1 of 7</span>
+        <span class="spacer"></span>
+        <div class="agents" id="agents">
+          <span class="agent live" data-a="builder"><span class="av">B</span>The Builder <small>Claude Code</small></span>
+          <span class="agent" data-a="checker"><span class="av">C</span>The Checker <small>OpenAI</small></span>
+          <span class="agent" data-a="explainer"><span class="av">E</span>The Explainer <small>Anthropic</small></span>
+          <span class="agent" data-a="voice"><span class="av">V</span>The Voice <small>OpenAI</small></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- GREY FLAG -->
+    <section class="scene" id="flag">
+      <div class="canvas-wrap" style="position:absolute;inset:0"><canvas id="cv-flag"></canvas>
+        <div class="flagcard">
+          <div class="flagpole"><i></i>Grey flag · step 6 · Check it</div>
+          <h3>The check stopped the build.</h3>
+          <p><b style="font-weight:500;color:var(--ink)">What happened:</b> no test stands behind <span style="font-family:var(--mono);font-size:13px">work-out-the-charge/charge.ts</span> yet, so the gate would not let the charge screen through.</p>
+          <p><b style="font-weight:500;color:var(--ink)">What the Builder will do next:</b> write the test that works out September's charge from the sample bill and checks it against ₹4,312.</p>
+          <p><b style="font-weight:500;color:var(--ink)">Who has been called:</b> Rachit Agarwal, trainer, by email at 11:42. You can wait here or go on with step 5, which does not need this.</p>
+          <div class="acts"><button class="btn lit">Wait for the trainer</button><button class="btn">Go on with step 5 · Show the bill</button><button class="btn quiet">What is a test?</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASK THE CODE -->
+    <section class="scene" id="ask" style="grid-template-columns:1fr 420px;gap:14px">
+      <div class="right" style="grid-template-rows:1fr">
+        <div class="code"><header><span class="chip">Paused · step 3</span><span class="path">features/work-out-the-charge/charge.ts</span><span class="in">· click a line to ask it</span></header><pre id="askpre"></pre></div>
+      </div>
+      <div class="askpanel">
+        <header><span class="dot"></span><b style="font-weight:500">Ask the code</b><span class="chip">Answers come from these lines only</span></header>
+        <div class="turns" id="turns"></div>
+        <div class="askbar"><input id="askinput" placeholder="Ask this file anything, or say it" aria-label="Ask the code"><button class="btn">Ask</button><div class="mic" title="Say it">●</div></div>
+      </div>
+    </section>
+
+    <!-- WALK THROUGH -->
+    <section class="scene" id="walk">
+      <div class="screenframe"><header><span class="chip ok">Verified · 2 tests pass</span><span style="font-weight:500">Show the bill</span><span class="in" style="color:var(--ink-faint);font-size:12px">· the screen as it really is, photographed just now</span></header>
+        <div class="ui">
+          <h2>September 2026 · Shah residence</h2>
+          <div class="tiles">
+            <div class="tile"><span class="eyebrow">Units used</span><span class="v">412 kWh</span><span class="chip ok trace">traced</span><small style="color:var(--ink-muted);font-size:12px">read from the bill, page 1</small></div>
+            <div class="tile"><span class="eyebrow">Tariff found</span><span class="v">₹7.80 /kWh</span><span class="chip ok trace">traced</span><small style="color:var(--ink-muted);font-size:12px">UPPCL domestic, slab 301–500, from the web on 30 Oct</small></div>
+            <div class="tile"><span class="eyebrow">You owe</span><span class="v">₹4,312</span><span class="chip ok trace">traced</span><small style="color:var(--ink-muted);font-size:12px">412 × 7.80 + fixed charge ₹110 + duty 5%</small></div>
+          </div>
+          <div style="color:var(--ink-muted);font-size:13px">Kept in the database as bill #1 · charge #1. Every figure above opens its trail.</div>
+        </div>
+      </div>
+      <div class="sign">
+        <div><div class="eyebrow">Walk through · the last act</div><h2 class="plan-h">Three screens, read aloud. Say yes to each.</h2></div>
+        <div class="sigrow signed"><div><b>Read the bill</b><small>"This screen shows the bill as it was read: 412 units, 1 to 30 September." · Yes · Meera Shah · 11:58</small></div><span class="seal">signed · 7f3a…c21</span></div>
+        <div class="sigrow signed"><div><b>Find the tariff</b><small>"It found UPPCL's domestic tariff for your slab on the web and kept the page it read." · Yes · Meera Shah · 11:59</small></div><span class="seal">signed · 9b10…e77</span></div>
+        <div class="sigrow"><div><b>Show the bill</b><small>"You owe ₹4,312: 412 units at ₹7.80, a fixed charge of ₹110 and 5% duty. Shall I write down that you agree?"</small></div><button class="btn lit">Yes, I agree</button></div>
+        <div class="glassp" style="padding:16px 18px;display:grid;gap:6px"><span class="eyebrow">Then</span><span>The Checker flies the site and signs its own report. Then <b style="font-weight:500">Hand over</b>: the repository, the keys and the signed trail are yours.</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="voice" id="voice">
+    <div class="wave"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="line"><b id="v-who">The Voice</b><span id="v-text">Hello Meera. Tell me what you want to make, in one sentence.</span></div>
+    <div class="acts"><button class="btn quiet" style="padding:6px 12px">Say it again</button><button class="btn quiet" style="padding:6px 12px">Slower</button><button class="btn quiet" style="padding:6px 12px">Call the trainer</button></div>
+  </div>
+</div>
+
+<script>
+/* ---------- The product being filmed: Read my bill ---------- */
+const PLAN=[
+ {n:1,name:'Read the bill',what:'Open the PDF you dropped in and pull out the units, the dates and the amount printed on it.',bld:'Read the bill'},
+ {n:2,name:'Find the tariff',what:'Look up your supplier’s tariff for your slab on the web and keep the page it read.',bld:'Find the tariff'},
+ {n:3,name:'Work out the charge',what:'Units × tariff, plus the fixed charge and duty, in a sheet you can open.',bld:'Work out the charge'},
+ {n:4,name:'Keep it',what:'Three tables in the ground: bills, tariffs, charges. Nothing is lost between months.',bld:'the ground'},
+ {n:5,name:'Show the bill',what:'One screen with the three figures, each traced back to where it came from.',bld:'Show the bill'},
+ {n:6,name:'Check it',what:'The Checker runs the tests and the gate. If anything is untested, a grey flag stops the build.',bld:'every building'},
+ {n:7,name:'Hand over',what:'You walk through each screen and say yes. The repository and the keys become yours.',bld:'the whole street'}
+];
+const BUILDINGS=[
+ {id:'read',name:'Read the bill',x:1.5,y:1.5,w:2.4,d:2.4,floors:4,bricks:0,target:4,state:'Unverified'},
+ {id:'tariff',name:'Find the tariff',x:9,y:0.2,w:2.4,d:2.4,floors:4,bricks:0,target:6,state:'Unverified'},
+ {id:'charge',name:'Work out the charge',x:6.5,y:4.8,w:2.6,d:2.6,floors:4,bricks:0,target:8,state:'Unverified'},
+ {id:'show',name:'Show the bill',x:11.5,y:5.6,w:2.6,d:2.4,floors:4,bricks:0,target:5,state:'Unverified',facade:true}
+];
+const PLOTS=[
+ {id:'bills',name:'bills',x:1,y:6.5,w:2.4,d:1.2,rows:0,lit:false},
+ {id:'tariffs',name:'tariffs',x:12.2,y:1.2,w:2.4,d:1.2,rows:0,lit:false},
+ {id:'charges',name:'charges',x:8,y:8.4,w:2.4,d:1.2,rows:0,lit:false}
+];
+const JETTY={name:'Tariff on the web',x:15.4,y:2.2};
+const ROADS=[['read','charge'],['tariff','charge'],['charge','show']];
+const PIPES=[ // a trail drawn as plumbing: plot -> building floor -> building -> facade
+ {id:'owe',from:'bills',via:['read','charge'],to:'show',label:'₹4,312',steps:['412 kWh left bills','became ₹3,214 in charge.ts','+ ₹110 fixed, + 5% duty','₹4,312 on the screen']}
+];
+
+/* ---------- Isometric engine ---------- */
+function makeStage(canvas,opts={}){
+  const ctx=canvas.getContext('2d');
+  const cam={o:0,scale:1.3,cx:7.5,cy:4.6,...(opts.cam||{})};
+  const W=15,D=10; // world tiles
+  let t0=performance.now();
+  const state={progress:opts.progress||0,water:0,flow:opts.flow||false,agents:opts.agents||[],selected:null};
+  function rot(x,y){ // quarter turns around world centre
+    const cxw=W/2,cyw=D/2; let dx=x-cxw,dy=y-cyw;
+    for(let i=0;i<cam.o;i++){const t=dx;dx=-dy;dy=t;}
+    return [dx+cxw,dy+cyw];
+  }
+  function P(x,y,z=0){ // world -> screen
+    const [rx,ry]=rot(x,y);
+    const tw=64*cam.scale,th=32*cam.scale;
+    const sx=(rx-ry)*tw/2, sy=(rx+ry)*th/2 - z*th*1.1;
+    const [cx,cy]=rot(cam.cx,cam.cy);
+    const ox=canvas.width/2-(cx-cy)*tw/2, oy=canvas.height/2-(cx+cy)*th/2;
+    return [sx+ox,sy+oy];
+  }
+  function poly(pts,fill,stroke,lw=1){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+  function tile(x,y,w,d,z,fill,stroke){poly([P(x,y,z),P(x+w,y,z),P(x+w,y+d,z),P(x,y+d,z)],fill,stroke);}
+  function label(text,x,y,z,size=12,color='#F2F6F3',weight=500,align='center'){const [sx,sy]=P(x,y,z);ctx.font=`${weight} ${size*Math.max(.8,Math.min(cam.scale,1.4))}px Urbanist, system-ui, sans-serif`;ctx.fillStyle=color;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(text,sx,sy);}
+  function resize(){const r=canvas.getBoundingClientRect();const dpr=Math.min(devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(1,0,0,1,0,0);ctx.scale(1,1);}
+  new ResizeObserver(resize).observe(canvas);resize();
+  function depth(o){const [rx,ry]=rot(o.x+o.w/2,o.y+o.d/2);return rx+ry;}
+  function draw(now){
+    const dt=(now-t0)/1000;t0=now;state.water+=dt*(state.flow?0.35:0);
+    const dpr=Math.min(devicePixelRatio||1,2);ctx.setTransform(dpr,0,0,dpr,0,0);
+    const w=canvas.width/dpr,h=canvas.height/dpr;
+    ctx.clearRect(0,0,w,h);
+    // water (lake) beyond x>=12
+    poly([P(15,-1),P(20,-1),P(20,11),P(15,11)],'rgba(104,231,142,0.045)');
+    for(let i=0;i<6;i++){const yy=-0.5+i*1.8+Math.sin(state.water*2+i)*0.15;ctx.beginPath();const a=P(15.2,yy),b=P(19.8,yy);ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.strokeStyle='rgba(104,231,142,0.10)';ctx.lineWidth=1;ctx.stroke();}
+    // ground
+    for(let x=0;x<15;x++)for(let y=0;y<D;y++)tile(x,y,1,1,0,'rgba(255,255,255,0.012)','rgba(255,255,255,0.045)');
+    poly([P(0,0),P(15,0),P(15,D),P(0,D)],null,'rgba(255,255,255,0.14)');
+    // shore
+    ctx.beginPath();const s1=P(15,-1),s2=P(15,11);ctx.moveTo(s1[0],s1[1]);ctx.lineTo(s2[0],s2[1]);ctx.strokeStyle='rgba(104,231,142,0.35)';ctx.lineWidth=2;ctx.stroke();
+    // jetty
+    poly([P(14.6,2.0,0.02),P(JETTY.x+0.9,2.0,0.02),P(JETTY.x+0.9,2.6,0.02),P(14.6,2.6,0.02)],'rgba(255,255,255,0.08)','rgba(255,255,255,0.25)');
+    label(JETTY.name,JETTY.x+0.4,1.2,0,12,'#9DABA6',500);
+    // roads
+    ROADS.forEach(([a,b])=>{const A=BUILDINGS.find(o=>o.id===a),B=BUILDINGS.find(o=>o.id===b);const p1=P(A.x+A.w/2,A.y+A.d/2,0.01),p2=P(B.x+B.w/2,B.y+B.d/2,0.01);ctx.beginPath();ctx.moveTo(p1[0],p1[1]);ctx.lineTo(p2[0],p2[1]);ctx.strokeStyle='rgba(255,255,255,0.10)';ctx.lineWidth=6*cam.scale;ctx.stroke();});
+    // plots (tables)
+    PLOTS.forEach(p=>{const lit=p.lit;tile(p.x,p.y,p.w,p.d,-0.06,lit?'rgba(104,231,142,0.16)':'rgba(255,255,255,0.03)',lit?'rgba(104,231,142,0.6)':'rgba(255,255,255,0.18)');
+      // recessed walls
+      poly([P(p.x,p.y+p.d,0),P(p.x+p.w,p.y+p.d,0),P(p.x+p.w,p.y+p.d,-0.06),P(p.x,p.y+p.d,-0.06)],'rgba(0,0,0,0.35)');
+      poly([P(p.x+p.w,p.y,0),P(p.x+p.w,p.y+p.d,0),P(p.x+p.w,p.y+p.d,-0.06),P(p.x+p.w,p.y,-0.06)],'rgba(0,0,0,0.25)');
+      label(p.name,p.x+p.w/2,p.y+p.d/2,-0.02,12,lit?'#68E78E':'#9DABA6',600);
+      label(p.rows?`${p.rows} row${p.rows>1?'s':''}`:'empty',p.x+p.w/2,p.y+p.d/2+0.5,-0.02,10,'#5E6C68',400);
+    });
+    // pipes
+    if(state.flow){PIPES.forEach(pipe=>drawPipe(pipe));}
+    // buildings sorted by depth
+    const objs=[...BUILDINGS].sort((a,b)=>depth(a)-depth(b));
+    objs.forEach(b=>drawBuilding(b));
+    // agents
+    state.agents.forEach(a=>drawAgent(a));
+    requestAnimationFrame(draw);
+  }
+  function drawBuilding(b){
+    const fh=0.62,H=b.floors*fh,done=Math.min(1,b.bricks/b.target);
+    const x=b.x,y=b.y,w=b.w,d=b.d;
+    const glass='rgba(120,200,160,0.07)',edge='rgba(255,255,255,0.28)',inner='rgba(255,255,255,0.08)';
+    // ground shadow
+    tile(x-0.1,y-0.1,w+0.2,d+0.2,0.005,'rgba(0,0,0,0.35)');
+    // back faces (drawn first for transparency)
+    poly([P(x,y,0),P(x+w,y,0),P(x+w,y,H),P(x,y,H)],glass,inner);
+    poly([P(x,y,0),P(x,y+d,0),P(x,y+d,H),P(x,y,H)],glass,inner);
+    // floors
+    for(let f=1;f<b.floors;f++){tile(x,y,w,d,f*fh,'rgba(255,255,255,0.025)','rgba(255,255,255,0.10)');}
+    // bricks inside: laid in build order, bottom floor first
+    const perFloor=Math.max(2,Math.ceil(b.target/b.floors));
+    for(let i=0;i<b.bricks;i++){const f=Math.floor(i/perFloor),k=i%perFloor;const bx=x+0.3+(k%2)*0.9,by=y+0.3+Math.floor(k/2)*0.9,bz=f*fh+0.06;const live=(i===b.bricks-1&&b.live);
+      const z=bz,s=0.62,hh=0.3;
+      poly([P(bx,by+s,z),P(bx+s,by+s,z),P(bx+s,by+s,z+hh),P(bx,by+s,z+hh)],live?'rgba(104,231,142,0.55)':'rgba(104,231,142,0.28)');
+      poly([P(bx+s,by,z),P(bx+s,by+s,z),P(bx+s,by+s,z+hh),P(bx+s,by,z+hh)],live?'rgba(104,231,142,0.40)':'rgba(104,231,142,0.18)');
+      poly([P(bx,by,z+hh),P(bx+s,by,z+hh),P(bx+s,by+s,z+hh),P(bx,by+s,z+hh)],live?'#68E78E':'rgba(104,231,142,0.70)');
+      if(live){const [gx,gy]=P(bx+s/2,by+s/2,z+hh);const g=ctx.createRadialGradient(gx,gy,0,gx,gy,40*cam.scale);g.addColorStop(0,'rgba(104,231,142,0.35)');g.addColorStop(1,'rgba(104,231,142,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(gx,gy,40*cam.scale,0,7);ctx.fill();}
+    }
+    // light inside grows with completion
+    if(done>0){const [gx,gy]=P(x+w/2,y+d/2,H/2);const g=ctx.createRadialGradient(gx,gy,0,gx,gy,90*cam.scale);g.addColorStop(0,`rgba(104,231,142,${0.10*done})`);g.addColorStop(1,'rgba(104,231,142,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(gx,gy,90*cam.scale,0,7);ctx.fill();}
+    // front faces
+    poly([P(x+w,y,0),P(x+w,y+d,0),P(x+w,y+d,H),P(x+w,y,H)],'rgba(255,255,255,0.045)',edge);
+    poly([P(x,y+d,0),P(x+w,y+d,0),P(x+w,y+d,H),P(x,y+d,H)],'rgba(255,255,255,0.03)',edge);
+    // facade screen on the front-left face when the screen exists
+    if(b.facade&&done>0.5){const fx1=x+0.2,fx2=x+w-0.2,z1=H*0.35,z2=H*0.9;
+      poly([P(fx1,y+d,z1),P(fx2,y+d,z1),P(fx2,y+d,z2),P(fx1,y+d,z2)],'rgba(11,23,34,0.92)','rgba(104,231,142,0.6)');
+      // tiny UI: a title and three figures
+      const t=P(fx1+0.12,y+d,z2-0.25);ctx.font=`500 ${10*cam.scale}px Urbanist, system-ui`;ctx.fillStyle='#F2F6F3';ctx.textAlign='left';ctx.fillText('September 2026',t[0],t[1]);
+      ['412 kWh','₹7.80','₹4,312'].forEach((v,i)=>{const q=P(fx1+0.12+i*0.5,y+d,z1+0.55);ctx.font=`300 ${12*cam.scale}px Urbanist, system-ui`;ctx.fillStyle='#68E78E';ctx.fillText(v,q[0],q[1]);});
+    }
+    // roof
+    tile(x,y,w,d,H,'rgba(255,255,255,0.07)','rgba(255,255,255,0.35)');
+    // flag + name
+    const [lx,ly]=P(x+w/2,y+d/2,H+0.9);
+    ctx.font=`500 ${13*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle='#F2F6F3';ctx.textAlign='center';ctx.fillText(b.name,lx,ly);
+    const st=b.state,col=st==='Verified'||st==='Confirmed'?'#68E78E':'#9DABA6';
+    ctx.font=`500 ${11*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle=col;ctx.fillText('▶ '+st+(b.bricks<b.target&&b.bricks>0?` · ${b.bricks} of ${b.target} parts`:''),lx,ly+15*Math.min(cam.scale,1.3));
+  }
+  function drawPipe(pipe){
+    const pts=[];const plot=PLOTS.find(p=>p.id===pipe.from);pts.push([plot.x+plot.w/2,plot.y+plot.d/2,-0.02]);
+    pipe.via.forEach(id=>{const b=BUILDINGS.find(o=>o.id===id);pts.push([b.x+b.w/2,b.y+b.d/2,0]);pts.push([b.x+b.w/2,b.y+b.d/2,1.8]);pts.push([b.x+b.w/2,b.y+b.d/2,0]);});
+    const to=BUILDINGS.find(o=>o.id===pipe.to);pts.push([to.x+to.w/2,to.y+to.d/2,0]);pts.push([to.x+to.w/2,to.y+to.d/2,2.6]);pts.push([to.x+0.6,to.y+to.d,2.6]);
+    const sp=pts.map(p=>P(...p));
+    ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.22)';ctx.lineWidth=10*cam.scale;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
+    ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.55)';ctx.lineWidth=3*cam.scale;ctx.setLineDash([10*cam.scale,14*cam.scale]);ctx.lineDashOffset=-state.water*120;ctx.stroke();ctx.setLineDash([]);
+    // the drop with its value
+    const L=[];let tot=0;for(let i=1;i<sp.length;i++){const d=Math.hypot(sp[i][0]-sp[i-1][0],sp[i][1]-sp[i-1][1]);L.push(d);tot+=d;}
+    let u=(state.water*0.12)%1*tot,i=0;while(i<L.length-1&&u>L[i]){u-=L[i];i++;}
+    const f=L[i]?u/L[i]:0,dx=sp[i][0]+(sp[i+1][0]-sp[i][0])*f,dy=sp[i][1]+(sp[i+1][1]-sp[i][1])*f;
+    ctx.beginPath();ctx.arc(dx,dy,7*cam.scale,0,7);ctx.fillStyle='#68E78E';ctx.shadowColor='rgba(104,231,142,0.8)';ctx.shadowBlur=18;ctx.fill();ctx.shadowBlur=0;
+    const stepIdx=Math.min(pipe.steps.length-1,Math.floor(i/ (sp.length/pipe.steps.length)));
+    ctx.font=`500 ${12*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle='#F2F6F3';ctx.textAlign='left';ctx.fillText(pipe.steps[stepIdx],dx+12,dy-10);
+  }
+  function drawAgent(a){const b=BUILDINGS.find(o=>o.id===a.at);if(!b)return;const [sx,sy]=P(b.x+b.w+0.5,b.y+b.d+0.4,0);
+    const r=9*cam.scale;ctx.beginPath();ctx.ellipse(sx,sy,r*1.2,r*0.45,0,0,7);ctx.fillStyle='rgba(0,0,0,0.35)';ctx.fill();
+    ctx.beginPath();ctx.roundRect(sx-r*0.7,sy-r*2.6,r*1.4,r*2.2,r*0.5);ctx.fillStyle=a.color;ctx.fill();
+    ctx.beginPath();ctx.arc(sx,sy-r*3.1,r*0.6,0,7);ctx.fillStyle='#F2F6F3';ctx.fill();
+    ctx.font=`600 ${11*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle='#F2F6F3';ctx.textAlign='center';ctx.fillText(a.name,sx,sy-r*4.2);
+    ctx.font=`400 ${10*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle='#9DABA6';ctx.fillText(a.vendor,sx,sy-r*4.2+13*Math.min(cam.scale,1.3));
+  }
+  requestAnimationFrame(draw);
+  return {cam,state,turn(d){cam.o=(cam.o+d+4)%4},zoom(f){cam.scale=Math.max(.6,Math.min(2.2,cam.scale*f))}};
+}
+
+/* ---------- Scenes ---------- */
+const scenes={};
+function show(id){document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
+  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],film:['Arena','Read my bill','The film'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
+  const c=crumbs[id];document.getElementById('crumb').innerHTML=c.map((t,i)=>i<c.length-1?`<a href="#${id}">${t}</a><span>›</span>`:`<span class="cur">${t}</span>`).join('');
+  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
+  document.getElementById('v-text').textContent=v[id];
+  if(id==='plan')startPlan();if(id==='film')startFilm();if(id==='ask')startAsk();
+  try{history.replaceState(null,'','#'+id)}catch(e){}
+}
+document.querySelectorAll('#scenes button').forEach(b=>b.onclick=()=>show(b.dataset.s));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
+document.querySelectorAll('.cam .btn').forEach(b=>b.onclick=e=>{const st=e.target.closest('.scene').dataset.stage;const s=scenes[st];if(!s)return;({left:()=>s.turn(-1),right:()=>s.turn(1),in:()=>s.zoom(1.2),out:()=>s.zoom(1/1.2)})[b.dataset.cam]();});
+window.addEventListener('keydown',e=>{const on=document.querySelector('.scene.on');const s=scenes[on&&on.dataset.stage];if(!s)return;if(e.key==='ArrowLeft')s.turn(-1);if(e.key==='ArrowRight')s.turn(1);if(e.key==='+'||e.key==='=')s.zoom(1.2);if(e.key==='-')s.zoom(1/1.2);});
+document.getElementById('plan').dataset.stage='plan';document.getElementById('film').dataset.stage='film';document.getElementById('flag').dataset.stage='flag';
+
+/* PLAN scene: steps appear one by one; empty plots with names appear on the Street */
+let planStarted=false;
+function startPlan(){ if(planStarted)return;planStarted=true;
+  scenes.plan=makeStage(document.getElementById('cv-plan'),{cam:{scale:1.15}});
+  const list=document.getElementById('planlist');
+  PLAN.forEach((s,i)=>{const el=document.createElement('div');el.className='step';el.innerHTML=`<span class="n">${s.n}</span><div><h3>${s.name}</h3><p>${s.what}</p></div><span class="chip bld">${s.bld}</span>`;list.appendChild(el);setTimeout(()=>el.classList.add('in'),400+i*700);});
+  const acts=document.createElement('div');acts.className='plan-actions';acts.innerHTML=`<button class="btn lit" data-go="film">Yes, build it</button><button class="btn">Change something</button><span class="chip">Your yes is written down in your name</span>`;list.appendChild(acts);acts.querySelector('[data-go]').onclick=()=>show('film');
+}
+
+/* FILM scene: a scripted timeline of what the builder does, says and writes */
+const FILES={
+ 'features/read-the-bill/read.ts':[
+  `<span class="k">import</span> { readPdf } <span class="k">from</span> <span class="s">'../../lib/pdf'</span>;`,
+  `<span class="k">import</span> { figure } <span class="k">from</span> <span class="s">'../../rama/figures'</span>;`,
+  ``,
+  `<span class="c">// The bill as it is printed: units, dates and the amount.</span>`,
+  `<span class="k">export type</span> <span class="f">Bill</span> = { units: <span class="f">number</span>; from: <span class="f">Date</span>; to: <span class="f">Date</span>; amount: <span class="f">number</span> };`,
+  ``,
+  `<span class="k">export async function</span> <span class="f">readBill</span>(file: <span class="f">Buffer</span>): <span class="f">Promise</span>&lt;<span class="f">Bill</span>&gt; {`,
+  `  <span class="k">const</span> text = <span class="k">await</span> readPdf(file);`,
+  `  <span class="k">const</span> units = figure(<span class="s">'units-used'</span>, pick(text, <span class="s">/Units\\s+(\\d+)/</span>));`,
+  `  <span class="k">const</span> amount = figure(<span class="s">'amount-printed'</span>, pick(text, <span class="s">/Amount\\s+₹\\s*([\\d,]+)/</span>));`,
+  `  <span class="k">return</span> { units, amount, ...period(text) };`,
+  `}`],
+ 'features/read-the-bill/read.test.ts':[
+  `<span class="k">import</span> { readBill } <span class="k">from</span> <span class="s">'./read'</span>;`,
+  `<span class="k">import</span> { sample } <span class="k">from</span> <span class="s">'../../fixtures/bill-sep-2026'</span>;`,
+  ``,
+  `<span class="f">it</span>(<span class="s">'reads 412 units from the September bill'</span>, <span class="k">async</span> () => {`,
+  `  <span class="k">const</span> bill = <span class="k">await</span> readBill(sample);`,
+  `  expect(bill.units).toBe(<span class="n">412</span>);`,
+  `});`],
+ 'features/find-the-tariff/lookup.ts':[
+  `<span class="k">import</span> { searchWeb } <span class="k">from</span> <span class="s">'../../lib/web'</span>;`,
+  `<span class="k">import</span> { figure } <span class="k">from</span> <span class="s">'../../rama/figures'</span>;`,
+  ``,
+  `<span class="c">// Finds the supplier's tariff for the slab and keeps the page it read.</span>`,
+  `<span class="k">export async function</span> <span class="f">findTariff</span>(supplier: <span class="f">string</span>, units: <span class="f">number</span>) {`,
+  `  <span class="k">const</span> page = <span class="k">await</span> searchWeb(<span class="s">\`\${supplier} domestic tariff 2026\`</span>);`,
+  `  <span class="k">const</span> slab = slabFor(units, page.table);`,
+  `  <span class="k">return</span> { rate: figure(<span class="s">'tariff-rate'</span>, slab.rate), source: page.url, readAt: <span class="k">new</span> Date() };`,
+  `}`],
+ 'features/work-out-the-charge/charge.ts':[
+  `<span class="k">import</span> { figure } <span class="k">from</span> <span class="s">'../../rama/figures'</span>;`,
+  ``,
+  `<span class="k">const</span> FIXED_CHARGE = <span class="n">110</span>;   <span class="c">// ₹ per month, from the tariff order</span>`,
+  `<span class="k">const</span> DUTY = <span class="n">0.05</span>;         <span class="c">// electricity duty, 5%</span>`,
+  ``,
+  `<span class="c">// What you owe: units × rate, plus the fixed charge, plus duty on the lot.</span>`,
+  `<span class="k">export function</span> <span class="f">charge</span>(units: <span class="f">number</span>, rate: <span class="f">number</span>) {`,
+  `  <span class="k">const</span> energy = units * rate;`,
+  `  <span class="k">const</span> beforeDuty = energy + FIXED_CHARGE;`,
+  `  <span class="k">return</span> figure(<span class="s">'you-owe'</span>, Math.round(beforeDuty * (<span class="n">1</span> + DUTY)));`,
+  `}`],
+ 'db/schema.ts':[
+  `<span class="k">import</span> { pgTable, serial, integer, numeric, date, text } <span class="k">from</span> <span class="s">'drizzle-orm/pg-core'</span>;`,
+  ``,
+  `<span class="k">export const</span> bills = pgTable(<span class="s">'bills'</span>, { id: serial().primaryKey(), units: integer(), from: date(), to: date(), amount: numeric() });`,
+  `<span class="k">export const</span> tariffs = pgTable(<span class="s">'tariffs'</span>, { id: serial().primaryKey(), rate: numeric(), source: text(), readAt: date() });`,
+  `<span class="k">export const</span> charges = pgTable(<span class="s">'charges'</span>, { id: serial().primaryKey(), billId: integer(), owe: numeric() });`],
+ 'app/bill/page.tsx':[
+  `<span class="k">import</span> { Figure } <span class="k">from</span> <span class="s">'../../rama/Figure'</span>;`,
+  `<span class="k">import</span> { latestBill } <span class="k">from</span> <span class="s">'../../db/bills'</span>;`,
+  ``,
+  `<span class="k">export default async function</span> <span class="f">BillPage</span>() {`,
+  `  <span class="k">const</span> b = <span class="k">await</span> latestBill();`,
+  `  <span class="k">return</span> (&lt;main&gt;`,
+  `    &lt;h1&gt;{b.month} · {b.household}&lt;/h1&gt;`,
+  `    &lt;Figure id=<span class="s">"units-used"</span>&gt;{b.units} kWh&lt;/Figure&gt;`,
+  `    &lt;Figure id=<span class="s">"tariff-rate"</span>&gt;₹{b.rate} /kWh&lt;/Figure&gt;`,
+  `    &lt;Figure id=<span class="s">"you-owe"</span>&gt;₹{b.owe}&lt;/Figure&gt;`,
+  `  &lt;/main&gt;);`,
+  `}`]
+};
+// What the builder says, in its own words, as it works (captured from Claude Code's stream)
+const SCRIPT=[
+ {step:1,at:'read',say:'I will start with the bill itself. I am opening the PDF you dropped in to see what is printed on it.',agent:'builder'},
+ {step:1,file:'features/read-the-bill/read.ts',say:'I am writing a part that reads the bill. It pulls out the units used, the dates and the amount, and marks the units and the amount as figures so they can be traced later.',bricks:['read',3],card:{name:'features/read-the-bill/read.ts',what:'Opens the bill and pulls out the units used, the billing dates and the amount printed on it.',step:'step 1 · Read the bill',figs:2}},
+ {step:1,file:'features/read-the-bill/read.test.ts',say:'Now a test, so the gate will let this through: it reads your September bill and expects 412 units.',bricks:['read',4],plot:['bills',1],card:{name:'features/read-the-bill/read.test.ts',what:'Proves the reader finds 412 units on the September bill. The gate needs this before the screen can be signed.',step:'step 1 · Read the bill',figs:0}},
+ {step:1,check:true,say:'Reading the bill: 412 units, 1 to 30 September, ₹4,290 printed. The test passes.',agent:'checker',state:['read','Verified']},
+ {step:2,at:'tariff',file:'features/find-the-tariff/lookup.ts',say:'Next, the tariff. This part goes across the water to the web, searches for your supplier’s domestic tariff, finds the slab for 412 units and keeps the page it read, so you can see where the rate came from.',bricks:['tariff',6],plot:['tariffs',1],card:{name:'features/find-the-tariff/lookup.ts',what:'Searches the web for the supplier’s tariff, picks the slab for your units and keeps the page it read.',step:'step 2 · Find the tariff',figs:1},state:['tariff','Verified']},
+ {step:3,at:'charge',file:'features/work-out-the-charge/charge.ts',say:'Now the sum. Units times the rate, plus a fixed charge of ₹110 from the tariff order, plus 5% duty on the whole. The answer is a figure called “you owe”, so the screen can show where it came from.',bricks:['charge',8],plot:['charges',1],card:{name:'features/work-out-the-charge/charge.ts',what:'Works out what you owe: units × rate, plus the fixed charge, plus 5% duty. Its answer is the figure “you owe”.',step:'step 3 · Work out the charge',figs:1}},
+ {step:4,at:'charge',file:'db/schema.ts',say:'Keeping it. Three tables in the ground: bills, tariffs and charges. Each month adds a row; nothing is overwritten.',bricks:['charge',8],plots:[['bills',1],['tariffs',1],['charges',1]],card:{name:'db/schema.ts',what:'The three tables: bills, tariffs and charges. Each month adds rows; nothing is overwritten.',step:'step 4 · Keep it',figs:0}},
+ {step:5,at:'show',file:'app/bill/page.tsx',say:'The screen. One page with the three figures. Each one is a Figure, so when you click it you see its trail back to the bill, the web page and the sum.',bricks:['show',5],flow:true,card:{name:'app/bill/page.tsx',what:'The one screen: units, tariff and what you owe, each a traced figure.',step:'step 5 · Show the bill',figs:3},state:['show','Verified']},
+ {step:6,at:'charge',check:true,say:'Running the tests and the gate on every building.',agent:'checker',flag:true},
+ {step:7,say:'Everything is built and checked. Now you walk through it with the voice and say yes to each screen.',agent:'voice'}
+];
+let film=null;
+function startFilm(){
+  if(film){return;}
+  film={i:0,speed:1,paused:false,timer:null,parts:0};
+  scenes.film=makeStage(document.getElementById('cv-film'),{cam:{scale:1.25},agents:[{at:'read',name:'The Builder',vendor:'Claude Code',color:'#68E78E'}]});
+  renderSteps(1);runEvent();
+}
+function renderSteps(cur,flag){const s=document.getElementById('stepstrip');s.innerHTML=PLAN.map(p=>`<span class="s ${p.n<cur?'done':p.n===cur?'now':''} ${flag&&p.n===6?'flag':''}"><i>${p.n<cur?'✓':p.n}</i>${p.name}</span>`).join('')+`<span class="chip" style="margin-left:8px">Lift ${Math.min(cur,6)} of 6</span>`;}
+function setAgent(a){document.querySelectorAll('.agent').forEach(x=>x.classList.toggle('live',x.dataset.a===a));document.getElementById('sub-who').textContent={builder:'The Builder',checker:'The Checker',explainer:'The Explainer',voice:'The Voice'}[a];document.querySelector('.subs .who small').textContent={builder:'Claude Code · its own words',checker:'OpenAI · the test result, as it is',explainer:'Anthropic · explained, not yet confirmed',voice:'OpenAI · reading the builder’s line'}[a];}
+function typeText(el,text,cps,done){el.innerHTML='<span class="cur"></span>';let i=0;const cur=el.querySelector('.cur');(function tick(){if(film.paused){film.timer=setTimeout(tick,120);return;}i+=Math.max(1,Math.round(cps*film.speed/20));el.firstChild.nodeType===3?el.firstChild.nodeValue=text.slice(0,i):el.insertBefore(document.createTextNode(text.slice(0,i)),cur);if(i<text.length)film.timer=setTimeout(tick,50);else{cur.remove();done&&done();}})();}
+function typeFile(path,done){const pre=document.getElementById('codepre');document.getElementById('codepath').textContent=path;pre.innerHTML='';const lines=FILES[path]||[];let i=0;
+  (function next(){if(film.paused){film.timer=setTimeout(next,120);return;}if(i>=lines.length){done&&done();return;}const d=document.createElement('div');d.className='ln new';d.innerHTML=lines[i]||'&nbsp;';pre.appendChild(d);pre.scrollTop=pre.scrollHeight;i++;film.timer=setTimeout(next,Math.max(180,650/film.speed));})();}
+function showCard(c){const el=document.getElementById('filecard');el.querySelector('.eyebrow').textContent='A new part · '+c.step;document.getElementById('fc-name').textContent=c.name;document.getElementById('fc-what').textContent=c.what;el.querySelector('.row .chip').textContent=c.figs?`Carries ${c.figs} figure${c.figs>1?'s':''}`:'Carries no figure';el.classList.add('in');
+  film.parts++;document.getElementById('partcount').textContent=film.parts;const p=document.createElement('div');p.className='part';p.innerHTML=`<div><b>${c.name}</b><br><span>${c.what}</span></div><span class="chip un">unconfirmed</span>`;document.getElementById('parts').prepend(p);
+  setTimeout(()=>el.classList.remove('in'),6500/film.speed);}
+function runEvent(){
+  const ev=SCRIPT[film.i];if(!ev){return;}
+  const stage=scenes.film;renderSteps(ev.step,ev.flag);document.getElementById('pace').textContent=`${film.paused?'Paused':'Playing at '+(film.speed===1?'reading pace':film.speed+'× pace')} · step ${ev.step} of 7`;
+  setAgent(ev.agent||'builder');if(ev.at){stage.state.agents[0].at=ev.at;}
+  if(ev.state){const b=BUILDINGS.find(x=>x.id===ev.state[0]);b.state=ev.state[1];}
+  document.getElementById('v-text').textContent=ev.say;
+  typeText(document.getElementById('subtitle'),ev.say,22,()=>{
+    const after=()=>{if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}if(ev.plots){ev.plots.forEach(([id,n])=>{const p=PLOTS.find(x=>x.id===id);p.rows=n;p.lit=true;});}if(ev.flow){stage.state.flow=true;}
+      BUILDINGS.forEach(b=>b.live=false);
+      if(ev.flag){film.timer=setTimeout(()=>show('flag'),1800/film.speed);return;}
+      film.i++;film.timer=setTimeout(runEvent,900/film.speed);};
+    if(ev.file){const b=BUILDINGS.find(x=>x.id===ev.bricks[0]);const target=ev.bricks[1];const lines=FILES[ev.file].length;let laid=0;b.live=true;
+      const grow=setInterval(()=>{if(film.paused)return;if(b.bricks<target){b.bricks++;}else clearInterval(grow);},Math.max(180,650/film.speed)*Math.ceil(lines/Math.max(1,target-b.bricks)));
+      typeFile(ev.file,()=>{clearInterval(grow);b.bricks=target;if(ev.card)showCard(ev.card);film.timer=setTimeout(after,1400/film.speed);});
+    } else {film.timer=setTimeout(after,1200/film.speed);}
+  });
+}
+document.getElementById('b-pause').onclick=e=>{film.paused=!film.paused;e.target.textContent=film.paused?'Play':'Pause';document.getElementById('voice').classList.toggle('quiet',film.paused);};
+document.getElementById('b-slower').onclick=()=>{film.speed=Math.max(.5,film.speed/1.5)};document.getElementById('b-faster').onclick=()=>{film.speed=Math.min(4,film.speed*1.5)};
+document.getElementById('b-next').onclick=()=>{clearTimeout(film.timer);const cur=SCRIPT[film.i].step;while(SCRIPT[film.i]&&SCRIPT[film.i].step===cur){const ev=SCRIPT[film.i];if(ev.bricks){BUILDINGS.find(x=>x.id===ev.bricks[0]).bricks=ev.bricks[1];}if(ev.state){BUILDINGS.find(x=>x.id===ev.state[0]).state=ev.state[1];}if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}film.i++;}runEvent();};
+document.getElementById('b-replay').onclick=()=>{clearTimeout(film.timer);const cur=SCRIPT[film.i]?SCRIPT[film.i].step:7;while(film.i>0&&SCRIPT[film.i-1].step===cur)film.i--;runEvent();};
+document.getElementById('b-catch').onclick=()=>{film.speed=4;};
+
+/* ASK THE CODE: scripted answers that cite lines; one honest "the code does not say" */
+const ASK=[
+ {q:'What does this file do?',a:'It works out what you owe. It multiplies the units by the rate (line 8), adds the fixed charge of ₹110 (line 9), then adds 5% duty on that total and rounds it (line 10). The answer is marked as the figure “you owe” so the screen can show where it came from.',cite:[8,9,10]},
+ {q:'Why is the fixed charge 110?',a:'Line 3 sets it to 110 and the comment beside it says it comes from the tariff order. The code does not say which tariff order or which year; that is kept with the tariff page in Find the tariff, not here.',cite:[3]},
+ {q:'What happens if the bill has no units?',a:'The code does not say. This file expects a number for units (line 7) and never checks for a missing one; a missing value would be handled, or not, in Read the bill before it gets here. You could ask the Builder to add that check.',cite:[7]}
+];
+let askStarted=false;
+function startAsk(){if(askStarted)return;askStarted=true;const pre=document.getElementById('askpre');FILES['features/work-out-the-charge/charge.ts'].forEach(l=>{const d=document.createElement('div');d.className='ln';d.innerHTML=l||'&nbsp;';pre.appendChild(d);});
+  const turns=document.getElementById('turns');let k=0;
+  function hi(lines){pre.querySelectorAll('.ln').forEach((d,i)=>d.classList.toggle('hi',lines.includes(i+1)));}
+  (function nextQ(){if(k>=ASK.length)return;const t=ASK[k++];const q=document.createElement('div');q.className='turn q';q.innerHTML=`<span class="eyebrow">Meera · said</span><p>${t.q}</p>`;turns.appendChild(q);
+    setTimeout(()=>{hi(t.cite);const a=document.createElement('div');a.className='turn a';a.innerHTML=`<span class="eyebrow">The code · from its own lines</span><p>${t.a}</p><span class="cite">${t.cite.map(n=>`<span class="chip">line ${n}</span>`).join('')}</span>`;turns.appendChild(a);turns.scrollTop=turns.scrollHeight;document.getElementById('v-text').textContent=t.a;setTimeout(nextQ,3200);},900);})();
+}
+
+/* boot: scene from hash */
+const h=(location.hash||'#arena').slice(1);show(['arena','plan','film','flag','ask','walk'].includes(h)?h:'arena');
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','film','flag','ask','walk'].includes(h))show(h);});
+// grey-flag scene draws the street with the flag state
+(function(){const c=document.getElementById('cv-flag');const obs=new MutationObserver(()=>{if(document.getElementById('flag').classList.contains('on')&&!scenes.flag){scenes.flag=makeStage(c,{cam:{scale:1.2},agents:[{at:'charge',name:'The Checker',vendor:'OpenAI',color:'#7CC8F0'}]});BUILDINGS.forEach(b=>{b.bricks=b.target});PLOTS.forEach(p=>{p.lit=true;p.rows=1});}});obs.observe(document.getElementById('flag'),{attributes:true});})();
+</script>
