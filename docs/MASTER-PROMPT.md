@@ -1,6 +1,6 @@
 # House of Rama — Master Prompt
 
-Built on trust. This document drives the build of House of Rama. It is committed once; after that the agent reads it from disk, one stage per session. Revised 2026-10-24 after Stage 6 and Gaps 1: Stages 0–6 stand as built; Stages 7–12 build the Pod Edition (`docs/POD-EDITION.md`) on top, ending with the first real product, ergPLAN.
+Built on trust. This document drives the build of House of Rama. It is committed once; after that the agent reads it from disk, one stage per session. Revised 2026-10-24 after Stage 6 and Gaps 1: Stages 0–6 stand as built; Stages 7–13 build the Pod Edition (`docs/POD-EDITION.md`) on top, ending with the first real product, ergPLAN.
 
 ## 0. How to use this prompt
 
@@ -26,7 +26,7 @@ Built on trust. This document drives the build of House of Rama. It is committed
 
 (See `CLAUDE.md` §4. Verbatim.)
 
-## 5. Plan — the Pod Edition, Stages 7–12
+## 5. Plan — the Pod Edition, Stages 7–13
 
 Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Showroom and trails, ceremony, audit, floor-edition plumbing, sealed signatures, deploy). From Stage 7 the build follows the Pod Edition construct. Sequenced by what becomes permanent earliest: the workbench that holds people and keys, then the face, then the scaffold that makes products traceable by construction, then the voice, then the glass that shows the code being written and the data flowing, then ergPLAN.
 
@@ -38,10 +38,11 @@ Stages 0–6 and Gaps 1 are built (foundation, Blueprint, Brick-level site, Show
 | 10 | Ears | GPT Live voice, transcript, the track asked by voice, decision cards by spoken yes, scrap and restart, the board | a rehearsal on the sample product |
 | 11 | Glass and flow | The journey layout (one tab per act, one lit action); the camera: turn and zoom; live code written inside the glass with plain English beside every block, unconfirmed until confirmed; the pipes: the trail drawn as plumbing with real data flowing through it in slow motion; the same views in replay. Two days | the sample product, built, used and replayed |
 | 12 | ergPLAN | The first real product, built entirely inside House of Rama | ergPLAN |
+| 13 | The film | The customer alone in the chair with the voice: one sentence in, the plan spelled out in steps, each step built on screen by a named agent typing real code with its own words as narration, a card for every file, the building growing in sync, "ask the code" in English, the trainer called only on a grey flag; the new sample product "Read my bill"; the look matched to a designed reference | the sample product, filmed end to end |
 
 Deferred (notes in `docs/POD-EDITION.md`): wallet, customer-owned GitHub at handover, the fixed board camera, pod lights and bookings in daily use.
 
-## 6. Stage prompts — Stages 7–12
+## 6. Stage prompts — Stages 7–13
 
 ### Stage 7 — Workbench
 
@@ -176,6 +177,38 @@ apps/rama: the camera ring and zoom controls in Harmony, with plain words from t
 Tests: tab layout (one primary per tab, actions in their act only, glossary on tabs); camera reducer (turn, zoom, level hand-offs, URL round trip); frame determinism in four orientations; pick in four orientations; the block splitter on fixtures (every line belongs to exactly one block); the typing stream from a recorded lift (order, pace floor, deletions); explanation cache by hash; unconfirmed until confirmed, and the overlay write audited; the pane shows "Not explained yet" with no drafter key; pipe geometry from trail fixtures (every trail step has a pipe, every untraced step a dry one); the table slab (columns from schema, readers and writers, 50-row paging, count in the customer's unit, masked secrets, "Rows not connected" without a connection, read-only enforced); the flow sequence from a recorded re-execution (values in order, pause, step, dry step); banned words; e2e: open the sample product, walk the five tabs with one lit action on each, replay the recorded build, turn the Street twice, zoom into Take an order down to the code, watch it typed, read every block's English, confirm one, then ask for the flow of the day's takings and watch the real rows become the figure on the screen.
 
 Done when: the screen reads as the journey with one lit action; the inside of a building is the third level under the same camera and the Stage 2 brick building is gone from the app; a plot opens to its real columns and rows, read-only; a person can turn and zoom the sample product with a mouse and with words, watch its code written inside the glass during Test drive, read a plain-English line beside every block (each unconfirmed until someone signs it), and watch the real data of a figure flow from the ground to the screen in slow motion, dry wherever it is untraced; reviewer run; report. STOP.
+```
+
+### Stage 13 — The film
+
+```
+Stage 13 turns House of Rama into what the pod floor is for: a non-coder walks in alone, says what they want, and watches their application being built as a film they can stop and question. The voice is their only companion (Invariant 9 unchanged); the trainer is called only when a flag goes grey. The development is autonomous, done by the strongest frontier model the seats allow, and everything that happens is explained visually and in plain English. The trust machinery of Stages 0–12 is untouched; the film is how it is experienced. Stage 12 (ergPLAN) may continue underneath; this stage does not touch the house stack, the gate or the ceremony.
+
+Before code: `design/film/` holds the designed reference (frames and a scripted walkthrough of the sample film, in Harmony's tokens) made before this stage. The stage's job is to make the live app match it. Screenshot-comparison tests (`tests/stage-13.look.test.ts`) compare the app at 1920×1080 against the reference frames with a stated tolerance; the stage does not pass on geometry alone.
+
+The sample product becomes "Read my bill" (replacing the Chai Stall everywhere, including Test drive): it reads an electricity bill (a PDF), finds the tariff on the web, works out the charge in a calculation sheet, keeps bills and charges in a database, and shows one screen with the bill's figures traced. The web lookup is a jetty across the water. Test drive replays its recorded build; with keys set it builds for real.
+
+The arena (apps/rama, the customer's home):
+- One sentence and a microphone. The voice greets the person by the name they picked and asks what they want to make. Idea, files dropped in (a sample bill), and the brains are all taken here; the brains question is not asked of a customer: the seats default to the strongest configured in Settings → Brains, shown in one sentence ("Claude Code builds, OpenAI checks"), changeable by the trainer only.
+- The plan, spelled out: the builder turns the sentence into numbered steps in plain words (prompt plan.v1 through the builder seat; drafted, read aloud by the voice, decided by a spoken or clicked yes as decision cards, as in Stage 10). Each step names what it will make, in the customer's words, and which building it belongs to. The Street appears as empty plots with the buildings' names the moment the plan is decided.
+
+The film (packages/stage, packages/workbench, packages/ears):
+- The build runs step by step, as the plan reads. For each step a named agent steps up on the stage (the Builder, the Checker, the Explainer, the Voice — figures in Harmony's palette, one per seat, each with its vendor said once in plain words), and the step's work is shown as it happens: the file being written types in on the glass, the brick grows, the building rises, the pipes connect, the plot in the ground fills.
+- Narration is the builder's own words. Claude Code's text between its tool calls (what it says it is about to do and what it found) is captured from the stream, shown as subtitles under the typing and read by the voice; it is marked as the builder's narration and is never rewritten by the drafter. When the builder is silent for a step the subtitle says what changed, from the diff, in the glossary's words. Pace: never faster than a line can be read; pause, slower, faster, skip to the next step, replay a step, and "catch up" to a live build.
+- A card for every file, when it is born: its plain-word name, which step and building it serves, what it does in one or two sentences (the Explainer seat, prompt explain.v1 as in Stage 11, unconfirmed until confirmed), and the figures it carries. The cards stack into the "Parts" shelf of the film, and the inside of the building shows the same cards on the bricks.
+- The grey flag: when a lift fails the gate, a test, or the figures lint, the film pauses on a grey flag with one plain sentence and the builder's next action, the voice says it, and the trainer is called: the flag appears in the trainer console's "Needs a trainer" list and, if a trainer's email is in `members.json`, an email goes out. The customer can wait or go on with another step that does not depend on it. The trainer resolves it from the console; the film resumes.
+- When the film ends: the walkthrough (Stage 4 ceremony) plays as the last act, the voice reading each screen and asking for the customer's yes, then the Checker's audit flies, then Hand over.
+
+Ask the code (packages/workbench `askCode`, apps/rama):
+- At any moment, paused or playing, the person clicks a block, a file, a line, a figure or a building and asks a question, typed or spoken. The answer comes from the Explainer seat (prompt ask.v1) given only: the selected code, its file's card, the plan step it serves, its trail if it carries a figure, and the question. The answer is in plain English, cites the lines it rests on (shown highlighted in the glass), and says "the code does not say" when the answer is not in what it was given. Answers are explanations, shown as such; they are never a record and never change one (Invariant 6 and 9).
+- The voice can ask it: "what does this part do", "why is this here", "what happens if the bill has no units" route to askCode with the thing on screen as the selection.
+- Every question and answer is kept as a turn in the session transcript with the selection, so a trainer can see what the customer asked.
+
+The look: the reference frames of `design/film/` are the specification. The Street is a place, not a diagram: buildings read as glass with floors and light inside, facades large enough to read, the ground visibly a database (plots with their names and row counts), the lake and the jetties drawn; the inside is a room with walls of code; pipes are pipes with water moving in them. Every control in Harmony; one lit action; plain words only (the glossary test runs on every frame of the film).
+
+Tests: plan.v1 produces numbered steps each naming a building (fixture sentences); the film's step order follows the plan; narration is only builder text or diff-derived glossary text (a test feeds a builder stream with a product fact in the drafter's output and asserts it never reaches a subtitle); pace floor; file cards unconfirmed until confirmed and audited; grey flag pauses, lists in the console, emails when configured, resumes on resolution; askCode answers cite lines and says "the code does not say" on a question outside the selection; transcript keeps questions; screenshot comparisons against the reference frames; e2e: a recorded customer session on "Read my bill" from the first sentence to Hand over with no trainer action, and one with a grey flag resolved by a trainer.
+
+Done when: a person who cannot code sits alone, says one sentence, watches "Read my bill" built as a film with every step spoken and every file explained, asks the code three questions and gets answers from the code, signs the walkthrough by voice, and the app looks like the reference; reviewer run; report. STOP.
 ```
 
 ### Stage 12 — ergPLAN
@@ -396,6 +429,7 @@ interface Finding { id: string; auditId: string; brick: string; check: string; v
 | 9 | Scaffold lint refuses an unmarked number; sample product rebuilt from the scaffold by the builder with no human command, 100% traced, all Verified; Test drive uses this path; four seats chosen in Settings and asked in discovery, builder ≠ auditor enforced, OpenAI-compatible adapter covers Gemini/Grok/Kimi/Ollama; reviewer |
 | 10 | Mouth-not-mind test; track questions answered only from trails; spoken yes creates a named decision; rehearsal acts 1–3 by voice; reviewer |
 | 11 | Five tabs, one lit action each, no empty stage; the inside replaces the Stage 2 canvas with nothing less inspectable; plots open to real columns and rows, read-only, never invented; four orientations and continuous zoom, deterministic frames and pick in all four; code typed inside the glass during a real lift and in replay; one English line per block, drafted by the drafter and unconfirmed until confirmed; "Not explained yet" with no key; pipes for every trail step and dry pipes for untraced; the flow animates only recorded or re-executed values; banned-word test covers the pane and the flow; reviewer |
+| 13 | Reference frames matched within tolerance; plan in steps decided by yes; narration only builder or diff text; file cards unconfirmed until confirmed; grey flag calls the trainer; askCode cites lines or says the code does not say; recorded customer session end to end with no trainer; reviewer |
 | 12 | ergPLAN first signed release: own repository, 100% traced, customer screens Confirmed, signed audit, member's name on signature one |
 
 Two honest numbers wherever a rate is reported: figures traced over figures shown, and screens signed over screens changed, each with its audience named. An untraced figure correctly shown as untraced is never scored as a failure.

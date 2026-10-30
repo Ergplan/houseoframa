@@ -32,6 +32,10 @@ Street (buildings named for what they do, roads, the ground = tables, the lake =
 
 GPT Live, a mouth not a mind (Invariant 9): takes inputs, asks, suggests, reads back; writes nothing. The builder hands it every product sentence. Commands: yes, no, scrap everything, show me, open, show me the code, go back, what if.
 
+## The film (30 Oct)
+
+The customer sits alone with the voice. One sentence in; the plan spelled out in steps and decided by yes; each step built on screen by a named agent typing real code, its own words as narration; a card for every file; the building growing in sync; "ask the code" answered in English from the code only; the trainer called only on a grey flag. Development is autonomous by the strongest frontier model configured. The look is a designed reference (`design/film/`), not a paragraph. Stage 13.
+
 ## The session
 
 1 Arrive · 2 Ideate (board + talk → map + draft cards) · 3 Agree (design explained aloud, including what it will not do; "Yes, build it" = signature one) · 4 Build (between shifts; lakefront rises) · 5 Walk and sign (voice calls each screen; audit; keys). "Scrap" starts a named new draft; the old one is kept, withdrawn.
