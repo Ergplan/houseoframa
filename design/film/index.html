@@ -81,6 +81,21 @@ canvas{display:block;width:100%;height:100%}
 .cam{position:absolute;top:14px;left:14px;display:flex;gap:6px}
 .cam .btn{padding:6px 12px;font-size:12px}
 .legend{position:absolute;left:14px;bottom:14px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* FOUNDATION (time-lapse) */
+#foundation{grid-template-columns:1fr 440px;grid-template-rows:1fr auto;gap:14px}
+.explain{display:grid;grid-template-rows:auto auto 1fr;gap:14px;min-height:0}
+.block{padding:20px 22px;border-radius:var(--r-lg);color:var(--on-folder);background:linear-gradient(135deg,var(--folder-hi),var(--folder) 45%,var(--folder-deep));box-shadow:var(--float),var(--edge);display:grid;gap:6px}
+.block .eyebrow{color:var(--on-folder-muted)}.block h3{margin:0;font:400 26px/32px var(--sans)}.block .path{font:500 12px/16px var(--mono);color:var(--on-folder-muted)}.block p{margin:4px 0 0;font-size:15px;line-height:22px}
+.arch{padding:16px 18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);display:grid;gap:8px}
+.arch .fl{display:grid;grid-template-columns:110px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--line);font-size:13px;color:var(--ink-muted)}
+.arch .fl b{font-weight:500;color:var(--ink)}.arch .fl.on{background:var(--accent-soft);border-color:transparent;color:var(--ink)}.arch .fl .cnt{font-variant-numeric:tabular-nums;color:var(--ink-faint);font-size:12px}
+.laid{display:grid;gap:4px;overflow:auto;align-content:start}
+.laid div{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:13px;color:var(--ink-muted);padding:4px 6px}.laid div.on{color:var(--ink)}.laid i{font-style:normal;color:var(--accent)}
+.tl{grid-column:1/-1;display:grid;grid-template-columns:auto auto 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-radius:var(--pill);background:var(--surface);border:1px solid var(--line)}
+.tl input[type=range]{width:100%;accent-color:var(--accent)}
+.tl .frame{font:500 13px/18px var(--mono);color:var(--ink-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.camlabel{position:absolute;right:14px;top:14px}
 /* FILM */
 #film{grid-template-columns:1fr 420px;grid-template-rows:auto 1fr auto;gap:14px}
 .steps{grid-column:1/-1;display:flex;gap:6px;align-items:center;overflow:auto}
@@ -173,7 +188,7 @@ canvas{display:block;width:100%;height:100%}
     <div class="crumb" id="crumb"><a href="#arena">Arena</a><span>›</span><span class="cur">What shall we make?</span></div>
     <div class="spacer"></div>
     <div class="scenes" id="scenes" aria-label="Reference frames">
-      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="film">Film</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
+      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
     </div>
     <div class="person"><div class="avatar">MS</div><div><b style="font-weight:500">Meera Shah</b><small>customer · alone in the chair</small></div></div>
   </div>
@@ -201,6 +216,26 @@ canvas{display:block;width:100%;height:100%}
         <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
         <div class="legend"><span class="chip">A building for each thing it does</span><span class="chip">The ground is the database</span><span class="chip">Across the water: the web</span></div>
       </div>
+    </section>
+
+    <!-- FOUNDATION: the shell laid block by block, filmed from the ground -->
+    <section class="scene" id="foundation" data-stage="foundation">
+      <div class="canvas-wrap"><canvas id="cv-found"></canvas>
+        <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
+        <span class="chip camlabel">Camera on the ground · one frame per saved change</span>
+      </div>
+      <div class="explain">
+        <div class="block" id="fblock"><span class="eyebrow">Block 1 of 14 · the ground</span><h3>The list of parts</h3><span class="path">package.json</span><p>What this product is made of and how it is started. Every product here begins with the same list, so the Checker knows what to expect.</p></div>
+        <div class="arch" id="farch"><span class="eyebrow">The architecture · every product here has these floors</span>
+          <div class="fl" data-f="talks"><b>Talks to</b><span>the web, other services</span><span class="cnt">0</span></div>
+          <div class="fl" data-f="shows"><b>Shows</b><span>the screens people see</span><span class="cnt">0</span></div>
+          <div class="fl" data-f="decides"><b>Decides</b><span>the rules and the sums</span><span class="cnt">0</span></div>
+          <div class="fl" data-f="remembers"><b>Remembers</b><span>the tables in the ground</span><span class="cnt">0</span></div>
+          <div class="fl" data-f="checks"><b>Checks</b><span>tests and the gate at the door</span><span class="cnt">0</span></div>
+        </div>
+        <div class="laid" id="flaid"></div>
+      </div>
+      <div class="tl"><button class="btn" id="f-play">Pause</button><span class="frame" id="f-frame">frame 0 of 2,800</span><input type="range" id="f-scrub" min="0" max="2800" value="0" aria-label="Scrub the time-lapse"><span class="chip" id="f-speed">1 frame = 1 saved change · playing slowly</span></div>
     </section>
 
     <!-- FILM -->
@@ -444,11 +479,11 @@ function makeStage(canvas,opts={}){
 /* ---------- Scenes ---------- */
 const scenes={};
 function show(id){if(id==='flow'){show('film');jumpToStep(5);document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s==='flow'));document.getElementById('v-text').textContent='Watch the number travel: 412 units leave the bills table, become ₹3,214 in the sum, gain the fixed charge and the duty, and arrive on the screen as ₹4,312.';try{history.replaceState(null,'','#flow')}catch(e){}return;}document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
-  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
+  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
   const c=crumbs[id];document.getElementById('crumb').innerHTML=c.map((t,i)=>i<c.length-1?`<a href="#${id}">${t}</a><span>›</span>`:`<span class="cur">${t}</span>`).join('');
-  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
+  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
   document.getElementById('v-text').textContent=v[id];
-  if(id==='plan')startPlan();if(id==='film')startFilm();if(id==='ask')startAsk();
+  if(id==='plan')startPlan();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
   try{history.replaceState(null,'','#'+id)}catch(e){}
 }
 document.querySelectorAll('#scenes button').forEach(b=>b.onclick=()=>show(b.dataset.s));
@@ -598,9 +633,89 @@ function startAsk(){if(askStarted)return;askStarted=true;const pre=document.getE
     setTimeout(()=>{hi(t.cite);const a=document.createElement('div');a.className='turn a';a.innerHTML=`<span class="eyebrow">The code · from its own lines</span><p>${t.a}</p><span class="cite">${t.cite.map(n=>`<span class="chip">line ${n}</span>`).join('')}</span>`;turns.appendChild(a);turns.scrollTop=turns.scrollHeight;document.getElementById('v-text').textContent=t.a;setTimeout(nextQ,3200);},900);})();
 }
 
+
+/* FOUNDATION: the house-stack shell laid block by block, a time-lapse from the ground */
+const SHELL=[
+ {path:'package.json',name:'The list of parts',floor:'checks',what:'What this product is made of and how it is started. Every product here begins with the same list, so the Checker knows what to expect.'},
+ {path:'app/layout.tsx',name:'The frame around every screen',floor:'shows',what:'The title bar and the edges every page sits inside. One frame, so all screens look like one product.'},
+ {path:'app/page.tsx',name:'The front door',floor:'shows',what:'The first screen a person sees. Empty for now: it says the product’s name and nothing else.'},
+ {path:'db/schema.ts',name:'The shape of the ground',floor:'remembers',what:'Which tables exist. None yet. Every table that is added here must carry who wrote each row and when.'},
+ {path:'db/client.ts',name:'The pipe to the ground',floor:'remembers',what:'How the building reaches its tables. There is one pipe, so every read and write can be seen.'},
+ {path:'db/migrations/0001_ground.sql',name:'The first layer of soil',floor:'remembers',what:'The database is created, with the audit log that every important write appends to.'},
+ {path:'rama/figures.ts',name:'The register of numbers',floor:'decides',what:'Every number the product will ever show must be entered here with its name. A number not in the register cannot reach a screen.'},
+ {path:'rama/Figure.tsx',name:'The glass label on a number',floor:'shows',what:'Wraps a number on a screen so it shows its value and points at its trail: the sum, the inputs, the table, the commit, the signature.'},
+ {path:'rama/lint.ts',name:'The inspector at the door',floor:'checks',what:'Reads every screen before it is built and refuses one that shows a number without its label.'},
+ {path:'rama/screens.json',name:'The list of screens',floor:'shows',what:'Each screen with the building it belongs to, so the Street can draw it on the right facade.'},
+ {path:'lib/web.ts',name:'The jetty',floor:'talks',what:'The one place the product talks to the outside world. Nothing else may fetch, so what it reads can be kept and shown.'},
+ {path:'tests/front-door.test.ts',name:'The first proof',floor:'checks',what:'Opens the front door and checks it says the product’s name. The first test that must pass before anything merges.'},
+ {path:'.github/workflows/gate.yml',name:'The merge gate',floor:'checks',what:'Runs on every change. Nothing merges without a passing test behind it and a signature on every screen that changed.'},
+ {path:'.rama/features.json',name:'The names of the buildings',floor:'checks',what:'Your words for what the product does, written at the plan. The Street draws one building per name.'}
+];
+const FLOORZ={remembers:0,decides:1,shows:2,talks:3,checks:-1};
+function makeFoundation(canvas){
+  const ctx=canvas.getContext('2d');const cam={o:0,scale:2.4,cx:3,cy:3};const st={t:0,playing:true,speed:1};
+  const W=6,D=6,fh=0.9;
+  function rot(x,y){let dx=x-W/2,dy=y-D/2;for(let i=0;i<cam.o;i++){const t=dx;dx=-dy;dy=t;}return [dx+W/2,dy+D/2];}
+  function P(x,y,z=0){const [rx,ry]=rot(x,y);const tw=64*cam.scale,th=32*cam.scale;const [cx,cy]=rot(cam.cx,cam.cy);const r=canvas.getBoundingClientRect();return [(rx-ry)*tw/2+r.width/2-(cx-cy)*tw/2,(rx+ry)*th/2-z*th*1.1+r.height*0.62-(cx+cy)*th/2];}
+  function poly(pts,fill,stroke,lw=1){ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}}
+  function tile(x,y,w,d,z,f,s){poly([P(x,y,z),P(x+w,y,z),P(x+w,y+d,z),P(x,y+d,z)],f,s);}
+  function resize(){const r=canvas.getBoundingClientRect();const dpr=Math.min(devicePixelRatio||1,2);canvas.width=r.width*dpr;canvas.height=r.height*dpr;}
+  new ResizeObserver(resize).observe(canvas);resize();
+  const TOTAL=2800;const perBlock=TOTAL/SHELL.length;
+  function draw(){const dpr=Math.min(devicePixelRatio||1,2);ctx.setTransform(dpr,0,0,dpr,0,0);const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);
+    if(st.playing){st.t=Math.min(TOTAL,st.t+0.9*st.speed);if(st.t>=TOTAL){st.playing=false;document.getElementById('f-play').textContent='Replay';}}
+    const laid=Math.min(SHELL.length,Math.floor(st.t/perBlock)+ (st.t>0?1:0));const cur=Math.max(0,Math.min(SHELL.length-1,Math.floor(st.t/perBlock)));const frac=(st.t%perBlock)/perBlock;
+    // ground grid, dug footprint
+    for(let x=0;x<W;x++)for(let y=0;y<D;y++)tile(x,y,1,1,0,'rgba(255,255,255,0.012)','rgba(255,255,255,0.05)');
+    const bx=1,by=1,bw=4,bd=4,H=4*fh;
+    tile(bx,by,bw,bd,-0.25,'rgba(104,231,142,0.08)','rgba(104,231,142,0.35)');
+    poly([P(bx,by+bd,0),P(bx+bw,by+bd,0),P(bx+bw,by+bd,-0.25),P(bx,by+bd,-0.25)],'rgba(0,0,0,0.4)');poly([P(bx+bw,by,0),P(bx+bw,by+bd,0),P(bx+bw,by+bd,-0.25),P(bx+bw,by,-0.25)],'rgba(0,0,0,0.3)');
+    ctx.font=`500 ${12*cam.scale/2}px Urbanist, system-ui`;ctx.fillStyle='#68E78E';ctx.textAlign='center';const gl=P(bx+bw/2,by+bd/2,-0.2);ctx.fillText('the ground · the database',gl[0],gl[1]);
+    // back glass + floors appear as blocks reach them
+    const maxFloor=Math.max(0,...SHELL.slice(0,laid).map(b=>FLOORZ[b.floor]));
+    const Hnow=Math.min(H,(maxFloor+1)*fh+ (laid?0.1:0));
+    poly([P(bx,by,0),P(bx+bw,by,0),P(bx+bw,by,Hnow),P(bx,by,Hnow)],'rgba(120,200,160,0.06)','rgba(255,255,255,0.10)');
+    poly([P(bx,by,0),P(bx,by+bd,0),P(bx,by+bd,Hnow),P(bx,by,Hnow)],'rgba(120,200,160,0.06)','rgba(255,255,255,0.10)');
+    for(let f=0;f<=maxFloor;f++){tile(bx,by,bw,bd,f*fh,'rgba(255,255,255,0.03)','rgba(255,255,255,0.14)');const nm=['Remembers','Decides','Shows','Talks to'][f];const q=P(bx-0.15,by+bd,f*fh+0.45);ctx.font=`500 ${11*cam.scale/2}px Urbanist, system-ui`;ctx.fillStyle='#9DABA6';ctx.textAlign='right';ctx.fillText(nm,q[0],q[1]);}
+    // blocks
+    const slots={};SHELL.forEach((b,i)=>{if(i>=laid)return;const f=FLOORZ[b.floor];const k=(slots[f]=(slots[f]||0)+1)-1;let x,y,z;
+      if(f<0){x=bx-0.6+ (k%2)*0.0; y=by+0.2+k*0.75; z=0; if(k>2){x=bx+bw+0.1;y=by+0.2+(k-3)*0.75;}}
+      else {x=bx+0.35+(k%3)*1.1;y=by+0.35+Math.floor(k/3)*1.1;z=f*fh+0.05;}
+      const s=0.7,hh=0.4,live=(i===cur&&st.playing),rise=live?(1-Math.min(1,frac*3))*0.8:0;z+=rise;
+      const a=live?1:0.75;
+      poly([P(x,y+s,z),P(x+s,y+s,z),P(x+s,y+s,z+hh),P(x,y+s,z+hh)],f<0?`rgba(157,171,166,${0.35*a})`:`rgba(104,231,142,${0.30*a})`);
+      poly([P(x+s,y,z),P(x+s,y+s,z),P(x+s,y+s,z+hh),P(x+s,y,z+hh)],f<0?`rgba(157,171,166,${0.25*a})`:`rgba(104,231,142,${0.18*a})`);
+      poly([P(x,y,z+hh),P(x+s,y,z+hh),P(x+s,y+s,z+hh),P(x,y+s,z+hh)],f<0?`rgba(200,210,206,${0.8*a})`:(live?'#68E78E':`rgba(104,231,142,${0.65*a})`),live?'#fff':null);
+      const lp=P(x+s/2,y+s/2,z+hh+0.25);ctx.font=`${live?600:400} ${(live?12:10)*cam.scale/2}px Urbanist, system-ui`;ctx.fillStyle=live?'#F2F6F3':'#9DABA6';ctx.textAlign='center';ctx.fillText(b.name,lp[0],lp[1]);
+      if(live){ctx.font=`400 ${9*cam.scale/2}px "JetBrains Mono", monospace`;ctx.fillStyle='#68E78E';ctx.fillText(b.path,lp[0],lp[1]+11*cam.scale/2);
+        // callout to the panel: a line to the right edge
+        ctx.beginPath();ctx.moveTo(lp[0]+60,lp[1]-4);ctx.lineTo(r.width-20,lp[1]-4);ctx.strokeStyle='rgba(104,231,142,0.35)';ctx.setLineDash([4,6]);ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);}
+    });
+    // front glass
+    poly([P(bx+bw,by,0),P(bx+bw,by+bd,0),P(bx+bw,by+bd,Hnow),P(bx+bw,by,Hnow)],'rgba(255,255,255,0.035)','rgba(255,255,255,0.22)');
+    poly([P(bx,by+bd,0),P(bx+bw,by+bd,0),P(bx+bw,by+bd,Hnow),P(bx,by+bd,Hnow)],'rgba(255,255,255,0.025)','rgba(255,255,255,0.22)');
+    // crane: a thin mast and a jib over the live block
+    const m=P(bx+bw+0.8,by-0.4,0),mt=P(bx+bw+0.8,by-0.4,H+1.2);ctx.beginPath();ctx.moveTo(m[0],m[1]);ctx.lineTo(mt[0],mt[1]);ctx.strokeStyle='rgba(242,196,107,0.8)';ctx.lineWidth=2;ctx.stroke();
+    const jib=P(bx+0.5,by+0.5,H+1.2);ctx.beginPath();ctx.moveTo(mt[0],mt[1]);ctx.lineTo(jib[0],jib[1]);ctx.stroke();
+    // panel
+    const b=SHELL[cur];document.getElementById('fblock').innerHTML=`<span class="eyebrow">Block ${cur+1} of ${SHELL.length} · ${({remembers:'the ground',decides:'the Decides floor',shows:'the Shows floor',talks:'the Talks-to floor',checks:'around the building'})[b.floor]}</span><h3>${b.name}</h3><span class="path">${b.path}</span><p>${b.what}</p>`;
+    const counts={};SHELL.slice(0,laid).forEach(x=>counts[x.floor]=(counts[x.floor]||0)+1);document.querySelectorAll('#farch .fl').forEach(el=>{el.classList.toggle('on',el.dataset.f===b.floor);el.querySelector('.cnt').textContent=(counts[el.dataset.f]||0)+' block'+((counts[el.dataset.f]||0)===1?'':'s');});
+    document.getElementById('flaid').innerHTML=SHELL.map((x,i)=>`<div class="${i===cur?'on':''}"><i>${i<laid?'✓':'·'}</i>${x.name}</div>`).join('');
+    document.getElementById('f-frame').textContent=`frame ${Math.round(st.t).toLocaleString('en-IN')} of ${TOTAL.toLocaleString('en-IN')}`;document.getElementById('f-scrub').value=st.t;
+    document.getElementById('v-text').textContent=b.what;
+    requestAnimationFrame(draw);}
+  requestAnimationFrame(draw);
+  return {cam,st,turn(d){cam.o=(cam.o+d+4)%4},zoom(f){cam.scale=Math.max(1.2,Math.min(4,cam.scale*f))}};
+}
+let foundation=null;
+function startFoundation(){if(foundation)return;foundation=makeFoundation(document.getElementById('cv-found'));scenes.foundation=foundation;
+  document.getElementById('f-play').onclick=e=>{if(foundation.st.t>=2800){foundation.st.t=0;}foundation.st.playing=!foundation.st.playing;e.target.textContent=foundation.st.playing?'Pause':'Play';};
+  document.getElementById('f-scrub').oninput=e=>{foundation.st.t=+e.target.value;};
+}
+
 /* boot: scene from hash */
-const h=(location.hash||'#arena').slice(1);show(['arena','plan','film','flow','flag','ask','walk'].includes(h)?h:'arena');
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','film','flow','flag','ask','walk'].includes(h))show(h);});
+const h=(location.hash||'#arena').slice(1);show(['arena','plan','foundation','film','flow','flag','ask','walk'].includes(h)?h:'arena');
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','foundation','film','flow','flag','ask','walk'].includes(h))show(h);});
 // grey-flag scene draws the street with the flag state
 (function(){const c=document.getElementById('cv-flag');const obs=new MutationObserver(()=>{if(document.getElementById('flag').classList.contains('on')&&!scenes.flag){scenes.flag=makeStage(c,{cam:{scale:1.2},agents:[{at:'charge',name:'The Checker',vendor:'OpenAI',color:'#7CC8F0'}]});BUILDINGS.forEach(b=>{b.bricks=b.target});PLOTS.forEach(p=>{p.lit=true;p.rows=1});}});obs.observe(document.getElementById('flag'),{attributes:true});})();
 </script>
