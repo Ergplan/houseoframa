@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "524b56d952ae282729ae06b009e128607cff0a90",
+  "commit": "275a9c32f40aece4d88c30ef8da39c02157cd27d",
   "commits": [
     {
       "at": "2026-10-23T20:04:19+00:00",
@@ -14751,6 +14751,27 @@
       "sha": "524b56d952ae282729ae06b009e128607cff0a90",
       "short": "524b56d",
       "subject": "Stage 13, part 3: the trainer is called, and the film tested end to end"
+    },
+    {
+      "at": "2026-10-31T01:41:44+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "M",
+          "path": ".rama/features.json"
+        },
+        {
+          "add": 434,
+          "del": 30,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        }
+      ],
+      "sha": "275a9c32f40aece4d88c30ef8da39c02157cd27d",
+      "short": "275a9c3",
+      "subject": "Name the film's building on House of Rama's own Street"
     }
   ],
   "edges": [
@@ -32095,7 +32116,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-31T01:32:04+05:30",
+  "extractedAt": "2026-10-31T01:41:44+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -32260,12 +32281,12 @@
     {
       "binary": false,
       "bytes": 3778,
-      "changes": 3,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "97de6aa006f35cfccbfde8bfdec1467a3eda4f87",
-      "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
+      "lastCommit": "275a9c32f40aece4d88c30ef8da39c02157cd27d",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
       "lines": 97,
@@ -35000,7 +35021,7 @@
     },
     {
       "binary": false,
-      "bytes": 20637,
+      "bytes": 20667,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -35009,7 +35030,7 @@
       "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 1056,
+      "lines": 1058,
       "path": "apps/rama/components/film/film.css",
       "test": false
     },
@@ -45758,7 +45779,7 @@
     },
     {
       "binary": false,
-      "bytes": 17326,
+      "bytes": 17829,
       "changes": 2,
       "env": [],
       "envDynamic": false,
@@ -45789,7 +45810,7 @@
       "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 478,
+      "lines": 487,
       "path": "packages/workbench/src/film.ts",
       "test": false
     },
@@ -46351,7 +46372,7 @@
     },
     {
       "binary": false,
-      "bytes": 12840,
+      "bytes": 12841,
       "changes": 1,
       "env": [],
       "envDynamic": false,

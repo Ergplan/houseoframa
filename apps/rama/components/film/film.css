@@ -906,6 +906,7 @@
 }
 /* The voice */
 .film-voice {
+  grid-row: 4;
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 14px;
@@ -1045,6 +1046,7 @@
   color: var(--ink-muted);
 }
 .film-called {
+  grid-row: 2;
   display: flex;
   gap: 12px;
   align-items: center;

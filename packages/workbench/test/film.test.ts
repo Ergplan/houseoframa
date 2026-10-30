@@ -342,7 +342,7 @@ describe('the lifts', () => {
     writeFileSync(
       typingFile('bills', env),
       [
-        { at: 900, lift: 1, path: 'db/bills.ts', before: null, after: 'x' },
+        { at: 1900, lift: 1, path: 'db/bills.ts', before: null, after: 'x' },
         { at: 100, lift: 1, path: 'features/read/read.ts', before: null, after: 'x' },
       ]
         .map((e) => JSON.stringify(e))

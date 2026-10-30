@@ -385,7 +385,16 @@ export function filmOf(input: FilmInput): Film {
       };
     });
     // In the order the builder saved them; files the tail did not see keep the commit's order, after.
-    files.sort((a, b) => (a.at ?? Infinity) - (b.at ?? Infinity));
+    // Files saved in the same second (a replay lays a lift down at once) go ground first, then the
+    // rules, the screens, the checks, and the papers last, so the film builds up the way a house does.
+    const second = (f: FilmFile) => (f.at === null ? Infinity : Math.floor(f.at / 1000));
+    const rank = (f: FilmFile) =>
+      /^(\.|README)/.test(f.path)
+        ? 9
+        : ['remembers', 'decides', 'talks', 'shows', 'checks'].indexOf(f.layer);
+    files.sort(
+      (a, b) => second(a) - second(b) || rank(a) - rank(b) || a.path.localeCompare(b.path),
+    );
     const tablesLit: string[] = [];
     for (const f of files)
       for (const t of f.tables)
