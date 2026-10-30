@@ -173,7 +173,7 @@ canvas{display:block;width:100%;height:100%}
     <div class="crumb" id="crumb"><a href="#arena">Arena</a><span>›</span><span class="cur">What shall we make?</span></div>
     <div class="spacer"></div>
     <div class="scenes" id="scenes" aria-label="Reference frames">
-      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="film">Film</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
+      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="film">Film</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
     </div>
     <div class="person"><div class="avatar">MS</div><div><b style="font-weight:500">Meera Shah</b><small>customer · alone in the chair</small></div></div>
   </div>
@@ -420,7 +420,7 @@ function makeStage(canvas,opts={}){
     pipe.via.forEach(id=>{const b=BUILDINGS.find(o=>o.id===id);pts.push([b.x+b.w/2,b.y+b.d/2,0]);pts.push([b.x+b.w/2,b.y+b.d/2,1.8]);pts.push([b.x+b.w/2,b.y+b.d/2,0]);});
     const to=BUILDINGS.find(o=>o.id===pipe.to);pts.push([to.x+to.w/2,to.y+to.d/2,0]);pts.push([to.x+to.w/2,to.y+to.d/2,2.6]);pts.push([to.x+0.6,to.y+to.d,2.6]);
     const sp=pts.map(p=>P(...p));
-    ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.22)';ctx.lineWidth=10*cam.scale;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
+    ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.30)';ctx.lineWidth=12*cam.scale;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
     ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.55)';ctx.lineWidth=3*cam.scale;ctx.setLineDash([10*cam.scale,14*cam.scale]);ctx.lineDashOffset=-state.water*120;ctx.stroke();ctx.setLineDash([]);
     // the drop with its value
     const L=[];let tot=0;for(let i=1;i<sp.length;i++){const d=Math.hypot(sp[i][0]-sp[i-1][0],sp[i][1]-sp[i-1][1]);L.push(d);tot+=d;}
@@ -443,8 +443,8 @@ function makeStage(canvas,opts={}){
 
 /* ---------- Scenes ---------- */
 const scenes={};
-function show(id){document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
-  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],film:['Arena','Read my bill','The film'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
+function show(id){if(id==='flow'){show('film');jumpToStep(5);document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s==='flow'));document.getElementById('v-text').textContent='Watch the number travel: 412 units leave the bills table, become ₹3,214 in the sum, gain the fixed charge and the duty, and arrive on the screen as ₹4,312.';try{history.replaceState(null,'','#flow')}catch(e){}return;}document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
+  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
   const c=crumbs[id];document.getElementById('crumb').innerHTML=c.map((t,i)=>i<c.length-1?`<a href="#${id}">${t}</a><span>›</span>`:`<span class="cur">${t}</span>`).join('');
   const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
   document.getElementById('v-text').textContent=v[id];
@@ -578,7 +578,9 @@ function runEvent(){
 }
 document.getElementById('b-pause').onclick=e=>{film.paused=!film.paused;e.target.textContent=film.paused?'Play':'Pause';document.getElementById('voice').classList.toggle('quiet',film.paused);};
 document.getElementById('b-slower').onclick=()=>{film.speed=Math.max(.5,film.speed/1.5)};document.getElementById('b-faster').onclick=()=>{film.speed=Math.min(4,film.speed*1.5)};
-document.getElementById('b-next').onclick=()=>{clearTimeout(film.timer);const cur=SCRIPT[film.i].step;while(SCRIPT[film.i]&&SCRIPT[film.i].step===cur){const ev=SCRIPT[film.i];if(ev.bricks){BUILDINGS.find(x=>x.id===ev.bricks[0]).bricks=ev.bricks[1];}if(ev.state){BUILDINGS.find(x=>x.id===ev.state[0]).state=ev.state[1];}if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}film.i++;}runEvent();};
+function skipStep(){const cur=SCRIPT[film.i].step;while(SCRIPT[film.i]&&SCRIPT[film.i].step===cur){const ev=SCRIPT[film.i];if(ev.bricks){BUILDINGS.find(x=>x.id===ev.bricks[0]).bricks=ev.bricks[1];}if(ev.state){BUILDINGS.find(x=>x.id===ev.state[0]).state=ev.state[1];}if(ev.plot){const p=PLOTS.find(x=>x.id===ev.plot[0]);p.rows=ev.plot[1];p.lit=true;}if(ev.plots){ev.plots.forEach(([id,n])=>{const p=PLOTS.find(x=>x.id===id);p.rows=n;p.lit=true;});}if(ev.card){film.parts++;document.getElementById('partcount').textContent=film.parts;const q=document.createElement('div');q.className='part';q.innerHTML=`<div><b>${ev.card.name}</b><br><span>${ev.card.what}</span></div><span class="chip un">unconfirmed</span>`;document.getElementById('parts').prepend(q);}film.i++;}}
+function jumpToStep(n){clearTimeout(film.timer);while(SCRIPT[film.i]&&SCRIPT[film.i].step<n)skipStep();if(n>=5){scenes.film.state.flow=true;scenes.film.state.agents[0].at='show';}runEvent();}
+document.getElementById('b-next').onclick=()=>{clearTimeout(film.timer);skipStep();runEvent();};
 document.getElementById('b-replay').onclick=()=>{clearTimeout(film.timer);const cur=SCRIPT[film.i]?SCRIPT[film.i].step:7;while(film.i>0&&SCRIPT[film.i-1].step===cur)film.i--;runEvent();};
 document.getElementById('b-catch').onclick=()=>{film.speed=4;};
 
@@ -597,8 +599,8 @@ function startAsk(){if(askStarted)return;askStarted=true;const pre=document.getE
 }
 
 /* boot: scene from hash */
-const h=(location.hash||'#arena').slice(1);show(['arena','plan','film','flag','ask','walk'].includes(h)?h:'arena');
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','film','flag','ask','walk'].includes(h))show(h);});
+const h=(location.hash||'#arena').slice(1);show(['arena','plan','film','flow','flag','ask','walk'].includes(h)?h:'arena');
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','film','flow','flag','ask','walk'].includes(h))show(h);});
 // grey-flag scene draws the street with the flag state
 (function(){const c=document.getElementById('cv-flag');const obs=new MutationObserver(()=>{if(document.getElementById('flag').classList.contains('on')&&!scenes.flag){scenes.flag=makeStage(c,{cam:{scale:1.2},agents:[{at:'charge',name:'The Checker',vendor:'OpenAI',color:'#7CC8F0'}]});BUILDINGS.forEach(b=>{b.bricks=b.target});PLOTS.forEach(p=>{p.lit=true;p.rows=1});}});obs.observe(document.getElementById('flag'),{attributes:true});})();
 </script>
