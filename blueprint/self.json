@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+  "commit": "524b56d952ae282729ae06b009e128607cff0a90",
   "commits": [
     {
       "at": "2026-10-23T20:04:19+00:00",
@@ -14616,6 +14616,141 @@
       "sha": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
       "short": "05ab55f",
       "subject": "Stage 13, part 2: the builder's own words, as it works, play in the film"
+    },
+    {
+      "at": "2026-10-31T01:32:04+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 2,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/app/film/[siteId]/page.tsx"
+        },
+        {
+          "add": 29,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/app/page.tsx"
+        },
+        {
+          "add": 14,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/film/FilmPlayer.tsx"
+        },
+        {
+          "add": 12,
+          "del": 1,
+          "kind": "M",
+          "path": "apps/rama/components/film/film.css"
+        },
+        {
+          "add": 230,
+          "del": 45,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 4,
+          "del": 2,
+          "kind": "M",
+          "path": "docs/ARCHITECTURE.md"
+        },
+        {
+          "add": 6,
+          "del": 0,
+          "kind": "M",
+          "path": "docs/KNOWN-GAPS.md"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/arena.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/build.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/design.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/flag.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/foundation.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/ground.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/plan.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/try.png"
+        },
+        {
+          "add": null,
+          "del": null,
+          "kind": "A",
+          "path": "docs/reports/stage-13/walk.png"
+        },
+        {
+          "add": 9,
+          "del": 4,
+          "kind": "M",
+          "path": "packages/workbench/src/build.ts"
+        },
+        {
+          "add": 76,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/workbench/src/calls.ts"
+        },
+        {
+          "add": 1,
+          "del": 0,
+          "kind": "M",
+          "path": "packages/workbench/src/index.ts"
+        },
+        {
+          "add": 39,
+          "del": 0,
+          "kind": "A",
+          "path": "packages/workbench/test/calls.test.ts"
+        },
+        {
+          "add": 199,
+          "del": 0,
+          "kind": "A",
+          "path": "tests/stage-13.e2e.test.ts"
+        }
+      ],
+      "sha": "524b56d952ae282729ae06b009e128607cff0a90",
+      "short": "524b56d",
+      "subject": "Stage 13, part 3: the trainer is called, and the film tested end to end"
     }
   ],
   "edges": [
@@ -28060,6 +28195,15 @@
     {
       "from": "packages/workbench/src/build.ts",
       "symbols": [
+        "answerCalls",
+        "callTrainer"
+      ],
+      "to": "packages/workbench/src/calls.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/build.ts",
+      "symbols": [
         "figuresOfBlock",
         "productFigures"
       ],
@@ -28257,6 +28401,14 @@
         "BuilderNotWired"
       ],
       "to": "packages/workbench/src/builders/types.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/calls.ts",
+      "symbols": [
+        "workDir"
+      ],
+      "to": "packages/blueprint/src/site.ts",
       "typeOnly": false
     },
     {
@@ -28581,6 +28733,14 @@
         "*"
       ],
       "to": "packages/workbench/src/builders/index.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/src/index.ts",
+      "symbols": [
+        "*"
+      ],
+      "to": "packages/workbench/src/calls.ts",
       "typeOnly": false
     },
     {
@@ -29312,6 +29472,16 @@
         "BUILDER_OPTIONS"
       ],
       "to": "packages/workbench/src/seats.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/calls.test.ts",
+      "symbols": [
+        "answerCalls",
+        "callTrainer",
+        "openCalls"
+      ],
+      "to": "packages/workbench/src/calls.ts",
       "typeOnly": false
     },
     {
@@ -30396,6 +30566,43 @@
         "wordsOn"
       ],
       "to": "tests/words.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-13.e2e.test.ts",
+      "symbols": [
+        "bannedIn"
+      ],
+      "to": "apps/rama/test/banned.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-13.e2e.test.ts",
+      "symbols": [
+        "dropSandboxes"
+      ],
+      "to": "packages/workbench/src/ground.ts",
+      "typeOnly": false
+    },
+    {
+      "english": {
+        "confirmed": false,
+        "text": "the shape of a running dev server with its address, output and stop control; starting a dev server on a free port"
+      },
+      "from": "tests/stage-13.e2e.test.ts",
+      "symbols": [
+        "DevServer",
+        "startDevServer"
+      ],
+      "to": "tests/dev-server.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "tests/stage-13.e2e.test.ts",
+      "symbols": [
+        "throwawayDb"
+      ],
+      "to": "tests/session.ts",
       "typeOnly": false
     },
     {
@@ -31888,7 +32095,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-31T01:05:20+05:30",
+  "extractedAt": "2026-10-31T01:32:04+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -32052,7 +32259,7 @@
     },
     {
       "binary": false,
-      "bytes": 3414,
+      "bytes": 3778,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -32061,7 +32268,7 @@
       "lastCommit": "b9884f93761b6824b203ce8e8dd144337cce6315",
       "layer": "foundation",
       "layerRule": "overlay: repo config, CI and scripts",
-      "lines": 91,
+      "lines": 97,
       "path": ".rama/features.json",
       "test": false
     },
@@ -34093,7 +34300,7 @@
     {
       "binary": false,
       "bytes": 3698,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -34101,7 +34308,7 @@
         "dynamic"
       ],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 103,
@@ -34237,7 +34444,7 @@
     {
       "binary": false,
       "bytes": 10539,
-      "changes": 7,
+      "changes": 8,
       "env": [
         "GIT_SHA"
       ],
@@ -34247,7 +34454,7 @@
         "dynamic"
       ],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 289,
@@ -34735,7 +34942,7 @@
     {
       "binary": false,
       "bytes": 62806,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -34744,7 +34951,7 @@
         "FilmScene"
       ],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 1743,
@@ -34794,12 +35001,12 @@
     {
       "binary": false,
       "bytes": 20637,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
       "lines": 1056,
@@ -36769,12 +36976,12 @@
     {
       "binary": false,
       "bytes": 102922,
-      "changes": 27,
+      "changes": 28,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 265,
@@ -36856,12 +37063,12 @@
     {
       "binary": false,
       "bytes": 26965,
-      "changes": 26,
+      "changes": 27,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
-      "lastCommit": "acc2c3c851405bbd9f027114b0cff021c8b232da",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 88,
@@ -37250,6 +37457,141 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 0,
       "path": "docs/reports/stage-11/walk-through.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 263678,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/arena.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 584622,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/build.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 685544,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/design.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 501699,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/flag.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 529741,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/foundation.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 641343,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/ground.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 779554,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/plan.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 642310,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/try.png",
+      "test": false
+    },
+    {
+      "binary": true,
+      "bytes": 324917,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 0,
+      "path": "docs/reports/stage-13/walk.png",
       "test": false
     },
     {
@@ -45182,7 +45524,7 @@
     {
       "binary": false,
       "bytes": 20449,
-      "changes": 7,
+      "changes": 8,
       "env": [
         "HOME",
         "PATH"
@@ -45206,7 +45548,7 @@
         "startBuild"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
-      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 521,
@@ -45331,6 +45673,26 @@
         "zod"
       ],
       "path": "packages/workbench/src/builders/types.ts",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2556,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [
+        "TrainerCall",
+        "answerCalls",
+        "callTrainer",
+        "openCalls"
+      ],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 76,
+      "path": "packages/workbench/src/calls.ts",
       "test": false
     },
     {
@@ -45569,14 +45931,14 @@
     {
       "binary": false,
       "bytes": 704,
-      "changes": 8,
+      "changes": 9,
       "env": [],
       "envDynamic": false,
       "exports": [
         "*"
       ],
       "firstCommit": "16ab2e2befeb0183f4dac5e5f36422e952828986",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 24,
@@ -45921,6 +46283,24 @@
         "vitest"
       ],
       "path": "packages/workbench/test/builders.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
+      "bytes": 1810,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 39,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/calls.test.ts",
       "test": true
     },
     {
@@ -47742,6 +48122,27 @@
     },
     {
       "binary": false,
+      "bytes": 9146,
+      "changes": 1,
+      "env": [
+        "RAMA_SHOTS"
+      ],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 199,
+      "packages": [
+        "playwright",
+        "vitest"
+      ],
+      "path": "tests/stage-13.e2e.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 8202,
       "changes": 4,
       "env": [
@@ -48178,6 +48579,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -48480,6 +48882,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -48724,6 +49127,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -48905,6 +49309,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -49071,6 +49476,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -49235,6 +49641,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -49402,6 +49809,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -49569,6 +49977,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -49736,6 +50145,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -49888,6 +50298,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -50054,6 +50465,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -50192,6 +50604,7 @@
         "packages/workbench/src/builders/recorded.ts",
         "packages/workbench/src/builders/stubs.ts",
         "packages/workbench/src/builders/types.ts",
+        "packages/workbench/src/calls.ts",
         "packages/workbench/src/code.ts",
         "packages/workbench/src/explain.ts",
         "packages/workbench/src/film.ts",
@@ -52340,15 +52753,6 @@
     }
   ],
   "tags": [],
-  "unresolved": [
-    {
-      "from": "packages/workbench/src/build.ts",
-      "spec": "./calls.ts"
-    },
-    {
-      "from": "packages/workbench/src/index.ts",
-      "spec": "./calls.ts"
-    }
-  ],
+  "unresolved": [],
   "worktree": true
 }

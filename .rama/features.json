@@ -31,6 +31,12 @@
       "screens": ["apps/rama/app:/site/[siteId]", "apps/rama/app:/site/[siteId]/care"]
     },
     {
+      "id": "watch-the-film",
+      "name": "Watch it built, as a film",
+      "does": "Plays a product's build to a person who does not write code: the plan, the design, the foundation, each file written with the builder's own words, the product's own code running, the ground, and the signatures.",
+      "screens": ["apps/rama/app:/film/[siteId]"]
+    },
+    {
       "id": "agree-what-to-build",
       "name": "Agree what to build",
       "does": "Writes down each decision as a card that is decided only by a named yes.",
