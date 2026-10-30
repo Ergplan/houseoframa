@@ -97,6 +97,16 @@ canvas{display:block;width:100%;height:100%}
 .act .what{font:500 12px/16px var(--mono);color:var(--ink)}.act .own{margin-left:auto;color:var(--ink-faint);font-size:11px;white-space:nowrap}
 .act details{color:var(--ink-muted)}.act summary{cursor:pointer;color:var(--accent);font-size:12px;list-style:none}.act summary::before{content:'▸ '}.act details[open] summary::before{content:'▾ '}
 .act pre{margin:6px 0 0;font:400 11px/16px var(--mono);white-space:pre-wrap;color:var(--ink-muted);padding:8px 10px;border-radius:8px;background:var(--canvas)}
+/* RUN: the product's own code, firing */
+#run{grid-template-columns:1fr 460px;grid-template-rows:auto 1fr auto;gap:14px}
+.runhead{grid-column:1/-1;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.runhead .file{border-style:solid}
+.trace{display:grid;gap:6px;overflow:auto;align-content:start}
+.tr{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:10px 12px;border-radius:var(--r-sm);background:var(--glass);border:1px solid var(--line);opacity:.45}
+.tr.on{opacity:1;background:var(--accent-soft);border-color:transparent}.tr.done{opacity:1}
+.tr i{font-style:normal;width:24px;height:24px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--accent)}
+.tr .where{font:500 11px/14px var(--mono);color:var(--ink-muted)}.tr .en{font-size:14px;line-height:20px}.tr .val{font:500 12px/16px var(--mono);color:var(--accent);margin-top:2px}
+.runbar{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 /* FOUNDATION (time-lapse) */
 #foundation{grid-template-columns:1fr 440px;grid-template-rows:1fr auto;gap:14px}
 .explain{display:grid;grid-template-rows:auto auto 1fr;gap:14px;min-height:0}
@@ -203,7 +213,7 @@ canvas{display:block;width:100%;height:100%}
     <div class="crumb" id="crumb"><a href="#arena">Arena</a><span>›</span><span class="cur">What shall we make?</span></div>
     <div class="spacer"></div>
     <div class="scenes" id="scenes" aria-label="Reference frames">
-      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="design">Design</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
+      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="design">Design</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="run">Try it</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
     </div>
     <div class="person"><div class="avatar">MS</div><div><b style="font-weight:500">Meera Shah</b><small>customer · alone in the chair</small></div></div>
   </div>
@@ -249,6 +259,19 @@ canvas{display:block;width:100%;height:100%}
         <div class="ditem" data-k="gate"><i>6</i><div><h4>A gate at the door, a checker from another company</h4><p>Nothing changes without a test behind it and your signature on the screen. The Checker is not the Builder and signs its own report.</p></div></div>
         <div class="plan-actions"><button class="btn lit" data-go="foundation">Yes, build it like this</button><button class="btn">Change the design</button></div>
       </div>
+    </section>
+
+    <!-- RUN: drop a bill into the finished product and watch its code fire -->
+    <section class="scene" id="run" data-stage="run">
+      <div class="runhead"><span class="eyebrow">Try it · the product, not the Builder</span><span class="file">📄 <b>bill-oct-2026.pdf</b> dropped on the screen</span><span class="chip ok">Your product’s code is running · slowed to reading pace</span></div>
+      <div class="canvas-wrap"><canvas id="cv-run"></canvas>
+        <div class="cam"><button class="btn" data-cam="left">↺ Turn left</button><button class="btn" data-cam="right">Turn right ↻</button><button class="btn" data-cam="in">+ Closer</button><button class="btn" data-cam="out">− Further</button></div>
+      </div>
+      <div class="right" style="grid-template-rows:minmax(0,1fr) minmax(0,1fr)">
+        <div class="code"><header><span class="chip ok" id="run-state">Running</span><span class="path" id="runpath">app/bill/page.tsx</span><span class="in" id="runin">· the line that is running is lit</span></header><pre id="runpre"></pre></div>
+        <div class="acts-log"><div class="eyebrow">What fired, in order · each line of your product that ran, with what it produced</div><div class="trace" id="runtrace"></div></div>
+      </div>
+      <div class="runbar"><button class="btn" id="r-pause">Pause</button><button class="btn" id="r-step">Next line</button><button class="btn" id="r-again">Run it again</button><span class="pace" id="r-pace">Step 1 of 9 · the bill arrives at the screen</span><span class="spacer"></span><span class="chip">0.8 seconds of real time, played over 40</span></div>
     </section>
 
     <!-- FOUNDATION: the shell laid block by block, filmed from the ground -->
@@ -436,7 +459,7 @@ function makeStage(canvas,opts={}){
       label(p.rows?`${p.rows} row${p.rows>1?'s':''}`:'empty',p.x+p.w/2,p.y+p.d/2+0.5,-0.02,10,'#5E6C68',400);
     });
     // pipes
-    if(state.flow){PIPES.forEach(pipe=>drawPipe(pipe));}
+    if(state.flow){(state.pipes||PIPES).forEach(pipe=>drawPipe(pipe));}
     // buildings sorted by depth
     const objs=[...BUILDINGS].sort((a,b)=>depth(a)-depth(b));
     objs.forEach(b=>drawBuilding(b));
@@ -485,18 +508,18 @@ function makeStage(canvas,opts={}){
     ctx.font=`500 ${11*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle=col;ctx.fillText('▶ '+st+(b.bricks<b.target&&b.bricks>0?` · ${b.bricks} of ${b.target} parts`:''),lx,ly+15*Math.min(cam.scale,1.3));
   }
   function drawPipe(pipe){
-    const pts=[];const plot=PLOTS.find(p=>p.id===pipe.from);pts.push([plot.x+plot.w/2,plot.y+plot.d/2,-0.02]);
+    const pts=[];if(pipe.points){pipe.points.forEach(q=>pts.push(q));}else{const plot=PLOTS.find(p=>p.id===pipe.from);pts.push([plot.x+plot.w/2,plot.y+plot.d/2,-0.02]);
     pipe.via.forEach(id=>{const b=BUILDINGS.find(o=>o.id===id);pts.push([b.x+b.w/2,b.y+b.d/2,0]);pts.push([b.x+b.w/2,b.y+b.d/2,1.8]);pts.push([b.x+b.w/2,b.y+b.d/2,0]);});
-    const to=BUILDINGS.find(o=>o.id===pipe.to);pts.push([to.x+to.w/2,to.y+to.d/2,0]);pts.push([to.x+to.w/2,to.y+to.d/2,2.6]);pts.push([to.x+0.6,to.y+to.d,2.6]);
+    const to=BUILDINGS.find(o=>o.id===pipe.to);pts.push([to.x+to.w/2,to.y+to.d/2,0]);pts.push([to.x+to.w/2,to.y+to.d/2,2.6]);pts.push([to.x+0.6,to.y+to.d,2.6]);}
     const sp=pts.map(p=>P(...p));
     ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.30)';ctx.lineWidth=12*cam.scale;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
     ctx.beginPath();sp.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle='rgba(104,231,142,0.55)';ctx.lineWidth=3*cam.scale;ctx.setLineDash([10*cam.scale,14*cam.scale]);ctx.lineDashOffset=-state.water*120;ctx.stroke();ctx.setLineDash([]);
     // the drop with its value
     const L=[];let tot=0;for(let i=1;i<sp.length;i++){const d=Math.hypot(sp[i][0]-sp[i-1][0],sp[i][1]-sp[i-1][1]);L.push(d);tot+=d;}
-    let u=(state.water*0.12)%1*tot,i=0;while(i<L.length-1&&u>L[i]){u-=L[i];i++;}
+    let u=(pipe.at!=null?Math.min(0.999,pipe.at):(state.water*0.12)%1)*tot,i=0;while(i<L.length-1&&u>L[i]){u-=L[i];i++;}
     const f=L[i]?u/L[i]:0,dx=sp[i][0]+(sp[i+1][0]-sp[i][0])*f,dy=sp[i][1]+(sp[i+1][1]-sp[i][1])*f;
     ctx.beginPath();ctx.arc(dx,dy,7*cam.scale,0,7);ctx.fillStyle='#68E78E';ctx.shadowColor='rgba(104,231,142,0.8)';ctx.shadowBlur=18;ctx.fill();ctx.shadowBlur=0;
-    const stepIdx=Math.min(pipe.steps.length-1,Math.floor(i/ (sp.length/pipe.steps.length)));
+    const stepIdx=pipe.stepIdx!=null?pipe.stepIdx:Math.min(pipe.steps.length-1,Math.floor(i/ (sp.length/pipe.steps.length)));
     ctx.font=`500 ${12*Math.min(cam.scale,1.3)}px Urbanist, system-ui`;ctx.fillStyle='#F2F6F3';ctx.textAlign='left';ctx.fillText(pipe.steps[stepIdx],dx+12,dy-10);
   }
   function drawAgent(a){const b=BUILDINGS.find(o=>o.id===a.at);if(!b)return;const [sx,sy]=P(b.x+b.w+0.5,b.y+b.d+0.4,0);
@@ -513,11 +536,11 @@ function makeStage(canvas,opts={}){
 /* ---------- Scenes ---------- */
 const scenes={};
 function show(id){if(id==='flow'){show('film');jumpToStep(5);document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s==='flow'));document.getElementById('v-text').textContent='Watch the number travel: 412 units leave the bills table, become ₹3,214 in the sum, gain the fixed charge and the duty, and arrive on the screen as ₹4,312.';try{history.replaceState(null,'','#flow')}catch(e){}return;}document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
-  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],design:['Arena','Read my bill','The design'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
+  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],design:['Arena','Read my bill','The design'],run:['Arena','Read my bill','Try it · a bill goes in'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
   const c=crumbs[id];document.getElementById('crumb').innerHTML=c.map((t,i)=>i<c.length-1?`<a href="#${id}">${t}</a><span>›</span>`:`<span class="cur">${t}</span>`).join('');
-  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',design:'Before a single block, the design. Three glass buildings, four floors each, the database as the ground, the web across the water, pipes for every number, and a gate at the door. Shall I build it like this?',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
+  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',run:'You dropped October’s bill on the screen. Watch your product read it: this is its own code running, one line at a time, slowed down so you can follow.',design:'Before a single block, the design. Three glass buildings, four floors each, the database as the ground, the web across the water, pipes for every number, and a gate at the door. Shall I build it like this?',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
   document.getElementById('v-text').textContent=v[id];
-  if(id==='plan')startPlan();if(id==='design')startDesign();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
+  if(id==='plan')startPlan();if(id==='design')startDesign();if(id==='run')startRun();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
   try{history.replaceState(null,'','#'+id)}catch(e){}
 }
 document.querySelectorAll('#scenes button').forEach(b=>b.onclick=()=>show(b.dataset.s));
@@ -743,6 +766,41 @@ function makeFoundation(canvas){
   requestAnimationFrame(draw);
   return {cam,st,turn(d){cam.o=(cam.o+d+4)%4},zoom(f){cam.scale=Math.max(1.2,Math.min(4,cam.scale*f))}};
 }
+/* RUN: the product's own code path when a bill is dropped in, instrumented in the sandbox */
+const RUN=[
+ {file:'app/bill/page.tsx',line:5,where:'Shows floor · the screen',en:'The screen receives the file you dropped and hands it to the reader.',val:'file = bill-oct-2026.pdf · 1 page · 212 KB',pipe:0},
+ {file:'features/read-the-bill/read.ts',line:7,where:'Decides floor · the reader',en:'readBill starts with the file.',val:'readBill(file)',pipe:1},
+ {file:'features/read-the-bill/read.ts',line:8,where:'Decides floor · the reader',en:'The PDF is turned into plain text.',val:'text = 1,198 characters',pipe:2},
+ {file:'features/read-the-bill/read.ts',line:9,where:'Decides floor · the reader',en:'The units are picked out after the word “Units” and marked as a figure.',val:'units = 398   ← figure units-used',pipe:3},
+ {file:'features/read-the-bill/read.ts',line:10,where:'Decides floor · the reader',en:'The amount is picked out after “Amount” and marked as a figure. The comma is removed first — the fix from step 7.',val:'amount = 4160   ← figure amount-printed',pipe:4},
+ {file:'features/read-the-bill/read.ts',line:11,where:'Decides floor · the reader',en:'The dates are read and the six values are handed back together.',val:'{ units: 398, amount: 4160, from: 1 Oct, to: 31 Oct }',pipe:5},
+ {file:'features/keep-it/save.ts',line:4,where:'Remembers floor · the pipe to the ground',en:'The six values are written as one new row in the bills table. Nothing is overwritten.',val:'INSERT INTO bills … → row #2',pipe:6},
+ {file:'db · bills',line:0,where:'The ground · table bills',en:'The table now holds two bills.',val:'bills: 2 rows',pipe:7},
+ {file:'app/bill/page.tsx',line:8,where:'Shows floor · the screen',en:'The screen reads the newest row and shows the figures, each pointing back at the line of the bill it came from.',val:'398 kWh · ₹4,160 · due 15 Nov',pipe:8}
+];
+const RUNFILES={'app/bill/page.tsx':FILES['app/bill/page.tsx'],'features/read-the-bill/read.ts':FILES['features/read-the-bill/read.ts'],
+ 'features/keep-it/save.ts':[`<span class="k">import</span> { db, bills } <span class="k">from</span> <span class="s">'../../db/client'</span>;`,``,`<span class="c">// One new row per bill read. A re-read is a new row, never an update.</span>`,`<span class="k">export async function</span> <span class="f">saveBill</span>(b) { <span class="k">return</span> db.insert(bills).values(b).returning(); }`],
+ 'db · bills':[`<span class="c">bills</span>`,`<span class="c">id  consumer_no      units  amount  from        to</span>`,`1   4123 7788 0021   412    4290    2026-09-01  2026-09-30`,`<span class="n">2   4123 7788 0021   398    4160    2026-10-01  2026-10-31</span>`]};
+let run=null;
+function startRun(){if(run){return;}
+  const stage=makeStage(document.getElementById('cv-run'),{cam:{scale:1.3},flow:true});scenes.run=stage;
+  BUILDINGS.forEach(b=>{b.bricks=b.target;b.state='Confirmed';});PLOTS.forEach(p=>{p.lit=true;p.rows=p.id==='bills'?1:1;});
+  const sh=BUILDINGS.find(b=>b.id==='show'),rd=BUILDINGS.find(b=>b.id==='read'),pl=PLOTS.find(p=>p.id==='bills');
+  const path=[[sh.x+0.6,sh.y+sh.d,2.6],[sh.x+sh.w/2,sh.y+sh.d/2,2.6],[sh.x+sh.w/2,sh.y+sh.d/2,0.1],[rd.x+rd.w/2,rd.y+rd.d/2,0.1],[rd.x+rd.w/2,rd.y+rd.d/2,1.3],[rd.x+rd.w/2,rd.y+rd.d/2,0.6],[pl.x+pl.w/2,pl.y+pl.d/2,-0.02],[sh.x+sh.w/2,sh.y+sh.d/2,0.1],[sh.x+0.6,sh.y+sh.d,2.6]];
+  const pipe={points:path,steps:RUN.map(r=>r.val),at:0,stepIdx:0};stage.state.pipes=[pipe];
+  run={i:0,paused:false,timer:null};
+  const tr=document.getElementById('runtrace');tr.innerHTML=RUN.map((r,i)=>`<div class="tr" id="tr${i}"><i>${i+1}</i><div><div class="where">${r.file}${r.line?' · line '+r.line:''} · ${r.where}</div><div class="en">${r.en}</div><div class="val">${r.val}</div></div></div>`).join('');
+  function showLine(r){const pre=document.getElementById('runpre');document.getElementById('runpath').textContent=r.file;pre.innerHTML='';(RUNFILES[r.file]||[]).forEach((l,k)=>{const d=document.createElement('div');d.className='ln'+(k+1===r.line?' hi':'');d.innerHTML=l||'&nbsp;';pre.appendChild(d);});}
+  function tick(){if(run.paused){run.timer=setTimeout(tick,150);return;}const r=RUN[run.i];if(!r){document.getElementById('run-state').textContent='Done · 9 lines ran';document.getElementById('r-pace').textContent='Done · October’s bill is on the screen and in the ground';return;}
+    document.querySelectorAll('.tr').forEach((el,k)=>{el.classList.toggle('on',k===run.i);el.classList.toggle('done',k<run.i);});document.getElementById('tr'+run.i).scrollIntoView({block:'nearest'});
+    showLine(r);pipe.at=run.i/(RUN.length-1)*0.999;pipe.stepIdx=run.i;if(run.i===7){pl.rows=2;}
+    document.getElementById('r-pace').textContent=`Step ${run.i+1} of ${RUN.length} · ${r.en}`;document.getElementById('v-text').textContent=r.en;
+    run.i++;run.timer=setTimeout(tick,4200);}
+  tick();
+  document.getElementById('r-pause').onclick=e=>{run.paused=!run.paused;e.target.textContent=run.paused?'Play':'Pause';};
+  document.getElementById('r-step').onclick=()=>{clearTimeout(run.timer);run.paused=false;tick();run.paused=true;document.getElementById('r-pause').textContent='Play';};
+  document.getElementById('r-again').onclick=()=>{clearTimeout(run.timer);run.i=0;run.paused=false;pl.rows=1;document.getElementById('run-state').textContent='Running';document.getElementById('r-pause').textContent='Pause';tick();};
+}
 let design=null;
 function startDesign(){if(design)return;design=makeStage(document.getElementById('cv-design'),{cam:{scale:1.2},flow:true});scenes.design=design;
   const items=[...document.querySelectorAll('#design .ditem')];let k=0;(function nxt(){items.forEach((el,i)=>el.classList.toggle('on',i===k));const el=items[k];if(el){document.getElementById('v-text').textContent=el.querySelector('h4').textContent+'. '+el.querySelector('p').textContent;}k++;if(k<=items.length)setTimeout(nxt,3600);})();
@@ -754,8 +812,8 @@ function startFoundation(){if(foundation)return;foundation=makeFoundation(docume
 }
 
 /* boot: scene from hash */
-const h=(location.hash||'#arena').slice(1);show(['arena','plan','design','foundation','film','flow','flag','ask','walk'].includes(h)?h:'arena');
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','design','foundation','film','flow','flag','ask','walk'].includes(h))show(h);});
+const h=(location.hash||'#arena').slice(1);show(['arena','plan','design','foundation','film','run','flow','flag','ask','walk'].includes(h)?h:'arena');
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','design','foundation','film','run','flow','flag','ask','walk'].includes(h))show(h);});
 // grey-flag scene draws the street with the flag state
 (function(){const c=document.getElementById('cv-flag');const obs=new MutationObserver(()=>{if(document.getElementById('flag').classList.contains('on')&&!scenes.flag){scenes.flag=makeStage(c,{cam:{scale:1.2},agents:[{at:'charge',name:'The Checker',vendor:'OpenAI',color:'#7CC8F0'}]});BUILDINGS.forEach(b=>{b.bricks=b.target});PLOTS.forEach(p=>{p.lit=true;p.rows=1});}});obs.observe(document.getElementById('flag'),{attributes:true});})();
 </script>
