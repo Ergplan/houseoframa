@@ -107,6 +107,30 @@ canvas{display:block;width:100%;height:100%}
 .tr i{font-style:normal;width:24px;height:24px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--accent)}
 .tr .where{font:500 11px/14px var(--mono);color:var(--ink-muted)}.tr .en{font-size:14px;line-height:20px}.tr .val{font:500 12px/16px var(--mono);color:var(--accent);margin-top:2px}
 .runbar{grid-column:1/-1;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+/* THE GROUND: what a database is, for a non-coder */
+#ground{grid-template-columns:1fr 420px;gap:14px}
+.gstage{position:relative;border-radius:var(--r-xl);background:radial-gradient(80% 70% at 50% 40%,#0A1826 0%,var(--charcoal) 70%);border:1px solid var(--line);box-shadow:var(--edge);overflow:hidden;display:grid;grid-template-rows:auto 1fr;padding:20px 24px;gap:12px;min-height:0}
+.gbld{display:flex;gap:14px;justify-content:center}
+.gb{display:grid;gap:4px;justify-items:center;padding:10px 16px;border-radius:var(--r-md);background:var(--glass);border:1px solid var(--line);min-width:150px;transition:.3s}
+.gb b{font-weight:500}.gb small{color:var(--ink-muted);font-size:11px}.gb.on{background:var(--accent-soft);border-color:transparent;box-shadow:var(--shadow-glow)}
+.gmain{position:relative;display:grid;grid-template-rows:1fr auto;gap:10px;min-height:0}
+svg.pipes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.slab{align-self:center;margin:60px auto 0;width:min(100%,900px);padding:16px 18px 18px;border-radius:var(--r-lg);background:rgba(104,231,142,0.06);border:1px solid rgba(104,231,142,0.45);box-shadow:0 30px 60px -30px rgba(104,231,142,0.35),var(--edge);display:grid;gap:10px}
+.slab .ttl{display:flex;gap:10px;align-items:baseline}.slab .ttl b{font:400 22px/28px var(--sans)}.slab .ttl span{color:var(--ink-muted);font-size:13px}
+.grid{display:grid;grid-template-columns:40px 1.1fr 1fr 1fr 1fr 1.2fr;gap:4px}
+.cell{padding:8px 10px;border-radius:10px;background:rgba(0,11,26,0.6);font:400 13px/18px var(--sans);min-height:36px;display:grid;align-content:center;border:1px solid transparent;transition:.3s}
+.cell.h{background:transparent;display:grid;gap:1px}.cell.h b{font-weight:500;font-size:13px}.cell.h small{font:400 10px/12px var(--mono);color:var(--ink-faint)}
+.cell.w{border-color:rgba(104,231,142,0.7);background:var(--accent-soft)}.cell.r{border-color:rgba(124,200,240,0.7)}.cell.new{animation:born 1s}
+.cell .by{display:block;font-size:10px;color:var(--ink-muted)}
+.cell.id{color:var(--ink-faint);font-family:var(--mono);font-size:12px}
+.plots{display:flex;gap:10px;justify-content:center}
+.plot{padding:10px 18px;border-radius:14px;border:1px dashed var(--line-strong);color:var(--ink-muted);font-size:13px;display:grid;gap:2px;justify-items:center}
+.plot b{font-weight:500;color:var(--ink);font-family:var(--mono);font-size:13px}.plot.on{border-style:solid;border-color:rgba(104,231,142,0.6);color:var(--ink);background:var(--accent-soft)}
+.gl{display:grid;gap:8px;align-content:start;overflow:auto}
+.gl .ditem{cursor:pointer}
+.matrix{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:3px;font-size:12px}
+.matrix div{padding:6px 8px;border-radius:8px;background:var(--glass)}.matrix .hh{color:var(--ink-muted);font-weight:500;background:transparent}.matrix .W{color:var(--accent);background:var(--accent-soft)}.matrix .R{color:#7CC8F0}.matrix .N{color:var(--ink-faint)}
+.audit{font:400 11px/16px var(--mono);color:var(--ink-muted);padding:10px 12px;border-radius:10px;background:var(--canvas);border:1px solid var(--line)}
 /* FOUNDATION (time-lapse) */
 #foundation{grid-template-columns:1fr 440px;grid-template-rows:1fr auto;gap:14px}
 .explain{display:grid;grid-template-rows:auto auto 1fr;gap:14px;min-height:0}
@@ -213,7 +237,7 @@ canvas{display:block;width:100%;height:100%}
     <div class="crumb" id="crumb"><a href="#arena">Arena</a><span>›</span><span class="cur">What shall we make?</span></div>
     <div class="spacer"></div>
     <div class="scenes" id="scenes" aria-label="Reference frames">
-      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="design">Design</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="run">Try it</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
+      <button data-s="arena" class="on">Arena</button><button data-s="plan">Plan</button><button data-s="design">Design</button><button data-s="foundation">Foundation</button><button data-s="film">Film</button><button data-s="run">Try it</button><button data-s="ground">The ground</button><button data-s="flow">Flow</button><button data-s="flag">Grey flag</button><button data-s="ask">Ask the code</button><button data-s="walk">Walk through</button>
     </div>
     <div class="person"><div class="avatar">MS</div><div><b style="font-weight:500">Meera Shah</b><small>customer · alone in the chair</small></div></div>
   </div>
@@ -272,6 +296,41 @@ canvas{display:block;width:100%;height:100%}
         <div class="acts-log"><div class="eyebrow">What fired, in order · each line of your product that ran, with what it produced</div><div class="trace" id="runtrace"></div></div>
       </div>
       <div class="runbar"><button class="btn" id="r-pause">Pause</button><button class="btn" id="r-step">Next line</button><button class="btn" id="r-again">Run it again</button><span class="pace" id="r-pace">Step 1 of 9 · the bill arrives at the screen</span><span class="spacer"></span><span class="chip">0.8 seconds of real time, played over 40</span></div>
+    </section>
+
+    <!-- THE GROUND: what a database is, how data moves in pipes, which part changes what -->
+    <section class="scene" id="ground" data-stage="ground">
+      <div class="gstage">
+        <div class="gbld">
+          <div class="gb" data-b="read"><b>Read the bill</b><small>writes 4 columns</small></div>
+          <div class="gb" data-b="keep"><b>Keep it</b><small>adds the row</small></div>
+          <div class="gb" data-b="charge"><b>Work out the charge</b><small>reads 1 · writes to charges</small></div>
+          <div class="gb" data-b="show"><b>Show the bill</b><small>reads only</small></div>
+        </div>
+        <div class="gmain">
+          <svg class="pipes" id="gpipes" viewBox="0 0 1000 500" preserveAspectRatio="none"></svg>
+          <div class="slab" id="gslab">
+            <div class="ttl"><b>bills</b><span>one row per bill · six things about each · <span id="g-rows">1 row</span></span></div>
+            <div class="grid" id="ggrid"></div>
+          </div>
+          <div class="plots"><div class="plot on" data-p="bills"><b>bills</b><span>1 row</span></div><div class="plot" data-p="tariffs"><b>tariffs</b><span>1 row</span></div><div class="plot" data-p="charges"><b>charges</b><span>1 row</span></div><div class="plot" data-p="audit"><b>audit_log</b><span>every write, who and when</span></div></div>
+        </div>
+      </div>
+      <div class="gl" id="glist">
+        <div><div class="eyebrow">The ground · in plain words</div><h2 class="plan-h">Where your data lives, and who may touch it.</h2></div>
+        <div class="ditem" data-k="1"><i>1</i><div><h4>A database is the ground under the buildings</h4><p>It is made of tables. Your product has three: bills, tariffs, charges — plus one the ground keeps for itself, the audit log.</p></div></div>
+        <div class="ditem" data-k="2"><i>2</i><div><h4>A table is a sheet</h4><p>One row per bill. One column per thing you want to keep about it: units, amount, the period, who wrote it and when.</p></div></div>
+        <div class="ditem" data-k="3"><i>3</i><div><h4>Data moves through pipes</h4><p>A building writes down a pipe into a column; a building reads up a pipe from a column. Green pipes write, blue pipes read. There are no other ways in or out.</p></div></div>
+        <div class="ditem" data-k="4"><i>4</i><div><h4>Watch a bill arrive</h4><p>Each cell of the new row is filled by the one part that knows it: the reader fills units and amount, the ground itself stamps who and when.</p></div></div>
+        <div class="ditem" data-k="5"><i>5</i><div><h4>Which part may change what</h4><p>Every column has exactly one writer. Everyone else may only read it. The table below is the whole truth of it.</p>
+          <div class="matrix" style="margin-top:8px"><div class="hh">column</div><div class="hh">Read the bill</div><div class="hh">Work out the charge</div><div class="hh">Show the bill</div>
+            <div>units</div><div class="W">writes</div><div class="R">reads</div><div class="R">reads</div>
+            <div>amount</div><div class="W">writes</div><div class="N">—</div><div class="R">reads</div>
+            <div>period</div><div class="W">writes</div><div class="N">—</div><div class="R">reads</div>
+            <div>charges · owe</div><div class="N">—</div><div class="W">writes</div><div class="R">reads</div>
+            <div>who · when</div><div class="N">the ground</div><div class="N">the ground</div><div class="R">reads</div></div></div></div>
+        <div class="ditem" data-k="6"><i>6</i><div><h4>Nothing is ever overwritten</h4><p>A correction is a new row that points at the old one. Every write is a line in the audit log, with the part that wrote it and the time.</p><div class="audit" style="margin-top:8px">audit_log · 30 Oct 11:31:08<br>bills · row 2 · written by read-the-bill@1.0 · for Meera Shah</div></div></div>
+      </div>
     </section>
 
     <!-- FOUNDATION: the shell laid block by block, filmed from the ground -->
@@ -536,11 +595,11 @@ function makeStage(canvas,opts={}){
 /* ---------- Scenes ---------- */
 const scenes={};
 function show(id){if(id==='flow'){show('film');jumpToStep(5);document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s==='flow'));document.getElementById('v-text').textContent='Watch the number travel: 412 units leave the bills table, become ₹3,214 in the sum, gain the fixed charge and the duty, and arrive on the screen as ₹4,312.';try{history.replaceState(null,'','#flow')}catch(e){}return;}document.querySelectorAll('.scene').forEach(s=>s.classList.toggle('on',s.id===id));document.querySelectorAll('#scenes button').forEach(b=>b.classList.toggle('on',b.dataset.s===id));
-  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],design:['Arena','Read my bill','The design'],run:['Arena','Read my bill','Try it · a bill goes in'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
+  const crumbs={arena:['Arena','What shall we make?'],plan:['Arena','Read my bill','The plan'],design:['Arena','Read my bill','The design'],run:['Arena','Read my bill','Try it · a bill goes in'],ground:['Arena','Read my bill','The ground'],foundation:['Arena','Read my bill','The foundation'],film:['Arena','Read my bill','The film'],flow:['Arena','Read my bill','The flow'],flag:['Arena','Read my bill','The film · grey flag'],ask:['Arena','Read my bill','Ask the code'],walk:['Arena','Read my bill','Walk through']};
   const c=crumbs[id];document.getElementById('crumb').innerHTML=c.map((t,i)=>i<c.length-1?`<a href="#${id}">${t}</a><span>›</span>`:`<span class="cur">${t}</span>`).join('');
-  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',run:'You dropped October’s bill on the screen. Watch your product read it: this is its own code running, one line at a time, slowed down so you can follow.',design:'Before a single block, the design. Three glass buildings, four floors each, the database as the ground, the web across the water, pipes for every number, and a gate at the door. Shall I build it like this?',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
+  const v={arena:'Hello Meera. Tell me what you want to make, in one sentence.',plan:'Here is the plan in seven steps. I will read each one. Say yes when you are happy, or tell me what to change.',ground:'The ground under the buildings is the database. Let me show you what that is, how your data moves, and who may change what.',run:'You dropped October’s bill on the screen. Watch your product read it: this is its own code running, one line at a time, slowed down so you can follow.',design:'Before a single block, the design. Three glass buildings, four floors each, the database as the ground, the web across the water, pipes for every number, and a gate at the door. Shall I build it like this?',foundation:'Before anything of yours, the shell. Watch it laid block by block from the ground; I will say what each block is for.',film:'Step one. The Builder is opening your bill. I will tell you what it does as it does it.',flag:'The check has stopped the build and I have called Rachit. Shall we wait, or go on with step five?',ask:'Ask the file anything. It will answer from its own lines, and say so if it cannot.',walk:'You owe four thousand three hundred and twelve rupees. Shall I write down that you agree?'};
   document.getElementById('v-text').textContent=v[id];
-  if(id==='plan')startPlan();if(id==='design')startDesign();if(id==='run')startRun();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
+  if(id==='plan')startPlan();if(id==='design')startDesign();if(id==='run')startRun();if(id==='ground')startGround();if(id==='foundation')startFoundation();if(id==='film')startFilm();if(id==='ask')startAsk();
   try{history.replaceState(null,'','#'+id)}catch(e){}
 }
 document.querySelectorAll('#scenes button').forEach(b=>b.onclick=()=>show(b.dataset.s));
@@ -801,6 +860,40 @@ function startRun(){if(run){return;}
   document.getElementById('r-step').onclick=()=>{clearTimeout(run.timer);run.paused=false;tick();run.paused=true;document.getElementById('r-pause').textContent='Play';};
   document.getElementById('r-again').onclick=()=>{clearTimeout(run.timer);run.i=0;run.paused=false;pl.rows=1;document.getElementById('run-state').textContent='Running';document.getElementById('r-pause').textContent='Pause';tick();};
 }
+/* THE GROUND */
+const GCOLS=[{k:'id',n:'row',t:'id'},{k:'units',n:'units used',t:'units'},{k:'amount',n:'amount printed',t:'amount'},{k:'from',n:'period from',t:'period_from'},{k:'to',n:'period to',t:'period_to'},{k:'by',n:'who · when',t:'created_by · created_at'}];
+const GROWS=[{id:'1',units:'412',amount:'₹4,290',from:'1 Sep 2026',to:'30 Sep 2026',by:'read-the-bill · 30 Oct 11:28'},{id:'2',units:'398',amount:'₹4,160',from:'1 Oct 2026',to:'31 Oct 2026',by:'read-the-bill · 30 Oct 11:31'}];
+let ground=null;
+function startGround(){if(ground)return;ground={k:0};
+  const grid=document.getElementById('ggrid');
+  function render(rows,fillTo){grid.innerHTML='';GCOLS.forEach(c=>{grid.insertAdjacentHTML('beforeend',`<div class="cell h"><b>${c.n}</b><small>${c.t}</small></div>`);});
+    rows.forEach((r,ri)=>GCOLS.forEach((c,ci)=>{const filled=ri<rows.length-1||fillTo==null||ci<=fillTo;const cls=c.k==='id'?'cell id':'cell';const by=(ri===rows.length-1&&fillTo!=null&&ci===fillTo)?`<span class="by">filled by ${c.k==='by'?'the ground':'the reader'}</span>`:'';grid.insertAdjacentHTML('beforeend',`<div class="${cls} ${filled?'':''} ${(ri===rows.length-1&&fillTo!=null&&ci===fillTo)?'new w':''}" data-c="${c.k}">${filled?r[c.k]:'·'}${by}</div>`);}));}
+  render([GROWS[0]]);
+  const svg=document.getElementById('gpipes');
+  function pipes(mode){ // mode: none | write | read | both
+    const slab=document.getElementById('gslab').getBoundingClientRect(),main=svg.getBoundingClientRect();const sx=1000/main.width,sy=500/main.height;
+    function cellX(k){const el=grid.querySelector(`.cell.h:nth-child(${GCOLS.findIndex(c=>c.k===k)+1})`);const r=el.getBoundingClientRect();return [(r.left+r.width/2-main.left)*sx,(r.top-main.top)*sy];}
+    function bX(b){const el=document.querySelector(`.gb[data-b="${b}"]`);const r=el.getBoundingClientRect();return [(r.left+r.width/2-main.left)*sx,(r.bottom-main.top)*sy];}
+    const L=[];const add=(b,k,kind)=>{const [x1,y1]=bX(b),[x2,y2]=cellX(k);const my=(y1+y2)/2;L.push(`<path d="M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}" fill="none" stroke="${kind==='w'?'rgba(104,231,142,0.55)':'rgba(124,200,240,0.55)'}" stroke-width="6" stroke-linecap="round"/><path d="M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}" fill="none" stroke="${kind==='w'?'#68E78E':'#7CC8F0'}" stroke-width="2" stroke-dasharray="8 12" class="dash ${kind}"/>`);};
+    if(mode==='write'||mode==='both'){add('read','units','w');add('read','amount','w');add('read','from','w');add('read','to','w');add('keep','id','w');}
+    if(mode==='read'||mode==='both'){add('show','units','r');add('show','amount','r');add('charge','units','r');}
+    svg.innerHTML=L.join('')+`<style>.dash.w{animation:gw 1.2s linear infinite}.dash.r{animation:gr 1.2s linear infinite}@keyframes gw{to{stroke-dashoffset:-20}}@keyframes gr{to{stroke-dashoffset:20}}</style>`;
+    document.querySelectorAll('.cell').forEach(c=>{c.classList.remove('w','r');const k=c.dataset.c;if(!k)return;if((mode==='write'||mode==='both')&&['units','amount','from','to','id'].includes(k))c.classList.add('w');if((mode==='read'||mode==='both')&&['units','amount'].includes(k))c.classList.add('r');});
+    document.querySelectorAll('.gb').forEach(g=>g.classList.toggle('on',(mode==='write'&&['read','keep'].includes(g.dataset.b))||(mode==='read'&&['show','charge'].includes(g.dataset.b))||mode==='both'));
+  }
+  const items=[...document.querySelectorAll('#glist .ditem')];
+  const beats=[
+    ()=>{pipes('none');document.querySelectorAll('.plot').forEach(p=>p.classList.add('on'));},
+    ()=>{pipes('none');document.querySelectorAll('.plot').forEach(p=>p.classList.toggle('on',p.dataset.p==='bills'));},
+    ()=>{pipes('both');},
+    ()=>{pipes('write');let ci=0;render(GROWS,0);const iv=setInterval(()=>{ci++;if(ci>=GCOLS.length){clearInterval(iv);document.getElementById('g-rows').textContent='2 rows';document.querySelector('.plot[data-p=bills] span').textContent='2 rows';return;}render(GROWS,ci);pipes('write');},1100);},
+    ()=>{pipes('both');},
+    ()=>{pipes('none');document.querySelectorAll('.plot').forEach(p=>p.classList.toggle('on',p.dataset.p==='audit'));}
+  ];
+  function go(k){ground.k=k;items.forEach((el,i)=>el.classList.toggle('on',i===k));const el=items[k];document.getElementById('v-text').textContent=el.querySelector('h4').textContent+'. '+el.querySelector('p').textContent;beats[k]();}
+  items.forEach((el,i)=>el.onclick=()=>{clearTimeout(ground.t);go(i);});
+  (function auto(){go(ground.k);ground.t=setTimeout(()=>{if(ground.k<items.length-1){ground.k++;auto();}},ground.k===3?9000:5500);})();
+}
 let design=null;
 function startDesign(){if(design)return;design=makeStage(document.getElementById('cv-design'),{cam:{scale:1.2},flow:true});scenes.design=design;
   const items=[...document.querySelectorAll('#design .ditem')];let k=0;(function nxt(){items.forEach((el,i)=>el.classList.toggle('on',i===k));const el=items[k];if(el){document.getElementById('v-text').textContent=el.querySelector('h4').textContent+'. '+el.querySelector('p').textContent;}k++;if(k<=items.length)setTimeout(nxt,3600);})();
@@ -812,8 +905,8 @@ function startFoundation(){if(foundation)return;foundation=makeFoundation(docume
 }
 
 /* boot: scene from hash */
-const h=(location.hash||'#arena').slice(1);show(['arena','plan','design','foundation','film','run','flow','flag','ask','walk'].includes(h)?h:'arena');
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','design','foundation','film','run','flow','flag','ask','walk'].includes(h))show(h);});
+const h=(location.hash||'#arena').slice(1);show(['arena','plan','design','foundation','film','run','ground','flow','flag','ask','walk'].includes(h)?h:'arena');
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['arena','plan','design','foundation','film','run','ground','flow','flag','ask','walk'].includes(h))show(h);});
 // grey-flag scene draws the street with the flag state
 (function(){const c=document.getElementById('cv-flag');const obs=new MutationObserver(()=>{if(document.getElementById('flag').classList.contains('on')&&!scenes.flag){scenes.flag=makeStage(c,{cam:{scale:1.2},agents:[{at:'charge',name:'The Checker',vendor:'OpenAI',color:'#7CC8F0'}]});BUILDINGS.forEach(b=>{b.bricks=b.target});PLOTS.forEach(p=>{p.lit=true;p.rows=1});}});obs.observe(document.getElementById('flag'),{attributes:true});})();
 </script>
