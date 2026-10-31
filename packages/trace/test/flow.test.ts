@@ -97,6 +97,19 @@ describe('the flow of a figure', () => {
   });
 });
 
+describe('one record', () => {
+  it('is one row said in words, never the record as the code writes it', () => {
+    const c: Capture = structuredClone(capture);
+    c.runs['todays-total/todays-takings']!.inputs[0]!.value = JSON.stringify({
+      consumerNo: '4123 7788 0021',
+      units: 412,
+    });
+    const step = flowOf(c, 'todays-total/todays-takings')!.steps[0]!;
+    expect(step.rows).toEqual({ count: 1, first: ['4123 7788 0021, units 412'] });
+    expect(step.sentence).not.toMatch(/[{}"]/);
+  });
+});
+
 describe('where an input is kept', () => {
   const keptIn = (data: string) => {
     const c: Capture = structuredClone(capture);

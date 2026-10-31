@@ -2,6 +2,7 @@
 // yes to, in their words. The builder builds it from these on the house stack, like any product
 // (Stage 9; rebuilt in Stage 11 to keep its orders in its own database); nothing of the stall is written
 // by hand any more. The cards stand in for discovery's yes.
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { homeDir } from '@rama/db';
 
@@ -9,9 +10,12 @@ export const SAMPLE_NAME = 'Chai Stall (Test drive)';
 export const SAMPLE_IDEA =
   'A chai stall takes orders through the day and sees the day’s takings and GST.';
 
-/** The recording Test drive replays when no builder can run (fixtures/sample-build). */
+/**
+ * The recording Test drive replays when no builder can run (fixtures/sample-build); an engineer or a test
+ * may point RAMA_SAMPLE_RECORDING at another recording (fixtures/sample-build-bill, Read my bill).
+ */
 export const sampleRecording = (env: NodeJS.ProcessEnv = process.env) =>
-  path.join(homeDir(env), 'fixtures/sample-build');
+  env.RAMA_SAMPLE_RECORDING || path.join(homeDir(env), 'fixtures/sample-build');
 
 export const SAMPLE_CARDS: { title: string; statement: string }[] = [
   { title: 'Build the chai stall', statement: SAMPLE_IDEA },
@@ -46,3 +50,32 @@ export const SAMPLE_CARDS: { title: string; statement: string }[] = [
       'It does not save a new order yet, take a payment, print a bill or keep more than one day. It has no sign-in.',
   },
 ];
+
+/** A sample product for Test drive: its name, its idea, its cards and how many screens it has. */
+export interface Sample {
+  name: string;
+  idea: string;
+  cards: { title: string; statement: string }[];
+  screens: number;
+  /** The state each screen ends Test drive in, by route: customer screens Confirmed, staff ones Verified. */
+  states: Record<string, 'Confirmed' | 'Verified'>;
+}
+
+export const CHAI_STALL: Sample = {
+  name: SAMPLE_NAME,
+  idea: SAMPLE_IDEA,
+  cards: SAMPLE_CARDS,
+  screens: 3,
+  states: { '/': 'Confirmed', '/new': 'Confirmed', '/total': 'Verified' },
+};
+
+/**
+ * The sample a recording was made of (Stage 13): its `sample.json` (name, idea, cards, screens, states) when the
+ * recording carries one, else the Chai Stall, which the first recording is of.
+ */
+export function sampleOf(recordingDir: string): Sample {
+  const f = path.join(recordingDir, 'sample.json');
+  if (!existsSync(f)) return CHAI_STALL;
+  const s = JSON.parse(readFileSync(f, 'utf8')) as Sample;
+  return { name: s.name, idea: s.idea, cards: s.cards, screens: s.screens, states: s.states };
+}

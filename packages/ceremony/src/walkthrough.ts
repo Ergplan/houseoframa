@@ -41,12 +41,14 @@ export function walkthrough(
       return v.figures
         .map((f, i) => ({ f, key: keys[i]! }))
         .filter(({ f }) => f.traced)
-        .map(({ key }) => {
+        .map(({ f, key }) => {
           const t = showroom.trails[key]!;
           return {
             key,
             title: t.title,
-            shown: t.result?.shown ?? null,
+            // What the person reads on the screen ("₹3,003.00"), not the value behind it (300300): a
+            // signature confirms what was seen.
+            shown: f.text || t.result?.shown || null,
             matches: t.result?.matches ?? null,
           };
         });
@@ -55,7 +57,7 @@ export function walkthrough(
       (d) => d.screenId === screenId && !superseded.has(d.id) && d.status === 'decided',
     );
     const parts = [
-      ...figures.map((f) => `${f.title} shows ${f.shown ?? 'a value that could not be read'}.`),
+      ...figures.map((f) => `“${f.title}” shows ${f.shown ?? 'a value that could not be read'}.`),
       ...cards.map((d) => d.statement),
     ];
     const titles = [...new Set(views.map((v) => v.title))].join(', ');

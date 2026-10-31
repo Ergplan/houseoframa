@@ -1,0 +1,335 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Claude Code (builder)" <builder@houseoframa.local>
+Date: Sat, 31 Oct 2026 22:23:13 +0530
+Subject: [PATCH 2/2] Check the amount: Does it add up? works the bill out from
+ its units and the tariff
+
+---
+ .rama/features.json                      | 12 ++++-
+ .rama/screens.json                       |  6 +++
+ app/check/page.test.tsx                  | 21 ++++++++
+ app/check/page.tsx                       | 46 +++++++++++++++++
+ data/tariff.json                         | 11 ++++
+ features/check-the-amount/charge.test.ts | 28 ++++++++++
+ features/check-the-amount/charge.ts      | 56 ++++++++++++++++++++
+ rama/figures.ts                          | 65 ++++++++++++++++++++++++
+ 8 files changed, 244 insertions(+), 1 deletion(-)
+ create mode 100644 app/check/page.test.tsx
+ create mode 100644 app/check/page.tsx
+ create mode 100644 data/tariff.json
+ create mode 100644 features/check-the-amount/charge.test.ts
+ create mode 100644 features/check-the-amount/charge.ts
+
+diff --git a/.rama/features.json b/.rama/features.json
+index 496b49c..399d339 100644
+--- a/.rama/features.json
++++ b/.rama/features.json
+@@ -4,7 +4,17 @@
+       "id": "read-the-bill",
+       "name": "Read the bill",
+       "does": "Reads the six things printed on an electricity bill and keeps them exactly as printed.",
+-      "screens": ["/"]
++      "screens": [
++        "/"
++      ]
++    },
++    {
++      "id": "check-the-amount",
++      "name": "Check the amount",
++      "does": "Works out what the bill should come to under the tariff, from its units, and says whether the amount it asks for adds up.",
++      "screens": [
++        "/check"
++      ]
+     }
+   ]
+ }
+diff --git a/.rama/screens.json b/.rama/screens.json
+index 8a98820..219df64 100644
+--- a/.rama/screens.json
++++ b/.rama/screens.json
+@@ -15,6 +15,12 @@
+       "title": "My bill",
+       "route": "/",
+       "audience": "customer"
++    },
++    {
++      "name": "does-it-add-up",
++      "title": "Does it add up?",
++      "route": "/check",
++      "audience": "customer"
+     }
+   ]
+ }
+diff --git a/app/check/page.test.tsx b/app/check/page.test.tsx
+new file mode 100644
+index 0000000..6f9c8ee
+--- /dev/null
++++ b/app/check/page.test.tsx
+@@ -0,0 +1,21 @@
++import { renderToStaticMarkup } from 'react-dom/server';
++import { expect, it } from 'vitest';
++import DoesItAddUp from './page';
++
++it('works the sample bill out and says it adds up, every amount a traced figure', async () => {
++  const html = renderToStaticMarkup(await DoesItAddUp());
++  expect(html).toContain('Does it add up?');
++  expect(html).toContain('It adds up');
++  for (const [id, v] of [
++    ['energy-charge', 275000],
++    ['fixed-charge', 11000],
++    ['electricity-duty', 14300],
++    ['worked-out-amount', 300300],
++    ['amount-payable', 300300],
++    ['difference', 0],
++  ] as const) {
++    expect(html).toContain(`data-rama-figure="${id}"`);
++    expect(html).toContain(`data-rama-value="${v}"`);
++  }
++  expect(html).toContain('₹2,750.00');
++});
+diff --git a/app/check/page.tsx b/app/check/page.tsx
+new file mode 100644
+index 0000000..2cd6eb4
+--- /dev/null
++++ b/app/check/page.tsx
+@@ -0,0 +1,46 @@
++import { Figure } from '../../components/Figure';
++import { latestBill } from '../../db/bills';
++import {
++  TARIFF,
++  difference,
++  electricityDuty,
++  energyCharge,
++  fixedCharge,
++  verdict,
++  workedOutAmount,
++} from '../../features/check-the-amount/charge';
++import { amountPayable } from '../../features/read-the-bill/read';
++import tariff from '../../data/tariff.json';
++
++export const dynamic = 'force-dynamic';
++
++export default async function DoesItAddUp() {
++  const bill = await latestBill();
++  return (
++    <main>
++      <h1>{'Does it add up?'}</h1>
++      <p>{verdict(bill)}</p>
++      <p>Under: {tariff.name}</p>
++      <p>
++        Energy charge: <Figure id="energy-charge" fn={energyCharge} args={[bill, TARIFF]} show="rupees" />
++      </p>
++      <p>
++        Fixed charge: <Figure id="fixed-charge" fn={fixedCharge} args={[bill, TARIFF]} show="rupees" />
++      </p>
++      <p>
++        Electricity duty:{' '}
++        <Figure id="electricity-duty" fn={electricityDuty} args={[bill, TARIFF]} show="rupees" />
++      </p>
++      <p>
++        It should come to:{' '}
++        <Figure id="worked-out-amount" fn={workedOutAmount} args={[bill, TARIFF]} show="rupees" />
++      </p>
++      <p>
++        The bill asks for: <Figure id="amount-payable" fn={amountPayable} args={[bill]} show="rupees" />
++      </p>
++      <p>
++        Difference: <Figure id="difference" fn={difference} args={[bill, TARIFF]} show="rupees" />
++      </p>
++    </main>
++  );
++}
+diff --git a/data/tariff.json b/data/tariff.json
+new file mode 100644
+index 0000000..c4dbf33
+--- /dev/null
++++ b/data/tariff.json
+@@ -0,0 +1,11 @@
++{
++  "name": "Sample domestic tariff (illustrative, not a real supplier's)",
++  "category": "Domestic",
++  "slabs": [
++    { "upTo": 100, "paisePerUnit": 550 },
++    { "upTo": 300, "paisePerUnit": 680 },
++    { "upTo": null, "paisePerUnit": 750 }
++  ],
++  "fixedChargePaise": 11000,
++  "dutyPercent": 5
++}
+diff --git a/features/check-the-amount/charge.test.ts b/features/check-the-amount/charge.test.ts
+new file mode 100644
+index 0000000..0a1367e
+--- /dev/null
++++ b/features/check-the-amount/charge.test.ts
+@@ -0,0 +1,28 @@
++import { readFileSync } from 'node:fs';
++import { expect, it } from 'vitest';
++import { readBill } from '../read-the-bill/read';
++import { difference, electricityDuty, energyCharge, fixedCharge, verdict, workedOutAmount } from './charge';
++
++const bill = readBill(readFileSync('data/bill-sep-2026.pdf'));
++
++it('works the sample bill out slab by slab: it adds up', () => {
++  // 100 × 5.50 + 200 × 6.80 + 112 × 7.50 = 550 + 1,360 + 840
++  expect(energyCharge(bill)).toBe(275000);
++  expect(fixedCharge(bill)).toBe(11000);
++  expect(electricityDuty(bill)).toBe(14300);
++  expect(workedOutAmount(bill)).toBe(300300);
++  expect(difference(bill)).toBe(0);
++  expect(verdict(bill)).toMatch(/^It adds up/);
++});
++
++it('says when a bill asks for more, or less, than the tariff gives', () => {
++  expect(difference({ ...bill, amountPaise: 310000 })).toBe(9700);
++  expect(verdict({ ...bill, amountPaise: 310000 })).toMatch(/more than the tariff gives/);
++  expect(verdict({ ...bill, amountPaise: 290000 })).toMatch(/less than the tariff gives/);
++});
++
++it('charges units within the first slab at its rate only, and cannot check a bill without units', () => {
++  expect(energyCharge({ ...bill, units: 80 })).toBe(80 * 550);
++  expect(energyCharge({ ...bill, units: 0 })).toBe(0);
++  expect(verdict({ ...bill, units: null })).toMatch(/cannot be checked/);
++});
+diff --git a/features/check-the-amount/charge.ts b/features/check-the-amount/charge.ts
+new file mode 100644
+index 0000000..470adc5
+--- /dev/null
++++ b/features/check-the-amount/charge.ts
+@@ -0,0 +1,56 @@
++// Check the amount: what the bill should come to under the tariff, worked out from the units on the bill,
++// and how far the amount it asks for is from that. Every amount is in paise.
++import tariff from '../../data/tariff.json';
++import type { Bill } from '../read-the-bill/read';
++
++export interface Tariff {
++  slabs: { upTo: number | null; paisePerUnit: number }[];
++  fixedChargePaise: number;
++  dutyPercent: number;
++}
++
++export const TARIFF: Tariff = tariff;
++
++/** The energy charge: each slab's units at that slab's rate, added up. */
++export function energyCharge(bill: Bill, t: Tariff = TARIFF): number {
++  let left = bill.units ?? 0;
++  let from = 0;
++  let sum = 0;
++  for (const s of t.slabs) {
++    const room = s.upTo === null ? left : Math.min(left, s.upTo - from);
++    sum += room * s.paisePerUnit;
++    left -= room;
++    from = s.upTo ?? from;
++    if (left <= 0) break;
++  }
++  return sum;
++}
++
++/** The fixed charge for the month. */
++export const fixedCharge = (_bill: Bill, t: Tariff = TARIFF): number => t.fixedChargePaise;
++
++/** Electricity duty: the duty percent of the energy and fixed charges, rounded to the paisa. */
++export function electricityDuty(bill: Bill, t: Tariff = TARIFF): number {
++  return Math.round(((energyCharge(bill, t) + fixedCharge(bill, t)) * t.dutyPercent) / 100);
++}
++
++/** What the bill should come to: energy charge, fixed charge and duty. */
++export function workedOutAmount(bill: Bill, t: Tariff = TARIFF): number {
++  return energyCharge(bill, t) + fixedCharge(bill, t) + electricityDuty(bill, t);
++}
++
++/** How much more the bill asks for than it should (less when negative). */
++export function difference(bill: Bill, t: Tariff = TARIFF): number {
++  return (bill.amountPaise ?? 0) - workedOutAmount(bill, t);
++}
++
++/** Whether the bill adds up, in words. */
++export function verdict(bill: Bill, t: Tariff = TARIFF): string {
++  if (bill.units === null || bill.amountPaise === null)
++    return 'It cannot be checked: the bill does not show its units or its amount.';
++  const d = difference(bill, t);
++  if (d === 0) return 'It adds up: the bill asks for exactly what the tariff gives.';
++  return d > 0
++    ? 'It does not add up: the bill asks for more than the tariff gives.'
++    : 'It does not add up: the bill asks for less than the tariff gives.';
++}
+diff --git a/rama/figures.ts b/rama/figures.ts
+index 13260e4..93166a8 100644
+--- a/rama/figures.ts
++++ b/rama/figures.ts
+@@ -2,6 +2,13 @@
+ // and what it means in the customer's words. A screen shows a figure only through <Figure id>, and
+ // rama/lint.ts fails the build on any number shown any other way.
+ import { amountPayable, unitsConsumed } from '../features/read-the-bill/read';
++import {
++  difference,
++  electricityDuty,
++  energyCharge,
++  fixedCharge,
++  workedOutAmount,
++} from '../features/check-the-amount/charge';
+ import { defineFigures } from './define';
+ 
+ export const figures = defineFigures({
+@@ -23,4 +30,62 @@ export const figures = defineFigures({
+     show: 'rupees',
+     files: ['data/bill-sep-2026.pdf'],
+   },
++  'energy-charge': {
++    fn: energyCharge,
++    title: 'Energy charge',
++    what: 'What the units used cost under the tariff.',
++    english: 'Each slab’s units at that slab’s rate, added up: up to 100 units at ₹5.50, the next 200 at ₹6.80, the rest at ₹7.50.',
++    inputs: [
++      { label: 'Units consumed', source: 'energyCharge(bill, …)', data: 'bills.units' },
++      { label: 'The tariff’s slabs', source: 'energyCharge(…, tariff)', data: 'data/tariff.json' },
++    ],
++    show: 'rupees',
++    files: ['data/tariff.json'],
++  },
++  'fixed-charge': {
++    fn: fixedCharge,
++    title: 'Fixed charge',
++    what: 'The charge for the month, whatever is used.',
++    english: 'The tariff’s fixed charge for a month.',
++    inputs: [{ label: 'The tariff’s fixed charge', source: 'fixedCharge(…, tariff)', data: 'data/tariff.json' }],
++    show: 'rupees',
++    files: ['data/tariff.json'],
++  },
++  'electricity-duty': {
++    fn: electricityDuty,
++    title: 'Electricity duty',
++    what: 'The duty on the energy and fixed charges.',
++    english: 'Five percent of the energy charge and the fixed charge, rounded to the paisa.',
++    inputs: [
++      { label: 'Units consumed', source: 'electricityDuty(bill, …)', data: 'bills.units' },
++      { label: 'The tariff', source: 'electricityDuty(…, tariff)', data: 'data/tariff.json' },
++    ],
++    show: 'rupees',
++    files: ['data/tariff.json'],
++  },
++  'worked-out-amount': {
++    fn: workedOutAmount,
++    title: 'It should come to',
++    what: 'What the bill should ask for, worked out from its units and the tariff.',
++    english: 'The energy charge, the fixed charge and the duty, added up.',
++    inputs: [
++      { label: 'Units consumed', source: 'workedOutAmount(bill, …)', data: 'bills.units' },
++      { label: 'The tariff', source: 'workedOutAmount(…, tariff)', data: 'data/tariff.json' },
++    ],
++    show: 'rupees',
++    files: ['data/tariff.json'],
++  },
++  difference: {
++    fn: difference,
++    title: 'Difference',
++    what: 'How much more the bill asks for than it should; nothing when it adds up.',
++    english: 'The amount the bill asks for, less what it should come to.',
++    inputs: [
++      { label: 'Amount payable', source: 'difference(bill, …)', data: 'bills.amount_paise' },
++      { label: 'Units consumed', source: 'difference(bill, …)', data: 'bills.units' },
++      { label: 'The tariff', source: 'difference(…, tariff)', data: 'data/tariff.json' },
++    ],
++    show: 'rupees',
++    files: ['data/tariff.json'],
++  },
+ });

@@ -1,0 +1,20 @@
+{
+  "builder": "Claude Code",
+  "model": "claude-opus-5-5",
+  "recordedAt": "2026-10-31T17:20:00.000Z",
+  "costUsd": null,
+  "lifts": [
+    {
+      "said": "My bill now reads the sample bill and shows the six things printed on it: consumer 4123 7788 0021, Domestic, 1 to 30 September 2026, 412 units, Rs 3,003.00 payable, due 15 October. Each bill read is kept as a row in the bills table.",
+      "next": "Build \"Check the amount\": Does it add up? at /check, working the bill out from its units and the tariff.",
+      "done": false,
+      "patch": "0001-Read-the-bill-My-bill-shows-the-six-things-printed-o.patch"
+    },
+    {
+      "said": "Does it add up? at /check works the sample bill out from its 412 units under the sample tariff: Rs 2,750.00 energy, Rs 110.00 fixed, Rs 143.00 duty, Rs 3,003.00 in all, exactly what the bill asks. It says so in words first, then shows every amount as a traced figure.",
+      "next": null,
+      "done": true,
+      "patch": "0002-Check-the-amount-Does-it-add-up-works-the-bill-out-f.patch"
+    }
+  ]
+}

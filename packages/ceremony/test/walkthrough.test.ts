@@ -69,7 +69,8 @@ const showroom = {
     },
     'bill-2/bill-total': {
       title: 'Bill total',
-      result: { shown: '₹20', computed: '₹20', matches: true },
+      // The value behind the figure is kept raw (paise); the screen writes it in rupees.
+      result: { shown: '2000', computed: '2000', matches: true },
     },
   },
 } as unknown as Showroom;
@@ -119,8 +120,10 @@ describe('walkthrough', () => {
   });
 
   it('builds the statement from the traced figures and the decided cards in force, never from a model', () => {
+    // A person signs what they read on the screen (₹20), never the raw value behind it (2000).
+    expect(steps[0]!.statement).not.toMatch(/2000/);
     expect(steps[0]!.statement).toBe(
-      'On /bills/[id] (Bill 1, Bill 2): Bill total shows ₹10. Bill total shows ₹20. Totals are whole rupees. Totals are whole rupees, rounded half up. I have looked at this screen and it shows what I expect.',
+      'On /bills/[id] (Bill 1, Bill 2): “Bill total” shows ₹10. “Bill total” shows ₹20. Totals are whole rupees. Totals are whole rupees, rounded half up. I have looked at this screen and it shows what I expect.',
     );
     expect(steps[0]!.figures.map((f) => f.key)).toEqual(['bill-1/bill-total', 'bill-2/bill-total']);
     expect(steps[1]!.statement).toBe(

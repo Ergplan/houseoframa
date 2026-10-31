@@ -235,7 +235,7 @@ describe('signatures in the showroom and the walkthrough', () => {
     expect(el.props.member).toBe('Asha Rao');
     expect(el.props.steps.map((s) => [s.screenId, s.signature])).toEqual([['/', null]]);
     expect(el.props.steps[0]!.statement).toBe(
-      'On / (Shop): Order total shows 2. I have looked at this screen and it shows what I expect.',
+      'On / (Shop): “Order total” shows ₹28.00. I have looked at this screen and it shows what I expect.',
     );
     const html = renderToStaticMarkup(el);
     expect(html).toContain('data-state="unsigned"');

@@ -118,9 +118,12 @@ describe('capture', () => {
       '₹500',
     ]);
     // A number the detector cannot tell from a figure ("Order 7") is marked untraced, not left bare. Dates,
-    // times, years and identifiers that mix letters and digits are not figures; neither are plain words.
+    // times, years, identifiers that mix letters and digits and identifiers of ten or more digits printed in
+    // groups (a consumer number, a phone number) are not figures; neither are plain words.
     const all = cap.screens.flatMap((s) => s.figures).map((f) => f.text);
-    expect(all.some((t) => /owner|staff|none|Sept|INV-042|GSTIN/.test(t))).toBe(false);
+    expect(all.some((t) => /owner|staff|none|Sept|INV-042|GSTIN|Consumer|Call/.test(t))).toBe(
+      false,
+    );
   });
 
   it("re-executes the convention's function with each screen's own arguments, and the overlay's harness", () => {

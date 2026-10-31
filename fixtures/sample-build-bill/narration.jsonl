@@ -1,0 +1,28 @@
+{"lift":1,"at":0,"kind":"said","text":"I will start with the bill itself. I am opening the sample bill to see exactly what is printed on it, before I write anything."}
+{"lift":1,"at":1500,"kind":"tool","text":"Read data/bill-sep-2026.pdf","tool":"Read","target":"data/bill-sep-2026.pdf"}
+{"lift":1,"at":3000,"kind":"said","text":"Its text is compressed, as real bills are. Six things on it are worth keeping exactly: the consumer number, the billing period, the category, the units consumed, the amount payable and the due date. I will read those six and nothing else."}
+{"lift":1,"at":4500,"kind":"tool","text":"Read rama/define.ts","tool":"Read","target":"rama/define.ts"}
+{"lift":1,"at":6000,"kind":"said","text":"First, a part that opens a PDF and gives back its text, unpacking the compressed parts with the zip reader built into Node, so no new package is needed."}
+{"lift":1,"at":7500,"kind":"tool","text":"Write lib/pdf-text.ts","tool":"Write","target":"lib/pdf-text.ts"}
+{"lift":1,"at":9000,"kind":"said","text":"Now the reader. It finds each of the six things by the words printed before it, keeps the amount in paise, and leaves anything it cannot find empty instead of guessing."}
+{"lift":1,"at":10500,"kind":"tool","text":"Write features/read-the-bill/read.ts","tool":"Write","target":"features/read-the-bill/read.ts"}
+{"lift":1,"at":12000,"kind":"said","text":"Next, the ground: one table, bills, with a column for each of the six things and the file they were read from. Every row also carries which product, when and by whom, as every table here must."}
+{"lift":1,"at":13500,"kind":"tool","text":"Edit db/schema.ts","tool":"Edit","target":"db/schema.ts"}
+{"lift":1,"at":15000,"kind":"tool","text":"Write db/bills.ts","tool":"Write","target":"db/bills.ts"}
+{"lift":1,"at":16500,"kind":"said","text":"The screen, My bill, shows the six things. The units and the amount are figures, so each one can be traced back to the line of the bill it came from."}
+{"lift":1,"at":18000,"kind":"tool","text":"Write app/page.tsx","tool":"Write","target":"app/page.tsx"}
+{"lift":1,"at":19500,"kind":"tool","text":"Write rama/figures.ts","tool":"Write","target":"rama/figures.ts"}
+{"lift":1,"at":21000,"kind":"said","text":"Checks before I hand it over: the reader on the sample bill, the table's columns, and the screen. The welcome building from the house stack goes, since this product has its own."}
+{"lift":1,"at":22500,"kind":"tool","text":"Write features/read-the-bill/read.test.ts","tool":"Write","target":"features/read-the-bill/read.test.ts"}
+{"lift":1,"at":24000,"kind":"tool","text":"Bash npx vitest run","tool":"Bash","target":"npx vitest run"}
+{"lift":1,"at":25500,"kind":"said","text":"Seven checks pass, the figures inspector passes, the types check. It reads 412 units and Rs 3,003.00 off the sample bill."}
+{"lift":2,"at":0,"kind":"said","text":"Now the question a person really has: does the bill add up? I need the tariff the bill was charged under. There is no real supplier here, so I keep a sample tariff in a file and say on the screen that it is a sample."}
+{"lift":2,"at":1500,"kind":"tool","text":"Write data/tariff.json","tool":"Write","target":"data/tariff.json"}
+{"lift":2,"at":3000,"kind":"said","text":"The sum, slab by slab: the first 100 units at Rs 5.50, the next 200 at Rs 6.80, the rest at Rs 7.50; then the fixed charge, then five percent duty on both. Last, the difference between what the bill asks and what it should be."}
+{"lift":2,"at":4500,"kind":"tool","text":"Write features/check-the-amount/charge.ts","tool":"Write","target":"features/check-the-amount/charge.ts"}
+{"lift":2,"at":6000,"kind":"tool","text":"Write features/check-the-amount/charge.test.ts","tool":"Write","target":"features/check-the-amount/charge.test.ts"}
+{"lift":2,"at":7500,"kind":"said","text":"The screen, Does it add up?, says the answer in words first, then every amount that goes into it, each a figure with its trail."}
+{"lift":2,"at":9000,"kind":"tool","text":"Write app/check/page.tsx","tool":"Write","target":"app/check/page.tsx"}
+{"lift":2,"at":10500,"kind":"tool","text":"Edit rama/figures.ts","tool":"Edit","target":"rama/figures.ts"}
+{"lift":2,"at":12000,"kind":"tool","text":"Bash npx vitest run","tool":"Bash","target":"npx vitest run"}
+{"lift":2,"at":13500,"kind":"said","text":"Eleven checks pass. On the sample bill it works out Rs 2,750 of energy, Rs 110 fixed and Rs 143 duty: Rs 3,003, exactly what the bill asks. It adds up."}

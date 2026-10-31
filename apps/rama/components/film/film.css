@@ -1056,3 +1056,10 @@
   color: var(--ink);
   font-size: 14px;
 }
+
+.film-note {
+  margin: 8px 0 0;
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 18px;
+}

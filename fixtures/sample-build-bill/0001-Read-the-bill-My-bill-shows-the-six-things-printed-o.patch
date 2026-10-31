@@ -1,0 +1,507 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Claude Code (builder)" <builder@houseoframa.local>
+Date: Sat, 31 Oct 2026 22:22:19 +0530
+Subject: [PATCH 1/2] Read the bill: My bill shows the six things printed on
+ the bill, kept in the bills table
+
+---
+ .rama/features.json                 |   6 +--
+ .rama/screens.json                  |   4 +-
+ app/page.test.tsx                   |  17 +++++---
+ app/page.tsx                        |  26 ++++++++---
+ data/bill-sep-2026.pdf              | Bin 0 -> 914 bytes
+ db/bills.test.ts                    |  15 +++++++
+ db/bills.ts                         |  44 +++++++++++++++++++
+ db/schema.ts                        |  18 +++++++-
+ features/read-the-bill/read.test.ts |  45 +++++++++++++++++++
+ features/read-the-bill/read.ts      |  64 ++++++++++++++++++++++++++++
+ features/welcome/plan.test.ts       |   7 ---
+ features/welcome/plan.ts            |  20 ---------
+ lib/pdf-text.ts                     |  47 ++++++++++++++++++++
+ rama/figures.ts                     |  25 +++++++----
+ 14 files changed, 285 insertions(+), 53 deletions(-)
+ create mode 100644 data/bill-sep-2026.pdf
+ create mode 100644 db/bills.test.ts
+ create mode 100644 db/bills.ts
+ create mode 100644 features/read-the-bill/read.test.ts
+ create mode 100644 features/read-the-bill/read.ts
+ delete mode 100644 features/welcome/plan.test.ts
+ delete mode 100644 features/welcome/plan.ts
+ create mode 100644 lib/pdf-text.ts
+
+diff --git a/.rama/features.json b/.rama/features.json
+index 4501b7a..496b49c 100644
+--- a/.rama/features.json
++++ b/.rama/features.json
+@@ -1,9 +1,9 @@
+ {
+   "features": [
+     {
+-      "id": "welcome",
+-      "name": "Welcome",
+-      "does": "Says what the product is for and how many buildings its plan has.",
++      "id": "read-the-bill",
++      "name": "Read the bill",
++      "does": "Reads the six things printed on an electricity bill and keeps them exactly as printed.",
+       "screens": ["/"]
+     }
+   ]
+diff --git a/.rama/screens.json b/.rama/screens.json
+index 033479b..8a98820 100644
+--- a/.rama/screens.json
++++ b/.rama/screens.json
+@@ -11,8 +11,8 @@
+   },
+   "screens": [
+     {
+-      "name": "welcome",
+-      "title": "Welcome",
++      "name": "my-bill",
++      "title": "My bill",
+       "route": "/",
+       "audience": "customer"
+     }
+diff --git a/app/page.test.tsx b/app/page.test.tsx
+index e673e18..16173a4 100644
+--- a/app/page.test.tsx
++++ b/app/page.test.tsx
+@@ -1,9 +1,16 @@
+ import { renderToStaticMarkup } from 'react-dom/server';
+ import { expect, it } from 'vitest';
+-import Welcome from './page';
++import MyBill from './page';
+ 
+-it('shows the plan’s count of buildings as a traced figure', () => {
+-  const html = renderToStaticMarkup(<Welcome />);
+-  expect(html).toContain('data-rama-figure="building-count"');
+-  expect(html).toContain('data-rama-value="1"');
++it('shows the sample bill as printed: its units and amount as traced figures', async () => {
++  const html = renderToStaticMarkup(await MyBill());
++  expect(html).toContain('My bill');
++  expect(html).toContain('4123 7788 0021');
++  expect(html).toContain('data-rama-figure="units-consumed"');
++  expect(html).toContain('data-rama-value="412"');
++  expect(html).toContain('data-rama-figure="amount-payable"');
++  expect(html).toContain('data-rama-value="300300"');
++  expect(html).toContain('₹3,003.00');
++  expect(html).toContain('15-10-2026');
++  expect(html).not.toContain('Not found on the bill');
+ });
+diff --git a/app/page.tsx b/app/page.tsx
+index 1a65344..5fbe22d 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,16 +1,28 @@
+ import { Figure } from '../components/Figure';
+-import { buildingCount, planned } from '../features/welcome/plan';
++import { latestBill } from '../db/bills';
++import { amountPayable, missing, unitsConsumed } from '../features/read-the-bill/read';
+ 
+-export default function Welcome() {
+-  const buildings = planned();
++export const dynamic = 'force-dynamic';
++
++export default async function MyBill() {
++  const bill = await latestBill();
++  const gaps = missing(bill);
+   return (
+     <main>
+-      <h1>{'Read my bill (Test drive)'}</h1>
+-      <p>{'Reads my electricity bill, keeps the exact numbers printed on it, and checks that the amount adds up.'}</p>
++      <h1>{'My bill'}</h1>
++      <p>Consumer: {bill.consumerNo ?? 'not on the bill'}</p>
++      <p>Category: {bill.category ?? 'not on the bill'}</p>
++      <p>
++        For: {bill.periodFrom ?? '?'} to {bill.periodTo ?? '?'}
++      </p>
++      <p>
++        Units consumed: <Figure id="units-consumed" fn={unitsConsumed} args={[bill]} show="count" />
++      </p>
+       <p>
+-        Buildings planned:{' '}
+-        <Figure id="building-count" fn={buildingCount} args={[buildings]} show="count" />
++        Amount payable: <Figure id="amount-payable" fn={amountPayable} args={[bill]} show="rupees" />
+       </p>
++      <p>Due by: {bill.dueDate ?? 'not on the bill'}</p>
++      {gaps.length ? <p>Not found on the bill: {gaps.join(', ')}.</p> : null}
+     </main>
+   );
+ }
+diff --git a/data/bill-sep-2026.pdf b/data/bill-sep-2026.pdf
+new file mode 100644
+index 0000000000000000000000000000000000000000..475d08bf9d38c0f71940176a4763d07ba889c0c5
+GIT binary patch
+literal 914
+zcmY!laB<T$)HC5yef0SJWiCSn1BLvgEG`=x1^tl9f>Z^4=fsl4ocweJ{eZ;u)M5oA
+zpn@O;J3Fq_ycCc^5Fb?oM4i5OW=gR_v@u9|EYOtv(!3G{LnMtL8BC2JYl>2VN+I^>
+z`=+L3COYL;C`20o)tg$HDp;5p0nH0aEzU13N(MRz<WjeMpbjv@P{9;rBhVfY0$Q6_
+z0yM2y!2~J_b2f+%v)v~(FTEr~!PvwIXi{cQNoo<0&PgmubxBRmPe}#2xwxb#H8Gc~
+zVovL&(|Lys1XwTF#urXkaLl%TuPQQOLIr2juEgX?nFUkXi{`BQ`Mb*{R8#cjrEcSL
+zlYNsne7AZ2K=06YId*2|_Q!`lOCDNt{eFM=?Wa7q&%VxSf0-ozPHeLCjvH$>@+@a=
+zd9VBY`yD~v`AbD4*D9rE%?X+H=!Sl3ndeK37YCFwK6p=@9_l9bn#oLD%;x;}gEJn;
+zPTScVd%9<X(j}qan{Djb*5z+ayc7`hLh7>8;!7)5H1BwutES}}I`4r~l&GPE{Kf>8
+z83l=45pRB9H9YZYmSeQ9{HhgR8IwMiDt&J~YbCRNf2`-uor&v|<&4!I@LE4PHKpU$
+z>tok1mq}dDKNC|M)bm28)al052XkyU_KC{g&g7mj+3%IKM%%p4{G#={g~ONSCFQ=J
+zE?Rz#@7AlH&5KU)>TQ~~e9OtLZ9S25cW%4B&SovgMiZ8IJr=)z9*Vs2n@Qu!(I!xw
+zKm!<>s6cTDiycTR1jn#`aA{HrI8lNG4HfjA5{pwIG9IZpWvL~Z$%#lQtfDA2jmtp6
+zjLQHH6wFLbjZGEO6yRcpK)XOdArB#D2234jVunV*oPj20WMYmXW@d(@uB0e2GbgnO
+noSA|%t5OxrfC)E0ACwQEnW(rVv8V*>PIF^JE>%@me>W}w><UI(
+
+literal 0
+HcmV?d00001
+
+diff --git a/db/bills.test.ts b/db/bills.test.ts
+new file mode 100644
+index 0000000..92e6216
+--- /dev/null
++++ b/db/bills.test.ts
+@@ -0,0 +1,15 @@
++import { expect, it } from 'vitest';
++import { getTableColumns } from 'drizzle-orm';
++import { keepBill, latestBill, sampleBill } from './bills';
++import { bills } from './schema';
++
++it('keeps the six things of a bill and where they were read from, with the provenance of every row', () => {
++  expect(Object.keys(getTableColumns(bills)).sort()).toEqual(
++    ['id', 'siteId', 'createdAt', 'createdBy', 'consumerNo', 'category', 'periodFrom', 'periodTo', 'units', 'amountPaise', 'dueDate', 'readFrom'].sort(),
++  );
++});
++
++it('without a database, reads the sample bill straight from its file and keeps nothing', async () => {
++  expect(await latestBill()).toEqual(sampleBill());
++  await expect(keepBill(sampleBill(), 'data/bill-sep-2026.pdf', 'test')).resolves.toBeUndefined();
++});
+diff --git a/db/bills.ts b/db/bills.ts
+new file mode 100644
+index 0000000..f326252
+--- /dev/null
++++ b/db/bills.ts
+@@ -0,0 +1,44 @@
++// The bills table: every bill read, kept as printed. With a database the table itself is read (and the
++// sample bill read and written in the first time it is empty); without one, the sample bill is read
++// straight from data/.
++import { readFileSync } from 'node:fs';
++import path from 'node:path';
++import { desc } from 'drizzle-orm';
++import { readBill, type Bill } from '../features/read-the-bill/read';
++import { database, siteId } from './connect';
++import { bills } from './schema';
++
++export const SAMPLE_BILL = 'data/bill-sep-2026.pdf';
++
++/** The sample bill, read from its file. */
++export function sampleBill(): Bill {
++  return readBill(readFileSync(path.join(process.cwd(), SAMPLE_BILL)));
++}
++
++/** Keeps a bill as a new row, written by whoever read it. */
++export async function keepBill(bill: Bill, readFrom: string, by: string): Promise<void> {
++  const db = database();
++  if (!db) return;
++  await db.insert(bills).values({ siteId: siteId(), createdBy: by, readFrom, ...bill });
++}
++
++/** The newest bill kept; the sample bill when none is kept yet. */
++export async function latestBill(): Promise<Bill> {
++  const db = database();
++  if (!db) return sampleBill();
++  let rows = await db.select().from(bills).orderBy(desc(bills.id)).limit(1);
++  if (rows.length === 0) {
++    await keepBill(sampleBill(), SAMPLE_BILL, 'sample');
++    rows = await db.select().from(bills).orderBy(desc(bills.id)).limit(1);
++  }
++  const r = rows[0]!;
++  return {
++    consumerNo: r.consumerNo,
++    category: r.category,
++    periodFrom: r.periodFrom,
++    periodTo: r.periodTo,
++    units: r.units,
++    amountPaise: r.amountPaise,
++    dueDate: r.dueDate,
++  };
++}
+diff --git a/db/schema.ts b/db/schema.ts
+index fea6ff1..5090dfb 100644
+--- a/db/schema.ts
++++ b/db/schema.ts
+@@ -2,10 +2,26 @@
+ // product it belongs to, when the row was written and by whom. Spread `provenance()` into each one:
+ //
+ //   export const orders = pgTable('orders', { id: serial('id').primaryKey(), ...provenance(), … });
+-import { text, timestamp } from 'drizzle-orm/pg-core';
++import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+ 
+ export const provenance = () => ({
+   siteId: text('site_id').notNull(),
+   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+   createdBy: text('created_by').notNull(),
+ });
++
++/** One row per bill read: the six things printed on it, exactly as printed. A bill read again is a new row. */
++export const bills = pgTable('bills', {
++  id: serial('id').primaryKey(),
++  ...provenance(),
++  consumerNo: text('consumer_no'),
++  category: text('category'),
++  periodFrom: text('period_from'),
++  periodTo: text('period_to'),
++  units: integer('units'),
++  /** Amount payable, in paise. */
++  amountPaise: integer('amount_paise'),
++  dueDate: text('due_date'),
++  /** The file the values were read from. */
++  readFrom: text('read_from').notNull(),
++});
+diff --git a/features/read-the-bill/read.test.ts b/features/read-the-bill/read.test.ts
+new file mode 100644
+index 0000000..7de4023
+--- /dev/null
++++ b/features/read-the-bill/read.test.ts
+@@ -0,0 +1,45 @@
++import { readFileSync } from 'node:fs';
++import { expect, it } from 'vitest';
++import { amountPayable, missing, paise, readBill, unitsConsumed } from './read';
++import { pdfLines } from '../../lib/pdf-text';
++
++const sample = readFileSync('data/bill-sep-2026.pdf');
++
++it('reads the six things printed on the sample bill, exactly as printed', () => {
++  expect(readBill(sample)).toEqual({
++    consumerNo: '4123 7788 0021',
++    category: 'Domestic',
++    periodFrom: '01-09-2026',
++    periodTo: '30-09-2026',
++    units: 412,
++    amountPaise: 300300,
++    dueDate: '15-10-2026',
++  });
++  expect(unitsConsumed(readBill(sample))).toBe(412);
++  expect(amountPayable(readBill(sample))).toBe(300300);
++});
++
++it('reads a compressed bill’s text line by line', () => {
++  expect(pdfLines(sample)).toContain('Units consumed 412');
++});
++
++it('keeps an amount in paise, with or without its commas and paise', () => {
++  expect(paise('Rs 3,003.00')).toBe(300300);
++  expect(paise('Rs 45')).toBe(4500);
++  expect(paise('Rs 12.5')).toBe(1250);
++  expect(paise(null)).toBeNull();
++});
++
++it('leaves what is not on the bill empty, and says so', () => {
++  const blank = readBill(Buffer.from('%PDF-1.4\n%%EOF\n'));
++  expect(blank.units).toBeNull();
++  expect(missing(blank)).toEqual([
++    'the consumer number',
++    'the category',
++    'the billing period',
++    'the units consumed',
++    'the amount payable',
++    'the due date',
++  ]);
++  expect(missing(readBill(sample))).toEqual([]);
++});
+diff --git a/features/read-the-bill/read.ts b/features/read-the-bill/read.ts
+new file mode 100644
+index 0000000..4ad7fd4
+--- /dev/null
++++ b/features/read-the-bill/read.ts
+@@ -0,0 +1,64 @@
++// Read the bill: the six things printed on a bill, exactly as printed, picked out of its text. A thing
++// that is not on the bill is left empty rather than guessed, and the reader says which ones are missing.
++import { pdfLines } from '../../lib/pdf-text';
++
++export interface Bill {
++  consumerNo: string | null;
++  category: string | null;
++  /** The billing period as printed, day-month-year: from and to. */
++  periodFrom: string | null;
++  periodTo: string | null;
++  /** Units consumed, as printed. */
++  units: number | null;
++  /** Amount payable, in paise (100 paise make a rupee). */
++  amountPaise: number | null;
++  dueDate: string | null;
++}
++
++/** The value printed after a label, on the line that starts with it. */
++function after(lines: string[], label: string): string | null {
++  const line = lines.find((l) => l.toLowerCase().startsWith(label.toLowerCase()));
++  return line ? line.slice(label.length).trim() || null : null;
++}
++
++/** "Rs 3,003.00" in paise; null when it is not an amount. */
++export function paise(printed: string | null): number | null {
++  const m = printed?.match(/([\d,]+)(?:\.(\d{1,2}))?/);
++  if (!m) return null;
++  return Number(m[1]!.replace(/,/g, '')) * 100 + Number((m[2] ?? '0').padEnd(2, '0'));
++}
++
++/** The six things printed on the bill. */
++export function readBill(pdf: Buffer): Bill {
++  const lines = pdfLines(pdf);
++  const period = after(lines, 'Billing period')?.match(/(\S+)\s+to\s+(\S+)/) ?? null;
++  const units = after(lines, 'Units consumed');
++  return {
++    consumerNo: after(lines, 'Consumer No'),
++    category: after(lines, 'Category'),
++    periodFrom: period?.[1] ?? null,
++    periodTo: period?.[2] ?? null,
++    units: units && /^\d+$/.test(units.replace(/,/g, '')) ? Number(units.replace(/,/g, '')) : null,
++    amountPaise: paise(after(lines, 'Amount payable')),
++    dueDate: after(lines, 'Due date'),
++  };
++}
++
++/** The things the bill did not show, in plain words. */
++export function missing(b: Bill): string[] {
++  const names: [keyof Bill, string][] = [
++    ['consumerNo', 'the consumer number'],
++    ['category', 'the category'],
++    ['periodFrom', 'the billing period'],
++    ['units', 'the units consumed'],
++    ['amountPaise', 'the amount payable'],
++    ['dueDate', 'the due date'],
++  ];
++  return names.filter(([k]) => b[k] === null).map(([, n]) => n);
++}
++
++/** Units consumed, as the bill prints them. */
++export const unitsConsumed = (b: Bill): number => b.units ?? 0;
++
++/** Amount payable, in paise, as the bill prints it. */
++export const amountPayable = (b: Bill): number => b.amountPaise ?? 0;
+diff --git a/features/welcome/plan.test.ts b/features/welcome/plan.test.ts
+deleted file mode 100644
+index ce0a933..0000000
+--- a/features/welcome/plan.test.ts
++++ /dev/null
+@@ -1,7 +0,0 @@
+-import { expect, it } from 'vitest';
+-import { buildingCount, planned } from './plan';
+-
+-it('counts the buildings on the plan', () => {
+-  expect(buildingCount(planned())).toBe(1);
+-  expect(buildingCount([])).toBe(0);
+-});
+diff --git a/features/welcome/plan.ts b/features/welcome/plan.ts
+deleted file mode 100644
+index 3ced38f..0000000
+--- a/features/welcome/plan.ts
++++ /dev/null
+@@ -1,20 +0,0 @@
+-// The welcome building: how many buildings the product's plan has. The builder replaces this building
+-// with the product's own; it is here so the scaffold shows one traced figure from the first lift.
+-import plan from '../../.rama/features.json';
+-
+-export interface Building {
+-  id: string;
+-  name: string;
+-  does: string;
+-  screens: string[];
+-}
+-
+-/** The buildings on the plan, as .rama/features.json lists them. */
+-export function planned(): Building[] {
+-  return plan.features;
+-}
+-
+-/** How many buildings the plan has. */
+-export function buildingCount(buildings: Building[]): number {
+-  return buildings.length;
+-}
+diff --git a/lib/pdf-text.ts b/lib/pdf-text.ts
+new file mode 100644
+index 0000000..b8cd2da
+--- /dev/null
++++ b/lib/pdf-text.ts
+@@ -0,0 +1,47 @@
++// The text of a PDF, as it is printed: every content stream is unpacked (most bills compress theirs)
++// and its text-showing operators are read in order, one line per text position. Enough for a bill made
++// of plain text; a scanned bill (a picture) has no text to read and gives back nothing.
++import { inflateSync } from 'node:zlib';
++
++/** The text of each line of the PDF, top to bottom as written. */
++export function pdfLines(pdf: Buffer): string[] {
++  const raw = pdf.toString('latin1');
++  const lines: string[] = [];
++  const streams = /<<([^>]*(?:>(?!>)[^>]*)*)>>\s*stream\r?\n/g;
++  let m: RegExpExecArray | null;
++  while ((m = streams.exec(raw))) {
++    const start = m.index + m[0].length;
++    const end = raw.indexOf('endstream', start);
++    if (end < 0) break;
++    let body = Buffer.from(raw.slice(start, end).replace(/\r?\n$/, ''), 'latin1');
++    if (/\/FlateDecode/.test(m[1]!)) {
++      try {
++        body = inflateSync(body);
++      } catch {
++        continue;
++      }
++    }
++    lines.push(...textOf(body.toString('latin1')));
++  }
++  return lines.map((l) => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
++}
++
++/** The strings a content stream shows, a new line at each move of the text position. */
++function textOf(content: string): string[] {
++  const out: string[] = [];
++  let line = '';
++  const ops = /\[((?:\([^)\\]*(?:\\.[^)\\]*)*\)|[^\]])*)\]\s*TJ|\(((?:[^)\\]|\\.)*)\)\s*Tj|\b(Td|TD|Tm|T\*|ET)\b/g;
++  let m: RegExpExecArray | null;
++  while ((m = ops.exec(content))) {
++    if (m[3]) {
++      if (line) out.push(line);
++      line = '';
++    } else if (m[2] !== undefined) line += unescape(m[2]);
++    else if (m[1] !== undefined)
++      for (const s of m[1].matchAll(/\(((?:[^)\\]|\\.)*)\)/g)) line += unescape(s[1]!);
++  }
++  if (line) out.push(line);
++  return out;
++}
++
++const unescape = (s: string) => s.replace(/\\([()\\])/g, '$1');
+diff --git a/rama/figures.ts b/rama/figures.ts
+index 9456501..13260e4 100644
+--- a/rama/figures.ts
++++ b/rama/figures.ts
+@@ -1,17 +1,26 @@
+ // Every figure the product shows (docs/HOUSE-STYLE.md): its function, imported from where it is written,
+ // and what it means in the customer's words. A screen shows a figure only through <Figure id>, and
+ // rama/lint.ts fails the build on any number shown any other way.
+-import { buildingCount } from '../features/welcome/plan';
++import { amountPayable, unitsConsumed } from '../features/read-the-bill/read';
+ import { defineFigures } from './define';
+ 
+ export const figures = defineFigures({
+-  'building-count': {
+-    fn: buildingCount,
+-    title: 'Buildings planned',
+-    what: 'How many things the product will do, as its plan lists them.',
+-    english: 'The number of buildings on the plan.',
+-    inputs: [{ label: 'The plan', source: 'buildingCount(buildings)', data: '.rama/features.json' }],
++  'units-consumed': {
++    fn: unitsConsumed,
++    title: 'Units consumed',
++    what: 'The electricity used in the billing period, as the bill prints it.',
++    english: 'Read off the bill, after the words “Units consumed”.',
++    inputs: [{ label: 'The bill', source: 'unitsConsumed(bill)', data: 'bills.units' }],
+     show: 'count',
+-    files: ['.rama/features.json'],
++    files: ['data/bill-sep-2026.pdf'],
++  },
++  'amount-payable': {
++    fn: amountPayable,
++    title: 'Amount payable',
++    what: 'What the bill asks to be paid, as it prints it.',
++    english: 'Read off the bill, after the words “Amount payable”, kept in paise.',
++    inputs: [{ label: 'The bill', source: 'amountPayable(bill)', data: 'bills.amount_paise' }],
++    show: 'rupees',
++    files: ['data/bill-sep-2026.pdf'],
+   },
+ });

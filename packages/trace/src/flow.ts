@@ -54,7 +54,11 @@ function rowsOf(value: string | null): { count: number; first: string[] } | null
   if (!value) return null;
   try {
     const v = JSON.parse(value) as unknown;
-    return Array.isArray(v) ? { count: v.length, first: v.slice(0, 3).map(rowWords) } : null;
+    if (Array.isArray(v)) return { count: v.length, first: v.slice(0, 3).map(rowWords) };
+    // One record (a bill read off its file, a row fetched by itself) is one row, said in words, never
+    // shown to a person as the code writes it.
+    if (v && typeof v === 'object') return { count: 1, first: [rowWords(v)] };
+    return null;
   } catch {
     return null;
   }

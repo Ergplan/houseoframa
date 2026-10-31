@@ -187,11 +187,12 @@ describe('the rows of a plot', () => {
   beforeAll(async () => {
     const w = postgres(sandboxUrl('chai-stall', env), { max: 1, onnotice: () => {} });
     await w`delete from orders`;
-    // 60 orders: 55 yesterday, then 5 today, each with a key in it that must never be shown.
+    // 60 orders: 55 two days ago (so none falls into today, whatever the hour the test runs), then 5
+    // today, each with a key in it that must never be shown.
     for (let i = 0; i < 60; i++)
       await w`insert into orders (site_id, item, cups, api_key, created_at)
         values ('chai-stall', ${`Chai ${i}`}, ${(i % 3) + 1}, ${i % 2 ? `sk-${i}` : null},
-          ${i < 55 ? w`now() - interval '1 day' + ${`${i} minutes`}::interval` : w`now() - ${`${60 - i} seconds`}::interval`})`;
+          ${i < 55 ? w`now() - interval '2 days' + ${`${i} minutes`}::interval` : w`now() - ${`${60 - i} seconds`}::interval`})`;
     await w.end();
   });
 

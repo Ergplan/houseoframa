@@ -27,7 +27,7 @@ import {
 import { seatProblems, vendorEntry } from '@rama/model';
 import { seatsOf } from './seats.ts';
 import { startJob, StepError, type StartedJob } from './jobs.ts';
-import { SAMPLE_CARDS, SAMPLE_IDEA, SAMPLE_NAME, sampleRecording } from './sample.ts';
+import { sampleOf, sampleRecording } from './sample.ts';
 import { siteStates } from './states.ts';
 
 export const TEST_DRIVE_PERSON = 'Test drive';
@@ -97,6 +97,11 @@ export async function testDrive(
   made: (siteId: string) => void = () => {},
 ): Promise<void> {
   let site!: SiteLocation;
+  // The sample the recording was made of (the Chai Stall unless the recording says otherwise).
+  const sample = sampleOf(sampleRecording(env));
+  const SAMPLE_NAME = sample.name;
+  const SAMPLE_IDEA = sample.idea;
+  const SAMPLE_CARDS = sample.cards;
   const at = () => new Date();
   const driver = await withDb((db) =>
     ensurePerson(db, { name: TEST_DRIVE_PERSON, role: 'customer' }, TEST_DRIVE_COMPONENT),
@@ -148,7 +153,7 @@ export async function testDrive(
   await step('Builder', async () => {
     const chosen = await testDriveBuilder(withDb, env);
     builder = chosen.driver;
-    return `${builder.label} builds the stall: ${chosen.why}.`;
+    return `${builder.label} builds the sample: ${chosen.why}.`;
   });
   await build(withDb, step, site, {
     driver: builder,
@@ -159,8 +164,10 @@ export async function testDrive(
 
   await step('Street', () => {
     const bp = writeSiteBlueprint(site);
-    if (bp.screens.length !== 3)
-      throw new StepError(`The stall should have 3 screens; it has ${bp.screens.length}.`);
+    if (bp.screens.length !== sample.screens)
+      throw new StepError(
+        `The sample should have ${sample.screens} screens; it has ${bp.screens.length}.`,
+      );
     const named = (
       JSON.parse(readFileSync(path.join(site.repoDir, '.rama/features.json'), 'utf8')) as {
         features: { name: string }[];
@@ -184,7 +191,7 @@ export async function testDrive(
       throw new StepError('The screens were not photographed after the last lift.');
     if (untraced)
       throw new StepError(
-        `${untraced} figure${untraced === 1 ? ' is' : 's are'} untraced on the stall.`,
+        `${untraced} figure${untraced === 1 ? ' is' : 's are'} untraced on the sample.`,
       );
     if (wrong)
       throw new StepError(
@@ -227,14 +234,14 @@ export async function testDrive(
         );
       }
     });
-    return `“Test drive” walked and signed ${customer.length} customer screens; the staff screen is left to its tests.`;
+    const staff = c.screens.filter((s) => s.audience !== 'customer' && s.blueprintScreen).length;
+    return `“Test drive” walked and signed ${customer.length} customer screens${staff ? `; the staff screen${staff === 1 ? ' is' : 's are'} left to ${staff === 1 ? 'its' : 'their'} tests` : ''}.`;
   });
 
   await step('Three states', () => {
     const st = siteStates(site, writeSiteBlueprint(site), env);
     const by = Object.fromEntries(st.screens.map((s) => [s.route, s.state.state]));
-    const want = { '/': 'Confirmed', '/new': 'Confirmed', '/total': 'Verified' };
-    for (const [route, state] of Object.entries(want))
+    for (const [route, state] of Object.entries(sample.states))
       if (by[route] !== state)
         throw new StepError(
           `The screen ${route} should be ${state}; it is ${by[route] ?? 'missing'}.`,

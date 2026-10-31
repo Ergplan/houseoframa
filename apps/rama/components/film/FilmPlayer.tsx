@@ -299,6 +299,15 @@ function litUpTo(film: Film, k: number): Record<string, { lit: boolean; rows: nu
 // ---------------------------------------------------------------------------------------------------
 // 1. The plan: the cards, numbered, as the voice reads them.
 
+/** A Test drive's yeses and signatures are given by House of Rama's stand-in person "Test drive". */
+const standInNote = (film: Film) =>
+  film.site.id.startsWith('testdrive-') ? (
+    <p className="film-note">
+      This is a Test drive: the stand-in “Test drive” said yes and signed, to show the whole loop.
+      Your own products wait for your yes and your signature.
+    </p>
+  ) : null;
+
 function PlanScene(p: SceneProps) {
   const { film } = p;
   const [k, setK] = useState(0);
@@ -322,6 +331,7 @@ function PlanScene(p: SceneProps) {
         <div>
           <div className="film-eyebrow">The plan · {film.steps.length} steps · read aloud</div>
           <h2 className="film-h">Here is how it will be built.</h2>
+          {standInNote(film)}
         </div>
         {film.steps.map((s, i) => (
           <div key={s.n} className={`film-step${i < k ? ' in' : ''}`}>
@@ -1422,7 +1432,7 @@ function TryScene(p: SceneProps) {
               <b>{s.sentence}</b>
               <code>
                 {s.rows
-                  ? `${s.rows.count} rows`
+                  ? `${s.rows.count} ${s.rows.count === 1 ? 'row' : 'rows'}`
                   : s.value
                     ? s.value.length > 160
                       ? `${s.value.slice(0, 159)}…`
@@ -1431,7 +1441,8 @@ function TryScene(p: SceneProps) {
               </code>
               {s.rows ? (
                 <small>
-                  {s.rows.count} rows · {s.rows.first.slice(0, 2).join(' · ')}
+                  {s.rows.count} {s.rows.count === 1 ? 'row' : 'rows'} ·{' '}
+                  {s.rows.first.slice(0, 2).join(' · ')}
                 </small>
               ) : null}
             </span>
@@ -1491,7 +1502,7 @@ function GroundScene(p: SceneProps) {
       {
         title: 'Which part may change what',
         text: t
-          ? `${t.writers.length ? `Only ${t.writers.map(nameOf(p)).join(' and ')} may write ${t.name}.` : `No building writes ${t.name}.`} ${t.readers.length ? `${t.readers.map(nameOf(p)).join(' and ')} only read${t.readers.length === 1 ? 's' : ''} it.` : 'No other building reads it.'}`
+          ? `${t.writers.length ? `Only ${t.writers.map(nameOf(p)).join(' and ')} may write ${t.name}.` : `No building writes ${t.name}.`} ${t.readers.length ? `${t.readers.map(nameOf(p)).join(' and ')} only read${t.readers.length === 1 ? 's' : ''} it.` : t.writers.length ? `No other building reads it directly: the others get its rows through ${t.writers.map(nameOf(p)).join(' and ')}.` : 'No building reads it.'}`
           : '',
       },
       {
@@ -1525,7 +1536,12 @@ function GroundScene(p: SceneProps) {
       if (pts) pipes.push({ points: pts, t: null, label: null, kind: 'read' });
     }
   }
-  const cols = t.columns;
+  // Every column, the product's own first and the three the ground writes itself last; a wide table
+  // scrolls sideways rather than hide a column.
+  const cols = [
+    ...t.columns.filter((c) => c.from !== 'provenance'),
+    ...t.columns.filter((c) => c.from === 'provenance'),
+  ];
   return (
     <div className="film-two">
       <div className="film-ground-main">
@@ -1564,9 +1580,9 @@ function GroundScene(p: SceneProps) {
           </div>
           <div
             className="film-grid"
-            style={{ gridTemplateColumns: `repeat(${Math.min(cols.length, 8)}, minmax(0, 1fr))` }}
+            style={{ gridTemplateColumns: `repeat(${cols.length}, minmax(112px, 1fr))` }}
           >
-            {cols.slice(0, 8).map((c) => (
+            {cols.map((c) => (
               <div key={c.name} className="cell h">
                 <b>
                   {c.from === 'provenance'
@@ -1586,7 +1602,7 @@ function GroundScene(p: SceneProps) {
             ))}
             {page?.connected && page.rows
               ? page.rows.rows.slice(0, 6).flatMap((r, ri) =>
-                  cols.slice(0, 8).map((c) => {
+                  cols.map((c) => {
                     const j = page.rows!.columns.indexOf(c.name);
                     return (
                       <div
@@ -1706,6 +1722,7 @@ function WalkScene(p: SceneProps) {
         <div>
           <div className="film-eyebrow">Walk through · the last act</div>
           <h2 className="film-h">Each screen, read aloud. Say yes to each.</h2>
+          {standInNote(p.film)}
         </div>
         {screens.map((s) => {
           const sig = p.signed.find((x) => x.screen === s.screen);

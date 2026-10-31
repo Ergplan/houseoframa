@@ -98,7 +98,7 @@ describe('Test drive', () => {
     const said = (name: string) => end.steps.find((s) => s.name === name)!;
     // No key: the recording of a real build replays, through the same loop and the same checks.
     expect(said('Builder').sentence).toBe(
-      'Claude Code (recorded) builds the stall: no Anthropic key is set.',
+      'Claude Code (recorded) builds the sample: no Anthropic key is set.',
     );
     // The real builder's first lift was refused by the gate; the grey flag says why and what is next,
     // and the next lift is the fix.

@@ -61,8 +61,13 @@ function collectFigures(arg) {
   // or more plain digits is an identifier (a phone number, an account), not a figure.
   const NUMERIC = /^[\u2212-]?(\d{1,3}(,\d{2,3})+|\d{1,9})(\.\d+)?$/;
   const MONTH = /^(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?$/i;
+  // Ten or more digits printed in groups of two to five ("4123 7788 0021", "98200 11223") are one
+  // identifier (a consumer number, an account, a phone number), not several counts.
+  const GROUPED_ID = /(?<![\d,.])\d{2,5}(?: \d{2,5})+(?![\d,.])/g;
+  const withoutGroupedIds = (t) =>
+    t.replace(GROUPED_ID, (m) => (m.replace(/ /g, '').length >= 10 ? ' ' : m));
   const numberInWords = (t) => {
-    const tokens = t
+    const tokens = withoutGroupedIds(t)
       .split(/[\s·;()]+/) // a d/m or d/m/y date stays one token, and is not numeric
       .map((w) => w.replace(/[.,:;!?]+$/, ''))
       .filter(Boolean);

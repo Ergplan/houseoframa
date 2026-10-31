@@ -46,6 +46,12 @@ The unit suites of `@rama/app`, `@rama/stage`, `@rama/workbench`, `@rama/model` 
 - **"Ask the code" is reached from the build's code pane**, on the file on screen, not by selecting single lines; the route takes any line range, the pane asks about the file's first 120 lines.
 - **The old screens were not moved to `/trainer/...`.** They stay at their addresses, closed to a customer by sending them to the film; a trainer reaches them from "Trainer view".
 
+## Watched from outside
+
+At the member's word ("think of a product, build it and watch it from outside and rate it"), Claude made a small product, **Read my bill** (reads a one-page sample electricity bill PDF, keeps the six numbers printed on it in a `bills` table, and checks the amount against a sample tariff), as a recording in `fixtures/sample-build-bill`, and ran House of Rama's own Test drive on it. House of Rama found one real defect in its own checks on the way: the merge gate took a consumer number printed in groups ("4123 7788 0021") for three untraced counts and stopped the build three lifts in a row, calling a trainer; ten or more digits in groups are now an identifier, not a figure (`page-figures.js`, with a test). With that, every Test drive step passes on Read my bill: 8 of 8 figures traced and worked out again the same, 2 of 2 screens Verified then Confirmed, the audit clean.
+
+The film was then photographed scene by scene as the customer sees it and given, screenshots only, to an independent reviewer playing a shop owner who does not write code. Its scores: understood how it was built 6/10, understands the database 6/10, trusts the numbers 4/10, looks good and calm 8/10, **overall 5/10**. Its first finding was the worst: the signed statement said "Amount payable shows 300300" while the screen showed ₹3,003.00, so a person would sign a number they never saw. Fixed the same day: a statement now quotes what the screen shows ("“Amount payable” shows ₹3,003.00"; `walkthrough.ts`, and the showroom test that had expected "Order total shows 2" for a screen showing ₹28.00), Try it says a single record as one row in words, the ground shows every column and says how the other buildings reach the table, and a Test drive says plainly that the stand-in "Test drive" said yes and signed. What remains is in KNOWN-GAPS.
+
 ## Reviewer findings
 
 Not yet run: the reviewer is OpenAI's model, called with the key kept on the VM. It is the second line of the VM paste; its findings are to be fixed and listed here before the stage stops.

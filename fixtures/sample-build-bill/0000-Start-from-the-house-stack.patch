@@ -1,0 +1,1488 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: House of Rama <people@houseoframa.local>
+Date: Sat, 31 Oct 2026 16:57:56 +0000
+Subject: [PATCH] Start from the house stack
+
+---
+ .github/workflows/build.yml     |  21 +
+ .github/workflows/rama-gate.yml | 101 ++++
+ .gitignore                      |   3 +
+ .npmrc                          |   4 +
+ .rama/features.json             |  10 +
+ .rama/screens.json              |  20 +
+ README.md                       |  16 +
+ app/layout.tsx                  |  11 +
+ app/page.test.tsx               |   9 +
+ app/page.tsx                    |  16 +
+ components/Figure.tsx           |  28 ++
+ db/connect.ts                   |  19 +
+ db/schema.ts                    |  11 +
+ features/welcome/plan.test.ts   |   7 +
+ features/welcome/plan.ts        |  20 +
+ next.config.mjs                 |   2 +
+ package.json                    |  31 ++
+ rama/define.ts                  |  48 ++
+ rama/figures.ts                 |  17 +
+ rama/lint.ts                    | 860 ++++++++++++++++++++++++++++++++
+ tsconfig.json                   |  36 ++
+ vitest.config.ts                |  14 +
+ 22 files changed, 1304 insertions(+)
+ create mode 100644 .github/workflows/build.yml
+ create mode 100644 .github/workflows/rama-gate.yml
+ create mode 100644 .gitignore
+ create mode 100644 .npmrc
+ create mode 100644 .rama/features.json
+ create mode 100644 .rama/screens.json
+ create mode 100644 README.md
+ create mode 100644 app/layout.tsx
+ create mode 100644 app/page.test.tsx
+ create mode 100644 app/page.tsx
+ create mode 100644 components/Figure.tsx
+ create mode 100644 db/connect.ts
+ create mode 100644 db/schema.ts
+ create mode 100644 features/welcome/plan.test.ts
+ create mode 100644 features/welcome/plan.ts
+ create mode 100644 next.config.mjs
+ create mode 100644 package.json
+ create mode 100644 rama/define.ts
+ create mode 100644 rama/figures.ts
+ create mode 100644 rama/lint.ts
+ create mode 100644 tsconfig.json
+ create mode 100644 vitest.config.ts
+
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+new file mode 100644
+index 0000000..4b83c65
+--- /dev/null
++++ b/.github/workflows/build.yml
+@@ -0,0 +1,21 @@
++# Every push: the figures lint (no number on a screen without its Figure), the tests and the build.
++# The merge gate (rama-gate.yml) is the other workflow: nothing merges unsigned.
++name: build
++
++on: [push, pull_request]
++
++permissions:
++  contents: read
++
++jobs:
++  build:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-node@v4
++        with:
++          node-version: 22
++      - run: npm install --no-audit --no-fund
++      - run: npm run lint:figures
++      - run: npm test
++      - run: npm run build
+diff --git a/.github/workflows/rama-gate.yml b/.github/workflows/rama-gate.yml
+new file mode 100644
+index 0000000..c8c423d
+--- /dev/null
++++ b/.github/workflows/rama-gate.yml
+@@ -0,0 +1,101 @@
++# House of Rama merge gate (Invariant 4: nothing merges unsigned). Copied into a target's
++# .github/workflows/ from github.com/Ergplan/houseoframa packages/ceremony/ci/rama-gate.yml.
++#
++# It runs on pull_request_target, so the version of this file that judges a pull request is the one on
++# the base branch: a pull request cannot edit or switch off the gate that judges it. Two jobs on two
++# runners keep the target's code away from the gate:
++#   tests  runs the pull request's tests (its code) for a report, with a read-only token, no secrets and
++#          no House of Rama checkout; whatever it does, it ends on its own runner;
++#   gate   never runs the target's code: it checks the pull request out as data, runs House of Rama's
++#          gate at a pinned ref, and reads the report as a list of passed test files, nothing more.
++# The gate reads no configuration from the target. Make "rama gate" a required check in the branch
++# protection rules; that setting lives outside the repository's files.
++name: rama gate
++
++on:
++  pull_request_target:
++    types: [opened, synchronize, reopened]
++
++permissions:
++  contents: read
++
++jobs:
++  tests:
++    name: target tests (report only)
++    runs-on: ubuntu-latest
++    continue-on-error: true
++    steps:
++      - uses: actions/checkout@v4
++        with:
++          ref: ${{ github.event.pull_request.head.sha }}
++          persist-credentials: false
++      - uses: actions/setup-node@v4
++        with:
++          node-version: 22
++      - run: npm ci
++      - run: npx vitest run --project unit --reporter=json --outputFile=rama-tests.json
++      - name: Name each test file by its repository path (the gate job checks the target out elsewhere)
++        if: ${{ !cancelled() }}
++        run: >
++          node -e 'const fs = require("fs"), path = require("path");
++          if (!fs.existsSync("rama-tests.json")) process.exit(0);
++          const r = JSON.parse(fs.readFileSync("rama-tests.json", "utf8"));
++          for (const t of r.testResults ?? []) t.name = path.relative(process.cwd(), t.name).split(path.sep).join("/");
++          fs.writeFileSync("rama-tests.json", JSON.stringify(r));'
++      - uses: actions/upload-artifact@v4
++        if: ${{ !cancelled() }}
++        with:
++          name: rama-tests
++          path: rama-tests.json
++          if-no-files-found: ignore
++
++  gate:
++    name: rama gate
++    needs: tests
++    if: ${{ !cancelled() }}
++    runs-on: ubuntu-latest
++    steps:
++      - name: Check out the pull request as data (full history, no credentials kept)
++        uses: actions/checkout@v4
++        with:
++          ref: ${{ github.event.pull_request.head.sha }}
++          fetch-depth: 0
++          persist-credentials: false
++          path: target
++
++      - name: Check out House of Rama at a pinned ref
++        uses: actions/checkout@v4
++        with:
++          repository: Ergplan/houseoframa
++          ref: 592d0c488f84be86434c287b853a25545b237100
++          persist-credentials: false
++          path: rama
++
++      - uses: pnpm/action-setup@v4
++        with:
++          version: 10
++      - uses: actions/setup-node@v4
++        with:
++          node-version: 22
++
++      - name: Install House of Rama
++        run: pnpm --dir rama install --frozen-lockfile
++
++      - name: Fetch the test report (absent when the tests job wrote none)
++        uses: actions/download-artifact@v4
++        continue-on-error: true
++        with:
++          name: rama-tests
++          path: ${{ runner.temp }}/report
++
++      - name: Gate
++        env:
++          BASE: ${{ github.event.pull_request.base.sha }}
++          REPORT: ${{ runner.temp }}/report/rama-tests.json
++          # House of Rama's public key: a signature counts only when its seal verifies against it. Written
++          # here by `rama-ceremony install-gate`; this copy of the file is the base branch's.
++          PUBLIC_KEY: 'MCowBQYDK2VwAyEAM9hlGWGZpmyziDZsk4nkgMyNV2VKRqmWpNY54ldYZF0='
++        run: |
++          if [ -f "$REPORT" ]; then set -- --test-report "$REPORT"; fi
++          if [ -n "$PUBLIC_KEY" ]; then set -- "$@" --public-key "$PUBLIC_KEY"; fi
++          pnpm --dir rama rama gate "$GITHUB_WORKSPACE/target" --base "$BASE" "$@"
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..beb7067
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,3 @@
++node_modules/
++.next/
++next-env.d.ts
+diff --git a/.npmrc b/.npmrc
+new file mode 100644
+index 0000000..32f4aee
+--- /dev/null
++++ b/.npmrc
+@@ -0,0 +1,4 @@
++# npm (10.9) stops with "Cannot read properties of null (reading 'edgesOut')" on vitest's optional peers
++# (its browser and devtools packages); they are not used here. vite, the one peer the tests need, is a
++# devDependency of its own, so this leaves nothing out. Laid down by House of Rama's house stack.
++legacy-peer-deps=true
+diff --git a/.rama/features.json b/.rama/features.json
+new file mode 100644
+index 0000000..4501b7a
+--- /dev/null
++++ b/.rama/features.json
+@@ -0,0 +1,10 @@
++{
++  "features": [
++    {
++      "id": "welcome",
++      "name": "Welcome",
++      "does": "Says what the product is for and how many buildings its plan has.",
++      "screens": ["/"]
++    }
++  ]
++}
+diff --git a/.rama/screens.json b/.rama/screens.json
+new file mode 100644
+index 0000000..033479b
+--- /dev/null
++++ b/.rama/screens.json
+@@ -0,0 +1,20 @@
++{
++  "app": {
++    "install": "npm install --no-audit --no-fund",
++    "build": "npx next build --webpack",
++    "start": "npm start -- -p {port}",
++    "ready": "/"
++  },
++  "viewport": {
++    "width": 390,
++    "height": 700
++  },
++  "screens": [
++    {
++      "name": "welcome",
++      "title": "Welcome",
++      "route": "/",
++      "audience": "customer"
++    }
++  ]
++}
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..3c1ed44
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,16 @@
++# Read my bill (Test drive)
++
++Reads my electricity bill, keeps the exact numbers printed on it, and checks that the amount adds up.
++
++Built in House of Rama on the house stack (Next.js, TypeScript, Postgres, Drizzle). Every number on a
++screen is a figure traced to the function that works it out, and every screen is walked and signed by
++name before it merges.
++
++- `features/<building>/`: one folder for each thing the product does, named as `.rama/features.json` names it.
++- `app/`: the screens. Each one is the glass front of its building.
++- `rama/figures.ts`: every figure, with its function and what it means in the customer's words.
++- `components/Figure.tsx`: the only way a screen shows a number. `npm run lint:figures` (run before every
++  build) fails on any number shown another way, naming the file and line.
++- `.rama/screens.json`: which screens House of Rama photographs, and who each is for.
++- `db/schema.ts`: the tables. `db/connect.ts`: the product's own database, when House of Rama connects one;
++  without one (the tests, a build) a building reads its sample rows from `data/<table>.json`.
+diff --git a/app/layout.tsx b/app/layout.tsx
+new file mode 100644
+index 0000000..22eb7ba
+--- /dev/null
++++ b/app/layout.tsx
+@@ -0,0 +1,11 @@
++import type { ReactNode } from 'react';
++
++export const metadata = { title: 'Read my bill (Test drive)' };
++
++export default function RootLayout({ children }: { children: ReactNode }) {
++  return (
++    <html lang="en">
++      <body style={{ fontFamily: 'system-ui, sans-serif', margin: 16 }}>{children}</body>
++    </html>
++  );
++}
+diff --git a/app/page.test.tsx b/app/page.test.tsx
+new file mode 100644
+index 0000000..e673e18
+--- /dev/null
++++ b/app/page.test.tsx
+@@ -0,0 +1,9 @@
++import { renderToStaticMarkup } from 'react-dom/server';
++import { expect, it } from 'vitest';
++import Welcome from './page';
++
++it('shows the plan’s count of buildings as a traced figure', () => {
++  const html = renderToStaticMarkup(<Welcome />);
++  expect(html).toContain('data-rama-figure="building-count"');
++  expect(html).toContain('data-rama-value="1"');
++});
+diff --git a/app/page.tsx b/app/page.tsx
+new file mode 100644
+index 0000000..1a65344
+--- /dev/null
++++ b/app/page.tsx
+@@ -0,0 +1,16 @@
++import { Figure } from '../components/Figure';
++import { buildingCount, planned } from '../features/welcome/plan';
++
++export default function Welcome() {
++  const buildings = planned();
++  return (
++    <main>
++      <h1>{'Read my bill (Test drive)'}</h1>
++      <p>{'Reads my electricity bill, keeps the exact numbers printed on it, and checks that the amount adds up.'}</p>
++      <p>
++        Buildings planned:{' '}
++        <Figure id="building-count" fn={buildingCount} args={[buildings]} show="count" />
++      </p>
++    </main>
++  );
++}
+diff --git a/components/Figure.tsx b/components/Figure.tsx
+new file mode 100644
+index 0000000..2301fca
+--- /dev/null
++++ b/components/Figure.tsx
+@@ -0,0 +1,28 @@
++// A figure on a screen (docs/HOUSE-STYLE.md): it works its value out by calling the figure's own
++// function with the arguments given, and shows that result. So what a person reads is always what the
++// function says; it marks the element with the figure's id, the arguments and the raw value, so House of
++// Rama can trace it and work it out again. rama/figures.ts is read as a type only: a screen carries the
++// code of its own figures and no other.
++import type { figures } from '../rama/figures';
++import { SHOW } from '../rama/define';
++
++type Figures = typeof figures;
++
++export function Figure<K extends keyof Figures & string>(props: {
++  id: K;
++  /** The same function rama/figures.ts names for this id (rama/lint.ts checks). */
++  fn: Figures[K]['fn'];
++  args: Parameters<Figures[K]['fn']>;
++  show: Figures[K]['show'];
++}) {
++  const value = (props.fn as (...a: unknown[]) => number)(...props.args);
++  return (
++    <span
++      data-rama-figure={props.id}
++      data-rama-args={JSON.stringify(props.args)}
++      data-rama-value={String(value)}
++    >
++      {SHOW[props.show](value)}
++    </span>
++  );
++}
+diff --git a/db/connect.ts b/db/connect.ts
+new file mode 100644
+index 0000000..3977a00
+--- /dev/null
++++ b/db/connect.ts
+@@ -0,0 +1,19 @@
++// The product's own database. House of Rama hands the running app DATABASE_URL (a database for this
++// product alone) and RAMA_SITE_ID (the product's id, for each row's site_id). Without them (the tests,
++// `next build`) `database()` is null and a building reads its sample rows from data/<table>.json.
++import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
++import postgres from 'postgres';
++import * as schema from './schema';
++
++let db: PostgresJsDatabase<typeof schema> | undefined;
++
++/** The database, or null when none is connected. */
++export function database(): PostgresJsDatabase<typeof schema> | null {
++  const url = process.env.DATABASE_URL;
++  if (!url) return null;
++  db ??= drizzle(postgres(url, { max: 3 }), { schema });
++  return db;
++}
++
++/** The product's id, written into each row's site_id. */
++export const siteId = (): string => process.env.RAMA_SITE_ID ?? 'this-product';
+diff --git a/db/schema.ts b/db/schema.ts
+new file mode 100644
+index 0000000..fea6ff1
+--- /dev/null
++++ b/db/schema.ts
+@@ -0,0 +1,11 @@
++// The product's tables, in Drizzle (the ground of the Street). Every table carries its provenance: the
++// product it belongs to, when the row was written and by whom. Spread `provenance()` into each one:
++//
++//   export const orders = pgTable('orders', { id: serial('id').primaryKey(), ...provenance(), … });
++import { text, timestamp } from 'drizzle-orm/pg-core';
++
++export const provenance = () => ({
++  siteId: text('site_id').notNull(),
++  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
++  createdBy: text('created_by').notNull(),
++});
+diff --git a/features/welcome/plan.test.ts b/features/welcome/plan.test.ts
+new file mode 100644
+index 0000000..ce0a933
+--- /dev/null
++++ b/features/welcome/plan.test.ts
+@@ -0,0 +1,7 @@
++import { expect, it } from 'vitest';
++import { buildingCount, planned } from './plan';
++
++it('counts the buildings on the plan', () => {
++  expect(buildingCount(planned())).toBe(1);
++  expect(buildingCount([])).toBe(0);
++});
+diff --git a/features/welcome/plan.ts b/features/welcome/plan.ts
+new file mode 100644
+index 0000000..3ced38f
+--- /dev/null
++++ b/features/welcome/plan.ts
+@@ -0,0 +1,20 @@
++// The welcome building: how many buildings the product's plan has. The builder replaces this building
++// with the product's own; it is here so the scaffold shows one traced figure from the first lift.
++import plan from '../../.rama/features.json';
++
++export interface Building {
++  id: string;
++  name: string;
++  does: string;
++  screens: string[];
++}
++
++/** The buildings on the plan, as .rama/features.json lists them. */
++export function planned(): Building[] {
++  return plan.features;
++}
++
++/** How many buildings the plan has. */
++export function buildingCount(buildings: Building[]): number {
++  return buildings.length;
++}
+diff --git a/next.config.mjs b/next.config.mjs
+new file mode 100644
+index 0000000..c4a407b
+--- /dev/null
++++ b/next.config.mjs
+@@ -0,0 +1,2 @@
++/** @type {import('next').NextConfig} */
++export default {};
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..a56541d
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,31 @@
++{
++  "name": "testdrive-0",
++  "version": "0.1.0",
++  "private": true,
++  "type": "module",
++  "description": "Reads my electricity bill, keeps the exact numbers printed on it, and checks that the amount adds up.",
++  "scripts": {
++    "dev": "next dev",
++    "lint:figures": "node rama/lint.ts",
++    "prebuild": "node rama/lint.ts",
++    "build": "next build --webpack",
++    "start": "next start",
++    "typecheck": "tsc --noEmit",
++    "test": "vitest run"
++  },
++  "dependencies": {
++    "drizzle-orm": "0.45.3",
++    "next": "16.3.8",
++    "postgres": "3.4.9",
++    "react": "19.3.0",
++    "react-dom": "19.3.0"
++  },
++  "devDependencies": {
++    "@types/node": "22.20.5",
++    "@types/react": "19.3.0",
++    "@types/react-dom": "19.3.0",
++    "typescript": "6.0.3",
++    "vite": "8.3.4",
++    "vitest": "5.0.3"
++  }
++}
+diff --git a/rama/define.ts b/rama/define.ts
+new file mode 100644
+index 0000000..54d3a18
+--- /dev/null
++++ b/rama/define.ts
+@@ -0,0 +1,48 @@
++// The house convention for figures (House of Rama, docs/HOUSE-STYLE.md). Every number a screen shows is
++// a figure: an entry of rama/figures.ts naming the function that works it out, and a <Figure> on the
++// screen that shows that function's own result. House of Rama reads this file and rama/figures.ts as
++// they are written; keep every entry a plain object of plain strings, so it can.
++
++/** How a figure is written on a screen. Rupee amounts are kept in paise (100 paise make a rupee). */
++export const SHOW = {
++  /** A count, with Indian grouping: 1,23,456. */
++  count: (n: number) => n.toLocaleString('en-IN'),
++  /** An amount held in paise, written in rupees: ₹1,234.50. */
++  rupees: (paise: number) =>
++    `₹${(paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
++  /** A share held as a percentage: 12.5%. */
++  percent: (n: number) => `${n.toLocaleString('en-IN', { maximumFractionDigits: 2 })}%`,
++} as const;
++export type Show = keyof typeof SHOW;
++
++/** One input of a figure: what it is, where it enters the function, and where it is kept. */
++export interface FigureInput {
++  label: string;
++  /** Where the value enters the code: `dayTotal(orders)`, a constant's name. */
++  source: string;
++  /** Where the value is kept: `orders.cups`, `data/orders.json`, `the form (not saved yet)`. */
++  data: string;
++}
++
++// eslint-disable-next-line @typescript-eslint/no-explicit-any -- any function of plain values that returns a number
++type Formula = (...args: any[]) => number;
++
++export interface FigureDef<F extends Formula = Formula> {
++  /** The function that works the figure out: imported, never written here. */
++  fn: F;
++  /** What the figure is called, in the customer's words. */
++  title: string;
++  /** What it tells the person reading it, in one sentence. */
++  what: string;
++  /** How it is worked out, in plain English, as the decision card says it. */
++  english: string;
++  inputs: FigureInput[];
++  show: Show;
++  /** Files whose changes belong to the figure's history besides its function's own (data files). */
++  files?: string[];
++}
++
++/** The figures of the product, by id (lowercase words joined by dashes). */
++export function defineFigures<const T extends Record<string, FigureDef>>(defs: T): T {
++  return defs;
++}
+diff --git a/rama/figures.ts b/rama/figures.ts
+new file mode 100644
+index 0000000..9456501
+--- /dev/null
++++ b/rama/figures.ts
+@@ -0,0 +1,17 @@
++// Every figure the product shows (docs/HOUSE-STYLE.md): its function, imported from where it is written,
++// and what it means in the customer's words. A screen shows a figure only through <Figure id>, and
++// rama/lint.ts fails the build on any number shown any other way.
++import { buildingCount } from '../features/welcome/plan';
++import { defineFigures } from './define';
++
++export const figures = defineFigures({
++  'building-count': {
++    fn: buildingCount,
++    title: 'Buildings planned',
++    what: 'How many things the product will do, as its plan lists them.',
++    english: 'The number of buildings on the plan.',
++    inputs: [{ label: 'The plan', source: 'buildingCount(buildings)', data: '.rama/features.json' }],
++    show: 'count',
++    files: ['.rama/features.json'],
++  },
++});
+diff --git a/rama/lint.ts b/rama/lint.ts
+new file mode 100644
+index 0000000..bbe7652
+--- /dev/null
++++ b/rama/lint.ts
+@@ -0,0 +1,860 @@
++// The figures lint (Invariant 10: traced by construction). Any number a screen shows outside a <Figure>
++// fails the build, naming the file and the line; so does a <Figure> whose function is not the one
++// rama/figures.ts names for it, and an entry of rama/figures.ts House of Rama could not read as written.
++//
++//   node rama/lint.ts [product folder] [--json] [--trusted <the house stack's folder>]
++//
++// It runs before every build (`prebuild`) and in CI, and House of Rama runs its own copy of this file
++// after every lift, so editing the product's copy changes nothing House of Rama sees.
++import { existsSync, readFileSync } from 'node:fs';
++import path from 'node:path';
++import ts from 'typescript';
++
++export interface LintFinding {
++  file: string;
++  line: number;
++  sentence: string;
++}
++
++const REGISTRY = 'rama/figures.ts';
++const FIGURE_COMPONENT = 'components/Figure.tsx';
++const SHOWS = new Set(['count', 'rupees', 'percent']);
++/** Attributes whose value a person reads on the screen. */
++const SHOWN_ATTRIBUTES = new Set(['placeholder', 'title', 'alt', 'aria-label', 'children']);
++const SHOWN_VALUE_ON = new Set(['input', 'textarea']);
++
++const NUMBER_TO_TEXT = new Set([
++  'toFixed',
++  'toString',
++  'toLocaleString',
++  'toPrecision',
++  'toExponential',
++]);
++const DIGIT = /\d/;
++/** How many steps a value is followed (a name to what it holds, a call to what it gives back). */
++const FOLLOW_LIMIT = 20;
++
++function program(dir: string): ts.Program {
++  const configFile = path.join(dir, 'tsconfig.json');
++  const read = ts.readConfigFile(configFile, (f) => ts.sys.readFile(f));
++  const parsed = ts.parseJsonConfigFileContent(read.config ?? {}, ts.sys, dir);
++  return ts.createProgram({
++    rootNames: parsed.fileNames.filter((f) => !f.includes('/node_modules/')),
++    options: { ...parsed.options, noEmit: true, plugins: [] },
++  });
++}
++
++/** What a figure entry says, read from the object literal as written. */
++interface Entry {
++  id: string;
++  fn: ts.Symbol | null;
++  show: string | null;
++}
++
++/** The files that show a figure: the house stack's own, which a lift may not change. */
++export const TRUSTED_FILES = [FIGURE_COMPONENT, 'rama/define.ts'];
++
++/**
++ * `trusted`: the house stack's own folder (House of Rama passes it when it runs its copy). The files
++ * that show a figure must be the same as there: the lint does not read them, it trusts them.
++ */
++export function lintFigures(dir: string, trusted?: string): LintFinding[] {
++  const root = path.resolve(dir);
++  const findings: LintFinding[] = [];
++  if (!existsSync(path.join(root, 'tsconfig.json')))
++    return [{ file: 'tsconfig.json', line: 1, sentence: 'The product has no tsconfig.json.' }];
++  if (trusted)
++    for (const f of TRUSTED_FILES) {
++      const mine = path.join(root, f);
++      const theirs = path.join(path.resolve(trusted), f);
++      if (!existsSync(mine) || readFileSync(mine, 'utf8') !== readFileSync(theirs, 'utf8'))
++        findings.push({
++          file: f,
++          line: 1,
++          sentence: `${f}, line 1: is the house stack's own and must stay as it is: it shows every figure, so the lint trusts it rather than reads it.`,
++        });
++    }
++  const prog = program(root);
++  const checker = prog.getTypeChecker();
++  const rel = (sf: ts.SourceFile) => path.relative(root, sf.fileName).split(path.sep).join('/');
++  const report = (sf: ts.SourceFile, node: ts.Node, said: string) => {
++    const at = line(sf, node);
++    findings.push({ file: rel(sf), line: at, sentence: `${rel(sf)}, line ${at}: ${said}` });
++  };
++  const unmarked = (sf: ts.SourceFile, node: ts.Node, why: string) =>
++    report(
++      sf,
++      node,
++      `${why[0]!.toUpperCase()}${why.slice(1)} is shown without a Figure. Show it through <Figure id> (${REGISTRY}) or write it in words.`,
++    );
++  const own = prog
++    .getSourceFiles()
++    .filter(
++      (sf) =>
++        !sf.isDeclarationFile && !rel(sf).startsWith('..') && !rel(sf).includes('node_modules/'),
++    );
++
++  // The symbol a name stands for, through any renaming on the way in.
++  const target = (node: ts.Node): ts.Symbol | null => {
++    let s = checker.getSymbolAtLocation(node) ?? null;
++    if (s && s.flags & ts.SymbolFlags.Alias) s = checker.getAliasedSymbol(s);
++    return s;
++  };
++
++  const text = (e: ts.Expression | undefined) =>
++    e && (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e)) ? e.text : null;
++
++  const entries = new Map<string, Entry>();
++  const registry = own.find((sf) => rel(sf) === REGISTRY);
++  if (!registry)
++    findings.push({
++      file: REGISTRY,
++      line: 1,
++      sentence: `${REGISTRY} is missing: every figure is listed there.`,
++    });
++  else readRegistry(registry);
++
++  function readRegistry(sf: ts.SourceFile) {
++    let found = false;
++    const visit = (node: ts.Node) => {
++      if (
++        ts.isCallExpression(node) &&
++        ts.isIdentifier(node.expression) &&
++        node.expression.text === 'defineFigures'
++      ) {
++        found = true;
++        const arg = node.arguments[0];
++        if (!arg || !ts.isObjectLiteralExpression(arg)) {
++          report(
++            sf,
++            node,
++            'defineFigures is given something other than a list written out in full.',
++          );
++          return;
++        }
++        for (const p of arg.properties) readEntry(sf, p);
++        return;
++      }
++      ts.forEachChild(node, visit);
++    };
++    visit(sf);
++    if (!found) report(sf, sf, `${REGISTRY} does not list its figures with defineFigures.`);
++  }
++
++  function readEntry(sf: ts.SourceFile, p: ts.ObjectLiteralElementLike) {
++    if (!ts.isPropertyAssignment(p) || !(ts.isStringLiteral(p.name) || ts.isIdentifier(p.name))) {
++      report(sf, p, 'Each figure is written as “id”: { … }.');
++      return;
++    }
++    const id = p.name.text;
++    if (!/^[a-z0-9][a-z0-9-]{0,79}$/.test(id))
++      report(sf, p, `The figure “${id}” needs an id of lowercase words joined by dashes.`);
++    if (!ts.isObjectLiteralExpression(p.initializer)) {
++      report(sf, p, `The figure “${id}” is not written out in full.`);
++      return;
++    }
++    const field = (name: string) => {
++      const f = (p.initializer as ts.ObjectLiteralExpression).properties.find(
++        (x): x is ts.PropertyAssignment =>
++          ts.isPropertyAssignment(x) && ts.isIdentifier(x.name) && x.name.text === name,
++      );
++      return f?.initializer;
++    };
++    for (const name of ['title', 'what', 'english']) {
++      const v = text(field(name));
++      if (!v?.trim())
++        report(
++          sf,
++          p,
++          `The figure “${id}” needs its ${name === 'english' ? 'way of working it out in plain English' : name} written as plain text.`,
++        );
++    }
++    const inputs = field('inputs');
++    if (!inputs || !ts.isArrayLiteralExpression(inputs))
++      report(sf, p, `The figure “${id}” needs its inputs listed.`);
++    else
++      for (const i of inputs.elements) {
++        const ok =
++          ts.isObjectLiteralExpression(i) &&
++          ['label', 'source', 'data'].every((k) =>
++            i.properties.some(
++              (x) =>
++                ts.isPropertyAssignment(x) &&
++                ts.isIdentifier(x.name) &&
++                x.name.text === k &&
++                Boolean(text(x.initializer)?.trim()),
++            ),
++          );
++        if (!ok)
++          report(
++            sf,
++            i,
++            `An input of “${id}” needs its label, where it enters and where it is kept, as plain text.`,
++          );
++      }
++    const show = text(field('show'));
++    if (!show || !SHOWS.has(show))
++      report(sf, p, `The figure “${id}” needs show: count, rupees or percent.`);
++    const fnNode = field('fn');
++    let fn: ts.Symbol | null = null;
++    if (!fnNode || !ts.isIdentifier(fnNode))
++      report(sf, p, `The figure “${id}” needs fn: the name of the function that works it out.`);
++    else {
++      fn = target(fnNode);
++      const decl = fn?.valueDeclaration ?? fn?.declarations?.[0];
++      const at = decl ? rel(decl.getSourceFile()) : null;
++      if (!decl || !at || at.startsWith('..') || at.includes('node_modules/'))
++        report(sf, fnNode, `The function of “${id}” is not one of the product’s own.`);
++      else if (at === REGISTRY || at.endsWith('.tsx'))
++        report(
++          sf,
++          fnNode,
++          `The function of “${id}” must be written in a .ts file of its building, not here.`,
++        );
++      else if (!(
++        ts.isFunctionDeclaration(decl) ||
++        (ts.isVariableDeclaration(decl) &&
++          decl.initializer &&
++          (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer)))
++      ))
++        report(
++          sf,
++          fnNode,
++          `“${fnNode.text}”, the function of “${id}”, is not written as a function.`,
++        );
++    }
++    entries.set(id, { id, fn, show });
++  }
++
++  // A number, or what may be one; a type that also holds elements (a component's children) passes them on
++  // and is judged where they are written.
++  const numberLike = (t: ts.Type): boolean => {
++    if (t.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) return true;
++    if (t.flags & (ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)) return true;
++    if (t.isUnion())
++      return t.types.some(numberLike) && !t.types.some((m) => m.flags & ts.TypeFlags.Object);
++    return false;
++  };
++  const isNumber = (e: ts.Expression) => numberLike(checker.getTypeAtLocation(e));
++
++  /** The values given to a name, or a property, after it was declared: `x = …`, `o.x = …`, `x += …`. */
++  const assigned = new Map<ts.Symbol, ts.Expression[]>();
++  function assignedTo(sym: ts.Symbol, sf: ts.SourceFile): ts.Expression[] {
++    const known = assigned.get(sym);
++    if (known) return known;
++    const out: ts.Expression[] = [];
++    const visit = (n: ts.Node) => {
++      if (
++        ts.isBinaryExpression(n) &&
++        n.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
++        n.operatorToken.kind <= ts.SyntaxKind.LastAssignment
++      ) {
++        const left = ts.isPropertyAccessExpression(n.left) ? n.left.name : n.left;
++        if (target(left) === sym) out.push(n.right);
++      }
++      ts.forEachChild(n, visit);
++    };
++    visit(sf);
++    assigned.set(sym, out);
++    return out;
++  }
++
++  /**
++   * What a destructured name may hold: its default (`{ label = '123' }`), and the whole value it is
++   * destructured from when that is a variable's (`const { label } = { label: '123' }`).
++   */
++  function destructuredFrom(el: ts.BindingElement): ts.Expression[] {
++    const out: ts.Expression[] = el.initializer ? [el.initializer] : [];
++    let up: ts.Node = el.parent;
++    while (ts.isObjectBindingPattern(up) || ts.isArrayBindingPattern(up) || ts.isBindingElement(up))
++      up = up.parent;
++    if (ts.isVariableDeclaration(up) && up.initializer) out.push(up.initializer);
++    return out;
++  }
++
++  /** The function a callee or a callback stands for, through any names for it; null when not found. */
++  function fnOf(x: ts.Node | undefined): ts.FunctionLikeDeclaration | null {
++    let at: ts.Node | undefined =
++      x && ts.isExpression(x as ts.Expression) ? unwrap(x as ts.Expression) : x;
++    for (let hops = 0; at && hops < FOLLOW_LIMIT; hops++) {
++      if (
++        ts.isFunctionDeclaration(at) ||
++        ts.isMethodDeclaration(at) ||
++        ts.isArrowFunction(at) ||
++        ts.isFunctionExpression(at)
++      )
++        return at;
++      if (ts.isIdentifier(at) || ts.isPropertyAccessExpression(at))
++        at = target(ts.isPropertyAccessExpression(at) ? at.name : at)?.valueDeclaration;
++      else if (ts.isVariableDeclaration(at) && at.initializer) at = unwrap(at.initializer);
++      else return null;
++    }
++    return null;
++  }
++
++  /** Whether the expression, shown as a child of an element, shows a number; and why. */
++  function shows(e: ts.Expression, depth = 0): string | null {
++    e = unwrap(e);
++    // A value followed this far without an end is not taken on trust.
++    if (depth >= FOLLOW_LIMIT)
++      return `“${e.getText().slice(0, 40)}”, which the lint cannot follow to where it is written, so it may be a number`;
++    if (ts.isJsxElement(e) || ts.isJsxSelfClosingElement(e) || ts.isJsxFragment(e)) return null;
++    if (ts.isStringLiteral(e) || ts.isNoSubstitutionTemplateLiteral(e))
++      return DIGIT.test(e.text) ? `the number in “${e.text.trim().slice(0, 40)}”` : null;
++    // An object written in place and handed over (to a function, a component, createElement): any text
++    // in it may be what is shown. A number in it is judged where it is shown.
++    if (ts.isObjectLiteralExpression(e)) {
++      for (const p of e.properties) {
++        const values =
++          (ts.isGetAccessorDeclaration(p) || ts.isMethodDeclaration(p)) && p.body
++            ? returnsOf(p.body)
++            : [
++                ts.isPropertyAssignment(p)
++                  ? p.initializer
++                  : ts.isShorthandPropertyAssignment(p)
++                    ? p.name
++                    : ts.isSpreadAssignment(p)
++                      ? p.expression
++                      : undefined,
++              ];
++        for (const value of values) {
++          if (!value || ts.isArrowFunction(value) || ts.isFunctionExpression(value)) continue;
++          if (!ts.isObjectLiteralExpression(value) && !ts.isStringLiteral(value) && isNumber(value))
++            continue;
++          const why = shows(value, depth + 1);
++          if (why) return why;
++        }
++      }
++    }
++    // A spread inside a list (`[...xs]`) holds what it spreads.
++    if (ts.isSpreadElement(e)) return shows(e.expression, depth + 1);
++    // A list written in place (and joined, or shown as it is): any element may be shown.
++    if (ts.isArrayLiteralExpression(e)) {
++      for (const el of e.elements) {
++        const why = shows(el, depth + 1);
++        if (why) return why;
++      }
++    }
++    if (ts.isConditionalExpression(e)) return shows(e.whenTrue, depth) ?? shows(e.whenFalse, depth);
++    if (ts.isBinaryExpression(e)) {
++      const op = e.operatorToken.kind;
++      if (op === ts.SyntaxKind.AmpersandAmpersandToken) return shows(e.right, depth);
++      if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
++        return shows(e.left, depth) ?? shows(e.right, depth);
++      // Text joined from parts: a part that holds a number is shown.
++      if (op === ts.SyntaxKind.PlusToken) return shows(e.left, depth) ?? shows(e.right, depth);
++    }
++    const type = checker.getTypeAtLocation(e);
++    if (type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown))
++      return `“${e.getText().slice(0, 40)}”, whose kind is not known, so it may be a number`;
++    if (numberLike(type)) return `the number “${e.getText().slice(0, 40)}”`;
++    // Text whose every possible value is known, and one of them holds a number.
++    const texts = type.isUnion() ? type.types : [type];
++    const numbered = texts.find((t) => t.isStringLiteral() && DIGIT.test(t.value));
++    if (numbered?.isStringLiteral())
++      return `“${e.getText().slice(0, 40)}”, which may be “${numbered.value.slice(0, 40)}”`;
++    // One element of a list or record (written in place, or by a name, a call…): any of its elements may
++    // be the one shown, so it is judged by what it is read from.
++    if (ts.isElementAccessExpression(e)) {
++      const why = shows(e.expression, depth + 1);
++      if (why) return `“${e.getText().slice(0, 40)}”, which may be ${why}`;
++    }
++    // A name for a value written in the product's own code: what it was given is what is shown.
++    if (ts.isIdentifier(e) || ts.isPropertyAccessExpression(e)) {
++      const decl = target(ts.isPropertyAccessExpression(e) ? e.name : e)?.valueDeclaration;
++      // What it holds as written: a variable's or a field's first value, a shorthand's name, or what a
++      // getter gives back.
++      const givenAll: ts.Expression[] = !decl
++        ? []
++        : (ts.isVariableDeclaration(decl) ||
++              ts.isPropertyAssignment(decl) ||
++              ts.isPropertyDeclaration(decl)) &&
++            decl.initializer
++          ? [decl.initializer]
++          : ts.isShorthandPropertyAssignment(decl)
++            ? [decl.name]
++            : ts.isGetAccessorDeclaration(decl) && decl.body
++              ? returnsOf(decl.body)
++              : ts.isBindingElement(decl)
++                ? destructuredFrom(decl)
++                : [];
++      // A map callback's parameter holds each element of the list mapped (`['123'].map((x) => x)`).
++      // A name destructured from the parameter (`({ label }) => …`) is that parameter's too.
++      let param: ts.Node | undefined = decl;
++      while (
++        param &&
++        (ts.isBindingElement(param) ||
++          ts.isObjectBindingPattern(param) ||
++          ts.isArrayBindingPattern(param))
++      )
++        param = param.parent;
++      if (param && ts.isParameter(param) && ts.isIdentifier(e)) {
++        const decl = param;
++        const cb = decl.parent;
++        const call = cb.parent;
++        if (
++          (ts.isArrowFunction(cb) || ts.isFunctionExpression(cb)) &&
++          cb.parameters[0] === decl &&
++          ts.isCallExpression(call) &&
++          call.arguments[0] === cb &&
++          ts.isPropertyAccessExpression(call.expression) &&
++          ['map', 'flatMap', 'forEach'].includes(call.expression.name.text)
++        ) {
++          const why = shows(call.expression.expression, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, an element of a list that holds ${why}`;
++        }
++      }
++      const sym = target(ts.isPropertyAccessExpression(e) ? e.name : e);
++      // What it was given first, and every value given to it after (`label = '123'`).
++      const values = [
++        ...givenAll.filter((g) => !rel(g.getSourceFile()).includes('node_modules/')),
++        ...(sym && decl && !rel(decl.getSourceFile()).includes('node_modules/')
++          ? assignedTo(sym, decl.getSourceFile())
++          : []),
++      ];
++      for (const v of values) {
++        const why = shows(v, depth + 1);
++        if (why) return `“${e.getText().slice(0, 40)}”, which holds ${why}`;
++      }
++    }
++    if (ts.isTemplateExpression(e)) {
++      const span = e.templateSpans.find((s) => isNumber(s.expression));
++      if (span) return `the number “${span.expression.getText().slice(0, 40)}” written into text`;
++      for (const part of e.templateSpans) {
++        const why = shows(part.expression, depth + 1);
++        if (why) return `${why}, written into text`;
++      }
++      if (DIGIT.test(e.head.text) || e.templateSpans.some((s) => DIGIT.test(s.literal.text)))
++        return `the number in “${e.getText().slice(0, 40)}”`;
++      return null;
++    }
++    if (ts.isCallExpression(e)) {
++      const callee = e.expression;
++      if (
++        ts.isPropertyAccessExpression(callee) &&
++        NUMBER_TO_TEXT.has(callee.name.text) &&
++        isNumber(callee.expression)
++      )
++        return `the number “${callee.expression.getText().slice(0, 40)}” written as text`;
++      const sym = target(ts.isPropertyAccessExpression(callee) ? callee.name : callee);
++      const decl = sym?.valueDeclaration ?? sym?.declarations?.[0];
++      const words = decl && ts.getJSDocTags(decl).some((t) => t.tagName.text === 'words');
++      const numeric = e.arguments.find((a) => isNumber(a));
++      if (numeric && !words)
++        return `“${e.getText().slice(0, 40)}”, text made from the number “${numeric.getText().slice(0, 30)}”`;
++      // A library's function or method (concat, join, createElement…) makes what it shows from what it
++      // is called on and given.
++      const builtIn = decl && rel(decl.getSourceFile()).includes('node_modules/');
++      if (builtIn) {
++        // map and flatMap show what their callback gives back, not what they run over.
++        const mapping =
++          ts.isPropertyAccessExpression(callee) && ['map', 'flatMap'].includes(callee.name.text);
++        const parts = mapping
++          ? e.arguments.slice(1)
++          : [...(ts.isPropertyAccessExpression(callee) ? [callee.expression] : []), ...e.arguments];
++        for (const part of parts) {
++          const why = shows(part, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
++        }
++        // A list made by map or flatMap holds what the callback gives back, inline or by name.
++        if (mapping)
++          for (const cb of e.arguments.slice(0, 1)) {
++            const fn = fnOf(cb);
++            if (!fn?.body)
++              return `“${e.getText().slice(0, 40)}”, made by a callback the lint cannot follow, so it may hold a number`;
++            for (const given of returnsOf(fn.body)) {
++              const why = shows(given, depth + 1);
++              if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
++            }
++            // A callback that gives back what it is handed (its parameter, inline or named) gives the
++            // list's own elements: the list mapped is judged too.
++            // Every name the parameters bind, destructured ones included.
++            const bound = (n: ts.BindingName): ts.Identifier[] =>
++              ts.isIdentifier(n)
++                ? [n]
++                : n.elements.flatMap((el) => (ts.isBindingElement(el) ? bound(el.name) : []));
++            const params = new Set(
++              fn.parameters.flatMap((p) => bound(p.name).map((id) => target(id))),
++            );
++            const usesParam = (n: ts.Node): boolean =>
++              (ts.isIdentifier(n) && params.has(target(n))) ||
++              ts.forEachChild(n, usesParam) === true;
++            if (
++              ts.isPropertyAccessExpression(callee) &&
++              returnsOf(fn.body).some((r) => usesParam(r))
++            ) {
++              const why = shows(callee.expression, depth + 1);
++              if (why) return `“${e.getText().slice(0, 40)}”, which gives back elements of ${why}`;
++            }
++          }
++      }
++      // A function of the product's own, through any names for it (`const alias = label`): what it gives
++      // back is what is shown.
++      const fn = fnOf(decl);
++      const own = Boolean(decl && !rel(decl.getSourceFile()).includes('node_modules/'));
++      // A call of the product's own that cannot be followed to a function (a function handed in, a
++      // name too far) gives text the lint cannot judge: it is not taken on trust.
++      if (own && !words && (!fn || !fn.body) && !numberLike(checker.getTypeAtLocation(e)))
++        return `“${e.getText().slice(0, 40)}”, a call the lint cannot follow to the function it runs, so it may give a number`;
++      if (fn && fn.body && !words && !rel(fn.getSourceFile()).includes('node_modules/')) {
++        // What it is given may be what it gives back (`label('123')` returning its argument).
++        for (const part of e.arguments) {
++          const why = shows(part, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, made from ${why}`;
++        }
++        for (const given of returnsOf(fn.body)) {
++          const why = shows(given, depth + 1);
++          if (why) return `“${e.getText().slice(0, 40)}”, which gives ${why}`;
++        }
++      }
++    }
++    return null;
++  }
++
++  function checkFigure(sf: ts.SourceFile, el: ts.JsxSelfClosingElement | ts.JsxOpeningElement) {
++    const attr = (name: string) =>
++      el.attributes.properties.find(
++        (a): a is ts.JsxAttribute => ts.isJsxAttribute(a) && a.name.getText() === name,
++      );
++    const idAttr = attr('id')?.initializer;
++    const id = idAttr && ts.isStringLiteral(idAttr) ? idAttr.text : null;
++    if (!id) {
++      report(sf, el, 'A Figure needs its id written as plain text, so it can be traced.');
++      return;
++    }
++    const entry = entries.get(id);
++    if (!entry) {
++      report(sf, el, `The Figure “${id}” is not in ${REGISTRY}.`);
++      return;
++    }
++    const fnInit = attr('fn')?.initializer;
++    const fnExpr = fnInit && ts.isJsxExpression(fnInit) ? fnInit.expression : undefined;
++    const fn = fnExpr && ts.isIdentifier(fnExpr) ? target(fnExpr) : null;
++    if (!fn || (entry.fn && fn !== entry.fn))
++      report(
++        sf,
++        el,
++        `The Figure “${id}” must be worked out by the function ${REGISTRY} names for it.`,
++      );
++    const showInit = attr('show')?.initializer;
++    const show = showInit && ts.isStringLiteral(showInit) ? showInit.text : null;
++    if (show !== entry.show)
++      report(
++        sf,
++        el,
++        `The Figure “${id}” must be shown as ${REGISTRY} says (${entry.show ?? 'not said'}).`,
++      );
++  }
++
++  const tagOf = (el: ts.JsxSelfClosingElement | ts.JsxOpeningElement) => el.tagName.getText();
++
++  for (const sf of own) {
++    const file = rel(sf);
++    // Every file a screen may be made of: elements in .tsx, components made with createElement in .ts
++    // too, tests included (a page may bring a component in from one). Configuration is not a screen;
++    // the files that show a figure are trusted (above), and this lint is not a screen.
++    if (
++      !/\.tsx?$/.test(file) ||
++      /^(vitest|next|drizzle|playwright)\.config\.ts$/.test(file) ||
++      TRUSTED_FILES.includes(file) ||
++      file === 'rama/lint.ts'
++    )
++      continue;
++    const visit = (node: ts.Node) => {
++      if (ts.isJsxSelfClosingElement(node) || ts.isJsxElement(node)) {
++        const open = ts.isJsxElement(node) ? node.openingElement : node;
++        // Only the house stack's own Figure is a figure: a component of another file that is merely named
++        // Figure is read like any other.
++        const figureDecl = target(open.tagName)?.declarations?.[0];
++        if (
++          tagOf(open) === 'Figure' &&
++          figureDecl &&
++          rel(figureDecl.getSourceFile()) === FIGURE_COMPONENT
++        ) {
++          checkFigure(sf, open);
++          return; // what a Figure holds is the Figure's
++        }
++        const tag = tagOf(open);
++        const tagDecl = /^[A-Z]/.test(tag) ? target(open.tagName)?.declarations?.[0] : undefined;
++        const ownComponent = Boolean(
++          tagDecl && !rel(tagDecl.getSourceFile()).includes('node_modules/'),
++        );
++        // Props spread in (`{...{ text: '123' }}`, or a name for such an object) count as written.
++        // Spread props, opened all the way down (`{...{ ...{ children: '123' } }}`, names followed).
++        type Prop = {
++          node: ts.Node;
++          name: string;
++          given: ts.Expression | undefined;
++          /** A spread the lint could not follow to where it is written: refused, not trusted. */
++          lost?: true;
++        };
++        const opened = (at: ts.Node, e: ts.Expression, steps = 0): Prop[] => {
++          const lost: Prop[] = [{ node: at, name: '', given: undefined, lost: true }];
++          if (steps >= FOLLOW_LIMIT) return lost;
++          const next = (x: ts.Expression) => opened(at, x, steps + 1);
++          if (unwrap(e) !== e) return next(unwrap(e));
++          if (ts.isIdentifier(e)) {
++            const d: ts.Declaration | undefined = target(e)?.valueDeclaration;
++            if (d && ts.isVariableDeclaration(d))
++              return d.initializer
++                ? [
++                    ...next(d.initializer),
++                    ...assignedTo(target(e)!, d.getSourceFile()).flatMap(next),
++                  ]
++                : [];
++            // A component's own props spread on (`{...props}`) are judged where it is given them.
++            if (d && (ts.isParameter(d) || ts.isBindingElement(d))) return [];
++            return lost;
++          }
++          // Either branch may be the one spread.
++          if (ts.isConditionalExpression(e)) return [...next(e.whenTrue), ...next(e.whenFalse)];
++          if (ts.isBinaryExpression(e)) {
++            const op = e.operatorToken.kind;
++            if (op === ts.SyntaxKind.AmpersandAmpersandToken) return next(e.right);
++            if (op === ts.SyntaxKind.BarBarToken || op === ts.SyntaxKind.QuestionQuestionToken)
++              return [...next(e.left), ...next(e.right)];
++            return lost;
++          }
++          // One of the product's own functions: what it gives back is spread.
++          if (ts.isCallExpression(e)) {
++            const callee = ts.isPropertyAccessExpression(e.expression)
++              ? e.expression.name
++              : e.expression;
++            const d = target(callee)?.valueDeclaration;
++            const fn =
++              d && ts.isFunctionDeclaration(d)
++                ? d
++                : d &&
++                    ts.isVariableDeclaration(d) &&
++                    d.initializer &&
++                    (ts.isArrowFunction(d.initializer) || ts.isFunctionExpression(d.initializer))
++                  ? d.initializer
++                  : undefined;
++            if (fn?.body && !rel(fn.getSourceFile()).includes('node_modules/'))
++              return [
++                ...returnsOf(fn.body).flatMap(next),
++                // What it is given may be what it gives back (`make({ children: '123' })`).
++                ...e.arguments
++                  .filter((x) => ts.isStringLiteral(x) || !isNumber(x))
++                  .map((x): Prop => ({ node: at, name: 'children', given: x })),
++              ];
++            return lost;
++          }
++          if (!ts.isObjectLiteralExpression(e)) {
++            // Nothing (null, undefined, false) spreads nothing; anything else is not taken on trust.
++            const t = checker.getTypeAtLocation(e);
++            return t.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined | ts.TypeFlags.BooleanLike)
++              ? []
++              : lost;
++          }
++          return e.properties.flatMap((p): Prop[] => {
++            if (ts.isShorthandPropertyAssignment(p))
++              return [{ node: at, name: p.name.text, given: p.name }];
++            if (ts.isSpreadAssignment(p)) return next(p.expression);
++            const name = propName(p.name);
++            if (ts.isPropertyAssignment(p)) return [{ node: at, name, given: p.initializer }];
++            // A getter or a method gives what it returns.
++            if ((ts.isGetAccessorDeclaration(p) || ts.isMethodDeclaration(p)) && p.body)
++              return returnsOf(p.body).map((given) => ({ node: at, name, given }));
++            return [];
++          });
++        };
++        const spread = open.attributes.properties.flatMap((a) =>
++          ts.isJsxSpreadAttribute(a) ? opened(a, a.expression) : [],
++        );
++        const written = open.attributes.properties.flatMap((a) =>
++          ts.isJsxAttribute(a) && a.initializer
++            ? [
++                {
++                  node: a as ts.Node,
++                  name: a.name.getText(),
++                  given: ts.isStringLiteral(a.initializer)
++                    ? (a.initializer as ts.Expression)
++                    : ts.isJsxExpression(a.initializer)
++                      ? a.initializer.expression
++                      : undefined,
++                },
++              ]
++            : [],
++        );
++        for (const a of [...written, ...spread]) {
++          if ('lost' in a && a.lost) {
++            unmarked(
++              sf,
++              a.node,
++              `a spread the lint cannot follow to where it is written, so it may hold a number`,
++            );
++            continue;
++          }
++          if (!a.given) continue;
++          const name = a.name;
++          // Text handed to one of the product's own components may be shown by it, where the lint sees
++          // only "some text": every prop but `key` is judged where it is handed over (a number handed
++          // over is judged where the component shows it). A library's component (a link, an image) is
++          // judged only by the attributes a person reads.
++          // A number handed over is left to where the component shows it only when the prop is a plain
++          // number there (then the lint sees a number); handed into a prop of any wider kind
++          // (`ReactNode`) it would be seen only as "an element", so it is judged here.
++          const expected = checker.getContextualType(a.given);
++          const plainNumber =
++            expected !== undefined &&
++            Boolean(expected.flags & (ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)) &&
++            !expected.isUnion();
++          const handed =
++            ownComponent &&
++            name !== 'key' &&
++            !(!ts.isStringLiteral(a.given) && isNumber(a.given) && plainNumber);
++          const shown =
++            handed ||
++            (!ownComponent && (SHOWN_ATTRIBUTES.has(name) || name === 'dangerouslySetInnerHTML')) ||
++            ((name === 'value' || name === 'defaultValue') && SHOWN_VALUE_ON.has(tag));
++          if (!shown) continue;
++          // HTML set directly is shown as it is written: its object opened like a spread (names, choices,
++          // functions followed), and refused when it cannot be opened.
++          if (name === 'dangerouslySetInnerHTML') {
++            for (const h of opened(a.node, a.given)) {
++              const why = h.lost
++                ? 'raw HTML the lint cannot follow to where it is written, so it may hold a number'
++                : h.name === '__html' && h.given
++                  ? shows(h.given)
++                  : null;
++              if (why) unmarked(sf, a.node, why);
++            }
++            continue;
++          }
++          const given = a.given;
++          const why = given ? shows(given) : null;
++          if (why) unmarked(sf, a.node, why);
++        }
++      }
++      // A component shows what it gives back, element or not: a function named with a capital, or the
++      // file's default export (a page), named or not.
++      const isFn = (x: ts.Node | undefined): x is ts.ArrowFunction | ts.FunctionExpression =>
++        Boolean(x && (ts.isArrowFunction(x) || ts.isFunctionExpression(x)));
++      const defaulted = (n: ts.Node) =>
++        ts.canHaveModifiers(n) &&
++        (ts.getModifiers(n) ?? []).some((m) => m.kind === ts.SyntaxKind.DefaultKeyword);
++      let exported: ts.Expression | undefined;
++      let exportedBody: ts.ConciseBody | undefined;
++      // The default export by name (`export default page`, `export { page as default }`): its function.
++      const byName = (id: ts.Identifier | ts.ModuleExportName) => {
++        const d = target(id)?.valueDeclaration;
++        if (d && ts.isFunctionDeclaration(d)) return d.body;
++        if (d && ts.isVariableDeclaration(d) && isFn(d.initializer)) return d.initializer.body;
++        return undefined;
++      };
++      if (ts.isExportAssignment(node) && !node.isExportEquals) {
++        exported = node.expression;
++        if (exported) exported = unwrap(exported);
++        if (exported && ts.isIdentifier(exported)) exportedBody = byName(exported);
++      }
++      if (
++        ts.isExportDeclaration(node) &&
++        !node.moduleSpecifier &&
++        node.exportClause &&
++        ts.isNamedExports(node.exportClause)
++      )
++        for (const el of node.exportClause.elements)
++          if (el.name.text === 'default') exportedBody = byName(el.propertyName ?? el.name);
++      const component =
++        (ts.isFunctionDeclaration(node) &&
++          ((node.name && /^[A-Z]/.test(node.name.text)) || defaulted(node))) ||
++        (ts.isVariableDeclaration(node) &&
++          ts.isIdentifier(node.name) &&
++          /^[A-Z]/.test(node.name.text) &&
++          isFn(node.initializer)) ||
++        isFn(exported) ||
++        Boolean(exportedBody);
++      const body = ts.isFunctionDeclaration(node)
++        ? node.body
++        : ts.isVariableDeclaration(node) && isFn(node.initializer)
++          ? node.initializer.body
++          : isFn(exported)
++            ? exported.body
++            : exportedBody;
++      if (component && body)
++        for (const given of returnsOf(body)) {
++          const why = shows(given);
++          if (why) unmarked(sf, given, why);
++        }
++      if (ts.isJsxText(node) && DIGIT.test(node.text)) {
++        unmarked(sf, node, `the number in “${node.text.trim().slice(0, 40)}”`);
++      }
++      if (
++        ts.isJsxExpression(node) &&
++        node.expression &&
++        (ts.isJsxElement(node.parent) || ts.isJsxFragment(node.parent))
++      ) {
++        const why = shows(node.expression);
++        if (why) unmarked(sf, node, why);
++      }
++      ts.forEachChild(node, visit);
++    };
++    visit(sf);
++  }
++  // One finding a line: two ways of seeing the same number there say the same thing.
++  const seen = new Set<string>();
++  return findings
++    .sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line)
++    .filter((f) => !seen.has(`${f.file}:${f.line}`) && Boolean(seen.add(`${f.file}:${f.line}`)));
++}
++
++/**
++ * A property's name as written: a computed one written as text is read, and any other computed name is
++ * taken as `children`, a name that is shown, so its value is judged rather than skipped.
++ */
++function propName(n: ts.PropertyName): string {
++  if (ts.isIdentifier(n) || ts.isStringLiteral(n) || ts.isNumericLiteral(n)) return n.text;
++  if (ts.isComputedPropertyName(n)) {
++    const x = unwrap(n.expression);
++    if (ts.isStringLiteral(x) || ts.isNoSubstitutionTemplateLiteral(x)) return x.text;
++  }
++  return 'children';
++}
++
++/** The value inside wrappers that do not change it: brackets, `as`, `satisfies`, `!`, `<T>`. */
++function unwrap(e: ts.Expression): ts.Expression {
++  while (
++    ts.isParenthesizedExpression(e) ||
++    ts.isAsExpression(e) ||
++    ts.isSatisfiesExpression(e) ||
++    ts.isNonNullExpression(e) ||
++    ts.isTypeAssertionExpression(e)
++  )
++    e = e.expression;
++  return e;
++}
++
++/** What a function body gives back: its return statements' values, not those of functions inside it. */
++function returnsOf(body: ts.ConciseBody): ts.Expression[] {
++  if (!ts.isBlock(body)) return [body];
++  const out: ts.Expression[] = [];
++  const visit = (n: ts.Node) => {
++    if (ts.isReturnStatement(n) && n.expression) out.push(n.expression);
++    if (ts.isFunctionLike(n)) return;
++    ts.forEachChild(n, visit);
++  };
++  ts.forEachChild(body, visit);
++  return out;
++}
++
++const line = (sf: ts.SourceFile, node: ts.Node) =>
++  sf.getLineAndCharacterOfPosition(node.getStart(sf)).line + 1;
++
++const self =
++  process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename);
++if (self) {
++  const args = process.argv.slice(2);
++  const dir =
++    args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--trusted') ?? process.cwd();
++  const trustedAt = args.indexOf('--trusted');
++  const found = lintFigures(dir, trustedAt >= 0 ? args[trustedAt + 1] : undefined);
++  if (args.includes('--json')) process.stdout.write(JSON.stringify(found) + '\n');
++  else if (found.length) {
++    for (const f of found) console.error(f.sentence);
++    console.error(
++      `\n${found.length} thing${found.length === 1 ? '' : 's'} to fix before the build.`,
++    );
++  } else console.log('Every number on a screen is a traced figure.');
++  process.exitCode = found.length ? 1 : 0;
++}
+diff --git a/tsconfig.json b/tsconfig.json
+new file mode 100644
+index 0000000..a2067e4
+--- /dev/null
++++ b/tsconfig.json
+@@ -0,0 +1,36 @@
++{
++  "compilerOptions": {
++    "target": "ES2022",
++    "lib": [
++      "dom",
++      "dom.iterable",
++      "ES2022"
++    ],
++    "module": "esnext",
++    "moduleResolution": "bundler",
++    "jsx": "react-jsx",
++    "strict": true,
++    "noEmit": true,
++    "skipLibCheck": true,
++    "resolveJsonModule": true,
++    "isolatedModules": true,
++    "esModuleInterop": true,
++    "allowJs": false,
++    "incremental": false,
++    "plugins": [
++      {
++        "name": "next"
++      }
++    ]
++  },
++  "include": [
++    "next-env.d.ts",
++    "**/*.ts",
++    "**/*.tsx",
++    ".next/types/**/*.ts",
++    ".next/dev/types/**/*.ts"
++  ],
++  "exclude": [
++    "node_modules"
++  ]
++}
+diff --git a/vitest.config.ts b/vitest.config.ts
+new file mode 100644
+index 0000000..366e475
+--- /dev/null
++++ b/vitest.config.ts
+@@ -0,0 +1,14 @@
++// One project, "unit": the merge gate's workflow runs `vitest run --project unit` for its report.
++import { defineConfig } from 'vitest/config';
++
++export default defineConfig({
++  oxc: { jsx: { runtime: 'automatic' } },
++  test: {
++    projects: [
++      {
++        oxc: { jsx: { runtime: 'automatic' } },
++        test: { name: 'unit', include: ['**/*.test.{ts,tsx}'], exclude: ['**/node_modules/**'] },
++      },
++    ],
++  },
++});
