@@ -1,6 +1,6 @@
 {
   "branches": [],
-  "commit": "275a9c32f40aece4d88c30ef8da39c02157cd27d",
+  "commit": "592d0c488f84be86434c287b853a25545b237100",
   "commits": [
     {
       "at": "2026-10-23T20:04:19+00:00",
@@ -14772,6 +14772,45 @@
       "sha": "275a9c32f40aece4d88c30ef8da39c02157cd27d",
       "short": "275a9c3",
       "subject": "Name the film's building on House of Rama's own Street"
+    },
+    {
+      "at": "2026-10-31T01:53:22+05:30",
+      "author": "Claude",
+      "changes": [
+        {
+          "add": 2,
+          "del": 0,
+          "kind": "M",
+          "path": "apps/rama/components/film/film.css"
+        },
+        {
+          "add": 30,
+          "del": 9,
+          "kind": "M",
+          "path": "blueprint/self.json"
+        },
+        {
+          "add": 61,
+          "del": 0,
+          "kind": "A",
+          "path": "docs/reports/stage-13.md"
+        },
+        {
+          "add": 10,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/src/film.ts"
+        },
+        {
+          "add": 1,
+          "del": 1,
+          "kind": "M",
+          "path": "packages/workbench/test/film.test.ts"
+        }
+      ],
+      "sha": "592d0c488f84be86434c287b853a25545b237100",
+      "short": "592d0c4",
+      "subject": "Stage 13: report draft; files laid together go ground first; the voice stays at the foot"
     }
   ],
   "edges": [
@@ -29326,9 +29365,7 @@
     {
       "from": "packages/workbench/src/testdrive.ts",
       "symbols": [
-        "SAMPLE_CARDS",
-        "SAMPLE_IDEA",
-        "SAMPLE_NAME",
+        "sampleOf",
         "sampleRecording"
       ],
       "to": "packages/workbench/src/sample.ts",
@@ -29901,6 +29938,16 @@
         "productId"
       ],
       "to": "packages/workbench/src/products.ts",
+      "typeOnly": false
+    },
+    {
+      "from": "packages/workbench/test/sample.test.ts",
+      "symbols": [
+        "CHAI_STALL",
+        "sampleOf",
+        "sampleRecording"
+      ],
+      "to": "packages/workbench/src/sample.ts",
       "typeOnly": false
     },
     {
@@ -32116,7 +32163,7 @@
       "version": "5.0.3"
     }
   ],
-  "extractedAt": "2026-10-31T01:41:44+05:30",
+  "extractedAt": "2026-10-31T01:53:22+05:30",
   "extractorVersion": "0.2.0",
   "layers": [
     {
@@ -34729,7 +34776,7 @@
     },
     {
       "binary": false,
-      "bytes": 10617,
+      "bytes": 10630,
       "changes": 4,
       "env": [
         "RAMA_WORK_DIR"
@@ -34962,7 +35009,7 @@
     },
     {
       "binary": false,
-      "bytes": 62806,
+      "bytes": 63713,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -34975,7 +35022,7 @@
       "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 1743,
+      "lines": 1760,
       "packages": [
         "react"
       ],
@@ -35021,16 +35068,16 @@
     },
     {
       "binary": false,
-      "bytes": 20667,
-      "changes": 3,
+      "bytes": 20769,
+      "changes": 4,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
+      "lastCommit": "592d0c488f84be86434c287b853a25545b237100",
       "layer": "interface",
       "layerRule": "overlay: apps/rama components and canvas",
-      "lines": 1058,
+      "lines": 1065,
       "path": "apps/rama/components/film/film.css",
       "test": false
     },
@@ -37083,7 +37130,7 @@
     },
     {
       "binary": false,
-      "bytes": 26965,
+      "bytes": 28015,
       "changes": 27,
       "env": [],
       "envDynamic": false,
@@ -37092,7 +37139,7 @@
       "lastCommit": "524b56d952ae282729ae06b009e128607cff0a90",
       "layer": "shell",
       "layerRule": "overlay: app routes, docs, e2e tests",
-      "lines": 88,
+      "lines": 89,
       "path": "docs/KNOWN-GAPS.md",
       "purpose": {
         "confirmed": false,
@@ -37478,6 +37525,21 @@
       "layerRule": "overlay: app routes, docs, e2e tests",
       "lines": 0,
       "path": "docs/reports/stage-11/walk-through.png",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 12051,
+      "changes": 1,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "592d0c488f84be86434c287b853a25545b237100",
+      "lastCommit": "592d0c488f84be86434c287b853a25545b237100",
+      "layer": "shell",
+      "layerRule": "overlay: app routes, docs, e2e tests",
+      "lines": 67,
+      "path": "docs/reports/stage-13.md",
       "test": false
     },
     {
@@ -37956,6 +38018,96 @@
       "layerRule": "fallback: no rule matched",
       "lines": 25,
       "path": "fixtures/rehearsal/script.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 61394,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 1488,
+      "path": "fixtures/sample-build-bill/0000-Start-from-the-house-stack.patch",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 19700,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 507,
+      "path": "fixtures/sample-build-bill/0001-Read-the-bill-My-bill-shows-the-six-things-printed-o.patch",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 12525,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 335,
+      "path": "fixtures/sample-build-bill/0002-Check-the-amount-Does-it-add-up-works-the-bill-out-f.patch",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 1049,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 20,
+      "path": "fixtures/sample-build-bill/lifts.json",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 4463,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 28,
+      "path": "fixtures/sample-build-bill/narration.jsonl",
+      "test": false
+    },
+    {
+      "binary": false,
+      "bytes": 2294,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "shell",
+      "layerRule": "fallback: no rule matched",
+      "lines": 39,
+      "path": "fixtures/sample-build-bill/sample.json",
       "test": false
     },
     {
@@ -41648,7 +41800,7 @@
     },
     {
       "binary": false,
-      "bytes": 3466,
+      "bytes": 3638,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -41660,7 +41812,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 80,
+      "lines": 82,
       "path": "packages/ceremony/src/walkthrough.ts",
       "test": false
     },
@@ -41815,7 +41967,7 @@
     },
     {
       "binary": false,
-      "bytes": 4070,
+      "bytes": 4321,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -41824,7 +41976,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 136,
+      "lines": 139,
       "packages": [
         "vitest"
       ],
@@ -45116,7 +45268,7 @@
     },
     {
       "binary": false,
-      "bytes": 5646,
+      "bytes": 5889,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -45129,7 +45281,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 143,
+      "lines": 147,
       "path": "packages/trace/src/flow.ts",
       "test": false
     },
@@ -45220,7 +45372,7 @@
     },
     {
       "binary": false,
-      "bytes": 10358,
+      "bytes": 10743,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -45229,7 +45381,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 218,
+      "lines": 223,
       "path": "packages/trace/src/page-figures.js",
       "test": false
     },
@@ -45352,7 +45504,7 @@
     },
     {
       "binary": false,
-      "bytes": 13741,
+      "bytes": 13864,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -45361,7 +45513,7 @@
       "lastCommit": "8442ddbb58f3ac5b9edd868c7f0a711ca5b6f324",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 334,
+      "lines": 337,
       "packages": [
         "vitest"
       ],
@@ -45370,7 +45522,7 @@
     },
     {
       "binary": false,
-      "bytes": 9289,
+      "bytes": 9340,
       "changes": 1,
       "env": [],
       "envDynamic": false,
@@ -45402,7 +45554,7 @@
     },
     {
       "binary": false,
-      "bytes": 4667,
+      "bytes": 5181,
       "changes": 3,
       "env": [],
       "envDynamic": false,
@@ -45411,7 +45563,7 @@
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 113,
+      "lines": 126,
       "packages": [
         "vitest"
       ],
@@ -45780,7 +45932,7 @@
     {
       "binary": false,
       "bytes": 17829,
-      "changes": 2,
+      "changes": 3,
       "env": [],
       "envDynamic": false,
       "exports": [
@@ -45807,7 +45959,7 @@
         "siteFilm"
       ],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "05ab55f7341b8df32e68b8c3be6aee799a9d9006",
+      "lastCommit": "592d0c488f84be86434c287b853a25545b237100",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 487,
@@ -46070,21 +46222,24 @@
     },
     {
       "binary": false,
-      "bytes": 3283,
+      "bytes": 4583,
       "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [
+        "CHAI_STALL",
         "SAMPLE_CARDS",
         "SAMPLE_IDEA",
         "SAMPLE_NAME",
+        "Sample",
+        "sampleOf",
         "sampleRecording"
       ],
       "firstCommit": "e6c5b79fad0b81f45f12b731c179b7d59b9e3183",
       "lastCommit": "56dd7b4e3044b762fbff8f8059cb1d154c76e6ac",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 48,
+      "lines": 81,
       "path": "packages/workbench/src/sample.ts",
       "test": false
     },
@@ -46201,7 +46356,7 @@
     },
     {
       "binary": false,
-      "bytes": 10579,
+      "bytes": 10951,
       "changes": 4,
       "env": [],
       "envDynamic": false,
@@ -46218,7 +46373,7 @@
       "lastCommit": "4cb7c4caf2cc607a0053df11196b0533ac1602f0",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 255,
+      "lines": 262,
       "path": "packages/workbench/src/testdrive.ts",
       "tables": [
         {
@@ -46373,12 +46528,12 @@
     {
       "binary": false,
       "bytes": 12841,
-      "changes": 1,
+      "changes": 2,
       "env": [],
       "envDynamic": false,
       "exports": [],
       "firstCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
-      "lastCommit": "b0eba63e9ff03d78a486970ea7ed9ce751692a02",
+      "lastCommit": "592d0c488f84be86434c287b853a25545b237100",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
       "lines": 405,
@@ -46411,7 +46566,7 @@
     },
     {
       "binary": false,
-      "bytes": 12849,
+      "bytes": 12920,
       "changes": 1,
       "env": [
         "DATABASE_URL"
@@ -46422,7 +46577,7 @@
       "lastCommit": "b501fc0a6fe09acf12f8a25090c60a2165a71315",
       "layer": "logic",
       "layerRule": "overlay: packages/*",
-      "lines": 323,
+      "lines": 324,
       "packages": [
         "postgres",
         "vitest"
@@ -46526,6 +46681,24 @@
     },
     {
       "binary": false,
+      "bytes": 1374,
+      "changes": 0,
+      "env": [],
+      "envDynamic": false,
+      "exports": [],
+      "firstCommit": "",
+      "lastCommit": "",
+      "layer": "logic",
+      "layerRule": "overlay: packages/*",
+      "lines": 31,
+      "packages": [
+        "vitest"
+      ],
+      "path": "packages/workbench/test/sample.test.ts",
+      "test": true
+    },
+    {
+      "binary": false,
       "bytes": 5655,
       "changes": 1,
       "env": [
@@ -46590,7 +46763,7 @@
     },
     {
       "binary": false,
-      "bytes": 9319,
+      "bytes": 9320,
       "changes": 9,
       "env": [
         "DATABASE_URL"
